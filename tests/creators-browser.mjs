@@ -78,7 +78,7 @@ try {
     await page.screenshot({ path: path.join(root, 'dist', `${kind}-${family}.png`) });
   };
   await page.getByText('Designs', { exact: true }).click();
-  for (const family of ['inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+  for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
     await choose('Antenna type', family);
     assert.ok(!/undefined|NaN/.test(await page.locator('#side').textContent()));
     if (family === 'nfc') {
@@ -100,6 +100,34 @@ try {
     }
     await saveAndExport('transformer', family);
   }
+  await choose('Transformer type', 'multilayer');
+  await choose('Drive model', 'voltage');
+  await set('S load resistance', 25); await page.waitForTimeout(220); await solved();
+  assert.match(await page.locator('#side').textContent(), /Loaded primary current/);
+  assert.equal(await page.locator('.winding-row').count(), 4);
+  await page.getByLabel('Move winding 2 down', { exact: true }).click();
+  await page.waitForTimeout(220); await solved();
+  assert.equal(await page.getByLabel('Winding assignment, front to back', { exact: true }).inputValue(), 'P,S,P,S');
+  await page.screenshot({ path: path.join(root, 'dist', 'transformer-loaded-stack.png') });
+  // Mock only the board-context response; keep the real page/RPC transport.
+  await page.route('**/api', async route => {
+    const request = route.request().postDataJSON();
+    if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: { layerCount: 2, thickness: 1.6, warnings: [] } } });
+    return route.continue();
+  });
+  await page.getByRole('button', { name: 'Refresh board settings', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('#st-algo').textContent === 'geometry failed');
+  assert.match(await page.locator('.layer-assistant').textContent(), /Board has 2/);
+  await page.unroute('**/api');
+  await page.route('**/api', async route => {
+    const request = route.request().postDataJSON();
+    if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: { layerCount: 4, thickness: 1.8, warnings: [] } } });
+    return route.continue();
+  });
+  await page.getByRole('button', { name: 'Refresh board settings', exact: true }).click();
+  await page.waitForTimeout(220); await solved();
+  assert.match(await page.locator('.layer-assistant').textContent(), /Board has 4/);
+  assert.equal(Number(await page.getByLabel('Winding separation', { exact: true }).inputValue()), 1.8);
   await page.setViewportSize({ width: 1100, height: 800 });
   assert.ok(await page.locator('#btn-place').evaluate(e => e.getBoundingClientRect().right <= innerWidth), 'Toolbar must fit at 1100px');
   assert.deepEqual(errors, []);

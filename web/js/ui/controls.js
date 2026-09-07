@@ -159,7 +159,7 @@ export class Panel {
       seg: buildSeg, check: buildCheck, text: buildText,
       shapes: buildShapes, note: buildNote, row: buildRow, action: buildAction,
     }[spec.type] || buildRange;
-    const entry = builder(spec, this);
+    const entry = spec.type === 'custom' ? spec.build(this) : builder(spec, this);
     if (!entry) return null;
     if (spec.key) this.fields.set(spec.key, entry);
     if (spec.when) entry.when = spec.when;
