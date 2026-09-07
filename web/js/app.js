@@ -218,7 +218,7 @@ const api = {
 function reconcile(key, value) {
   const ws = current();
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
-  if (key === 'family' && ['antenna', 'transformer'].includes(app.ws)) app.fitPending = true;
+  if ((key === 'family' && ['antenna', 'transformer'].includes(app.ws)) || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
 }
 
 function renderRail() {
@@ -292,6 +292,8 @@ function renderSide(res) {
     host.append(grid);
   }
 
+  const preview=ws.preview?.(cfg(),res,api);
+  if(preview)host.append(preview);
   const notes = ws.notes(cfg(), res);
   if (notes.length) {
     host.append(el('div', { class: 'side-section' },
@@ -378,7 +380,7 @@ async function placeIntoBoard() {
     return;
   }
   const existingNets = bridge.state.context?.nets || [];
-  if (['antenna', 'transformer'].includes(app.ws)) {
+  if (['antenna', 'transformer'].includes(app.ws) || (app.ws === 'motor' && ['stepper','planar'].includes(res.family))) {
     const required = [...new Set([...res.art.tracks, ...res.art.pads].map(p => p.net).filter(Boolean))];
     const missing = required.filter(n => !existingNets.includes(n));
     if (missing.length) {

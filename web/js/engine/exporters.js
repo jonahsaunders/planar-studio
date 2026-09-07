@@ -231,6 +231,12 @@ export function exportSvg(A, opt = {}) {
     for (const o of art.outline) S.push(`<path d="${pathD(o.pts)}"/>`);
     S.push(`</g>`);
   }
+  if (art.labels.length) {
+    const xml = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    S.push('<g id="labels" fill="#E6EDF3" font-family="monospace" text-anchor="middle" dominant-baseline="middle">');
+    for (const l of art.labels) S.push(`<text x="${f3(l.x)}" y="${f3(-l.y)}" font-size="${f3(l.size)}">${xml(l.text)}</text>`);
+    S.push('</g>');
+  }
   S.push(`</svg>`);
   return S.join('\n');
 }
@@ -247,7 +253,7 @@ function pathD(pts) {
 
 export function exportDxf(A, opt = {}) {
   const art = prepared(A, opt.tolerance);
-  const layers = usedLayers(art);
+  const layers = [...new Set([...usedLayers(art), ...art.labels.map(l => l.layer)])];
   const dxfName = (n) => n.replace(/\./g, '_');
   const g = [];
   const put = (code, val) => { g.push(String(code)); g.push(String(val)); };
@@ -284,6 +290,10 @@ export function exportDxf(A, opt = {}) {
       for (const [x, y] of [[-1,-1], [1,-1], [1,1], [-1,1]]) { put(0, 'VERTEX'); put(8, ln); put(10, f3(p.x + x * p.w / 2)); put(20, f3(p.y + y * p.h / 2)); put(30, 0); }
       put(0, 'SEQEND'); put(8, ln);
     } else { put(0, 'CIRCLE'); put(8, ln); put(10, f3(p.x)); put(20, f3(p.y)); put(30, 0); put(40, f3(p.w / 2)); }
+  }
+  for (const l of art.labels) {
+    put(0, 'TEXT'); put(8, dxfName(l.layer)); put(10, f3(l.x)); put(20, f3(l.y)); put(30, 0);
+    put(40, f3(l.size)); put(1, String(l.text).replace(/[\r\n]/g, ' '));
   }
   put(0, 'ENDSEC'); put(0, 'EOF');
   return g.join('\n') + '\n';

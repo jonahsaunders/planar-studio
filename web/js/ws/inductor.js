@@ -145,7 +145,7 @@ export function compute(cfg, env, opt = {}) {
     net: env.net || 'COIL',
     label: `${env.name || 'L1'}  ${cfg.layers}L`,
   });
-  art.outline = outlineFor(cfg, coil, 2);
+  art.outline = outlineFor(cfg, coil, 2, art);
 
   const result = {
     coil, art, layers,
@@ -305,7 +305,7 @@ export function spec(cfg, res) {
 }
 
 export function notes(cfg, res) {
-  const out = [];
+  const out = [...(res.art?.notes || [])];
   const a = res.analysis;
   const c = res.coil;
   if (!a) return out;

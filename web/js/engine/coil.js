@@ -465,6 +465,7 @@ export function layerNames(n) {
 
 /* Build the full multi-layer winding: geometry, vias, terminals. */
 export function buildCoil(cfg) {
+  if (cfg.motorGeometry && cfg.shape !== 'wedge') return buildMotorCoil(cfg);
   const pitch = cfg.traceW + cfg.traceS;
   const g = {
     shape: cfg.shape, turns: cfg.turns, pitch,
@@ -533,7 +534,7 @@ export function buildCoil(cfg) {
   const rStart = Math.hypot(startPt[0], startPt[1]);
   const padS = cfg.padSize > 0 ? cfg.padSize : 1.2;
   const leadR = rStart + padS * 0.9 + cfg.traceS;
-  const dAng = (padS + cfg.traceS) / (2 * leadR);
+  const dAng = Math.asin(Math.min(0.99, (padS + cfg.traceS) / (2 * leadR)));
   // an odd layer count leaves the far end deep inside its own winding
   const enclosed = Math.hypot(endPt[0], endPt[1]) < rStart - pitch * 0.5;
   const fan = (p, dir) => {
@@ -585,6 +586,41 @@ export function buildCoil(cfg) {
     bbox: bboxOf(spiral.path),
     outerR: Math.max(rMax, leadR), innerR: rMin, dOutFlat, dInFlat,
   };
+}
+
+/* Fit a conventional spiral into one stator slot before rotating instances.
+   Keep the local winding dimensions for the electrical solver; translate only
+   geometry, otherwise a small circular coil would be analysed as a 60 mm coil. */
+function buildMotorCoil(cfg) {
+  const ro = cfg.dOuter / 2, ri = cfg.dInner / 2;
+  const cx = (ro + ri) / 2;
+  const half = clamp(cfg.spanDeg * Math.PI / 360, 0, Math.PI / 2);
+  const radius = Math.min((ro - ri) / 2, cx * Math.sin(half)) - cfg.traceW / 2;
+  const pitch = cfg.traceW + cfg.traceS;
+  if (!(radius > pitch)) throw new Error('No room for this coil. Increase the ring depth or coil span, or reduce track width and clearance.');
+  const aspect = clamp(cfg.aspect, 0.2, 1);
+  // A stadium's bounding rectangle is inscribed in the available circle.
+  const localR = cfg.shape === 'racetrack' ? radius / Math.sqrt(1 + aspect * aspect) : radius;
+  const apothem = cfg.shape === 'polygon' ? localR * Math.cos(Math.PI / cfg.sides)
+    : cfg.shape === 'racetrack' ? localR * aspect : localR;
+  // Leave room for the inner transition via, including copper clearance.
+  const maxTurns = Math.floor((apothem - cfg.viaPad / 2 - cfg.traceS - cfg.traceW / 2) / pitch);
+  if (maxTurns < 1) throw new Error('No complete turn fits around the inner via. Increase the coil span or reduce the trace/via sizes.');
+  const local = { ...cfg, motorGeometry: false, arrayEnabled: false,
+    dOuter: localR * 2, turns: Math.min(maxTurns, Math.max(1, Math.floor(cfg.turns))),
+    aspect, fillet: 0, cornerR: localR * aspect };
+  const coil = buildCoil(local);
+  const move = pts => pts.map(([x, y]) => [x + cx, y]);
+  coil.spiral.path = move(coil.spiral.path);
+  coil.spiral.base = move(coil.spiral.base);
+  coil.spiral.maxTurns = maxTurns;
+  for (const l of [...coil.layers, ...coil.links, ...coil.leads]) l.pts = move(l.pts);
+  for (const v of coil.vias) v.x += cx;
+  coil.terminals = move(coil.terminals);
+  coil.bbox = bboxOf(coil.spiral.path);
+  coil.outerR += cx;
+  coil.motorCentre = cx;
+  return coil;
 }
 
 /* Constant-radius arc between two points at (nearly) equal radius. */
@@ -1068,14 +1104,14 @@ export function solveTurnsForL(cfg, targetL, opts = {}) {
 
 export function motorAnalysis(cfg, coil, a) {
   const p = Math.max(1, cfg.polePairs);
-  const arrayed = cfg.arrayEnabled && cfg.shape === 'wedge';
+  const arrayed = cfg.arrayEnabled && (cfg.shape === 'wedge' || cfg.motorGeometry);
   const phases = arrayed ? cfg.phases : 1;
   const coilsTotal = arrayed ? Math.max(1, cfg.coilCount) : 1;
   const coilsPerPhase = coilsTotal / phases;
   const rO = cfg.dOuter / 2e3, rI = Math.max(coil.innerR / 1e3, 1e-4);
-  const rOa = rO, rIa = cfg.shape === 'wedge' ? cfg.dInner / 2e3 : rI;
+  const rOa = rO, rIa = arrayed ? cfg.dInner / 2e3 : rI;
 
-  const alpha = (cfg.shape === 'wedge' ? cfg.spanDeg : 360 / Math.max(coilsTotal, 2 * p)) * Math.PI / 180;
+  const alpha = (arrayed ? cfg.spanDeg : 360 / Math.max(coilsTotal, 2 * p)) * Math.PI / 180;
   const kp = Math.abs(Math.sin(clamp(p * alpha / 2, -Math.PI * 1.5, Math.PI * 1.5)));
   const kw = clamp(kp, 0.05, 1);
 
