@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.0 (development)
+
+- Add a layer setup assistant with board requirements, KiCad setup instructions
+  and explicit board-context refresh; fix controls retaining stale configuration
+  objects after adopting the board stack-up.
+- Add a visual winding editor with per-section winding/layer/height controls,
+  accessible assignment reorder buttons and section add/remove actions.
+- Add linear loaded transformer analysis for every transformer family using the
+  complete inductance matrix, RMS voltage source, source impedance and independent
+  secondary impedances. Support exact open and short terminations; report loaded
+  output, phase, regulation, power and DC winding loss.
+- Compute ferrite loaded flux from common ampere-turns. Keep supplied core losses
+  separate; loaded circuit efficiency excludes core and AC copper loss.
+- Add edge-fed circular TM11 patches and microstrip-fed rectangular slots with
+  starting dimensions, tuning controls, exports and topology-specific limits.
+- Add numerical, geometry/export and whole-app DOM regressions for the new flows.
+  Rendered browser and live KiCad validation remain outstanding.
+
 ## 1.2.0 (development)
 
 - Add inset-fed patches, printed/folded dipoles, inverted-F variants, NFC loops with numerical target sizing and tuning C, and patch arrays with ideal array-factor plots.

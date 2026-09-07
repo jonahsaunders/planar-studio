@@ -484,3 +484,17 @@ table.spec .dim { color: var(--text-mute); }
   .topbar .tabs { order: 2; flex-basis: 100%; justify-content: center; }
   .topbar .brand { flex-shrink: 0; }
 }
+
+/* Layer setup and winding assignment editor. */
+.layer-assistant { padding: 10px; border: 1px solid var(--line, #56616b); border-radius: 8px; }
+.layer-assistant p { margin: 0 0 8px; font-weight: 600; }
+.layer-assistant[data-state="warn"], .stack-error { color: var(--warn, #bb782a); }
+.layer-assistant .btn { margin-top: 10px; }
+.winding-row { display: grid; grid-template-columns: 18px minmax(70px, 1fr) 60px; gap: 6px; padding: 9px 7px; margin: 8px 0; border: 1px solid var(--line, #56616b); border-left: 4px solid #70a2e8; border-radius: 6px; }
+.winding-row[data-winding="S"], .winding-row[data-winding="S2"], .winding-row[data-winding="S3"] { border-left-color: #de8686; }
+.winding-row select { min-width: 0; width: 100%; }
+.winding-row label { grid-column: 2 / 4; display: flex; align-items: center; gap: 6px; }
+.winding-row input { width: 90px; max-width: 100%; }
+.winding-actions { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
+.winding-actions .btn { min-width: 30px; }
+.stack-error { font-size: 12px; }

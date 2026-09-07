@@ -171,6 +171,26 @@ function refreshHandles() {
 
 /* Public surface the workspaces use to write back into the config. */
 const api = {
+  boardContext: () => bridge.state.context,
+  canRefreshBoard: () => !bridge.state.standalone,
+  async refreshBoard() {
+    try {
+      const ctx = await bridge.api.context();
+      bridge.state.context = ctx;
+      bridge.state.lastContextAt = Date.now();
+      app.boardApplied = true;
+      adoptBoard(ctx);
+      toast('Board settings refreshed.', 'info');
+      return ctx;
+    } catch (err) { toast(`Could not refresh board settings: ${err.message}`, 'error'); throw err; }
+  },
+  setMany(values) {
+    Object.assign(cfg(), values);
+    for (const [key, value] of Object.entries(values)) reconcile(key, value);
+    app.dirty = true;
+    app.panel.sync();
+    scheduleQuick();
+  },
   set(key, value) {
     if (cfg()[key] === value) return;
     cfg()[key] = value;
@@ -652,6 +672,9 @@ function renderLink(st) {
   $('btn-place').disabled = !st.hasBoard;
   $('st-board').textContent = st.hasBoard ? (st.boardName || 'board') : (st.connected ? 'no board' : 'offline');
 
+  // Update board-aware controls without replacing partially typed field values.
+  for (const key of ['_layerAssistant', '_windingEditor']) app.panel?.fields.get(key)?.set?.();
+
   // First time a board appears, adopt its stack-up.
   if (st.hasBoard && st.context && !app.boardApplied) {
     app.boardApplied = true;
@@ -663,7 +686,7 @@ function adoptBoard(ctx) {
   const notes = [];
   for (const key of Object.keys(app.configs)) {
     const { applied, cfg: next } = applyBoardContext(app.configs[key], ctx);
-    app.configs[key] = next;
+    Object.assign(app.configs[key], next);
     if (key === app.ws && applied.length) notes.push(...applied);
   }
   // The filter workspace measures to the reference plane, not through the board.

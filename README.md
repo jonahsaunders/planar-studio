@@ -1,5 +1,22 @@
 # Planar Studio
 
+## Layer setup, loaded transformers and antennas — 1.3.0 development
+
+- **Layer setup assistant:** required versus available copper layers, exact KiCad
+  setup steps, and a **Refresh board settings** button. Board settings remain under
+  your control in KiCad.
+- **Interactive winding stack:** assign windings and copper layers row by row,
+  swap assignments, add/remove sections, and edit copper center heights.
+- **Loaded transformers:** sinusoidal voltage source, source impedance and separate
+  open/short/impedance loads for S/S2/S3. Reports RMS outputs, real power,
+  regulation and DC winding loss. Circuit efficiency excludes AC and core losses.
+- **Circular patch and microstrip-fed slot:** two additional antenna families with
+  tuning controls, model-specific readouts and the existing exports.
+
+See [the 1.3 guide](docs/stack-load-antennas.md) for controls, formulas,
+validation and model limits. Existing designs retain imposed-current behavior
+until you select the voltage-source drive model.
+
 ## Antenna and transformer families — 1.2.0 development
 
 The Antenna workspace now includes edge/inset-fed patches, printed and folded
@@ -252,7 +269,7 @@ retuning the geometry to hide it.
 ## Install
 
 **From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.2.0.zip`, or use *Install from File* on the archive built by
+`planar-studio-1.3.0.zip`, or use *Install from File* on the archive built by
 `./build.sh`.
 
 **By hand.** Copy this folder into KiCad's plugin directory as

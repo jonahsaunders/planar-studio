@@ -1,9 +1,11 @@
 import { buildTransformer, TRANSFORMER_FAMILIES, transformerExtras, STACK_PRESETS, CORE_MATERIALS } from '../engine/transformer.js';
+import { layerAssistant, windingEditor } from '../ui/winding-stack.js';
 import { eng, num } from '../ui/controls.js';
 import { colourFor, fmtHz } from './common.js';
 export const id = 'transformer', title = 'Transformer';
 export const defaults = () => ({ ...transformerExtras(), shape: 'circle', primaryTurns: 6, secondaryTurns: 3, dOuter: 30, traceW: 0.5, traceS: 0.3, boardT: 1.6, copperOz: 1, tempC: 25, freq: 1e5, current: 1, secondaryCurrent: 1, ppt: 128, tolerance: 0.004 });
 const advanced = c => c.family && c.family !== 'aircore';
+const loaded = c => c.driveMode === 'voltage';
 const ferrite = c => c.family === 'ferrite';
 const options = o => Object.entries(o).map(([value, label]) => ({ value, label }));
 export function reconcile(c, key, value) {
@@ -12,7 +14,10 @@ export function reconcile(c, key, value) {
     if (value === 'ferrite') c.dOuter = Math.max(40, c.dOuter);
   }
 }
-export function rail(panel) {
+export function rail(panel, api) {
+  panel.group({ key: 'layer-assistant', title: 'Layer setup assistant', fields: [
+    { key: '_layerAssistant', type: 'custom', build: p => layerAssistant(p, api) },
+  ] });
   panel.group({ key: 'windings', title: 'Planar transformer', fields: [
     { key: 'family', type: 'select', label: 'Transformer type', options: options(TRANSFORMER_FAMILIES) },
     { key: 'shape', type: 'seg', label: 'Winding shape', options: [{ value: 'circle', label: 'Circular' }, { value: 'polygon', label: 'Square' }] },
@@ -24,7 +29,10 @@ export function rail(panel) {
     { key: 'traceW', type: 'range', label: 'Track width', unit: 'mm', min: 0.1, max: 3, step: 0.01 },
     { key: 'traceS', type: 'range', label: 'Turn clearance', unit: 'mm', min: 0.1, max: 3, step: 0.01 },
   ] });
-  panel.group({ key: 'stack', title: 'Winding stack-up', fields: [
+  panel.group({ key: 'visual-stack', title: 'Interactive winding stack', when: advanced, fields: [
+    { key: '_windingEditor', type: 'custom', build: p => windingEditor(p, api), when: advanced },
+  ] });
+  panel.group({ key: 'stack', title: 'Stack details and copper', fields: [
     { key: 'stackPlan', type: 'text', label: 'Winding assignment, front to back', hint: 'One entry per used layer: P,P,S,S or P,S,P,S. Use S2/S3 for additional secondaries. Every winding connects its layers in series.', when: advanced },
     { key: 'copperLayers', type: 'text', label: 'Copper layer names (optional)', hint: 'Example: F.Cu,In1.Cu,In2.Cu,B.Cu. Blank selects available layers in order, including the back.', when: advanced },
     { key: 'layerPositions', type: 'text', label: 'Copper center heights (optional, mm)', hint: 'Example: 0,0.2,1.4,1.6. Same order as the assigned layers; blank assumes uniform spacing.', when: advanced },
@@ -46,15 +54,31 @@ export function rail(panel) {
     { key: 'coreLe', type: 'number', label: 'Effective magnetic path le', unit: 'mm', when: ferrite },
     { key: 'coreGap', type: 'number', label: 'Total magnetic gap', unit: 'mm', when: ferrite },
     { key: 'leakageFraction', type: 'range', label: 'Assumed series leakage / self L', min: 0.001, max: 0.3, step: 0.001, when: ferrite, hint: 'Supplied assumption, not calculated from interleaving.' },
-    { key: 'coreVoltage', type: 'number', label: 'Sinusoidal primary RMS voltage', unit: 'V', when: ferrite },
+    { key: 'coreVoltage', type: 'number', label: 'Sinusoidal primary RMS voltage', unit: 'V', when: c => ferrite(c) && !loaded(c) },
     { key: 'coreFluxLimit', type: 'number', label: 'Design peak flux limit', unit: 'T', when: ferrite },
     { key: 'coreLossDensity', type: 'number', label: 'Core loss density at operating point', unit: 'kW/m³', when: ferrite, hint: 'From the material curve at actual frequency, flux and core temperature. Zero leaves core loss unknown.' },
   ] });
   panel.group({ key: 'drive', title: 'Operating point', fields: [
+    { key: 'driveMode', type: 'select', label: 'Drive model', options: options({ current: 'Imposed currents / open-circuit estimate', voltage: 'Voltage source with secondary loads' }) },
     { key: 'freq', type: 'number', label: 'Frequency', unit: 'Hz', si: true, format: fmtHz },
-    { key: 'current', type: 'range', label: 'Primary RMS current', unit: 'A', min: 0.01, max: 20, step: 0.01 },
-    { key: 'secondaryCurrent', type: 'range', label: 'Secondary RMS current', unit: 'A', min: 0.01, max: 20, step: 0.01, hint: 'For multiple secondaries this entered current applies to each winding for the DC-loss estimate.' },
+    { key: 'current', type: 'range', label: 'Primary RMS current', when: c => !loaded(c), unit: 'A', min: 0.01, max: 20, step: 0.01 },
+    { key: 'secondaryCurrent', type: 'range', label: 'Secondary RMS current', when: c => !loaded(c), unit: 'A', min: 0.01, max: 20, step: 0.01, hint: 'For multiple secondaries this entered current applies to each winding for the DC-loss estimate.' },
   ] });
+  panel.group({ key: 'source', title: 'Sinusoidal source', when: loaded, fields: [
+    { key: 'sourceVoltage', type: 'number', label: 'Source RMS voltage', unit: 'V' },
+    { key: 'sourceR', type: 'number', label: 'Source resistance', unit: 'Ω' },
+    { key: 'sourceX', type: 'number', label: 'Source reactance', unit: 'Ω', hint: 'At the operating frequency: positive inductive, negative capacitive.' },
+    { type: 'note', text: 'Linear sinusoidal circuit. No rectifiers, switching waveforms, AC winding loss or parasitic resonance.' },
+  ] });
+  for (const [name, prefix] of [['S', 'load'], ['S2', 'load2'], ['S3', 'load3']]) {
+    const visible = c => loaded(c) && (name === 'S' || (c.family === 'multi-secondary' && c.stackPlan.split(',').map(n => n.trim()).includes(name)));
+    panel.group({ key: `load-${name}`, title: `${name} secondary load`, when: visible, fields: [
+      { key: `${prefix}Mode`, type: 'select', label: `${name} termination`, options: options({ load: 'Impedance load', open: 'Open circuit', short: 'Short circuit' }) },
+      { key: `${prefix}R`, type: 'number', label: `${name} load resistance`, unit: 'Ω', when: c => c[`${prefix}Mode`] === 'load' },
+      { key: `${prefix}X`, type: 'number', label: `${name} load reactance`, unit: 'Ω', when: c => c[`${prefix}Mode`] === 'load' },
+      { type: 'note', text: 'Load connects from the dotted + to − terminal of the complete winding. A center tap remains open.' },
+    ] });
+  }
 }
 export const compute = buildTransformer;
 export const handles = () => [];
@@ -63,7 +87,13 @@ export const notes = (c, r) => r.notes;
 export const charts = () => [];
 export function tiles(c, r) {
   const a = r.analysis; if (!a) return [];
-  const out = [{ k: 'Primary L', v: eng(a.L1, 'H', 4) }, { k: 'Secondary L', v: eng(a.L2, 'H', 4) }, { k: 'Mutual M', v: eng(a.M, 'H', 4) }, { k: 'Coupling k', v: num(a.k, 4), sub: r.core ? 'from supplied leakage assumption' : '' }, { k: 'Turns ratio Np:Ns', v: `${num(a.ratio, 3)}:1` }, { k: 'DC copper loss', v: eng(a.loss, 'W', 3), sub: 'at entered winding currents' }];
+  const out = [{ k: 'Primary L', v: eng(a.L1, 'H', 4) }, { k: 'Secondary L', v: eng(a.L2, 'H', 4) }, { k: 'Mutual M', v: eng(a.M, 'H', 4) }, { k: 'Coupling k', v: num(a.k, 4), sub: r.core ? 'from supplied leakage assumption' : '' }, { k: 'Turns ratio Np:Ns', v: `${num(a.ratio, 3)}:1` }, { k: 'DC copper loss', v: eng(a.loss, 'W', 3), sub: a.loaded ? 'from solved RMS currents' : 'at entered winding currents' }];
+  if (a.loaded) {
+    const l = a.loaded;
+    out.push({ k: 'Loaded primary current', v: eng(l.primaryCurrent, 'A', 4) }, { k: 'Delivered load power', v: eng(l.outputPower, 'W', 4) },
+      { k: 'Circuit efficiency', v: l.efficiency == null ? '—' : `${num(l.efficiency * 100, 2)}%`, sub: 'DC winding loss only; excludes core and AC losses' });
+    for (const q of l.outputs) out.push({ k: `${q.name} loaded voltage`, v: eng(q.voltage, 'V', 4), sub: `${q.mode}; ${eng(q.current, 'A', 3)}` });
+  }
   if (a.tapTurns) out.push({ k: 'Turns per tapped half', v: String(a.tapTurns) });
   if (r.core) out.push({ k: 'Core AL', v: eng(r.core.AL, 'H/turn²', 4) }, { k: 'Peak core flux', v: eng(r.core.Bpeak, 'T', 4) }, { k: 'Flux / design limit', v: `${num(r.core.fluxUtilization * 100, 1)}%` }, { k: 'Estimated core loss', v: eng(r.core.loss, 'W', 3), sub: 'from entered loss density' });
   return out;
@@ -71,6 +101,23 @@ export function tiles(c, r) {
 export function spec(c, r) {
   const a = r.analysis; if (!a) return [];
   const sections = [{ title: 'Transformer estimates', rows: [['Topology', TRANSFORMER_FAMILIES[c.family || 'aircore']], ['Model', r.model], ['Primary DC resistance', eng(a.R1, 'Ω', 4)], ['Secondary DC resistance', eng(a.R2, 'Ω', 4)], ['Primary leakage L (S shorted, other secondaries open)', eng(a.leakage, 'H', 4)], ['Open-secondary induced RMS voltage', eng(a.induced, 'V', 4)], ['Voltage assumption', 'Sinusoidal imposed primary current, open secondaries']] }];
+  if (a.loaded) {
+    const l = a.loaded;
+    sections[0].rows = sections[0].rows.filter(row => !['Open-secondary induced RMS voltage', 'Voltage assumption'].includes(row[0]));
+    sections.push({ title: 'Loaded sinusoidal circuit', rows: [
+      ['Source', `${eng(c.sourceVoltage, 'V', 4)} RMS; R=${eng(c.sourceR, 'Ω', 4)}, X=${eng(c.sourceX, 'Ω', 4)}`],
+      ['Primary terminal voltage / current', `${eng(l.primaryVoltage, 'V', 4)} / ${eng(l.primaryCurrent, 'A', 4)}`],
+      ['Transformer real input power', eng(l.inputPower, 'W', 4)], ['Total load power', eng(l.outputPower, 'W', 4)],
+      ['DC winding loss', eng(l.copperLoss, 'W', 4)], ['Source resistance loss', eng(l.sourceLoss, 'W', 4)],
+      ['Scope', 'Linear AC impedance loads; excludes core dissipation, AC winding loss and capacitance'],
+    ] });
+    for (const q of l.outputs) sections.push({ title: `${q.name} loaded output`, rows: [
+      ['Termination', q.mode], ['RMS voltage / current', `${eng(q.voltage, 'V', 4)} / ${eng(q.current, 'A', 4)}`],
+      ['Voltage phase relative to source', `${num(q.phaseDeg, 2)}°`], ['Real load power', eng(q.power, 'W', 4)],
+      ['All-secondaries-open voltage', eng(q.openVoltage, 'V', 4)],
+      ['Regulation (Vopen − Vload) / Vload', q.regulation == null ? '—' : `${num(q.regulation * 100, 2)}%`],
+    ] });
+  }
   if (!r.windings) {
     sections[0].rows.push(['Terminals', '1 (dot), 2 primary; 3 (dot), 4 secondary'], ['Breakout', 'Inner terminals require insulated jumpers']);
     return sections;
@@ -80,8 +127,8 @@ export function spec(c, r) {
   const pairs = [];
   for (let i = 0; i < r.windings.length; i++) for (let j = i; j < r.windings.length; j++) pairs.push([`${r.windings[i].name} ↔ ${r.windings[j].name}`, `${eng(a.matrix[i][j], 'H', 4)}; k=${num(a.coupling[i][j], 4)}`]);
   sections.push({ title: 'Inductance / coupling matrix', rows: pairs });
-  sections.push({ title: 'Open-secondary outputs', rows: a.outputs.map(q => [q.name, `Np:Ns ${num(q.ratio, 3)}:1; ${eng(q.induced, 'V', 4)} at imposed primary current`]) });
-  if (r.core) sections.push({ title: 'Core assumptions', rows: [['Material', r.core.material], ['Relative permeability', num(r.core.muR, 0)], ['Core AL', eng(r.core.AL, 'H/turn²', 4)], ['Peak flux at supplied voltage', eng(r.core.Bpeak, 'T', 4)], ['Core loss', r.core.loss == null ? 'Unknown: supply operating-point loss density' : eng(r.core.loss, 'W', 4)], ['Mechanical export', 'Post cutout in board export; add/verify manually for direct placement']] });
+  if (!a.loaded) sections.push({ title: 'Open-secondary outputs', rows: a.outputs.map(q => [q.name, `Np:Ns ${num(q.ratio, 3)}:1; ${eng(q.induced, 'V', 4)} at imposed primary current`]) });
+  if (r.core) sections.push({ title: 'Core assumptions', rows: [['Material', r.core.material], ['Relative permeability', num(r.core.muR, 0)], ['Core AL', eng(r.core.AL, 'H/turn²', 4)], [a.loaded ? 'Peak flux from solved currents' : 'Peak flux at supplied voltage', eng(r.core.Bpeak, 'T', 4)], ['Core loss', r.core.loss == null ? 'Unknown: supply operating-point loss density' : eng(r.core.loss, 'W', 4)], ['Mechanical export', 'Post cutout in board export; add/verify manually for direct placement']] });
   return sections;
 }
 export const status = (c, r) => ({ algo: r.model, summary: r.analysis ? `${TRANSFORMER_FAMILIES[c.family || 'aircore']} · Np:Ns ${num(r.analysis.ratio, 3)}:1 · k ${num(r.analysis.k, 3)}` : 'solving…' });

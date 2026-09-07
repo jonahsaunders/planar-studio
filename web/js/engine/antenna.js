@@ -1,4 +1,5 @@
 /* Parametric antenna layouts. Each family declares its actual model scope. */
+import { buildRoundOrSlot } from './round-slot-antennas.js';
 import { buildPatch } from './patch-antenna.js';
 import { artwork, pad, track, run, rect, bounds, label, transform, merge } from './artwork.js';
 import { buildCoil, toFilaments, inductanceOf, discretisationCorrection, OZ_MM, RHO_CU20 } from './coil.js';
@@ -7,9 +8,11 @@ import { range, choice } from './creator-validation.js';
 export const ANTENNA_FAMILIES = {
   patch: 'Edge-fed patch', 'inset-patch': 'Inset-fed patch', dipole: 'Printed dipole',
   'folded-dipole': 'Folded dipole', ifa: 'Inverted-F', mifa: 'Meandered inverted-F',
+  'circular-patch': 'Circular patch', slot: 'Microstrip-fed slot',
   nfc: 'NFC loop', 'patch-array': 'Patch array',
 };
 export const antennaExtras = () => ({
+  radiusScale: 1, slotScale: 1, slotWidth: 1.5, slotStub: 5,
   family: 'patch', insetFraction: 0.32, insetGap: 0.4, edgeResistance: 300,
   traceW: 0.8, feedGap: 1, armScale: 0.95, foldSpacing: 3, groundWidth: 45,
   groundLength: 30, antennaHeight: 6, feedOffset: 2, meanderRuns: 5, meanderPitch: 2,
@@ -37,6 +40,7 @@ export function buildAntenna(input, env = {}, opt = {}) {
   range(c, 'freq', c.family === 'nfc' ? 1e5 : 1e8, c.family === 'nfc' ? 30e6 : 30e9);
   range(c, 'boardT', 0.05, 10); range(c, 'epsR', 1.01, 20);
   range(c, 'copperOz', 0.25, 4); range(c, 'margin', 0.1, 100);
+  if (['circular-patch', 'slot'].includes(c.family)) return buildRoundOrSlot(c, env);
   if (c.family === 'nfc') return nfc(c, env, opt);
   if (['dipole', 'folded-dipole', 'ifa', 'mifa'].includes(c.family)) return wireAntenna(c, env);
   if (c.family === 'patch-array') return patchArray(c, env);

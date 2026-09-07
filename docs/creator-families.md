@@ -1,5 +1,10 @@
 # Antenna and transformer families — 1.2.0 development
 
+Version 1.3 adds a [layer assistant, visual winding editor, loaded circuit
+analysis and two antenna families](stack-load-antennas.md). The imposed-current
+and open-secondary limits below describe the original drive mode; the new guide
+explains voltage-source operation.
+
 Choose **Antenna type** or **Transformer type** in the existing workspace.
 Old 1.1 designs retain their original edge-fed patch or two-layer air-core
 behavior. All families use the existing Save/Open, JSON import, six exports,

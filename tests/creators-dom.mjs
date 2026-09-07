@@ -42,7 +42,7 @@ const choose = async (label, value) => {
   assert.ok(select, label); select.value = value; select.dispatchEvent(new w.Event('change', { bubbles: true }));
   await new Promise(r => setTimeout(r, 220)); await solved();
 };
-for (const family of ['inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
   await choose('Antenna type', family);
   assert.equal(document.querySelector('[data-key="nfc"]').hidden, family !== 'nfc');
   assert.equal(document.querySelector('[data-key="array"]').hidden, family !== 'patch-array');
@@ -71,6 +71,56 @@ for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interle
     set('Core post width / diameter', 6); await new Promise(r => setTimeout(r, 220)); await solved();
   }
 }
+// New winding editor, loaded circuit and explicit board refresh.
+await choose('Transformer type', 'multilayer');
+assert.equal(document.querySelectorAll('.winding-row').length, 4);
+await choose('Drive model', 'voltage');
+assert.match(document.querySelector('#side').textContent, /Loaded primary current/);
+set('S load resistance', 25); await new Promise(r => setTimeout(r, 220)); await solved();
+await choose('S termination', 'open');
+assert.match(document.querySelector('#side').textContent, /open; 0 A/);
+await choose('S termination', 'load');
+const winding = document.querySelector('[aria-label="Winding on section 2"]');
+winding.value = 'S'; winding.dispatchEvent(new w.Event('change', { bubbles: true }));
+await new Promise(r => setTimeout(r, 220)); await solved();
+button('Save');
+await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.stackPlan === 'P,S,S,S');
+const savedLoad = JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config;
+assert.equal(savedLoad.driveMode, 'voltage'); assert.equal(savedLoad.loadR, 25);
+document.querySelector('[aria-label="Move winding 1 down"]').click();
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.equal(document.querySelector('[aria-label="Winding assignment, front to back"]').value, 'S,P,S,S');
+button('Add winding layer');
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.equal(document.querySelectorAll('.winding-row').length, 5);
+document.querySelector('[aria-label="Remove section 5"]').click();
+await new Promise(r => setTimeout(r, 220)); await solved();
+set('Copper height for section 2 (mm)', 0.3);
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.match(document.querySelector('[aria-label="Copper center heights (optional, mm)"]').value, /0.3/);
+button('Use automatic spacing');
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.equal(document.querySelector('[aria-label="Copper center heights (optional, mm)"]').value, '');
+const bridge = await import('../web/js/bridge.js');
+bridge.state.standalone = false;
+bridge.state.context = { layerCount: 2, thickness: 1.6 };
+set('Outer diameter', 41);
+await until(() => document.querySelector('#st-algo').textContent === 'geometry failed');
+assert.match(document.querySelector('.layer-assistant').textContent, /Requires 4 copper layers · Board has 2/);
+assert.match(document.querySelector('.layer-assistant').textContent, /Physical Stackup/);
+bridge.api.context = async () => ({ layerCount: 4, thickness: 2, warnings: [] });
+button('Refresh board settings');
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.match(document.querySelector('.layer-assistant').textContent, /Board has 4 · Layer count ready/);
+assert.equal(Number(document.querySelector('[aria-label="Winding separation"]').value), 2);
+// Regression: adopting context must retain the config object bound to Panel.
+set('Primary turns', 8); await new Promise(r => setTimeout(r, 220)); await solved();
+button('Save');
+await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.primaryTurns === 8);
+assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.boardT, 2);
+bridge.api.context = async () => { throw new Error('No PCB open'); };
+button('Refresh board settings'); await until(() => document.querySelector('.layer-assistant').textContent.includes('No PCB open'));
+assert.equal([...document.querySelectorAll('button')].find(b => b.textContent === 'Refresh board settings').disabled, false);
 console.log('Whole-app creator DOM flows passed: tabs, edits, saved configs, export dialogs, tools, all antenna/transformer families, target sizing, core materials and invalid-state recovery. Canvas/layout not tested.');
 await w.happyDOM.abort();
 process.exit(0);

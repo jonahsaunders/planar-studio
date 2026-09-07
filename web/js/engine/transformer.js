@@ -4,6 +4,9 @@ import { buildAirTransformer } from './air-transformer.js';
 import { buildCoil, layerNames, toFilaments, inductanceOf, discretisationCorrection, mutualOf, OZ_MM, RHO_CU20, ALPHA_CU, MU0 } from './coil.js';
 import { artwork, track, via, pad, label, rect, arcPts, bounds, rotatePts } from './artwork.js';
 import { range, choice, positiveMatrix } from './creator-validation.js';
+import { loadDefaults, loadedTransformer } from './transformer-load.js';
+import { C } from './complex.js';
+import { resolveStack } from './winding-stack.js';
 
 export const TRANSFORMER_FAMILIES = {
   aircore: 'Two-layer air-core', multilayer: 'Multilayer air-core',
@@ -19,6 +22,7 @@ export const STACK_PRESETS = {
 // Ferroxcube 3C95: https://www.ferroxcube.com/en-global/news/download/37
 export const CORE_MATERIALS = { custom: { name: 'User material' }, N87: { name: 'TDK N87 (nominal μi)', muR: 2200 }, '3C95': { name: 'Ferroxcube 3C95 (nominal μi)', muR: 3000 } };
 export const transformerExtras = () => ({
+  ...loadDefaults(),
   family: 'aircore', stackPlan: 'P,P,S,S', copperLayers: '', layerPositions: '',
   secondary2Turns: 3, secondary3Turns: 3, viaPad: 0.8, viaDrill: 0.4,
   coreShape: 'rectangular', corePostW: 6, corePostH: 6, coreClearance: 0.5,
@@ -44,10 +48,12 @@ function minRadius(pts) {
 export function buildTransformer(input, env = {}, opt = {}) {
   const c = { ...transformerExtras(), ...input };
   choice(c, 'family', Object.keys(TRANSFORMER_FAMILIES));
+  choice(c, 'driveMode', ['current', 'voltage']);
   if (c.family === 'aircore') {
     const r = buildAirTransformer(c, env, opt);
     r.model = 'Air-core Neumann partial inductance';
     r.art.meta.family = c.family;
+    attachLoad(c, r);
     return r;
   }
   for (const key of ['primaryTurns', 'secondaryTurns']) range(c, key, 1, 60, true);
@@ -159,8 +165,9 @@ export function buildTransformer(input, env = {}, opt = {}) {
     core.Bpeak = c.coreVoltage * Math.sqrt(2) / (2 * Math.PI * c.freq * windings[0].turns * c.coreAe * 1e-6);
     core.fluxUtilization = core.Bpeak / c.coreFluxLimit;
     core.loss = c.coreLossDensity > 0 ? c.coreLossDensity * 1e3 * c.coreAe * c.coreLe * 1e-9 : null;
-    if (core.Bpeak > c.coreFluxLimit) notes.push(warn('Sinusoidal drive exceeds the entered design flux limit. Increase turns/frequency/core area or reduce voltage. The linear model is not valid after saturation.'));
+    if (c.driveMode !== 'voltage' && core.Bpeak > c.coreFluxLimit) notes.push(warn('Sinusoidal drive exceeds the entered design flux limit. Increase turns/frequency/core area or reduce voltage. The linear model is not valid after saturation.'));
   }
+  attachLoad(c, r);
   return r;
 }
 
@@ -169,28 +176,6 @@ function fanLead(end, node, theta) {
   return [end, radial, ...arcPts(0, 0, node.radius, theta, node.theta, 0.025).slice(1)];
 }
 
-function resolveStack(c, board, count) {
-  const explicit = tokens(c.copperLayers);
-  const boardNames = board?.copperLayers?.length ? board.copperLayers.map(l => l.name) : board?.layerCount ? layerNames(board.layerCount) : null;
-  if (boardNames && boardNames.length < count) throw new Error(`This winding assignment needs ${count} copper layers; the board has ${boardNames.length}.`);
-  const defaultCount = count + count % 2;
-  const available = boardNames || layerNames(defaultCount);
-  const layers = explicit.length ? explicit : [...available.slice(0, count - 1), available.at(-1)];
-  const ordinal = name => name === 'F.Cu' ? 0 : name === 'B.Cu' ? 31 : /^In([1-9]|[12][0-9]|30)\.Cu$/.test(name) ? Number(name.match(/\d+/)[0]) : -1;
-  if (layers.length !== count || new Set(layers).size !== count || layers.some((n, i) => ordinal(n) < 0 || (i > 0 && ordinal(n) <= ordinal(layers[i - 1])))) throw new Error('Copper layers must be unique canonical names in front-to-back order, one per winding assignment.');
-  if (boardNames && layers.some(n => !boardNames.includes(n))) throw new Error('Selected copper layer does not exist on the open board.');
-  const needed = Math.max(defaultCount, ...layers.filter(n => n.startsWith('In')).map(n => Number(n.match(/\d+/)[0]) + 2));
-  const fullLayers = boardNames || layerNames(needed + needed % 2);
-  let z;
-  if (tokens(c.layerPositions).length) {
-    z = tokens(c.layerPositions).map(Number);
-    if (z.length !== count || z.some((v, i) => !Number.isFinite(v) || v < 0 || v > c.boardT || (i > 0 && v - z[i - 1] < c.copperOz * OZ_MM + 0.01))) throw new Error('Enter increasing copper center heights in mm within board thickness, one per assigned layer, with dielectric clearance.');
-  } else {
-    z = layers.map(n => fullLayers.indexOf(n) / (fullLayers.length - 1) * c.boardT);
-    if (z.some((v, i) => !Number.isFinite(v) || v < 0 || (i > 0 && v - z[i - 1] < c.copperOz * OZ_MM + 0.01))) throw new Error('Layer separation is too small for the selected copper thickness.');
-  }
-  return { layers, z, fullLayers, assumedZ: !tokens(c.layerPositions).length };
-}
 
 function checkVias(A, windings, clearance) {
   const nodes = windings.flatMap(q => q.nodes.map(n => ({ ...n, net: q.net })));
@@ -211,7 +196,7 @@ function coreParameters(c, inner) {
   range(c, 'corePostW', 1, 100); range(c, 'corePostH', 1, 100); range(c, 'coreClearance', 0.1, 5);
   range(c, 'coreAe', 1, 10000); range(c, 'coreLe', 1, 1000); range(c, 'coreGap', 0, 10);
   range(c, 'coreMuR', 1, 20000); range(c, 'coreWindowHeight', 0.2, 30); range(c, 'coreFluxLimit', 0.01, 1);
-  range(c, 'coreVoltage', 0.01, 1000); range(c, 'leakageFraction', 0.001, 0.5); range(c, 'coreLossDensity', 0, 100000);
+  if (c.driveMode !== 'voltage') range(c, 'coreVoltage', 0.01, 1000); range(c, 'leakageFraction', 0.001, 0.5); range(c, 'coreLossDensity', 0, 100000);
   const radius = c.coreShape === 'round' ? c.corePostW / 2 + c.coreClearance : Math.hypot(c.corePostW / 2 + c.coreClearance, c.corePostH / 2 + c.coreClearance);
   if (radius + c.viaPad / 2 + c.traceS >= inner) throw new Error('Core opening intersects the transition-via area. Increase winding diameter or reduce core post/turns.');
   if (c.boardT + 2 * c.coreClearance > c.coreWindowHeight) throw new Error('PCB plus assembly clearance exceeds the core window height.');
@@ -220,7 +205,23 @@ function coreParameters(c, inner) {
   return { AL, muR, material: CORE_MATERIALS[c.coreMaterial].name, notes: [
     info('Linear magnetic-circuit estimate: AL = μ0·Ae/(le/μr + gap). No gap fringing, nonlinear B-H curve, DC bias or temperature-dependent permeability. Material presets supply nominal initial μ at 25 °C only.'),
     info('Leakage is an entered fraction of winding self-inductance, not a field solution. Coupling follows that assumption; interleaving does not automatically improve this ferrite estimate.'),
-    info('Flux uses the entered sinusoidal primary RMS voltage; copper loss separately uses entered RMS currents. Enter loss density from the material curve at this frequency, flux and temperature to estimate core loss (zero means unknown).'),
+    info(c.driveMode === 'voltage' ? 'Loaded flux uses the solved winding currents. Supplied loss density must match that operating point; it is reported separately from the circuit.' : 'Flux uses the entered sinusoidal primary RMS voltage; copper loss separately uses entered RMS currents. Enter loss density from the material curve at this frequency, flux and temperature to estimate core loss (zero means unknown).'),
     warn('The core post cutout is included in the board export. Direct placement does not modify board edges: create this cutout and check the complete core assembly separately. Post geometry does not specify a purchasable core or an isolation rating.'),
   ] };
+}
+
+function attachLoad(c, r) {
+  if (!r.analysis || c.driveMode !== 'voltage') return;
+  const a = r.analysis, names = r.windings?.map(q => q.name) || ['P', 'S'];
+  a.loaded = loadedTransformer(c, a.matrix || [[a.L1, a.M], [a.M, a.L2]], a.resistances || [a.R1, a.R2], names);
+  a.loss = a.loaded.copperLoss;
+  r.notes.push(info('Loaded analysis solves the linear RMS phasor circuit with a sinusoidal source and independent secondary impedances. Efficiency includes DC winding resistance only; AC copper loss, core dissipation and parasitic capacitance are excluded.'));
+  if (c.family === 'center-tapped') r.notes.push(info('The load is connected across the complete S winding. The center tap is open; asymmetric half-winding loads and rectifiers are not modeled.'));
+  if (r.core) {
+    const flux = a.loaded.currents.reduce((s, I, i) => C.add(s, C.scale(I, r.core.AL * r.windings[i].turns)), [0, 0]);
+    r.core.Bpeak = Math.SQRT2 * C.abs(flux) / (c.coreAe * 1e-6);
+    r.core.fluxUtilization = r.core.Bpeak / c.coreFluxLimit;
+    if (r.core.Bpeak > c.coreFluxLimit) r.notes.push(warn('Loaded drive exceeds the design flux limit. The linear core model is outside its intended range.'));
+    r.notes.push(info('Loaded peak flux comes from the common core flux AL × sum(N × I). Supplied core loss density is reported separately and does not alter the circuit solution.'));
+  }
 }
