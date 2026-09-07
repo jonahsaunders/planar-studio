@@ -1,6 +1,20 @@
 # Planar Studio
 
-## Antenna and Transformer creators — 1.1.0 development
+## Antenna and transformer families — 1.2.0 development
+
+The Antenna workspace now includes edge/inset-fed patches, printed and folded
+dipoles, inverted-F and meandered inverted-F radiators, NFC loops with target-L
+sizing and tuning capacitance, and patch arrays with ideal array-factor plots.
+
+The Transformer workspace adds routed multilayer, center-tapped, multi-secondary
+and interleaved air-core windings, plus a ferrite magnetic-circuit model with
+core-post openings, material inputs and flux estimates. Each family identifies
+its supported outputs and model limits. Existing 1.1 designs retain their behavior.
+
+See the [Antenna and transformer families guide](docs/creator-families.md) for
+layer assignments, terminals, feed nets, matching assumptions and validation.
+
+## Original antenna and transformer creators
 
 Two new workspace tabs join Inductor, PCB motor and Filter:
 
@@ -32,7 +46,7 @@ extended with a filter synthesis and layout stack.
 
 ## What it does
 
-Three workspaces over one geometry and one solver.
+Five workspaces sharing one artwork/export pipeline.
 
 **Inductor.** Seven winding families, 1 to 16 copper layers in series or
 parallel, with correct mirrored stacking and automatic transition vias. Full
@@ -238,7 +252,7 @@ retuning the geometry to hide it.
 ## Install
 
 **From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.1.0.zip`, or use *Install from File* on the archive built by
+`planar-studio-1.2.0.zip`, or use *Install from File* on the archive built by
 `./build.sh`.
 
 **By hand.** Copy this folder into KiCad's plugin directory as
@@ -308,9 +322,11 @@ web/
       charts.js       response plots
       controls.js     declarative parameter panels
     ws/
-      inductor.js     the three workspaces: parameters, readouts, charts
+      inductor.js     workspace parameters, readouts and charts
       motor.js
       filter.js
+      antenna.js
+      transformer.js
 
 tests/
   verify.mjs          numerical validation against known answers

@@ -138,6 +138,7 @@ export class Panel {
     this.host.append(det);
     this.groups.push(det);
     det._badge = badge;
+    det._when = spec.when;
 
     for (const f of spec.fields || []) {
       if (!f) continue;
@@ -167,6 +168,7 @@ export class Panel {
 
   /** Push state values into the controls, and apply `when` visibility. */
   sync() {
+    for (const group of this.groups) group.hidden = !!group._when && !group._when(this.state);
     for (const [key, entry] of this.fields) {
       if (entry.when) {
         const visible = entry.when(this.state);
@@ -318,7 +320,7 @@ function buildCheck(spec, panel) {
 }
 
 function buildText(spec, panel) {
-  const input = el('input', { class: 'textin', type: 'text', spellcheck: 'false', placeholder: spec.placeholder || '' });
+  const input = el('input', { class: 'textin', type: 'text', spellcheck: 'false', placeholder: spec.placeholder || '', 'aria-label': spec.label });
   const commit = () => panel.commit(spec.key, input.value, spec);
   input.addEventListener('change', commit);
   const node = el('div', { class: 'field' },

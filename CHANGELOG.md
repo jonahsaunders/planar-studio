@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.0 (development)
+
+- Add inset-fed patches, printed/folded dipoles, inverted-F variants, NFC loops with numerical target sizing and tuning C, and patch arrays with ideal array-factor plots.
+- Add routed multilayer, center-tapped, multi-secondary and interleaved windings, with configurable copper layers/heights, isolated through-via routing, and a full air-core inductance/coupling matrix.
+- Add rectangular/round ferrite-post openings, nominal material permeability presets, a linear magnetic-circuit model, supplied leakage, flux-limit checks and optional operating-point core-loss estimates.
+- Preserve legacy creator behavior and all six exports. Keep sparse inner-layer IDs and emit complete even board layer tables.
+- Add conditional family controls, canvas refitting, topology-specific model documentation, and geometry/model/export/DOM/browser regression coverage.
+- Full-wave antenna matching, ferrite nonlinear/AC-loss simulation, rendered browser validation and live KiCad/physical validation remain outside the verified scope of this development build.
+
 ## 1.1.0 (development)
 
 - Add Antenna workspace: rectangular edge-fed patch synthesis, substrate and feed controls, dimension tuning, ground plane, and estimated resonance.
