@@ -28,7 +28,7 @@ cp plugin.json requirements.txt ipc_entry.py LICENSE README.md "$STAGE/plugins/"
 cp -R planar_studio "$STAGE/plugins/"
 cp -R web "$STAGE/plugins/"
 mkdir -p "$STAGE/plugins/docs"
-cp docs/motor-families.png docs/motor-families.md docs/motor-shapes.png docs/motor-coils.md docs/design-tools.md docs/creators.md docs/creator-families.md docs/stack-load-antennas.md "$STAGE/plugins/docs/"
+cp docs/publishing-motor-update.md docs/motor-families.png docs/motor-families.md docs/motor-shapes.png docs/motor-coils.md docs/design-tools.md docs/creators.md docs/creator-families.md docs/stack-load-antennas.md "$STAGE/plugins/docs/"
 mkdir -p "$STAGE/plugins/resources"
 cp resources/icon-light-24.png resources/icon-dark-24.png "$STAGE/plugins/resources/"
 

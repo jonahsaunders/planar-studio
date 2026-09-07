@@ -6,6 +6,44 @@ original rotary motor. See the [motor families guide](docs/motor-families.md)
 for controls, wiring and model limits. [Coil shapes and adjustable terminal
 breakouts](docs/motor-coils.md) remain available.
 
+## New motor families
+
+| Family | Layout and drive | Design readouts |
+| --- | --- | --- |
+| Two-phase PCB stepper | Mirrored coil ring with isolated A/B phases; full-step and microstep commands | Step increment, holding-torque estimate and animated equilibrium preview |
+| Linear PCB motor | Straight three-phase array with optional star terminals | Thrust, phase currents and force versus mover position |
+| Dual-rotor axial flux | Rotary stator between two magnet discs; adjustable gaps and alignment | Combined field, stack dimensions and torque/back-EMF estimates |
+| Two-axis planar motor | Independently driven coil grid with X/Y commands | Axis forces, per-coil currents and peak driver current |
+
+The new stepper, linear and planar layouts require two series copper layers.
+Performance readouts use approximate static magnetic-field models. They do not
+replace magnetic FEA, live KiCad DRC or measurements of a physical motor.
+
+<!-- motor-gallery:start -->
+**Current geometry previews** — generated from this version's PCB exporter;
+these are layout images, not application screenshots.
+
+![Stepper, dual-rotor stator, linear array and two-axis planar grid](docs/motor-families.png)
+<!-- motor-gallery:end -->
+
+<details>
+<summary>Coil shapes and optional bottom terminals</summary>
+
+![Annular-sector, circular, oval and polygon motor windings](docs/motor-shapes.png)
+
+Rotary and linear star windings can expose A/B/C/N, expose A/B/C with an
+internal neutral, or omit grouped pads. Disable automatic interconnection for
+manual wiring. A stepper instead has two isolated phases with four endpoints;
+each planar-grid coil has its own pair of terminals.
+
+</details>
+
+To capture fresh application screenshots locally and replace the gallery above,
+run `npm ci`, `npx playwright install chromium`, then `npm run shots:motor`.
+The capture script updates this README only after all five screens succeed.
+See [publishing the update](docs/publishing-motor-update.md) for patch and push
+instructions.
+
 ## Layer setup, loaded transformers and antennas — 1.3.0 development
 
 - **Layer setup assistant:** required versus available copper layers, exact KiCad
@@ -76,19 +114,19 @@ parallel, with correct mirrored stacking and automatic transition vias. Full
 electrical model: inductance, DC and AC resistance, parasitic capacitance,
 self-resonance, Q, IPC-2221 current rating and temperature rise.
 
-**PCB motor.** Annular-sector, circular, racetrack and polygon coils tiled around
-an adjustable ring. Optional star (wye) wiring groups phase terminals and neutral
-at the bottom, or at another chosen angle. Choose phase-plus-neutral pads,
-phase-only pads, or no grouped terminals; automatic star wiring can also be
-disabled for fully manual interconnection. Series and parallel coil connections
-use separate routing layers in an outer collar, leaving the bore clear.
-Automatic routing supports two series copper layers; unsupported configurations
-retain individual terminals and show an error. Inductance and resistance follow
-the selected geometry; the sinusoidal PMSM estimates retain a pitch-only,
-annular-sector flux model. See [Motor coils and star wiring](docs/motor-coils.md)
-for controls, terminal names and model limits.
-
-![Four motor coil shapes with bottom star terminals](docs/motor-shapes.png)
+**PCB motor.** Rotary, two-phase stepper, linear, dual-rotor and two-axis planar
+families. Ring layouts offer annular-sector, circular, racetrack and polygon
+coils; linear and planar arrays offer circular, racetrack and polygon cells.
+Optional star (wye) wiring on rotary and linear designs offers phase-plus-neutral
+pads, phase-only pads, or no grouped terminals. Ring terminals have an adjustable
+angular position; linear links occupy lanes below the array. Turn automatic
+interconnection off for manual wiring. Steppers use two isolated phase circuits,
+and planar grids retain independent coil connections. New non-rotary layouts
+require two series copper layers. Inductance and resistance follow the selected
+coil geometry; force/torque estimates use the stated family-specific magnetic
+approximations. See [Motor coils and star wiring](docs/motor-coils.md)
+for terminal names and [Motor families](docs/motor-families.md) for each family's
+controls, geometry and model limits.
 
 **Filter.** Six families, synthesised from a prototype and laid out as copper:
 
