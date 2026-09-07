@@ -24,8 +24,10 @@ import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, expor
 import * as wsInductor from './ws/inductor.js';
 import * as wsMotor from './ws/motor.js';
 import * as wsFilter from './ws/filter.js';
+import * as wsAntenna from './ws/antenna.js';
+import * as wsTransformer from './ws/transformer.js';
 
-const WORKSPACES = { inductor: wsInductor, motor: wsMotor, filter: wsFilter };
+const WORKSPACES = { inductor: wsInductor, motor: wsMotor, filter: wsFilter, antenna: wsAntenna, transformer: wsTransformer };
 
 /* ------------------------------------------------------------------ state */
 
@@ -35,8 +37,10 @@ const app = {
     inductor: wsInductor.defaults(),
     motor: wsMotor.defaults(),
     filter: wsFilter.defaults(),
+    antenna: wsAntenna.defaults(),
+    transformer: wsTransformer.defaults(),
   },
-  names: { inductor: 'L1', motor: 'M1', filter: 'FL1' },
+  names: { inductor: 'L1', motor: 'M1', filter: 'FL1', antenna: 'ANT1', transformer: 'T1' },
   result: null,
   panel: null,
   view: null,
@@ -114,7 +118,7 @@ function environment() {
 
 function netNameFor() {
   const ctx = bridge.state.context;
-  const wanted = app.ws === 'filter' ? 'RF' : 'COIL';
+  const wanted = ['filter', 'antenna'].includes(app.ws) ? 'RF' : 'COIL';
   if (ctx && ctx.nets && ctx.nets.length) {
     // Prefer a net the board already has, since the API cannot create one.
     const exact = ctx.nets.find((n) => n === wanted);
@@ -130,10 +134,16 @@ function runCompute(quick) {
   try {
     res = ws.compute(cfg(), environment(), { quick });
   } catch (err) {
-    console.error(err);
+    app.result = null;
+    app.view.setArtwork(null, []);
+    app.view.setHandles([]);
+    app.charts.forEach(c => c.destroy());
+    app.charts.clear();
+    $('side').replaceChildren();
+    $('st-solve').textContent = 'Fix parameters to continue';
     $('st-algo').textContent = 'geometry failed';
     toast(`Could not build the geometry: ${err.message}`, 'error');
-    return;
+    return false;
   }
   if (!quick) lastSolveMs = performance.now() - t0;
   app.result = res;
@@ -149,6 +159,7 @@ function runCompute(quick) {
   } else {
     renderSide(res);
   }
+  return true;
 }
 
 function refreshHandles() {
@@ -317,13 +328,14 @@ function switchWorkspace(next) {
 /* --------------------------------------------------------------- actions */
 
 function currentArtwork() {
-  return app.result ? app.result.art : null;
+  return runCompute(false) ? app.result.art : null;
 }
 
 function showDesignTools(tab = 'optimize') {
+  if (['antenna', 'transformer'].includes(app.ws)) tab = 'board';
   clearTimeout(fullTimer);
   if (quickTimer) { cancelAnimationFrame(quickTimer); quickTimer = 0; }
-  runCompute(false);
+  if (!runCompute(false)) return;
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
     designId: () => designId(app.ws, app.names[app.ws]),
@@ -337,11 +349,21 @@ function showDesignTools(tab = 'optimize') {
 }
 
 async function placeIntoBoard() {
+  if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
   if (!bridge.state.hasBoard) {
     toast('No board is open in KiCad. Open a PCB and try again.', 'warn');
     return;
+  }
+  const existingNets = bridge.state.context?.nets || [];
+  if (['antenna', 'transformer'].includes(app.ws)) {
+    const required = [...new Set([...res.art.tracks, ...res.art.pads].map(p => p.net).filter(Boolean))];
+    const missing = required.filter(n => !existingNets.includes(n));
+    if (missing.length) {
+      toast(`Create these nets in KiCad before placing: ${missing.join(', ')}. You can also export a KiCad board with the nets included.`, 'warn');
+      return;
+    }
   }
   const est = estimate(res.art, cfg().tolerance);
   if (est.segments > 25000) {
@@ -387,6 +409,7 @@ async function placeIntoBoard() {
 }
 
 async function writeLibrary() {
+  if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
   const name = app.names[app.ws];
@@ -395,7 +418,7 @@ async function writeLibrary() {
     tolerance: cfg().tolerance,
     description: current().status(cfg(), res).summary,
     tags: `planar studio ${app.ws}`,
-    reference: app.ws === 'filter' ? 'FL**' : 'L**',
+    reference: ({ filter: 'FL**', antenna: 'ANT**', transformer: 'T**', motor: 'M**' })[app.ws] || 'L**',
   });
   try {
     const out = await bridge.api.writeLibrary(name, text);
@@ -413,6 +436,7 @@ async function writeLibrary() {
 /* ----------------------------------------------------------- export modal */
 
 function exportOptions() {
+  if (!runCompute(false)) return [];
   const res = app.result;
   const name = app.names[app.ws];
   const tol = cfg().tolerance;
@@ -420,7 +444,7 @@ function exportOptions() {
   return [
     {
       title: 'KiCad footprint (.kicad_mod)',
-      desc: 'Copper as footprint graphics with through-hole terminals. Drop the folder in as a .pretty library.',
+      desc: 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
       file: `${name}.kicad_mod`,
       make: () => exportKicadMod(res.art, { name, tolerance: tol, description: current().status(cfg(), res).summary }),
     },
@@ -481,6 +505,7 @@ const REFERENCES = [
 function openExport() {
   if (!app.result) return;
   const opts = exportOptions();
+  if (!opts.length) return;
   const grid = el('div', { class: 'export-grid' });
   for (const o of opts) {
     const card = el('button', { class: 'export-card', type: 'button' },
@@ -726,6 +751,8 @@ function wireChrome() {
     if (e.key === '1') switchWorkspace('inductor');
     if (e.key === '2') switchWorkspace('motor');
     if (e.key === '3') switchWorkspace('filter');
+    if (e.key === '4') switchWorkspace('antenna');
+    if (e.key === '5') switchWorkspace('transformer');
   });
 
   window.addEventListener('beforeunload', (e) => {

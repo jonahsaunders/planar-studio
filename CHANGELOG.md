@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.0 (development)
+
+- Add Antenna workspace: rectangular edge-fed patch synthesis, substrate and feed controls, dimension tuning, ground plane, and estimated resonance.
+- Add Transformer workspace: independent circular or square front/back air-core windings, primary/secondary turns, numerical L/M/k, resistance, leakage and induced-voltage estimates.
+- Preserve SMD copper pad dimensions and layers in canvas, SVG, DXF, KiCad board/footprint exports and IPC placement. Transformer terminals no longer become through vias.
+- Reject invalid creator geometry; prevent stale designs being placed or exported after invalid edits. Require separate existing nets for direct creator placement.
+- Add numerical, export, IPC serialization and UI regression coverage; align runtime, package and PCM versions.
+- Models are starting points: patch matching needs EM/VNA tuning; transformer inner terminals need insulated breakout and the model excludes ferrite cores and AC/parasitic losses.
+
 ## Unreleased — Design Tools
 
 - Add constrained coil optimization, measurement import/overlays and fitting,

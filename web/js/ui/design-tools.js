@@ -394,6 +394,10 @@ export function openDesignTools(host, initial = 'optimize') {
     title.textContent = `Design tools · ${host.name()}`;
     for (const b of nav.children) b.setAttribute('aria-pressed', String(b.dataset.tool === id));
     status.textContent = 'Settings are included when you save the design.';
+    if (['antenna', 'transformer'].includes(kind()) && id !== 'board') {
+      body.append(note('This study supports the Inductor, PCB motor or Filter workspace. Antenna and Transformer calculations are shown in their main workspace.'));
+      return;
+    }
     try { renderers[id](); } catch (e) { status.textContent = e.message; }
   }
   for (const [id, label] of TABS) { const b = button(label, () => render(id)); b.dataset.tool = id; nav.append(b); }

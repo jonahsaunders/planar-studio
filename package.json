@@ -1,11 +1,11 @@
 {
   "name": "planar-studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
+    "test": "node tests/verify.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
@@ -14,7 +14,10 @@
     "dev": "python3 ipc_entry.py --browser --verbose",
     "test:tools": "node tests/design-tools.mjs",
     "test:dom": "node tests/tools-dom.mjs",
-    "test:browser": "node tests/design-tools-browser.mjs"
+    "test:browser": "node tests/design-tools-browser.mjs",
+    "test:creators": "node tests/creators.mjs",
+    "test:creators:browser": "node tests/creators-browser.mjs",
+    "test:creators:dom": "node tests/creators-dom.mjs"
   },
   "license": "MIT",
   "repository": {
