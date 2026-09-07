@@ -1,5 +1,17 @@
 # Planar Studio
 
+## Antenna and Transformer creators — 1.1.0 development
+
+Two new workspace tabs join Inductor, PCB motor and Filter:
+
+- **Antenna:** rectangular edge-fed microstrip patch with front feed and back ground, frequency/substrate inputs, dimensional tuning, and estimated resonance.
+- **Transformer:** two isolated circular or square air-core PCB windings, with independent turns, numerical inductance and coupling, DC resistance/loss, leakage and induced-voltage estimates.
+
+Both support saved designs, JSON import/export, KiCad board/footprint, SVG, DXF and specification exports. Surface copper stays on its selected layer. Keyboard shortcuts **4** and **5** open the new workspaces.
+
+See [Creator guide](docs/creators.md) for terminals, net setup, equations and model limits. These are design starting points: antenna impedance matching needs simulation/measurement, and transformer inner terminals need insulated breakouts.
+
+
 [![tests](https://github.com/jonahsaunders/planar-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/jonahsaunders/planar-studio/actions/workflows/ci.yml)
 [![KiCad 9.0+](https://img.shields.io/badge/KiCad-9.0%2B-314CB0)](https://www.kicad.org/)
 [![licence MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
@@ -226,7 +238,7 @@ retuning the geometry to hide it.
 ## Install
 
 **From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.0.1.zip`, or use *Install from File* on the archive built by
+`planar-studio-1.1.0.zip`, or use *Install from File* on the archive built by
 `./build.sh`.
 
 **By hand.** Copy this folder into KiCad's plugin directory as

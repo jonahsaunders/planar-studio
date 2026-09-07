@@ -476,3 +476,11 @@ table.spec .dim { color: var(--text-mute); }
 @media (max-width: 1180px) {
   :root { --rail-w: 280px; --side-w: 300px; }
 }
+
+/* Five workspace tabs stay reachable on laptop-sized windows. */
+@media (max-width: 1350px) {
+  :root { --bar-h: 88px; }
+  .topbar { flex-wrap: wrap; align-content: center; gap: 6px 10px; }
+  .topbar .tabs { order: 2; flex-basis: 100%; justify-content: center; }
+  .topbar .brand { flex-shrink: 0; }
+}

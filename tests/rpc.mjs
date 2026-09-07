@@ -57,7 +57,7 @@ try {
 
   // --- info and status --------------------------------------------------
   const info = await rpc('app.info');
-  check('app.info answers', info.ok && info.result.version === '1.0.0', info.result && info.result.version);
+  check('app.info answers', info.ok && info.result.version === JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version, info.result && info.result.version);
   check('every method the page calls is registered',
     ['board.context', 'board.place', 'board.unplace', 'board.select', 'library.write',
       'library.list', 'file.save', 'prefs.get', 'prefs.set', 'designs.list',

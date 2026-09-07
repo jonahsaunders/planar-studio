@@ -46,6 +46,7 @@ export const pad = (x, y, opt = {}) => ({
   layer: opt.layer || 'F.Cu',
   drill: opt.drill || 0,
   role: opt.role || '',
+  mask: opt.mask !== false,
 });
 export const label = (x, y, text, opt = {}) => ({ x, y, text, layer: opt.layer || 'F.SilkS', size: opt.size || 1 });
 
@@ -167,7 +168,7 @@ export function bounds(A) {
   for (const t of A.tracks) for (const p of t.pts) hit(p[0], p[1], t.width / 2);
   for (const a of A.arcs) { hit(a.start[0], a.start[1], a.width / 2); hit(a.mid[0], a.mid[1], a.width / 2); hit(a.end[0], a.end[1], a.width / 2); }
   for (const v of A.vias) hit(v.x, v.y, v.diameter / 2);
-  for (const p of A.pads) { hit(p.x, p.y, Math.max(p.w, p.h) / 2); }
+  for (const p of A.pads) { hit(p.x - p.w / 2, p.y - p.h / 2); hit(p.x + p.w / 2, p.y + p.h / 2); }
   for (const o of A.outline) for (const p of o.pts) hit(p[0], p[1]);
   if (!isFinite(x0)) return { x0: 0, y0: 0, x1: 0, y1: 0, w: 0, h: 0, cx: 0, cy: 0 };
   return { x0, y0, x1, y1, w: x1 - x0, h: y1 - y0, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
@@ -197,6 +198,7 @@ export function copperArea(A) {
     for (let i = 1; i < t.pts.length; i++) L += Math.hypot(t.pts[i][0] - t.pts[i - 1][0], t.pts[i][1] - t.pts[i - 1][1]);
     per.set(t.layer, (per.get(t.layer) || 0) + L * t.width);
   }
+  for (const p of A.pads) per.set(p.layer, (per.get(p.layer) || 0) + (p.shape === 'rect' ? p.w * p.h : Math.PI * p.w * p.h / 4));
   return per;
 }
 
@@ -275,9 +277,9 @@ export function toKicad(A, opt = {}) {
     start: P(a.start), mid: P(a.mid), end: P(a.end),
   }));
   const vias = A.vias.map((v) => ({ x: v.x + dx, y: -v.y + dy, drill: v.drill, diameter: v.diameter, net: v.net }));
-  // A plugin cannot create a pad outside a footprint, so terminals become
-  // through-hole vias on the board. In the footprint export they stay pads.
-  const padVias = A.pads.map((p) => ({
+  // Drilled terminals become vias. Surface pads remain layer-specific and
+  // are grouped in a footprint by the IPC backend; never short them through.
+  const padVias = A.pads.filter(p => p.drill > 0).map((p) => ({
     x: p.x + dx, y: -p.y + dy,
     drill: p.drill || Math.min(p.w, p.h) * 0.5,
     diameter: Math.max(p.w, p.h),
@@ -285,5 +287,6 @@ export function toKicad(A, opt = {}) {
   }));
   const texts = A.labels.map((l) => ({ x: l.x + dx, y: -l.y + dy, value: l.text, layer: l.layer }));
 
-  return { tracks, arcs, vias: vias.concat(padVias), texts };
+  const pads = A.pads.filter(p => !p.drill).map(p => ({ ...p, x: p.x + dx, y: -p.y + dy }));
+  return { tracks, arcs, vias: vias.concat(padVias), pads, texts };
 }

@@ -2,7 +2,7 @@
   "$schema": "https://go.kicad.org/api/schemas/v1",
   "identifier": "com.jonahsaunders.planarstudio",
   "name": "Planar Studio",
-  "description": "Parametric planar inductors, axial-flux PCB motors and planar filters, placed straight into the board.",
+  "description": "Design planar coils, PCB motors, filters, antennas and transformers.",
   "runtime": {
     "type": "python",
     "min_version": "3.9"
@@ -11,12 +11,18 @@
     {
       "identifier": "open_studio",
       "name": "Planar Studio",
-      "description": "Design planar coils, PCB motors and filters and place them into the open board.",
-      "scopes": ["pcb"],
+      "description": "Create planar coils, motors, filters, antennas and transformers in the open board.",
+      "scopes": [
+        "pcb"
+      ],
       "entrypoint": "ipc_entry.py",
       "show-button": true,
-      "icons-light": ["resources/icon-light-24.png"],
-      "icons-dark": ["resources/icon-dark-24.png"]
+      "icons-light": [
+        "resources/icon-light-24.png"
+      ],
+      "icons-dark": [
+        "resources/icon-dark-24.png"
+      ]
     }
   ]
 }

@@ -215,6 +215,7 @@ export class Viewport {
     if (this.show.grid) this.drawGrid(ctx, W, H);
     if (this.art) {
       this.drawOutline(ctx);
+      this.drawSurfacePads(ctx);
       this.drawCopper(ctx);
       if (this.show.vias) this.drawVias(ctx);
       if (this.show.labels) this.drawLabels(ctx);
@@ -336,6 +337,17 @@ export class Viewport {
     ctx.globalAlpha = 1;
   }
 
+  drawSurfacePads(ctx) {
+    const layers = [...this.layerColor.keys()];
+    for (const p of this.art.pads.filter(p => !p.drill).sort((a, b) => layers.indexOf(b.layer) - layers.indexOf(a.layer))) {
+      if (this.layerVisible.get(p.layer) === false) continue;
+      const [x, y] = this.toScreen(p.x, p.y);
+      ctx.fillStyle = this.layerColor.get(p.layer) || '#E8B23A';
+      if (p.shape === 'rect') ctx.fillRect(x - p.w * this.scale / 2, y - p.h * this.scale / 2, p.w * this.scale, p.h * this.scale);
+      else { ctx.beginPath(); ctx.arc(x, y, p.w * this.scale / 2, 0, Math.PI * 2); ctx.fill(); }
+    }
+  }
+
   drawVias(ctx) {
     for (const v of this.art.vias) {
       const [x, y] = this.toScreen(v.x, v.y);
@@ -348,7 +360,7 @@ export class Viewport {
         ctx.beginPath(); ctx.arc(x, y, rd, 0, Math.PI * 2); ctx.fill();
       }
     }
-    for (const p of this.art.pads) {
+    for (const p of this.art.pads.filter(p => p.drill > 0)) {
       const [x, y] = this.toScreen(p.x, p.y);
       const r = Math.max(Math.max(p.w, p.h) * this.scale / 2, 2);
       ctx.fillStyle = '#E8B23A';

@@ -65,8 +65,8 @@ export function exportKicadMod(A, opt = {}) {
   L.push(`  (layer "F.Cu")`);
   L.push(`  (descr "${(opt.description || art.meta.kind || 'Planar Studio structure').replace(/"/g, "'")}")`);
   L.push(`  (tags "${(opt.tags || 'planar studio').replace(/"/g, '')}")`);
-  L.push(`  (attr through_hole)`);
-  L.push(`  (fp_text reference "${opt.reference || 'L**'}" (at 0 ${f3(-b.y1 - 1.6)} 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))`);
+  L.push(`  (attr ${art.pads.some(p => p.drill > 0) || art.vias.length ? 'through_hole' : 'smd'})`);
+  L.push(`  (fp_text reference "${opt.reference || ({ antenna: 'ANT**', transformer: 'T**' })[art.meta.kind] || 'L**'}" (at 0 ${f3(-b.y1 - 1.6)} 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))`);
   L.push(`  (fp_text value "${name}" (at 0 ${f3(-b.y0 + 1.6)} 0) (layer "F.Fab") (effects (font (size 1 1) (thickness 0.15))))`);
 
   for (const t of art.tracks) {
@@ -88,7 +88,7 @@ export function exportKicadMod(A, opt = {}) {
   for (const p of art.pads) {
     const shape = p.shape === 'rect' ? 'rect' : 'circle';
     const type = p.drill > 0 ? 'thru_hole' : 'smd';
-    const layers = p.drill > 0 ? '"*.Cu" "*.Mask"' : `"${p.layer}" "${p.layer.replace('.Cu', '.Mask')}"`;
+    const layers = p.drill > 0 ? '"*.Cu" "*.Mask"' : `"${p.layer}"${p.mask === false ? '' : ` "${p.layer.replace('.Cu', '.Mask')}"`}`;
     L.push(`  (pad "${p.number}" ${type} ${shape} (at ${f3(p.x)} ${f3(-p.y)}) (size ${f3(p.w)} ${f3(p.h)}) `
       + (p.drill > 0 ? `(drill ${f3(p.drill)}) ` : '') + `(layers ${layers}))`);
   }
@@ -157,8 +157,15 @@ export function exportKicadPcb(A, opt = {}) {
       + `(layers "F.Cu" "B.Cu") (net ${netOf(v)}))`);
   }
   for (const p of art.pads) {
-    L.push(`  (via (at ${f3(p.x)} ${f3(-p.y)}) (size ${f3(Math.max(p.w, p.h))}) `
-      + `(drill ${f3(p.drill || Math.min(p.w, p.h) * 0.5)}) (layers "F.Cu" "B.Cu") (net ${netOf(p)}))`);
+    if (p.drill > 0) {
+      L.push(`  (via (at ${f3(p.x)} ${f3(-p.y)}) (size ${f3(Math.max(p.w, p.h))}) `
+        + `(drill ${f3(p.drill)}) (layers "F.Cu" "B.Cu") (net ${netOf(p)}))`);
+    } else {
+      const mask = p.mask === false ? '' : ` "${p.layer.replace('.Cu', '.Mask')}"`;
+      L.push(`  (footprint "planar-pad" (layer "F.Cu") (at ${f3(p.x)} ${f3(-p.y)}) (attr smd)`
+        + ` (pad "${p.number}" smd ${p.shape === 'rect' ? 'rect' : 'circle'} (at 0 0) (size ${f3(p.w)} ${f3(p.h)})`
+        + ` (layers "${p.layer}"${mask}) (net ${netOf(p)} "${p.net || ''}")))`);
+    }
   }
   for (const t of art.labels) {
     L.push(`  (gr_text "${String(t.text).replace(/"/g, "'")}" (at ${f3(t.x)} ${f3(-t.y)}) (layer "${t.layer}") `
@@ -188,10 +195,16 @@ export function exportSvg(A, opt = {}) {
   // Draw the back layers first so the front sits on top, as KiCad shows it.
   for (let i = layers.length - 1; i >= 0; i--) {
     const ln = layers[i];
-    const colour = (opt.colors && opt.colors[ln]) || KICAD_COLORS[i % KICAD_COLORS.length];
+    const colour = (opt.colors && opt.colors[ln]) || (ln === 'B.Cu' ? KICAD_COLORS[15] : KICAD_COLORS[i % KICAD_COLORS.length]);
     const group = art.tracks.filter((t) => t.layer === ln);
-    if (!group.length) continue;
+    const pads = art.pads.filter(p => !p.drill && p.layer === ln);
+    if (!group.length && !pads.length) continue;
     S.push(`<g id="${ln.replace('.', '_')}" fill="none" stroke="${colour}" stroke-linecap="round" stroke-linejoin="round">`);
+    for (const p of pads) {
+      S.push(p.shape === 'rect'
+        ? `<rect x="${f3(p.x - p.w / 2)}" y="${f3(-p.y - p.h / 2)}" width="${f3(p.w)}" height="${f3(p.h)}" fill="${colour}" stroke="none"/>`
+        : `<circle cx="${f3(p.x)}" cy="${f3(-p.y)}" r="${f3(p.w / 2)}" fill="${colour}" stroke="none"/>`);
+    }
     for (const t of group) {
       S.push(`<path stroke-width="${f3(t.width)}" d="${pathD(t.pts)}"/>`);
     }
@@ -202,9 +215,10 @@ export function exportSvg(A, opt = {}) {
     for (const v of art.vias) S.push(`<circle cx="${f3(v.x)}" cy="${f3(-v.y)}" r="${f3(v.diameter / 2)}"/>`);
     S.push(`</g>`);
   }
-  if (art.pads.length) {
+  const drilledPads = art.pads.filter(p => p.drill > 0);
+  if (drilledPads.length) {
     S.push(`<g id="pads" fill="#E8B23A">`);
-    for (const p of art.pads) S.push(`<circle cx="${f3(p.x)}" cy="${f3(-p.y)}" r="${f3(Math.max(p.w, p.h) / 2)}"/>`);
+    for (const p of drilledPads) S.push(`<circle cx="${f3(p.x)}" cy="${f3(-p.y)}" r="${f3(Math.max(p.w, p.h) / 2)}"/>`);
     S.push(`</g>`);
   }
   if (art.outline.length) {
@@ -259,7 +273,12 @@ export function exportDxf(A, opt = {}) {
     put(0, 'CIRCLE'); put(8, 'VIAS'); put(10, f3(v.x)); put(20, f3(v.y)); put(30, 0); put(40, f3(v.diameter / 2));
   }
   for (const p of art.pads) {
-    put(0, 'CIRCLE'); put(8, 'VIAS'); put(10, f3(p.x)); put(20, f3(p.y)); put(30, 0); put(40, f3(Math.max(p.w, p.h) / 2));
+    const ln = p.drill > 0 ? 'VIAS' : dxfName(p.layer);
+    if (p.shape === 'rect') {
+      put(0, 'POLYLINE'); put(8, ln); put(66, 1); put(70, 1);
+      for (const [x, y] of [[-1,-1], [1,-1], [1,1], [-1,1]]) { put(0, 'VERTEX'); put(8, ln); put(10, f3(p.x + x * p.w / 2)); put(20, f3(p.y + y * p.h / 2)); put(30, 0); }
+      put(0, 'SEQEND'); put(8, ln);
+    } else { put(0, 'CIRCLE'); put(8, ln); put(10, f3(p.x)); put(20, f3(p.y)); put(30, 0); put(40, f3(p.w / 2)); }
   }
   put(0, 'ENDSEC'); put(0, 'EOF');
   return g.join('\n') + '\n';
@@ -326,7 +345,8 @@ export function estimate(A, tol) {
   for (const v of areas.values()) area += v;
   return {
     segments: segs,
-    vias: art.vias.length + art.pads.length,
+    vias: art.vias.length + art.pads.filter(p => p.drill > 0).length,
+    pads: art.pads.filter(p => !p.drill).length,
     tracks: art.tracks.length,
     copperLengthMM: copperLength(art),
     copperAreaMM2: area,

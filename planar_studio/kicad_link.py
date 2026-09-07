@@ -85,6 +85,7 @@ class Placement:
     tracks: List[Dict[str, Any]] = field(default_factory=list)
     arcs: List[Dict[str, Any]] = field(default_factory=list)
     vias: List[Dict[str, Any]] = field(default_factory=list)
+    pads: List[Dict[str, Any]] = field(default_factory=list)
     texts: List[Dict[str, Any]] = field(default_factory=list)
     origin: Tuple[float, float] = (0.0, 0.0)
 
@@ -98,11 +99,12 @@ class Placement:
             arcs=list(payload.get("arcs") or []),
             vias=list(payload.get("vias") or []),
             texts=list(payload.get("texts") or []),
+            pads=list(payload.get("pads") or []),
             origin=(float(origin[0]), float(origin[1])),
         )
 
     def item_count(self) -> int:
-        return len(self.tracks) + len(self.arcs) + len(self.vias) + len(self.texts)
+        return len(self.tracks) + len(self.arcs) + len(self.vias) + len(self.texts) + len(self.pads)
 
 
 @dataclass
@@ -364,7 +366,7 @@ class KiCadLink:
             if not nm:
                 return net
             if nm not in net_cache:
-                net_cache[nm] = self.resolve_net(nm) or net
+                net_cache[nm] = self.resolve_net(nm)
             return net_cache[nm]
 
         ox, oy = placement.origin
@@ -423,6 +425,41 @@ class KiCadLink:
                 v.net = n
             items.append(v)
 
+        if placement.pads:
+            # Pads must live inside a footprint. Never turn an SMD antenna
+            # plate or transformer terminal into a through via.
+            from kipy.board_types import FootprintInstance, Pad, PadType, PadStackShape
+            fp = FootprintInstance()
+            fp.layer = BoardLayer.BL_F_Cu
+            fp.reference_field.text.value = placement.name
+            fp.value_field.text.value = placement.name
+            for spec in placement.pads:
+                layer = _resolve_layer(spec.get("layer"))
+                if layer not in (BoardLayer.BL_F_Cu, BoardLayer.BL_B_Cu):
+                    raise LinkError("Surface pads require F.Cu or B.Cu.")
+                w, h = float(spec["w"]), float(spec["h"])
+                x, y = float(spec["x"]), float(spec["y"])
+                if not all(math.isfinite(v) for v in (w, h, x, y)) or min(w, h) <= 0:
+                    raise LinkError("Invalid surface pad dimensions.")
+                p = Pad()
+                p.pad_type = PadType.PT_SMD
+                p.number = str(spec.get("number", ""))
+                p.position = Vector2.from_xy(from_mm(x), from_mm(y))
+                p.padstack.layers = [layer]
+                # A NORMAL padstack defines the shape once, on its front entry,
+                # and applies it to each enabled layer, including a back pad.
+                shape = p.padstack.copper_layers[0]
+                shape.shape = PadStackShape.PSS_RECTANGLE if spec.get("shape") == "rect" else PadStackShape.PSS_CIRCLE
+                shape.size = Vector2.from_xy(from_mm(w), from_mm(h))
+                if spec.get("mask", True):
+                    p.padstack.layers = [layer, BoardLayer.BL_F_Mask if layer == BoardLayer.BL_F_Cu else BoardLayer.BL_B_Mask]
+                n = net_for(spec)
+                if n is not None:
+                    p.net = n
+                fp.definition.add_item(p)
+            fp.position = Vector2.from_xy(from_mm(ox), from_mm(oy))
+            items.append(fp)
+
         for spec in placement.texts:
             layer = _resolve_layer(spec.get("layer") or "F.SilkS")
             if layer is None:
@@ -476,6 +513,9 @@ class KiCadLink:
                 if _kiid(item) in wanted:
                     victims.append(item)
             for item in board.get_vias():
+                if _kiid(item) in wanted:
+                    victims.append(item)
+            for item in board.get_footprints():
                 if _kiid(item) in wanted:
                     victims.append(item)
         except Exception as exc:
@@ -543,7 +583,7 @@ class KiCadLink:
             return
         wanted = set(ids)
         try:
-            hits = [i for i in list(board.get_tracks()) + list(board.get_vias()) if _kiid(i) in wanted]
+            hits = [i for i in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) if _kiid(i) in wanted]
             if hits:
                 board.add_to_selection(hits)
         except Exception:
