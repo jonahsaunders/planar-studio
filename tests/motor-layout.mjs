@@ -1,0 +1,126 @@
+/* Check the physical interconnect graph, not just its labels. Coils are removed
+   from this graph so an accidental bypass cannot hide behind winding continuity. */
+import assert from 'node:assert/strict';
+import { defaults, compute, notes } from '../web/js/ws/motor.js';
+import { defaults as inductorDefaults } from '../web/js/ws/inductor.js';
+import { buildCoil, analyse } from '../web/js/engine/coil.js';
+import { instances, buildArtwork } from '../web/js/engine/coilgeom.js';
+import { exportKicadPcb, exportKicadMod, exportSvg, exportDxf } from '../web/js/engine/exporters.js';
+
+function pointDistance(p, a, b) {
+  const dx=b[0]-a[0], dy=b[1]-a[1];
+  const u=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy || 1)));
+  return Math.hypot(p[0]-a[0]-u*dx,p[1]-a[1]-u*dy);
+}
+function distance(p, pts) {
+  let d=Infinity;
+  for(let i=1;i<pts.length;i++) d=Math.min(d,pointDistance(p,pts[i-1],pts[i]));
+  return d;
+}
+function interconnectGroups(art) {
+  const nodes=[...art.tracks.filter(t=>!['winding','lead','transition'].includes(t.role)),
+    ...art.vias.filter(v=>v.role==='bus-drop'),...art.pads];
+  const parent=nodes.map((_,i)=>i);
+  const root=i=>parent[i]===i?i:(parent[i]=root(parent[i]));
+  const join=(i,j)=>{parent[root(i)]=root(j);};
+  for(let i=0;i<nodes.length;i++) for(let j=0;j<i;j++) {
+    const a=nodes[i],b=nodes[j];
+    let d, threshold;
+    if(a.pts && b.pts) {
+      if(a.layer!==b.layer) continue;
+      d=Math.min(distance(a.pts[0],b.pts),distance(a.pts.at(-1),b.pts),distance(b.pts[0],a.pts),distance(b.pts.at(-1),a.pts));
+      threshold=(a.width+b.width)/2;
+    } else if(a.pts || b.pts) {
+      const t=a.pts?a:b,p=a.pts?b:a;
+      d=distance([p.x,p.y],t.pts);threshold=(t.width+(p.w || p.diameter))/2;
+    } else { d=Math.hypot(a.x-b.x,a.y-b.y);threshold=((a.w||a.diameter)+(b.w||b.diameter))/2; }
+    if(d < threshold+1e-7) join(i,j);
+  }
+  const groups=new Map();
+  nodes.forEach((n,i)=> {if(n.number){const k=root(i);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(n.number);}});
+  return [...groups.values()].map(g=>g.sort().join(',')).sort();
+}
+function expectedGroups(cfg) {
+  const groups=[], neutral=['N'];
+  for(let p=0;p<cfg.phases;p++) {
+    const coils=Array.from({length:cfg.coilCount},(_,i)=>i).filter(i=>i%cfg.phases===p);
+    const phase=String.fromCharCode(65+p);
+    if(cfg.coilSeries) {
+      groups.push([phase,`C${coils[0]+1}.1`]);
+      for(let i=0;i<coils.length-1;i++) groups.push([`C${coils[i]+1}.2`,`C${coils[i+1]+1}.1`]);
+      neutral.push(`C${coils.at(-1)+1}.2`);
+    } else {
+      groups.push([phase,...coils.map(i=>`C${i+1}.1`)]);
+      neutral.push(...coils.map(i=>`C${i+1}.2`));
+    }
+  }
+  return [...groups,neutral].map(g=>g.sort().join(',')).sort();
+}
+let cases=0;
+for(const shape of ['wedge','circle','racetrack','polygon']) {
+  for(const coilSeries of [true,false]) for(const terminalAngle of [-90,0,137]) {
+    const cfg={...defaults(),shape,coilSeries,terminalAngle};
+    const r=compute(cfg,{}, {quick:true});
+    assert.equal(r.instances,12);
+    assert.equal(r.art.meta.starRouted,true,JSON.stringify(r.art.notes));
+    assert.deepEqual(interconnectGroups(r.art),expectedGroups(cfg),`${shape}, series=${coilSeries}, angle=${terminalAngle}`);
+    const R=Math.hypot(...r.art.outline[0].pts[0]);
+    for(const t of r.art.tracks) for(const p of t.pts) assert.ok(Math.hypot(...p)+t.width/2<R);
+    for(const p of r.art.pads) assert.ok(Math.hypot(p.x,p.y)+p.w/2<R);
+    assert.equal(new Set(r.art.pads.map(p=>p.number)).size,r.art.pads.length);
+    assert.equal(new Set(r.art.tracks.map(t=>t.net)).size,1,'continuous winding must not export conflicting nets');
+    for(const p of r.art.ports) assert.ok(Math.abs(Math.sin(Math.atan2(p.y,p.x)-terminalAngle*Math.PI/180))<1e-9);
+    if(shape!=='wedge') for(const [x,y] of r.coil.spiral.path) {
+      assert.ok(Math.hypot(x,y)>=cfg.dInner/2+cfg.traceW/2-1e-8,'bore clearance');
+      assert.ok(Math.hypot(x,y)<=cfg.dOuter/2-cfg.traceW/2+1e-8,'outer clearance');
+      assert.ok(Math.abs(Math.atan2(y,x))<=cfg.spanDeg*Math.PI/360,'slot containment');
+    }
+    for(const exporter of [exportKicadPcb,exportKicadMod,exportSvg,exportDxf]) {
+      const text=exporter(r.art);assert.ok(text.length>100);assert.ok(!/NaN|Infinity/.test(text));
+    }
+    assert.match(exportSvg(r.art), />N<\/text>/);
+    assert.match(exportDxf(r.art), /\nTEXT\n/);
+    const roundTrip=compute(JSON.parse(JSON.stringify(cfg)),{}, {quick:true});
+    assert.deepEqual(roundTrip.art,r.art);
+    cases++;
+  }
+  const cfg={...defaults(),shape};
+  const r=compute(cfg,{}, {segmentCap:1000});
+  assert.ok(r.analysis.L>0 && Number.isFinite(r.analysis.Rdc));
+  assert.equal(r.motor.coilsTotal,12);
+  assert.equal(r.motor.phases,3);
+  // Translation into the stator must not alter the coil's numerical inductance.
+  if(shape!=='wedge') {
+    const shifted=structuredClone(r.coil);
+    for(const l of [...shifted.layers,...shifted.links,...shifted.leads]) for(const p of l.pts)p[0]-=r.coil.motorCentre;
+    for(const v of shifted.vias)v.x-=r.coil.motorCentre;
+    assert.ok(Math.abs(analyse(cfg,shifted,{segmentCap:1000}).L/r.analysis.L-1)<1e-10);
+  }
+}
+for(const count of [3,6,18,24]) {
+  const cfg={...defaults(),coilCount:count,spanDeg:Math.min(26,360/count-2)};
+  const r=compute(cfg,{}, {quick:true});
+  assert.equal(r.art.meta.starRouted,true);
+  assert.deepEqual(interconnectGroups(r.art),expectedGroups(cfg));cases++;
+}
+for(const sides of [4,6,8,10,12]) {
+  const cfg={...defaults(),shape:'polygon',sides,turns:60};
+  const r=compute(cfg,{}, {segmentCap:500});
+  assert.ok(r.coil.spiral.turnsUsed<=r.coil.spiral.maxTurns);
+  assert.ok(notes(cfg,r).some(n=>/requested turns/.test(n.text)));cases++;
+}
+for(const changes of [{layers:1},{layers:3},{layers:4},{connection:'parallel'},{coilCount:13},{spanDeg:30}]) {
+  const cfg={...defaults(),...changes};const r=compute(cfg,{}, {quick:true});
+  assert.equal(r.art.meta.starRouted,false);
+  assert.equal(r.art.ports.length,0);
+  assert.ok(notes(cfg,r).some(n=>n.level==='error' && /omitted/.test(n.text)));cases++;
+}
+for(const changes of [{dInner:60},{dInner:-1},{phases:0},{shape:'custom'},{shape:'polygon',sides:0},{shape:'circle',spanDeg:0.1}]) {
+  assert.throws(()=>compute({...defaults(),...changes},{},{quick:true}));cases++;
+}
+const cfg={...defaults(),shape:'circle',busEnabled:false};
+assert.equal(compute(cfg,{},{quick:true}).art.ports.length,0);
+const single={...inductorDefaults(),arrayEnabled:true,coilCount:12};
+assert.equal(instances(single).length,1);
+assert.equal(buildArtwork(single,buildCoil(single)).meta.kind,'coil');
+console.log(`${cases} motor layout scenarios passed: connectivity, containment, exports, persistence, and validation.`);

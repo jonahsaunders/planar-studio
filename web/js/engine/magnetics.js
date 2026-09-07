@@ -2,6 +2,7 @@
    Equal current sharing is assumed for parallel layers. No ferrite, ground
    planes, eddy currents, or external lead return path is modeled. */
 import { buildCoil, analyse, toFilaments, mutualOf, MU0 } from './coil.js';
+import { instances } from './coilgeom.js';
 
 export function windingPolys(cfg, coil = buildCoil(cfg)) {
   const polys = coil.layers.map((l) => l.pts.map(([x, y]) => [x, y, l.z]));
@@ -70,8 +71,8 @@ export function fieldSlice(cfg, opt = {}) {
   const n = Math.max(9, Math.min(61, opt.resolution || 31)), extent = cfg.dOuter * 0.65;
   const polys = windingPolys(cfg), phases = opt.motor ? cfg.phases : 1;
   const groups = Array.from({ length: phases }, () => []);
-  const count = opt.motor ? cfg.coilCount : 1;
-  for (let i = 0; i < count; i++) groups[i % phases].push(...transformPolys(polys, { rotation: i * 360 / count }));
+  const placements = opt.motor ? instances({ ...cfg, arrayEnabled: true }) : [{ phase: 0, angle: 0 }];
+  for (const it of placements) groups[it.phase].push(...transformPolys(polys, { rotation: it.angle * 180 / Math.PI }));
   const filaments = groups.map((p) => toFilaments(p, 0.35, 8000));
   const current = cfg.current / (cfg.connection === 'parallel' ? cfg.layers : 1)
     / (opt.motor && !cfg.coilSeries ? cfg.coilCount / cfg.phases : 1);

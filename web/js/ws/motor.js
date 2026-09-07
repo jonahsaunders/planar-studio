@@ -1,9 +1,9 @@
 /* ============================================================================
    PCB MOTOR WORKSPACE — axial-flux stator.
 
-   A stator is a ring of sector coils plus the interconnect that makes them a
-   three-phase winding. The coil engine already builds the sector; what this
-   workspace adds is the machine on top of it: winding factor, flux linkage,
+   A stator is a ring of slot-fitted coils plus an optional star interconnect.
+   The coil engine builds each shape; this workspace adds shape and routing
+   controls and the approximate machine model: winding factor, flux linkage,
    torque and back-EMF constants, and the torque–speed line at a bus voltage.
 
    The airgap flux density is an input, not a magnetostatic solve. That is the
@@ -25,17 +25,18 @@ export function defaults() {
   return {
     ...inductorDefaults(),
     shape: 'wedge',
+    motorGeometry: true,
     arrayEnabled: true,
     dOuter: 60,
     dInner: 26,
     spanDeg: 26,
     turns: 9,
-    layers: 4,
+    layers: 2,
     traceW: 0.3,
     traceS: 0.2,
     coilCount: 12,
     phases: 3,
-    polePairs: 7,
+    polePairs: 8,
     bGap: 0.45,
     rpm: 3000,
     vdc: 24,
@@ -43,6 +44,7 @@ export function defaults() {
     freq: 1e3,
     coilSeries: true,
     busEnabled: true,
+    terminalAngle: -90,
   };
 }
 
@@ -55,6 +57,14 @@ export function rail(panel, app) {
     key: 'stator',
     title: 'Stator ring',
     fields: [
+      { key: 'shape', type: 'select', label: 'Coil shape', options: [
+        { value: 'wedge', label: 'Annular sector' },
+        { value: 'circle', label: 'Circular spiral' },
+        { value: 'racetrack', label: 'Racetrack / oval' },
+        { value: 'polygon', label: 'Polygon (square, hexagon…)' },
+      ], hint: 'Each coil fits inside its slot; diameter and bore still describe the complete stator.' },
+      { key: 'sides', type: 'range', label: 'Polygon sides', min: 4, max: 12, step: 2, when: c => c.shape === 'polygon' },
+      { key: 'aspect', type: 'range', label: 'Oval aspect ratio', min: 0.2, max: 1, step: 0.05, when: c => c.shape === 'racetrack' },
       { key: 'dOuter', type: 'range', label: 'Outer diameter', unit: 'mm', min: 10, max: 300, step: 0.5, hardMin: 4 },
       { key: 'dInner', type: 'range', label: 'Bore diameter', unit: 'mm', min: 2, max: 260, step: 0.5 },
       {
@@ -78,13 +88,13 @@ export function rail(panel, app) {
             hint: 'Set the span so the coils just touch, with one clearance between them.',
             onClick: (p) => {
               const c = p.state;
-              const gapDeg = (c.traceS * 2) / (Math.PI * c.dOuter / 360) * 1;
+              const gapDeg = 2 * Math.asin(Math.min(1, (c.traceW + c.traceS) / c.dInner)) * 180 / Math.PI;
               app.set('spanDeg', Number(Math.max(2, 360 / c.coilCount - gapDeg).toFixed(2)));
             },
           },
           {
             label: 'Max turns',
-            hint: 'Set the turn count to the most the sector will hold.',
+            hint: 'Set the turn count to the most the selected coil will hold.',
             onClick: () => app.setMaxTurns(),
           },
         ],
@@ -93,7 +103,9 @@ export function rail(panel, app) {
         key: 'coilSeries', type: 'seg', label: 'Coils per phase',
         options: [{ value: true, label: 'Series' }, { value: false, label: 'Parallel' }],
       },
-      { key: 'busEnabled', type: 'check', label: 'Draw the phase interconnect', hint: 'Concentric buses in the bore, one ring per phase plus a star point.' },
+      { key: 'busEnabled', type: 'check', label: 'Connect phases in star (wye)', hint: 'Join the winding ends at N and group separate A/B/C drive terminals at the bottom. Requires two series copper layers.' },
+      { key: 'terminalAngle', type: 'range', label: 'Terminal position', unit: '°', min: -180, max: 180, step: 1,
+        when: c => c.busEnabled, hint: '−90° is bottom, 0° is right. Routing occupies an outer collar and keeps the bore clear.' },
     ],
   });
 
@@ -137,14 +149,21 @@ export function rail(panel, app) {
 
 export function compute(cfg, env, opt = {}) {
   const layers = chooseLayers(cfg, env.board);
-  const full = { ...cfg, shape: 'wedge', arrayEnabled: true, layerNames: layers };
+  if (!['wedge', 'circle', 'racetrack', 'polygon'].includes(cfg.shape)) throw new Error('Choose a supported motor coil shape.');
+  if (!(cfg.dOuter > cfg.dInner && cfg.dInner > 0)) throw new Error('The bore must be positive and smaller than the outer diameter.');
+  if (cfg.shape === 'polygon' && (!Number.isInteger(cfg.sides) || cfg.sides < 3 || cfg.sides > 12)) throw new Error('Choose three to twelve polygon sides.');
+  if (![cfg.traceW, cfg.traceS, cfg.turns, cfg.spanDeg, cfg.viaDrill, cfg.padDrill].every(v => Number.isFinite(v) && v > 0)
+    || !(cfg.viaPad > cfg.viaDrill && cfg.padSize > cfg.padDrill)) throw new Error('Use positive trace, turn and drill dimensions, with copper pads larger than their holes.');
+  if (!Number.isInteger(cfg.coilCount) || cfg.coilCount < 3 || !Number.isInteger(cfg.phases) || cfg.phases < 1 || cfg.phases > 6) throw new Error('Use at least three coils and one to six whole phases.');
+  const full = { ...cfg, motorGeometry: true, arrayEnabled: true, layerNames: layers };
   const coil = buildCoil(full);
+  if (coil.spiral.maxTurns < 1) throw new Error('No complete turn fits. Enlarge the coil slot or reduce track width and clearance.');
   const art = buildArtwork(full, coil, {
     name: env.name || 'M1',
     net: env.net || 'COIL',
     label: `${env.name || 'M1'}  ${cfg.coilCount}c ${cfg.phases}φ ${cfg.polePairs}pp`,
   });
-  art.outline = outlineFor(full, coil, 2.5);
+  art.outline = outlineFor(full, coil, 2.5, art);
 
   const res = { coil, art, layers, bounds: bounds(art), instances: instances(full).length };
   if (opt.quick) return res;
@@ -207,6 +226,8 @@ export function spec(cfg, res) {
     {
       title: 'Winding',
       rows: [
+        ['Coil shape', cfg.shape === 'polygon' ? `${cfg.sides}-sided polygon` : cfg.shape],
+        ['Terminals', res.art.meta.starRouted ? `Star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
         ['Coils / phases / pole pairs', `${m.coilsTotal} / ${m.phases} / ${m.p}`],
         ['Coils per phase', `${num(m.coilsPerPhase, 2)} in ${cfg.coilSeries ? 'series' : 'parallel'}`],
         ['Turns per coil', `${a.turns.toFixed(2)} × ${a.nL} layers`],
@@ -256,9 +277,11 @@ export function spec(cfg, res) {
 }
 
 export function notes(cfg, res) {
-  const out = [];
+  const out = [...(res.art?.notes || [])];
   const m = res.motor, a = res.analysis;
   if (!m || !a) return out;
+  if (!a.drc.turnsOK) out.push({ level: 'warn', text: `Only ${a.turns.toFixed(0)} of ${cfg.turns} requested turns fit this coil shape. Use Max turns or enlarge the slot.` });
+  if (cfg.shape !== 'wedge') out.push({ level: 'info', text: 'Inductance and resistance use the selected coil geometry. Torque and back-EMF retain the approximate annular-sector flux model; use field simulation to compare coil shapes.' });
 
   const slots = 360 / cfg.coilCount;
   if (cfg.spanDeg > slots) {
@@ -280,6 +303,13 @@ export function notes(cfg, res) {
   if (m.kw < 0.7) {
     out.push({ level: 'warn', text: `Winding factor is ${m.kw.toFixed(2)}. The coil span and the pole pitch are badly matched — try a span near 180 electrical degrees.` });
   }
+  const members = Math.ceil(cfg.coilCount / cfg.phases);
+  let re = 0, im = 0;
+  for (let i = 0; i < cfg.coilCount; i += cfg.phases) {
+    const a = 2 * Math.PI * i * cfg.polePairs / cfg.coilCount;
+    re += Math.cos(a); im += Math.sin(a);
+  }
+  if (Math.hypot(re, im) / members < 0.95) out.push({ level: 'warn', text: 'The repeated phase sequence does not align every same-phase coil with the rotor poles. Torque and back-EMF estimates omit this cancellation. Use a compatible slot/pole combination (for example 12 coils and 8 pole pairs), or design a custom winding schedule.' });
   if (a.rise > 60) {
     out.push({ level: 'error', text: `IPC-2221 puts the rise at ${a.rise.toFixed(0)} K at ${cfg.current} A. A stator has no still air around it, so the real figure is worse.` });
   }
@@ -291,7 +321,7 @@ export function notes(cfg, res) {
   }
   out.push({
     level: 'info',
-    text: 'Iron loss, windage and inverter losses are not in the efficiency figure — it is copper only, so treat it as an upper bound.',
+    text: 'Coils use a repeating phase sequence with equal polarity. The motor model uses a pitch factor only; it does not solve the slot/pole distribution or optimize winding polarity. Verify the winding schedule for your rotor. Efficiency excludes iron, windage and inverter losses.',
   });
   return out;
 }
@@ -340,7 +370,7 @@ export function charts(cfg, res) {
 export function status(cfg, res) {
   const m = res.motor;
   return {
-    algo: `Sector offset · ${res.instances} coils`,
+    algo: `${res.coil.spiral.algorithm.name} · ${res.instances} coils`,
     summary: m ? `Kt ${num(m.Kt, 4)} N·m/A · Kv ${num(m.Kv, 0)} rpm/V · η ${num(m.eff * 100, 0)}%` : 'solving…',
   };
 }

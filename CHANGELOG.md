@@ -1,5 +1,20 @@
 # Changelog
 
+## Motor coil and star routing update (development)
+
+- Add circular, racetrack/oval and polygon motor coils, including square and
+  hexagonal profiles, with slot fitting and shape-specific turn limits.
+- Replace disconnected bore buses with checked series/parallel star routing on
+  two series copper layers; group phase inputs and neutral at an adjustable
+  position, defaulting to the bottom, inside an expanded outer collar.
+- Preserve winding tap names in KiCad, SVG and DXF output; use one physical net
+  for the continuous star winding and unique individual coil terminal numbers.
+- Align magnetic-field placements with the motor artwork and report routing
+  restrictions, dropped turns and incompatible repeated-phase rotor schedules.
+- Default new motors to 12 coils, eight pole pairs and two copper layers.
+- Add physical interconnect graph, export, geometry and real-control DOM tests.
+  Live KiCad and rendered browser validation remain outstanding.
+
 ## 1.3.0 (development)
 
 - Add a layer setup assistant with board requirements, KiCad setup instructions

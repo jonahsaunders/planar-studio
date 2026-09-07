@@ -1,5 +1,8 @@
 # Planar Studio
 
+Motor coil shapes and adjustable star terminals are now available. See the
+[motor guide](docs/motor-coils.md).
+
 ## Layer setup, loaded transformers and antennas — 1.3.0 development
 
 - **Layer setup assistant:** required versus available copper layers, exact KiCad
@@ -70,13 +73,17 @@ parallel, with correct mirrored stacking and automatic transition vias. Full
 electrical model: inductance, DC and AC resistance, parasitic capacitance,
 self-resonance, Q, IPC-2221 current rating and temperature rise.
 
-**PCB motor.** Sector coils tiled around a ring with the phase interconnect
-drawn — concentric buses in the bore, one ring per phase plus a star point.
-Sinusoidal PMSM model: winding factor, flux linkage, K<sub>t</sub>,
-K<sub>e</sub>, K<sub>v</sub>, motor constant, and the torque–speed line at a
-bus voltage.
+**PCB motor.** Annular-sector, circular, racetrack and polygon coils tiled around
+an adjustable ring. Optional star (wye) wiring groups phase terminals and neutral
+at the bottom, or at another chosen angle. Series and parallel coil connections
+use separate routing layers in an outer collar, leaving the bore clear.
+Automatic routing supports two series copper layers; unsupported configurations
+retain individual terminals and show an error. Inductance and resistance follow
+the selected geometry; the sinusoidal PMSM estimates retain a pitch-only,
+annular-sector flux model. See [Motor coils and star wiring](docs/motor-coils.md)
+for controls, terminal names and model limits.
 
-![A twelve-coil three-phase stator with its phase buses](docs/screenshot-motor.png)
+![Four motor coil shapes with bottom star terminals](docs/motor-shapes.png)
 
 **Filter.** Six families, synthesised from a prototype and laid out as copper:
 

@@ -7,22 +7,23 @@
    ========================================================================= */
 
 import {
-  artwork, track, via, pad, label, run, arcPts, merge, transform, bounds, TAU,
+  artwork, track, via, pad, label, arcPts, merge, transform, bounds, TAU,
 } from './artwork.js';
 import { layerNames } from './coil.js';
+import { starBus } from './motorbus.js';
 
 export const PHASE_NAMES = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-/* Which instances exist, and what phase each belongs to. Only the sector coil
-   tiles: every other winding is centred on the origin, so rotating a copy of
-   it would land exactly on top of the original. */
+/* Motor coils are positioned in their slot by buildCoil before rotation.
+   Ordinary inductor shapes remain centred and are never arrayed. */
 export function instances(cfg) {
-  if (cfg.shape !== 'wedge' || !cfg.arrayEnabled || cfg.coilCount < 2) {
+  if ((!cfg.motorGeometry && cfg.shape !== 'wedge') || !cfg.arrayEnabled || cfg.coilCount < 2) {
     return [{ angle: 0, phase: 0, index: 0 }];
   }
   const n = cfg.coilCount;
   const out = [];
-  for (let i = 0; i < n; i++) out.push({ angle: TAU * i / n, phase: i % cfg.phases, index: i });
+  const offset = cfg.motorGeometry ? (cfg.terminalAngle ?? -90) * Math.PI / 180 + Math.PI / n : 0;
+  for (let i = 0; i < n; i++) out.push({ angle: TAU * i / n + offset, phase: i % cfg.phases, index: i });
   return out;
 }
 
@@ -64,26 +65,28 @@ export function coilArtwork(cfg, coil, opt = {}) {
 /**
  * A full design: one coil, or a ring of them with the phase interconnect.
  *
- * The interconnect is the part that separates a stator from a picture of one.
- * Coils of the same phase have to be joined in series or parallel, and the
- * joins have to happen somewhere that does not cross another phase. Two
- * concentric ring buses on a spare layer do it: an inner bus per phase and an
- * outer star point, with each coil dropping onto its own ring through a via.
+ * A star connection uses an outer collar and two layers for crossings.
+ * Its arcs implement the selected series or parallel topology.
  */
 export function buildArtwork(cfg, coil, opt = {}) {
-  const A = artwork({ name: opt.name || 'coil', kind: cfg.arrayEnabled && cfg.shape === 'wedge' ? 'stator' : 'coil' });
+  const A = artwork({ name: opt.name || 'coil', kind: cfg.arrayEnabled && (cfg.shape === 'wedge' || cfg.motorGeometry) ? 'stator' : 'coil' });
   const inst = instances(cfg);
   const arrayed = inst.length > 1;
   const names = coil.names || layerNames(cfg.layers);
 
+  const bus = arrayed && cfg.busEnabled !== false ? starBus(cfg, coil, inst, names, opt) : null;
   for (const it of inst) {
-    const netName = arrayed ? `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}` : (opt.net || 'COIL');
+    const netName = bus?.meta.routed ? (opt.net || 'COIL') : arrayed ? `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}` : (opt.net || 'COIL');
     const one = coilArtwork(cfg, coil, { net: netName, name: `${opt.name || 'coil'}-${it.index}` });
+    for (const t of one.tracks) t.phase = it.phase;
+    if (arrayed) one.pads.forEach((p, i) => { p.number = `C${it.index + 1}.${i + 1}`; });
     merge(A, it.angle ? transform(one, { angle: it.angle }) : one);
   }
 
-  if (arrayed && cfg.busEnabled !== false) {
-    merge(A, phaseBus(cfg, coil, inst, names, opt));
+  if (bus) {
+    merge(A, bus);
+    A.meta.starRouted = !!bus.meta.routed;
+    A.meta.routingOuterRadius = bus.meta.outerRadius;
   }
 
   if (opt.silk !== false) {
@@ -95,63 +98,11 @@ export function buildArtwork(cfg, coil, opt = {}) {
   return A;
 }
 
-/* Concentric ring buses joining same-phase coils, plus a star point. */
-function phaseBus(cfg, coil, inst, names, opt) {
-  const A = artwork({ name: 'bus', kind: 'bus' });
-  const busLayer = names[names.length - 1];
-  const w = Math.max(cfg.traceW * 2, 0.4);
-  const clearance = cfg.traceS;
-
-  // Rings sit inside the stator bore, where there is no winding copper.
-  const rBase = Math.max(cfg.dInner / 2 - (w + clearance) * 1.5, w * 2);
-  const phases = cfg.phases;
-  const rings = [];
-  for (let p = 0; p < phases; p++) rings.push(rBase - p * (w + clearance));
-  const rStar = rBase - phases * (w + clearance);
-
-  if (rStar <= w) {
-    A.notes.push({
-      level: 'warn',
-      text: 'No room inside the bore for the phase buses. Increase the inner diameter or route the '
-        + 'interconnect by hand.',
-    });
-    return A;
-  }
-
-  for (let p = 0; p < phases; p++) {
-    A.tracks.push(track(busLayer, w, arcPts(0, 0, rings[p], 0, TAU, 0.06), {
-      role: 'phase-bus', net: `${opt.net || 'COIL'}_${PHASE_NAMES[p]}`,
-    }));
-  }
-  A.tracks.push(track(busLayer, w, arcPts(0, 0, rStar, 0, TAU, 0.06), { role: 'star', net: 'STAR' }));
-
-  // Each coil's inner terminal drops to its phase ring.
-  for (const it of inst) {
-    const t = coil.terminals[1];
-    const ang = Math.atan2(t[1], t[0]) + it.angle;
-    const rTerm = Math.hypot(t[0], t[1]);
-    const r = rings[it.phase];
-    const x0 = rTerm * Math.cos(ang), y0 = rTerm * Math.sin(ang);
-    const x1 = r * Math.cos(ang), y1 = r * Math.sin(ang);
-    A.vias.push(via(x0, y0, { drill: cfg.viaDrill, diameter: cfg.viaPad, net: `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}`, role: 'bus-drop' }));
-    A.tracks.push(track(busLayer, w, run(x0, y0, x1, y1), {
-      role: 'bus-drop', net: `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}`,
-    }));
-  }
-
-  A.notes.push({
-    level: 'info',
-    text: `Phase buses are on ${busLayer} inside the bore. Coils of one phase are joined in `
-      + `${cfg.coilSeries ? 'series' : 'parallel'}; the star ring is the neutral point for a wye connection.`,
-  });
-  return A;
-}
-
-/** Board outline hints: a disc for a stator, a rounded rectangle otherwise. */
-export function outlineFor(cfg, coil, margin = 2) {
+/** Disc outline, including the routing collar; stators also have a bore. */
+export function outlineFor(cfg, coil, margin = 2, art = null) {
   const out = [];
-  const R = coil.outerR + margin;
-  if (cfg.shape === 'wedge' && cfg.arrayEnabled) {
+  const R = Math.max(coil.outerR, art?.meta.routingOuterRadius || 0) + margin;
+  if ((cfg.shape === 'wedge' || cfg.motorGeometry) && cfg.arrayEnabled) {
     out.push({ layer: 'Edge.Cuts', pts: arcPts(0, 0, R, 0, TAU, 0.05) });
     const ri = Math.max(1, cfg.dInner / 2 - margin);
     out.push({ layer: 'Edge.Cuts', pts: arcPts(0, 0, ri, 0, TAU, 0.05) });
