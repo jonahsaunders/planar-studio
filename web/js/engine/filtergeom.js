@@ -247,15 +247,16 @@ export function layoutInterdigital(design, ctx) {
   R.forEach((r, i) => {
     const xc = x + r.w / 2;
     centres.push(xc);
-    A.tracks.push(track(L, r.w, run(xc, 0, xc, len), { role: 'resonator', index: i }));
+    const rlen = r.length || len;
+    A.tracks.push(track(L, r.w, run(xc, 0, xc, rlen), { role: 'resonator', index: i }));
 
     // Grounded end alternates so adjacent resonators couple through their
     // open ends -- that is what makes the structure interdigital rather than
     // combline.
     const groundedAtBottom = i % 2 === 0;
-    const gy = groundedAtBottom ? 0 : len;
+    const gy = groundedAtBottom ? 0 : rlen;
     A.vias.push(via(xc, gy, { drill: ctx.viaDrill, diameter: ctx.viaPad, net: ctx.gndNet, role: 'resonator-ground' }));
-    A.labels.push(label(xc, groundedAtBottom ? len + 0.9 : -0.9, `R${i + 1}`, { size: 0.6 }));
+    A.labels.push(label(xc, groundedAtBottom ? rlen + 0.9 : -0.9, `R${i + 1}`, { size: 0.6 }));
 
     const gap = i < R.length - 1 ? design.gaps[i].s : 0;
     x += r.w + gap;
@@ -278,14 +279,14 @@ export function layoutInterdigital(design, ctx) {
   R.forEach((r, i) => {
     const xc = centres[i];
     const bottom = i % 2 === 0;
-    const y0 = bottom ? 0 : len;
+    const y0 = bottom ? 0 : (r.length || len);
     const y1 = bottom ? -ctx.railGap : len + ctx.railGap;
     A.tracks.push(track(L, r.w, run(xc, y0, xc, y1), { role: 'ground-stub', net: ctx.gndNet }));
   });
 
   // Tapped feeds on the first and last resonators.
   const tapLen = clamp(design.tap ? design.tap.length : len * 0.25, 0.5, len - 0.5);
-  const inY = tapLen, outY = R.length % 2 === 0 ? len - tapLen : tapLen;
+  const inY = Math.min(tapLen, R[0].length || len), outY = R.length % 2 === 0 ? Math.max(0, (R.at(-1).length || len) - tapLen) : Math.min(tapLen, R.at(-1).length || len);
   A.tracks.push(track(L, design.feed.w, run(centres[0] - ctx.feedLength - 1, inY, centres[0], inY), { role: 'feed' }));
   A.ports.push({ x: centres[0] - ctx.feedLength - 1, y: inY, name: 'P1', angle: Math.PI });
   A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));

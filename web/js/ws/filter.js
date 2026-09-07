@@ -20,6 +20,7 @@ import {
 } from '../engine/filter.js';
 import { microstrip, microstripWidth } from '../engine/microstrip.js';
 import { defaultContext, layoutFilter } from '../engine/filtergeom.js';
+import { tuneDistributed, tuningHandles, DISTRIBUTED } from '../engine/filtertune.js';
 import { bounds } from '../engine/artwork.js';
 import { eng, num } from '../ui/controls.js';
 import { chooseLayers, colourFor, fmtHz } from './common.js';
@@ -262,14 +263,14 @@ export function rail(panel, app) {
    Compute
    ----------------------------------------------------------------------- */
 
-function substrateOf(cfg) {
+export function substrateOf(cfg) {
   return {
     h: cfg.subH, er: cfg.subEr, t: cfg.subT, tanD: cfg.tanD,
     minGap: cfg.minGap, minTrace: cfg.minTrace,
   };
 }
 
-function synth(cfg) {
+export function synth(cfg) {
   const sub = substrateOf(cfg);
   const base = {
     response: cfg.response, order: cfg.order, ripple: cfg.ripple,
@@ -338,7 +339,9 @@ function realisedNetwork(design, art) {
 
 export function compute(cfg, env, opt = {}) {
   const layers = chooseLayers({ layers: Math.max(2, cfg.coilLayers) }, env.board);
-  const design = synth(cfg);
+  const nominal = opt.fixedDesign || (cfg.fixedDesign?.kind === cfg.family ? cfg.fixedDesign : null) || synth(cfg);
+  const design = DISTRIBUTED.includes(cfg.family)
+    ? tuneDistributed(nominal, cfg, cfg.tuning || {}, opt.variation || {}) : nominal;
   const ctx = defaultContext({
     ...substrateOf(cfg),
     layers,
@@ -360,7 +363,7 @@ export function compute(cfg, env, opt = {}) {
   });
 
   const art = layoutFilter(design, ctx);
-  const res = { design, art, ctx, layers, bounds: bounds(art) };
+  const res = { design, nominal, art, ctx, layers, bounds: bounds(art) };
   if (opt.quick) return res;
 
   const [f0, f1] = sweepRange(cfg, design);
@@ -387,7 +390,7 @@ export function compute(cfg, env, opt = {}) {
   return res;
 }
 
-export function handles() { return []; }
+export const handles = tuningHandles;
 
 /* --------------------------------------------------------------------------
    Reconciliation
@@ -410,6 +413,10 @@ const FAMILY_RANGE = {
 };
 
 export function reconcile(cfg, key) {
+  if (['family', 'order', 'response', 'band', 'fc', 'f1', 'f2', 'ripple', 'z0', 'zRes', 'zHigh', 'zLow', 'seriesFirst'].includes(key)) {
+    cfg.tuning = {};
+    cfg.fixedDesign = null;
+  }
   if (key === 'family') {
     const allowed = FAMILIES[cfg.family].bands;
     if (!allowed.includes(cfg.band)) cfg.band = allowed[0];
@@ -610,6 +617,8 @@ function worstVswr(res) {
 
 export function notes(cfg, res) {
   const out = [];
+  if (cfg.fixedDesign) out.push({ level: 'info', text: 'Calibrated copper dimensions are frozen. Change synthesis targets or reset geometry tuning to synthesize a fresh layout.' });
+  if (res.design.tuningModel) out.push({ level: 'info', text: res.design.tuningModel });
   for (const n of res.art.notes || []) out.push(n);
   for (const n of res.review || []) out.push({ level: n.level, text: n.text });
 

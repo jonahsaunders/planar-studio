@@ -99,6 +99,14 @@ class Application:
 
         # ---- board --------------------------------------------------------
 
+        @api.method("board.snapshot")
+        @_require_link
+        def _snapshot(params: Dict[str, Any]) -> Dict[str, Any]:
+            result = self.link.board_snapshot()
+            previous = self.store.get_placement(str(params.get("designId") or ""), result["name"])
+            result["excludedIds"] = previous.get("ids", []) if previous else []
+            return result
+
         @api.method("board.context")
         @_require_link
         def _context(_params: Dict[str, Any]) -> Dict[str, Any]:
@@ -292,7 +300,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if "--print-url" in argv:
         url = app.server.start()
         app.server.wait_until_ready()
-        print(url)
+        print(url, flush=True)
         try:
             while True:
                 time.sleep(3600)

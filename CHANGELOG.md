@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — Design Tools
+
+- Add constrained coil optimization, measurement import/overlays and fitting,
+  coupled-coil exploration, manufacturing tolerance studies, direct and automatic
+  filter tuning, magnetic-field slices, board-aware placement checks, and rotor design.
+- Keep fixed copper dimensions during distributed-filter material studies and fitting.
+  Hairpin/interdigital tuning uses an explicitly labeled narrowband resonator model.
+- Add a read-only live-board snapshot RPC and configurable placement origin.
+- Persist study settings and measurement baselines through existing design storage.
+- Run studies in cancelable workers; dispose canvas observers when views are replaced.
+- Flush the standalone server URL so automated clients can connect through a pipe.
+- Add numerical, DOM/worker, snapshot, and reproducible browser integration tests.
+- See docs/design-tools.md for supported cases, model limits, and validation status.
+
+
 ## 1.0.0
 
 First release. The engine from [planar-coil-studio][pcs] moved inside KiCad as
