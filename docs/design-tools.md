@@ -196,6 +196,11 @@ solved peak Bgap and use **Apply external field to motor** to update performance
 There is no automated FEA solver integration, back-iron model, rotor structural
 analysis, or magnet-temperature/demagnetization model in this version.
 
+## Layout correction
+
+The 1.0.1 development build corrects lumped-filter spacing and terminal routing.
+See [layout-fix.md](layout-fix.md) for the changes, tests, and remaining limits.
+
 ## Validation and development
 
 ```sh

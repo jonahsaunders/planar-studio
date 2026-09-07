@@ -52,6 +52,17 @@ cascade.
 
 ![A hairpin band-pass filter with its response](docs/screenshot-filter.png)
 
+## Layout correction — 1.0.1 development build
+
+This build fixes lumped-filter component overlap, coil-terminal return routing,
+capacitor end clearance, and plate-capacitor layer transitions. Layout slots use
+the complete copper bounds, including leads and vias. Existing saved settings
+are recalculated using the corrected layout when opened.
+
+Run `node tests/lumped-layout.mjs` from the patched source checkout for the
+physical-routing regression suite. See `docs/layout-fix.md` for validation and
+remaining limitations.
+
 ## Design tools
 
 The **Design tools** button opens eight local engineering workflows:
@@ -215,7 +226,7 @@ retuning the geometry to hide it.
 ## Install
 
 **From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.0.0.zip`, or use *Install from File* on the archive built by
+`planar-studio-1.0.1.zip`, or use *Install from File* on the archive built by
 `./build.sh`.
 
 **By hand.** Copy this folder into KiCad's plugin directory as

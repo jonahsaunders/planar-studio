@@ -21,7 +21,7 @@ from .server import Api, RpcError, UiServer
 from .store import Store
 from .window import Shell, report
 
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WEB_ROOT = os.path.join(HERE, "web")
 

@@ -23,7 +23,7 @@
 
 import {
   artwork, track, via, pad, label, run, fillRect, uBend,
-  merge, transform, defaultNet,
+  merge, transform, defaultNet, boundsCopper,
 } from './artwork.js';
 import { buildCoil, analyse, solveCoilForL } from './coil.js';
 import { interdigitalCap, interdigitalFingersFor, plateAreaFor, microstrip } from './microstrip.js';
@@ -368,12 +368,13 @@ export function interdigitalGeom(ctx, targetC, opt = {}) {
   const pitch = fw + fg;
   const width = fingers * fw + (fingers - 1) * fg;
   const x0 = -width / 2 + fw / 2;
-  const yTop = overlap / 2, yBot = -overlap / 2;
+  // Reserve the end gaps outside the modeled overlap, including round caps.
+  const yTop = (overlap + 2 * endGap + fw) / 2, yBot = -yTop;
 
   for (let i = 0; i < fingers; i++) {
     const x = x0 + i * pitch;
-    if (i % 2 === 0) A.tracks.push(track(L, fw, run(x, yBot + endGap, x, yTop), { role: 'idc-finger-a' }));
-    else A.tracks.push(track(L, fw, run(x, yBot, x, yTop - endGap), { role: 'idc-finger-b' }));
+    if (i % 2 === 0) A.tracks.push(track(L, fw, run(x, yBot + endGap + fw / 2, x, yTop), { role: 'idc-finger-a' }));
+    else A.tracks.push(track(L, fw, run(x, yBot, x, yTop - endGap - fw / 2), { role: 'idc-finger-b' }));
   }
   const spineA = yTop + spineW / 2;
   const spineB = yBot - spineW / 2;
@@ -495,6 +496,36 @@ export function coilGeom(ctx, targetL, opt = {}) {
   };
 }
 
+// Give every capacitor two accessible signal-layer ports. The second plate
+// must escape on its own layer before a via brings it up outside the plates.
+function layoutCap(ctx, value) {
+  if (ctx.capStyle !== 'plate' || ctx.layers.length < 2) return interdigitalGeom(ctx, value);
+  const g = plateGeom(ctx, value, { layerA: ctx.signalLayer });
+  const escape = Math.max(ctx.viaPad / 2, ctx.traceW / 2) + ctx.clearance;
+  const a = [0, g.portA[1] + escape], b = [0, g.portB[1] - escape];
+  g.art.tracks.push(track(g.layerA, ctx.traceW, [g.portA, a], { role: 'plate-lead-a' }));
+  g.art.tracks.push(track(g.layerB, ctx.traceW, [g.portB, b], { role: 'plate-lead-b' }));
+  g.art.vias.push(via(b[0], b[1], { drill: ctx.viaDrill, diameter: ctx.viaPad, role: 'plate-escape' }));
+  return { ...g, portA: a, portB: b, height: a[1] - b[1] };
+}
+
+// Slots are centered on their full copper bounds, including leads and vias.
+// In particular, a parallel shunt with a wide capacitor is NOT centered on
+// its electrical node. Apply the same translation to every attachment point.
+function fitElement(built, ctx) {
+  const b = boundsCopper(built.art);
+  const points = [built.portA, built.portB, ...(built.groundPoints || [])].filter(Boolean);
+  const x0 = Math.min(b.x0, ...points.map(p => p[0] - ctx.traceW / 2));
+  const x1 = Math.max(b.x1, ...points.map(p => p[0] + ctx.traceW / 2));
+  const dx = -(x0 + x1) / 2;
+  const move = p => [p[0] + dx, p[1]];
+  const margin = Math.max(ctx.clearance, 0.2) + ctx.traceW / 2;
+  return { ...built, art: transform(built.art, { dx }),
+    portA: move(built.portA), portB: built.portB && move(built.portB),
+    groundPoints: (built.groundPoints || []).map(move),
+    span: x1 - x0 + 2 * margin, up: Math.max(0, b.y1), down: Math.max(0, -b.y0) };
+}
+
 /* --------------------------------------------------------------------------
    6.  LUMPED LC LADDER
 
@@ -521,7 +552,7 @@ export function layoutLumped(design, ctx) {
 
   for (const el of design.elements) {
     if (el.kind === 'series') {
-      const built = buildSeries(el, ctx, warn);
+      const built = fitElement(buildSeries(el, ctx, warn), ctx);
       const span = built.span;
       // Enter the element from the left node, leave from the right node.
       const dx = x + span / 2;
@@ -535,7 +566,7 @@ export function layoutLumped(design, ctx) {
       placed.push({ el, x: dx, ...built });
       x += span;
     } else {
-      const built = buildShunt(el, ctx, warn);
+      const built = fitElement(buildShunt(el, ctx, warn), ctx);
       // Shunt elements hang below the spine at a single node.
       const dx = x + built.span / 2;
       merge(A, transform(built.art, { dx, dy: built.dy || 0 }));
@@ -561,7 +592,8 @@ export function layoutLumped(design, ctx) {
   // Ground rail below everything that reaches downward.
   const grounds = placed.filter((p) => p.ground).map((p) => p.ground);
   if (grounds.length) {
-    const railY = Math.min(...grounds.map((g) => g[1])) - ctx.railGap;
+    const railY = Math.min(boundsCopper(A).y0, ...grounds.map((g) => g[1]))
+      - Math.max(ctx.railGap, ctx.clearance) - ctx.railWidth / 2;
     A.tracks.push(track(L, ctx.railWidth, run(-1, railY, x + 1, railY), { role: 'gnd-rail', net: ctx.gndNet }));
     grounds.forEach((g) => {
       A.tracks.push(track(L, ctx.traceW, run(g[0], g[1], g[0], railY), { role: 'gnd-drop', net: ctx.gndNet }));
@@ -609,7 +641,7 @@ function buildSeries(el, ctx, warn) {
     if (p.kind === 'L') {
       const g = coilGeom(ctx, p.value, { freq: ctx.designF || 1e8 });
       // Coil sits above the spine; its terminals point down.
-      const dy = g.radius + Math.max(ctx.clearance * 2, 0.6);
+      const dy = -boundsCopper(g.art).y0 + Math.max(ctx.clearance * 2, 0.6);
       merge(A, transform(g.art, { dx: cursor + g.radius, dy }));
       const a = [cursor + g.radius + g.portA[0], g.portA[1] + dy];
       const b = [cursor + g.radius + g.portB[0], g.portB[1] + dy];
@@ -621,9 +653,7 @@ function buildSeries(el, ctx, warn) {
       if (g.solve && g.solve.saturated) warn.push(`A ${(p.value * 1e9).toFixed(1)} nH series inductor does not fit in a ${ctx.coilDiameter} mm spiral — widen the coil budget.`);
       if (g.enclosed) warn.push('The spiral came out with an odd layer count, so one terminal is enclosed by its own turns. Use an even layer count.');
     } else {
-      const g = ctx.capStyle === 'plate' && ctx.layers.length > 1
-        ? plateGeom(ctx, p.value)
-        : interdigitalGeom(ctx, p.value);
+      const g = layoutCap(ctx, p.value);
       // Series capacitor: rotate a quarter turn so the two combs face left
       // and right instead of up and down.
       const rotated = transform(g.art, { angle: Math.PI / 2 });
@@ -647,15 +677,16 @@ function buildSeries(el, ctx, warn) {
   // A parallel capacitor bridges the same two nodes, below the spine.
   const par = parts.find((p) => p.kind === 'Cpar');
   if (par && portA && portB) {
-    const g = ctx.capStyle === 'plate' && ctx.layers.length > 1 ? plateGeom(ctx, par.value) : interdigitalGeom(ctx, par.value);
+    const g = layoutCap(ctx, par.value);
     const rotated = transform(g.art, { angle: Math.PI / 2 });
     const mid = (portA[0] + portB[0]) / 2;
     const dy = -(g.width / 2 + Math.max(ctx.clearance * 2, 0.7));
     merge(A, transform(rotated, { dx: mid, dy }));
     const a = [mid - g.portA[1], dy];
     const b = [mid - g.portB[1], dy];
-    A.tracks.push(track(L, ctx.traceW, lroute(portA[0], portA[1], a[0], a[1], true), { role: 'par-link' }));
-    A.tracks.push(track(L, ctx.traceW, lroute(b[0], b[1], portB[0], portB[1], false), { role: 'par-link' }));
+    // Approach each electrode from above, outside the capacitor body.
+    A.tracks.push(track(L, ctx.traceW, [portA, [portA[0], 0], [a[0], 0], a], { role: 'par-link' }));
+    A.tracks.push(track(L, ctx.traceW, [b, [b[0], 0], [portB[0], 0], portB], { role: 'par-link' }));
     down = Math.max(down, -dy + g.width / 2);
     realised.Cpar = g.model.C; target.Cpar = par.value;
   }
@@ -682,7 +713,7 @@ function buildShunt(el, ctx, warn) {
   let portA = [0, 0];
   const groundPoints = [];
 
-  const makeCap = (value) => (ctx.capStyle === 'plate' && ctx.layers.length > 1 ? plateGeom(ctx, value) : interdigitalGeom(ctx, value));
+  const makeCap = value => layoutCap(ctx, value);
 
   if (el.type === 'C') {
     const g = makeCap(el.C);
@@ -698,7 +729,7 @@ function buildShunt(el, ctx, warn) {
     }
   } else if (el.type === 'L') {
     const g = coilGeom(ctx, el.L, { freq: ctx.designF || 1e8 });
-    const dy = -(g.radius + Math.max(ctx.clearance * 2, 0.6));
+    const dy = boundsCopper(g.art).y0 - Math.max(ctx.clearance * 2, 0.6);
     // Terminals point down; the node is above, so the coil is flipped.
     const flipped = transform(g.art, { angle: Math.PI });
     merge(A, transform(flipped, { dx: 0, dy }));
@@ -706,7 +737,7 @@ function buildShunt(el, ctx, warn) {
     const b = [-g.portB[0], -g.portB[1] + dy];
     portA = a;
     // Bring the second terminal round the outside of the coil to the rail.
-    const side = g.radius + Math.max(ctx.clearance * 2, 0.5);
+    const side = -boundsCopper(g.art).x1 - Math.max(ctx.clearance * 2, 0.5);
     A.tracks.push(track(L, ctx.traceW, [b, [side, b[1]], [side, dy - g.radius - 0.4]], { role: 'coil-return' }));
     groundPoints.push([side, dy - g.radius - 0.4]);
     span = g.radius * 2 + side + 2 * ctx.clearance;
@@ -720,13 +751,13 @@ function buildShunt(el, ctx, warn) {
     merge(A, transform(gc.art, { dx: 0, dy: dyC }));
     portA = [gc.portA[0], gc.portA[1] + dyC];
     const gl = coilGeom(ctx, el.L, { freq: ctx.designF || 1e8 });
-    const dyL = dyC + gc.portB[1] - Math.max(ctx.clearance * 2, 0.6) - gl.radius;
+    const dyL = dyC + gc.portB[1] - Math.max(ctx.clearance * 2, 0.6) + boundsCopper(gl.art).y0;
     const flipped = transform(gl.art, { angle: Math.PI });
     merge(A, transform(flipped, { dx: 0, dy: dyL }));
     const a = [-gl.portA[0], -gl.portA[1] + dyL];
     const b = [-gl.portB[0], -gl.portB[1] + dyL];
     A.tracks.push(track(L, ctx.traceW, lroute(gc.portB[0], gc.portB[1] + dyC, a[0], a[1], true), { role: 'link' }));
-    const side = gl.radius + Math.max(ctx.clearance * 2, 0.5);
+    const side = -boundsCopper(gl.art).x1 - Math.max(ctx.clearance * 2, 0.5);
     A.tracks.push(track(L, ctx.traceW, [b, [side, b[1]], [side, dyL - gl.radius - 0.4]], { role: 'coil-return' }));
     groundPoints.push([side, dyL - gl.radius - 0.4]);
     span = Math.max(gc.width, gl.radius * 2 + side) + 2 * ctx.clearance;
@@ -736,7 +767,7 @@ function buildShunt(el, ctx, warn) {
     // Side by side, both from the node to the rail.
     const gl = coilGeom(ctx, el.L, { freq: ctx.designF || 1e8 });
     const gc = makeCap(el.C);
-    const dyL = -(gl.radius + Math.max(ctx.clearance * 2, 0.6));
+    const dyL = boundsCopper(gl.art).y0 - Math.max(ctx.clearance * 2, 0.6);
     const flipped = transform(gl.art, { angle: Math.PI });
     const xL = -(gl.radius + inner / 2);
     merge(A, transform(flipped, { dx: xL, dy: dyL }));

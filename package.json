@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/design-tools.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
+    "test": "node tests/verify.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",

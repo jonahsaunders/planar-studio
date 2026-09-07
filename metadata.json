@@ -18,20 +18,25 @@
   "tags": [
     "inductor",
     "coil",
-    "planar magnetics",
+    "planar-magnetics",
     "motor",
-    "axial flux",
+    "axial-flux",
     "filter",
     "microstrip",
-    "RF",
-    "EMI"
+    "rf",
+    "emi"
   ],
   "versions": [
     {
-      "version": "1.0.0",
-      "status": "stable",
+      "version": "1.0.1",
+      "status": "development",
       "kicad_version": "9.0",
-      "platforms": ["linux", "macos", "windows"]
+      "platforms": [
+        "linux",
+        "macos",
+        "windows"
+      ],
+      "runtime": "ipc"
     }
   ]
 }
