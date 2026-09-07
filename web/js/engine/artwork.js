@@ -246,7 +246,7 @@ export function decimate(pts, tol) {
 }
 
 export function simplify(A, tol) {
-  if (!(tol > 0)) return A;
+  if (!(tol > 0) || A.meta.exactPaths) return A;
   const out = { ...A, tracks: A.tracks.map((t) => ({ ...t, pts: decimate(t.pts, tol) })) };
   return out;
 }
@@ -263,7 +263,7 @@ export function simplify(A, tol) {
  * board coordinates.
  */
 export function toKicad(A, opt = {}) {
-  const tol = opt.tolerance || 0;
+  const tol = A.meta.exactPaths ? 0 : opt.tolerance || 0;
   const dx = opt.dx || 0, dy = opt.dy || 0;
   const P = (p) => [p[0] + dx, -p[1] + dy];
 

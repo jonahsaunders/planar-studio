@@ -2,6 +2,7 @@
    Equal current sharing is assumed for parallel layers. No ferrite, ground
    planes, eddy currents, or external lead return path is modeled. */
 import { buildCoil, analyse, toFilaments, mutualOf, MU0 } from './coil.js';
+import { windingPhasors, phaseAngle } from './winding-design.js';
 import { instances } from './coilgeom.js';
 
 export function windingPolys(cfg, coil = buildCoil(cfg)) {
@@ -68,21 +69,30 @@ export function fieldAt(F, pointMM, current = 1, exclusionMM = 0) {
 export function fieldSlice(cfg, opt = {}) {
   const height = opt.height ?? 2;
   if (!(height > cfg.traceW / 2)) throw new Error('Probe height must exceed half the trace width.');
-  const n = Math.max(9, Math.min(61, opt.resolution || 31)), extent = cfg.dOuter * 0.65;
+  const n = Math.max(9, Math.min(61, opt.resolution || 31)), extent = (cfg.obstacleEnabled ? Math.max(cfg.areaWidth,cfg.areaHeight) : cfg.dOuter) * 0.65;
   const polys = windingPolys(cfg), phases = opt.motor ? cfg.phases : 1;
-  const groups = Array.from({ length: phases }, () => []);
-  const placements = opt.motor ? instances({ ...cfg, arrayEnabled: true }) : [{ phase: 0, angle: 0 }];
-  for (const it of placements) groups[it.phase].push(...transformPolys(polys, { rotation: it.angle * 180 / Math.PI }));
-  const filaments = groups.map((p) => toFilaments(p, 0.35, 8000));
-  const current = cfg.current / (cfg.connection === 'parallel' ? cfg.layers : 1)
-    / (opt.motor && !cfg.coilSeries ? cfg.coilCount / cfg.phases : 1);
+  const schedule = opt.motor ? windingPhasors(cfg) : null;
+  const placements = opt.motor ? instances({ ...cfg, arrayEnabled: true }) : [{ phase: 0, angle: 0, polarity: 1 }];
+  const groups = Array.from({length:phases},()=>[]);
+  for(const it of placements) {
+    const p=schedule?.phases[it.phase], branch=p?.branches.find(b=>b.coils.includes(it.index));
+    const weight=branch?p.resistanceFactor/branch.coils.length:1;
+    const shaped=polys.map(poly=>poly.map(([x,y,z])=>[x,y*(it.polarity||1),z]));
+    groups[it.phase].push({polys:transformPolys(shaped,{rotation:it.angle*180/Math.PI}),weight});
+  }
+  const current = cfg.current / (cfg.connection === 'parallel' ? cfg.layers : 1);
   const z = (cfg.layers > 1 ? cfg.boardT / 2 : 0) + height;
-  const maps = filaments.map((F) => {
-    const values = [];
-    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) values.push(fieldAt(F, [-extent + 2 * extent * i / (n - 1), -extent + 2 * extent * j / (n - 1), z], current, cfg.traceW / 2));
+  const maps = groups.map(group => {
+    const parts=group.map(g=>({F:toFilaments(g.polys,0.35,Math.max(256,Math.floor(8000/Math.max(1,group.length)))),weight:g.weight}));
+    const values=[];
+    for(let j=0;j<n;j++)for(let i=0;i<n;i++) {
+      const point=[-extent+2*extent*i/(n-1),-extent+2*extent*j/(n-1),z],value=[0,0,0];
+      for(const {F,weight}of parts) {const b=fieldAt(F,point,current*weight,cfg.traceW/2);for(let a=0;a<3;a++)value[a]+=b[a];}
+      values.push(value);
+    }
     return values;
   });
-  return { n, extent, z, maps, phases, current: cfg.current, polys: groups.flat() };
+  return { n, extent, z, maps, phases, phaseAngles:Array.from({length:phases},(_,p)=>phaseAngle(p,phases)), current: cfg.current, polys: groups.flatMap(g=>g.flatMap(p=>p.polys)) };
 }
 
 /** Axial field on the centerline of one uniformly magnetized cylindrical magnet

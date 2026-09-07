@@ -498,3 +498,16 @@ table.spec .dim { color: var(--text-mute); }
 .winding-actions { display: flex; flex-wrap: wrap; gap: 6px; grid-column: 1 / -1; }
 .winding-actions .btn { min-width: 30px; }
 .stack-error { font-size: 12px; }
+
+/* Winding assignments and editable board constraints. */
+.design-table { width:100%; border-collapse:collapse; font-size:12px; }
+.design-table th,.design-table td { padding:5px 3px; text-align:left; border-bottom:1px solid var(--line); }
+.design-table select,.design-table input { width:100%; min-width:0; padding:4px; }
+.design-table-scroll { max-height:330px; overflow:auto; margin:10px 0; }
+.winding-designer > label { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+.winding-designer > label select { min-width:0; flex:1; }
+.obstacle-map { display:block; width:100%; height:220px; border:1px solid var(--line); border-radius:5px; touch-action:none; cursor:crosshair; }
+.obstacle-card { border:1px solid var(--line); border-radius:5px; padding:8px; margin:10px 0; min-width:0; }
+.obstacle-card label { display:grid; gap:3px; font-size:11px; margin-bottom:7px; }
+.obstacle-card input,.obstacle-card textarea { width:100%; min-width:0; box-sizing:border-box; }
+.obstacle-fields { display:grid; grid-template-columns:1fr 1fr; gap:8px; }

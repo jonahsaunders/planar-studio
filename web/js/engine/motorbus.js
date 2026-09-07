@@ -3,6 +3,72 @@
    at the destination ring, so a spoke can cross other rings without a short.
    Broken phase arcs form series chains rather than shorting all coil ends. */
 import { artwork, track, via, pad, label, arcPts, TAU } from './artwork.js';
+import { windingPhasors } from './winding-design.js';
+
+/* One radial lane per series link makes arbitrary polarity and branch order
+   routable without joining a winding's two ends on a shared phase arc. */
+export function scheduledBus(cfg, coil, inst, names, opt = {}) {
+  const A = artwork({ name: 'scheduled star connection', kind: 'bus' });
+  const reject = text => { A.notes.push({ level: 'error', text: `${text} Star routing was omitted; individual coil terminals remain available.` }); return A; };
+  if (cfg.layers !== 2 || cfg.connection !== 'series' || coil.enclosed) return reject('Automatic star routing requires exactly two series copper layers with exterior terminals.');
+  if (cfg.spanDeg >= 360 / cfg.coilCount || !Number.isInteger(coil.spiral.turnsUsed)) return reject('Leave space between slots and use whole turns for scheduled routing.');
+  const winding = windingPhasors(cfg);
+  if (winding.phases.some(p => !p.branches.length)) return reject('Every phase needs at least one coil.');
+  if (winding.parallelMismatch) return reject('Parallel branches have unequal induced-voltage phasors. Put these coils in series or use compatible branches to avoid circulating current.');
+  const breakout = cfg.terminalBreakout ?? 'phase-neutral';
+  if (!['phase-neutral', 'phases', 'none'].includes(breakout)) throw new Error('Choose a supported terminal breakout.');
+  const seam = (cfg.terminalAngle ?? -90) * Math.PI / 180, net = opt.net || 'COIL';
+  const polar = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
+  const wrap = a => seam + ((a - seam) % TAU + TAU) % TAU;
+  const ends = inst.map(it => coil.terminals.map(([x, y]) => {
+    const r = Math.hypot(x, y), angle = wrap(Math.atan2(y * it.polarity, x) + it.angle);
+    return { r, angle, point: polar(r, angle) };
+  }));
+  const all = ends.flat().sort((a, b) => a.angle - b.angle);
+  for (let i = 0; i < all.length; i++) {
+    const a = all[i], b = all[(i + 1) % all.length];
+    if (2 * Math.min(a.r, b.r) * Math.sin(((b.angle - a.angle + TAU) % TAU) / 2) < Math.max(cfg.padSize, cfg.viaPad, cfg.traceW) + cfg.traceS - 1e-6)
+      return reject('Terminal pads or radial spokes lack clearance. Reduce pad size or increase stator diameter.');
+  }
+  const lane = Math.max(cfg.padSize, cfg.viaPad, cfg.traceW) + cfg.traceS + 0.3;
+  const r0 = Math.max(cfg.dOuter / 2, ...all.map(t => t.r)) + cfg.padSize / 2 + cfg.traceS + lane;
+  let nextLane = cfg.phases;
+  const spoke = (t, r, phase) => {
+    const point = polar(r, t.angle);
+    A.tracks.push(track(names[0], cfg.traceW, [t.point, point], { net, phase, role: 'scheduled-spoke' }));
+    A.vias.push(via(...point, { drill: cfg.viaDrill, diameter: cfg.viaPad, net, role: 'bus-drop' }));
+  };
+  const arc = (r, a, b, phase) => { if (b - a > 1e-9) A.tracks.push(track(names.at(-1), cfg.traceW, arcPts(0, 0, r, a, b, 0.01), { net, phase, role: 'scheduled-link' })); };
+  const terminal = (r, name) => {
+    const [x, y] = polar(r, seam);
+    A.pads.push(pad(x, y, { w: cfg.padSize, drill: cfg.padDrill, number: name, net }));
+    A.ports.push({ x, y, name, net }); A.labels.push(label(x, y - cfg.padSize, name, { size: 0.8 }));
+  };
+  const neutral = [], inputs = [];
+  for (const p of winding.phases) {
+    const first = [], r = r0 + p.phase * lane;
+    for (const branch of p.branches) {
+      const coils = branch.coils.slice().sort((a, b) => Math.min(...ends[a].map(t => t.angle)) - Math.min(...ends[b].map(t => t.angle)));
+      first.push(ends[coils[0]][0]); neutral.push({ t: ends[coils.at(-1)][1], phase: p.phase });
+      inputs.push(`${String.fromCharCode(65 + p.phase)} branch ${branch.branch}: C${coils[0] + 1}.1`);
+      for (let i = 1; i < coils.length; i++) {
+        const a = ends[coils[i - 1]][1], b = ends[coils[i]][0], radius = r0 + nextLane++ * lane;
+        spoke(a, radius, p.phase); spoke(b, radius, p.phase);
+        arc(radius, Math.min(a.angle, b.angle), Math.max(a.angle, b.angle), p.phase);
+      }
+    }
+    first.forEach(t => spoke(t, r, p.phase));
+    arc(r, breakout !== 'none' ? seam : Math.min(...first.map(t => t.angle)), Math.max(...first.map(t => t.angle)), p.phase);
+    if (breakout !== 'none') terminal(r, String.fromCharCode(65 + p.phase));
+  }
+  const rN = r0 + nextLane * lane;
+  neutral.forEach(({ t, phase }) => spoke(t, rN, phase));
+  arc(rN, breakout === 'phase-neutral' ? seam : Math.min(...neutral.map(e => e.t.angle)), Math.max(...neutral.map(e => e.t.angle)));
+  if (breakout === 'phase-neutral') terminal(rN, 'N');
+  A.meta.routed = true; A.meta.outerRadius = rN + cfg.padSize / 2;
+  A.notes.push({ level: 'info', text: `Scheduled star connection: ascending coil order within each branch; branches of a phase are parallel. ${inputs.join('; ')}. ${breakout === 'phase-neutral' ? 'Neutral N exposed.' : 'Neutral stays internal.'} Link lanes increase board diameter. Interconnect resistance and inter-coil mutual inductance are excluded.` });
+  return A;
+}
 
 export function starBus(cfg, coil, inst, names, opt = {}) {
   const A = artwork({ name: 'star connection', kind: 'bus' });
@@ -16,6 +82,7 @@ export function starBus(cfg, coil, inst, names, opt = {}) {
   if (cfg.layers !== 2 || cfg.connection !== 'series' || coil.enclosed) {
     return reject('Automatic star routing requires exactly two series copper layers with both terminals outside each coil.');
   }
+  if (cfg.motorGeometry && !cfg.coilSeries && windingPhasors(cfg).parallelMismatch) return reject('Parallel coils have unequal induced-voltage phasors. Use compatible poles or series wiring.');
   if (cfg.coilCount % cfg.phases) return reject('Use a coil count divisible by the phase count for a balanced star connection.');
   if (cfg.spanDeg >= 360 / cfg.coilCount) return reject('Leave clearance between adjacent coil slots by reducing the coil span.');
   if (cfg.turns < 1 || Math.abs(coil.spiral.turnsUsed - Math.round(coil.spiral.turnsUsed)) > 1e-6) return reject('Automatic star routing requires whole turns.');

@@ -152,6 +152,7 @@ export function openDesignTools(host, initial = 'optimize') {
   }
   function optimize() {
     if (!requireKind('inductor', 'The optimizer searches standalone coil geometry.')) return;
+    if(config().obstacleEnabled){body.append(note('Use Design around obstacles in the main parameter rail to size this winding. The diameter optimizer does not support constrained contours.'));return;}
     body.append(note('Search whole turns and diameter across three trace widths, three gaps, and your chosen layer counts. Candidates must fit including terminals, meet the inductance tolerance, and stay below self-resonance. This bounded search does not guarantee a global optimum.'));
     const c = config(), s = settings('optimize', { target: host.result()?.analysis?.L * 1e6 || 10, maxWidth: 30, maxHeight: 30, frequency: c.freq, minWidth: 0.2, maxTrace: 0.6, minGap: 0.15, maxGap: 0.35, layerList: `${c.layers}`, errorPct: 3, srfMargin: 3 });
     const f = form();
@@ -232,6 +233,7 @@ export function openDesignTools(host, initial = 'optimize') {
   }
   function coupling() {
     if (!requireKind('inductor', 'Use the inductor workspace as the transmitter, then design and position its receiver here.')) return;
+    if(config().obstacleEnabled){body.append(note('The receiver editor currently sizes standard coil shapes. Coupled obstacle-contour designs are not supported in this panel.'));return;}
     body.append(note('Air-core Neumann mutual inductance, including winding layers and series vias. Parallel layers assume equal current sharing. The voltage is the open-circuit sinusoidal receiver voltage; load, resonance, ferrite, and shielding are excluded. Drag the receiver in the top view to change offset.'));
     const c = config(), s = settings('coupling', { diameter: c.dOuter, turns: c.turns, layers: c.layers, traceW: c.traceW, traceS: c.traceS, boardT: c.boardT, x: 0, y: 0, z: 5, tilt: 0 });
     const f = form();
@@ -255,6 +257,7 @@ export function openDesignTools(host, initial = 'optimize') {
     body.append(button('Open receiver as inductor', () => { const rx = receiver(); host.apply(rx); close(); }));
   }
   function tolerance() {
+    if(config().obstacleEnabled){body.append(note('Fixed-copper tolerance studies are not yet supported for obstacle contours.'));return;}
     if (kind() === 'motor') { body.append(note('Tolerance studies operate on one winding or a distributed filter.'), button('Open inductor', () => { close(); host.switch('inductor', active); })); return; }
     if (kind() === 'filter' && !requireDistributed()) return;
     body.append(note('Independent uniform variations within ± limits, with a repeatable seed. Etch is total width change: centerlines stay fixed and gaps change oppositely. The curves show pointwise 5th–95th percentiles; yield is conditional on these tolerances and the model. Invalid samples count as failures.'));
@@ -295,7 +298,7 @@ export function openDesignTools(host, initial = 'optimize') {
       const maxB = Math.max(1e-12, ...r.maps[0].map((_, i) => r.maps.reduce((sum, map) => sum + Math.hypot(...map[i]), 0)));
       let vectors = [];
       function draw() {
-        vectors = r.maps[0].map((_, i) => [0, 1, 2].map((axis) => r.maps.reduce((sum, map, p) => sum + map[i][axis] * (r.phases > 1 ? Math.cos(phase - p * 2 * Math.PI / r.phases) : 1), 0)));
+        vectors = r.maps[0].map((_, i) => [0, 1, 2].map((axis) => r.maps.reduce((sum, map, p) => sum + map[i][axis] * (r.phases > 1 ? Math.cos(phase - (r.phaseAngles?.[p] ?? p * 2 * Math.PI / r.phases)) : 1), 0)));
         ctx.fillStyle = '#111823'; ctx.fillRect(0, 0, 640, 540);
         const cell = 480 / r.n;
         vectors.forEach((v, i) => {

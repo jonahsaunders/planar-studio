@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/loaded-stack-antennas.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
+    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/loaded-stack-antennas.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
@@ -21,7 +21,10 @@
     "test:families": "node tests/creator-families.mjs",
     "test:motor": "node tests/motor-layout.mjs && node tests/motor-families.mjs",
     "test:motor:dom": "node tests/motor-dom.mjs",
-    "shots:motor": "node tests/motor-shots.mjs"
+    "shots:motor": "node tests/motor-shots.mjs",
+    "test:design-layout": "node tests/winding-design.mjs && node tests/obstacles.mjs",
+    "test:design-layout:browser": "node tests/design-layout-browser.mjs",
+    "test:design-layout:dom": "node tests/design-layout-dom.mjs"
   },
   "license": "MIT",
   "repository": {

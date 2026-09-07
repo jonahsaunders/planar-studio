@@ -37,7 +37,7 @@ const KICAD_COLORS = ['#C83434', '#7FC64D', '#CC7FCC', '#4CC3BD', '#BC8455',
   '#A87A54', '#6E7FD6', '#5FB89B', '#4D7FC4'];
 
 function prepared(A, tol) {
-  if (!(tol > 0)) return A;
+  if (!(tol > 0) || A.meta.exactPaths) return A;
   return { ...A, tracks: A.tracks.map((t) => ({ ...t, pts: decimate(t.pts, tol) })) };
 }
 

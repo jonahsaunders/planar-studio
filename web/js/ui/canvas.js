@@ -215,6 +215,15 @@ export class Viewport {
     if (this.show.grid) this.drawGrid(ctx, W, H);
     if (this.art) {
       this.drawOutline(ctx);
+      if (this.art.obstacles) {
+        ctx.save();
+        for (const o of this.art.obstacles) {
+          ctx.beginPath();o.polygon.forEach(([x,y],i)=>{const p=this.toScreen(x,y);if(i)ctx.lineTo(...p);else ctx.moveTo(...p);});ctx.closePath();
+          ctx.fillStyle='rgba(193, 75, 102, 0.18)';ctx.strokeStyle='#c14b66';ctx.lineWidth=1;ctx.fill();ctx.stroke();
+          const p=this.toScreen(o.x,o.y);ctx.fillStyle='#c14b66';ctx.font='11px sans-serif';ctx.fillText(o.name,p[0]+5,p[1]-5);
+        }
+        ctx.restore();
+      }
       this.drawSurfacePads(ctx);
       this.drawCopper(ctx);
       if (this.show.vias) this.drawVias(ctx);

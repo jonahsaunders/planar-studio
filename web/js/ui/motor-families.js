@@ -1,6 +1,7 @@
 import { MOTOR_FAMILIES, familyOf, isTranslation } from '../engine/motorfamilies.js';
 import { substrateFields, processFields } from '../ws/common.js';
 import { el, eng, num } from './controls.js';
+import { windingDesigner } from './winding-design.js';
 const rotational=c=>['rotary','dual-rotor'].includes(familyOf(c));
 const stepper=c=>familyOf(c)==='stepper';
 const planar=c=>familyOf(c)==='planar';
@@ -15,6 +16,9 @@ export function familyRail(panel,app) {
     range('coilCount','Coils',3,48,1,null,rotational),range('phases','Phases',1,6,1,null,rotational),
     range('polePairs','Pole pairs',1,30,1,null,rotational),range('spanDeg','Coil span',3,120,0.5,'°',rotational),
     {key:'ringActions',type:'row',when:rotational,buttons:[{label:'Fill the ring',onClick:p=>{const c=p.state;const gap=2*Math.asin(Math.min(1,(c.traceW+c.traceS)/c.dInner))*180/Math.PI;app.set('spanDeg',Number(Math.max(2,360/c.coilCount-gap).toFixed(2)));}}]},
+  ]});
+  panel.group({key:'winding-designer',title:'Motor winding designer',when:rotational,fields:[
+    {key:'_motorWindingDesigner',type:'custom',when:rotational,build:p=>windingDesigner(p,app)},
   ]});
   panel.group({key:'stepper',title:'Stepper command',when:stepper,fields:[
     range('stepperPolePairs','Stepper pole pairs',1,6),range('stepperFill','Stepper slot fill',0.3,0.9,0.01),
@@ -36,7 +40,7 @@ export function familyRail(panel,app) {
     range('aspect','Oval aspect ratio',0.2,1,0.05,null,c=>(isTranslation(c)?c.cellShape:c.shape)==='racetrack'),
   ]});
   panel.group({key:'routing',title:'Connections',when:c=>!planar(c),fields:[
-    {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!stepper(c),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
+    {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!stepper(c)&&(!rotational(c)||c.windingMode!=='custom'),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
     {key:'busEnabled',type:'check',label:'Automatic phase interconnection',hint:'Rotary and linear families use star wiring. The stepper gets two isolated series phase circuits. Turn off to wire individual coils manually.'},
     {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>c.busEnabled,options:[
       {value:'phase-neutral',label:'Phase terminals + neutral (if applicable)'},{value:'phases',label:'Phase terminals only'},{value:'none',label:'No grouped terminals'}],
