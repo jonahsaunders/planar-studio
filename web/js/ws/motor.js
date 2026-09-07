@@ -15,8 +15,11 @@ import { buildCoil, analyse, motorAnalysis, motorCurve, sweep } from '../engine/
 import { buildArtwork, outlineFor, instances } from '../engine/coilgeom.js';
 import { bounds } from '../engine/artwork.js';
 import { eng, num } from '../ui/controls.js';
-import { chooseLayers, colourFor, substrateFields, processFields } from './common.js';
+import { chooseLayers, colourFor } from './common.js';
 import { defaults as inductorDefaults } from './inductor.js';
+import { familyDefaults, familyOf, familyLayout, familyAnalysis, dualRotorField, MOTOR_FAMILIES } from '../engine/motorfamilies.js';
+import { familyRail, extraTiles, extraSpec, extraCharts, motorPreview } from '../ui/motor-families.js';
+export const preview = motorPreview;
 
 export const id = 'motor';
 export const title = 'PCB motor';
@@ -24,6 +27,7 @@ export const title = 'PCB motor';
 export function defaults() {
   return {
     ...inductorDefaults(),
+    ...familyDefaults(),
     shape: 'wedge',
     motorGeometry: true,
     arrayEnabled: true,
@@ -53,101 +57,10 @@ export function defaults() {
    Rail
    ----------------------------------------------------------------------- */
 
-export function rail(panel, app) {
-  panel.group({
-    key: 'stator',
-    title: 'Stator ring',
-    fields: [
-      { key: 'shape', type: 'select', label: 'Coil shape', options: [
-        { value: 'wedge', label: 'Annular sector' },
-        { value: 'circle', label: 'Circular spiral' },
-        { value: 'racetrack', label: 'Racetrack / oval' },
-        { value: 'polygon', label: 'Polygon (square, hexagon…)' },
-      ], hint: 'Each coil fits inside its slot; diameter and bore still describe the complete stator.' },
-      { key: 'sides', type: 'range', label: 'Polygon sides', min: 4, max: 12, step: 2, when: c => c.shape === 'polygon' },
-      { key: 'aspect', type: 'range', label: 'Oval aspect ratio', min: 0.2, max: 1, step: 0.05, when: c => c.shape === 'racetrack' },
-      { key: 'dOuter', type: 'range', label: 'Outer diameter', unit: 'mm', min: 10, max: 300, step: 0.5, hardMin: 4 },
-      { key: 'dInner', type: 'range', label: 'Bore diameter', unit: 'mm', min: 2, max: 260, step: 0.5 },
-      {
-        key: 'coilCount', type: 'range', label: 'Coils', min: 3, max: 48, step: 1,
-        hint: 'Coils around the ring. Usually a multiple of the phase count.',
-      },
-      { key: 'phases', type: 'range', label: 'Phases', min: 1, max: 6, step: 1 },
-      {
-        key: 'polePairs', type: 'range', label: 'Pole pairs', min: 1, max: 30, step: 1,
-        hint: 'Rotor magnet pole pairs. Sets the electrical frequency and the winding factor.',
-      },
-      {
-        key: 'spanDeg', type: 'range', label: 'Coil span', unit: '°', min: 3, max: 120, step: 0.5,
-        hint: 'Mechanical span of one coil. 360/coils fills the ring exactly, minus clearance.',
-      },
-      {
-        type: 'row',
-        buttons: [
-          {
-            label: 'Fill the ring',
-            hint: 'Set the span so the coils just touch, with one clearance between them.',
-            onClick: (p) => {
-              const c = p.state;
-              const gapDeg = 2 * Math.asin(Math.min(1, (c.traceW + c.traceS) / c.dInner)) * 180 / Math.PI;
-              app.set('spanDeg', Number(Math.max(2, 360 / c.coilCount - gapDeg).toFixed(2)));
-            },
-          },
-          {
-            label: 'Max turns',
-            hint: 'Set the turn count to the most the selected coil will hold.',
-            onClick: () => app.setMaxTurns(),
-          },
-        ],
-      },
-      {
-        key: 'coilSeries', type: 'seg', label: 'Coils per phase',
-        options: [{ value: true, label: 'Series' }, { value: false, label: 'Parallel' }],
-      },
-      { key: 'busEnabled', type: 'check', label: 'Connect phases in star (wye)', hint: 'Join the winding ends at N. Turn off to leave individual coils for manual wiring. Requires two series copper layers.' },
-      { key: 'terminalBreakout', type: 'select', label: 'Terminal breakout', when: c => c.busEnabled,
-        options: [
-          { value: 'phase-neutral', label: 'Phase terminals + neutral (A/B/C/N)' },
-          { value: 'phases', label: 'Phase terminals only (A/B/C)' },
-          { value: 'none', label: 'No grouped terminals' },
-        ], hint: 'Hiding N keeps the star point connected internally. No grouped terminals keeps the interconnects but omits the extra pads and breakout tails; individual coil pads remain available.' },
-      { key: 'terminalAngle', type: 'range', label: 'Terminal position', unit: '°', min: -180, max: 180, step: 1,
-        when: c => c.busEnabled, hint: '−90° is bottom, 0° is right. Also sets the routing seam when no grouped terminals are drawn. Routing occupies an outer collar and keeps the bore clear.' },
-    ],
-  });
-
-  panel.group({
-    key: 'winding',
-    title: 'Winding',
-    fields: [
-      { key: 'turns', type: 'range', label: 'Turns per layer', min: 1, max: 60, step: 1 },
-      { key: 'layers', type: 'range', label: 'Copper layers', min: 1, max: 16, step: 1 },
-      {
-        key: 'connection', type: 'seg', label: 'Layer connection',
-        options: [{ value: 'series', label: 'Series' }, { value: 'parallel', label: 'Parallel' }],
-      },
-      { key: 'traceW', type: 'range', label: 'Track width', unit: 'mm', min: 0.075, max: 2, step: 0.005 },
-      { key: 'traceS', type: 'range', label: 'Clearance', unit: 'mm', min: 0.075, max: 2, step: 0.005 },
-      ...substrateFields(),
-    ],
-  });
-
-  panel.group({
-    key: 'machine',
-    title: 'Machine',
-    fields: [
-      {
-        key: 'bGap', type: 'range', label: 'Airgap flux density', unit: 'T', min: 0.05, max: 1.4, step: 0.01,
-        hint: 'Peak, at the copper. An input, not a solve — take it from your magnet grade and gap.',
-      },
-      { key: 'current', type: 'range', label: 'Phase current (peak)', unit: 'A', min: 0.1, max: 120, step: 0.1 },
-      { key: 'vdc', type: 'range', label: 'Bus voltage', unit: 'V', min: 3, max: 800, step: 1 },
-      { key: 'rpm', type: 'range', label: 'Speed', unit: 'rpm', min: 100, max: 40000, step: 50 },
-      { key: 'tempC', type: 'range', label: 'Winding temperature', unit: '°C', min: -40, max: 155, step: 1 },
-    ],
-  });
-
-  panel.group({ key: 'process', title: 'Process', open: false, fields: processFields() });
+export function rail(panel, app) { familyRail(panel, app); }
+// HTML selects emit strings; keep the step count numeric in saved configs.
+export function reconcile(cfg,key,value) {
+  if(key==='microsteps')cfg.microsteps=Number(value);
 }
 
 /* --------------------------------------------------------------------------
@@ -155,14 +68,21 @@ export function rail(panel, app) {
    ----------------------------------------------------------------------- */
 
 export function compute(cfg, env, opt = {}) {
+  const family=familyOf(cfg);
+  if(!MOTOR_FAMILIES.some(f=>f.value===family))throw new Error('Choose a supported motor family.');
   const layers = chooseLayers(cfg, env.board);
+  if(['stepper','linear','planar'].includes(family)) {
+    const res=familyLayout(cfg,layers,{name:env.name,net:env.net});
+    return opt.quick?res:familyAnalysis(res,opt);
+  }
+  const dual=family==='dual-rotor'?dualRotorField(cfg):null;
   if (!['wedge', 'circle', 'racetrack', 'polygon'].includes(cfg.shape)) throw new Error('Choose a supported motor coil shape.');
   if (!(cfg.dOuter > cfg.dInner && cfg.dInner > 0)) throw new Error('The bore must be positive and smaller than the outer diameter.');
   if (cfg.shape === 'polygon' && (!Number.isInteger(cfg.sides) || cfg.sides < 3 || cfg.sides > 12)) throw new Error('Choose three to twelve polygon sides.');
   if (![cfg.traceW, cfg.traceS, cfg.turns, cfg.spanDeg, cfg.viaDrill, cfg.padDrill].every(v => Number.isFinite(v) && v > 0)
     || !(cfg.viaPad > cfg.viaDrill && cfg.padSize > cfg.padDrill)) throw new Error('Use positive trace, turn and drill dimensions, with copper pads larger than their holes.');
   if (!Number.isInteger(cfg.coilCount) || cfg.coilCount < 3 || !Number.isInteger(cfg.phases) || cfg.phases < 1 || cfg.phases > 6) throw new Error('Use at least three coils and one to six whole phases.');
-  const full = { ...cfg, motorGeometry: true, arrayEnabled: true, layerNames: layers };
+  const full = { ...cfg, bGap:dual?dual.combined:cfg.bGap, motorGeometry: true, arrayEnabled: true, layerNames: layers };
   const coil = buildCoil(full);
   if (coil.spiral.maxTurns < 1) throw new Error('No complete turn fits. Enlarge the coil slot or reduce track width and clearance.');
   const art = buildArtwork(full, coil, {
@@ -172,7 +92,7 @@ export function compute(cfg, env, opt = {}) {
   });
   art.outline = outlineFor(full, coil, 2.5, art);
 
-  const res = { coil, art, layers, bounds: bounds(art), instances: instances(full).length };
+  const res = { coil, art, layers, bounds: bounds(art), instances: instances(full).length, family, dual, modelCfg:full };
   if (opt.quick) return res;
 
   const a = analyse(full, coil, { segmentCap: opt.segmentCap || 3000 });
@@ -185,6 +105,7 @@ export function compute(cfg, env, opt = {}) {
 }
 
 export function handles(cfg, res, app) {
+  if(['stepper','linear','planar'].includes(res.family))return [];
   const ro = cfg.dOuter / 2, ri = cfg.dInner / 2;
   const half = cfg.spanDeg * Math.PI / 360;
   return [
@@ -211,6 +132,7 @@ export function handles(cfg, res, app) {
    ----------------------------------------------------------------------- */
 
 export function tiles(cfg, res) {
+  const special=extraTiles(cfg,res);if(special)return special;
   const m = res.motor, a = res.analysis;
   if (!m || !a) return [];
   const effTone = m.eff > 0.85 ? 'good' : m.eff > 0.7 ? '' : 'warn';
@@ -227,12 +149,15 @@ export function tiles(cfg, res) {
 }
 
 export function spec(cfg, res) {
+  const special=extraSpec(cfg,res);if(special)return special;
+  cfg=res.modelCfg||cfg;
   const m = res.motor, a = res.analysis;
   if (!m) return [];
   return [
     {
-      title: 'Winding',
+      title: res.dual ? 'Dual-rotor winding' : 'Winding',
       rows: [
+        ...(res.dual ? [['Upper / lower field estimate', `${num(res.dual.top,3)} / ${num(res.dual.bottom,3)} T`], ['Combined field at copper midplane', `${num(res.dual.combined,3)} T`], ['Rotor face spacing', `${num(res.dual.discSpacing,2)} mm`], ['Total stack (excluding rotor back plates)', `${num(res.dual.stackHeight,2)} mm`]] : []),
         ['Coil shape', cfg.shape === 'polygon' ? `${cfg.sides}-sided polygon` : cfg.shape],
         ['Terminals', res.art.meta.starRouted ? `${res.art.ports.length} grouped terminals; star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
         ['Coils / phases / pole pairs', `${m.coilsTotal} / ${m.phases} / ${m.p}`],
@@ -285,6 +210,19 @@ export function spec(cfg, res) {
 
 export function notes(cfg, res) {
   const out = [...(res.art?.notes || [])];
+  if(res.familyAnalysis) {
+    if(!res.analysis.drc.turnsOK)out.push({level:'warn',text:`Only ${res.analysis.turns} of ${cfg.turns} requested turns fit. Use Max turns or enlarge the coil.`});
+    out.push({level:'info',text:res.familyAnalysis.limits});
+    if(res.family==='stepper')out.push({level:'info',text:'Microstep spacing is a command resolution, not guaranteed position accuracy. This air-core model predicts no unpowered holding torque.'});
+    if(res.family==='planar'&&res.familyAnalysis.peakCurrent>Math.max(Math.abs(cfg.current),Math.abs(cfg.currentY))+1e-8)out.push({level:'warn',text:'Combining X and Y commands increases some coil currents above either individual command. Size each driver for the reported peak coil current.'});
+    return out;
+  }
+  if(res.dual) {
+    out.push({level:'info',text:'Dual rotor: isolated-cylinder center fields are combined as spatial harmonics at the copper midplane. This is an estimate, not a solve of neighboring magnets, back iron, leakage, axial attraction or field variation through the PCB. The diagram is a side-view schematic.'});
+    if(res.dual.combined<0.01)out.push({level:'warn',text:'The two rotor fields nearly cancel. Change relative alignment or rotor gaps.'});
+    const radius=(cfg.dOuter+cfg.dInner)/4;
+    if(cfg.magnetDiameter>2*radius*Math.sin(Math.PI/(2*cfg.polePairs))||cfg.magnetDiameter>(cfg.dOuter-cfg.dInner)/2)out.push({level:'warn',text:'The chosen magnets overlap adjacent poles or extend outside the winding annulus. Reduce magnet diameter.'});
+  }
   const m = res.motor, a = res.analysis;
   if (!m || !a) return out;
   if (!a.drc.turnsOK) out.push({ level: 'warn', text: `Only ${a.turns.toFixed(0)} of ${cfg.turns} requested turns fit this coil shape. Use Max turns or enlarge the slot.` });
@@ -334,9 +272,12 @@ export function notes(cfg, res) {
 }
 
 export function charts(cfg, res) {
-  if (!res.curve || !res.curve.length) return [];
+  const special=extraCharts(cfg,res);if(special)return special;
+  const dualChart=res.dual?[{id:'rotor-alignment',title:'Combined field versus rotor alignment',note:'Isolated magnet amplitudes combined as harmonics; excludes neighboring magnets and back iron.',spec:{x:{values:res.dual.curve.map(p=>p.x),label:'Mechanical offset (°)'},y:{label:'T'},series:[{name:'Combined field',values:res.dual.curve.map(p=>p.y)}]}}]:[];
+  if (!res.curve || !res.curve.length) return dualChart;
   const rpm = res.curve.map((p) => p.rpm);
   return [
+    ...dualChart,
     {
       id: 'torque',
       title: `Torque and power at ${cfg.vdc} V`,
@@ -375,6 +316,10 @@ export function charts(cfg, res) {
 }
 
 export function status(cfg, res) {
+  if(['stepper','linear','planar'].includes(res.family)) {
+    const m=res.familyAnalysis;
+    return {algo:`${MOTOR_FAMILIES.find(f=>f.value===res.family).label} · ${res.instances} coils`,summary:!m?'solving…':m.kind==='stepper'?`Step ${num(m.commandStep,3)}° · holding ${num(m.holding*1000,2)} mN·m`:m.kind==='linear'?`Force ${num(m.force,4)} N`:`Fx ${num(m.fx,4)} N · Fy ${num(m.fy,4)} N`};
+  }
   const m = res.motor;
   return {
     algo: `${res.coil.spiral.algorithm.name} · ${res.instances} coils`,

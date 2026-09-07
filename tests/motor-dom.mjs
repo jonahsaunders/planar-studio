@@ -68,6 +68,65 @@ for (const kind of ['inductor', 'motor']) {
 }
 assert.equal(document.querySelector('select[aria-label="Coil shape"]').value, 'polygon');
 assert.equal(document.querySelector('input[aria-label="Polygon sides"]').value, '4');
-console.log('Motor controls, shape-specific fields, recomputation, save, export and routing errors passed.');
+const visible=(label)=>{
+  const n=document.querySelector(`[aria-label="${label}"]`);
+  if(!n)return false;
+  for(let p=n;p;p=p.parentElement)if(p.hidden||p.style.display==='none')return false;
+  return true;
+};
+for(const [family,label,param,value]of [
+  ['stepper','Holding torque estimate','Step command',3],
+  ['linear','Mover force','Mover X',5],
+  ['dual-rotor','Combined field at copper midplane','Upper rotor gap',2],
+  ['planar','Mover force X','Y drive current',1.5],
+]) {
+  await choose('Motor family',family);
+  assert.match(document.querySelector('#side').textContent,new RegExp(label));
+  assert.ok(document.querySelector(`svg[aria-label="${family} motor preview"]`));
+  assert.equal(visible('Speed'),family==='dual-rotor');
+  assert.equal(visible('Mover Y'),family==='planar');
+  assert.equal(visible('Coil shape'),family==='stepper'||family==='dual-rotor');
+  assert.equal(visible('Terminal breakout'),family!=='planar');
+  set(param,value);await new Promise(r=>setTimeout(r,220));await solved();
+  button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.motor:m1')).config.motorFamily===family);
+  const snapshot=JSON.parse(localStorage.getItem('planar.design.motor:m1'));
+  assert.equal(snapshot.config.motorFamily,family);
+  assert.equal(snapshot.config.terminalBreakout,'none');
+  await choose('Motor family','rotary');
+  api.loadDesign=async()=>snapshot;
+  button('Open…');await until(()=>document.querySelector('.export-card .t'));
+  document.querySelector('.export-card').click();await new Promise(r=>setTimeout(r,220));await solved();
+  assert.equal(document.querySelector('select[aria-label="Motor family"]').value,family);
+  assert.equal(Number(document.querySelector(`input[aria-label="${param}"]`).value),value);
+  document.querySelector('#btn-export').click();assert.equal(document.querySelectorAll('.export-card').length,6);button('Close');
+}
+await choose('Motor family','stepper');
+await choose('Microsteps per full step','16');
+const index=()=>Number(document.querySelector('input[aria-label="Step command"]').value);
+const initial=index();button('Animate steps');await until(()=>index()!==initial);await solved();
+button('Stop stepping');const stopped=index();await new Promise(r=>setTimeout(r,750));assert.equal(index(),stopped);
+button('Animate steps');document.querySelector('[data-ws="inductor"]').click();
+await new Promise(r=>setTimeout(r,750));await solved();
+document.querySelector('[data-ws="motor"]').click();await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(index(),stopped,'animation must not modify an inactive workspace');
+assert.ok([...document.querySelectorAll('button')].some(b=>b.textContent==='Animate steps'));
+await choose('Motor family','planar');
+set('Grid pitch',5);await until(()=>/overlap adjacent cells/.test(document.querySelector('#toasts').textContent));
+assert.equal(document.querySelector('#side .tile'),null,'invalid geometry must clear stale results');
+set('Grid pitch',20);await new Promise(r=>setTimeout(r,220));await solved();
+const {state}=await import('../web/js/bridge.js');
+let placements=0;api.place=async()=>{placements++;return {};};
+state.hasBoard=true;state.context={nets:[]};
+for(const family of ['planar','stepper']) {
+  await choose('Motor family',family);
+  const btn=document.querySelector('#btn-place');btn.disabled=false;btn.click();
+  await until(()=>/Create these nets in KiCad/.test(document.querySelector('#toasts').textContent));
+  assert.equal(placements,0,'missing independent nets must prevent placement');
+}
+state.hasBoard=false;state.context=null;
+await choose('Motor family','rotary');
+assert.equal(document.querySelector('select[aria-label="Coil shape"]').value,'polygon');
+assert.equal(document.querySelector('select[aria-label="Terminal breakout"]').value,'none');
+console.log('All motor families: controls, previews, step animation, save/load, exports, legacy settings and invalid-layout recovery passed.');
 await w.happyDOM.close();
 process.exit(0);

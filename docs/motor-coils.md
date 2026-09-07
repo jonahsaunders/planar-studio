@@ -1,5 +1,8 @@
 # Motor coils and star wiring
 
+This guide describes the rotary star winding. See [motor families](motor-families.md)
+for the stepper, linear, dual-rotor and two-axis planar options.
+
 ![Generated coil shapes with bottom star terminals](motor-shapes.png)
 
 The PCB motor workspace now offers annular-sector, circular, racetrack/oval,
@@ -14,7 +17,7 @@ Requested turns that do not fit are reported beside the results.
 
 1. Select **PCB motor** and a **Coil shape**.
 2. Use **two copper layers** with **Layer connection: Series**.
-3. Enable **Connect phases in star (wye)**.
+3. Enable **Automatic phase interconnection**.
 4. Choose **Series** or **Parallel** under **Coils per phase**.
 5. Choose a **Terminal breakout** (see below).
 6. Leave **Terminal position** at **−90°** for the bottom, or rotate it.
@@ -36,7 +39,7 @@ C1.1/C1.2, C2.1/C2.2, and so on.
 
 The default preserves the previous A/B/C/N layout, including older designs
 without this setting. No grouped terminals removes the extra pads and breakout
-tails, rather than merely hiding labels. Turn **Connect phases in star (wye)**
+tails, rather than merely hiding labels. Turn **Automatic phase interconnection**
 off as well when you want completely independent coils for your own routing.
 Individual coil pads remain available in every mode.
 With star routing enabled and no grouped terminals, use C1.1 for phase A,

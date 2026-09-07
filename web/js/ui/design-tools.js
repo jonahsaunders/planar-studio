@@ -281,6 +281,7 @@ export function openDesignTools(host, initial = 'optimize') {
     }));
   }
   function fieldTool() {
+    if(kind()==='motor' && ['stepper','linear','planar'].includes(config().motorFamily)) { body.append(note('This field-slice tool assumes a rotary polyphase ring. Use the selected family’s force/torque charts and drive preview; export its geometry for a full magnetic field solve.')); return; }
     if (kind() === 'filter') { body.append(note('The magnetic field tool needs a winding current path.'), button('Open inductor', () => { close(); host.switch('inductor', active); })); return; }
     body.append(note('Biot–Savart field above the upper copper plane, in free space. Motors combine the actual winding paths with sinusoidal phase currents; the phase buses, external return wiring, rotor magnets, and induced currents are excluded. The animation is slowed for inspection.'));
     const c = config(), s = settings('field', { height: 2, resolution: 31, component: 'Bz' }), f = form();
@@ -362,6 +363,7 @@ export function openDesignTools(host, initial = 'optimize') {
     }); runButton('Check placement', inspect);
   }
   function rotor() {
+    if(kind()==='motor' && config().motorFamily && config().motorFamily!=='rotary') { body.append(note('This tool designs a single rotary magnet ring. The selected motor family has its own geometry and drive/rotor preview in the main workspace.')); return; }
     if (!requireKind('motor', 'Design a rotor alongside a PCB motor stator. Magnet count follows twice the motor pole-pair count.')) return;
     body.append(note('Alternating axial N/S cylindrical magnets. The field estimate is the centerline field of one isolated, uniformly magnetized cylinder in free space. It excludes neighboring magnets, back iron, leakage, and the rotor field fundamental. Use a measured or external-solver peak air-gap field for motor performance.'));
     const c = config(), s = settings('rotor', { radius: (c.dOuter + c.dInner) / 4, diameter: 6, thickness: 3, gap: 1, br: 1.2, angle: 0, externalB: c.bGap });

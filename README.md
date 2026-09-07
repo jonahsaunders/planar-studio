@@ -1,7 +1,10 @@
 # Planar Studio
 
-Motor coil shapes and adjustable star terminals are now available. See the
-[motor guide](docs/motor-coils.md).
+The PCB motor workspace now includes two-phase steppers, linear motors,
+dual-rotor axial-flux configurations and two-axis planar grids alongside the
+original rotary motor. See the [motor families guide](docs/motor-families.md)
+for controls, wiring and model limits. [Coil shapes and adjustable terminal
+breakouts](docs/motor-coils.md) remain available.
 
 ## Layer setup, loaded transformers and antennas — 1.3.0 development
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## Four motor families (development)
+
+- Add two-phase PCB stepper geometry with isolated phase chains, full/microstep
+  commands, an animated equilibrium preview and static holding-torque estimates.
+- Add linear three-phase arrays with star routing, adjustable pole pitch, mover
+  position and force-versus-position plots.
+- Add dual-rotor gap, magnet and alignment controls with a schematic preview,
+  combined-field estimates and updated rotary readouts.
+- Add independently driven two-axis coil grids with signed per-coil currents,
+  X/Y force estimates, peak-current reporting and position sweeps.
+- Preserve original rotary designs, coil shapes and optional grouped terminals;
+  save/load and export family-specific geometry and specifications.
+- Check routing isolation, containment, model invariants, controls, animation,
+  persistence and invalid-layout recovery. New non-rotary windings require two
+  series copper layers; magnetic estimates are quasi-static approximations.
+  Rendered-browser, live KiCad and physical validation remain outstanding.
+
 ## Motor coil and star routing update (development)
 
 - Add selectable A/B/C/N, A/B/C-only and no-grouped-terminal breakout modes.
