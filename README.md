@@ -1,5 +1,20 @@
 # Planar Studio
 
+## Motor winding designer and obstacle-aware coils
+
+- **Motor winding designer:** assign each rotary/dual-rotor coil to a phase,
+  polarity and series branch; parallel branches connect at phase and neutral.
+  Automatic assignments, compatible pole-count suggestions and phasor previews
+  help expose cancellation. Torque and back-EMF now include signed distribution.
+- **Design around obstacles:** in Inductor, mark mounting-hole circles, connector
+  rectangles and forbidden polygons inside a board area. Generate continuous
+  contour windings in a remaining connected pocket, with trace/pad/via clearance
+  checks and saved editable constraints. Supports one layer, two series layers,
+  or up to sixteen parallel layers.
+
+See the [winding and obstacle guide](docs/winding-obstacles.md) for controls,
+models, export behavior, validation and scope.
+
 The PCB motor workspace now includes two-phase steppers, linear motors,
 dual-rotor axial-flux configurations and two-axis planar grids alongside the
 original rotary motor. See the [motor families guide](docs/motor-families.md)

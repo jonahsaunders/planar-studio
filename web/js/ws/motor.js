@@ -19,7 +19,13 @@ import { chooseLayers, colourFor } from './common.js';
 import { defaults as inductorDefaults } from './inductor.js';
 import { familyDefaults, familyOf, familyLayout, familyAnalysis, dualRotorField, MOTOR_FAMILIES } from '../engine/motorfamilies.js';
 import { familyRail, extraTiles, extraSpec, extraCharts, motorPreview } from '../ui/motor-families.js';
-export const preview = motorPreview;
+import { windingPreview } from '../ui/winding-design.js';
+export function preview(cfg, res, app) {
+  const winding = windingPreview(cfg, res);
+  const motion = motorPreview(cfg, res, app);
+  if (winding && motion) { winding.append(motion); return winding; }
+  return winding || motion;
+}
 
 export const id = 'motor';
 export const title = 'PCB motor';
@@ -50,6 +56,7 @@ export function defaults() {
     busEnabled: true,
     terminalAngle: -90,
     terminalBreakout: 'phase-neutral',
+    windingMode: 'repeat', windingSchedule: null,
   };
 }
 
@@ -161,10 +168,12 @@ export function spec(cfg, res) {
         ['Coil shape', cfg.shape === 'polygon' ? `${cfg.sides}-sided polygon` : cfg.shape],
         ['Terminals', res.art.meta.starRouted ? `${res.art.ports.length} grouped terminals; star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
         ['Coils / phases / pole pairs', `${m.coilsTotal} / ${m.phases} / ${m.p}`],
-        ['Coils per phase', `${num(m.coilsPerPhase, 2)} in ${cfg.coilSeries ? 'series' : 'parallel'}`],
+        ['Coils per phase (mean)', `${num(m.coilsPerPhase, 2)}; ${cfg.windingMode === 'custom' ? 'explicit branches below' : cfg.coilSeries ? 'series' : 'parallel'}`],
         ['Turns per coil', `${a.turns.toFixed(2)} × ${a.nL} layers`],
         ['Series turns per phase', num(m.Nseries, 1)],
         ['Winding factor kw', num(m.kw, 4)],
+        ['Distribution / pitch factors', `${num(m.winding?.kd ?? 1, 4)} / ${num(m.kp, 4)}`],
+        ...(m.winding ? m.winding.phases.map(p => [`Phase ${String.fromCharCode(65+p.phase)} branches`, p.branches.map(b => b.coils.map(i => `C${i+1}${m.winding.schedule[i].polarity<0?'−':'+'}`).join(' → ')).join(' ∥ ')]) : []),
         ['Coil span', `${num(m.alpha, 2)}°`],
         ['Conductor length per coil', `${num(a.lenTotal * 1e3, 0)} mm`],
         ['Copper mass, whole stator', `${num(a.cuMass * 1e3 * m.coilsTotal, 1)} g`],
@@ -172,7 +181,7 @@ export function spec(cfg, res) {
     },
     {
       title: 'Magnetics',
-      note: 'Sinusoidal PMSM model: Kt = 1.5·p·λ with λ = N·kw·Φ and Φ = (2/π)·B·A_pole.',
+      note: 'Sinusoidal model: Kt = (phases/2)·p·λ with λ = N·kw·Φ. kw includes signed phase distribution; scalar results describe balanced imposed currents and omit torque ripple.',
       rows: [
         ['Airgap flux density (peak)', `${num(cfg.bGap, 3)} T`],
         ['Pole area', `${num(m.Apole * 1e6, 1)} mm²`],
@@ -246,15 +255,11 @@ export function notes(cfg, res) {
     });
   }
   if (m.kw < 0.7) {
-    out.push({ level: 'warn', text: `Winding factor is ${m.kw.toFixed(2)}. The coil span and the pole pitch are badly matched — try a span near 180 electrical degrees.` });
+    out.push({ level: 'warn', text: `Winding factor is ${m.kw.toFixed(2)}. Check both the coil span and the phase/polarity assignments.` });
   }
-  const members = Math.ceil(cfg.coilCount / cfg.phases);
-  let re = 0, im = 0;
-  for (let i = 0; i < cfg.coilCount; i += cfg.phases) {
-    const a = 2 * Math.PI * i * cfg.polePairs / cfg.coilCount;
-    re += Math.cos(a); im += Math.sin(a);
-  }
-  if (Math.hypot(re, im) / members < 0.95) out.push({ level: 'warn', text: 'The repeated phase sequence does not align every same-phase coil with the rotor poles. Torque and back-EMF estimates omit this cancellation. Use a compatible slot/pole combination (for example 12 coils and 8 pole pairs), or design a custom winding schedule.' });
+  if (m.winding && !m.winding.balanced) out.push({ level: 'warn', text: 'The phase EMF magnitudes or resistances are unbalanced. Scalar motor results assume imposed balanced sinusoidal phase currents; inspect the winding phasors.' });
+  if (m.winding?.parallelMismatch) out.push({ level: 'error', text: 'Parallel branch EMFs differ. Automatic routing is omitted; scalar estimates exclude circulating-current loss. Use series wiring or compatible parallel branches.' });
+  if ((m.winding?.kd ?? 1) < 0.95) out.push({ level: 'warn', text: `Phase assignment and polarity give distribution factor ${num(m.winding.kd, 3)}. This cancellation is included in torque and back-EMF estimates. Try Automatic assignments or a suggested pole count.` });
   if (a.rise > 60) {
     out.push({ level: 'error', text: `IPC-2221 puts the rise at ${a.rise.toFixed(0)} K at ${cfg.current} A. A stator has no still air around it, so the real figure is worse.` });
   }
@@ -266,7 +271,7 @@ export function notes(cfg, res) {
   }
   out.push({
     level: 'info',
-    text: 'Coils use a repeating phase sequence with equal polarity. The motor model uses a pitch factor only; it does not solve the slot/pole distribution or optimize winding polarity. Verify the winding schedule for your rotor. Efficiency excludes iron, windage and inverter losses.',
+    text: 'Torque includes signed coil distribution and pitch factors, using the stronger forward/reverse sequence with balanced sinusoidal currents. Phase values assume identical coils and neglect inter-coil mutual inductance and parallel circulating currents. Efficiency excludes iron, windage and inverter losses.',
   });
   return out;
 }

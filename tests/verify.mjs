@@ -402,7 +402,8 @@ section('Stator arraying and the motor model');
   const cfg = baseCfg({
     shape: 'wedge', arrayEnabled: true, dOuter: 60, dInner: 26, spanDeg: 26,
     turns: 9, layers: 4, traceW: 0.3, traceS: 0.2, coilCount: 12, phases: 3,
-    polePairs: 7, bGap: 0.45, current: 6, rpm: 3000, vdc: 24,
+    // A compatible repeating schedule; cancellation is tested separately.
+    polePairs: 8, bGap: 0.45, current: 6, rpm: 3000, vdc: 24,
   });
   const coil = buildCoil(cfg);
   const a = analyse(cfg, coil, { segmentCap: 3000 });

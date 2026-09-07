@@ -10,7 +10,9 @@
 import { buildCoil, analyse, sweep, ALGORITHMS } from '../engine/coil.js';
 import { buildArtwork, outlineFor } from '../engine/coilgeom.js';
 import { bounds } from '../engine/artwork.js';
-import { eng, num } from '../ui/controls.js';
+import { el, eng, num } from '../ui/controls.js';
+import { obstacleDefaults } from '../engine/obstacles.js';
+import { obstacleEditor, obstacleHandles } from '../ui/obstacles.js';
 import {
   SHAPES, chooseLayers, colourFor, substrateFields, processFields, driveFields, fmtHz,
 } from './common.js';
@@ -20,6 +22,7 @@ export const title = 'Inductor';
 
 export function defaults() {
   return {
+    ...obstacleDefaults(),
     shape: 'circle',
     turns: 8,
     dOuter: 24,
@@ -59,9 +62,22 @@ export function defaults() {
    ----------------------------------------------------------------------- */
 
 export function rail(panel, app) {
+  panel.group({key:'obstacle-mode',title:'Design around obstacles',fields:[
+    {key:'obstacleEnabled',type:'check',label:'Generate in remaining board area',hint:'Uses the marked board area and obstacles instead of a standard coil shape.'},
+    ...[['areaWidth','Board-area width',5,500],['areaHeight','Board-area height',5,500],['areaClearance','Obstacle / edge clearance',0,20]].map(([key,label,min,max])=>({key,type:'number',label,min,max,step:0.1,unit:'mm',when:c=>c.obstacleEnabled})),
+    {key:'obstacleTurns',type:'custom',when:c=>c.obstacleEnabled,build:p=>{
+      const input=el('input',{type:'number',min:1,max:60,step:1,'aria-label':'Requested contour turns'});
+      input.addEventListener('change',()=>{if(input.value!=='')app.set('turns',Number(input.value));});
+      return {node:el('label',{},'Requested contour turns',input),set:()=>{input.value=String(p.state.turns);}};
+    }},
+    {key:'obstacleSeedAuto',type:'check',label:'Find winding center automatically',when:c=>c.obstacleEnabled},
+    ...[['obstacleSeedX','Winding center X'],['obstacleSeedY','Winding center Y']].map(([key,label])=>({key,type:'number',label,step:0.1,unit:'mm',when:c=>c.obstacleEnabled&&!c.obstacleSeedAuto})),
+    {key:'_obstacles',type:'custom',when:c=>c.obstacleEnabled,build:p=>obstacleEditor(p,app)},
+  ]});
   panel.group({
     key: 'shape',
     title: 'Winding',
+    when: c => !c.obstacleEnabled,
     fields: [
       { key: 'shape', type: 'shapes', options: SHAPES, optionHint: true },
       {
@@ -165,6 +181,7 @@ export function compute(cfg, env, opt = {}) {
    ----------------------------------------------------------------------- */
 
 export function handles(cfg, res, app) {
+  if(cfg.obstacleEnabled)return obstacleHandles(cfg,app);
   const out = [];
   const r = cfg.dOuter / 2;
   out.push({
@@ -255,7 +272,7 @@ export function spec(cfg, res) {
       title: 'Geometry',
       rows: [
         ['Algorithm', res.algorithm ? res.algorithm.name : '—'],
-        ['Turns used', `${a.turns.toFixed(3)} of ${c.spiral.maxTurns.toFixed(2)} possible`],
+        c.obstacleRegions ? ['Generated / requested contour turns', `${a.turns} / ${cfg.turns}`] : ['Turns used', `${a.turns.toFixed(3)} of ${c.spiral.maxTurns.toFixed(2)} possible`],
         ['Outer / inner (effective)', `${num(a.dOutEff, 2)} / ${num(a.dInEff, 2)} mm`],
         ['Track pitch', `${num(a.pitch, 3)} mm`],
         ['Conductor length', `${num(a.lenTotal * 1e3, 1)} mm total`],
@@ -316,6 +333,7 @@ export function notes(cfg, res) {
         + 'or an even layer count, which brings the chain back to where it started.',
     });
   }
+  if (c.obstacleRegions) out.push({level:'info',text:`Winding center: ${num(c.obstacleSeed[0],2)}, ${num(c.obstacleSeed[1],2)} mm. One connected pocket is used; this bounded search does not guarantee maximum area utilization.`});
   if (!a.drc.turnsOK) {
     out.push({ level: 'warn', text: `The geometry only fits ${a.drc.maxTurns.toFixed(2)} turns; the extra turns were dropped.` });
   }

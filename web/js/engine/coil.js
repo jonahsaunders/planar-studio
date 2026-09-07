@@ -9,6 +9,9 @@
    Geometry is carried in millimetres. Physics converts to SI at the boundary.
    ========================================================================= */
 
+import { buildObstacleCoil } from './obstacles.js';
+import { windingPhasors } from './winding-design.js';
+
 export const MU0      = 4e-7 * Math.PI;      // H/m
 export const EPS0     = 8.8541878128e-12;    // F/m
 export const RHO_CU20 = 1.724e-8;            // ohm-m at 20 C
@@ -465,6 +468,7 @@ export function layerNames(n) {
 
 /* Build the full multi-layer winding: geometry, vias, terminals. */
 export function buildCoil(cfg) {
+  if (cfg.obstacleEnabled && !cfg.motorGeometry && !cfg.arrayEnabled) return buildObstacleCoil(cfg);
   if (cfg.motorGeometry && cfg.shape !== 'wedge') return buildMotorCoil(cfg);
   const pitch = cfg.traceW + cfg.traceS;
   const g = {
@@ -839,7 +843,7 @@ export function analyse(cfg, coil, opts = {}) {
   const nL = cfg.layers;
   const series = cfg.connection === 'series';
   const tCu = cfg.copperOz * OZ_MM;                 // mm
-  const w = cfg.traceW, s = cfg.traceS, pitch = w + s;
+  const w = cfg.traceW, s = cfg.traceS, pitch = coil.obstacleRegions ? coil.pitch : w + s;
   const rho = RHO_CU20 * (1 + ALPHA_CU * (cfg.tempC - 20));
 
   /* ---- geometry-derived scalars ---- */
@@ -901,8 +905,8 @@ export function analyse(cfg, coil, opts = {}) {
   }
 
   const dOutEff = coil.dOutFlat * 1e-3, dInEff = coil.dInFlat * 1e-3;
-  const Lcs = currentSheetL(cfg.shape, cfg.sides, turns, dOutEff, dInEff);
-  const Lwh = wheelerL(cfg.shape, cfg.sides, turns, dOutEff, dInEff);
+  const Lcs = coil.obstacleRegions ? null : currentSheetL(cfg.shape, cfg.sides, turns, dOutEff, dInEff);
+  const Lwh = coil.obstacleRegions ? null : wheelerL(cfg.shape, cfg.sides, turns, dOutEff, dInEff);
   const Lsingle = Fone != null ? Fone : Lnum;
 
   /* ---- resistance ---- */
@@ -949,7 +953,7 @@ export function analyse(cfg, coil, opts = {}) {
   const Ploss = Iop * Iop * Rac;
 
   /* ---- fill / DRC ---- */
-  const boardArea = Math.PI * Math.pow(coil.outerR * 1e-3, 2);
+  const boardArea = coil.obstacleRegions ? cfg.areaWidth * cfg.areaHeight * 1e-6 : Math.PI * Math.pow(coil.outerR * 1e-3, 2);
   const cuAreaPlan = w * 1e-3 * lenLayer;
   const fill = cuAreaPlan / boardArea;
   const drc = {
@@ -1027,6 +1031,7 @@ export function sweep(cfg, a, f0, f1, n) {
    The result is a coil you would have drawn by hand: n whole turns, sized to
    fit.                                                                       */
 export function solveCoilForL(cfg, targetL, opts = {}) {
+  if(cfg.obstacleEnabled)throw new Error('Target-inductance sizing is not available for obstacle windings. Adjust the contour turn count and board area.');
   const tol = opts.tol || 0.005;
   const dMax = opts.dMax || cfg.dOuter;
   const dMin = opts.dMin || Math.max(dMax * 0.25, (cfg.traceW + cfg.traceS) * 6);
@@ -1112,29 +1117,32 @@ export function motorAnalysis(cfg, coil, a) {
   const rOa = rO, rIa = arrayed ? cfg.dInner / 2e3 : rI;
 
   const alpha = (arrayed ? cfg.spanDeg : 360 / Math.max(coilsTotal, 2 * p)) * Math.PI / 180;
-  const kp = Math.abs(Math.sin(clamp(p * alpha / 2, -Math.PI * 1.5, Math.PI * 1.5)));
-  const kw = clamp(kp, 0.05, 1);
+  const kp = Math.abs(Math.sin(p * alpha / 2));
+  const winding = arrayed ? windingPhasors(cfg) : null;
+  const kw = kp * (winding?.kd ?? 1);
 
   const Apole = Math.PI * (rOa * rOa - rIa * rIa) / (2 * p);
   const Bpk = cfg.bGap;
   const flux = (2 / Math.PI) * Bpk * Apole;                 // Wb per pole, sinusoidal
 
-  const seriesCoils = cfg.coilSeries ? coilsPerPhase : 1;
+  const seriesCoils = winding?.effectiveTurns ?? (cfg.coilSeries ? coilsPerPhase : 1);
   const Nseries = a.turns * (a.series ? a.nL : 1) * seriesCoils;
   const lambda = Nseries * kw * flux;                       // Wb-turn per phase
 
-  const Kt = 1.5 * p * lambda;                              // N.m per A(peak)
+  const driveFactor = phases / 2;
+  const Kt = driveFactor * p * lambda;                              // N.m per A(peak)
   const KeMech = p * lambda;                                // V per (rad/s), peak LN
   const Kv = KeMech > 0 ? 60 / (TAU * KeMech) : Infinity;   // rpm/V
 
   const RphaseCoil = a.Rdc;
-  const Rphase = cfg.coilSeries ? RphaseCoil * coilsPerPhase : RphaseCoil / coilsPerPhase;
-  const Lphase = cfg.coilSeries ? a.L * coilsPerPhase : a.L / coilsPerPhase;
+  const resistanceFactor = winding ? winding.phases.reduce((s, p) => s + p.resistanceFactor, 0) / phases : (cfg.coilSeries ? coilsPerPhase : 1 / coilsPerPhase);
+  const Rphase = RphaseCoil * resistanceFactor;
+  const Lphase = a.L * resistanceFactor;
 
   const Ipk = cfg.current;
   const torque = Kt * Ipk;
-  const Pcu = 1.5 * Ipk * Ipk * Rphase;
-  const km = Kt / Math.sqrt(1.5 * Rphase);                  // N.m per sqrt(W)
+  const Pcu = driveFactor * Ipk * Ipk * Rphase;
+  const km = Kt / Math.sqrt(driveFactor * Rphase);                  // N.m per sqrt(W)
   const rpm = cfg.rpm;
   const fElec = p * rpm / 60;
   const omega = TAU * rpm / 60;
@@ -1149,7 +1157,7 @@ export function motorAnalysis(cfg, coil, a) {
   const stall = KeMech > 0 ? Kt * (Vdc / Math.SQRT2) / Rphase : 0;
 
   return {
-    p, phases, coilsTotal, coilsPerPhase, kw, alpha: alpha * 180 / Math.PI,
+    p, phases, coilsTotal, coilsPerPhase, winding, kp, driveFactor, kw, alpha: alpha * 180 / Math.PI,
     Apole, flux, Nseries, lambda, Kt, KeMech, Kv, Rphase, Lphase,
     torque, Pcu, km, fElec, Pmech, eff, Vbemf, tauE, noLoad, stall,
     srfMargin: a.srf / Math.max(fElec, 1e-9),
@@ -1167,7 +1175,7 @@ export function motorCurve(m, n = 64) {
     const omega = TAU * rpm / 60;
     const Pmech = torque * omega;
     const I = m.Kt > 0 ? torque / m.Kt : 0;
-    const Pcu = 1.5 * I * I * m.Rphase;
+    const Pcu = (m.driveFactor ?? 1.5) * I * I * m.Rphase;
     out.push({ rpm, torque, Pmech, Pcu, eff: Pmech + Pcu > 0 ? Pmech / (Pmech + Pcu) : 0 });
   }
   return out;

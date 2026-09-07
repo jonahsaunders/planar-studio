@@ -110,13 +110,14 @@ match the artwork.
 - The existing multilayer coil engine/export path does not provide an isolated
   blind/buried-via topology for automatically connecting more than two series
   layers. This change does not claim to solve that limitation.
-- Coils use a repeated phase sequence with equal winding polarity. This is not
-  an automatic slot/pole winding-schedule optimizer. The workspace warns when
-  the same-phase coil phasors do not align with the selected rotor pole count.
+- The motor winding designer supports repeating, automatic, and custom phase,
+  polarity, and branch assignments for rotary and dual-rotor stators. See the
+  [winding and obstacle guide](winding-obstacles.md). Saved older designs retain
+  their repeating assignments; their readouts now include distribution cancellation.
 - Numerical coil inductance and DC resistance use the chosen geometry. Motor
-  torque/back-EMF still use the original annular-sector flux and pitch-only
-  model: they omit distribution cancellation and are not a reliable ranking of
-  circular versus sector performance. Use field simulation and measurements.
+  torque/back-EMF combine the signed coil distribution with the annular-sector
+  flux and pitch approximation. This remains an approximate comparison of
+  circular versus sector performance; use field simulation and measurements.
 - Interconnect resistance, interconnect inductance, inter-coil mutual coupling,
   iron loss, windage and inverter losses are not included in the motor estimates.
 

@@ -12,6 +12,7 @@ const linspace = (a, b, n) => Array.from({ length: n }, (_, i) => a + (b - a) * 
 const unique = (xs) => [...new Set(xs)];
 
 export function optimizeCoil(cfg, opt, progress = () => {}) {
+  if(cfg.obstacleEnabled)throw new Error('Use the obstacle editor to size this winding; the diameter optimizer does not support constrained contours.');
   for (const key of ['targetL', 'maxWidth', 'maxHeight', 'frequency', 'minWidth', 'maxTrace', 'minGap', 'maxGap']) positive(opt[key], key);
   if (opt.minWidth > opt.maxTrace || opt.minGap > opt.maxGap) throw new Error('Minimum exceeds maximum.');
   const layers = unique(opt.layers.map(Number));
@@ -90,6 +91,7 @@ export function maskScore(curve, mask) {
 }
 
 export function toleranceStudy(kind, cfg, opt, progress = () => {}) {
+  if(cfg.obstacleEnabled)throw new Error('Fixed-copper tolerance studies are not yet supported for obstacle contours.');
   const samples = Math.round(opt.samples || 50);
   if (samples < 2 || samples > 500) throw new Error('Choose 2–500 samples.');
   for (const [key, value] of Object.entries(opt.ranges)) if (!Number.isFinite(value) || value < 0 || (key !== 'etch' && value >= 100)) throw new Error('Tolerances must be nonnegative and relative tolerances below 100%.');

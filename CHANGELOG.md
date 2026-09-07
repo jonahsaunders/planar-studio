@@ -1,5 +1,17 @@
 # Changelog
 
+## Winding designer and obstacle-aware coils — development
+
+- Add rotary/dual-rotor phase, polarity and series/parallel branch assignments,
+  automatic schedules, compatible pole suggestions, and a phasor visualization.
+- Route arbitrary schedules with independent link lanes; reject mismatched
+  parallel EMFs. Include signed distribution cancellation in motor estimates.
+- Add an Inductor board-area editor for mounting holes, connectors and forbidden
+  polygons; generate and check continuous contour windings in a free pocket.
+- Preserve constraints, assignments and exact checked copper in saved designs
+  and exports. Add geometry, circuit, interaction and browser regression suites.
+
+
 ## Four motor families (development)
 
 - Add two-phase PCB stepper geometry with isolated phase chains, full/microstep
