@@ -1,6 +1,8 @@
 # Antenna and Transformer creators
 
-Available in the 1.1.0 development build. Select **Antenna** (shortcut 4) or
+The original creators described here were introduced in 1.1.0.
+See [the 1.2 family guide](creator-families.md) for additional antenna types,
+multilayer/tapped/multi-secondary windings and the ferrite model. Select **Antenna** (shortcut 4) or
 **Transformer** (shortcut 5). The parameter rail, design name, saved designs,
 JSON import, exports and layer visibility work like the existing workspaces.
 Invalid geometry clears the result; placement/export recomputes the current inputs.

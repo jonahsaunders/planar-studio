@@ -59,8 +59,49 @@ try {
     await page.getByRole('tab', { name, exact: true }).click(); await solved();
   }
   assert.equal(Number(await page.getByLabel('Length tuning', { exact: true }).inputValue()), 1.1);
+  // New families run through real selectors and the backend save/export path.
+  const choose = async (name, value) => {
+    await page.getByLabel(name, { exact: true }).selectOption(value);
+    await page.waitForTimeout(220); await solved();
+  };
+  const saveAndExport = async (kind, family) => {
+    await page.getByRole('button', { name: 'Save', exact: true }).click();
+    await page.locator('#btn-export').click();
+    await page.locator('.export-card').filter({ hasText: 'Design JSON' }).click();
+    const filename = kind === 'antenna' ? 'ANT1' : 'T1';
+    const target = path.join(stateDir, 'exports', `${filename}.json`);
+    await page.waitForFunction(n => document.querySelector('#toasts').textContent.includes(`Wrote ${n}.json`), filename);
+    // The toast can survive a previous export; poll the actual output revision.
+    const deadline = Date.now() + 5000;
+    while ((!fs.existsSync(target) || JSON.parse(fs.readFileSync(target, 'utf8')).config.family !== family) && Date.now() < deadline) await page.waitForTimeout(20);
+    assert.equal(JSON.parse(fs.readFileSync(target, 'utf8')).config.family, family);
+    await page.screenshot({ path: path.join(root, 'dist', `${kind}-${family}.png`) });
+  };
+  await page.getByText('Designs', { exact: true }).click();
+  for (const family of ['inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+    await choose('Antenna type', family);
+    assert.ok(!/undefined|NaN/.test(await page.locator('#side').textContent()));
+    if (family === 'nfc') {
+      assert.ok(await page.getByLabel('Loop turns', { exact: true }).isVisible());
+      await page.getByRole('button', { name: 'Size loop to target inductance' }).click(); await page.waitForTimeout(220); await solved();
+    }
+    if (family === 'patch-array') assert.equal(await page.locator('#side canvas').count(), 1);
+    await saveAndExport('antenna', family);
+  }
+  await page.getByRole('tab', { name: 'Transformer', exact: true }).click(); await solved();
+  await page.getByText('Designs', { exact: true }).click();
+  for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
+    await choose('Transformer type', family);
+    if (family === 'center-tapped') assert.match(await page.locator('#side').textContent(), /S_CT/);
+    if (family === 'ferrite') {
+      await choose('Core material', '3C95');
+      assert.match(await page.locator('#side').textContent(), /Ferroxcube 3C95/);
+      await choose('Core post shape', 'round');
+    }
+    await saveAndExport('transformer', family);
+  }
   await page.setViewportSize({ width: 1100, height: 800 });
   assert.ok(await page.locator('#btn-place').evaluate(e => e.getBoundingClientRect().right <= innerWidth), 'Toolbar must fit at 1100px');
   assert.deepEqual(errors, []);
-  console.log('Creator browser flows passed: five workspaces, edits, saves, exports, invalid state and tool guards.');
+  console.log('Creator browser flows passed: five workspaces, edits, saves, exports, invalid state, tool guards and all antenna/transformer families.');
 } finally { await browser?.close(); proc.kill(); fs.rmSync(stateDir, { recursive: true, force: true }); }

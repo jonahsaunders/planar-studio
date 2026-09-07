@@ -1,8 +1,8 @@
 {
   "$schema": "https://go.kicad.org/pcm/schemas/v1",
   "name": "Planar Studio",
-  "description": "Create planar inductors, PCB motors, filters, patch antennas and air-core transformers in KiCad.",
-  "description_full": "Planar Studio designs the copper structures that have no footprint to drop in: spiral and sector inductors, axial-flux motor stators, and filters from lumped LC ladders to hairpin and interdigital microstrip.\n\nIt opens as its own window beside KiCad and talks to the running instance over the IPC API. It reads the open board's stack-up, so layer count, thickness, dielectric constant and copper weight are the board's real numbers rather than assumptions; and it writes real tracks, arcs and vias into that board inside a single commit, so one Ctrl+Z removes a four-thousand-segment winding.\n\nThe electromagnetics are numerical, not curve-fitted. Inductance is a partial-inductance sum over the discretised three-dimensional filament path, validated against closed-form and elliptic-integral references. Filter responses are computed from the geometry that would actually be placed, including a spiral's measured Q and a capacitor's parasitics, and are plotted beside the ideal prototype so the cost of realising the network in copper is visible rather than hidden.\n\nAntenna and Transformer workspaces generate edge-fed rectangular patches and isolated air-core windings. Antenna dimensions use a transmission-line approximation; transformer coupling uses the numerical partial-inductance solver. Surface copper pads retain their layer in previews, exports and IPC placement.",
+  "description": "Create planar inductors, PCB motors, filters, antenna families and planar transformers in KiCad.",
+  "description_full": "Planar Studio designs the copper structures that have no footprint to drop in: spiral and sector inductors, axial-flux motor stators, and filters from lumped LC ladders to hairpin and interdigital microstrip.\n\nIt opens as its own window beside KiCad and talks to the running instance over the IPC API. It reads the open board's stack-up, so layer count, thickness, dielectric constant and copper weight are the board's real numbers rather than assumptions; and it writes real tracks, arcs and vias into that board inside a single commit, so one Ctrl+Z removes a four-thousand-segment winding.\n\nThe electromagnetics are numerical, not curve-fitted. Inductance is a partial-inductance sum over the discretised three-dimensional filament path, validated against closed-form and elliptic-integral references. Filter responses are computed from the geometry that would actually be placed, including a spiral's measured Q and a capacitor's parasitics, and are plotted beside the ideal prototype so the cost of realising the network in copper is visible rather than hidden.\n\nAntenna and Transformer workspaces generate edge-fed rectangular patches and isolated air-core windings. Antenna dimensions use a transmission-line approximation; transformer coupling uses the numerical partial-inductance solver. Surface copper pads retain their layer in previews, exports and IPC placement.\n\nVersion 1.2 adds inset patches, dipoles, inverted-F variants, NFC loops and patch arrays; multilayer, tapped, multi-secondary and interleaved windings; and a ferrite magnetic-circuit model with core-post cutouts. Each family identifies its supported estimates and validation limits.",
   "identifier": "com.jonahsaunders.planarstudio",
   "type": "plugin",
   "author": {
@@ -30,7 +30,7 @@
   ],
   "versions": [
     {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "status": "development",
       "kicad_version": "9.0",
       "platforms": [

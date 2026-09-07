@@ -36,6 +36,41 @@ document.querySelector('#btn-export').click(); assert.equal(document.querySelect
 set('Primary turns', 6); await solved();
 for (const kind of ['inductor', 'motor', 'filter', 'antenna']) { document.querySelector(`[data-ws="${kind}"]`).click(); await new Promise(r => setTimeout(r, 200)); await solved(); }
 assert.equal(Number(document.querySelector('[aria-label="Length tuning"]').value), 1.1);
-console.log('Whole-app creator DOM flows passed: tabs, edits, saved configs, export dialogs, tools and invalid-state recovery. Canvas/layout not tested.');
+// Exercise every family through the real panel/reconcile/save pipeline.
+const choose = async (label, value) => {
+  const select = document.querySelector(`select[aria-label="${label}"]`);
+  assert.ok(select, label); select.value = value; select.dispatchEvent(new w.Event('change', { bubbles: true }));
+  await new Promise(r => setTimeout(r, 220)); await solved();
+};
+for (const family of ['inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+  await choose('Antenna type', family);
+  assert.equal(document.querySelector('[data-key="nfc"]').hidden, family !== 'nfc');
+  assert.equal(document.querySelector('[data-key="array"]').hidden, family !== 'patch-array');
+  button('Save');
+  await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.family === family);
+  assert.ok(!/undefined|NaN/.test(document.querySelector('#side').textContent));
+  if (family === 'nfc') {
+    const before = Number(document.querySelector('[aria-label="Loop outer diameter"]').value);
+    button('Size loop to target inductance'); await new Promise(r => setTimeout(r, 220)); await solved();
+    assert.notEqual(Number(document.querySelector('[aria-label="Loop outer diameter"]').value), before);
+  }
+}
+document.querySelector('[data-ws="transformer"]').click(); await solved();
+for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
+  await choose('Transformer type', family);
+  assert.equal(document.querySelector('[data-key="core"]').hidden, family !== 'ferrite');
+  button('Save');
+  await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.family === family);
+  if (family === 'center-tapped') assert.match(document.querySelector('#side').textContent, /S_CT/);
+  if (family === 'ferrite') {
+    await choose('Core material', 'N87');
+    assert.match(document.querySelector('#side').textContent, /TDK N87/);
+    set('Core post width / diameter', 100);
+    await until(() => document.querySelector('#st-algo').textContent === 'geometry failed');
+    assert.equal(document.querySelectorAll('#side .tile').length, 0);
+    set('Core post width / diameter', 6); await new Promise(r => setTimeout(r, 220)); await solved();
+  }
+}
+console.log('Whole-app creator DOM flows passed: tabs, edits, saved configs, export dialogs, tools, all antenna/transformer families, target sizing, core materials and invalid-state recovery. Canvas/layout not tested.');
 await w.happyDOM.abort();
 process.exit(0);

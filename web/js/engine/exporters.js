@@ -107,15 +107,20 @@ export function exportKicadMod(A, opt = {}) {
 
 export function exportKicadPcb(A, opt = {}) {
   const art = prepared(A, opt.tolerance);
-  const layers = usedLayers(art);
+  // A PCB needs a complete, even copper stack, including unused inner layers.
+  // Sparse transformer assignments must retain their actual KiCad layer IDs.
+  const touched = [...usedLayers(art), ...(art.meta.boardLayers || [])];
+  const inner = Math.max(0, ...touched.filter(n => /^In\d+\.Cu$/.test(n)).map(n => Number(n.match(/\d+/)[0])));
+  const count = Math.max(2, inner + 2 + inner % 2);
+  const layers = ['F.Cu', ...Array.from({ length: count - 2 }, (_, i) => `In${i + 1}.Cu`), 'B.Cu'];
   const L = [];
 
   L.push(`(kicad_pcb (version 20221018) (generator "planar-studio")`);
   L.push(`  (general (thickness ${f3(opt.boardThickness || 1.6)}))`);
   L.push(`  (paper "A4")`);
   L.push(`  (layers`);
-  layers.forEach((n, i) => {
-    const num = n === 'F.Cu' ? 0 : n === 'B.Cu' ? 31 : i;
+  layers.forEach((n) => {
+    const num = n === 'F.Cu' ? 0 : n === 'B.Cu' ? 31 : Number(n.match(/\d+/)[0]);
     L.push(`    (${num} "${n}" signal)`);
   });
   for (const t of TECH_LAYERS) L.push(`    (${t[0]} "${t[1]}" ${t[2]}${t[3] ? ` "${t[3]}"` : ''})`);

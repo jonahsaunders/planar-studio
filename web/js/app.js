@@ -198,6 +198,7 @@ const api = {
 function reconcile(key, value) {
   const ws = current();
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
+  if (key === 'family' && ['antenna', 'transformer'].includes(app.ws)) app.fitPending = true;
 }
 
 function renderRail() {
