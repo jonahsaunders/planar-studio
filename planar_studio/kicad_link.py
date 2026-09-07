@@ -316,6 +316,18 @@ class KiCadLink:
 
         return ctx
 
+    def board_snapshot(self) -> Dict[str, Any]:
+        """Serialize live, including unsaved, board state without saving it."""
+        with self._lock:
+            board = self._board()
+            try:
+                text = board.get_as_string()
+            except Exception as exc:
+                raise LinkError("This KiCad API cannot serialize the board. Import a saved .kicad_pcb in Board checks instead.") from exc
+            if not isinstance(text, str) or len(text) > 40_000_000:
+                raise LinkError("The board snapshot is unavailable or exceeds 40 MB.")
+            return {"name": str(getattr(board, "name", "") or ""), "text": text, "source": "live"}
+
     # ------------------------------------------------------------------ nets
 
     def resolve_net(self, name: Optional[str]) -> Any:

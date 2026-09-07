@@ -71,7 +71,7 @@ try {
     st.result.error.slice(0, 60));
 
   // --- board methods with no board -------------------------------------
-  for (const m of ['board.context', 'board.place', 'board.unplace', 'board.select']) {
+  for (const m of ['board.context', 'board.snapshot', 'board.place', 'board.unplace', 'board.select']) {
     const r = await rpc(m, { placement: { name: 'x', tracks: [] }, designId: 'x' });
     check(`${m} fails politely with no KiCad`,
       r.ok === false && ['nolink', 'empty'].includes(r.kind) && !/Traceback/.test(r.error || ''),

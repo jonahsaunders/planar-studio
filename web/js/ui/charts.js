@@ -83,6 +83,8 @@ export class LineChart {
 
   setSpec(spec) { this.spec = spec; this.draw(); }
 
+  destroy() { this._observer?.disconnect(); cancelAnimationFrame(this._raf); this._raf = 0; }
+
   _bind() {
     const c = this.canvas;
     c.addEventListener('pointermove', (e) => {
@@ -92,7 +94,7 @@ export class LineChart {
       if (idx !== this.hoverIndex) { this.hoverIndex = idx; this.draw(); }
     });
     c.addEventListener('pointerleave', () => { this.hoverIndex = -1; this.draw(); });
-    const ro = new ResizeObserver(() => this.draw());
+    const ro = this._observer = new ResizeObserver(() => this.draw());
     ro.observe(c);
   }
 
@@ -106,8 +108,11 @@ export class LineChart {
     const box = this._plotBox(W, this.canvas.getBoundingClientRect().height);
     const t = (px - box.l) / box.w;
     if (t < -0.02 || t > 1.02) return -1;
-    const n = x.values.length;
-    return Math.max(0, Math.min(n - 1, Math.round(t * (n - 1))));
+    const xs = x.values;
+    const target = x.log ? xs[0] * (xs.at(-1) / xs[0]) ** t : xs[0] + (xs.at(-1) - xs[0]) * t;
+    let lo = 0, hi = xs.length - 1;
+    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (xs[m] < target) lo = m; else hi = m; }
+    return Math.abs(xs[lo] - target) < Math.abs(xs[hi] - target) ? lo : hi;
   }
 
   draw() {
@@ -167,7 +172,8 @@ export class LineChart {
         }
       }
     }
-    if (!isFinite(lo) || !isFinite(hi) || hi - lo < 1e-12) { lo -= 1; hi += 1; }
+    if (!isFinite(lo) || !isFinite(hi)) { lo = 0; hi = 1; }
+    if (hi - lo < 1e-12) { lo -= 1; hi += 1; }
     const padY = (hi - lo) * 0.06;
     lo -= padY; hi += padY;
     const sy = (v) => box.t + box.h * (1 - (v - lo) / (hi - lo));

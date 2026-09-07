@@ -16,6 +16,7 @@ import * as bridge from './bridge.js';
 import { Panel, el, icon, ICONS, tile, specTable, noteList, num } from './ui/controls.js';
 import { Viewport } from './ui/canvas.js';
 import { LineChart, legendFor } from './ui/charts.js';
+import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { applyBoardContext, designId } from './ws/common.js';
 import { toKicad, boundsCopper } from './engine/artwork.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, exportSpec, estimate } from './engine/exporters.js';
@@ -248,6 +249,8 @@ function renderStatus(res, quick) {
 function renderSide(res) {
   const ws = current();
   const host = $('side');
+  app.charts.forEach((c) => c.destroy());
+  app.charts.clear();
   host.replaceChildren();
 
   const tilesData = ws.tiles(cfg(), res);
@@ -264,7 +267,7 @@ function renderSide(res) {
       noteList(notes)));
   }
 
-  const chartSpecs = ws.charts(cfg(), res);
+  const chartSpecs = withMeasurements(ws.charts(cfg(), res), cfg(), app.ws);
   if (chartSpecs.length) {
     const sec = el('div', { class: 'side-section' }, el('h3', { text: 'Response' }));
     for (const c of chartSpecs) {
@@ -278,6 +281,7 @@ function renderSide(res) {
       sec.append(wrap);
       // Charts are created after layout so the canvas has a measured width.
       requestAnimationFrame(() => {
+        if (!canvas.isConnected) return;
         const chart = new LineChart(canvas, c.spec);
         app.charts.set(`${app.ws}:${c.id}`, chart);
         chart.draw();
@@ -303,6 +307,7 @@ function switchWorkspace(next) {
   app.ws = next;
   document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === next)));
   $('design-name').value = app.names[next];
+  app.charts.forEach((c) => c.destroy());
   app.charts.clear();
   renderRail();
   app.fitPending = true;
@@ -313,6 +318,22 @@ function switchWorkspace(next) {
 
 function currentArtwork() {
   return app.result ? app.result.art : null;
+}
+
+function showDesignTools(tab = 'optimize') {
+  clearTimeout(fullTimer);
+  if (quickTimer) { cancelAnimationFrame(quickTimer); quickTimer = 0; }
+  runCompute(false);
+  openDesignTools({
+    config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
+    designId: () => designId(app.ws, app.names[app.ws]),
+    dirty: () => { app.dirty = true; },
+    apply(patch) {
+      Object.assign(cfg(), patch); app.dirty = true;
+      renderRail(); runCompute(false);
+    },
+    switch(kind, tool) { switchWorkspace(kind); showDesignTools(tool); },
+  }, tab);
 }
 
 async function placeIntoBoard() {
@@ -341,7 +362,7 @@ async function placeIntoBoard() {
     const out = await bridge.api.place({
       name: app.names[app.ws],
       designId: did,
-      origin: [0, 0],
+      origin: cfg().placementOrigin || [0, 0],
       ...payload,
     }, {
       replace,
@@ -656,6 +677,7 @@ function wireChrome() {
   $('btn-place').addEventListener('click', placeIntoBoard);
   $('btn-library').addEventListener('click', writeLibrary);
   $('btn-export').addEventListener('click', openExport);
+  $('btn-tools').addEventListener('click', () => showDesignTools(app.ws === 'filter' ? 'tune' : app.ws === 'motor' ? 'rotor' : 'optimize'));
   $('link-pill').addEventListener('click', () => {
     bridge.reconnect();
     toast('Re-checking the KiCad connection…', 'info', { ms: 2500 });
@@ -693,6 +715,7 @@ function wireChrome() {
   });
 
   document.addEventListener('keydown', (e) => {
+    if (document.querySelector('.tools-scrim')) return;
     if (e.target.matches('input, select, textarea')) return;
     if (e.key === 'f' || e.key === 'F') { if (app.result) app.view.fit(app.result.bounds); }
     if (e.key === 'g' || e.key === 'G') $('t-grid').click();

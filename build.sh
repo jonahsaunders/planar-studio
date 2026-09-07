@@ -27,6 +27,8 @@ cp resources/icon.png "$STAGE/resources/icon.png"
 cp plugin.json requirements.txt ipc_entry.py LICENSE README.md "$STAGE/plugins/"
 cp -R planar_studio "$STAGE/plugins/"
 cp -R web "$STAGE/plugins/"
+mkdir -p "$STAGE/plugins/docs"
+cp docs/design-tools.md "$STAGE/plugins/docs/"
 mkdir -p "$STAGE/plugins/resources"
 cp resources/icon-light-24.png resources/icon-dark-24.png "$STAGE/plugins/resources/"
 

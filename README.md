@@ -52,6 +52,36 @@ cascade.
 
 ![A hairpin band-pass filter with its response](docs/screenshot-filter.png)
 
+## Layout correction — 1.0.1 development build
+
+This build fixes lumped-filter component overlap, coil-terminal return routing,
+capacitor end clearance, and plate-capacitor layer transitions. Layout slots use
+the complete copper bounds, including leads and vias. Existing saved settings
+are recalculated using the corrected layout when opened.
+
+Run `node tests/lumped-layout.mjs` from the patched source checkout for the
+physical-routing regression suite. See `docs/layout-fix.md` for validation and
+remaining limitations.
+
+## Design tools
+
+The **Design tools** button opens eight local engineering workflows:
+
+- **Optimize:** constrained coil search with candidate previews and Q/area/resistance tradeoffs.
+- **Measurements:** Touchstone/CSV overlays and bounded parameter fitting, preserving the original curve.
+- **Coupled coils:** independently positioned receiver, signed mutual inductance and coupling, and offset sweeps.
+- **Tolerances:** seeded manufacturing studies with response envelopes, conditional yield, and sensitivity rankings.
+- **Filter tuning:** drag physical length/gap handles or search against a response mask.
+- **Magnetic field:** free-space field slices, probe readouts, and motor phase-current animation.
+- **Board checks:** live or imported PCB snapshots, geometric conflict previews, ground checks, and placement origins.
+- **Rotor:** magnet-ring preview, isolated-pole field estimates, and externally supplied Bgap for the motor model.
+
+Long calculations run in cancelable background workers. Settings and measurements
+save with the design; study reports export as JSON. See the [Design Tools guide](docs/design-tools.md)
+for supported workflows, input formats, models, and validation limits. Fixed-copper
+fitting, tolerances, and tuning currently cover distributed filters; measurement
+overlays also support lumped/EMI filters. Board checks complement KiCad DRC.
+
 ## How it integrates
 
 This is an IPC API plugin, which means it runs as its own process with its own
@@ -187,7 +217,7 @@ between them is usually the most useful thing on the screen.
 
 ![A lumped LC low-pass in the light theme](docs/screenshot-filter-light.png)
 
-Layouts are the textbook forms, not optimised ones. A parallel-coupled filter
+Initial layouts use textbook synthesis. The Design Tools panel can tune their geometry against a response mask. A parallel-coupled filter
 built from first-order synthesis lands a percent or two low in centre frequency
 and, before its own loss narrows it again, 10–25 % wide in bandwidth. That is a
 property of the synthesis, and the response plot shows it rather than quietly
@@ -196,7 +226,7 @@ retuning the geometry to hide it.
 ## Install
 
 **From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.0.0.zip`, or use *Install from File* on the archive built by
+`planar-studio-1.0.1.zip`, or use *Install from File* on the archive built by
 `./build.sh`.
 
 **By hand.** Copy this folder into KiCad's plugin directory as

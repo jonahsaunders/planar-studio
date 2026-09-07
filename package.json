@@ -5,13 +5,16 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/rpc.mjs",
+    "test": "node tests/verify.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
     "shots": "node tests/shots.mjs",
     "build": "./build.sh",
-    "dev": "python3 ipc_entry.py --browser --verbose"
+    "dev": "python3 ipc_entry.py --browser --verbose",
+    "test:tools": "node tests/design-tools.mjs",
+    "test:dom": "node tests/tools-dom.mjs",
+    "test:browser": "node tests/design-tools-browser.mjs"
   },
   "license": "MIT",
   "repository": {
@@ -28,5 +31,9 @@
     "rf-filter",
     "microstrip",
     "electromagnetics"
-  ]
+  ],
+  "devDependencies": {
+    "happy-dom": "20.14.0",
+    "playwright": "1.62.1"
+  }
 }

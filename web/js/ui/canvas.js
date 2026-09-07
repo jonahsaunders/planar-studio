@@ -39,6 +39,8 @@ export class Viewport {
 
   /* ------------------------------------------------------------ transform */
 
+  destroy() { this._observer?.disconnect(); cancelAnimationFrame(this._raf); this._raf = 0; }
+
   toScreen(x, y) { return [x * this.scale + this.tx, -y * this.scale + this.ty]; }
   toWorld(px, py) { return [(px - this.tx) / this.scale, -(py - this.ty) / this.scale]; }
 
@@ -130,7 +132,7 @@ export class Viewport {
     c.addEventListener('pointercancel', end);
     c.addEventListener('pointerleave', () => { this.onHover(null); });
 
-    const ro = new ResizeObserver(() => this.resize());
+    const ro = this._observer = new ResizeObserver(() => this.resize());
     ro.observe(c.parentElement || c);
   }
 
