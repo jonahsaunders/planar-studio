@@ -1,0 +1,37 @@
+{
+  "$schema": "https://go.kicad.org/pcm/schemas/v1",
+  "name": "Planar Studio",
+  "description": "Parametric planar inductors, axial-flux PCB motors and planar filters, placed straight into the board.",
+  "description_full": "Planar Studio designs the copper structures that have no footprint to drop in: spiral and sector inductors, axial-flux motor stators, and filters from lumped LC ladders to hairpin and interdigital microstrip.\n\nIt opens as its own window beside KiCad and talks to the running instance over the IPC API. It reads the open board's stack-up, so layer count, thickness, dielectric constant and copper weight are the board's real numbers rather than assumptions; and it writes real tracks, arcs and vias into that board inside a single commit, so one Ctrl+Z removes a four-thousand-segment winding.\n\nThe electromagnetics are numerical, not curve-fitted. Inductance is a partial-inductance sum over the discretised three-dimensional filament path, validated against closed-form and elliptic-integral references. Filter responses are computed from the geometry that would actually be placed, including a spiral's measured Q and a capacitor's parasitics, and are plotted beside the ideal prototype so the cost of realising the network in copper is visible rather than hidden.",
+  "identifier": "com.jonahsaunders.planarstudio",
+  "type": "plugin",
+  "author": {
+    "name": "Jonah Saunders",
+    "contact": {
+      "web": "https://github.com/jonahsaunders/planar-studio"
+    }
+  },
+  "license": "MIT",
+  "resources": {
+    "homepage": "https://github.com/jonahsaunders/planar-studio"
+  },
+  "tags": [
+    "inductor",
+    "coil",
+    "planar magnetics",
+    "motor",
+    "axial flux",
+    "filter",
+    "microstrip",
+    "RF",
+    "EMI"
+  ],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "status": "stable",
+      "kicad_version": "9.0",
+      "platforms": ["linux", "macos", "windows"]
+    }
+  ]
+}

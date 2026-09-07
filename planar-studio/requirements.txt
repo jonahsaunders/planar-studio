@@ -1,0 +1,18 @@
+kicad-python>=0.4.0
+
+# Deliberately the only entry.
+#
+# KiCad builds a private virtualenv for this plugin and runs pip against this
+# file before it will show the toolbar button. If any line fails to install,
+# the whole plugin fails to appear -- with no obvious explanation -- so nothing
+# optional belongs here.
+#
+# The native application window (pywebview) is optional for exactly that
+# reason: it pulls a platform GUI backend, and a failure there would cost the
+# plugin rather than just the window. Planar Studio probes for it at runtime
+# and falls back to your default browser, which behaves identically. To get the
+# native window, add it to the plugin's own environment:
+#
+#   Windows  %LOCALAPPDATA%\kicad\python-environments\com.jonahsaunders.planarstudio\Scripts\python.exe -m pip install pywebview
+#   macOS    ~/Library/Caches/kicad/python-environments/com.jonahsaunders.planarstudio/bin/python -m pip install pywebview
+#   Linux    ~/.cache/kicad/python-environments/com.jonahsaunders.planarstudio/bin/python -m pip install pywebview
