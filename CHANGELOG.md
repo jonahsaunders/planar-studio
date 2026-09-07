@@ -2,6 +2,10 @@
 
 ## Motor coil and star routing update (development)
 
+- Add selectable A/B/C/N, A/B/C-only and no-grouped-terminal breakout modes.
+  Removing neutral breakout preserves the internal star; omitting all grouped
+  terminals retains individual coil pads and removes the extra breakout tails.
+
 - Add circular, racetrack/oval and polygon motor coils, including square and
   hexagonal profiles, with slot fitting and shape-specific turn limits.
 - Replace disconnected bore buses with checked series/parallel star routing on

@@ -6,6 +6,9 @@ import { artwork, track, via, pad, label, arcPts, TAU } from './artwork.js';
 
 export function starBus(cfg, coil, inst, names, opt = {}) {
   const A = artwork({ name: 'star connection', kind: 'bus' });
+  const breakout = cfg.terminalBreakout ?? 'phase-neutral';
+  if (!['phase-neutral', 'phases', 'none'].includes(breakout)) throw new Error('Choose a supported terminal breakout.');
+  const phasePads = breakout !== 'none', neutralPad = breakout === 'phase-neutral';
   const reject = text => {
     A.notes.push({ level: 'error', text: `${text} Star routing was omitted; the individual coil terminals remain available.` });
     return A;
@@ -70,11 +73,13 @@ export function starBus(cfg, coil, inst, names, opt = {}) {
     const group = inst.filter(it => it.phase === phase).map(it => ({ index: it.index, ends: terminals[it.index] }))
       .sort((a, b) => a.ends[0].angle - b.ends[0].angle);
     const r = r0 + phase * lane;
-    terminal(r, String.fromCharCode(65 + phase), phase);
+    if (phasePads) terminal(r, String.fromCharCode(65 + phase), phase);
     if (cfg.coilSeries) {
       const first = group[0].ends[0];
-      spoke(first, r, 'phase-feed', phase);
-      arc(r, seam, first.angle, 'phase-feed', phase);
+      if (phasePads) {
+        spoke(first, r, 'phase-feed', phase);
+        arc(r, seam, first.angle, 'phase-feed', phase);
+      }
       for (let i = 0; i < group.length - 1; i++) {
         const from = group[i].ends[1], to = group[i + 1].ends[0];
         spoke(from, r, 'series-link', phase);
@@ -87,14 +92,18 @@ export function starBus(cfg, coil, inst, names, opt = {}) {
         spoke(a, r, 'parallel-feed', phase);
         neutralEnds.push({ t: b, phase });
       }
-      arc(r, seam, group.at(-1).ends[0].angle, 'parallel-feed', phase);
+      arc(r, phasePads ? seam : group[0].ends[0].angle, group.at(-1).ends[0].angle, 'parallel-feed', phase);
     }
   }
-  terminal(rN, 'N');
+  if (neutralPad) terminal(rN, 'N');
   for (const { t, phase } of neutralEnds) spoke(t, rN, 'star-return', phase);
-  arc(rN, seam, Math.max(...neutralEnds.map(e => e.t.angle)), 'star');
+  const neutralAngles = neutralEnds.map(e => e.t.angle);
+  arc(rN, neutralPad ? seam : Math.min(...neutralAngles), Math.max(...neutralAngles), 'star');
   A.meta.routed = true;
   A.meta.outerRadius = rN + cfg.padSize / 2;
-  A.notes.push({ level: 'info', text: `Star connection: ${cfg.phases} separate phase inputs and common N, with coils in ${cfg.coilSeries ? 'series' : 'parallel'}. Spokes on ${front}, links on ${back}; routing adds an outer collar. The continuous winding uses one KiCad net (${net}); A/B/C identify winding taps, not isolated copper nets. Interconnect resistance and inductance are excluded from the motor estimates.` });
+  const terminalNote = neutralPad ? `${cfg.phases} phase terminals plus exposed neutral N`
+    : phasePads ? `${cfg.phases} phase terminals; neutral N stays internal`
+      : `no grouped terminal pads or breakout tails; phase inputs are ${Array.from({ length: cfg.phases }, (_, p) => `${String.fromCharCode(65 + p)} at C${p + 1}.1`).join(', ')}. Star and same-phase interconnections remain enabled`;
+  A.notes.push({ level: 'info', text: `Star connection: ${terminalNote}, with coils in ${cfg.coilSeries ? 'series' : 'parallel'}. Spokes on ${front}, links on ${back}; routing adds an outer collar. The continuous winding uses one KiCad net (${net}); phase names identify winding taps, not isolated copper nets. Interconnect resistance and inductance are excluded from the motor estimates.` });
   return A;
 }

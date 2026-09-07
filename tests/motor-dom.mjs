@@ -33,6 +33,10 @@ for (const shape of ['circle', 'racetrack', 'polygon', 'wedge']) {
   assert.match(document.querySelector('#side').textContent, /Star connection:/);
 }
 await choose('Coil shape', 'polygon');
+await choose('Terminal breakout', 'phases');
+assert.match(document.querySelector('#side').textContent, /neutral N stays internal/);
+await choose('Terminal breakout', 'none');
+assert.match(document.querySelector('#side').textContent, /no grouped terminal pads or breakout tails/);
 set('Terminal position', -45); await new Promise(r => setTimeout(r, 220)); await solved();
 button('Save'); await until(() => localStorage.getItem('planar.design.motor:m1'));
 const saved = JSON.parse(localStorage.getItem('planar.design.motor:m1'));
@@ -40,6 +44,7 @@ assert.equal(saved.config.shape, 'polygon');
 assert.equal(saved.config.sides, 4);
 assert.equal(saved.config.terminalAngle, -45);
 assert.equal(saved.config.motorGeometry, true);
+assert.equal(saved.config.terminalBreakout, 'none');
 set('Copper layers', 4); await new Promise(r => setTimeout(r, 220)); await solved();
 assert.match(document.querySelector('#side').textContent, /requires exactly two series copper layers/);
 set('Copper layers', 2); await new Promise(r => setTimeout(r, 220)); await solved();
@@ -50,12 +55,14 @@ document.querySelector('#btn-export').click();
 assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close');
 // Loading the saved design restores the new shape and routing controls.
 set('Terminal position', 20); await new Promise(r => setTimeout(r, 220)); await solved();
+await choose('Terminal breakout', 'phase-neutral');
 const { api } = await import('../web/js/bridge.js');
 api.listDesigns = async () => ({ designs: [{ id: 'motor:m1', name: 'M1', kind: 'motor', saved: 0 }] });
 api.loadDesign = async () => saved;
 button('Open…'); await until(() => document.querySelector('.export-card .t'));
 document.querySelector('.export-card').click(); await new Promise(r => setTimeout(r, 220)); await solved();
 assert.equal(document.querySelector('input[aria-label="Terminal position"]').value, '-45');
+assert.equal(document.querySelector('select[aria-label="Terminal breakout"]').value, 'none');
 for (const kind of ['inductor', 'motor']) {
   document.querySelector(`[data-ws="${kind}"]`).click(); await new Promise(r => setTimeout(r, 220)); await solved();
 }

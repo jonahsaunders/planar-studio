@@ -75,7 +75,9 @@ self-resonance, Q, IPC-2221 current rating and temperature rise.
 
 **PCB motor.** Annular-sector, circular, racetrack and polygon coils tiled around
 an adjustable ring. Optional star (wye) wiring groups phase terminals and neutral
-at the bottom, or at another chosen angle. Series and parallel coil connections
+at the bottom, or at another chosen angle. Choose phase-plus-neutral pads,
+phase-only pads, or no grouped terminals; automatic star wiring can also be
+disabled for fully manual interconnection. Series and parallel coil connections
 use separate routing layers in an outer collar, leaving the bore clear.
 Automatic routing supports two series copper layers; unsupported configurations
 retain individual terminals and show an error. Inductance and resistance follow

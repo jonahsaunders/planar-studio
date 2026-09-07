@@ -54,7 +54,8 @@ function expectedGroups(cfg) {
       neutral.push(...coils.map(i=>`C${i+1}.2`));
     }
   }
-  return [...groups,neutral].map(g=>g.sort().join(',')).sort();
+  const mode = cfg.terminalBreakout ?? 'phase-neutral';
+  return [...groups,neutral].map(g=>g.filter(n => /^C\d/.test(n) || (n === 'N' ? mode === 'phase-neutral' : mode !== 'none')).sort().join(',')).filter(Boolean).sort();
 }
 let cases=0;
 for(const shape of ['wedge','circle','racetrack','polygon']) {
@@ -97,6 +98,31 @@ for(const shape of ['wedge','circle','racetrack','polygon']) {
     assert.ok(Math.abs(analyse(cfg,shifted,{segmentCap:1000}).L/r.analysis.L-1)<1e-10);
   }
 }
+// Omitting a terminal must remove only the breakout, never the internal star.
+for (const shape of ['wedge','circle','racetrack','polygon']) {
+  for (const coilSeries of [true, false]) for (const terminalBreakout of ['phases', 'none']) {
+    const cfg = {...defaults(), shape, coilSeries, terminalBreakout, terminalAngle: 73};
+    const r = compute(cfg, {}, {quick:true});
+    assert.equal(r.art.meta.starRouted, true);
+    assert.deepEqual(r.art.ports.map(p=>p.name), terminalBreakout === 'phases' ? ['A','B','C'] : []);
+    assert.ok(!r.art.pads.some(p=>p.role === 'neutral-terminal'));
+    assert.ok(!r.art.labels.some(l=>l.text === 'N'));
+    assert.deepEqual(interconnectGroups(r.art), expectedGroups(cfg));
+    const star = r.art.tracks.find(t=>t.role === 'star');
+    assert.ok(star, 'internal star remains connected');
+    if (terminalBreakout === 'none') {
+      assert.equal(r.art.pads.length, cfg.coilCount * 2);
+      assert.ok(!r.art.tracks.some(t=>t.role === 'phase-feed'));
+    }
+    assert.deepEqual(compute(JSON.parse(JSON.stringify(cfg)), {}, {quick:true}).art, r.art);
+    assert.ok(!/>N<\/text>/.test(exportSvg(r.art)));
+    assert.ok(!/\(pad "N"/.test(exportKicadMod(r.art)));
+    cases++;
+  }
+}
+const legacy = {...defaults()}; delete legacy.terminalBreakout;
+assert.deepEqual(compute(legacy, {}, {quick:true}).art.ports.map(p=>p.name), ['A','B','C','N']);
+assert.throws(()=>compute({...defaults(), terminalBreakout:'invalid'}, {}, {quick:true}));
 for(const count of [3,6,18,24]) {
   const cfg={...defaults(),coilCount:count,spanDeg:Math.min(26,360/count-2)};
   const r=compute(cfg,{}, {quick:true});

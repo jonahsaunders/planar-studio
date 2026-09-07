@@ -45,6 +45,7 @@ export function defaults() {
     coilSeries: true,
     busEnabled: true,
     terminalAngle: -90,
+    terminalBreakout: 'phase-neutral',
   };
 }
 
@@ -103,9 +104,15 @@ export function rail(panel, app) {
         key: 'coilSeries', type: 'seg', label: 'Coils per phase',
         options: [{ value: true, label: 'Series' }, { value: false, label: 'Parallel' }],
       },
-      { key: 'busEnabled', type: 'check', label: 'Connect phases in star (wye)', hint: 'Join the winding ends at N and group separate A/B/C drive terminals at the bottom. Requires two series copper layers.' },
+      { key: 'busEnabled', type: 'check', label: 'Connect phases in star (wye)', hint: 'Join the winding ends at N. Turn off to leave individual coils for manual wiring. Requires two series copper layers.' },
+      { key: 'terminalBreakout', type: 'select', label: 'Terminal breakout', when: c => c.busEnabled,
+        options: [
+          { value: 'phase-neutral', label: 'Phase terminals + neutral (A/B/C/N)' },
+          { value: 'phases', label: 'Phase terminals only (A/B/C)' },
+          { value: 'none', label: 'No grouped terminals' },
+        ], hint: 'Hiding N keeps the star point connected internally. No grouped terminals keeps the interconnects but omits the extra pads and breakout tails; individual coil pads remain available.' },
       { key: 'terminalAngle', type: 'range', label: 'Terminal position', unit: '°', min: -180, max: 180, step: 1,
-        when: c => c.busEnabled, hint: '−90° is bottom, 0° is right. Routing occupies an outer collar and keeps the bore clear.' },
+        when: c => c.busEnabled, hint: '−90° is bottom, 0° is right. Also sets the routing seam when no grouped terminals are drawn. Routing occupies an outer collar and keeps the bore clear.' },
     ],
   });
 
@@ -227,7 +234,7 @@ export function spec(cfg, res) {
       title: 'Winding',
       rows: [
         ['Coil shape', cfg.shape === 'polygon' ? `${cfg.sides}-sided polygon` : cfg.shape],
-        ['Terminals', res.art.meta.starRouted ? `Star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
+        ['Terminals', res.art.meta.starRouted ? `${res.art.ports.length} grouped terminals; star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
         ['Coils / phases / pole pairs', `${m.coilsTotal} / ${m.phases} / ${m.p}`],
         ['Coils per phase', `${num(m.coilsPerPhase, 2)} in ${cfg.coilSeries ? 'series' : 'parallel'}`],
         ['Turns per coil', `${a.turns.toFixed(2)} × ${a.nL} layers`],

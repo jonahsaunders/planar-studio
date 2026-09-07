@@ -16,7 +16,8 @@ Requested turns that do not fit are reported beside the results.
 2. Use **two copper layers** with **Layer connection: Series**.
 3. Enable **Connect phases in star (wye)**.
 4. Choose **Series** or **Parallel** under **Coils per phase**.
-5. Leave **Terminal position** at **−90°** for the bottom, or rotate it.
+5. Choose a **Terminal breakout** (see below).
+6. Leave **Terminal position** at **−90°** for the bottom, or rotate it.
 
 A, B and C are separate drive terminals, grouped along a radial line at the
 chosen angle. N is the shared neutral terminal. The three drive terminals are
@@ -24,6 +25,33 @@ connected to N through their windings; they are not directly shorted together.
 The same scheme supports one to six phases, provided the coil count divides
 evenly into the phase count. Each individual coil retains numbered terminals
 C1.1/C1.2, C2.1/C2.2, and so on.
+
+### Terminal breakout choices
+
+| Choice | Grouped pads for three phases | Internal wiring |
+| --- | --- | --- |
+| Phase terminals + neutral | A, B, C, N | Star point also exposed as N |
+| Phase terminals only | A, B, C | Star point remains connected internally |
+| No grouped terminals | None | Star and same-phase links remain; use individual coil pads |
+
+The default preserves the previous A/B/C/N layout, including older designs
+without this setting. No grouped terminals removes the extra pads and breakout
+tails, rather than merely hiding labels. Turn **Connect phases in star (wye)**
+off as well when you want completely independent coils for your own routing.
+Individual coil pads remain available in every mode.
+With star routing enabled and no grouped terminals, use C1.1 for phase A,
+C2.1 for B and C3.1 for C. In parallel mode the other start pads of the same
+phase are equivalent; in series mode use the first coil's start, not an
+intermediate series junction.
+
+Four pads do not mean four phases: N is the common end of the three windings.
+A conventional three-wire star motor keeps that junction internal and exposes
+only its three phase leads. A delta-connected motor also has three phase leads,
+but its windings form a closed triangle with no neutral junction. Lead count
+alone does not distinguish star from delta. This option changes which taps are
+exposed; it does not convert the winding to delta. See [TI's winding connection
+diagrams](https://www.ti.com/content/dam/videos/external-videos/en-us/4/3816841626001/6067548423001.mp4/subassets/precision_labs_motor_types.pdf)
+and [Microchip's neutral-point explanation](https://onlinedocs.microchip.com/oxy/GUID-78E22D6C-5DFB-43DC-9878-13A171504D6B-en-US-2/GUID-013AE6B0-B028-44BF-9D66-98EE8BF68AE2.html).
 
 The default is now 12 coils, eight pole pairs and two series copper layers.
 Eight pole pairs align the repeated same-phase coils for this simple winding
@@ -40,7 +68,7 @@ In series mode, each phase starts at its drive terminal, passes through every
 coil in that phase once, then ends at N. The arcs have deliberate breaks beside
 each coil, preventing a bus from bypassing the winding. In parallel mode every
 coil start joins its phase input and every end joins N. The neutral arc connects
-the returns to the N pad; it is not an isolated decorative ring.
+the returns together, and to the N pad only when neutral breakout is enabled.
 
 Routing occupies an **outer collar**. The generated board outline expands to
 contain the collar and terminal pads, while the bore stays empty. The control's
