@@ -22,7 +22,11 @@ families refits the canvas and shows the relevant controls.
 | Inverted-F | Ground rectangle, shorting leg, horizontal radiator and adjustable RF tap | First-order quarter-wave path length |
 | Meandered inverted-F | Folded radiator with selectable run count and pitch | First-order quarter-wave path length |
 | NFC loop | Circular or square loop, turns, diameter, width/gap, two surface terminals | Numerical free-space inductance, DC resistance at 20 °C, ideal unloaded tuning capacitance |
-| Patch array | 1–4 rows and columns, wavelength-based spacing, individual ports or a connected feed tree | Patch-element estimate and ideal normalized X/Y array-factor cuts |
+| Patch array | 1–32 rows and columns (up to 1,024 elements), wavelength-based spacing, individual ports or a connected feed tree | Patch-element estimate, overall board dimensions and ideal normalized X/Y array-factor cuts |
+
+Four additional families—Vivaldi tapered slot, printed Yagi, printed
+log-periodic and bow-tie—are described in the [directional antenna
+guide](directional-antennas.md), including their feed and profile controls.
 
 ### Feed and net conventions
 
@@ -76,6 +80,14 @@ Array-factor cuts use the normalized complex sum
 uniform amplitude and zero phase progression. Values are floored at −60 dB
 for plotting. These cuts exclude the patch element pattern, mutual coupling,
 feed losses, phase errors and scan effects; they are not gain predictions.
+
+Rows and columns are independent: linear arrays such as 1×32 and rectangular
+arrays such as 8×16 are supported. The controls and imported configurations use
+the same 32-per-axis limit. Plot sampling increases with electrical aperture
+to resolve narrower lobes. Overall board dimensions include the feed tree,
+ground margin and outline offset; larger arrays may exceed your fabricator's
+board size. Increase row spacing if a deeper feed tree leaves insufficient
+clearance. Saved designs and all exports retain the full array.
 
 Radiator clearance outlines on `Dwgs.User` are advisory drawing geometry,
 not enforced KiCad keepout zones. They are included in SVG, DXF and board

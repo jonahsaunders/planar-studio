@@ -348,12 +348,19 @@ export class Viewport {
 
   drawSurfacePads(ctx) {
     const layers = [...this.layerColor.keys()];
-    for (const p of this.art.pads.filter(p => !p.drill).sort((a, b) => layers.indexOf(b.layer) - layers.indexOf(a.layer))) {
-      if (this.layerVisible.get(p.layer) === false) continue;
-      const [x, y] = this.toScreen(p.x, p.y);
-      ctx.fillStyle = this.layerColor.get(p.layer) || '#E8B23A';
-      if (p.shape === 'rect') ctx.fillRect(x - p.w * this.scale / 2, y - p.h * this.scale / 2, p.w * this.scale, p.h * this.scale);
-      else { ctx.beginPath(); ctx.arc(x, y, p.w * this.scale / 2, 0, Math.PI * 2); ctx.fill(); }
+    const pads = this.art.pads.filter(p => !p.drill);
+    const ordered = [...new Set(pads.map(p => p.layer))].sort((a, b) => layers.indexOf(b) - layers.indexOf(a));
+    for (const layer of ordered) {
+      if (this.layerVisible.get(layer) === false) continue;
+      ctx.fillStyle = this.layerColor.get(layer) || '#E8B23A';
+      // One fill per layer removes anti-aliased seams between connected strips.
+      ctx.beginPath();
+      for (const p of pads.filter(p => p.layer === layer)) {
+        const [x, y] = this.toScreen(p.x, p.y), radius = p.w * this.scale / 2;
+        if (p.shape === 'rect') ctx.rect(x - radius, y - p.h * this.scale / 2, p.w * this.scale, p.h * this.scale);
+        else { ctx.moveTo(x + radius, y); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.closePath(); }
+      }
+      ctx.fill();
     }
   }
 

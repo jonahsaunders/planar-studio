@@ -78,7 +78,7 @@ try {
     await page.screenshot({ path: path.join(root, 'dist', `${kind}-${family}.png`) });
   };
   await page.getByText('Designs', { exact: true }).click();
-  for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+  for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
     await choose('Antenna type', family);
     assert.ok(!/undefined|NaN/.test(await page.locator('#side').textContent()));
     if (family === 'nfc') {

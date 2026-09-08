@@ -80,7 +80,11 @@ until you select the voltage-source drive model.
 
 The Antenna workspace now includes edge/inset-fed patches, printed and folded
 dipoles, inverted-F and meandered inverted-F radiators, NFC loops with target-L
-sizing and tuning capacitance, and patch arrays with ideal array-factor plots.
+sizing and tuning capacitance, and patch arrays up to 32 × 32 elements with
+ideal array-factor plots. Four additional starting-layout generators cover
+Vivaldi tapered slots, printed Yagis, printed log-periodic arrays and bow-tie
+dipoles. See [the directional antenna guide](docs/directional-antennas.md)
+for their feed arrangements, tuning controls and model limits.
 
 The Transformer workspace adds routed multilayer, center-tapped, multi-secondary
 and interleaved air-core windings, plus a ferrite magnetic-circuit model with
