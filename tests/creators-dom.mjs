@@ -42,10 +42,11 @@ const choose = async (label, value) => {
   assert.ok(select, label); select.value = value; select.dispatchEvent(new w.Event('change', { bubbles: true }));
   await new Promise(r => setTimeout(r, 220)); await solved();
 };
-for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'patch-array']) {
+for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
   await choose('Antenna type', family);
   assert.equal(document.querySelector('[data-key="nfc"]').hidden, family !== 'nfc');
   assert.equal(document.querySelector('[data-key="array"]').hidden, family !== 'patch-array');
+  assert.equal(document.querySelector('[data-key="directional"]').hidden, !['vivaldi', 'yagi', 'lpda', 'bowtie'].includes(family));
   button('Save');
   await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.family === family);
   assert.ok(!/undefined|NaN/.test(document.querySelector('#side').textContent));
@@ -54,7 +55,22 @@ for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded
     button('Size loop to target inductance'); await new Promise(r => setTimeout(r, 220)); await solved();
     assert.notEqual(Number(document.querySelector('[aria-label="Loop outer diameter"]').value), before);
   }
+  const field = { vivaldi: ['Vivaldi aperture width', 50, 'vivaldiAperture'], yagi: ['Yagi directors', 7, 'yagiDirectors'], lpda: ['Log-periodic elements', 10, 'lpdaElements'], bowtie: ['Bow-tie flare angle', 75, 'bowtieAngle'] }[family];
+  if (field) {
+    set(field[0], field[1]); await new Promise(r => setTimeout(r, 220)); await solved();
+    button('Save');
+    await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config[field[2]] === field[1]);
+    document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close');
+  }
 }
+// Large array dimensions must survive actual controls and saved designs.
+set('Array rows', 32); set('Array columns', 32);
+await new Promise(r => setTimeout(r, 220)); await solved();
+assert.match(document.querySelector('#side').textContent, /1024/);
+assert.match(document.querySelector('#side').textContent, /Overall board W × H/);
+button('Save');
+await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayCols === 32);
+assert.equal(JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayRows, 32);
 document.querySelector('[data-ws="transformer"]').click(); await solved();
 for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
   await choose('Transformer type', family);

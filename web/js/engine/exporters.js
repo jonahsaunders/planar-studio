@@ -205,11 +205,14 @@ export function exportSvg(A, opt = {}) {
     const pads = art.pads.filter(p => !p.drill && p.layer === ln);
     if (!group.length && !pads.length) continue;
     S.push(`<g id="${ln.replace('.', '_')}" fill="none" stroke="${colour}" stroke-linecap="round" stroke-linejoin="round">`);
-    for (const p of pads) {
-      S.push(p.shape === 'rect'
-        ? `<rect x="${f3(p.x - p.w / 2)}" y="${f3(-p.y - p.h / 2)}" width="${f3(p.w)}" height="${f3(p.h)}" fill="${colour}" stroke="none"/>`
-        : `<circle cx="${f3(p.x)}" cy="${f3(-p.y)}" r="${f3(p.w / 2)}" fill="${colour}" stroke="none"/>`);
-    }
+    // Fill adjacent rectangles together so anti-aliasing cannot introduce
+    // artificial dark seams through continuous stepped antenna copper.
+    const rectangles = pads.filter(p => p.shape === 'rect');
+    if (rectangles.length) S.push(`<path fill="${colour}" stroke="none" d="${rectangles.map(p => {
+      const x0 = f3(p.x - p.w / 2), x1 = f3(p.x + p.w / 2), y0 = f3(-p.y - p.h / 2), y1 = f3(-p.y + p.h / 2);
+      return `M${x0} ${y0}H${x1}V${y1}H${x0}Z`;
+    }).join(' ')}"/>`);
+    for (const p of pads.filter(p => p.shape !== 'rect')) S.push(`<circle cx="${f3(p.x)}" cy="${f3(-p.y)}" r="${f3(p.w / 2)}" fill="${colour}" stroke="none"/>`);
     for (const t of group) {
       S.push(`<path stroke-width="${f3(t.width)}" d="${pathD(t.pts)}"/>`);
     }

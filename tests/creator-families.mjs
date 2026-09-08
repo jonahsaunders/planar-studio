@@ -100,6 +100,46 @@ check('Connected 3×4 array exports one feed net, with feed routes below every p
   }
   exportRoundtrip(antenna, c, r);
 });
+for (const [rows, cols, feed] of [[1, 32, 'individual'], [32, 1, 'tree'], [7, 11, 'tree'], [32, 32, 'individual'], [32, 32, 'tree']]) check(`Large ${rows}×${cols} ${feed} array retains every element, board outline and exports`, () => {
+  const c = ac('patch-array', { arrayRows: rows, arrayCols: cols, arrayFeed: feed, spacingY: 0.8 });
+  const r = antenna.compute(c), a = r.analysis, patches = r.art.pads.filter(p => p.role === 'patch');
+  assert.equal(patches.length, rows * cols);
+  assert.equal(new Set(patches.map(p => p.number)).size, rows * cols);
+  assert.equal(new Set(patches.map(p => p.net)).size, feed === 'tree' ? 1 : rows * cols);
+  assert.equal(r.art.ports.filter(p => p.net !== 'GND').length, feed === 'tree' ? 1 : rows * cols);
+  const outline = r.art.outline.find(p => p.layer === 'Edge.Cuts').pts;
+  near(a.boardWidth, Math.max(...outline.map(p => p[0])) - Math.min(...outline.map(p => p[0])));
+  near(a.boardHeight, Math.max(...outline.map(p => p[1])) - Math.min(...outline.map(p => p[1])));
+  const center = a.angles.indexOf(0);
+  near(a.arrayFactorX[center], 0); near(a.arrayFactorY[center], 0);
+  // Independent closed-form uniform-array factor at every plotted angle.
+  for (const [n, spacing, values] of [[cols, c.spacingX, a.arrayFactorX], [rows, c.spacingY, a.arrayFactorY]]) {
+    assert.equal(values.length, a.angles.length);
+    for (let i = 0; i < values.length; i++) {
+      const u = Math.PI * spacing * Math.sin(a.angles[i] * Math.PI / 180);
+      const amplitude = Math.abs(Math.sin(u)) < 1e-10 ? 1 : Math.abs(Math.sin(n * u) / (n * Math.sin(u)));
+      near(values[i], 20 * Math.log10(Math.max(1e-3, amplitude)), 1e-6);
+    }
+  }
+  if (rows === 32 || cols === 32) assert.ok(a.angles.length > 181, 'Resolve narrower lobes');
+  // Every feed segment must stay outside unrelated patch copper.
+  for (const t of r.art.tracks.filter(t => t.role === 'array-feed')) for (const p of patches) {
+    const box = [p.x - (p.w + t.width) / 2, p.y - (p.h + t.width) / 2, p.x + (p.w + t.width) / 2, p.y + (p.h + t.width) / 2];
+    for (let i = 1; i < t.pts.length; i++) {
+      const [u, v] = [t.pts[i - 1], t.pts[i]];
+      assert.ok(Math.max(u[0], v[0]) < box[0] || Math.min(u[0], v[0]) > box[2] || Math.max(u[1], v[1]) < box[1] || Math.min(u[1], v[1]) > box[3], 'Feed crosses patch');
+    }
+  }
+  exportRoundtrip(antenna, c, r);
+  const root = sexpr(exportKicadPcb(r.art));
+  const pads = root.filter(n => n[0] === 'footprint').flatMap(n => n.filter(p => p[0] === 'pad'));
+  assert.equal(pads.length, rows * cols + 1, 'KiCad export retains all patches and ground');
+});
+check('Array limits reject invalid imported dimensions without silently truncating', () => {
+  for (const key of ['arrayRows', 'arrayCols']) for (const value of [0, 33, 2.5, NaN, Infinity]) {
+    assert.throws(() => antenna.compute(ac('patch-array', { [key]: value })), /integer.*1 and 32/);
+  }
+});
 
 function assertViasClear(r, clearance) {
   // Test simplified copper as exported, using an independent distance routine.

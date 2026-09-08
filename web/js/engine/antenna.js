@@ -1,5 +1,6 @@
 /* Parametric antenna layouts. Each family declares its actual model scope. */
 import { buildRoundOrSlot } from './round-slot-antennas.js';
+import { buildDirectional, DIRECTIONAL_FAMILIES, directionalDefaults } from './directional-antennas.js';
 import { buildPatch } from './patch-antenna.js';
 import { artwork, pad, track, run, rect, bounds, label, transform, merge } from './artwork.js';
 import { buildCoil, toFilaments, inductanceOf, discretisationCorrection, OZ_MM, RHO_CU20 } from './coil.js';
@@ -10,8 +11,11 @@ export const ANTENNA_FAMILIES = {
   'folded-dipole': 'Folded dipole', ifa: 'Inverted-F', mifa: 'Meandered inverted-F',
   'circular-patch': 'Circular patch', slot: 'Microstrip-fed slot',
   nfc: 'NFC loop', 'patch-array': 'Patch array',
+  vivaldi: 'Vivaldi tapered slot', yagi: 'Printed Yagi', lpda: 'Printed log-periodic', bowtie: 'Bow-tie dipole',
 };
+export const MAX_ARRAY_DIMENSION = 32;
 export const antennaExtras = () => ({
+  ...directionalDefaults(),
   radiusScale: 1, slotScale: 1, slotWidth: 1.5, slotStub: 5,
   family: 'patch', insetFraction: 0.32, insetGap: 0.4, edgeResistance: 300,
   traceW: 0.8, feedGap: 1, armScale: 0.95, foldSpacing: 3, groundWidth: 45,
@@ -40,6 +44,7 @@ export function buildAntenna(input, env = {}, opt = {}) {
   range(c, 'freq', c.family === 'nfc' ? 1e5 : 1e8, c.family === 'nfc' ? 30e6 : 30e9);
   range(c, 'boardT', 0.05, 10); range(c, 'epsR', 1.01, 20);
   range(c, 'copperOz', 0.25, 4); range(c, 'margin', 0.1, 100);
+  if (DIRECTIONAL_FAMILIES.includes(c.family)) return buildDirectional(c, env);
   if (['circular-patch', 'slot'].includes(c.family)) return buildRoundOrSlot(c, env);
   if (c.family === 'nfc') return nfc(c, env, opt);
   if (['dipole', 'folded-dipole', 'ifa', 'mifa'].includes(c.family)) return wireAntenna(c, env);
@@ -179,7 +184,7 @@ export function sizeNfcLoop(input) {
 }
 
 function patchArray(c, env) {
-  range(c, 'arrayRows', 1, 4, true); range(c, 'arrayCols', 1, 4, true);
+  range(c, 'arrayRows', 1, MAX_ARRAY_DIMENSION, true); range(c, 'arrayCols', 1, MAX_ARRAY_DIMENSION, true);
   range(c, 'spacingX', 0.3, 1.5); range(c, 'spacingY', 0.3, 1.5);
   choice(c, 'arrayFeed', ['individual', 'tree']);
   const element = buildPatch(c, env), { W, L, feedW, lambda0 } = element.analysis;
@@ -213,7 +218,10 @@ function patchArray(c, env) {
   A.pads.push(pad((gx0 + gx1) / 2, (gy0 + gy1) / 2, { w: gx1 - gx0, h: gy1 - gy0, shape: 'rect', number: String(c.arrayRows * c.arrayCols + 1), layer: 'B.Cu', net: 'GND', role: 'ground' }));
   A.ports.push({ x: gx0, y: gy0, net: 'GND', name: 'Back ground' });
   A.outline.push({ layer: 'Edge.Cuts', pts: rect(gx0 - 0.5, gy0 - 0.5, gx1 + 0.5, gy1 + 0.5) });
-  const angles = Array.from({ length: 181 }, (_, i) => i - 90);
+  // Resolve narrow lobes as the electrical aperture grows; retain the original
+  // one-degree grid for small arrays and always include broadside exactly.
+  const samplesPerDegree = Math.max(1, Math.ceil(Math.max(c.arrayCols * c.spacingX, c.arrayRows * c.spacingY) / 4));
+  const angles = Array.from({ length: 180 * samplesPerDegree + 1 }, (_, i) => i / samplesPerDegree - 90);
   const cut = (n, spacing) => angles.map(deg => {
     const phase = 2 * Math.PI * spacing * Math.sin(deg * Math.PI / 180);
     let re = 0, im = 0;
@@ -223,7 +231,7 @@ function patchArray(c, env) {
   const notes = [...element.notes, info('Array-factor cuts assume ideal equal-amplitude, equal-phase point elements. They exclude the patch element pattern, mutual coupling and feed effects; these are not realized gain/radiation predictions.')];
   if (c.arrayFeed === 'tree') notes.push(warn('Generated feed tree uses the entered line impedance throughout. T-junction matching and electrical path balancing are not synthesized; simulate and tune before use. The ideal array-factor plot does not model this feed.'));
   else notes.push(info('Each element has its own RF_n net and port. Supply the desired amplitude/phase with an external feed network.'));
-  return finish(A, { ...element.analysis, elements: c.arrayRows * c.arrayCols, dx, dy, angles, arrayFactorX: cut(c.arrayCols, c.spacingX), arrayFactorY: cut(c.arrayRows, c.spacingY) }, notes, 'Patch estimate + ideal array factor', ['Element dimensions', 'Estimated element resonance', 'Ideal normalized array factor']);
+  return finish(A, { ...element.analysis, rows: c.arrayRows, cols: c.arrayCols, elements: c.arrayRows * c.arrayCols, boardWidth: gx1 - gx0 + 1, boardHeight: gy1 - gy0 + 1, dx, dy, angles, arrayFactorX: cut(c.arrayCols, c.spacingX), arrayFactorY: cut(c.arrayRows, c.spacingY) }, notes, 'Patch estimate + ideal array factor', ['Element dimensions', 'Estimated element resonance', 'Ideal normalized array factor']);
 }
 
 function feedTree(A, points, width, net, axis) {
