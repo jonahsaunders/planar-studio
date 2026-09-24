@@ -87,6 +87,8 @@ class SerializedVias(unittest.TestCase):
             def begin_commit(self):
                 self.events.append('begin'); self.before = self.live[:]; return 'commit'
             def create_items(self, items):
+                for i, item in enumerate(items):
+                    item.proto.id.value = f'created-{len(self.live)}-{i}'
                 self.events.append('create'); self.created = items; self.live += items; return items
             def remove_items(self, items):
                 self.events.append('remove'); self.live = [v for v in self.live if v not in items]
@@ -156,6 +158,67 @@ class SerializedVias(unittest.TestCase):
         self.assertNotIn(self.board.old, self.board.live)
         self.assertEqual(result['replaced'], 1)
 
+    def test_large_replacement_batches_share_one_commit_and_preserve_unrelated_items(self):
+        p = placement()
+        p.vias = [dict(p.vias[i % 3], x=i) for i in range(2 * k.PLACEMENT_BATCH_SIZE + 1)]
+        prior = [SimpleNamespace(id=f'old-{i}') for i in range(k.PLACEMENT_BATCH_SIZE + 1)]
+        unrelated = self.board.old
+        self.board.live.extend(prior)
+        created_sizes, removed_sizes = [], []
+        create, remove = self.board.create_items, self.board.remove_items
+        def create_batch(items):
+            created_sizes.append(len(items))
+            result = create(items)
+            for i, item in enumerate(result):
+                item.proto.id.value = f'created-{len(created_sizes)}-{i}'
+            return result
+        def remove_batch(items):
+            removed_sizes.append(len(items)); remove(items)
+        self.board.create_items, self.board.remove_items = create_batch, remove_batch
+        result = self.link.place(p, replace_ids=[v.id for v in prior])
+        self.assertEqual(created_sizes, [k.PLACEMENT_BATCH_SIZE, k.PLACEMENT_BATCH_SIZE, 1])
+        self.assertEqual(removed_sizes, [k.PLACEMENT_BATCH_SIZE, 1])
+        self.assertEqual(self.board.events, ['begin', 'create', 'create', 'create', 'remove', 'remove', 'push'])
+        self.assertEqual(len(set(result['ids'])), len(p.vias))
+        self.assertEqual(result['created'], len(p.vias))
+        self.assertEqual(result['replaced'], len(prior))
+        self.assertIn(unrelated, self.board.live)
+        self.assertFalse(any(v in self.board.live for v in prior))
+
+    def test_mid_batch_failure_or_incomplete_result_rolls_back_before_deletion(self):
+        for failure in ['raise', 'short']:
+            with self.subTest(failure=failure):
+                self.setUp()
+                p = placement()
+                p.vias = [dict(p.vias[i % 3], x=i) for i in range(k.PLACEMENT_BATCH_SIZE + 1)]
+                create = self.board.create_items
+                calls = []
+                def fail_second(items):
+                    calls.append(len(items))
+                    result = create(items)
+                    if len(calls) == 2:
+                        if failure == 'raise':
+                            raise RuntimeError('simulated second-batch failure')
+                        return []
+                    return result
+                self.board.create_items = fail_second
+                with self.assertRaises(k.LinkError):
+                    self.link.place(p, replace_ids=['old-via'])
+                self.assertEqual(self.board.events, ['begin', 'create', 'create', 'drop'])
+                self.assertEqual(self.board.live, [self.board.old])
+
+    def test_missing_created_id_rolls_back_before_replacement_deletion(self):
+        create = self.board.create_items
+        def missing_id(items):
+            result = create(items)
+            result[-1].proto.id.value = ''
+            return result
+        self.board.create_items = missing_id
+        with self.assertRaisesRegex(k.LinkError, 'unique ID for every winding item'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, ['begin', 'create', 'drop'])
+        self.assertEqual(self.board.live, [self.board.old])
+
     def test_failed_create_or_remove_restores_previous_placement(self):
         for failure in ['create', 'remove', 'push']:
             with self.subTest(failure=failure):
@@ -175,6 +238,21 @@ class SerializedVias(unittest.TestCase):
             self.link.place(placement(), replace_ids=['old-via'])
         self.assertEqual(self.board.events, [])
         self.assertEqual(self.board.live, [self.board.old])
+
+    def test_failed_rollback_reports_uncertain_board_state(self):
+        def failed_create(items):
+            self.board.events.append('create')
+            self.board.live.extend(items)
+            raise RuntimeError('IPC reply timed out')
+        def failed_drop(*_):
+            self.board.events.append('drop')
+            raise RuntimeError('rollback reply timed out')
+        self.board.create_items, self.board.drop_commit = failed_create, failed_drop
+        with self.assertRaisesRegex(k.LinkError, 'rollback could not be confirmed.*board outcome is uncertain.*before retrying'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, ['begin', 'create', 'drop'])
+        self.assertGreater(len(self.board.live), 1)
+        self.assertIn(self.board.old, self.board.live)
 
     def test_missing_rollback_api_does_not_begin_or_create(self):
         self.board.drop_commit = None

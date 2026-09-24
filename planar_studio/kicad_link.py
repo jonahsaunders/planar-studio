@@ -71,6 +71,9 @@ except Exception as exc:  # pragma: no cover
 COPPER_ORDER: List[str] = (
     ["F.Cu"] + [f"In{i}.Cu" for i in range(1, 31)] + ["B.Cu"]
 )
+# Keep individual IPC requests below the connection timeout. A complete Litz
+# winding can contain over 68,000 segments; all batches share one undo commit.
+PLACEMENT_BATCH_SIZE = 1000
 
 
 class LinkError(RuntimeError):
@@ -548,19 +551,35 @@ class KiCadLink:
             raise LinkError("KiCad did not start a transaction for PCB Litz placement; no changes made.")
 
         try:
-            created = board.create_items(items)
-            if atomic and len(created or []) != len(items):
-                raise LinkError("KiCad did not create the complete winding.")
+            if atomic:
+                created = []
+                for offset in range(0, len(items), PLACEMENT_BATCH_SIZE):
+                    batch = items[offset:offset + PLACEMENT_BATCH_SIZE]
+                    result = board.create_items(batch)
+                    if len(result or []) != len(batch):
+                        raise LinkError("KiCad did not create the complete winding.")
+                    created.extend(result)
+                created_ids = [_kiid(item) for item in created]
+                if not all(created_ids) or len(set(created_ids)) != len(created_ids):
+                    raise LinkError("KiCad did not return a unique ID for every winding item.")
+            else:
+                created = board.create_items(items)
             if victims:
-                board.remove_items(victims)
+                for offset in range(0, len(victims), PLACEMENT_BATCH_SIZE):
+                    board.remove_items(victims[offset:offset + PLACEMENT_BATCH_SIZE])
             if commit is not None and atomic:
                 board.push_commit(commit, f"Planar Studio: place {placement.name}")
         except Exception as exc:
             if commit is not None:
                 try:
                     board.drop_commit(commit)
-                except Exception:
-                    pass
+                except Exception as rollback_error:
+                    if atomic:
+                        raise LinkError(
+                            f"KiCad placement failed ({type(exc).__name__}: {exc}) and rollback could not be confirmed "
+                            f"({type(rollback_error).__name__}: {rollback_error}). The board outcome is uncertain; "
+                            "inspect the board and its undo history before retrying."
+                        ) from exc
             raise LinkError(f"KiCad rejected the placement: {type(exc).__name__}: {exc}") from exc
 
         if commit is not None and not atomic:

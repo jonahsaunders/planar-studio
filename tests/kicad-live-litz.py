@@ -53,12 +53,16 @@ if warnings:
     raise SystemExit('Refusing: the physical stack could not be verified: ' + '; '.join(warnings))
 owned = set()
 try:
+    started = time.monotonic()
     first = link.place(placement)
+    print(f"Native initial placement: {first['created']} items in {time.monotonic() - started:.2f}s", flush=True)
     owned.update(first['ids'])
     if len(first['ids']) != first['created']:
         raise RuntimeError('Native placement did not return every created item ID.')
     placement.origin = (5, 0)
+    started = time.monotonic()
     second = link.place(placement, replace_ids=first['ids'])
+    print(f"Native replacement: {second['created']} items in {time.monotonic() - started:.2f}s", flush=True)
     owned.update(second['ids'])
     actual = {k._kiid(item) for item in inventory()}
     if actual != set(second['ids']) or actual.intersection(first['ids']):

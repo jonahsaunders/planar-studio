@@ -159,8 +159,8 @@ The stack drawing and layer-pair drill inventory are review aids. The CSV
 inventory is not an Excellon drill program.
 
 The fabricator must approve adjacent-layer blind/buried via pairs, sequential
-lamination, drill sizes, registration and plating. Live IPC placement in a
-running KiCad application remains untested in the implementation environment.
+lamination, drill sizes, registration and plating. The live IPC check runs in
+the isolated GUI CI job; the local implementation environment cannot host KiCad.
 Controlled Python API fixtures and serialization checks are useful but do not
 substitute for that live-host test.
 
@@ -295,8 +295,14 @@ verification gate for pushes to `experimental/pcb-litz` and manual dispatch:
 | KiCad CLI | Install KiCad 9; parse the generated preset board with an outline, run native DRC, then generate Gerber/Excellon output using `--require-cli` |
 | KiCad GUI, in the same job | Launch a disposable board and isolated configuration under Xvfb; verify native placement, replacement, via spans and two GUI undo operations |
 
-The native parser, DRC, Gerber and Excellon gate passed on **KiCad 9.0.9** in
-[run 36069788484](https://github.com/jonahsaunders/planar-studio/actions/runs/36069788484), with zero DRC violations, unconnected items or schematic-parity issues. That run exposed separate browser-harness and GUI-startup failures; a successful manufacturing gate does not establish their success. Check the latest workflow run for every gate’s current status.
+The native parser, DRC, Gerber and Excellon gate passed on **KiCad 9.0.9**, with
+zero DRC violations, unconnected items or schematic-parity issues. The full
+rendered browser workflow and package build also passed in
+[run 36070748180](https://github.com/jonahsaunders/planar-studio/actions/runs/36070748180).
+The native artifacts contain 120 F.Cu–In1.Cu, 240 In1.Cu–In2.Cu and 120
+In2.Cu–B.Cu drill hits, two terminal through holes, and exactly two openings
+on each outer solder-mask layer. The live GUI placement/replacement/undo gate
+is separate; check the latest workflow run for every gate’s current status.
 
 The local implementation environment could not run the rendered-browser suite because Chromium socket
 creation was blocked, and native CLI fabrication verification was unavailable
