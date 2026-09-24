@@ -1,0 +1,326 @@
+"""Layer-span serialization and transaction failures, without a KiCad GUI."""
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+from planar_studio import kicad_link as k
+from planar_studio.app import Application
+from planar_studio.server import Api, RpcError
+
+STACK = ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu']
+
+
+def placement(spans=None):
+    spans = spans or [('F.Cu', 'In1.Cu'), ('In1.Cu', 'In2.Cu'), ('In2.Cu', 'B.Cu')]
+    return k.Placement.from_payload({'name': 'Litz', 'designId': 'litz-1', 'boardLayers': STACK, 'origin': [10, 20],
+        'vias': [{'x': i, 'y': 2, 'diameter': 0.6, 'drill': 0.3, 'from': a, 'to': b,
+                  'viaType': 'blind_buried', 'strandId': f'strand-{i}'} for i, (a, b) in enumerate(spans)]})
+
+
+class SpanValidation(unittest.TestCase):
+    def test_legacy_numeric_indexes_remain_full_span(self):
+        self.assertEqual(k._via_span({'from': 0, 'to': 1}), ('F.Cu', 'B.Cu', 'through'))
+
+    def test_invalid_span_rejected_before_any_board_operation(self):
+        bad = [
+            {'from': 'In1.Cu', 'to': 'In2.Cu'},
+            {'from': 'B.Cu', 'to': 'F.Cu', 'viaType': 'blind_buried'},
+            {'from': 'In1.Cu', 'to': 'In1.Cu', 'viaType': 'blind_buried'},
+            {'from': 'F.Cu', 'to': 'B.Cu', 'viaType': 'blind_buried'},
+            {'from': 'Invalid.Cu', 'to': 'B.Cu', 'viaType': 'blind_buried'},
+            {'from': 0, 'to': 1, 'viaType': 'blind_buried'},
+        ]
+        link = k.KiCadLink()
+        link._board = lambda: self.fail('Invalid payload must fail before a board read')
+        for spec in bad:
+            with self.subTest(spec=spec), self.assertRaises(k.LinkError):
+                link.preflight(k.Placement(vias=[spec]))
+
+    def test_unknown_live_stack_blocks_before_api_serialization(self):
+        link = k.KiCadLink(); link._board = lambda: object()
+        with self.assertRaisesRegex(k.LinkError, 'Cannot verify the live board copper stack'):
+            link.preflight(placement())
+
+    def test_missing_binding_rejected_without_dynamic_attribute_fallback(self):
+        with patch.object(k, 'ViaType', SimpleNamespace(VT_BLIND_BURIED=2)):
+            with self.assertRaisesRegex(k.LinkError, 'Cannot safely place blind/buried'):
+                k._configure_partial_via(SimpleNamespace(), placement().vias[0], STACK)
+
+    def test_rpc_preflight_failure_keeps_previous_placement(self):
+        app = Application.__new__(Application)
+        app.api = Api()
+        app.link = SimpleNamespace(preflight=lambda _: (_ for _ in ()).throw(k.LinkError('unsupported spans')))
+        app.store = SimpleNamespace()  # Any attempt to read or forget prior state fails.
+        app._register()
+        with self.assertRaisesRegex(RpcError, 'unsupported spans'):
+            app.api.call('board.place', {'replace': True, 'placement': {'vias': placement().vias}})
+
+    def test_rpc_defers_replacement_to_transaction_and_records_only_success(self):
+        app = Application.__new__(Application)
+        app.api = Api()
+        events = []
+        def place(value, net_name=None, replace_ids=None):
+            events.append(('place', replace_ids))
+            return {'ids': ['new-via'], 'created': 1, 'replaced': 1}
+        app.link = SimpleNamespace(preflight=lambda _: events.append(('preflight',)),
+            board_context=lambda: {'name': 'board'}, place=place)
+        app.store = SimpleNamespace(get_placement=lambda *_: {'ids': ['old-via']},
+            record_placement=lambda *args, **_: events.append(('record', args[2])))
+        app._register()
+        result = app.api.call('board.place', {'replace': True, 'placement': {'vias': placement().vias}})
+        self.assertEqual(events, [('preflight',), ('place', ['old-via']), ('record', ['new-via'])])
+        self.assertEqual(result['replaced'], 1)
+
+
+@unittest.skipUnless(k.HAVE_KIPY, 'Install requirements.txt to test actual IPC serialization')
+class SerializedVias(unittest.TestCase):
+    def setUp(self):
+        class Board:
+            def __init__(self):
+                self.events = []
+                self.old = SimpleNamespace(id='old-via')
+                self.live = [self.old]
+            def get_enabled_layers(self): return [k._resolve_layer(n) for n in STACK]
+            def get_tracks(self): return []
+            def get_vias(self): return self.live[:]
+            def get_footprints(self): return []
+            def get_text(self): return []
+            def begin_commit(self):
+                self.events.append('begin'); self.before = self.live[:]; return 'commit'
+            def create_items(self, items):
+                for i, item in enumerate(items):
+                    item.proto.id.value = f'created-{len(self.live)}-{i}'
+                self.events.append('create'); self.created = items; self.live += items; return items
+            def remove_items(self, items):
+                self.events.append('remove'); self.live = [v for v in self.live if v not in items]
+            def push_commit(self, *args): self.events.append('push')
+            def drop_commit(self, *args): self.events.append('drop'); self.live = self.before[:]
+        self.board = Board()
+        self.link = k.KiCadLink()
+        self.link._board = lambda: self.board
+        self.link._placement_board = lambda expected: expected
+
+    def test_operation_connection_has_long_timeout_and_exact_document_guard(self):
+        from kipy.board import Board
+        from kipy.proto.common.types import DocumentSpecifier
+        doc = DocumentSpecifier(board_filename='pcb-litz.kicad_pcb')
+        doc.project.path = '/tmp/owned-project'
+        expected = Board(None, doc)
+        link = k.KiCadLink('test')
+        status_client = object(); link._kicad = status_client
+        with patch.object(k, 'KiCad', return_value=SimpleNamespace(get_board=lambda: expected)) as ctor:
+            self.assertIs(link._placement_board(expected), expected)
+        self.assertEqual(ctor.call_args.kwargs['timeout_ms'], 60_000)
+        self.assertTrue(ctor.call_args.kwargs['client_name'].startswith('test placement '))
+        self.assertIs(link._kicad, status_client)
+        other = DocumentSpecifier(); other.CopyFrom(doc); other.project.path = '/tmp/unrelated-project'
+        with patch.object(k, 'KiCad', return_value=SimpleNamespace(get_board=lambda: Board(None, other))):
+            with self.assertRaisesRegex(k.LinkError, 'board changed.*no changes made'):
+                link._placement_board(expected)
+
+    def test_preflight_uses_explicit_transaction_board(self):
+        self.link._board = lambda: self.fail('Preflight must not reacquire a status board')
+        self.assertEqual(self.link.preflight(placement(), board=self.board), [])
+
+    def test_front_inner_back_spans_survive_protobuf_round_trip(self):
+        from kipy.board_types import Via, ViaType
+        result = self.link.place(placement())
+        self.assertEqual(result['created'], 3)
+        for i, (item, spec) in enumerate(zip(self.board.created, placement().vias)):
+            proto = type(item.proto)(); proto.ParseFromString(item.proto.SerializeToString())
+            v = Via(proto=proto)
+            self.assertEqual(v.type, ViaType.VT_BLIND_BURIED)
+            self.assertEqual(v.padstack.drill.start_layer, k._resolve_layer(spec['from']))
+            self.assertEqual(v.padstack.drill.end_layer, k._resolve_layer(spec['to']))
+            self.assertEqual(list(v.padstack.layers), [k._resolve_layer(spec['from']), k._resolve_layer(spec['to'])])
+            self.assertEqual(v.diameter, k.from_mm(0.6))
+            self.assertEqual(v.drill_diameter, k.from_mm(0.3))
+            self.assertEqual((v.position.x, v.position.y), (k.from_mm(10 + i), k.from_mm(22)))
+        self.assertEqual(self.board.events, ['begin', 'create', 'push'])
+
+    def test_spans_include_intermediate_enabled_layers(self):
+        self.link.place(placement([('F.Cu', 'In2.Cu')]))
+        self.assertEqual(list(self.board.created[0].padstack.layers), [k._resolve_layer(n) for n in STACK[:3]])
+
+    def test_terminal_mask_openings_survive_protobuf_and_preflight(self):
+        from kipy.board_types import Via, SolderMaskMode
+        p = placement()
+        p.vias.append({'x': 4, 'y': 5, 'diameter': 1.6, 'drill': 0.8, 'exposedTerminal': True})
+        self.link.place(p)
+        proto = type(self.board.created[-1].proto)()
+        proto.ParseFromString(self.board.created[-1].proto.SerializeToString())
+        terminal = Via(proto=proto)
+        for surface in (terminal.padstack.front_outer_layers, terminal.padstack.back_outer_layers):
+            self.assertEqual(surface.solder_mask_mode, SolderMaskMode.SMM_UNMASKED)
+        self.setUp()
+        with patch.object(k, 'Via', SimpleNamespace), self.assertRaisesRegex(k.LinkError, 'Cannot expose PCB Litz solder terminals'):
+            self.link.place(p, replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+
+    def test_mismatched_live_stack_and_unavailable_layer_block_without_commit(self):
+        self.board.get_enabled_layers = lambda: [k._resolve_layer(n) for n in ['F.Cu', 'B.Cu']]
+        with self.assertRaisesRegex(k.LinkError, 'stack differs'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        p = placement(); p.board_layers = []
+        with self.assertRaisesRegex(k.LinkError, 'not enabled'):
+            self.link.place(p, replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+        self.assertEqual(self.board.live, [self.board.old])
+
+    def test_unsupported_binding_and_bad_dimensions_block_before_commit(self):
+        with patch.object(k, 'ViaType', None):
+            with self.assertRaisesRegex(k.LinkError, 'Cannot safely place'):
+                self.link.place(placement(), replace_ids=['old-via'])
+        p = placement(); p.vias[0]['diameter'] = 0.2
+        with self.assertRaisesRegex(k.LinkError, 'positive drill'):
+            self.link.place(p)
+        self.assertEqual(self.board.events, [])
+
+    def test_replacement_is_created_then_removed_in_one_commit(self):
+        result = self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, ['begin', 'create', 'remove', 'push'])
+        self.assertNotIn(self.board.old, self.board.live)
+        self.assertEqual(result['replaced'], 1)
+
+    def test_replacement_and_removal_include_owned_text_and_preserve_other_text(self):
+        owned_text = SimpleNamespace(id='old-label')
+        unrelated_text = SimpleNamespace(id='unrelated-label')
+        self.board.live.extend([owned_text, unrelated_text])
+        self.board.get_vias = lambda: [v for v in self.board.live if v not in (owned_text, unrelated_text)]
+        self.board.get_text = lambda: [v for v in self.board.live if v in (owned_text, unrelated_text)]
+        result = self.link.place(placement(), replace_ids=['old-via', 'old-label'])
+        self.assertEqual(result['replaced'], 2)
+        self.assertNotIn(owned_text, self.board.live)
+        self.assertIn(unrelated_text, self.board.live)
+        self.board.live.append(owned_text)
+        self.assertEqual(self.link.remove_ids(['old-label']), {'removed': 1})
+        self.assertNotIn(owned_text, self.board.live)
+        self.assertIn(unrelated_text, self.board.live)
+
+    def test_large_replacement_batches_share_one_commit_and_preserve_unrelated_items(self):
+        p = placement()
+        p.vias = [dict(p.vias[i % 3], x=i) for i in range(2 * k.PLACEMENT_BATCH_SIZE + 1)]
+        prior = [SimpleNamespace(id=f'old-{i}') for i in range(k.PLACEMENT_BATCH_SIZE + 1)]
+        unrelated = self.board.old
+        self.board.live.extend(prior)
+        created_sizes, removed_sizes = [], []
+        create, remove = self.board.create_items, self.board.remove_items
+        def create_batch(items):
+            created_sizes.append(len(items))
+            result = create(items)
+            for i, item in enumerate(result):
+                item.proto.id.value = f'created-{len(created_sizes)}-{i}'
+            return result
+        def remove_batch(items):
+            removed_sizes.append(len(items)); remove(items)
+        self.board.create_items, self.board.remove_items = create_batch, remove_batch
+        result = self.link.place(p, replace_ids=[v.id for v in prior])
+        self.assertEqual(created_sizes, [k.PLACEMENT_BATCH_SIZE, k.PLACEMENT_BATCH_SIZE, 1])
+        self.assertEqual(removed_sizes, [k.PLACEMENT_BATCH_SIZE, 1])
+        self.assertEqual(self.board.events, ['begin', 'create', 'create', 'create', 'remove', 'remove', 'push'])
+        self.assertEqual(len(set(result['ids'])), len(p.vias))
+        self.assertEqual(result['created'], len(p.vias))
+        self.assertEqual(result['replaced'], len(prior))
+        self.assertIn(unrelated, self.board.live)
+        self.assertFalse(any(v in self.board.live for v in prior))
+
+    def test_mid_batch_failure_or_incomplete_result_rolls_back_before_deletion(self):
+        for failure in ['raise', 'short']:
+            with self.subTest(failure=failure):
+                self.setUp()
+                p = placement()
+                p.vias = [dict(p.vias[i % 3], x=i) for i in range(k.PLACEMENT_BATCH_SIZE + 1)]
+                create = self.board.create_items
+                calls = []
+                def fail_second(items):
+                    calls.append(len(items))
+                    result = create(items)
+                    if len(calls) == 2:
+                        if failure == 'raise':
+                            raise RuntimeError('simulated second-batch failure')
+                        return []
+                    return result
+                self.board.create_items = fail_second
+                with self.assertRaises(k.LinkError):
+                    self.link.place(p, replace_ids=['old-via'])
+                self.assertEqual(self.board.events, ['begin', 'create', 'create', 'drop'])
+                self.assertEqual(self.board.live, [self.board.old])
+
+    def test_missing_created_id_rolls_back_before_replacement_deletion(self):
+        create = self.board.create_items
+        def missing_id(items):
+            result = create(items)
+            result[-1].proto.id.value = ''
+            return result
+        self.board.create_items = missing_id
+        with self.assertRaisesRegex(k.LinkError, 'unique ID for every winding item'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, ['begin', 'create', 'drop'])
+        self.assertEqual(self.board.live, [self.board.old])
+
+    def test_failed_create_or_remove_restores_previous_placement(self):
+        for failure in ['create', 'remove', 'push']:
+            with self.subTest(failure=failure):
+                self.setUp()
+                def fail(*args):
+                    self.board.events.append(failure)
+                    raise RuntimeError('simulated IPC failure')
+                setattr(self.board, {'create': 'create_items', 'remove': 'remove_items', 'push': 'push_commit'}[failure], fail)
+                with self.assertRaisesRegex(k.LinkError, 'simulated IPC failure'):
+                    self.link.place(placement(), replace_ids=['old-via'])
+                self.assertEqual(self.board.events[-1], 'drop')
+                self.assertEqual(self.board.live, [self.board.old])
+
+    def test_missing_transaction_does_not_create_any_items(self):
+        self.board.begin_commit = lambda: None
+        with self.assertRaisesRegex(k.LinkError, 'did not start a transaction'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+        self.assertEqual(self.board.live, [self.board.old])
+
+    def test_failed_rollback_reports_uncertain_board_state(self):
+        def failed_create(items):
+            self.board.events.append('create')
+            self.board.live.extend(items)
+            raise RuntimeError('IPC reply timed out')
+        def failed_drop(*_):
+            self.board.events.append('drop')
+            raise RuntimeError('rollback reply timed out')
+        self.board.create_items, self.board.drop_commit = failed_create, failed_drop
+        with self.assertRaisesRegex(k.LinkError, 'rollback could not be confirmed.*board outcome is uncertain.*before retrying'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, ['begin', 'create', 'drop'])
+        self.assertGreater(len(self.board.live), 1)
+        self.assertIn(self.board.old, self.board.live)
+
+    def test_missing_rollback_api_does_not_begin_or_create(self):
+        self.board.drop_commit = None
+        with self.assertRaisesRegex(k.LinkError, 'complete undo transaction'):
+            self.link.place(placement(), replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+        self.assertEqual(self.board.live, [self.board.old])
+
+    def test_live_physical_stack_matches_or_rejects_before_mutation(self):
+        from kipy.board import BoardStackup
+        from kipy.proto.board import board_pb2
+        proto = board_pb2.BoardStackup()
+        for i, name in enumerate(STACK):
+            copper = proto.layers.add(); copper.layer = k._resolve_layer(name); copper.thickness.value_nm = k.from_mm(0.07)
+            if i < 3:
+                dielectric = proto.layers.add(); dielectric.thickness.value_nm = k.from_mm([0.4, 0.5, 0.4][i])
+        self.board.get_stackup = lambda: BoardStackup(proto)
+        p = placement(); p.physical_stack = {'copperThicknessMM': 0.07, 'dielectricThicknessMM': [0.4, 0.5, 0.4], 'boardThicknessMM': 1.58}
+        self.assertEqual(self.link.preflight(p), [])
+        proto.layers[3].thickness.value_nm = k.from_mm(0.6)
+        with self.assertRaisesRegex(k.LinkError, 'dielectric thicknesses differ'):
+            self.link.place(p, replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+
+    def test_unavailable_physical_stack_returns_explicit_warning(self):
+        p = placement(); p.physical_stack = {'copperThicknessMM': 0.07, 'dielectricThicknessMM': [0.4, 0.5, 0.4], 'boardThicknessMM': 1.58}
+        result = self.link.place(p)
+        self.assertIn('could not verify copper and dielectric', result['warnings'][0])
+
+
+if __name__ == '__main__':
+    unittest.main()

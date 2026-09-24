@@ -27,6 +27,7 @@ import platform
 import sys
 import threading
 import time
+import uuid
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -34,6 +35,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 # Optional import. Absence is a supported state, not an error.
 # --------------------------------------------------------------------------
 KIPY_IMPORT_ERROR: Optional[str] = None
+ViaType: Any = None
 try:  # pragma: no cover - depends on the host environment
     import kipy  # type: ignore
     from kipy import KiCad  # type: ignore
@@ -49,6 +51,11 @@ try:  # pragma: no cover - depends on the host environment
     from kipy.util import from_mm, to_mm  # type: ignore
 
     HAVE_KIPY = True
+    # Keep older bindings usable for ordinary through-hole designs.
+    try:
+        from kipy.board_types import ViaType  # type: ignore
+    except ImportError:
+        pass
 except Exception as exc:  # pragma: no cover
     HAVE_KIPY = False
     KIPY_IMPORT_ERROR = f"{type(exc).__name__}: {exc}"
@@ -65,6 +72,10 @@ except Exception as exc:  # pragma: no cover
 COPPER_ORDER: List[str] = (
     ["F.Cu"] + [f"In{i}.Cu" for i in range(1, 31)] + ["B.Cu"]
 )
+# Keep individual IPC requests below the connection timeout. A complete Litz
+# winding can contain over 68,000 segments; all batches share one undo commit.
+PLACEMENT_BATCH_SIZE = 1000
+PLACEMENT_TIMEOUT_MS = 60_000
 
 
 class LinkError(RuntimeError):
@@ -87,6 +98,8 @@ class Placement:
     vias: List[Dict[str, Any]] = field(default_factory=list)
     pads: List[Dict[str, Any]] = field(default_factory=list)
     texts: List[Dict[str, Any]] = field(default_factory=list)
+    board_layers: List[str] = field(default_factory=list)
+    physical_stack: Dict[str, Any] = field(default_factory=dict)
     origin: Tuple[float, float] = (0.0, 0.0)
 
     @classmethod
@@ -100,6 +113,8 @@ class Placement:
             vias=list(payload.get("vias") or []),
             texts=list(payload.get("texts") or []),
             pads=list(payload.get("pads") or []),
+            board_layers=list(payload.get("boardLayers") or []),
+            physical_stack=dict(payload.get("physicalStack") or {}),
             origin=(float(origin[0]), float(origin[1])),
         )
 
@@ -207,6 +222,32 @@ class KiCadLink:
     def invalidate(self) -> None:
         with self._lock:
             self._kicad = None
+
+    def _placement_board(self, expected: Any) -> Any:
+        """Use a bounded operation connection without slowing status requests.
+
+        KiCad can take several seconds to rebuild connectivity at EndCommit.
+        Its public constructor configures the timeout; private sockets are not
+        modified. All transaction commands use this connection and document.
+        """
+        document = getattr(expected, "document", None)
+        if document is None:
+            raise LinkError("Cannot verify the native board document before placement; no changes made.")
+        kwargs: Dict[str, Any] = {"client_name": f"{self._client_name} placement {uuid.uuid4().hex[:8]}",
+                                  "timeout_ms": PLACEMENT_TIMEOUT_MS}
+        sock = _socket_path()
+        if sock:
+            kwargs["socket_path"] = sock
+        token = os.environ.get("KICAD_API_TOKEN")
+        if token:
+            kwargs["kicad_token"] = token
+        try:
+            board = KiCad(**kwargs).get_board()  # type: ignore[name-defined]
+        except Exception as exc:
+            raise LinkError(f"Cannot establish the native placement connection; no changes made: {exc}") from exc
+        if board is None or getattr(board, "document", None) != document:
+            raise LinkError("The active native board changed before placement; no changes made.")
+        return board
 
     # ----------------------------------------------------------------- status
 
@@ -332,7 +373,7 @@ class KiCadLink:
 
     # ------------------------------------------------------------------ nets
 
-    def resolve_net(self, name: Optional[str]) -> Any:
+    def resolve_net(self, name: Optional[str], board: Any = None) -> Any:
         """Return the board's Net object for `name`, or None.
 
         The API has no way to create a net, so an unknown name yields None and
@@ -342,7 +383,7 @@ class KiCadLink:
         if not name:
             return None
         try:
-            board = self._board()
+            board = board if board is not None else self._board()
             for net in board.get_nets():
                 if str(getattr(net, "name", "")) == name:
                     return net
@@ -352,13 +393,52 @@ class KiCadLink:
 
     # ----------------------------------------------------------------- place
 
-    def place(self, placement: Placement, net_name: Optional[str] = None) -> Dict[str, Any]:
+    def preflight(self, placement: Placement, board: Any = None) -> List[str]:
+        """Check partial vias without changing the board, before replacement too.
+
+        The front-end stack is never evidence of the live board's layer set.
+        In particular, an In2.Cu-to-B.Cu span on a six-layer board crosses two
+        more copper layers than that same named pair on a four-layer board.
+        """
+        spans = [_via_span(spec) for spec in placement.vias]
+        if any(spec.get("exposedTerminal") for spec in placement.vias):
+            _configure_exposed_terminal(Via())  # type: ignore[name-defined]
+        partial = [span for span in spans if span[2] == "blind_buried"]
+        if not partial:
+            return []
+        board = board if board is not None else self._board()
+        layers = _board_copper_layers(board)
+        if placement.board_layers and placement.board_layers != layers:
+            raise LinkError("The live board copper stack differs from this PCB Litz design. Match the board stack or export a .kicad_pcb board.")
+        for spec in placement.tracks + placement.arcs + placement.pads:
+            if spec.get("layer") not in layers:
+                raise LinkError(f"PCB Litz copper layer {spec.get('layer')!r} is not enabled on the live board.")
+        checked = set()
+        for spec, span in zip(placement.vias, spans):
+            if span[2] != "blind_buried":
+                continue
+            if span[0] not in layers or span[1] not in layers:
+                raise LinkError("A blind/buried via endpoint is not enabled on the live board. Match the copper stack or export a .kicad_pcb board.")
+            key = (span, spec.get("diameter", 0.6), spec.get("drill", 0.3))
+            if key not in checked:
+                _configure_partial_via(Via(), spec, layers)  # type: ignore[name-defined]
+                checked.add(key)
+        return _check_physical_stack(board, layers, placement.physical_stack)
+
+    def place(self, placement: Placement, net_name: Optional[str] = None, replace_ids: Optional[Sequence[str]] = None) -> Dict[str, Any]:
         """Create every item in one commit. All of it lands, or none of it."""
         board = self._board()
+        partial = any(_via_span(s)[2] == "blind_buried" for s in placement.vias)
+        atomic = bool(partial or replace_ids)
+        if atomic:
+            board = self._placement_board(board)
+        stack_warnings = self.preflight(placement, board=board)
+        partial_layers = _board_copper_layers(board) if partial else []
         items: List[Any] = []
         skipped: List[str] = []
 
-        net = self.resolve_net(net_name)
+        resolve = (lambda name: self.resolve_net(name, board=board)) if atomic else self.resolve_net
+        net = resolve(net_name)
         net_cache: Dict[str, Any] = {}
 
         def net_for(spec: Dict[str, Any]) -> Any:
@@ -366,7 +446,7 @@ class KiCadLink:
             if not nm:
                 return net
             if nm not in net_cache:
-                net_cache[nm] = self.resolve_net(nm)
+                net_cache[nm] = resolve(nm)
             return net_cache[nm]
 
         ox, oy = placement.origin
@@ -415,11 +495,16 @@ class KiCadLink:
             v.position = Vector2.from_xy(  # type: ignore[name-defined]
                 from_mm(float(spec["x"]) + ox), from_mm(float(spec["y"]) + oy)
             )
-            try:
-                v.diameter = from_mm(float(spec.get("diameter", 0.6)))
-                v.drill_diameter = from_mm(float(spec.get("drill", 0.3)))
-            except Exception as exc:
-                skipped.append(f"via size ({type(exc).__name__})")
+            if _via_span(spec)[2] == "blind_buried":
+                _configure_partial_via(v, spec, partial_layers)
+            else:
+                try:
+                    v.diameter = from_mm(float(spec.get("diameter", 0.6)))
+                    v.drill_diameter = from_mm(float(spec.get("drill", 0.3)))
+                except Exception as exc:
+                    skipped.append(f"via size ({type(exc).__name__})")
+            if spec.get("exposedTerminal"):
+                _configure_exposed_terminal(v)
             n = net_for(spec)
             if n is not None:
                 v.net = n
@@ -475,30 +560,68 @@ class KiCadLink:
         if not items:
             return {"created": 0, "ids": [], "skipped": skipped}
 
+        victims: List[Any] = []
+        if replace_ids:
+            wanted = set(replace_ids)
+            try:
+                victims = [item for item in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) + list(board.get_text()) if _kiid(item) in wanted]
+            except Exception as exc:
+                raise LinkError(f"Cannot inspect the previous placement; no changes made: {exc}") from exc
+
+        if atomic and not all(callable(getattr(board, name, None)) for name in ("begin_commit", "push_commit", "drop_commit", "create_items")):
+            raise LinkError("KiCad must support a complete undo transaction for PCB Litz placement. Export a .kicad_pcb board instead.")
+        if victims and not callable(getattr(board, "remove_items", None)):
+            raise LinkError("This KiCad binding cannot replace the previous placement; no changes made.")
         commit = None
         try:
             commit = board.begin_commit()
-        except Exception:
+        except Exception as exc:
+            if atomic:
+                raise LinkError("KiCad must support an undo transaction for PCB Litz placement. Export a .kicad_pcb board instead.") from exc
             commit = None
+        if atomic and commit is None:
+            raise LinkError("KiCad did not start a transaction for PCB Litz placement; no changes made.")
 
         try:
-            created = board.create_items(items)
+            if atomic:
+                created = []
+                for offset in range(0, len(items), PLACEMENT_BATCH_SIZE):
+                    batch = items[offset:offset + PLACEMENT_BATCH_SIZE]
+                    result = board.create_items(batch)
+                    if len(result or []) != len(batch):
+                        raise LinkError("KiCad did not create the complete winding.")
+                    created.extend(result)
+                created_ids = [_kiid(item) for item in created]
+                if not all(created_ids) or len(set(created_ids)) != len(created_ids):
+                    raise LinkError("KiCad did not return a unique ID for every winding item.")
+            else:
+                created = board.create_items(items)
+            if victims:
+                for offset in range(0, len(victims), PLACEMENT_BATCH_SIZE):
+                    board.remove_items(victims[offset:offset + PLACEMENT_BATCH_SIZE])
+            if commit is not None and atomic:
+                board.push_commit(commit, f"Planar Studio: place {placement.name}")
         except Exception as exc:
             if commit is not None:
                 try:
                     board.drop_commit(commit)
-                except Exception:
-                    pass
+                except Exception as rollback_error:
+                    if atomic:
+                        raise LinkError(
+                            f"KiCad placement failed ({type(exc).__name__}: {exc}) and rollback could not be confirmed "
+                            f"({type(rollback_error).__name__}: {rollback_error}). The board outcome is uncertain; "
+                            "inspect the board and its undo history before retrying."
+                        ) from exc
             raise LinkError(f"KiCad rejected the placement: {type(exc).__name__}: {exc}") from exc
 
-        if commit is not None:
+        if commit is not None and not atomic:
             try:
                 board.push_commit(commit, f"Planar Studio: place {placement.name}")
             except Exception:
                 pass
 
         ids = [_kiid(c) for c in (created or [])]
-        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped}
+        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped, "replaced": len(victims), "warnings": stack_warnings}
 
     # ---------------------------------------------------------------- delete
 
@@ -516,6 +639,9 @@ class KiCadLink:
                 if _kiid(item) in wanted:
                     victims.append(item)
             for item in board.get_footprints():
+                if _kiid(item) in wanted:
+                    victims.append(item)
+            for item in board.get_text():
                 if _kiid(item) in wanted:
                     victims.append(item)
         except Exception as exc:
@@ -602,6 +728,145 @@ class KiCadLink:
 # --------------------------------------------------------------------------
 
 _LAYER_CACHE: Dict[str, Any] = {}
+
+
+def _via_span(spec: Dict[str, Any]) -> Tuple[str, str, str]:
+    """Numeric from/to fields in old designs were routing indexes, not spans."""
+    start, end = spec.get("from"), spec.get("to")
+    kind = spec.get("viaType") or "through"
+    if kind not in ("through", "blind_buried"):
+        raise LinkError(f"Unsupported via type {kind!r}.")
+    if not isinstance(start, str) and not isinstance(end, str) and kind == "through":
+        return "F.Cu", "B.Cu", kind
+    if start not in COPPER_ORDER or end not in COPPER_ORDER or COPPER_ORDER.index(start) >= COPPER_ORDER.index(end):
+        raise LinkError("Via endpoints must be existing canonical copper layer names in front-to-back order.")
+    full = start == "F.Cu" and end == "B.Cu"
+    if kind == "through" and not full:
+        raise LinkError("Partial-layer vias require viaType: blind_buried; refusing to substitute through vias.")
+    if kind == "blind_buried" and full:
+        raise LinkError("A blind/buried via must span less than the full board stack.")
+    return start, end, kind
+
+
+def _board_copper_layers(board: Any) -> List[str]:
+    """Read enabled copper, never the global enum of all possible layers."""
+    names: List[str] = []
+    try:
+        enabled = {_layer_name(layer) for layer in board.get_enabled_layers()}
+        names = [name for name in COPPER_ORDER if name in enabled]
+    except Exception:
+        pass
+    if not names:
+        try:
+            copper, _, _ = _read_stackup(board.get_stackup())
+            names = [entry["name"] for entry in copper]
+        except Exception:
+            pass
+    if not names:
+        try:
+            count = board.get_copper_layer_count()
+            if isinstance(count, int) and 2 <= count <= 32 and not count % 2:
+                names = ["F.Cu"] + [f"In{i}.Cu" for i in range(1, count - 1)] + ["B.Cu"]
+        except Exception:
+            pass
+    expected = ["F.Cu"] + [f"In{i}.Cu" for i in range(1, len(names) - 1)] + ["B.Cu"]
+    if len(names) < 2 or len(names) > 32 or len(names) % 2 or names != expected:
+        raise LinkError("Cannot verify the live board copper stack for blind/buried vias. Export a .kicad_pcb board or use compatible KiCad IPC bindings.")
+    return names
+
+
+def _check_physical_stack(board: Any, layers: List[str], expected: Dict[str, Any]) -> List[str]:
+    """Compare modeled copper/gap thicknesses when the host exposes the stack."""
+    if not expected:
+        return []
+    t = expected.get("copperThicknessMM")
+    gaps = expected.get("dielectricThicknessMM")
+    total = expected.get("boardThicknessMM")
+    if not isinstance(t, (int, float)) or not math.isfinite(t) or t <= 0 or not isinstance(gaps, list) or len(gaps) != len(layers) - 1 or any(not isinstance(g, (int, float)) or not math.isfinite(g) or g <= 0 for g in gaps):
+        raise LinkError("PCB Litz physical stack metadata is invalid.")
+    if not isinstance(total, (int, float)) or not math.isfinite(total) or abs(total - len(layers) * t - sum(gaps)) > 0.005:
+        raise LinkError("PCB Litz total board thickness disagrees with its modeled stack.")
+    unavailable = ["Native placement could not verify copper and dielectric thicknesses. Match the live board to the exported stack before using the modeled electrical results."]
+    try:
+        entries = list(board.get_stackup().layers)
+    except Exception:
+        return unavailable
+    actual_copper = []
+    actual_gaps = []
+    between = 0.0
+    names = []
+    for entry in entries:
+        name = _layer_name(getattr(entry, "layer", None))
+        raw = getattr(entry, "thickness", None)
+        if not isinstance(raw, (int, float)) or raw <= 0:
+            if name in layers:
+                return unavailable
+            continue
+        thickness = to_mm(int(raw))
+        if name in layers:
+            if names:
+                actual_gaps.append(between)
+            names.append(name)
+            actual_copper.append(thickness)
+            between = 0.0
+        elif names and len(names) < len(layers):
+            between += thickness
+    if names != layers or len(actual_gaps) != len(gaps) or any(g <= 0 for g in actual_gaps):
+        return unavailable
+    if any(abs(value - t) > 0.005 for value in actual_copper) or any(abs(a - b) > 0.005 for a, b in zip(actual_gaps, gaps)):
+        raise LinkError("The live board copper or dielectric thicknesses differ from this PCB Litz model. Match the stack or export a .kicad_pcb board; no changes made.")
+    return []
+
+
+def _configure_exposed_terminal(v: Any) -> None:
+    """Solder terminals need explicit front/back mask openings, regardless of board defaults."""
+    try:
+        from kipy.board_types import SolderMaskMode
+        mode = SolderMaskMode.SMM_UNMASKED
+        for surface in (v.padstack.front_outer_layers, v.padstack.back_outer_layers):
+            if not hasattr(surface, "solder_mask_mode"):
+                raise AttributeError("PadStack outer-layer mask overrides are required")
+            surface.solder_mask_mode = mode
+            if surface.solder_mask_mode != mode:
+                raise ValueError("binding did not preserve the terminal mask opening")
+    except Exception as exc:
+        raise LinkError(f"Cannot expose PCB Litz solder terminals with this KiCad binding ({exc}). Export a .kicad_pcb board or update KiCad/kicad-python.") from exc
+
+
+def _configure_partial_via(v: Any, spec: Dict[str, Any], layers: List[str]) -> None:
+    """Use the documented kicad-python Via/PadStack/DrillProperties API.
+
+    Via.type and Via.diameter have padstack side effects, so set both before
+    the enabled layers and drill endpoints. Read back from the wrapper to
+    detect bindings that cannot preserve the span before touching the board.
+    https://docs.kicad.org/kicad-python/board.html#kipy.board_types.Via
+    """
+    start, end, _ = _via_span(spec)
+    try:
+        diameter, drill = float(spec.get("diameter", 0.6)), float(spec.get("drill", 0.3))
+        if not all(math.isfinite(n) for n in (diameter, drill)) or not 0 < drill < diameter:
+            raise ValueError("via diameter must exceed its positive drill diameter")
+        kind = getattr(ViaType, "VT_BLIND_BURIED", None)
+        if kind is None or not hasattr(v, "type") or not hasattr(v, "padstack"):
+            raise AttributeError("Via.type and Via.padstack are required")
+        first, last = _resolve_layer(start), _resolve_layer(end)
+        enabled = [_resolve_layer(n) for n in layers[layers.index(start):layers.index(end) + 1]]
+        if first is None or last is None or any(n is None for n in enabled):
+            raise ValueError("unsupported copper layer")
+        if not hasattr(v.padstack, "layers") or not hasattr(v.padstack.drill, "start_layer") or not hasattr(v.padstack.drill, "end_layer"):
+            raise AttributeError("PadStack.layers and drill endpoints are required")
+        v.type = kind
+        v.diameter = from_mm(diameter)
+        v.drill_diameter = from_mm(drill)
+        v.padstack.layers = enabled
+        v.padstack.drill.start_layer = first
+        v.padstack.drill.end_layer = last
+        if v.type != kind or list(v.padstack.layers) != enabled or v.padstack.drill.start_layer != first or v.padstack.drill.end_layer != last:
+            raise ValueError("binding did not preserve the requested via span")
+        if v.diameter != from_mm(diameter) or v.drill_diameter != from_mm(drill):
+            raise ValueError("binding did not preserve the requested via dimensions")
+    except Exception as exc:
+        raise LinkError(f"Cannot safely place blind/buried vias with this KiCad binding ({exc}). Export a .kicad_pcb board or update KiCad/kicad-python.") from exc
 
 
 def _resolve_layer(name: Optional[str]) -> Any:

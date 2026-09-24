@@ -6,6 +6,7 @@ import { plain } from './engine/filtertune.js';
 self.onmessage = ({ data: { task, args } }) => {
   const progress = (value) => self.postMessage({ progress: value });
   try {
+    if (args.cfg?.windingMode === 'pcb-litz' && task !== 'board') throw new Error('This study does not support the experimental PCB Litz strand model.');
     const jobs = {
       optimize: () => optimizeCoil(args.cfg, args.opt, progress),
       tolerance: () => toleranceStudy(args.kind, args.cfg, args.opt, progress),

@@ -44,6 +44,13 @@ export class Viewport {
   toScreen(x, y) { return [x * this.scale + this.tx, -y * this.scale + this.ty]; }
   toWorld(px, py) { return [(px - this.tx) / this.scale, -(py - this.ty) / this.scale]; }
 
+  focusPoint(point, finding = {}) {
+    this.focusFinding = { point, finding };
+    const radius = Math.max(2, Number(finding.required) * 8 || 3);
+    this.fit({ x0: point[0] - radius, y0: point[1] - radius, x1: point[0] + radius,
+      y1: point[1] + radius, w: 2 * radius, h: 2 * radius });
+  }
+
   fit(box, pad = 24) {
     const r = this.canvas.getBoundingClientRect();
     if (!box || !isFinite(box.w) || box.w <= 0 || box.h <= 0) {
@@ -176,6 +183,7 @@ export class Viewport {
   }
 
   setArtwork(art, layers) {
+    if (art !== this.art) this.focusFinding = null;
     this.art = art;
     if (layers) {
       for (const [name, colour] of layers) {
@@ -229,6 +237,13 @@ export class Viewport {
       if (this.show.vias) this.drawVias(ctx);
       if (this.show.labels) this.drawLabels(ctx);
       if (this.show.ports) this.drawPorts(ctx);
+      if (this.focusFinding) {
+        const [x, y] = this.toScreen(...this.focusFinding.point);
+        ctx.save(); ctx.strokeStyle = '#f0a13a'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(x, y, 13, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x - 20, y); ctx.lineTo(x + 20, y);
+        ctx.moveTo(x, y - 20); ctx.lineTo(x, y + 20); ctx.stroke(); ctx.restore();
+      }
     }
     if (this.show.handles) this.drawHandles(ctx);
     this.drawScale(ctx, W, H);
@@ -285,6 +300,19 @@ export class Viewport {
     return known.concat(extra);
   }
 
+  // Selection changes only the preview; every strand stays in the artwork
+  // consumed by validation and export.
+  strandOpacity(item) {
+    const meta = this.art.meta || {};
+    const phase = meta.previewStep >= 0 && item.transpositionStep !== meta.previewStep ? 0.15 : 1;
+    if (meta.previewStrandId != null) return (item.strandId === meta.previewStrandId ? 1 : 0.12) * phase;
+    if (meta.previewBundle) {
+      const bundle = item.bundle || (item.strandId == null ? null : item.strandId < 12 ? 'outer' : 'inner');
+      return (bundle === meta.previewBundle ? 1 : 0.12) * phase;
+    }
+    return phase;
+  }
+
   drawCopper(ctx) {
     const layers = this.layersInOrder();
     ctx.lineCap = 'round';
@@ -299,6 +327,7 @@ export class Viewport {
       ctx.strokeStyle = colour;
       for (const t of this.art.tracks) {
         if (t.layer !== name || t.pts.length < 2) continue;
+        ctx.globalAlpha = (front || layers.length === 1 ? 1 : 0.82) * this.strandOpacity(t);
         const w = Math.max(t.width * this.scale, 0.8);
         ctx.lineWidth = w;
         ctx.beginPath();
@@ -312,6 +341,7 @@ export class Viewport {
       }
       for (const a of this.art.arcs) {
         if (a.layer !== name) continue;
+        ctx.globalAlpha = (front || layers.length === 1 ? 1 : 0.82) * this.strandOpacity(a);
         ctx.lineWidth = Math.max(a.width * this.scale, 0.8);
         ctx.beginPath();
         const [sx, sy] = this.toScreen(a.start[0], a.start[1]);
@@ -366,6 +396,12 @@ export class Viewport {
 
   drawVias(ctx) {
     for (const v of this.art.vias) {
+      if (typeof v.from === 'string' && typeof v.to === 'string') {
+        const layers = this.art.meta?.boardLayers || this.art.meta?.layerNames || this.layersInOrder();
+        const a = layers.indexOf(v.from), b = layers.indexOf(v.to);
+        if (a >= 0 && b >= 0 && layers.slice(Math.min(a, b), Math.max(a, b) + 1).every(layer => this.layerVisible.get(layer) === false)) continue;
+      }
+      ctx.globalAlpha = this.strandOpacity(v);
       const [x, y] = this.toScreen(v.x, v.y);
       const r = Math.max(v.diameter * this.scale / 2, 1.4);
       ctx.fillStyle = '#D8D2C4';
@@ -376,6 +412,7 @@ export class Viewport {
         ctx.beginPath(); ctx.arc(x, y, rd, 0, Math.PI * 2); ctx.fill();
       }
     }
+    ctx.globalAlpha = 1;
     for (const p of this.art.pads.filter(p => p.drill > 0)) {
       const [x, y] = this.toScreen(p.x, p.y);
       const r = Math.max(Math.max(p.w, p.h) * this.scale / 2, 2);
