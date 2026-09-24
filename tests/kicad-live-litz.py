@@ -12,6 +12,8 @@ import subprocess
 import sys
 import time
 
+from native_board_identity import native_board_path
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from planar_studio import kicad_link as k
@@ -25,7 +27,7 @@ if not target.is_absolute() or target.suffix != '.kicad_pcb' or 'litz-smoke' not
     parser.error('Disposable board must have an absolute .kicad_pcb path with litz-smoke in its filename.')
 link = k.KiCadLink('Planar Studio disposable-board test')
 board = link._board()
-if not Path(board.name).is_absolute() or Path(board.name).resolve() != target.resolve():
+if native_board_path(board) != target.resolve():
     raise SystemExit('Refusing: the open board does not match the exact disposable path.')
 def inventory():
     return list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints())

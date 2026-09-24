@@ -54,7 +54,13 @@ try {
     };
   });
   const count = () => page.evaluate(() => window.__litzBrowserWorkers.length);
-  const response = method => page.waitForResponse(r => r.url().endsWith('/api') && r.request().postDataJSON()?.method === method, { timeout: 260000 });
+  const response = method => {
+    const pending = page.waitForResponse(r => r.url().endsWith('/api') && r.request().postDataJSON()?.method === method, { timeout: 260000 });
+    // An action can fail before this waiter is awaited. Closing the page must
+    // not replace that original failure with an unhandled waiter rejection.
+    pending.catch(() => {});
+    return pending;
+  };
   const set = async (label, value) => {
     const input = page.getByLabel(label, { exact: true }); await input.fill(String(value)); await input.press('Tab');
   };
@@ -212,9 +218,9 @@ try {
   assert.equal(await measurement.getByLabel('Measurement interpolation', { exact: true }).inputValue(), 'linear');
 
   await page.locator('#btn-export').click();
-  assert.equal(await page.locator('.export-card').filter({ hasText: 'KiCad footprint' }).isDisabled(), true);
+  assert.equal(await page.locator('.export-card').filter({ has: page.locator('.t', { hasText: /^KiCad footprint \(\.kicad_mod\)$/ }) }).isDisabled(), true);
   const exported = response('file.save');
-  await page.locator('.export-card').filter({ hasText: 'KiCad board' }).click();
+  await page.locator('.export-card').filter({ has: page.locator('.t', { hasText: /^KiCad board \(\.kicad_pcb\)$/ }) }).click();
   const written = await (await exported).json(); assert.equal(written.ok, true);
   const pcb = sexpr(fs.readFileSync(written.result.path, 'utf8'));
   const vias = pcb.filter(n => n[0] === 'via' && n[1] === 'blind');
@@ -242,6 +248,7 @@ try {
   }
   assert.ok(native.files.some(f => f.name === 'pcb-litz-review.zip'));
   const download = page.waitForEvent('download');
+  download.catch(() => {});
   await manufacturing.getByRole('button', { name: 'Download pcb-litz-review.zip', exact: true }).click();
   await (await download).saveAs(path.join(dist, 'pcb-litz-browser-review.zip'));
   assert.ok(fs.statSync(path.join(dist, 'pcb-litz-browser-review.zip')).size > 100);
@@ -254,6 +261,7 @@ try {
   assert.deepEqual(errors, []);
   console.log('PCB Litz browser: fresh Worker waits, sizing, view-only inspection, comparison, cancel/refine, candidate apply, measurements, persistence, export and native-CLI fallback passed.');
 } catch (error) {
+  console.error('Litz browser failure:', error);
   if (page && !page.isClosed()) {
     await page.screenshot({ path: path.join(dist, 'pcb-litz-failure.png') }).catch(() => {});
     console.error('Litz browser diagnostics:', await page.evaluate(() => ({ status: document.querySelector('#st-solve')?.textContent,

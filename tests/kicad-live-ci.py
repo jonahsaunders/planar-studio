@@ -20,6 +20,8 @@ import sys
 import tempfile
 import time
 
+from native_board_identity import native_board_path
+
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--ci-owned', action='store_true', required=True, help='Authorize launching and controlling this test’s own disposable GUI')
@@ -97,7 +99,13 @@ with tempfile.TemporaryDirectory(prefix='plitz-') as socket_temp:
                 client = KiCad(socket_path=env['KICAD_API_SOCKET'], timeout_ms=500)
                 client.ping()
                 live = client.get_board()
-                if live and Path(live.name).resolve() == board:
+                if live:
+                    identity = {'name': live.name, 'projectPath': live.document.project.path,
+                        'resolved': str(native_board_path(live))}
+                    print('Owned KiCad document:', json.dumps(identity), flush=True)
+                    (run_dir / 'document.json').write_text(json.dumps(identity, indent=2), encoding='utf-8')
+                    if native_board_path(live) != board:
+                        raise RuntimeError(f'Native document does not match the owned board: {identity}')
                     break
             except Exception as exc:
                 last_error = str(exc)
