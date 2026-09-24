@@ -115,7 +115,7 @@ export function exportKicadPcb(A, opt = {}) {
   // Sparse transformer assignments must retain their actual KiCad layer IDs.
   const layers = copperStack(art);
   const L = [];
-  const litzStack = art.meta.kind === 'pcb-litz';
+  const litzStack = ['pcb-litz', 'pcb-litz-reference', 'pcb-litz-conventional-reference'].includes(art.meta.kind);
   let thickness = opt.boardThickness || 1.6;
   if (litzStack) {
     const copper = art.meta.copperThicknessMM, gaps = art.meta.dielectricThicknessMM;
@@ -130,7 +130,8 @@ export function exportKicadPcb(A, opt = {}) {
     }
   }
 
-  L.push(`(kicad_pcb (version 20221018) (generator "planar-studio")`);
+  // Litz terminal vias explicitly open the mask using KiCad 9's tenting token.
+  L.push(`(kicad_pcb (version ${litzStack ? 20241229 : 20221018}) (generator "planar-studio")`);
   L.push(`  (general (thickness ${f3(thickness)}))`);
   L.push(`  (paper "A4")`);
   L.push(`  (layers`);
@@ -189,7 +190,7 @@ export function exportKicadPcb(A, opt = {}) {
   for (const p of art.pads) {
     if (p.drill > 0) {
       L.push(`  (via (at ${f3(p.x)} ${f3(-p.y)}) (size ${f3(Math.max(p.w, p.h))}) `
-        + `(drill ${f3(p.drill)}) (layers "F.Cu" "B.Cu") (net ${netOf(p)}))`);
+        + `(drill ${f3(p.drill)}) (layers "F.Cu" "B.Cu")${litzStack ? ' (tenting none)' : ''} (net ${netOf(p)}))`);
     } else {
       const mask = p.mask === false ? '' : ` "${p.layer.replace('.Cu', '.Mask')}"`;
       L.push(`  (footprint "planar-pad" (layer "F.Cu") (at ${f3(p.x)} ${f3(-p.y)}) (attr smd)`

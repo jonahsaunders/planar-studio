@@ -3,15 +3,29 @@
 ## Experimental PCB Litz winding
 
 The `experimental/pcb-litz` branch adds a four-layer, sixteen-strand PCB Litz
-mode to **Inductor**: dual-bundle transposition routing, strand-aware clearance
-and connectivity checks, KiCad board output with explicit blind/buried via
-spans, and a preliminary coupled-strand electrical model. The conservative
-preset uses 30° steps and 480 vias; it differs from the published coil.
+mode to **Inductor**. It includes dual-bundle transposition routing, strand-aware
+clearance/connectivity checks, finished copper sizing, adjustable terminals,
+optional board/bore outlines, fabrication screening, and KiCad board output
+with explicit blind/buried via spans. The starting preset uses 30° steps and
+480 vias; it differs from the published coil.
 
-AC loss and Q are unvalidated estimates that may substantially understate loss
-and overstate Q. Intrinsic self-resonance, thermal ratings and WPT efficiency
-are not predicted. See the [PCB Litz guide](docs/pcb-litz.md) for controls,
-fabrication requirements, exports, model limits and validation commands.
+Electrical analysis includes finite shared terminal buses, strand current
+phasors, selectable slab or rectangular-conductor AC loss, and an optional
+distributed capacitance/dielectric-loss network. Defaults retain the slab
+approximation with distributed capacitance and generated outlines off. Current
+means terminal RMS current; reported terminal ESR includes the enabled network
+losses. Measurement residuals, convergence studies, reference comparisons and a
+bounded geometry/DC design search are available in the Litz tools.
+
+AC loss, Q and any distributed-network resonance remain physically unvalidated;
+the rectangular model's frequency-dependent internal-inductance correction is
+not yet included in routed coupling. Thermal ratings and WPT efficiency are
+not predicted. See the [PCB Litz guide](docs/pcb-litz.md) and
+[model equations and benchmarks](docs/pcb-litz-models.md). The
+[verification workflow](.github/workflows/pcb-litz.yml) adds rendered-browser,
+native KiCad CLI DRC/manufacturing, and disposable-GUI placement/replacement/undo
+gates. These new CI gates have not yet run; local DOM/fixture tests do not
+establish their success.
 
 ## Motor winding designer and obstacle-aware coils
 

@@ -9,6 +9,7 @@
  * the paper's unpublished PCB files or its exact 1,140-via routing pattern.
  */
 import { artwork, track } from './artwork.js';
+import { LITZ_LAYOUT_DEFAULTS, checkLitzFit } from './litz-sizing.js';
 
 const TAU = 2 * Math.PI;
 const OZ_MM = 0.0348;
@@ -20,7 +21,8 @@ const INNER = [[1,1],[1,2],[2,2],[2,1]];
 export function litzDefaults() {
   return { windingMode: 'spiral', litzStepDeg: 30, litzStrandGap: 0.2,
     litzTurnSpacing: 5.5, litzDielectricGaps: [0.4, 0.5, 0.4],
-    litzViaDrill: 0.3, litzViaDiameter: 0.6, litzViaPlating: 25 };
+    litzViaDrill: 0.3, litzViaDiameter: 0.6, litzViaPlating: 25,
+    ...LITZ_LAYOUT_DEFAULTS };
 }
 
 export function litzPreset() {
@@ -44,9 +46,57 @@ function length(pts) {
   return total;
 }
 
+function distanceToOrigin(a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1];
+  const t = Math.max(0, Math.min(1, -(a[0] * dx + a[1] * dy) / (dx * dx + dy * dy || 1)));
+  return Math.hypot(a[0] + t * dx, a[1] + t * dy);
+}
+
+/** Exact radial and Cartesian bounds of the emitted straight copper segments
+ * and circular pads/vias. Board edges, silkscreen and labels are excluded. */
+export function litzCopperEnvelope(art, { windingOnly = false } = {}) {
+  let outer = 0, inner = Infinity;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  const point = (p, radius) => {
+    outer = Math.max(outer, Math.hypot(...p) + radius);
+    x0 = Math.min(x0, p[0] - radius); y0 = Math.min(y0, p[1] - radius);
+    x1 = Math.max(x1, p[0] + radius); y1 = Math.max(y1, p[1] + radius);
+  };
+  for (const t of art.tracks) {
+    if (windingOnly && (t.role === 'terminal-bus' || t.terminalLead)) continue;
+    for (const p of t.pts) point(p, t.width / 2);
+    for (let i = 1; i < t.pts.length; i++) inner = Math.min(inner,
+      distanceToOrigin(t.pts[i - 1], t.pts[i]) - t.width / 2);
+  }
+  for (const v of art.vias) {
+    point([v.x, v.y], v.diameter / 2);
+    inner = Math.min(inner, Math.hypot(v.x, v.y) - v.diameter / 2);
+  }
+  if (!windingOnly) for (const p of art.pads) {
+    const radius = Math.max(p.w, p.h) / 2;
+    point([p.x, p.y], radius);
+    inner = Math.min(inner, Math.hypot(p.x, p.y) - radius);
+  }
+  const bounds = { x0, y0, x1, y1, w: x1 - x0, h: y1 - y0,
+    cx: (x0 + x1) / 2, cy: (y0 + y1) / 2 };
+  return { outerRadiusMM: outer, boreRadiusMM: Math.max(0, inner),
+    diameterMM: 2 * outer, boreMM: 2 * Math.max(0, inner), bounds };
+}
+
+function circleOutline(radius, clockwise = false, count = 720) {
+  const pts = Array.from({ length: count }, (_, i) => {
+    const angle = (clockwise ? -1 : 1) * TAU * i / count;
+    return [radius * Math.cos(angle), radius * Math.sin(angle)];
+  });
+  pts.push(pts[0].slice());
+  return pts;
+}
+
 /** All dimensions and returned coordinates are millimetres. */
 export function buildLitz(input, opt = {}) {
-  const cfg = { ...litzDefaults(), ...input };
+  const fit = checkLitzFit({ ...litzDefaults(), ...input });
+  if (!fit.ok) throw new Error(fit.errors[0]);
+  const cfg = fit.config, layout = fit.dimensions;
   const width = requireNumber(cfg.traceW, 'trace width (mm)', 0.1, 3);
   const gap = requireNumber(cfg.litzStrandGap, 'strand clearance (mm)', 0.1, 2);
   const turnGap = requireNumber(cfg.litzTurnSpacing, 'turn spacing (mm)', 0.2, 30);
@@ -81,15 +131,11 @@ export function buildLitz(input, opt = {}) {
   const steps = Math.round(turns * 360 / cfg.litzStepDeg);
   if (16 * turns * Math.PI * dOuter / 0.45 > 400000) throw new Error('PCB Litz: this design exceeds the experimental geometry size limit. Reduce diameter or turns.');
   // A small explicit routing allowance preserves clearance along slanted runs.
-  const lanePitch = (width + gap) * 1.05;
-  const ribbonWidth = 3 * lanePitch + width;
-  const pitch = ribbonWidth + turnGap;
+  const { lanePitch, ribbonWidth, pitch } = layout;
   const r0 = dOuter / 2 - width / 2 - 3 * lanePitch;
   const rMin = r0 - turns * pitch;
-  // Keep a coordinate-quantization allowance at the tightest fanout junctions,
-  // including downstream tools that round XY coordinates to three decimals.
-  const fan = Math.max(width + gap, diameter + gap) * 1.27 + 0.003;
-  const innerFan = (width + gap) * 0.7;
+  const { fan, innerFan, terminalPad, terminalDrill, busWidth,
+    terminalLead, terminalOffset, edgeClearance } = layout;
   if (diameter > width + 2 * gap) throw new Error('PCB Litz: via diameter is too large for the strand spacing. Reduce via diameter or increase strand clearance.');
   if (rMin < Math.max(3 * fan + 2, width * 3)) throw new Error('PCB Litz: the turns and conductor spacing do not fit inside this diameter. Reduce turns or increase outer diameter.');
   if (rMin * stepAngle < 12 * fan) throw new Error('PCB Litz: the transposition steps are too short at the inner turn for these trace/via dimensions. Increase step angle or outer diameter, or reduce turns.');
@@ -114,11 +160,12 @@ export function buildLitz(input, opt = {}) {
       const strand = { id, bundle, sections: [], vias: [], path3: [], positions: [] };
       const addSection = (layerIndex, pts, step, slot) => {
         const sequence = strand.sections.length;
+        const isTerminalLead = step < 0 || step === steps;
         const section = { layer: names[layerIndex], layerIndex, pts, sequence, sectionIndex: sequence,
-          strandId: id, transpositionStep: step, slot };
+          strandId: id, transpositionStep: step, slot, terminalLead: isTerminalLead };
         strand.sections.push(section);
         art.tracks.push(track(section.layer, width, pts, { net, role: 'litz-strand', strandId: id,
-          bundle, sectionIndex: sequence, sequence, transpositionStep: step, slot }));
+          bundle, sectionIndex: sequence, sequence, transpositionStep: step, slot, terminalLead: isTerminalLead }));
         for (const p of pts) {
           const p3 = [p[0], p[1], layers[layerIndex].z];
           const previous = strand.path3[strand.path3.length - 1];
@@ -135,7 +182,7 @@ export function buildLitz(input, opt = {}) {
         });
       };
       const start = at(0, 0, ring[initial][1] * lanePitch);
-      addSection(ring[initial][0], [[start[0], start[1] - 2], start], -1, initial);
+      addSection(ring[initial][0], [[start[0], start[1] - terminalLead], start], -1, initial);
       for (let step = 0; step < steps; step++) {
         const slot = (initial + step) % ring.length;
         const [fromLayer, fromColumn] = ring[slot];
@@ -163,7 +210,7 @@ export function buildLitz(input, opt = {}) {
       }
       const finalSlot = (initial + steps) % ring.length;
       const end = at(steps, 0, ring[finalSlot][1] * lanePitch);
-      addSection(ring[finalSlot][0], [end, [end[0], end[1] + 2]], steps, finalSlot);
+      addSection(ring[finalSlot][0], [end, [end[0], end[1] + terminalLead]], steps, finalSlot);
       strand.positions.push({ step: steps, slot: finalSlot, layer: names[ring[finalSlot][0]],
         column: ring[finalSlot][1], point: at(steps, 0, ring[finalSlot][1] * lanePitch) });
       strand.traceLengthMM = strand.sections.reduce((s, section) => s + length(section.pts), 0);
@@ -177,20 +224,22 @@ export function buildLitz(input, opt = {}) {
       const section = end ? s.sections[s.sections.length - 1] : s.sections[0];
       return { strandId: s.id, point: (end ? section.pts[section.pts.length - 1] : section.pts[0]).slice(), layer: section.layer };
     });
-    const padRadius = end ? rMin - 2 : r0 + 3 * lanePitch + 2;
+    const padRadius = end ? rMin - terminalOffset : r0 + 3 * lanePitch + terminalOffset;
     const angle = end ? turns * TAU : 0;
-    const padPoint = [padRadius * Math.cos(angle), padRadius * Math.sin(angle) + (end ? 2 : -2)];
-    // Each bus is split at the actual strand contact points so contacts are
-    // explicit graph vertices, not inferred from a broad copper polygon.
+    const padPoint = [padRadius * Math.cos(angle), padRadius * Math.sin(angle) + (end ? terminalLead : -terminalLead)];
+    // One straight bus passes through every declared strand endpoint. Keep it
+    // as one copper primitive: a widened bus's rounded internal subdivisions
+    // must not be mistaken for copper from a different terminal junction.
     for (let layerIndex = 0; layerIndex < 4; layerIndex++) {
       const points = members.filter(m => m.layer === names[layerIndex]).map(m => m.point)
         .sort((a, b) => Math.hypot(...a) - Math.hypot(...b));
       if (end) points.unshift(padPoint); else points.push(padPoint);
-      for (let i = 1; i < points.length; i++) art.tracks.push(track(names[layerIndex], width,
-        [points[i - 1], points[i]], { net, role: 'terminal-bus', terminalGroup: id }));
+      art.tracks.push(track(names[layerIndex], busWidth,
+        [points[0], points[points.length - 1]], { net, role: 'terminal-bus', terminalGroup: id,
+          contacts: points.slice() }));
     }
-    art.pads.push({ x: padPoint[0], y: padPoint[1], w: 1.6, h: 1.6, shape: 'circle',
-      drill: 0.8, number: String(end + 1), net, layer: '*.Cu', role: 'terminal-bus', terminalGroup: id });
+    art.pads.push({ x: padPoint[0], y: padPoint[1], w: terminalPad, h: terminalPad, shape: 'circle',
+      drill: terminalDrill, number: String(end + 1), net, layer: '*.Cu', role: 'terminal-bus', terminalGroup: id });
     art.ports.push({ x: padPoint[0], y: padPoint[1], name: end ? '2' : '1', net, angle: 0 });
     return { id, members, padPoint, padLayers: names.slice() };
   });
@@ -200,27 +249,48 @@ export function buildLitz(input, opt = {}) {
   art.notes.push({ level: 'warning', text: 'Experimental PCB Litz: requires adjacent-layer blind/buried vias and a fabricator-approved sequential-lamination stack.' });
   art.notes.push({ level: 'info', text: 'Paper-inspired 16-strand dual-bundle winding. This perimeter permutation and terminal fanout differ from the published 1,140-via example; no measured Q or WPT efficiency is implied.' });
   const lengths = strands.map(s => s.lengthMM);
-  let copperRadius = 0, boreRadius = Infinity;
-  for (const t of art.tracks.filter(t => t.role !== 'terminal-bus')) for (const p of t.pts) {
-    const r = Math.hypot(...p);
-    copperRadius = Math.max(copperRadius, r + t.width / 2);
-    boreRadius = Math.min(boreRadius, r - t.width / 2);
+  const winding = litzCopperEnvelope(art, { windingOnly: true });
+  const full = litzCopperEnvelope(art);
+  if (cfg.litzSizeMode === 'finished') {
+    if (full.diameterMM > cfg.litzTargetOuter + 1e-6) throw new Error('PCB Litz: the generated terminal and winding copper exceeds the finished diameter target. Reduce terminal dimensions or increase the target.');
+    if (full.boreMM < cfg.litzMinBore - 1e-6) throw new Error('PCB Litz: the generated copper does not preserve the requested bore. Reduce turns or increase the finished diameter.');
   }
-  for (const v of art.vias) {
-    const r = Math.hypot(v.x, v.y);
-    copperRadius = Math.max(copperRadius, r + v.diameter / 2);
-    boreRadius = Math.min(boreRadius, r - v.diameter / 2);
+  let boardBounds = null, boardOuterDiameterMM = null, boardBoreDiameterMM = 0;
+  if (cfg.litzOutline) {
+    // Circumscribe the outer polygon: its edges, not only its vertices, must
+    // clear copper. An inner cutout is inscribed, with the same 2 µm guard.
+    const count = 720, halfStepCos = Math.cos(Math.PI / count);
+    const boardRadius = (full.outerRadiusMM + edgeClearance + 0.002) / halfStepCos;
+    art.outline.push({ pts: circleOutline(boardRadius, false, count), layer: 'Edge.Cuts',
+      role: 'board-edge', closed: true });
+    boardOuterDiameterMM = 2 * boardRadius;
+    boardBounds = { x0: -boardRadius, y0: -boardRadius, x1: boardRadius, y1: boardRadius,
+      w: 2 * boardRadius, h: 2 * boardRadius, cx: 0, cy: 0 };
+    if (cfg.litzBoreCutout) {
+      const radius = full.boreRadiusMM - edgeClearance - 0.002;
+      if (radius <= 0.5) throw new Error('PCB Litz: insufficient bore for a cutout at the requested edge clearance.');
+      art.outline.push({ pts: circleOutline(radius, true, count), layer: 'Edge.Cuts',
+        role: 'bore-cutout', closed: true });
+      boardBoreDiameterMM = 2 * radius * halfStepCos;
+    }
   }
   const stats = { strandCount: 16, outerStrands: 12, innerStrands: 4,
     viaCount: art.vias.length, outerViaCount: strands.filter(s => s.bundle === 'outer').reduce((n, s) => n + s.vias.length, 0),
     innerViaCount: strands.filter(s => s.bundle === 'inner').reduce((n, s) => n + s.vias.length, 0),
     ribbonWidthMM: ribbonWidth, lanePitchMM: lanePitch, pitchMM: pitch,
-    innerDiameterMM: 2 * boreRadius, outerDiameterMM: 2 * copperRadius,
+    innerDiameterMM: winding.boreMM, outerDiameterMM: winding.diameterMM,
+    fullCopperDiameterMM: full.diameterMM, fullCopperBoreMM: full.boreMM,
+    fullCopperBounds: full.bounds, windingBounds: winding.bounds,
+    boardBounds, boardOuterDiameterMM, boardBoreDiameterMM,
     nominalInnerDiameterMM: 2 * (rMin - width / 2), nominalOuterDiameterMM: dOuter,
     completeCycles: steps / OUTER.length, stepDeg: cfg.litzStepDeg, steps,
     traceLengthMM: strands.reduce((n, s) => n + s.traceLengthMM, 0),
     minStrandLengthMM: Math.min(...lengths), maxStrandLengthMM: Math.max(...lengths) };
-  art.notes.push({ level: 'info', text: `The ${dOuter.toFixed(1)} mm nominal spiral expands to ${stats.outerDiameterMM.toFixed(2)} mm winding diameter at the via fanouts, with a ${stats.innerDiameterMM.toFixed(2)} mm winding bore. Terminal pads require additional board area.` });
+  art.meta.copperBounds = full.bounds;
+  art.meta.boardBounds = boardBounds;
+  art.meta.edgeClearanceMM = edgeClearance;
+  art.notes.push({ level: 'info', text: `The ${dOuter.toFixed(2)} mm nominal spiral has a ${stats.outerDiameterMM.toFixed(2)} mm winding diameter and ${stats.innerDiameterMM.toFixed(2)} mm winding bore. Including terminals, copper occupies ${full.diameterMM.toFixed(2)} mm diameter with ${full.boreMM.toFixed(2)} mm clear bore.` });
+  if (cfg.litzOutline) art.notes.push({ level: 'info', text: `Generated board diameter ${boardOuterDiameterMM.toFixed(2)} mm includes ${edgeClearance.toFixed(2)} mm copper edge clearance.${cfg.litzBoreCutout ? ` Minimum bore cutout diameter ${boardBoreDiameterMM.toFixed(2)} mm.` : ''}` });
   return { art, strands, layers, stats, terminalGroups, transpositions,
     config: { ...cfg, boardT, layerNames: names.slice(), layerZMM: layers.map(l => l.z),
       copperThicknessMM: tCu, lanePitchMM: lanePitch, ribbonWidthMM: ribbonWidth, pitchMM: pitch } };

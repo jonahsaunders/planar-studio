@@ -1,0 +1,75 @@
+name: PCB Litz verification
+
+on:
+  push:
+    branches: [experimental/pcb-litz]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pcb-litz-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  application:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Install Python IPC bindings
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+      - run: npm test
+      - run: npm run test:litz:dom
+      - name: Install rendered browser
+        run: npx playwright install --with-deps chromium
+      - run: npm run test:litz:browser
+      - run: npm run build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pcb-litz-application
+          path: |
+            dist/*.png
+            dist/*.zip
+          if-no-files-found: ignore
+
+  kicad:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install KiCad 9
+        run: |
+          sudo add-apt-repository --yes ppa:kicad/kicad-9.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad xvfb xauth dbus-x11 xdotool
+          kicad-cli --version
+      - name: Install Python IPC bindings
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+      - name: Check real board parsing, DRC and manufacturing output
+        run: python3 tests/kicad-cli-litz.py --require-cli
+      - name: Check native placement, replacement and undo
+        run: xvfb-run -a dbus-run-session -- .venv/bin/python tests/kicad-live-ci.py --ci-owned
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: pcb-litz-kicad
+          path: |
+            .test-state/kicad-cli/manufacturing/**
+            .test-state/kicad-live/**
+          if-no-files-found: ignore

@@ -320,9 +320,13 @@ export function toKicad(A, opt = {}) {
     drill: p.drill || Math.min(p.w, p.h) * 0.5,
     diameter: Math.max(p.w, p.h),
     net: p.net,
+    // These are solder terminals; KiCad's default tented vias hide the copper.
+    ...(A.meta.kind === 'pcb-litz' ? { exposedTerminal: true } : {}),
   }));
   const texts = A.labels.map((l) => ({ x: l.x + dx, y: -l.y + dy, value: l.text, layer: l.layer }));
 
   const pads = A.pads.filter(p => !p.drill).map(p => ({ ...p, x: p.x + dx, y: -p.y + dy }));
-  return { tracks, arcs, vias: vias.concat(padVias), pads, texts, boardLayers };
+  const physicalStack = A.meta.kind === 'pcb-litz' ? { copperThicknessMM: A.meta.copperThicknessMM,
+    dielectricThicknessMM: A.meta.dielectricThicknessMM?.slice(), boardThicknessMM: A.meta.boardThicknessMM } : undefined;
+  return { tracks, arcs, vias: vias.concat(padVias), pads, texts, boardLayers, physicalStack };
 }

@@ -94,6 +94,7 @@ class Placement:
     pads: List[Dict[str, Any]] = field(default_factory=list)
     texts: List[Dict[str, Any]] = field(default_factory=list)
     board_layers: List[str] = field(default_factory=list)
+    physical_stack: Dict[str, Any] = field(default_factory=dict)
     origin: Tuple[float, float] = (0.0, 0.0)
 
     @classmethod
@@ -108,6 +109,7 @@ class Placement:
             texts=list(payload.get("texts") or []),
             pads=list(payload.get("pads") or []),
             board_layers=list(payload.get("boardLayers") or []),
+            physical_stack=dict(payload.get("physicalStack") or {}),
             origin=(float(origin[0]), float(origin[1])),
         )
 
@@ -360,7 +362,7 @@ class KiCadLink:
 
     # ----------------------------------------------------------------- place
 
-    def preflight(self, placement: Placement) -> None:
+    def preflight(self, placement: Placement) -> List[str]:
         """Check partial vias without changing the board, before replacement too.
 
         The front-end stack is never evidence of the live board's layer set.
@@ -368,9 +370,11 @@ class KiCadLink:
         more copper layers than that same named pair on a four-layer board.
         """
         spans = [_via_span(spec) for spec in placement.vias]
+        if any(spec.get("exposedTerminal") for spec in placement.vias):
+            _configure_exposed_terminal(Via())  # type: ignore[name-defined]
         partial = [span for span in spans if span[2] == "blind_buried"]
         if not partial:
-            return
+            return []
         board = self._board()
         layers = _board_copper_layers(board)
         if placement.board_layers and placement.board_layers != layers:
@@ -388,11 +392,12 @@ class KiCadLink:
             if key not in checked:
                 _configure_partial_via(Via(), spec, layers)  # type: ignore[name-defined]
                 checked.add(key)
+        return _check_physical_stack(board, layers, placement.physical_stack)
 
     def place(self, placement: Placement, net_name: Optional[str] = None, replace_ids: Optional[Sequence[str]] = None) -> Dict[str, Any]:
         """Create every item in one commit. All of it lands, or none of it."""
         board = self._board()
-        self.preflight(placement)
+        stack_warnings = self.preflight(placement)
         partial_layers = _board_copper_layers(board) if any(_via_span(s)[2] == "blind_buried" for s in placement.vias) else []
         items: List[Any] = []
         skipped: List[str] = []
@@ -462,6 +467,8 @@ class KiCadLink:
                     v.drill_diameter = from_mm(float(spec.get("drill", 0.3)))
                 except Exception as exc:
                     skipped.append(f"via size ({type(exc).__name__})")
+            if spec.get("exposedTerminal"):
+                _configure_exposed_terminal(v)
             n = net_for(spec)
             if n is not None:
                 v.net = n
@@ -563,7 +570,7 @@ class KiCadLink:
                 pass
 
         ids = [_kiid(c) for c in (created or [])]
-        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped, "replaced": len(victims)}
+        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped, "replaced": len(victims), "warnings": stack_warnings}
 
     # ---------------------------------------------------------------- delete
 
@@ -712,6 +719,64 @@ def _board_copper_layers(board: Any) -> List[str]:
     if len(names) < 2 or len(names) > 32 or len(names) % 2 or names != expected:
         raise LinkError("Cannot verify the live board copper stack for blind/buried vias. Export a .kicad_pcb board or use compatible KiCad IPC bindings.")
     return names
+
+
+def _check_physical_stack(board: Any, layers: List[str], expected: Dict[str, Any]) -> List[str]:
+    """Compare modeled copper/gap thicknesses when the host exposes the stack."""
+    if not expected:
+        return []
+    t = expected.get("copperThicknessMM")
+    gaps = expected.get("dielectricThicknessMM")
+    total = expected.get("boardThicknessMM")
+    if not isinstance(t, (int, float)) or not math.isfinite(t) or t <= 0 or not isinstance(gaps, list) or len(gaps) != len(layers) - 1 or any(not isinstance(g, (int, float)) or not math.isfinite(g) or g <= 0 for g in gaps):
+        raise LinkError("PCB Litz physical stack metadata is invalid.")
+    if not isinstance(total, (int, float)) or not math.isfinite(total) or abs(total - len(layers) * t - sum(gaps)) > 0.005:
+        raise LinkError("PCB Litz total board thickness disagrees with its modeled stack.")
+    unavailable = ["Native placement could not verify copper and dielectric thicknesses. Match the live board to the exported stack before using the modeled electrical results."]
+    try:
+        entries = list(board.get_stackup().layers)
+    except Exception:
+        return unavailable
+    actual_copper = []
+    actual_gaps = []
+    between = 0.0
+    names = []
+    for entry in entries:
+        name = _layer_name(getattr(entry, "layer", None))
+        raw = getattr(entry, "thickness", None)
+        if not isinstance(raw, (int, float)) or raw <= 0:
+            if name in layers:
+                return unavailable
+            continue
+        thickness = to_mm(int(raw))
+        if name in layers:
+            if names:
+                actual_gaps.append(between)
+            names.append(name)
+            actual_copper.append(thickness)
+            between = 0.0
+        elif names and len(names) < len(layers):
+            between += thickness
+    if names != layers or len(actual_gaps) != len(gaps) or any(g <= 0 for g in actual_gaps):
+        return unavailable
+    if any(abs(value - t) > 0.005 for value in actual_copper) or any(abs(a - b) > 0.005 for a, b in zip(actual_gaps, gaps)):
+        raise LinkError("The live board copper or dielectric thicknesses differ from this PCB Litz model. Match the stack or export a .kicad_pcb board; no changes made.")
+    return []
+
+
+def _configure_exposed_terminal(v: Any) -> None:
+    """Solder terminals need explicit front/back mask openings, regardless of board defaults."""
+    try:
+        from kipy.board_types import SolderMaskMode
+        mode = SolderMaskMode.SMM_UNMASKED
+        for surface in (v.padstack.front_outer_layers, v.padstack.back_outer_layers):
+            if not hasattr(surface, "solder_mask_mode"):
+                raise AttributeError("PadStack outer-layer mask overrides are required")
+            surface.solder_mask_mode = mode
+            if surface.solder_mask_mode != mode:
+                raise ValueError("binding did not preserve the terminal mask opening")
+    except Exception as exc:
+        raise LinkError(f"Cannot expose PCB Litz solder terminals with this KiCad binding ({exc}). Export a .kicad_pcb board or update KiCad/kicad-python.") from exc
 
 
 def _configure_partial_via(v: Any, spec: Dict[str, Any], layers: List[str]) -> None:

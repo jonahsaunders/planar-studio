@@ -232,6 +232,14 @@ class Application:
 
         # ---- file output ---------------------------------------------------
 
+        @api.method("manufacturing.run")
+        def _manufacturing_run(params: Dict[str, Any]) -> Dict[str, Any]:
+            from .manufacturing import run_manufacturing
+            try:
+                return run_manufacturing(self.store.dir, params)
+            except (OSError, ValueError) as exc:
+                raise RpcError(f"Manufacturing workflow could not run: {exc}", kind="manufacturing") from exc
+
         @api.method("file.save")
         def _file_save(params: Dict[str, Any]) -> Dict[str, Any]:
             """Write an export next to the project, or into the store dir.

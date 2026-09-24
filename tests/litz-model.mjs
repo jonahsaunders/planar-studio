@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { analyseLitz, sweepLitz, solveLitzNetwork, foilSkinFactor } from '../web/js/engine/litz-model.js';
+import { analyseLitz, sweepLitz, solveLitzNetwork, foilSkinFactor, compareLitzConvergence } from '../web/js/engine/litz-model.js';
 import { buildLitz, litzPreset } from '../web/js/engine/litz.js';
 
 const close = (actual, expected, relative = 1e-8, absolute = 1e-14) =>
@@ -140,6 +140,65 @@ function viaGeometry(span, count = 1) {
   assert.ok(a.regularisationH < 0.01 * a.L);
   assert.ok(a.limitations.some(s => s.includes('underestimated')));
   assert.ok(sweepLitz(preset, a, 1e5, 1e7, 12).every(p => Number.isFinite(p.Z) && p.R > 0));
+  assert.ok(a.terminalBusRdc > 0 && a.terminalBusBranchCount > 8, 'All bus taps and terminal barrels are explicit shared branches.');
+  assert.ok(a.viaPadRdc > 0);
+  const wide = structuredClone(geometry);
+  for (const track of wide.art.tracks) if (track.role === 'terminal-bus') track.width *= 2;
+  const widened = analyseLitz(preset, wide, { segmentCap: 96 });
+  assert.ok(widened.Rdc < a.Rdc, 'Reducing shared-bus resistance must reduce network DC resistance.');
+
+  const distributed = analyseLitz({ ...preset, litzCapacitanceMode: 'distributed', litzCapacitanceCells: 2,
+    litzTanD: .02 }, geometry, { segmentCap: 96 });
+  close(distributed.Rdc, a.Rdc, 1e-8);
+  assert.ok(distributed.distributedCapacitance.pairCount > 0);
+  assert.ok(distributed.networkNodeCount > a.networkNodeCount);
+  assert.ok(distributed.Pdielectric > 0 && distributed.Ploss > 0);
+  close(distributed.Ptotal, preset.current ** 2 * distributed.Zr, 1e-8);
+  close(distributed.Ploss + distributed.Pdielectric, distributed.Ptotal, 1e-8);
+  assert.ok(Math.abs(distributed.powerBalanceError) < 1e-8);
+  assert.equal(distributed.srfKnown, false);
+  assert.ok(distributed.estimatedSrfHz === null || distributed.srfConfidence === 'unvalidated');
+  for (const p of sweepLitz(preset, distributed, 1e5, 1e7, 6)) {
+    close(p.R, p.Zr); close(p.R, p.copperR + p.dielectricR, 1e-8);
+    close(p.Q, p.Zi / p.Zr); assert.ok(p.R > 0);
+  }
+}
+
+// Field-loss sampling can change independently of source discretisation. The
+// report must expose both settings and never imply measured-model validation.
+{
+  const geometry = pairGeometry();
+  const report = compareLitzConvergence(cfg, geometry, { levels: [48, 96], lossSamples: [32, 64, 128], tolerance: .05 });
+  const sourceLevels = report.levels.filter(l => l.axis === 'source');
+  const lossLevels = report.levels.filter(l => l.axis === 'loss');
+  assert.deepEqual(sourceLevels.map(l => l.segmentCap), [48, 96]);
+  assert.deepEqual(sourceLevels.map(l => l.lossSamples), [128, 128]);
+  assert.deepEqual(lossLevels.map(l => l.segmentCap), [96, 96, 96]);
+  assert.deepEqual(lossLevels.map(l => l.lossSamples), [32, 64, 128]);
+  for (const change of report.changes) {
+    const before = report.levels[change.from], after = report.levels[change.to];
+    assert.equal(before.axis, change.axis); assert.equal(after.axis, change.axis);
+    if (change.axis === 'source') {
+      assert.equal(before.lossSamples, after.lossSamples);
+      assert.ok(after.segmentCap > before.segmentCap);
+    } else {
+      assert.equal(before.segmentCap, after.segmentCap);
+      assert.ok(after.lossSamples > before.lossSamples);
+    }
+  }
+  assert.equal(report.convergedNumerically, report.axes.source.convergedNumerically && report.axes.loss.convergedNumerically);
+  assert.equal(report.uniqueEvaluations, 4, 'The shared finest-resolution point is calculated once.');
+  assert.equal(report.accuracyValidated, false);
+  assert.ok(Number.isFinite(report.changes[0].relativeRac));
+  assert.ok(Number.isFinite(report.changes[0].maxCurrentPhasorChange));
+  const rectangular = analyseLitz({ ...cfg, litzAcModel: 'rectangular' }, geometry, { segmentCap: 64 });
+  assert.equal(rectangular.acModel, 'rectangular');
+  assert.ok(rectangular.rectangularModel.cellCount > 1 && rectangular.Rac >= rectangular.Rdc);
+  close(rectangular.Ptotal, cfg.current ** 2 * rectangular.Rac, 1e-8);
+  assert.ok(rectangular.limitations.some(s => s.includes('AC internal-inductance')));
+  assert.equal(rectangular.segmentCapUsed, 64);
+  assert.equal(rectangular.cellsPerStrand, 1);
+  assert.throws(() => compareLitzConvergence(cfg, geometry, { levels: [64, 64], lossSamples: [32, 64] }), /strictly increasing/);
 }
 
 assert.throws(() => analyseLitz(cfg, { layers: [], strands: [] }), /1–16/);

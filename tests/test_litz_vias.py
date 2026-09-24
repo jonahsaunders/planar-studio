@@ -116,6 +116,21 @@ class SerializedVias(unittest.TestCase):
         self.link.place(placement([('F.Cu', 'In2.Cu')]))
         self.assertEqual(list(self.board.created[0].padstack.layers), [k._resolve_layer(n) for n in STACK[:3]])
 
+    def test_terminal_mask_openings_survive_protobuf_and_preflight(self):
+        from kipy.board_types import Via, SolderMaskMode
+        p = placement()
+        p.vias.append({'x': 4, 'y': 5, 'diameter': 1.6, 'drill': 0.8, 'exposedTerminal': True})
+        self.link.place(p)
+        proto = type(self.board.created[-1].proto)()
+        proto.ParseFromString(self.board.created[-1].proto.SerializeToString())
+        terminal = Via(proto=proto)
+        for surface in (terminal.padstack.front_outer_layers, terminal.padstack.back_outer_layers):
+            self.assertEqual(surface.solder_mask_mode, SolderMaskMode.SMM_UNMASKED)
+        self.setUp()
+        with patch.object(k, 'Via', SimpleNamespace), self.assertRaisesRegex(k.LinkError, 'Cannot expose PCB Litz solder terminals'):
+            self.link.place(p, replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+
     def test_mismatched_live_stack_and_unavailable_layer_block_without_commit(self):
         self.board.get_enabled_layers = lambda: [k._resolve_layer(n) for n in ['F.Cu', 'B.Cu']]
         with self.assertRaisesRegex(k.LinkError, 'stack differs'):
@@ -167,6 +182,27 @@ class SerializedVias(unittest.TestCase):
             self.link.place(placement(), replace_ids=['old-via'])
         self.assertEqual(self.board.events, [])
         self.assertEqual(self.board.live, [self.board.old])
+
+    def test_live_physical_stack_matches_or_rejects_before_mutation(self):
+        from kipy.board import BoardStackup
+        from kipy.proto.board import board_pb2
+        proto = board_pb2.BoardStackup()
+        for i, name in enumerate(STACK):
+            copper = proto.layers.add(); copper.layer = k._resolve_layer(name); copper.thickness.value_nm = k.from_mm(0.07)
+            if i < 3:
+                dielectric = proto.layers.add(); dielectric.thickness.value_nm = k.from_mm([0.4, 0.5, 0.4][i])
+        self.board.get_stackup = lambda: BoardStackup(proto)
+        p = placement(); p.physical_stack = {'copperThicknessMM': 0.07, 'dielectricThicknessMM': [0.4, 0.5, 0.4], 'boardThicknessMM': 1.58}
+        self.assertEqual(self.link.preflight(p), [])
+        proto.layers[3].thickness.value_nm = k.from_mm(0.6)
+        with self.assertRaisesRegex(k.LinkError, 'dielectric thicknesses differ'):
+            self.link.place(p, replace_ids=['old-via'])
+        self.assertEqual(self.board.events, [])
+
+    def test_unavailable_physical_stack_returns_explicit_warning(self):
+        p = placement(); p.physical_stack = {'copperThicknessMM': 0.07, 'dielectricThicknessMM': [0.4, 0.5, 0.4], 'boardThicknessMM': 1.58}
+        result = self.link.place(p)
+        self.assertIn('could not verify copper and dielectric', result['warnings'][0])
 
 
 if __name__ == '__main__':

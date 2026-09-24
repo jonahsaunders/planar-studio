@@ -44,6 +44,13 @@ export class Viewport {
   toScreen(x, y) { return [x * this.scale + this.tx, -y * this.scale + this.ty]; }
   toWorld(px, py) { return [(px - this.tx) / this.scale, -(py - this.ty) / this.scale]; }
 
+  focusPoint(point, finding = {}) {
+    this.focusFinding = { point, finding };
+    const radius = Math.max(2, Number(finding.required) * 8 || 3);
+    this.fit({ x0: point[0] - radius, y0: point[1] - radius, x1: point[0] + radius,
+      y1: point[1] + radius, w: 2 * radius, h: 2 * radius });
+  }
+
   fit(box, pad = 24) {
     const r = this.canvas.getBoundingClientRect();
     if (!box || !isFinite(box.w) || box.w <= 0 || box.h <= 0) {
@@ -176,6 +183,7 @@ export class Viewport {
   }
 
   setArtwork(art, layers) {
+    if (art !== this.art) this.focusFinding = null;
     this.art = art;
     if (layers) {
       for (const [name, colour] of layers) {
@@ -229,6 +237,13 @@ export class Viewport {
       if (this.show.vias) this.drawVias(ctx);
       if (this.show.labels) this.drawLabels(ctx);
       if (this.show.ports) this.drawPorts(ctx);
+      if (this.focusFinding) {
+        const [x, y] = this.toScreen(...this.focusFinding.point);
+        ctx.save(); ctx.strokeStyle = '#f0a13a'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(x, y, 13, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x - 20, y); ctx.lineTo(x + 20, y);
+        ctx.moveTo(x, y - 20); ctx.lineTo(x, y + 20); ctx.stroke(); ctx.restore();
+      }
     }
     if (this.show.handles) this.drawHandles(ctx);
     this.drawScale(ctx, W, H);
@@ -289,12 +304,13 @@ export class Viewport {
   // consumed by validation and export.
   strandOpacity(item) {
     const meta = this.art.meta || {};
-    if (meta.previewStrandId != null) return item.strandId === meta.previewStrandId ? 1 : 0.12;
+    const phase = meta.previewStep >= 0 && item.transpositionStep !== meta.previewStep ? 0.15 : 1;
+    if (meta.previewStrandId != null) return (item.strandId === meta.previewStrandId ? 1 : 0.12) * phase;
     if (meta.previewBundle) {
       const bundle = item.bundle || (item.strandId == null ? null : item.strandId < 12 ? 'outer' : 'inner');
-      return bundle === meta.previewBundle ? 1 : 0.12;
+      return (bundle === meta.previewBundle ? 1 : 0.12) * phase;
     }
-    return 1;
+    return phase;
   }
 
   drawCopper(ctx) {

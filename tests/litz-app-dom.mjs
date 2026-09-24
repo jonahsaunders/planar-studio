@@ -77,6 +77,7 @@ globalThis.fetch = async (url, request) => {
   } else if (method === 'designs.list') result = { designs: [...designs.values()].map(({ id, name, kind, saved }) => ({ id, name, kind, saved })) };
   else if (method === 'designs.load') result = structuredClone(designs.get(params.id));
   else if (method === 'file.save') { files.push(params); result = { path: `/test-export/${params.name}` }; }
+  else if (method === 'manufacturing.run') result = { available: false, ok: false, status: 'unavailable', message: 'Test fixture: KiCad CLI unavailable', checks: {}, files: [] };
   else throw new Error(`Unexpected bridge request in Litz app integration test: ${method}`);
   return { ok: true, status: 200, json: async () => ({ ok: true, result }) };
 };
@@ -133,7 +134,7 @@ try {
     assert.equal(completedResponse.analysis.currentShares.length, 16);
     assert.match(side(), /Routing validationPassed/);
     assert.match(side(), /Self-resonanceUnknown/);
-    assert.equal(document.querySelectorAll('#side canvas.chart').length, 3);
+    assert.equal(document.querySelectorAll('#side canvas.chart').length, 6, 'Terminal R/L/Q, impedance, phase and copper-loss curves render.');
     assert.ok(workers.at(-1).ended, 'The completed worker is terminated.');
   });
 
@@ -260,6 +261,89 @@ try {
     set('Litz outer diameter', 160);
     await until(() => active.size === 1, 'Worker retry after editing');
     await solved();
+  });
+
+  await check('Inspection and study settings persist without restarting electrical work', async () => {
+    const count = workers.length, slider = input('Inspect transposition step');
+    slider.value = '3'; slider.dispatchEvent(new w.Event('input', { bubbles: true }));
+    assert.equal(input('Inspect transposition step'), slider, 'Scrubbing retains the active slider node.');
+    assert.match(side(), /Step 4 of/);
+    set('Inspector strand or bundle', 'strand:2');
+    set('Search maximum vias', 800);
+    await pause(30);
+    assert.equal(workers.length, count);
+    button('Save').click();
+    await until(() => [...designs.values()].some(d => d.config.litzInspectStep === 3), 'View and study settings saved');
+    const saved = [...designs.values()].find(d => d.config.litzInspectStep === 3);
+    assert.equal(saved.config.litzHighlight, 'strand:2');
+    assert.equal(saved.config.litzStudySettings.search.vias, '800');
+  });
+
+  await check('Real study workers return references and cancel without accepting stale results', async () => {
+    button('Compare reference winding').click();
+    await until(() => active.size === 1, 'Reference study starts');
+    const worker = workers.at(-1);
+    assert.ok(worker.url.endsWith('/litz-tools-worker.js'));
+    await until(() => active.size === 0 && /Conventional four-layer parallel spiral/.test(side()), 'Reference study completed');
+    assert.ok(worker.response.result.ordinary);
+    const reference = document.querySelector('[data-task-result="compare"]').textContent;
+    button('Compare resolutions').click();
+    await until(() => active.size === 1, 'Convergence study starts');
+    const stale = workers.at(-1);
+    button('Cancel Litz study').click();
+    assert.equal(active.size, 0); assert.ok(stale.ended);
+    stale.onmessage({ data: { result: { levels: [{ L: 999 }], limitations: ['STALE STUDY MUST NOT APPEAR'] } } });
+    assert.ok(!side().includes('STALE STUDY MUST NOT APPEAR'));
+    assert.equal(document.querySelector('[data-task-result="compare"]').textContent, reference);
+    assert.match(side(), /Study canceled/);
+  });
+
+  await check('Bounded search applies checked geometry and manufacturing reports missing CLI accurately', async () => {
+    set('Search turn spacings (mm)', '5.5');
+    button('Search feasible candidates').click();
+    await until(() => active.size === 0 && /Apply candidate 1/.test(side()), 'Candidate search completed');
+    assert.equal(workers.at(-1).response.result.evaluated, 1);
+    button('Apply candidate 1').click();
+    await until(() => active.size === 1, 'Applied candidate analysis starts');
+    await solved();
+    assert.equal([...document.querySelectorAll('label')].find(label => label.textContent.trim() === 'Generate board outline')?.querySelector('input').checked, true);
+    assert.equal(button('Run KiCad checks and package').disabled, false);
+    $('design-name').value = 'Experimental Litz DOM';
+    $('design-name').dispatchEvent(new w.Event('input', { bubbles: true }));
+    button('Run KiCad checks and package').click();
+    await until(() => /Native KiCad: unavailable/.test(side()), 'Native unavailability surfaced');
+    const request = rpc.findLast(r => r.method === 'manufacturing.run');
+    assert.equal(request.params.filename, 'Experimental-Litz-DOM.kicad_pcb');
+    assert.match(request.params.boardText, /Edge.Cuts/);
+    assert.equal(request.params.runDrc, true);
+  });
+
+  await check('Complex measurement residuals require explicit matching planes and do not launch workers', async () => {
+    const count = workers.length;
+    const upload = input('Import Litz impedance measurement');
+    const file = new w.File(['frequencyhz,R,X\n1000000,1,10\n10000000,2,100'], 'measured.csv', { type: 'text/csv' });
+    Object.defineProperty(upload, 'files', { value: [file], configurable: true });
+    upload.dispatchEvent(new w.Event('change', { bubbles: true }));
+    await until(() => /Measured R/.test(side()), 'Complex measurement imported');
+    assert.match(side(), /Residuals are unavailable until/);
+    assert.ok(!side().includes('Residual: model − measured'));
+    set('Measurement reference plane', 'coil-terminals');
+    assert.match(side(), /Residual: model − measured/);
+    set('Measurement reference plane', 'other');
+    assert.ok(!side().includes('Residual: model − measured'));
+    assert.equal(workers.length, count);
+  });
+
+  await check('Starting a study immediately after an edit flushes pending previews', async () => {
+    const count = workers.length;
+    set('Litz outer diameter', 165);
+    button('Compare reference winding').click(); // before requestAnimationFrame
+    await until(() => workers.slice(count).some(worker => worker.messages[0]?.task === 'compare'), 'Immediate study starts');
+    const study = workers.slice(count).find(worker => worker.messages[0]?.task === 'compare');
+    assert.equal(study.messages[0].cfg.dOuter, 165);
+    assert.equal(study.messages[0].geometry.config.dOuter, 165);
+    await until(() => active.size === 0 && /Conventional four-layer parallel spiral/.test(side()), 'Immediate study finishes on current geometry');
+    assert.ok(!side().includes('Running…'));
   });
 
   assert.deepEqual(domErrors, []);

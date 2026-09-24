@@ -72,6 +72,14 @@ for (const gaps of [[0.4, 0.5, 0.4], [0.2, 0.6, 0.35]]) {
   const cfg = litzPreset(); cfg.litzDielectricGaps = gaps;
   cfg.boardT = gaps.reduce((a, b) => a + b, 0) + 4 * 0.07;
   const geometry = buildLitz(cfg), root = sexpr(exportKicadPcb(geometry.art));
+  assert.equal(root.find(n => n[0] === 'version')[1], '20241229');
+  const terminalVias = root.filter(n => n[0] === 'via' && n[1] !== 'blind');
+  assert.equal(terminalVias.length, 2);
+  assert.ok(terminalVias.every(n => n.some(x => x[0] === 'tenting' && x[1] === 'none')),
+    'both solder terminals must have explicit mask openings regardless of the board default');
+  assert.ok(root.filter(n => n[0] === 'via' && n[1] === 'blind').every(n => !n.some(x => x[0] === 'tenting')),
+    'transition vias keep the board default mask treatment');
+  assert.equal(toKicad(geometry.art).vias.filter(v => v.exposedTerminal).length, 2);
   const boardThickness = Number(root.find(n => n[0] === 'general').find(n => n[0] === 'thickness')[1]);
   assert.ok(Math.abs(boardThickness - cfg.boardT) < 1e-6);
   const stackup = root.find(n => n[0] === 'setup').find(n => n[0] === 'stackup').filter(n => n[0] === 'layer');

@@ -26,8 +26,8 @@
     "test:design-layout:browser": "node tests/design-layout-browser.mjs",
     "test:design-layout:dom": "node tests/design-layout-dom.mjs",
     "test:antennas": "node tests/directional-antennas.mjs && node tests/creator-families.mjs",
-    "test:litz": "node tests/litz-geometry.mjs && node tests/litz-model.mjs && node tests/litz-export.mjs && node tests/litz-integration.mjs",
-    "test:litz:dom": "node tests/litz-dom.mjs && node tests/litz-app-dom.mjs",
+    "test:litz": "node tests/litz-geometry.mjs && node tests/litz-sizing.mjs && node tests/litz-manufacturing.mjs && node tests/litz-impedance.mjs && node tests/litz-network.mjs && node tests/litz-capacitance.mjs && node tests/litz-model.mjs && node tests/litz-measurements.mjs && node tests/litz-studies.mjs && node tests/litz-export.mjs && node tests/litz-integration.mjs",
+    "test:litz:dom": "node tests/litz-dom.mjs && node tests/litz-inspector-dom.mjs && node tests/litz-app-dom.mjs",
     "test:litz:browser": "node tests/litz-browser.mjs"
   },
   "license": "MIT",

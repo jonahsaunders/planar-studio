@@ -16,6 +16,7 @@ import { obstacleEditor, obstacleHandles } from '../ui/obstacles.js';
 import { litzDefaults, litzPreset, buildLitz } from '../engine/litz.js';
 import { analyseLitz, sweepLitz } from '../engine/litz-model.js';
 import { validateLitz } from '../engine/litz-validation.js';
+import { validateManufacturing } from '../engine/litz-manufacturing.js';
 import { isLitz, litzRail, litzTiles, litzSpec, litzNotes, litzCharts } from '../ui/litz.js';
 import {
   SHAPES, chooseLayers, colourFor, substrateFields, processFields, driveFields, fmtHz,
@@ -28,6 +29,9 @@ export function defaults() {
   return {
     ...litzDefaults(),
     windingMode: 'spiral', litzConfigured: false, litzHighlight: 'all', litzModelSegments: 96,
+    litzInspectStep: -1, litzLossSamples: 64, litzAcModel: 'slab',
+    litzCapacitanceMode: 'off', litzCapacitanceCells: 2, litzTanD: 0.02,
+    litzFabProfile: 'experimental', litzFabRules: {},
     ...obstacleDefaults(),
     shape: 'circle',
     turns: 8,
@@ -64,7 +68,7 @@ export function defaults() {
 }
 
 export function reconcile(c, key, value) {
-  if (key === 'litzModelSegments') c.litzModelSegments = Number(value);
+  if (['litzModelSegments', 'litzLossSamples', 'litzCapacitanceCells', 'litzInspectStep'].includes(key)) c[key] = Number(value);
   if (key === 'windingMode' && value === 'pcb-litz') {
     if (!c.litzConfigured) Object.assign(c, litzPreset());
     Object.assign(c, { windingMode: 'pcb-litz', litzConfigured: true, layers: 4, arrayEnabled: false, obstacleEnabled: false });
@@ -183,8 +187,10 @@ export function compute(cfg, env = {}, opt = {}) {
     if (env.board?.layerCount > 0 && env.board.layerCount !== 4) art.notes.push({ level: 'warn', text: `This PCB Litz design needs exactly four copper layers; the open board has ${env.board.layerCount}. Configure a four-layer board before native placement. Standalone board export retains the four-layer design.` });
     art.meta.previewStrandId = /^strand:(\d+)$/.test(cfg.litzHighlight || '') ? Number(cfg.litzHighlight.slice(7)) : null;
     art.meta.previewBundle = ['outer', 'inner'].includes(cfg.litzHighlight) ? cfg.litzHighlight : null;
+    art.meta.previewStep = Number.isInteger(cfg.litzInspectStep) ? cfg.litzInspectStep : -1;
     const validation = validateLitz(litz, cfg);
-    const result = { litz, art, layers, validation, bounds: bounds(art), algorithm: { name: 'PCB Litz · experimental', note: 'Four-layer dual-bundle strand transposition with independent topology and geometric validation.' } };
+    const manufacturing = validateManufacturing(litz, cfg, { validation });
+    const result = { litz, art, layers, validation, manufacturing, bounds: bounds(art), algorithm: { name: 'PCB Litz · experimental', note: 'Four-layer dual-bundle strand transposition with independent topology and geometric validation.' } };
     if (opt.quick || !validation.ok) return result;
     result.analysis = analyseLitz(cfg, litz, { ...opt, segmentCap: opt.segmentCap || cfg.litzModelSegments || 96 });
     result.sweep = sweepLitz(cfg, result.analysis);
