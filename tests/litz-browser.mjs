@@ -96,7 +96,8 @@ try {
 
   await page.goto(url, { waitUntil: 'networkidle' }); await initialReady();
   await modelAction(() => page.getByLabel('Winding mode', { exact: true }).selectOption('pcb-litz'), { windingMode: 'pcb-litz' });
-  assert.match(await page.locator('#side').innerText(), /Routing validation[\s\S]*Passed/);
+  const routingTile = page.locator('#side .tile').filter({ has: page.locator('.k', { hasText: /^Routing validation$/i }) });
+  assert.equal(await routingTile.locator('.v').innerText(), 'Passed');
   await page.locator('#t-fit').click();
   await page.screenshot({ path: path.join(dist, 'pcb-litz.png') });
   await modelAction(() => page.getByLabel('Litz size constraint', { exact: true }).selectOption('finished'), { litzSizeMode: 'finished' });

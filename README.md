@@ -24,8 +24,7 @@ not predicted. See the [PCB Litz guide](docs/pcb-litz.md) and
 [model equations and benchmarks](docs/pcb-litz-models.md). The
 [verification workflow](.github/workflows/pcb-litz.yml) adds rendered-browser,
 native KiCad CLI DRC/manufacturing, and disposable-GUI placement/replacement/undo
-gates. These new CI gates have not yet run; local DOM/fixture tests do not
-establish their success.
+gates. Check the latest [CI run](https://github.com/jonahsaunders/planar-studio/actions/workflows/pcb-litz.yml) for each gate’s status; local DOM/fixture tests do not establish native or rendered-browser success.
 
 ## Motor winding designer and obstacle-aware coils
 

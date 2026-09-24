@@ -134,7 +134,7 @@ Passing screening does not replace native KiCad DRC or fabricator CAM review.
 
 **KiCad board (`.kicad_pcb`)** is the primary editable output. It preserves real
 tracks/nets, blind/buried via spans, four-layer stack metadata and any generated
-Edge.Cuts loops. SVG and DXF support inspection/external tooling. Design JSON
+Edge.Cuts loops. Litz board output uses KiCad 9 format and explicitly opens both solder masks on the terminal vias. SVG and DXF support inspection/external tooling. Design JSON
 stores editable parameters; the specification records dimensions, terminal
 estimates, routing/fabrication findings and limitations.
 
@@ -295,9 +295,10 @@ verification gate for pushes to `experimental/pcb-litz` and manual dispatch:
 | KiCad CLI | Install KiCad 9; parse the generated preset board with an outline, run native DRC, then generate Gerber/Excellon output using `--require-cli` |
 | KiCad GUI, in the same job | Launch a disposable board and isolated configuration under Xvfb; verify native placement, replacement, via spans and two GUI undo operations |
 
-The new CI workflow has **not yet run**. Its definition and local tests do not
-establish that the native/browser gates pass. The local implementation
-environment could not run the rendered-browser suite because Chromium socket
+The native parser, DRC, Gerber and Excellon gate passed on **KiCad 9.0.9** in
+[run 36069788484](https://github.com/jonahsaunders/planar-studio/actions/runs/36069788484), with zero DRC violations, unconnected items or schematic-parity issues. That run exposed separate browser-harness and GUI-startup failures; a successful manufacturing gate does not establish their success. Check the latest workflow run for every gate’s current status.
+
+The local implementation environment could not run the rendered-browser suite because Chromium socket
 creation was blocked, and native CLI fabrication verification was unavailable
 without `kicad-cli`. DOM tests use canvas/bridge stubs and do not verify actual
 rendering or browser CSP. Python fixture/serialization tests do not verify
@@ -307,13 +308,13 @@ missing KiCad a failure in CI rather than a passing skip.
 The GUI gate runs
 `xvfb-run -a dbus-run-session -- .venv/bin/python tests/kicad-live-ci.py --ci-owned`.
 It creates and controls its own board/configuration and
-checks exact item identities before and after replacement/undo. It has not
-yet executed here or in CI. The separate manual live-host test requires an
+checks exact item identities before and after replacement/undo. Its result is
+reported separately from native CLI success. The separate manual live-host test requires an
 explicit disposable-board path and an optional interactive undo check; it is
 not part of ordinary unit-test execution.
 
 The workflow uploads application and KiCad review artifacts when available.
 Their presence alone does not mean every gate passed; inspect job status and
 native check results. Native placement, replacement and undo verification are
-implemented but remain unverified pending execution of the CI gate. Physical
-coil measurements and fabricator approval remain separate work.
+implemented and require a successful live GUI gate. Physical coil measurements
+and fabricator approval remain separate work.

@@ -54,7 +54,7 @@ settings.mkdir(parents=True)
 (settings / 'kicad_common.json').write_text(json.dumps({'meta': {'version': 3}, 'api': {'enable_server': True},
     'do_not_show_again': {'data_collection_prompt': True, 'update_check_prompt': True},
     'system': {'autosave_interval': 0}, 'auto_backup': {'enabled': False}}), encoding='utf-8')
-(settings / 'pcbnew.json').write_text(json.dumps({'system': {'first_run_shown': True}, 'graphics': {'canvas_type': 1}}), encoding='utf-8')
+(settings / 'pcbnew.json').write_text(json.dumps({'meta': {'version': 5}, 'system': {'first_run_shown': True}, 'graphics': {'canvas_type': 1}}), encoding='utf-8')
 (settings / 'fp-lib-table').write_text('(fp_lib_table (version 7))\n', encoding='utf-8')
 (settings / 'sym-lib-table').write_text('(sym_lib_table (version 7))\n', encoding='utf-8')
 
@@ -73,6 +73,20 @@ with tempfile.TemporaryDirectory(prefix='plitz-') as socket_temp:
     log = (run_dir / 'pcbnew.log').open('w', encoding='utf-8')
     process = subprocess.Popen(['pcbnew', str(board)], env=env, stdout=log, stderr=subprocess.STDOUT)
     previous_env, previous_argv, previous_input = os.environ.copy(), sys.argv[:], builtins.input
+    last_titles = None
+    def capture_owned_windows(label, screenshot=False):
+        ids = xdo('search', '--onlyvisible', '--pid', process.pid, check=False).stdout.split()
+        titles = {window: xdo('getwindowname', window, check=False).stdout.strip() for window in ids}
+        (run_dir / f'{label}-windows.json').write_text(json.dumps(titles, indent=2), encoding='utf-8')
+        if screenshot:
+            # KiCad's Ubuntu package installs system Pillow. The launcher is
+            # restricted to its dedicated X display; no host desktop is read.
+            shot = subprocess.run(['/usr/bin/python3', '-c',
+                'from PIL import ImageGrab; import sys; ImageGrab.grab().save(sys.argv[1])',
+                str(run_dir / f'{label}.png')], capture_output=True, text=True, timeout=10)
+            if shot.returncode:
+                (run_dir / f'{label}-screenshot-error.txt').write_text(shot.stderr, encoding='utf-8')
+        return titles
     try:
         os.environ.clear(); os.environ.update(env)
         deadline = time.monotonic() + 60
@@ -87,6 +101,10 @@ with tempfile.TemporaryDirectory(prefix='plitz-') as socket_temp:
                     break
             except Exception as exc:
                 last_error = str(exc)
+            titles = capture_owned_windows('startup')
+            if titles != last_titles:
+                print('Owned KiCad startup windows:', json.dumps(titles), flush=True)
+                last_titles = titles
             time.sleep(0.5)
         else:
             raise RuntimeError(f'Owned KiCad GUI did not open its IPC board: {last_error}; see {run_dir}')
@@ -113,6 +131,10 @@ with tempfile.TemporaryDirectory(prefix='plitz-') as socket_temp:
             'replacement': 'passed', 'guiUndo': 'passed', 'board': str(board)}, indent=2), encoding='utf-8')
         print(f'Owned GUI placement, replacement, via spans, and two undo steps passed. Evidence: {run_dir}')
     except BaseException as exc:
+        try:
+            capture_owned_windows('failure', screenshot=True)
+        except Exception as diagnostic_error:
+            print(f'Could not capture owned GUI diagnostics: {diagnostic_error}', flush=True)
         (run_dir / 'result.json').write_text(json.dumps({'ok': False, 'version': version, 'error': str(exc)}, indent=2), encoding='utf-8')
         raise
     finally:
