@@ -13,6 +13,8 @@ import sys
 import time
 
 from native_board_identity import native_board_path
+from kipy.errors import ApiError, ConnectionError as KiCadConnectionError
+from kipy.proto.common import ApiStatusCode
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -30,12 +32,20 @@ board = link._board()
 if native_board_path(board) != target.resolve():
     raise SystemExit('Refusing: the open board does not match the exact disposable path.')
 def inventory():
-    return list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints())
+    return list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) + list(board.get_text())
 def wait_inventory(expected):
-    deadline = time.monotonic() + 10
+    deadline = time.monotonic() + 60
     while time.monotonic() < deadline:
-        if {k._kiid(item) for item in inventory()} == expected:
-            return True
+        try:
+            if {k._kiid(item) for item in inventory()} == expected:
+                return True
+        except ApiError as exc:
+            if exc.code not in (ApiStatusCode.AS_BUSY, ApiStatusCode.AS_NOT_READY):
+                raise
+        except KiCadConnectionError:
+            # Undo can rebuild connectivity for longer than the read client's
+            # timeout. Only this read-only inventory query may be retried.
+            pass
         time.sleep(0.2)
     return False
 if inventory():
@@ -90,6 +100,12 @@ try:
     print('Live placement, replacement, and native via spans passed.' + (' Manual undo passed.' if args.manual_undo else ' GUI undo was not tested.'))
 finally:
     # Remove only test-owned IDs that are still present, and never save/revert.
-    remaining = [k._kiid(item) for item in inventory() if k._kiid(item) in owned]
-    if remaining:
-        link.remove_ids(remaining)
+    failure_in_flight = sys.exc_info()[0] is not None
+    try:
+        remaining = [k._kiid(item) for item in inventory() if k._kiid(item) in owned]
+        if remaining:
+            link.remove_ids(remaining)
+    except Exception as cleanup_error:
+        if not failure_in_flight:
+            raise
+        print(f'Owned-board cleanup also failed: {cleanup_error}', file=sys.stderr)

@@ -27,6 +27,7 @@ import platform
 import sys
 import threading
 import time
+import uuid
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -74,6 +75,7 @@ COPPER_ORDER: List[str] = (
 # Keep individual IPC requests below the connection timeout. A complete Litz
 # winding can contain over 68,000 segments; all batches share one undo commit.
 PLACEMENT_BATCH_SIZE = 1000
+PLACEMENT_TIMEOUT_MS = 60_000
 
 
 class LinkError(RuntimeError):
@@ -221,6 +223,32 @@ class KiCadLink:
         with self._lock:
             self._kicad = None
 
+    def _placement_board(self, expected: Any) -> Any:
+        """Use a bounded operation connection without slowing status requests.
+
+        KiCad can take several seconds to rebuild connectivity at EndCommit.
+        Its public constructor configures the timeout; private sockets are not
+        modified. All transaction commands use this connection and document.
+        """
+        document = getattr(expected, "document", None)
+        if document is None:
+            raise LinkError("Cannot verify the native board document before placement; no changes made.")
+        kwargs: Dict[str, Any] = {"client_name": f"{self._client_name} placement {uuid.uuid4().hex[:8]}",
+                                  "timeout_ms": PLACEMENT_TIMEOUT_MS}
+        sock = _socket_path()
+        if sock:
+            kwargs["socket_path"] = sock
+        token = os.environ.get("KICAD_API_TOKEN")
+        if token:
+            kwargs["kicad_token"] = token
+        try:
+            board = KiCad(**kwargs).get_board()  # type: ignore[name-defined]
+        except Exception as exc:
+            raise LinkError(f"Cannot establish the native placement connection; no changes made: {exc}") from exc
+        if board is None or getattr(board, "document", None) != document:
+            raise LinkError("The active native board changed before placement; no changes made.")
+        return board
+
     # ----------------------------------------------------------------- status
 
     def state(self) -> LinkState:
@@ -345,7 +373,7 @@ class KiCadLink:
 
     # ------------------------------------------------------------------ nets
 
-    def resolve_net(self, name: Optional[str]) -> Any:
+    def resolve_net(self, name: Optional[str], board: Any = None) -> Any:
         """Return the board's Net object for `name`, or None.
 
         The API has no way to create a net, so an unknown name yields None and
@@ -355,7 +383,7 @@ class KiCadLink:
         if not name:
             return None
         try:
-            board = self._board()
+            board = board if board is not None else self._board()
             for net in board.get_nets():
                 if str(getattr(net, "name", "")) == name:
                     return net
@@ -365,7 +393,7 @@ class KiCadLink:
 
     # ----------------------------------------------------------------- place
 
-    def preflight(self, placement: Placement) -> List[str]:
+    def preflight(self, placement: Placement, board: Any = None) -> List[str]:
         """Check partial vias without changing the board, before replacement too.
 
         The front-end stack is never evidence of the live board's layer set.
@@ -378,7 +406,7 @@ class KiCadLink:
         partial = [span for span in spans if span[2] == "blind_buried"]
         if not partial:
             return []
-        board = self._board()
+        board = board if board is not None else self._board()
         layers = _board_copper_layers(board)
         if placement.board_layers and placement.board_layers != layers:
             raise LinkError("The live board copper stack differs from this PCB Litz design. Match the board stack or export a .kicad_pcb board.")
@@ -400,12 +428,17 @@ class KiCadLink:
     def place(self, placement: Placement, net_name: Optional[str] = None, replace_ids: Optional[Sequence[str]] = None) -> Dict[str, Any]:
         """Create every item in one commit. All of it lands, or none of it."""
         board = self._board()
-        stack_warnings = self.preflight(placement)
-        partial_layers = _board_copper_layers(board) if any(_via_span(s)[2] == "blind_buried" for s in placement.vias) else []
+        partial = any(_via_span(s)[2] == "blind_buried" for s in placement.vias)
+        atomic = bool(partial or replace_ids)
+        if atomic:
+            board = self._placement_board(board)
+        stack_warnings = self.preflight(placement, board=board)
+        partial_layers = _board_copper_layers(board) if partial else []
         items: List[Any] = []
         skipped: List[str] = []
 
-        net = self.resolve_net(net_name)
+        resolve = (lambda name: self.resolve_net(name, board=board)) if atomic else self.resolve_net
+        net = resolve(net_name)
         net_cache: Dict[str, Any] = {}
 
         def net_for(spec: Dict[str, Any]) -> Any:
@@ -413,7 +446,7 @@ class KiCadLink:
             if not nm:
                 return net
             if nm not in net_cache:
-                net_cache[nm] = self.resolve_net(nm)
+                net_cache[nm] = resolve(nm)
             return net_cache[nm]
 
         ox, oy = placement.origin
@@ -531,11 +564,10 @@ class KiCadLink:
         if replace_ids:
             wanted = set(replace_ids)
             try:
-                victims = [item for item in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) if _kiid(item) in wanted]
+                victims = [item for item in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) + list(board.get_text()) if _kiid(item) in wanted]
             except Exception as exc:
                 raise LinkError(f"Cannot inspect the previous placement; no changes made: {exc}") from exc
 
-        atomic = bool(partial_layers or replace_ids)
         if atomic and not all(callable(getattr(board, name, None)) for name in ("begin_commit", "push_commit", "drop_commit", "create_items")):
             raise LinkError("KiCad must support a complete undo transaction for PCB Litz placement. Export a .kicad_pcb board instead.")
         if victims and not callable(getattr(board, "remove_items", None)):
@@ -607,6 +639,9 @@ class KiCadLink:
                 if _kiid(item) in wanted:
                     victims.append(item)
             for item in board.get_footprints():
+                if _kiid(item) in wanted:
+                    victims.append(item)
+            for item in board.get_text():
                 if _kiid(item) in wanted:
                     victims.append(item)
         except Exception as exc:

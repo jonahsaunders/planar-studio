@@ -84,6 +84,7 @@ class SerializedVias(unittest.TestCase):
             def get_tracks(self): return []
             def get_vias(self): return self.live[:]
             def get_footprints(self): return []
+            def get_text(self): return []
             def begin_commit(self):
                 self.events.append('begin'); self.before = self.live[:]; return 'commit'
             def create_items(self, items):
@@ -97,6 +98,29 @@ class SerializedVias(unittest.TestCase):
         self.board = Board()
         self.link = k.KiCadLink()
         self.link._board = lambda: self.board
+        self.link._placement_board = lambda expected: expected
+
+    def test_operation_connection_has_long_timeout_and_exact_document_guard(self):
+        from kipy.board import Board
+        from kipy.proto.common.types import DocumentSpecifier
+        doc = DocumentSpecifier(board_filename='pcb-litz.kicad_pcb')
+        doc.project.path = '/tmp/owned-project'
+        expected = Board(None, doc)
+        link = k.KiCadLink('test')
+        status_client = object(); link._kicad = status_client
+        with patch.object(k, 'KiCad', return_value=SimpleNamespace(get_board=lambda: expected)) as ctor:
+            self.assertIs(link._placement_board(expected), expected)
+        self.assertEqual(ctor.call_args.kwargs['timeout_ms'], 60_000)
+        self.assertTrue(ctor.call_args.kwargs['client_name'].startswith('test placement '))
+        self.assertIs(link._kicad, status_client)
+        other = DocumentSpecifier(); other.CopyFrom(doc); other.project.path = '/tmp/unrelated-project'
+        with patch.object(k, 'KiCad', return_value=SimpleNamespace(get_board=lambda: Board(None, other))):
+            with self.assertRaisesRegex(k.LinkError, 'board changed.*no changes made'):
+                link._placement_board(expected)
+
+    def test_preflight_uses_explicit_transaction_board(self):
+        self.link._board = lambda: self.fail('Preflight must not reacquire a status board')
+        self.assertEqual(self.link.preflight(placement(), board=self.board), [])
 
     def test_front_inner_back_spans_survive_protobuf_round_trip(self):
         from kipy.board_types import Via, ViaType
@@ -157,6 +181,21 @@ class SerializedVias(unittest.TestCase):
         self.assertEqual(self.board.events, ['begin', 'create', 'remove', 'push'])
         self.assertNotIn(self.board.old, self.board.live)
         self.assertEqual(result['replaced'], 1)
+
+    def test_replacement_and_removal_include_owned_text_and_preserve_other_text(self):
+        owned_text = SimpleNamespace(id='old-label')
+        unrelated_text = SimpleNamespace(id='unrelated-label')
+        self.board.live.extend([owned_text, unrelated_text])
+        self.board.get_vias = lambda: [v for v in self.board.live if v not in (owned_text, unrelated_text)]
+        self.board.get_text = lambda: [v for v in self.board.live if v in (owned_text, unrelated_text)]
+        result = self.link.place(placement(), replace_ids=['old-via', 'old-label'])
+        self.assertEqual(result['replaced'], 2)
+        self.assertNotIn(owned_text, self.board.live)
+        self.assertIn(unrelated_text, self.board.live)
+        self.board.live.append(owned_text)
+        self.assertEqual(self.link.remove_ids(['old-label']), {'removed': 1})
+        self.assertNotIn(owned_text, self.board.live)
+        self.assertIn(unrelated_text, self.board.live)
 
     def test_large_replacement_batches_share_one_commit_and_preserve_unrelated_items(self):
         p = placement()
