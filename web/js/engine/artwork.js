@@ -36,7 +36,42 @@ export function artwork(meta = {}) {
 }
 
 export const track = (layer, width, pts, opt = {}) => ({ layer, width, pts, net: opt.net || null, role: opt.role || '', ...opt });
-export const via = (x, y, opt = {}) => ({ x, y, drill: opt.drill || 0.3, diameter: opt.diameter || 0.6, net: opt.net || null, role: opt.role || '', from: opt.from, to: opt.to });
+export const via = (x, y, opt = {}) => ({ x, y, drill: opt.drill || 0.3, diameter: opt.diameter || 0.6, net: opt.net || null, role: opt.role || '', from: opt.from, to: opt.to, viaType: opt.viaType, strandId: opt.strandId });
+
+export const COPPER_LAYERS = ['F.Cu', ...Array.from({ length: 30 }, (_, i) => `In${i + 1}.Cu`), 'B.Cu'];
+
+/** The complete physical stack. Explicit stacks must include unused layers. */
+export function copperStack(A) {
+  const declared = A.meta.boardLayers || A.meta.layerNames;
+  const touched = [...A.tracks, ...A.arcs, ...A.pads.filter(p => !p.drill)].map(o => o.layer)
+    .concat(A.vias.flatMap(v => [v.from, v.to]).filter(n => typeof n === 'string'));
+  if (declared) {
+    if (!Array.isArray(declared) || declared.length < 2 || declared.length > 32 || declared.length % 2
+      || declared.some((n, i) => n !== (i === declared.length - 1 ? 'B.Cu' : i === 0 ? 'F.Cu' : `In${i}.Cu`))) {
+      throw new Error('Copper stack must list every layer in order from F.Cu to B.Cu, with an even layer count.');
+    }
+    if (touched.some(n => n?.endsWith('.Cu') && !declared.includes(n))) throw new Error('Artwork uses a copper layer outside its declared board stack.');
+    return declared.slice();
+  }
+  const inner = Math.max(0, ...touched.filter(n => /^In\d+\.Cu$/.test(n)).map(n => Number(n.match(/\d+/)[0])));
+  if (inner > 30) throw new Error('Copper layers must be canonical KiCad names between F.Cu and B.Cu.');
+  const count = Math.max(2, inner + 2 + inner % 2);
+  return ['F.Cu', ...Array.from({ length: count - 2 }, (_, i) => `In${i + 1}.Cu`), 'B.Cu'];
+}
+
+/** Resolve a via's actual plated span; old numeric routing indexes are not spans. */
+export function viaSpan(v, layers = COPPER_LAYERS) {
+  const named = typeof v.from === 'string' || typeof v.to === 'string';
+  const type = v.viaType || 'through';
+  if (!['through', 'blind_buried'].includes(type)) throw new Error(`Unsupported via type: ${type}.`);
+  if (!named && type === 'through') return { from: 'F.Cu', to: 'B.Cu', viaType: 'through' };
+  const i = layers.indexOf(v.from), j = layers.indexOf(v.to);
+  if (i < 0 || j < 0 || i >= j) throw new Error('Via endpoints must be existing copper layer names in front-to-back order.');
+  const full = v.from === 'F.Cu' && v.to === 'B.Cu';
+  if (type === 'through' && !full) throw new Error('A partial-layer via requires viaType: blind_buried; through vias would short other strands.');
+  if (type === 'blind_buried' && full) throw new Error('A blind/buried via must span less than the full board stack.');
+  return { from: v.from, to: v.to, viaType: type };
+}
 export const pad = (x, y, opt = {}) => ({
   x, y,
   w: opt.w || 1.6, h: opt.h || opt.w || 1.6,
@@ -263,6 +298,7 @@ export function simplify(A, tol) {
  * board coordinates.
  */
 export function toKicad(A, opt = {}) {
+  const boardLayers = copperStack(A);
   const tol = A.meta.exactPaths ? 0 : opt.tolerance || 0;
   const dx = opt.dx || 0, dy = opt.dy || 0;
   const P = (p) => [p[0] + dx, -p[1] + dy];
@@ -270,13 +306,13 @@ export function toKicad(A, opt = {}) {
   const tracks = [];
   for (const t of A.tracks) {
     const pts = (tol > 0 ? decimate(t.pts, tol) : t.pts).map(P);
-    if (pts.length >= 2) tracks.push({ layer: t.layer, width: t.width, net: t.net, pts });
+    if (pts.length >= 2) tracks.push({ layer: t.layer, width: t.width, net: t.net, strandId: t.strandId, pts });
   }
   const arcs = A.arcs.map((a) => ({
     layer: a.layer, width: a.width, net: a.net,
     start: P(a.start), mid: P(a.mid), end: P(a.end),
   }));
-  const vias = A.vias.map((v) => ({ x: v.x + dx, y: -v.y + dy, drill: v.drill, diameter: v.diameter, net: v.net }));
+  const vias = A.vias.map((v) => ({ x: v.x + dx, y: -v.y + dy, drill: v.drill, diameter: v.diameter, net: v.net, strandId: v.strandId, ...viaSpan(v, boardLayers) }));
   // Drilled terminals become vias. Surface pads remain layer-specific and
   // are grouped in a footprint by the IPC backend; never short them through.
   const padVias = A.pads.filter(p => p.drill > 0).map((p) => ({
@@ -288,5 +324,5 @@ export function toKicad(A, opt = {}) {
   const texts = A.labels.map((l) => ({ x: l.x + dx, y: -l.y + dy, value: l.text, layer: l.layer }));
 
   const pads = A.pads.filter(p => !p.drill).map(p => ({ ...p, x: p.x + dx, y: -p.y + dy }));
-  return { tracks, arcs, vias: vias.concat(padVias), pads, texts };
+  return { tracks, arcs, vias: vias.concat(padVias), pads, texts, boardLayers };
 }

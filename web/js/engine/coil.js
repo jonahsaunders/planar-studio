@@ -468,6 +468,7 @@ export function layerNames(n) {
 
 /* Build the full multi-layer winding: geometry, vias, terminals. */
 export function buildCoil(cfg) {
+  if (cfg.windingMode === 'pcb-litz') throw new Error('PCB Litz windings require the strand-aware Litz generator. This study supports conventional spirals only.');
   if (cfg.obstacleEnabled && !cfg.motorGeometry && !cfg.arrayEnabled) return buildObstacleCoil(cfg);
   if (cfg.motorGeometry && cfg.shape !== 'wedge') return buildMotorCoil(cfg);
   const pitch = cfg.traceW + cfg.traceS;

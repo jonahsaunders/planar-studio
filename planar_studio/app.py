@@ -136,20 +136,33 @@ class Application:
             if placement.item_count() == 0:
                 raise RpcError("nothing to place", kind="empty")
 
+            # Validate partial via spans and API support before replacement
+            # can remove the last successfully placed version of a design.
+            self.link.preflight(placement)
+
             board = str(self.link.board_context().get("name") or "")
             design_id = placement.design_id or f"anon-{int(time.time())}"
 
             replaced = 0
+            partial_vias = any(v.get("viaType") == "blind_buried" for v in placement.vias)
+            replace_ids = []
             if params.get("replace"):
                 previous = self.store.get_placement(design_id, board)
                 if previous:
-                    try:
-                        replaced = self.link.remove_ids(previous.get("ids", [])).get("removed", 0)
-                    except LinkError:
-                        replaced = 0
-                    self.store.forget_placement(design_id, board)
+                    if partial_vias:
+                        replace_ids = previous.get("ids", [])
+                    else:
+                        try:
+                            replaced = self.link.remove_ids(previous.get("ids", [])).get("removed", 0)
+                        except LinkError:
+                            replaced = 0
+                        self.store.forget_placement(design_id, board)
 
-            result = self.link.place(placement, net_name=params.get("net"))
+            if partial_vias:
+                result = self.link.place(placement, net_name=params.get("net"), replace_ids=replace_ids)
+                replaced = result.get("replaced", 0)
+            else:
+                result = self.link.place(placement, net_name=params.get("net"))
             self.store.record_placement(
                 design_id,
                 board,

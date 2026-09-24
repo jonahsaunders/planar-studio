@@ -285,6 +285,18 @@ export class Viewport {
     return known.concat(extra);
   }
 
+  // Selection changes only the preview; every strand stays in the artwork
+  // consumed by validation and export.
+  strandOpacity(item) {
+    const meta = this.art.meta || {};
+    if (meta.previewStrandId != null) return item.strandId === meta.previewStrandId ? 1 : 0.12;
+    if (meta.previewBundle) {
+      const bundle = item.bundle || (item.strandId == null ? null : item.strandId < 12 ? 'outer' : 'inner');
+      return bundle === meta.previewBundle ? 1 : 0.12;
+    }
+    return 1;
+  }
+
   drawCopper(ctx) {
     const layers = this.layersInOrder();
     ctx.lineCap = 'round';
@@ -299,6 +311,7 @@ export class Viewport {
       ctx.strokeStyle = colour;
       for (const t of this.art.tracks) {
         if (t.layer !== name || t.pts.length < 2) continue;
+        ctx.globalAlpha = (front || layers.length === 1 ? 1 : 0.82) * this.strandOpacity(t);
         const w = Math.max(t.width * this.scale, 0.8);
         ctx.lineWidth = w;
         ctx.beginPath();
@@ -312,6 +325,7 @@ export class Viewport {
       }
       for (const a of this.art.arcs) {
         if (a.layer !== name) continue;
+        ctx.globalAlpha = (front || layers.length === 1 ? 1 : 0.82) * this.strandOpacity(a);
         ctx.lineWidth = Math.max(a.width * this.scale, 0.8);
         ctx.beginPath();
         const [sx, sy] = this.toScreen(a.start[0], a.start[1]);
@@ -366,6 +380,12 @@ export class Viewport {
 
   drawVias(ctx) {
     for (const v of this.art.vias) {
+      if (typeof v.from === 'string' && typeof v.to === 'string') {
+        const layers = this.art.meta?.boardLayers || this.art.meta?.layerNames || this.layersInOrder();
+        const a = layers.indexOf(v.from), b = layers.indexOf(v.to);
+        if (a >= 0 && b >= 0 && layers.slice(Math.min(a, b), Math.max(a, b) + 1).every(layer => this.layerVisible.get(layer) === false)) continue;
+      }
+      ctx.globalAlpha = this.strandOpacity(v);
       const [x, y] = this.toScreen(v.x, v.y);
       const r = Math.max(v.diameter * this.scale / 2, 1.4);
       ctx.fillStyle = '#D8D2C4';
@@ -376,6 +396,7 @@ export class Viewport {
         ctx.beginPath(); ctx.arc(x, y, rd, 0, Math.PI * 2); ctx.fill();
       }
     }
+    ctx.globalAlpha = 1;
     for (const p of this.art.pads.filter(p => p.drill > 0)) {
       const [x, y] = this.toScreen(p.x, p.y);
       const r = Math.max(Math.max(p.w, p.h) * this.scale / 2, 2);

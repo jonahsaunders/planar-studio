@@ -1,5 +1,18 @@
 # Planar Studio
 
+## Experimental PCB Litz winding
+
+The `experimental/pcb-litz` branch adds a four-layer, sixteen-strand PCB Litz
+mode to **Inductor**: dual-bundle transposition routing, strand-aware clearance
+and connectivity checks, KiCad board output with explicit blind/buried via
+spans, and a preliminary coupled-strand electrical model. The conservative
+preset uses 30° steps and 480 vias; it differs from the published coil.
+
+AC loss and Q are unvalidated estimates that may substantially understate loss
+and overstate Q. Intrinsic self-resonance, thermal ratings and WPT efficiency
+are not predicted. See the [PCB Litz guide](docs/pcb-litz.md) for controls,
+fabrication requirements, exports, model limits and validation commands.
+
 ## Motor winding designer and obstacle-aware coils
 
 - **Motor winding designer:** assign each rotary/dual-rotor coil to a phase,

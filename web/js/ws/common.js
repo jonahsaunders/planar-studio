@@ -42,6 +42,10 @@ export function chooseLayers(cfg, boardCtx) {
 /** Pull substrate and process facts out of the open board. */
 export function applyBoardContext(cfg, ctx) {
   if (!ctx) return { applied: [], cfg };
+  // Litz uses an explicit four-layer dielectric stack. Silently clamping it
+  // to an open two-layer board would change its electrical topology. The
+  // placement preflight checks compatibility; the editable design stays intact.
+  if (cfg.windingMode === 'pcb-litz') return { applied: [], cfg };
   const applied = [];
   const next = { ...cfg };
 

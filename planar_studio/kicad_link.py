@@ -34,6 +34,7 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 # Optional import. Absence is a supported state, not an error.
 # --------------------------------------------------------------------------
 KIPY_IMPORT_ERROR: Optional[str] = None
+ViaType: Any = None
 try:  # pragma: no cover - depends on the host environment
     import kipy  # type: ignore
     from kipy import KiCad  # type: ignore
@@ -49,6 +50,11 @@ try:  # pragma: no cover - depends on the host environment
     from kipy.util import from_mm, to_mm  # type: ignore
 
     HAVE_KIPY = True
+    # Keep older bindings usable for ordinary through-hole designs.
+    try:
+        from kipy.board_types import ViaType  # type: ignore
+    except ImportError:
+        pass
 except Exception as exc:  # pragma: no cover
     HAVE_KIPY = False
     KIPY_IMPORT_ERROR = f"{type(exc).__name__}: {exc}"
@@ -87,6 +93,7 @@ class Placement:
     vias: List[Dict[str, Any]] = field(default_factory=list)
     pads: List[Dict[str, Any]] = field(default_factory=list)
     texts: List[Dict[str, Any]] = field(default_factory=list)
+    board_layers: List[str] = field(default_factory=list)
     origin: Tuple[float, float] = (0.0, 0.0)
 
     @classmethod
@@ -100,6 +107,7 @@ class Placement:
             vias=list(payload.get("vias") or []),
             texts=list(payload.get("texts") or []),
             pads=list(payload.get("pads") or []),
+            board_layers=list(payload.get("boardLayers") or []),
             origin=(float(origin[0]), float(origin[1])),
         )
 
@@ -352,9 +360,40 @@ class KiCadLink:
 
     # ----------------------------------------------------------------- place
 
-    def place(self, placement: Placement, net_name: Optional[str] = None) -> Dict[str, Any]:
+    def preflight(self, placement: Placement) -> None:
+        """Check partial vias without changing the board, before replacement too.
+
+        The front-end stack is never evidence of the live board's layer set.
+        In particular, an In2.Cu-to-B.Cu span on a six-layer board crosses two
+        more copper layers than that same named pair on a four-layer board.
+        """
+        spans = [_via_span(spec) for spec in placement.vias]
+        partial = [span for span in spans if span[2] == "blind_buried"]
+        if not partial:
+            return
+        board = self._board()
+        layers = _board_copper_layers(board)
+        if placement.board_layers and placement.board_layers != layers:
+            raise LinkError("The live board copper stack differs from this PCB Litz design. Match the board stack or export a .kicad_pcb board.")
+        for spec in placement.tracks + placement.arcs + placement.pads:
+            if spec.get("layer") not in layers:
+                raise LinkError(f"PCB Litz copper layer {spec.get('layer')!r} is not enabled on the live board.")
+        checked = set()
+        for spec, span in zip(placement.vias, spans):
+            if span[2] != "blind_buried":
+                continue
+            if span[0] not in layers or span[1] not in layers:
+                raise LinkError("A blind/buried via endpoint is not enabled on the live board. Match the copper stack or export a .kicad_pcb board.")
+            key = (span, spec.get("diameter", 0.6), spec.get("drill", 0.3))
+            if key not in checked:
+                _configure_partial_via(Via(), spec, layers)  # type: ignore[name-defined]
+                checked.add(key)
+
+    def place(self, placement: Placement, net_name: Optional[str] = None, replace_ids: Optional[Sequence[str]] = None) -> Dict[str, Any]:
         """Create every item in one commit. All of it lands, or none of it."""
         board = self._board()
+        self.preflight(placement)
+        partial_layers = _board_copper_layers(board) if any(_via_span(s)[2] == "blind_buried" for s in placement.vias) else []
         items: List[Any] = []
         skipped: List[str] = []
 
@@ -415,11 +454,14 @@ class KiCadLink:
             v.position = Vector2.from_xy(  # type: ignore[name-defined]
                 from_mm(float(spec["x"]) + ox), from_mm(float(spec["y"]) + oy)
             )
-            try:
-                v.diameter = from_mm(float(spec.get("diameter", 0.6)))
-                v.drill_diameter = from_mm(float(spec.get("drill", 0.3)))
-            except Exception as exc:
-                skipped.append(f"via size ({type(exc).__name__})")
+            if _via_span(spec)[2] == "blind_buried":
+                _configure_partial_via(v, spec, partial_layers)
+            else:
+                try:
+                    v.diameter = from_mm(float(spec.get("diameter", 0.6)))
+                    v.drill_diameter = from_mm(float(spec.get("drill", 0.3)))
+                except Exception as exc:
+                    skipped.append(f"via size ({type(exc).__name__})")
             n = net_for(spec)
             if n is not None:
                 v.net = n
@@ -475,14 +517,37 @@ class KiCadLink:
         if not items:
             return {"created": 0, "ids": [], "skipped": skipped}
 
+        victims: List[Any] = []
+        if replace_ids:
+            wanted = set(replace_ids)
+            try:
+                victims = [item for item in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) if _kiid(item) in wanted]
+            except Exception as exc:
+                raise LinkError(f"Cannot inspect the previous placement; no changes made: {exc}") from exc
+
+        atomic = bool(partial_layers or replace_ids)
+        if atomic and not all(callable(getattr(board, name, None)) for name in ("begin_commit", "push_commit", "drop_commit", "create_items")):
+            raise LinkError("KiCad must support a complete undo transaction for PCB Litz placement. Export a .kicad_pcb board instead.")
+        if victims and not callable(getattr(board, "remove_items", None)):
+            raise LinkError("This KiCad binding cannot replace the previous placement; no changes made.")
         commit = None
         try:
             commit = board.begin_commit()
-        except Exception:
+        except Exception as exc:
+            if atomic:
+                raise LinkError("KiCad must support an undo transaction for PCB Litz placement. Export a .kicad_pcb board instead.") from exc
             commit = None
+        if atomic and commit is None:
+            raise LinkError("KiCad did not start a transaction for PCB Litz placement; no changes made.")
 
         try:
             created = board.create_items(items)
+            if atomic and len(created or []) != len(items):
+                raise LinkError("KiCad did not create the complete winding.")
+            if victims:
+                board.remove_items(victims)
+            if commit is not None and atomic:
+                board.push_commit(commit, f"Planar Studio: place {placement.name}")
         except Exception as exc:
             if commit is not None:
                 try:
@@ -491,14 +556,14 @@ class KiCadLink:
                     pass
             raise LinkError(f"KiCad rejected the placement: {type(exc).__name__}: {exc}") from exc
 
-        if commit is not None:
+        if commit is not None and not atomic:
             try:
                 board.push_commit(commit, f"Planar Studio: place {placement.name}")
             except Exception:
                 pass
 
         ids = [_kiid(c) for c in (created or [])]
-        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped}
+        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped, "replaced": len(victims)}
 
     # ---------------------------------------------------------------- delete
 
@@ -602,6 +667,87 @@ class KiCadLink:
 # --------------------------------------------------------------------------
 
 _LAYER_CACHE: Dict[str, Any] = {}
+
+
+def _via_span(spec: Dict[str, Any]) -> Tuple[str, str, str]:
+    """Numeric from/to fields in old designs were routing indexes, not spans."""
+    start, end = spec.get("from"), spec.get("to")
+    kind = spec.get("viaType") or "through"
+    if kind not in ("through", "blind_buried"):
+        raise LinkError(f"Unsupported via type {kind!r}.")
+    if not isinstance(start, str) and not isinstance(end, str) and kind == "through":
+        return "F.Cu", "B.Cu", kind
+    if start not in COPPER_ORDER or end not in COPPER_ORDER or COPPER_ORDER.index(start) >= COPPER_ORDER.index(end):
+        raise LinkError("Via endpoints must be existing canonical copper layer names in front-to-back order.")
+    full = start == "F.Cu" and end == "B.Cu"
+    if kind == "through" and not full:
+        raise LinkError("Partial-layer vias require viaType: blind_buried; refusing to substitute through vias.")
+    if kind == "blind_buried" and full:
+        raise LinkError("A blind/buried via must span less than the full board stack.")
+    return start, end, kind
+
+
+def _board_copper_layers(board: Any) -> List[str]:
+    """Read enabled copper, never the global enum of all possible layers."""
+    names: List[str] = []
+    try:
+        enabled = {_layer_name(layer) for layer in board.get_enabled_layers()}
+        names = [name for name in COPPER_ORDER if name in enabled]
+    except Exception:
+        pass
+    if not names:
+        try:
+            copper, _, _ = _read_stackup(board.get_stackup())
+            names = [entry["name"] for entry in copper]
+        except Exception:
+            pass
+    if not names:
+        try:
+            count = board.get_copper_layer_count()
+            if isinstance(count, int) and 2 <= count <= 32 and not count % 2:
+                names = ["F.Cu"] + [f"In{i}.Cu" for i in range(1, count - 1)] + ["B.Cu"]
+        except Exception:
+            pass
+    expected = ["F.Cu"] + [f"In{i}.Cu" for i in range(1, len(names) - 1)] + ["B.Cu"]
+    if len(names) < 2 or len(names) > 32 or len(names) % 2 or names != expected:
+        raise LinkError("Cannot verify the live board copper stack for blind/buried vias. Export a .kicad_pcb board or use compatible KiCad IPC bindings.")
+    return names
+
+
+def _configure_partial_via(v: Any, spec: Dict[str, Any], layers: List[str]) -> None:
+    """Use the documented kicad-python Via/PadStack/DrillProperties API.
+
+    Via.type and Via.diameter have padstack side effects, so set both before
+    the enabled layers and drill endpoints. Read back from the wrapper to
+    detect bindings that cannot preserve the span before touching the board.
+    https://docs.kicad.org/kicad-python/board.html#kipy.board_types.Via
+    """
+    start, end, _ = _via_span(spec)
+    try:
+        diameter, drill = float(spec.get("diameter", 0.6)), float(spec.get("drill", 0.3))
+        if not all(math.isfinite(n) for n in (diameter, drill)) or not 0 < drill < diameter:
+            raise ValueError("via diameter must exceed its positive drill diameter")
+        kind = getattr(ViaType, "VT_BLIND_BURIED", None)
+        if kind is None or not hasattr(v, "type") or not hasattr(v, "padstack"):
+            raise AttributeError("Via.type and Via.padstack are required")
+        first, last = _resolve_layer(start), _resolve_layer(end)
+        enabled = [_resolve_layer(n) for n in layers[layers.index(start):layers.index(end) + 1]]
+        if first is None or last is None or any(n is None for n in enabled):
+            raise ValueError("unsupported copper layer")
+        if not hasattr(v.padstack, "layers") or not hasattr(v.padstack.drill, "start_layer") or not hasattr(v.padstack.drill, "end_layer"):
+            raise AttributeError("PadStack.layers and drill endpoints are required")
+        v.type = kind
+        v.diameter = from_mm(diameter)
+        v.drill_diameter = from_mm(drill)
+        v.padstack.layers = enabled
+        v.padstack.drill.start_layer = first
+        v.padstack.drill.end_layer = last
+        if v.type != kind or list(v.padstack.layers) != enabled or v.padstack.drill.start_layer != first or v.padstack.drill.end_layer != last:
+            raise ValueError("binding did not preserve the requested via span")
+        if v.diameter != from_mm(diameter) or v.drill_diameter != from_mm(drill):
+            raise ValueError("binding did not preserve the requested via dimensions")
+    except Exception as exc:
+        raise LinkError(f"Cannot safely place blind/buried vias with this KiCad binding ({exc}). Export a .kicad_pcb board or update KiCad/kicad-python.") from exc
 
 
 def _resolve_layer(name: Optional[str]) -> Any:

@@ -208,6 +208,7 @@ export function openDesignTools(host, initial = 'optimize') {
       if (kind() === 'filter' && data.rows.some((p) => p.s11db != null)) chart(body, x, [{ name: 'Simulated S11', values: r.response.s11db }, { name: 'Measured S11', values: measurementValues(data, 's11db', x), dash: [4, 3] }], 'S11 dB');
       if (!measurementValues(data, metric, x).some(Number.isFinite)) body.append(note(`No ${metric} data overlaps this sweep. Adjust the frequency range or import a matching measurement.`));
     }
+    if (c.windingMode === 'pcb-litz') { body.append(note('Measurement overlays are available for PCB Litz. Parameter fitting is not supported by the experimental strand model.')); return; }
     if (kind() === 'filter' && !DISTRIBUTED.includes(c.family)) { body.append(note('Parameter fitting currently supports coils and distributed filters. The imported overlay works for all filter families.')); return; }
     body.append(el('h3', { text: 'Fit selected parameters' }), note('Bounded least-squares fit. A fitted material value can also absorb fixture or model error; it is not a unique material measurement. The original prediction is retained.'));
     const s = settings('fit', { aMin: 2, aMax: 7, bMin: 0, bMax: kind() === 'filter' ? 0.08 : 100, fitA: 'yes', fitB: 'yes' }), f = form();
@@ -399,6 +400,10 @@ export function openDesignTools(host, initial = 'optimize') {
     title.textContent = `Design tools · ${host.name()}`;
     for (const b of nav.children) b.setAttribute('aria-pressed', String(b.dataset.tool === id));
     status.textContent = 'Settings are included when you save the design.';
+    if (config().windingMode === 'pcb-litz' && !['board', 'measurements'].includes(id)) {
+      body.append(note('This study uses the conventional spiral model and is unavailable for experimental PCB Litz windings. Use the main workspace for strand analysis, Measurements for overlays, or Board checks for placement.'));
+      return;
+    }
     if (['antenna', 'transformer'].includes(kind()) && id !== 'board') {
       body.append(note('This study supports the Inductor, PCB motor or Filter workspace. Antenna and Transformer calculations are shown in their main workspace.'));
       return;

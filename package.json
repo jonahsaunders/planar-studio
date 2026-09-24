@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/rpc.mjs && python3 -m unittest discover -s tests -p \"test_*.py\"",
+    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/rpc.mjs && npm run test:litz && python3 -m unittest discover -s tests -p \"test_*.py\"",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
@@ -25,7 +25,10 @@
     "test:design-layout": "node tests/winding-design.mjs && node tests/obstacles.mjs",
     "test:design-layout:browser": "node tests/design-layout-browser.mjs",
     "test:design-layout:dom": "node tests/design-layout-dom.mjs",
-    "test:antennas": "node tests/directional-antennas.mjs && node tests/creator-families.mjs"
+    "test:antennas": "node tests/directional-antennas.mjs && node tests/creator-families.mjs",
+    "test:litz": "node tests/litz-geometry.mjs && node tests/litz-model.mjs && node tests/litz-export.mjs && node tests/litz-integration.mjs",
+    "test:litz:dom": "node tests/litz-dom.mjs && node tests/litz-app-dom.mjs",
+    "test:litz:browser": "node tests/litz-browser.mjs"
   },
   "license": "MIT",
   "repository": {
