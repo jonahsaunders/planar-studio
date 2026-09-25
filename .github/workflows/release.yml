@@ -1,0 +1,84 @@
+name: Build and publish KiCad installer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - metadata.json
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: planar-studio-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Build and validate the installer
+        run: ./build.sh
+      - name: Read validated package version
+        id: package
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          package = json.loads(Path('metadata.json').read_text())['versions'][0]
+          version = package['version']
+          notes = Path(f'docs/releases/{version}.md')
+          if not notes.is_file():
+              raise SystemExit(f'Missing release notes: {notes}')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'version={version}\nstatus={package["status"]}\n')
+          PY
+      - name: Publish the versioned installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PACKAGE_VERSION: ${{ steps.package.outputs.version }}
+          PACKAGE_STATUS: ${{ steps.package.outputs.status }}
+        run: |
+          release_tag="v$PACKAGE_VERSION"
+          package_name="planar-studio-$PACKAGE_VERSION.zip"
+          created_release=false
+          if release_is_draft="$(gh release view "$release_tag" --json isDraft --jq .isDraft)"; then
+            if [ "$release_is_draft" != false ]; then
+              echo "Release $release_tag is a draft. Complete or remove it before retrying."
+              exit 1
+            fi
+            echo "Release $release_tag already exists. Published installers are not replaced."
+            echo "For a new release, update metadata.json and add matching release notes."
+          else
+            release_flags=()
+            if [ "$PACKAGE_STATUS" != stable ]; then
+              release_flags+=(--prerelease)
+            fi
+            gh release create "$release_tag" "dist/$package_name" \
+              --target "$GITHUB_SHA" \
+              --title "planar-studio-$PACKAGE_VERSION" \
+              --notes-file "docs/releases/$PACKAGE_VERSION.md" \
+              "${release_flags[@]}"
+            created_release=true
+          fi
+          # Check the exact public URL used by the README without authentication.
+          download_url="https://github.com/$GITHUB_REPOSITORY/releases/download/$release_tag/$package_name"
+          curl --fail --location --retry 3 --retry-all-errors \
+            --output "$RUNNER_TEMP/$package_name" "$download_url"
+          if [ "$created_release" = true ]; then
+            cmp "dist/$package_name" "$RUNNER_TEMP/$package_name"
+          fi
+          python3 scripts/check_pcm.py "$RUNNER_TEMP/$package_name"
+          printf 'Download verified: %s\n' "$download_url"

@@ -1,5 +1,27 @@
 # Planar Studio
 
+## Download and install
+
+### [Download planar-studio-1.3.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.3.0/planar-studio-1.3.0.zip)
+
+Ready-to-install package for **KiCad 9.0.1 or newer** on Windows, macOS and Linux.
+[Release details](https://github.com/jonahsaunders/planar-studio/releases/tag/v1.3.0).
+
+1. Download **planar-studio-1.3.0.zip** using the link above. **Keep it zipped.**
+2. In KiCad's main Project Manager window, open **Plugin and Content Manager**.
+3. Click **Install from File**, select the ZIP, and apply any pending changes.
+4. Restart KiCad and open the PCB Editor. Allow a moment for the plugin's Python
+   environment to finish setting up, then click the **Planar Studio** toolbar button.
+
+**Replacing an existing installation?** Close Planar Studio and the PCB Editor,
+then use **Plugin and Content Manager → Installed → Planar Studio → Uninstall →
+Apply Pending Changes** before installing this ZIP. Your saved designs are stored
+separately from the plugin; keep the settings folder.
+
+**Getting a metadata error?** Use the download link above. GitHub's **Code →
+Download ZIP** and the release's **Source code** links contain the source tree,
+which cannot be imported directly into KiCad's Plugin and Content Manager.
+
 ## Motor winding designer and obstacle-aware coils
 
 - **Motor winding designer:** assign each rotary/dual-rotor coil to a phase,
@@ -106,8 +128,8 @@ Both support saved designs, JSON import/export, KiCad board/footprint, SVG, DXF 
 See [Creator guide](docs/creators.md) for terminals, net setup, equations and model limits. These are design starting points: antenna impedance matching needs simulation/measurement, and transformer inner terminals need insulated breakouts.
 
 
-[![tests](https://github.com/jonahsaunders/planar-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/jonahsaunders/planar-studio/actions/workflows/ci.yml)
-[![KiCad 9.0+](https://img.shields.io/badge/KiCad-9.0%2B-314CB0)](https://www.kicad.org/)
+[![installer](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml/badge.svg)](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml)
+[![KiCad 9.0.1+](https://img.shields.io/badge/KiCad-9.0.1%2B-314CB0)](https://www.kicad.org/)
 [![licence MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 
 A KiCad extension for the copper you cannot buy as a part: planar inductors,
@@ -337,9 +359,12 @@ retuning the geometry to hide it.
 
 ## Install
 
-**From the Plugin and Content Manager.** Point PCM at a repository that hosts
-`planar-studio-1.3.0.zip`, or use *Install from File* on the archive built by
-`./build.sh`.
+**Recommended:** follow [Download and install](#download-and-install) at the top
+of this page. The release ZIP is ready for **Install from File**.
+
+**Build from source:** run `./build.sh` with Python 3 and `zip` available, then
+install `dist/planar-studio-1.3.0.zip`. The build validates the archive layout and
+referenced plugin files.
 
 **By hand.** Copy this folder into KiCad's plugin directory as
 `planar-studio`:
@@ -356,8 +381,8 @@ Restart KiCad. The toolbar button appears in the PCB editor once KiCad has
 built the plugin's virtual environment and installed `kicad-python` into it,
 which takes a moment the first time.
 
-Requires **KiCad 9.0 or newer** — the IPC API does not exist before it, and the
-old SWIG bindings this does not use were removed in KiCad 11.
+Requires **KiCad 9.0.1 or newer** for PCM installation. KiCad 9.0.1 added PCM
+support for the plugin's IPC runtime.
 
 ## Run it outside KiCad
 

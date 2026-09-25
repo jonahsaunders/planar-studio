@@ -38,6 +38,7 @@ find "$STAGE" -name '*.pyc' -delete 2>/dev/null || true
 find "$STAGE" -name '.DS_Store' -delete 2>/dev/null || true
 
 ( cd "$STAGE" && zip -q -r "../$NAME-$VERSION.zip" . )
+python3 scripts/check_pcm.py "$OUT/$NAME-$VERSION.zip"
 
 SIZE=$(wc -c < "$OUT/$NAME-$VERSION.zip" | tr -d ' ')
 SHA=$(sha256sum "$OUT/$NAME-$VERSION.zip" 2>/dev/null | cut -d' ' -f1 \
