@@ -13,7 +13,7 @@
    happens.
    ========================================================================= */
 
-import { bounds, decimate, copperLength, copperArea, segmentCount, copperStack, viaSpan } from './artwork.js';
+import { bounds, decimate, copperLength, copperArea, segmentCount } from './artwork.js';
 
 const f3 = (v) => {
   const x = Math.abs(v) < 5e-7 ? 0 : v;
@@ -44,7 +44,7 @@ function prepared(A, tol) {
 /* Every copper layer the artwork actually touches, in stack order. */
 export function usedLayers(A) {
   const order = ['F.Cu'].concat(Array.from({ length: 30 }, (_, i) => `In${i + 1}.Cu`)).concat(['B.Cu']);
-  const seen = new Set([...A.tracks, ...A.arcs, ...A.pads].map(t => t.layer).concat(A.vias.flatMap(v => [v.from, v.to])));
+  const seen = new Set(A.tracks.map((t) => t.layer).concat(A.pads.map((p) => p.layer)));
   return order.filter((n) => seen.has(n));
 }
 
@@ -54,10 +54,6 @@ export function usedLayers(A) {
 
 export function exportKicadMod(A, opt = {}) {
   const art = prepared(A, opt.tolerance);
-  const layers = copperStack(art);
-  if (art.vias.some(v => viaSpan(v, layers).viaType === 'blind_buried')) {
-    throw new Error('KiCad footprints cannot preserve blind/buried via spans. Export a .kicad_pcb board or use native KiCad placement.');
-  }
   const name = opt.name || art.meta.name || 'planar';
   const b = bounds(art);
   const R = Math.max(Math.abs(b.x0), Math.abs(b.x1), Math.abs(b.y0), Math.abs(b.y1)) + 1;
@@ -113,26 +109,14 @@ export function exportKicadPcb(A, opt = {}) {
   const art = prepared(A, opt.tolerance);
   // A PCB needs a complete, even copper stack, including unused inner layers.
   // Sparse transformer assignments must retain their actual KiCad layer IDs.
-  const layers = copperStack(art);
+  const touched = [...usedLayers(art), ...(art.meta.boardLayers || [])];
+  const inner = Math.max(0, ...touched.filter(n => /^In\d+\.Cu$/.test(n)).map(n => Number(n.match(/\d+/)[0])));
+  const count = Math.max(2, inner + 2 + inner % 2);
+  const layers = ['F.Cu', ...Array.from({ length: count - 2 }, (_, i) => `In${i + 1}.Cu`), 'B.Cu'];
   const L = [];
-  const litzStack = ['pcb-litz', 'pcb-litz-reference', 'pcb-litz-conventional-reference'].includes(art.meta.kind);
-  let thickness = opt.boardThickness || 1.6;
-  if (litzStack) {
-    const copper = art.meta.copperThicknessMM, gaps = art.meta.dielectricThicknessMM;
-    if (!Number.isFinite(copper) || copper <= 0 || !Array.isArray(gaps) || gaps.length !== layers.length - 1
-      || gaps.some(g => !Number.isFinite(g) || g <= 0)) throw new Error('PCB Litz export requires the complete copper and dielectric thicknesses from its generated geometry.');
-    thickness = copper * layers.length + gaps.reduce((sum, gap) => sum + gap, 0);
-    if (!Number.isFinite(art.meta.boardThicknessMM) || Math.abs(art.meta.boardThicknessMM - thickness) > 1e-6) {
-      throw new Error('PCB Litz exported board thickness must match its copper and dielectric stack.');
-    }
-    if (opt.boardThickness != null && Math.abs(opt.boardThickness - thickness) > 0.005) {
-      throw new Error('PCB Litz board thickness cannot override its modeled copper and dielectric stack.');
-    }
-  }
 
-  // Litz terminal vias explicitly open the mask using KiCad 9's tenting token.
-  L.push(`(kicad_pcb (version ${litzStack ? 20241229 : 20221018}) (generator "planar-studio")`);
-  L.push(`  (general (thickness ${f3(thickness)}))`);
+  L.push(`(kicad_pcb (version 20221018) (generator "planar-studio")`);
+  L.push(`  (general (thickness ${f3(opt.boardThickness || 1.6)}))`);
   L.push(`  (paper "A4")`);
   L.push(`  (layers`);
   layers.forEach((n) => {
@@ -141,16 +125,7 @@ export function exportKicadPcb(A, opt = {}) {
   });
   for (const t of TECH_LAYERS) L.push(`    (${t[0]} "${t[1]}" ${t[2]}${t[3] ? ` "${t[3]}"` : ''})`);
   L.push(`  )`);
-  if (litzStack) {
-    L.push('  (setup', '    (stackup');
-    layers.forEach((name, i) => {
-      L.push(`      (layer "${name}" (type "copper") (thickness ${f3(art.meta.copperThicknessMM)}))`);
-      if (i < layers.length - 1) {
-        L.push(`      (layer "dielectric ${i + 1}" (type "${i % 2 ? 'core' : 'prepreg'}") (thickness ${f3(art.meta.dielectricThicknessMM[i])}))`);
-      }
-    });
-    L.push('    )', '    (pad_to_mask_clearance 0) (grid_origin 0 0)', '  )');
-  } else L.push(`  (setup (pad_to_mask_clearance 0) (grid_origin 0 0))`);
+  L.push(`  (setup (pad_to_mask_clearance 0) (grid_origin 0 0))`);
 
   // Nets: index 0 is the unconnected net and must exist.
   const netNames = ['""'];
@@ -183,14 +158,13 @@ export function exportKicadPcb(A, opt = {}) {
       + `(end ${f3(a.end[0])} ${f3(-a.end[1])}) (width ${f3(a.width)}) (layer "${a.layer}") (net ${netOf(a)}))`);
   }
   for (const v of art.vias) {
-    const span = viaSpan(v, layers);
-    L.push(`  (via${span.viaType === 'blind_buried' ? ' blind' : ''} (at ${f3(v.x)} ${f3(-v.y)}) (size ${f3(v.diameter)}) (drill ${f3(v.drill)}) `
-      + `(layers "${span.from}" "${span.to}") (net ${netOf(v)}))`);
+    L.push(`  (via (at ${f3(v.x)} ${f3(-v.y)}) (size ${f3(v.diameter)}) (drill ${f3(v.drill)}) `
+      + `(layers "F.Cu" "B.Cu") (net ${netOf(v)}))`);
   }
   for (const p of art.pads) {
     if (p.drill > 0) {
       L.push(`  (via (at ${f3(p.x)} ${f3(-p.y)}) (size ${f3(Math.max(p.w, p.h))}) `
-        + `(drill ${f3(p.drill)}) (layers "F.Cu" "B.Cu")${litzStack ? ' (tenting none)' : ''} (net ${netOf(p)}))`);
+        + `(drill ${f3(p.drill)}) (layers "F.Cu" "B.Cu") (net ${netOf(p)}))`);
     } else {
       const mask = p.mask === false ? '' : ` "${p.layer.replace('.Cu', '.Mask')}"`;
       L.push(`  (footprint "planar-pad" (layer "F.Cu") (at ${f3(p.x)} ${f3(-p.y)}) (attr smd)`

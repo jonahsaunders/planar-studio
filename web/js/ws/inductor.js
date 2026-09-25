@@ -13,11 +13,6 @@ import { bounds } from '../engine/artwork.js';
 import { el, eng, num } from '../ui/controls.js';
 import { obstacleDefaults } from '../engine/obstacles.js';
 import { obstacleEditor, obstacleHandles } from '../ui/obstacles.js';
-import { litzDefaults, litzPreset, buildLitz } from '../engine/litz.js';
-import { analyseLitz, sweepLitz } from '../engine/litz-model.js';
-import { validateLitz } from '../engine/litz-validation.js';
-import { validateManufacturing } from '../engine/litz-manufacturing.js';
-import { isLitz, litzRail, litzTiles, litzSpec, litzNotes, litzCharts } from '../ui/litz.js';
 import {
   SHAPES, chooseLayers, colourFor, substrateFields, processFields, driveFields, fmtHz,
 } from './common.js';
@@ -27,11 +22,6 @@ export const title = 'Inductor';
 
 export function defaults() {
   return {
-    ...litzDefaults(),
-    windingMode: 'spiral', litzConfigured: false, litzHighlight: 'all', litzModelSegments: 96,
-    litzInspectStep: -1, litzLossSamples: 64, litzAcModel: 'slab',
-    litzCapacitanceMode: 'off', litzCapacitanceCells: 2, litzTanD: 0.02,
-    litzFabProfile: 'experimental', litzFabRules: {},
     ...obstacleDefaults(),
     shape: 'circle',
     turns: 8,
@@ -67,24 +57,12 @@ export function defaults() {
   };
 }
 
-export function reconcile(c, key, value) {
-  if (['litzModelSegments', 'litzLossSamples', 'litzCapacitanceCells', 'litzInspectStep'].includes(key)) c[key] = Number(value);
-  if (key === 'windingMode' && value === 'pcb-litz') {
-    if (!c.litzConfigured) Object.assign(c, litzPreset());
-    Object.assign(c, { windingMode: 'pcb-litz', litzConfigured: true, layers: 4, arrayEnabled: false, obstacleEnabled: false });
-  }
-  if (isLitz(c) && ['litzDielectricGaps', 'copperOz'].includes(key) && Array.isArray(c.litzDielectricGaps)) {
-    c.boardT = c.litzDielectricGaps.reduce((sum, gap) => sum + gap, 0) + 4 * c.copperOz * 0.0348;
-  }
-}
-
 /* --------------------------------------------------------------------------
    Parameter rail
    ----------------------------------------------------------------------- */
 
 export function rail(panel, app) {
-  litzRail(panel, app);
-  panel.group({key:'obstacle-mode',title:'Design around obstacles',when:c=>!isLitz(c),fields:[
+  panel.group({key:'obstacle-mode',title:'Design around obstacles',fields:[
     {key:'obstacleEnabled',type:'check',label:'Generate in remaining board area',hint:'Uses the marked board area and obstacles instead of a standard coil shape.'},
     ...[['areaWidth','Board-area width',5,500],['areaHeight','Board-area height',5,500],['areaClearance','Obstacle / edge clearance',0,20]].map(([key,label,min,max])=>({key,type:'number',label,min,max,step:0.1,unit:'mm',when:c=>c.obstacleEnabled})),
     {key:'obstacleTurns',type:'custom',when:c=>c.obstacleEnabled,build:p=>{
@@ -99,7 +77,7 @@ export function rail(panel, app) {
   panel.group({
     key: 'shape',
     title: 'Winding',
-    when: c => !c.obstacleEnabled && !isLitz(c),
+    when: c => !c.obstacleEnabled,
     fields: [
       { key: 'shape', type: 'shapes', options: SHAPES, optionHint: true },
       {
@@ -131,7 +109,6 @@ export function rail(panel, app) {
   panel.group({
     key: 'stack',
     title: 'Stack-up',
-    when: c => !isLitz(c),
     fields: [
       { key: 'layers', type: 'range', label: 'Copper layers', min: 1, max: 16, step: 1 },
       {
@@ -146,7 +123,7 @@ export function rail(panel, app) {
     ],
   });
 
-  panel.group({ key: 'process', title: 'Process', open: false, when: c => !isLitz(c), fields: processFields() });
+  panel.group({ key: 'process', title: 'Process', open: false, fields: processFields() });
 
   panel.group({
     key: 'drive',
@@ -158,7 +135,6 @@ export function rail(panel, app) {
     key: 'quality',
     title: 'Detail',
     open: false,
-    when: c => !isLitz(c),
     fields: [
       {
         key: 'ppt', type: 'range', label: 'Points per turn', min: 24, max: 512, step: 8,
@@ -177,25 +153,7 @@ export function rail(panel, app) {
    Compute
    ----------------------------------------------------------------------- */
 
-export function compute(cfg, env = {}, opt = {}) {
-  if (isLitz(cfg)) {
-    // The braid's blind/buried via spans refer to this exact four-layer stack.
-    // A different open board must not silently remap those manufacturing spans.
-    const layers = chooseLayers({ ...cfg, layers: 4 }, null);
-    const litz = buildLitz(cfg, { layerNames: layers, name: env.name || 'L1', net: env.net || 'COIL' });
-    const art = litz.art;
-    if (env.board?.layerCount > 0 && env.board.layerCount !== 4) art.notes.push({ level: 'warn', text: `This PCB Litz design needs exactly four copper layers; the open board has ${env.board.layerCount}. Configure a four-layer board before native placement. Standalone board export retains the four-layer design.` });
-    art.meta.previewStrandId = /^strand:(\d+)$/.test(cfg.litzHighlight || '') ? Number(cfg.litzHighlight.slice(7)) : null;
-    art.meta.previewBundle = ['outer', 'inner'].includes(cfg.litzHighlight) ? cfg.litzHighlight : null;
-    art.meta.previewStep = Number.isInteger(cfg.litzInspectStep) ? cfg.litzInspectStep : -1;
-    const validation = validateLitz(litz, cfg);
-    const manufacturing = validateManufacturing(litz, cfg, { validation });
-    const result = { litz, art, layers, validation, manufacturing, bounds: bounds(art), algorithm: { name: 'PCB Litz · experimental', note: 'Four-layer dual-bundle strand transposition with independent topology and geometric validation.' } };
-    if (opt.quick || !validation.ok) return result;
-    result.analysis = analyseLitz(cfg, litz, { ...opt, segmentCap: opt.segmentCap || cfg.litzModelSegments || 96 });
-    result.sweep = sweepLitz(cfg, result.analysis);
-    return result;
-  }
+export function compute(cfg, env, opt = {}) {
   const layers = chooseLayers(cfg, env.board);
   const coil = buildCoil({ ...cfg, layerNames: layers });
   const art = buildArtwork({ ...cfg, layerNames: layers }, coil, {
@@ -223,7 +181,6 @@ export function compute(cfg, env = {}, opt = {}) {
    ----------------------------------------------------------------------- */
 
 export function handles(cfg, res, app) {
-  if (isLitz(cfg)) return [];
   if(cfg.obstacleEnabled)return obstacleHandles(cfg,app);
   const out = [];
   const r = cfg.dOuter / 2;
@@ -290,7 +247,6 @@ export function handles(cfg, res, app) {
    ----------------------------------------------------------------------- */
 
 export function tiles(cfg, res) {
-  if (isLitz(cfg)) return litzTiles(cfg, res);
   const a = res.analysis;
   if (!a) return [];
   const drc = a.drc;
@@ -308,7 +264,6 @@ export function tiles(cfg, res) {
 }
 
 export function spec(cfg, res) {
-  if (isLitz(cfg)) return litzSpec(cfg, res);
   const a = res.analysis;
   const c = res.coil;
   if (!a) return [];
@@ -367,7 +322,6 @@ export function spec(cfg, res) {
 }
 
 export function notes(cfg, res) {
-  if (isLitz(cfg)) return litzNotes(cfg, res);
   const out = [...(res.art?.notes || [])];
   const a = res.analysis;
   const c = res.coil;
@@ -421,7 +375,6 @@ export function notes(cfg, res) {
 }
 
 export function charts(cfg, res) {
-  if (isLitz(cfg)) return litzCharts(cfg, res);
   if (!res.sweep || !res.sweep.length) return [];
   const f = res.sweep.map((p) => p.f);
   return [
@@ -467,10 +420,6 @@ export function charts(cfg, res) {
 
 export function status(cfg, res) {
   const a = res.analysis;
-  if (isLitz(cfg)) return {
-    algo: 'PCB Litz · experimental',
-    summary: res.validation?.ok === false ? `${res.validation.errors.length} routing errors · placement blocked` : a ? `Estimated L ${eng(a.L, 'H', 3)} · Q ${num(a.Q, 1)} · Rdc ${eng(a.Rdc, 'Ω', 3)}` : '16 strands · 4 layers · solving…',
-  };
   return {
     algo: res.algorithm ? res.algorithm.name : '—',
     summary: a ? `L ${eng(a.L, 'H', 3)} · Q ${num(a.Q, 1)} · Rdc ${eng(a.Rdc, 'Ω', 3)}` : 'solving…',

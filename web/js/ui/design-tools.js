@@ -6,7 +6,6 @@ import { LineChart, legendFor } from './charts.js';
 import { Viewport } from './canvas.js';
 import { artwork, track, bounds } from '../engine/artwork.js';
 import { parseMeasurement, measurementValues, interpolate } from '../engine/measurements.js';
-import { litzMeasurementMetrics } from '../engine/litz-measurements.js';
 import { DISTRIBUTED, plain } from '../engine/filtertune.js';
 import { windingPolys, transformPolys, rotorDesign } from '../engine/magnetics.js';
 import * as bridge from '../bridge.js';
@@ -209,18 +208,6 @@ export function openDesignTools(host, initial = 'optimize') {
       if (kind() === 'filter' && data.rows.some((p) => p.s11db != null)) chart(body, x, [{ name: 'Simulated S11', values: r.response.s11db }, { name: 'Measured S11', values: measurementValues(data, 's11db', x), dash: [4, 3] }], 'S11 dB');
       if (!measurementValues(data, metric, x).some(Number.isFinite)) body.append(note(`No ${metric} data overlaps this sweep. Adjust the frequency range or import a matching measurement.`));
     }
-    if (c.windingMode === 'pcb-litz') {
-      if (x?.length) for (const [key, label, scale] of [['R', 'Terminal resistance Ω', 1], ['L', 'Equivalent inductance µH', 1e6], ['Q', 'Terminal Q', 1]]) {
-        const values = x.map(frequency => litzMeasurementMetrics(data, { ...c.litzMeasurementOptions, frequency, model: r,
-          referencePlane: data.referencePlane || null, modelReferencePlane: 'coil-terminals' }));
-        chart(body, x, [
-          { name: 'Estimated', values: values.map(v => v.predicted?.[key] == null ? NaN : v.predicted[key] * scale) },
-          { name: 'Measured', values: values.map(v => v.atFrequency?.[key] == null ? NaN : v.atFrequency[key] * scale), dash: [4, 3] },
-        ], label, true, `${label}: measured and estimated`);
-      }
-      body.append(note('These curves compare terminal impedance. Match or de-embed the measurement fixture before interpreting differences. Negative-reactance and invalid points have no inductive L/Q value. Use PCB Litz studies for reference-plane residuals.'));
-      return;
-    }
     if (kind() === 'filter' && !DISTRIBUTED.includes(c.family)) { body.append(note('Parameter fitting currently supports coils and distributed filters. The imported overlay works for all filter families.')); return; }
     body.append(el('h3', { text: 'Fit selected parameters' }), note('Bounded least-squares fit. A fitted material value can also absorb fixture or model error; it is not a unique material measurement. The original prediction is retained.'));
     const s = settings('fit', { aMin: 2, aMax: 7, bMin: 0, bMax: kind() === 'filter' ? 0.08 : 100, fitA: 'yes', fitB: 'yes' }), f = form();
@@ -412,10 +399,6 @@ export function openDesignTools(host, initial = 'optimize') {
     title.textContent = `Design tools · ${host.name()}`;
     for (const b of nav.children) b.setAttribute('aria-pressed', String(b.dataset.tool === id));
     status.textContent = 'Settings are included when you save the design.';
-    if (config().windingMode === 'pcb-litz' && !['board', 'measurements'].includes(id)) {
-      body.append(note('This study uses the conventional spiral model and is unavailable for experimental PCB Litz windings. Use the main workspace for strand analysis, Measurements for overlays, or Board checks for placement.'));
-      return;
-    }
     if (['antenna', 'transformer'].includes(kind()) && id !== 'board') {
       body.append(note('This study supports the Inductor, PCB motor or Filter workspace. Antenna and Transformer calculations are shown in their main workspace.'));
       return;
@@ -430,15 +413,6 @@ export function openDesignTools(host, initial = 'optimize') {
 export function withMeasurements(charts, cfg, kind) {
   if (!cfg.measurement) return charts;
   for (const c of charts) {
-    if (cfg.windingMode === 'pcb-litz') {
-      const key = { rac: 'R', l: 'L', q: 'Q', 'terminal-r': 'R', 'terminal-l': 'L', 'terminal-q': 'Q' }[c.id];
-      if (key) {
-        const values = c.spec.x.values.map(frequency => litzMeasurementMetrics(cfg.measurement, { frequency,
-          interpolation: cfg.litzMeasurementOptions?.interpolation || 'linear' }).atFrequency?.[key] ?? NaN);
-        if (values.some(Number.isFinite)) c.spec.series.push({ name: 'Measured terminal', values, dash: [3, 3], color: '#a784ef' });
-        continue;
-      }
-    }
     const metric = kind === 'filter' && c.id === 'compare' ? 's21db' : kind === 'inductor' && c.id === 'z' ? 'Z' : null;
     if (!metric) continue;
     const values = measurementValues(cfg.measurement, metric, c.spec.x.values);

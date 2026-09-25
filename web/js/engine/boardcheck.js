@@ -1,7 +1,7 @@
 /* Read-only KiCad board geometry. +Y is converted to maths convention here.
    This is a conservative placement preview, not a replacement for KiCad DRC.
    Pads use enclosing circles; arcs are sampled at <= 0.025 mm sagitta. */
-import { artwork, track, viaSpan, copperStack, COPPER_LAYERS } from './artwork.js';
+import { artwork, track } from './artwork.js';
 
 export function sexpr(text) {
   if (text.length > 40e6) throw new Error('Board exceeds 40 MB. Use a smaller board snapshot.');
@@ -36,8 +36,7 @@ export function arcPoints(a, m, b) {
 
 export function parseBoard(text, excludedIds = []) {
   const root = sexpr(text), excluded = new Set(excludedIds), nets = new Map(all(root, 'net').map((n) => [n[1], n[2]]));
-  const boardLayers = one(root, 'layers').filter(Array.isArray).map(l => l[1]).filter(l => /\.Cu$/.test(l));
-  const out = { name: 'Board snapshot', copper: [], keepouts: [], edges: [], holes: [], warnings: [], source: 'file', boardLayers };
+  const out = { name: 'Board snapshot', copper: [], keepouts: [], edges: [], holes: [], warnings: [], source: 'file' };
   const copperLayer = (name) => /\.Cu$/.test(name || '');
   let seq = 0;
   function walk(items, pose = { x: 0, y: 0, a: 0 }) {
@@ -59,11 +58,8 @@ export function parseBoard(text, excludedIds = []) {
         const size = one(item, 'size').slice(1).map(Number), drill = one(item, 'drill').slice(1).filter((x) => /^\d/.test(x)).map(Number);
         const radius = kind === 'via' ? size[0] / 2 : (item[3] === 'circle' ? size[0] : Math.hypot(...size)) / 2;
         if (!Number.isFinite(radius)) { out.warnings.push(`Unsupported pad ${id}.`); continue; }
-        const physicalStack = boardLayers.length ? boardLayers : COPPER_LAYERS;
-        const viaLayers = kind === 'via' && layers.length === 2 && physicalStack.includes(layers[0]) && physicalStack.includes(layers[1])
-          ? physicalStack.slice(Math.min(physicalStack.indexOf(layers[0]), physicalStack.indexOf(layers[1])), Math.max(physicalStack.indexOf(layers[0]), physicalStack.indexOf(layers[1])) + 1) : layers;
-        if (kind === 'via' || layers.some(copperLayer)) out.copper.push({ ...base, layer: layers.includes('*.Cu') ? '*.Cu' : viaLayers.length > 1 ? viaLayers : viaLayers[0], layers: viaLayers, pts: [p, p], width: radius * 2 });
-        if (drill.length && Math.max(...drill) > 0) out.holes.push({ ...base, layer: kind === 'via' ? viaLayers : '*.Cu', point: p, radius: Math.max(...drill) / 2 });
+        if (kind === 'via' || layers.some(copperLayer)) out.copper.push({ ...base, layer: layers.includes('*.Cu') || kind === 'via' ? '*.Cu' : layers[0], layers, pts: [p, p], width: radius * 2 });
+        if (drill.length && Math.max(...drill) > 0) out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 });
       } else if (kind === 'zone') {
         const zoneLayers = layers.length ? layers : [layer], keepout = one(item, 'keepout');
         const polygons = all(item, keepout.length ? 'polygon' : 'filled_polygon');
@@ -141,7 +137,7 @@ function hits(a, b, radius, o) {
   if (o.polygon) return inside(a, o.polygon) || inside(b, o.polygon) || edgesOf(o.polygon).some(([c, d]) => segmentDistance(a, b, c, d) <= radius);
   return o.pts?.slice(1).some((p, i) => segmentDistance(a, b, o.pts[i], p) <= radius + (o.width || 0) / 2);
 }
-const sameLayer = (a, b) => Array.isArray(a) ? a.some(l => sameLayer(l, b)) : Array.isArray(b) ? b.some(l => sameLayer(a, l)) : a === b || a === '*.Cu' || b === '*.Cu';
+const sameLayer = (a, b) => a === b || a === '*.Cu' || b === '*.Cu';
 
 export function checkPlacement(art, board, opt = {}) {
   const clearance = opt.clearance ?? 0.2, origin = opt.origin || [0, 0];
@@ -149,18 +145,13 @@ export function checkPlacement(art, board, opt = {}) {
   const findings = [], seen = new Set();
   const add = (type, o, point, message) => { const key = `${type}:${o.id}`; if (!seen.has(key)) { seen.add(key); findings.push({ type, id: o.id, point, message }); } };
   const p = ([x, y]) => [x + origin[0], y - origin[1]];
-  const stack = copperStack(art);
-  const conductors = [...art.tracks, ...art.arcs.map((a) => ({ ...a, pts: arcPoints(a.start, a.mid, a.end) })), ...art.vias.map((v) => {
-    const span = viaSpan(v, stack);
-    const layer = span.viaType === 'through' ? '*.Cu' : stack.slice(stack.indexOf(span.from), stack.indexOf(span.to) + 1);
-    return { pts: [[v.x, v.y], [v.x, v.y]], width: v.diameter, layer, net: v.net };
-  }), ...art.pads.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.shape === 'circle' ? v.w : Math.hypot(v.w, v.h), layer: v.drill ? '*.Cu' : v.layer, net: v.net }))];
+  const conductors = [...art.tracks, ...art.arcs.map((a) => ({ ...a, pts: arcPoints(a.start, a.mid, a.end) })), ...art.vias.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.diameter, layer: '*.Cu', net: v.net })), ...art.pads.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.shape === 'circle' ? v.w : Math.hypot(v.w, v.h), layer: v.drill ? '*.Cu' : v.layer, net: v.net }))];
   const planes = board.copper.filter((o) => o.polygon && o.net === (opt.groundNet || 'GND'));
   for (const t of conductors) for (let i = 1; i < t.pts.length; i++) {
     const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + clearance + 0.025;
     if (board.loops.length && [a, b].some((q) => board.loops.filter((l) => inside(q, l)).length % 2 !== 1)) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
     if (board.edges.some((e) => e.slice(1).some((q, j) => segmentDistance(a, b, e[j], q) < radius))) add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
-    for (const o of board.holes) if ((!o.layer || sameLayer(t.layer, o.layer)) && pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
+    for (const o of board.holes) if (pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
     for (const o of board.keepouts) if (sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('keepout', o, a, 'Copper enters a keepout.');
     for (const o of board.copper) if (sameLayer(t.layer, o.layer) && !(t.net && t.net === o.net) && hits(a, b, radius, o)) add('copper', o, a, `Clearance conflict with ${o.net || 'unassigned copper'} on ${o.layer}.`);
     if (opt.kind !== 'filter' && t.role === 'winding') for (const o of planes) if (!sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('ground-overlap', o, a, 'Ground copper overlaps the winding projection; inductance and loss models exclude its effect.');

@@ -20,10 +20,6 @@ import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { applyBoardContext, designId } from './ws/common.js';
 import { toKicad, boundsCopper } from './engine/artwork.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, exportSpec, estimate } from './engine/exporters.js';
-import { renderLitzInspector } from './ui/litz-inspector.js';
-import { renderLitzTools } from './ui/litz-tools.js';
-import { litzMeasurementMetrics } from './engine/litz-measurements.js';
-import { stackSvg, manufacturingMarkdown, drillCSV } from './engine/litz-manufacturing.js';
 
 import * as wsInductor from './ws/inductor.js';
 import * as wsMotor from './ws/motor.js';
@@ -51,7 +47,6 @@ const app = {
   charts: new Map(),
   boardApplied: false,
   dirty: false,
-  litzTools: {},
 };
 
 const $ = (id) => document.getElementById(id);
@@ -99,54 +94,8 @@ function toast(message, kind = 'ok', opt = {}) {
 let quickTimer = 0;
 let fullTimer = 0;
 let lastSolveMs = 0;
-let litzWorker = null;
-let litzJob = 0;
-let resultSignature = '';
-let litzTaskWorker = null;
-let litzTaskJob = 0;
-
-function computeSignature() {
-  let config = cfg();
-  if (config.windingMode === 'pcb-litz') {
-    const { litzHighlight, litzInspectStep, measurement, litzMeasurementOptions, litzStudySettings, ...physical } = config;
-    config = physical;
-  }
-  return JSON.stringify({ ws: app.ws, config, env: environment() });
-}
-
-function stopLitzTask(clear = false) {
-  litzTaskJob++;
-  litzTaskWorker?.terminate();
-  litzTaskWorker = null;
-  if (clear) app.litzTools = {};
-  else for (const state of Object.values(app.litzTools)) if (state.status === 'running') state.status = 'canceled';
-}
-
-function refreshLitzPreview(key) {
-  if (!app.result?.litz) return;
-  const meta = app.result.art.meta;
-  meta.previewStrandId = /^strand:(\d+)$/.test(cfg().litzHighlight || '') ? Number(cfg().litzHighlight.slice(7)) : null;
-  meta.previewBundle = ['outer', 'inner'].includes(cfg().litzHighlight) ? cfg().litzHighlight : null;
-  meta.previewStep = Number.isInteger(cfg().litzInspectStep) ? cfg().litzInspectStep : -1;
-  app.view.draw();
-  if (key !== 'litzInspectStep') renderSide(app.result);
-}
-
-const litzViewKey = key => cfg().windingMode === 'pcb-litz' && ['litzHighlight', 'litzInspectStep'].includes(key);
-
-function litzCopperReady(res) {
-  return !!res.validation?.ok && !!res.manufacturing && res.manufacturing.errors.every(e => e.code === 'outline-missing');
-}
-
-function stopLitzSolve() {
-  litzJob++;
-  litzWorker?.terminate();
-  litzWorker = null;
-}
 
 function scheduleQuick() {
-  stopLitzSolve();
-  stopLitzTask(true);
   if (quickTimer) return;
   quickTimer = requestAnimationFrame(() => {
     quickTimer = 0;
@@ -156,7 +105,7 @@ function scheduleQuick() {
 
 function scheduleFull(delay = 130) {
   clearTimeout(fullTimer);
-  fullTimer = setTimeout(() => { fullTimer = 0; runCompute(false); }, delay);
+  fullTimer = setTimeout(() => runCompute(false), delay);
 }
 
 function environment() {
@@ -179,26 +128,11 @@ function netNameFor() {
 }
 
 function runCompute(quick) {
-  if (!quick) {
-    clearTimeout(fullTimer); fullTimer = 0;
-    if (quickTimer) { cancelAnimationFrame(quickTimer); quickTimer = 0; }
-  }
   const ws = current();
   const t0 = performance.now();
-  const signature = computeSignature();
-  if (!quick && app.result && signature === resultSignature
-      && (app.result.analysis || app.result.validation?.ok === false || litzWorker)) {
-    if (!litzWorker) { renderSide(app.result); renderStatus(app.result, false); }
-    return true;
-  }
-  // Every replacement invalidates studies tied to the previous result object,
-  // including the quick-to-full transition with unchanged physical settings.
-  stopLitzTask(true);
-  stopLitzSolve();
-  const background = !quick && cfg().windingMode === 'pcb-litz' && typeof Worker !== 'undefined';
   let res;
   try {
-    res = ws.compute(cfg(), environment(), { quick: quick || background });
+    res = ws.compute(cfg(), environment(), { quick });
   } catch (err) {
     app.result = null;
     app.view.setArtwork(null, []);
@@ -213,7 +147,6 @@ function runCompute(quick) {
   }
   if (!quick) lastSolveMs = performance.now() - t0;
   app.result = res;
-  resultSignature = signature;
 
   app.view.setArtwork(res.art, ws.layerList(cfg(), res));
   renderLayerChips(ws.layerList(cfg(), res));
@@ -225,32 +158,6 @@ function runCompute(quick) {
     scheduleFull();
   } else {
     renderSide(res);
-  }
-  if (background && res.validation?.ok) {
-    const job = litzJob;
-    const failure = message => {
-      if (job !== litzJob || app.result !== res) return;
-      stopLitzSolve();
-      $('st-solve').textContent = 'Electrical analysis failed; geometry retained';
-      toast(message, 'error');
-    };
-    let worker;
-    try { worker = new Worker(new URL('./litz-worker.js', import.meta.url), { type: 'module' }); }
-    catch (err) { failure(`Could not start strand analysis: ${err.message}`); return true; }
-    litzWorker = worker;
-    $('st-solve').textContent = 'solving strand currents in background…';
-    worker.onerror = e => failure(e.message);
-    worker.onmessage = ({ data }) => {
-      if (job !== litzJob || app.result !== res) return;
-      if (data.error) { failure(data.error); return; }
-      Object.assign(res, { analysis: data.analysis, sweep: data.sweep });
-      lastSolveMs = data.elapsed;
-      stopLitzSolve();
-      renderSide(res);
-      renderStatus(res, false);
-    };
-    try { worker.postMessage({ cfg: cfg(), geometry: res.litz, segmentCap: Number(cfg().litzModelSegments) || 96 }); }
-    catch (err) { failure(`Could not send geometry to strand analysis: ${err.message}`); }
   }
   return true;
 }
@@ -282,8 +189,7 @@ const api = {
     for (const [key, value] of Object.entries(values)) reconcile(key, value);
     app.dirty = true;
     app.panel.sync();
-    if (Object.keys(values).every(litzViewKey)) refreshLitzPreview('all');
-    else scheduleQuick();
+    scheduleQuick();
   },
   set(key, value) {
     if (cfg()[key] === value) return;
@@ -291,8 +197,7 @@ const api = {
     reconcile(key, value);
     app.dirty = true;
     app.panel.sync();
-    if (litzViewKey(key)) refreshLitzPreview(key);
-    else scheduleQuick();
+    scheduleQuick();
   },
   setMaxTurns() {
     const res = app.result;
@@ -313,7 +218,7 @@ const api = {
 function reconcile(key, value) {
   const ws = current();
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
-  if ((key === 'family' && ['antenna', 'transformer'].includes(app.ws)) || (key === 'motorFamily' && app.ws === 'motor') || key === 'windingMode') app.fitPending = true;
+  if ((key === 'family' && ['antenna', 'transformer'].includes(app.ws)) || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
 }
 
 function renderRail() {
@@ -321,8 +226,7 @@ function renderRail() {
     reconcile(key, value);
     app.dirty = true;
     app.panel.sync();
-    if (litzViewKey(key)) refreshLitzPreview(key);
-    else scheduleQuick();
+    scheduleQuick();
   });
   app.panel.clear();
   current().rail(app.panel, api);
@@ -377,7 +281,6 @@ function renderStatus(res, quick) {
 function renderSide(res) {
   const ws = current();
   const host = $('side');
-  const openDetails = new Map([...host.querySelectorAll('details')].map(d => [d.querySelector('summary')?.textContent, d.open]));
   app.charts.forEach((c) => c.destroy());
   app.charts.clear();
   host.replaceChildren();
@@ -391,31 +294,6 @@ function renderSide(res) {
 
   const preview=ws.preview?.(cfg(),res,api);
   if(preview)host.append(preview);
-  if (res.litz) {
-    host.append(renderLitzInspector(cfg(), res, {
-      set: api.set, setMany: api.setMany,
-      focusFinding(point, finding = {}) {
-        const at = Array.isArray(point) ? point : point?.at;
-        const issue = Array.isArray(point) ? finding : point;
-        if (!at || !at.every(Number.isFinite)) return;
-        if (issue.layer) app.view.layerVisible.set(issue.layer, true);
-        app.view.focusPoint(at, issue);
-      },
-    }));
-    const results = { ...app.litzTools };
-    if (cfg().measurement) results.measurements = { status: 'done', result: litzMeasurementMetrics(cfg().measurement, { ...cfg().litzMeasurementOptions, frequency: cfg().freq, model: res, referencePlane: cfg().measurement.referencePlane || null, modelReferencePlane: 'coil-terminals' }) };
-    host.append(renderLitzTools(cfg(), res, {
-      results, onTask: runLitzTask,
-      onSettings(task, values) { cfg().litzStudySettings ||= {}; cfg().litzStudySettings[task] = values; app.dirty = true; },
-      onApply: candidate => api.setMany({ ...(candidate.config || candidate), windingMode: 'pcb-litz', litzConfigured: true }),
-      onMeasure(data, options = {}) {
-        cfg().measurement = { ...data, referencePlane: options.referencePlane || null };
-        cfg().litzMeasurementOptions = options;
-        app.dirty = true; renderSide(app.result);
-      },
-      onDownload: downloadLitzFile,
-    }));
-  }
   const notes = ws.notes(cfg(), res);
   if (notes.length) {
     host.append(el('div', { class: 'side-section' },
@@ -454,61 +332,6 @@ function renderSide(res) {
       sec.note ? el('div', { class: 'hint', text: sec.note }) : null,
       specTable(sec.rows)));
   }
-  for (const details of host.querySelectorAll('details')) {
-    const key = details.querySelector('summary')?.textContent;
-    if (openDetails.has(key)) details.open = openDetails.get(key);
-  }
-}
-
-async function downloadLitzFile(file) {
-  if (file.encoding !== 'base64') return bridge.saveFile(file.name, file.content, file.mime);
-  const bytes = Uint8Array.from(atob(file.content), c => c.charCodeAt(0));
-  const url = URL.createObjectURL(new Blob([bytes], { type: file.mime || 'application/octet-stream' }));
-  const a = el('a', { href: url, download: file.name });
-  document.body.append(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
-
-async function runLitzTask(task, opt = {}) {
-  if (task === 'cancel') { stopLitzTask(); if (app.result) renderSide(app.result); return; }
-  // Flush edits before capturing geometry; queued preview work must not later
-  // replace the object that owns this study's results.
-  if (!runCompute(false)) return;
-  const res = app.result;
-  if (!res?.litz) return;
-  stopLitzTask();
-  const job = litzTaskJob, signature = computeSignature();
-  const state = app.litzTools[task] = { status: 'running' };
-  renderSide(res);
-  const accept = () => job === litzTaskJob && signature === computeSignature() && app.result === res;
-  const finish = (result, error) => {
-    if (!accept()) return;
-    litzTaskWorker?.terminate(); litzTaskWorker = null;
-    Object.assign(state, { status: error ? 'error' : 'done', result, error });
-    renderSide(res);
-  };
-  try {
-    if (task === 'manufacturing') {
-      if (!res.validation?.ok || !res.manufacturing?.ok) throw new Error('Resolve the routing and fabrication-rule errors before generating manufacturing files.');
-      const result = await bridge.api.manufacture({
-        ...opt,
-        boardText: exportKicadPcb(res.art, { boardThickness: res.litz.config.boardT }),
-        filename: `${app.names[app.ws].replace(/[^A-Za-z0-9_.-]+/g, '-').replace(/^[^A-Za-z0-9]+/, '').slice(0, 95) || 'pcb-litz'}.kicad_pcb`, runDrc: true, generate: opt.generate !== false,
-      });
-      finish(result); return;
-    }
-    if (!['convergence', 'compare', 'search'].includes(task)) throw new Error(`Unknown Litz study: ${task}`);
-    if (!res.validation?.ok) throw new Error('Resolve strand routing errors before running electrical studies.');
-    const worker = new Worker(new URL('./litz-tools-worker.js', import.meta.url), { type: 'module' });
-    litzTaskWorker = worker;
-    worker.onerror = event => finish(null, event.message || 'Study worker failed.');
-    worker.onmessage = ({ data }) => {
-      if (!accept()) return;
-      if (data.progress !== undefined) { state.progress = data.progress; return; }
-      finish(data.result, data.error);
-    };
-    worker.postMessage({ task, cfg: cfg(), geometry: res.litz, opt: { analysis: res.analysis, ...opt } });
-  } catch (error) { finish(null, error.message || String(error)); }
 }
 
 /* ------------------------------------------------------------ workspace */
@@ -532,7 +355,7 @@ function currentArtwork() {
 }
 
 function showDesignTools(tab = 'optimize') {
-  if (['antenna', 'transformer'].includes(app.ws) || cfg().windingMode === 'pcb-litz') tab = 'board';
+  if (['antenna', 'transformer'].includes(app.ws)) tab = 'board';
   clearTimeout(fullTimer);
   if (quickTimer) { cancelAnimationFrame(quickTimer); quickTimer = 0; }
   if (!runCompute(false)) return;
@@ -552,27 +375,9 @@ async function placeIntoBoard() {
   if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
-  if (res.litz && !litzCopperReady(res)) {
-    toast('Fix the PCB Litz routing and fabrication-rule errors before placing copper.', 'error');
-    return;
-  }
   if (!bridge.state.hasBoard) {
     toast('No board is open in KiCad. Open a PCB and try again.', 'warn');
     return;
-  }
-  if (res.litz) {
-    const actual = bridge.state.context?.copperLayers?.map(l => l.name) || [];
-    const wanted = res.art.meta.boardLayers || res.layers;
-    if (actual.length !== wanted.length || actual.some((layer, i) => layer !== wanted[i])) {
-      toast('PCB Litz placement requires the same four-layer stack as the design. Configure four copper layers in KiCad, then refresh, or export a KiCad board.', 'warn');
-      return;
-    }
-    const thickness = bridge.state.context?.thickness;
-    const designed = res.litz.config.boardT;
-    if (Number.isFinite(thickness) && Number.isFinite(designed) && Math.abs(thickness - designed) > 0.05) {
-      toast(`PCB Litz stack thickness is ${designed.toFixed(3)} mm; the open board is ${thickness.toFixed(3)} mm. Match the dielectric stack before placement.`, 'warn');
-      return;
-    }
   }
   const existingNets = bridge.state.context?.nets || [];
   if (['antenna', 'transformer'].includes(app.ws) || (app.ws === 'motor' && ['stepper','planar'].includes(res.family))) {
@@ -587,14 +392,11 @@ async function placeIntoBoard() {
   if (est.segments > 25000) {
     const ok = window.confirm(
       `This places ${est.segments.toLocaleString()} track segments. Boards get slow to edit above about `
-      + (res.litz ? '20,000. PCB Litz preserves exact paths for clearance. Continue?'
-        : '20,000. Raise the export tolerance to thin it out, or continue?'));
+      + `20,000. Raise the export tolerance to thin it out, or continue?`);
     if (!ok) return;
   }
 
-  let payload;
-  try { payload = toKicad(res.art, { tolerance: cfg().tolerance }); }
-  catch (err) { toast(err.message, 'error'); return; }
+  const payload = toKicad(res.art, { tolerance: cfg().tolerance });
   const did = designId(app.ws, app.names[app.ws]);
   const known = (bridge.state.context && bridge.state.context.placements) || [];
   const replace = known.some((p) => p.designId === did);
@@ -620,7 +422,6 @@ async function placeIntoBoard() {
     if (out.skipped && out.skipped.length) {
       toast(`Some items were skipped: ${out.skipped.slice(0, 3).join('; ')}`, 'warn');
     }
-    for (const warning of out.warnings || []) toast(warning, 'warn');
     bridge.reconnect();
   } catch (err) {
     if (err.kind === 'nolink') toast(`KiCad is not reachable: ${err.message}`, 'error');
@@ -634,10 +435,6 @@ async function writeLibrary() {
   if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
-  if (res.litz) {
-    toast('PCB Litz uses blind and buried vias. Export a KiCad board or place it directly; a footprint cannot preserve these layer connections.', 'warn');
-    return;
-  }
   const name = app.names[app.ws];
   const text = exportKicadMod(res.art, {
     name,
@@ -667,26 +464,21 @@ function exportOptions() {
   const name = app.names[app.ws];
   const tol = cfg().tolerance;
   const est = estimate(res.art, tol);
-  const invalidLitz = res.litz && !litzCopperReady(res);
-  const copperError = invalidLitz ? 'Fix the PCB Litz routing and fabrication-rule errors before exporting copper.' : '';
-  const options = [
+  return [
     {
       title: 'KiCad footprint (.kicad_mod)',
-      desc: res.litz ? 'Blind and buried vias require a KiCad board or direct placement. Footprint export is unavailable for PCB Litz.' : 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
-      unavailable: res.litz ? 'Use KiCad board export for PCB Litz.' : '',
+      desc: 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
       file: `${name}.kicad_mod`,
       make: () => exportKicadMod(res.art, { name, tolerance: tol, description: current().status(cfg(), res).summary }),
     },
     {
       title: 'KiCad board (.kicad_pcb)',
-      unavailable: copperError,
       desc: `Real tracks, vias and nets — ${est.segments.toLocaleString()} segments, about ${(est.approxBytes / 1024).toFixed(0)} kB. Open it, or File → Append Board.`,
       file: `${name}.kicad_pcb`,
       make: () => exportKicadPcb(res.art, { tolerance: tol, boardThickness: cfg().boardT }),
     },
     {
       title: 'SVG',
-      unavailable: copperError,
       desc: '1 unit = 1 mm, one group per copper layer, KiCad layer colours.',
       file: `${name}.svg`,
       mime: 'image/svg+xml',
@@ -694,7 +486,6 @@ function exportOptions() {
     },
     {
       title: 'DXF R12',
-      unavailable: copperError,
       desc: 'Polylines by layer, for mechanical CAD and FEA meshing (FEMM, Ansys).',
       file: `${name}.dxf`,
       make: () => exportDxf(res.art, { tolerance: tol }),
@@ -718,16 +509,10 @@ function exportOptions() {
         title: `${name} — ${current().title}`,
         subtitle: current().status(cfg(), res).summary,
         notes: current().notes(cfg(), res),
-        references: res.litz ? [LITZ_REFERENCE] : REFERENCES,
+        references: REFERENCES,
       }),
     },
   ];
-  if (res.litz) options.push(
-    { title: 'Fabrication report', desc: 'Rule findings, layer stack and drill spans for fabrication review.', file: `${name}-fabrication.md`, mime: 'text/markdown', make: () => manufacturingMarkdown(res.litz, cfg()) },
-    { title: 'Stack drawing', desc: 'Copper and dielectric thicknesses with the required via layer pairs.', file: `${name}-stack.svg`, mime: 'image/svg+xml', make: () => stackSvg(res.litz, cfg()) },
-    { title: 'Drill summary', desc: 'Drill counts and dimensions grouped by connected layer pair.', file: `${name}-drills.csv`, mime: 'text/csv', make: () => drillCSV(res.litz, cfg()) },
-  );
-  return options;
 }
 
 const REFERENCES = [
@@ -739,7 +524,6 @@ const REFERENCES = [
   'Matthaei, Young & Jones. Microwave Filters, Impedance-Matching Networks and Coupling Structures, 1980.',
   'Hong. Microstrip Filters for RF/Microwave Applications, 2nd ed., 2011.',
 ];
-const LITZ_REFERENCE = 'Kale & Wicht. A Dual-Bundle PCB Litz Coil Achieving 1 kW, 6.78 MHz WPT with 97.8% AC-AC Efficiency. IEEE WPTCE, 2026. DOI: 10.1109/WPTCE66920.2026.11691238. Measured results refer to the published hardware, not this experimental generator.';
 
 function openExport() {
   if (!app.result) return;
@@ -749,14 +533,11 @@ function openExport() {
   for (const o of opts) {
     const card = el('button', { class: 'export-card', type: 'button' },
       el('span', { class: 't', text: o.title }),
-      el('span', { class: 'd', text: o.unavailable || o.desc }));
-    if (o.unavailable) { card.disabled = true; card.title = o.unavailable; }
+      el('span', { class: 'd', text: o.desc }));
     card.addEventListener('click', async () => {
-      try {
-        const saved = await bridge.saveFile(o.file, o.make(), o.mime);
-        toast(saved.local ? `Downloaded ${o.file}.` : `Wrote ${o.file}.`, 'ok', { path: saved.path });
-        close();
-      } catch (err) { toast(err.message, 'error'); }
+      const saved = await bridge.saveFile(o.file, o.make(), o.mime);
+      toast(saved.local ? `Downloaded ${o.file}.` : `Wrote ${o.file}.`, 'ok', { path: saved.path });
+      close();
     });
     grid.append(card);
   }
@@ -815,7 +596,6 @@ function importDesignJson() {
       if (!data.config || typeof data.config !== 'object') throw new Error('no config in that file');
       app.ws = kind;
       app.configs[kind] = { ...WORKSPACES[kind].defaults(), ...data.config };
-      if (data.config.windingMode === 'pcb-litz') app.configs[kind].litzConfigured = true;
       app.names[kind] = data.name || app.names[kind];
       $('design-name').value = app.names[kind];
       document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === kind)));
@@ -852,7 +632,6 @@ async function openDesignPicker() {
         const entry = await bridge.api.loadDesign(d.id);
         app.ws = entry.kind && WORKSPACES[entry.kind] ? entry.kind : app.ws;
         app.configs[app.ws] = { ...WORKSPACES[app.ws].defaults(), ...entry.config };
-        if (entry.config.windingMode === 'pcb-litz') app.configs[app.ws].litzConfigured = true;
         app.names[app.ws] = entry.name;
         $('design-name').value = entry.name;
         document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === app.ws)));
