@@ -154,7 +154,6 @@ export const api = {
   writeLibrary: (name, text) => call('library.write', { name, text }),
   listLibrary: () => call('library.list'),
   saveFile: (name, text) => call('file.save', { name, text }, { timeout: 60000 }),
-  manufacture: params => call('manufacturing.run', params, { timeout: 500000 }),
   getPrefs: () => call('prefs.get'),
   setPrefs: (prefs) => call('prefs.set', { prefs }),
   listDesigns: () => call('designs.list'),

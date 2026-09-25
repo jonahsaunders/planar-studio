@@ -511,26 +511,3 @@ table.spec .dim { color: var(--text-mute); }
 .obstacle-card label { display:grid; gap:3px; font-size:11px; margin-bottom:7px; }
 .obstacle-card input,.obstacle-card textarea { width:100%; min-width:0; box-sizing:border-box; }
 .obstacle-fields { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-
-/* Litz inspection and study controls stay within the narrow results sidebar. */
-.litz-inspector, .litz-tools { min-width:0; max-width:100%; box-sizing:border-box; padding:12px; border-bottom:1px solid var(--line-soft); }
-.litz-inspector > summary, .litz-tools > summary, .litz-tool > summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.45; overflow-wrap:anywhere; }
-.litz-tool { min-width:0; margin-top:10px; padding:8px; border:1px solid var(--line-soft); border-radius:var(--radius-sm); }
-.litz-tools .tools-form { grid-template-columns:minmax(0,1fr); gap:9px; margin:10px 0; }
-.litz-tools .field, .litz-fab-rules .field, .litz-gap-editor .field { min-width:0; font-size:11px; }
-.litz-tools input, .litz-tools select, .litz-inspector select, .litz-inspector input[type="range"], .litz-fab-rules input[type="number"], .litz-gap-editor input { width:100%; min-width:0; max-width:100%; box-sizing:border-box; }
-.litz-tools input:not([type="file"]), .litz-fab-rules input[type="number"], .litz-gap-editor input { padding:6px; background:var(--panel-2); color:var(--text); border:1px solid var(--line); border-radius:var(--radius-sm); }
-.litz-inspector > svg { display:block; width:100%; height:auto; margin:10px 0; background:var(--panel-2); border:1px solid var(--line-soft); border-radius:var(--radius-sm); }
-.litz-inspector input[type="range"] { display:block; margin:12px 0; }
-.litz-tool-results { min-width:0; max-width:100%; }
-.litz-tool-results table.spec { display:block; max-width:100%; overflow-x:auto; margin:10px 0; }
-.litz-tool-results table.spec th, .litz-tool-results table.spec td { min-width:62px; max-width:155px; padding:5px 7px; vertical-align:top; white-space:normal; overflow-wrap:anywhere; }
-.litz-tool-results table.spec th { text-align:left; font-size:11px; color:var(--text-dim); border-bottom:1px solid var(--line); }
-.litz-tools .btn, .litz-inspector .btn { max-width:100%; white-space:normal; overflow-wrap:anywhere; line-height:1.4; margin:3px 0; }
-.litz-candidate + .litz-candidate, .litz-findings > div + div { border-top:1px solid var(--line-soft); margin-top:10px; padding-top:7px; }
-.litz-tools .hint, .litz-inspector .hint { overflow-wrap:anywhere; margin:8px 0; }
-.litz-fab-rules, .litz-gap-editor { display:grid; min-width:0; gap:8px; }
-.litz-sizing-help { min-width:0; padding:0 0 8px; overflow-wrap:anywhere; }
-.litz-sizing-candidate { padding:7px 0; border-top:1px solid var(--line-soft); }
-.litz-sizing-candidate .hint { margin:0 0 6px; }
-.litz-sizing-candidate .btn { max-width:100%; white-space:normal; }
