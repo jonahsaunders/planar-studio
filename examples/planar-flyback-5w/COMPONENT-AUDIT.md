@@ -4,7 +4,7 @@ Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic compon
 
 **This remains an unbuilt engineering prototype.** The package/analytical review is complete; electrical suitability is conditional on the hardware and process tests identified below. The tightest outstanding electrical margin is RFB pin current during clamp spikes. Input hot-plug, magnetic losses, thermal performance and control behavior are not qualified. No supplier contact, purchase or fabrication release occurred.
 
-[Per-component CSV](evidence/audit/component-audit.csv) · [Measured pads, pin nets and checks](evidence/audit/component-checks.json) · [Reviewed source records](sources/component-review.json) · [Revision comparison](evidence/audit/component-revision-checks.json) · [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md)
+[Per-component CSV](evidence/audit/component-audit.csv) · [Measured pads, pin nets and checks](evidence/audit/component-checks.json) · [Reviewed source records](sources/component-review.json) · [Current corner-mount revision](evidence/audit/mounting-revision-checks.json) · [Earlier component comparison](evidence/audit/component-revision-checks.json) · [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md)
 
 ## Corrections implemented
 
@@ -19,6 +19,8 @@ Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic compon
 | C7 + R8 | Add a 47 µF / 63 V hybrid reservoir through a 2.2 Ω / 1.5 W pulse-rated damping resistor in a shunt input branch. |
 | C8 | Add a second 180 µF / 16 V polymer output capacitor. C3/C8 now provide 360 µF nominal, 288 µF at −20%, and 11 mΩ parallel ESR at 100 kHz. |
 | PCB | Add 26 ground stitches plus two new capacitor return vias; expand front PGND copper. Keep all additions outside the winding/isolation region. |
+
+The subsequent mounting-only revision moves all four holes to **4.5 mm corner insets**, forming a **41 × 95 mm** pattern. The upper row moves 12.5 mm away from C7; the lower row moves 2.5 mm toward the bottom corners. Electronic placement, routes, filled copper, winding geometry and board/core-slot outline are unchanged by that move. Current capacitor/hardware clearance measurements are in the mounting comparison linked above.
 
 ## Why add this filtering?
 
@@ -210,7 +212,7 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.
+**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
 **Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -222,7 +224,7 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.
+**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
 **Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -234,7 +236,7 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.
+**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
 **Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -246,7 +248,7 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.
+**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
 **Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -417,4 +419,4 @@ The electronic BOM intentionally excludes the integral T1 winding, its separatel
 
 ERC reports zero messages. DRC reports zero violations, unconnected items or schematic-parity issues. Independent checks match 60 logical pins to 61 numbered pads and preserve the four winding polygons/19,229 samples. All 29 footprints have bundled models; 16 STEP assets are valid and 406 component-pair plus 29 substrate checks have no nominal positive-volume intersections.
 
-Run `scripts/rebuild.py`, refresh Gerber renders, then `audit-layout.py`, `audit-layout-complete.py`, `audit-components.py` and `render-component-audit.py`. The last two use KiCad Python and the human-reviewed `sources/component-review.json`; a changed MPN/package/pin mapping fails the applicability check and requires new review. Run `audit-component-revision.py --baseline-board PATH --baseline-id COMMIT` against the preceding 9bc0614 board to check intentional changes. Renew CadQuery solid checks, schematic renders and the manifest before publication. Historical evidence is explicitly marked and is not proof of the current board.
+Run `scripts/rebuild.py`, refresh Gerber renders, then `audit-layout.py`, `audit-layout-complete.py`, `audit-components.py` and `render-component-audit.py`. The last two use KiCad Python and the human-reviewed `sources/component-review.json`; a changed MPN/package/pin mapping fails the applicability check and requires new review. The component comparison against 9bc0614 is historical. Run `audit-mounting-revision.py --baseline-board PATH --baseline-id COMMIT` against the preceding 007bcb5 board for the current corner move. Renew CadQuery solid checks, schematic renders and the manifest before publication. Historical evidence is explicitly marked and is not proof of the current board.

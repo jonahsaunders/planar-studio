@@ -1,5 +1,5 @@
 {
-  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+  "board_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
   "baseline_commit": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
   "method": "Actual KiCad objects, filled ground polygons, netted probe features and explicit routed-centerline comparison. Corridor sampling is a projected geometry check, not a current-density model.",
   "route_comparison": [
@@ -237,12 +237,6 @@
   "SW_added_vias": 0,
   "return_planes": [
     {
-      "net": "/PGND",
-      "layer": "F.Cu",
-      "connected_filled_outlines": 1,
-      "area_mm2": 658.534402229979
-    },
-    {
       "net": "/GND_ISO",
       "layer": "F.Cu",
       "connected_filled_outlines": 1,
@@ -250,15 +244,21 @@
     },
     {
       "net": "/PGND",
-      "layer": "B.Cu",
+      "layer": "F.Cu",
       "connected_filled_outlines": 1,
-      "area_mm2": 842.553859667716
+      "area_mm2": 658.534402229979
     },
     {
       "net": "/GND_ISO",
       "layer": "B.Cu",
       "connected_filled_outlines": 1,
       "area_mm2": 711.543517545314
+    },
+    {
+      "net": "/PGND",
+      "layer": "B.Cu",
+      "connected_filled_outlines": 1,
+      "area_mm2": 842.553859667716
     }
   ],
   "sampled_return_corridors": [

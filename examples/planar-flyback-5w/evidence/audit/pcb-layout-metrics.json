@@ -1,5 +1,5 @@
 {
-  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+  "board_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
   "method": "Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.",
   "scope": "Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.",
   "routes": [
@@ -539,24 +539,24 @@
   "secondary_escape_note": "SEC_A escapes on In2.Cu to two parallel vias immediately above the rectifier anode pads. Pad/plane spreading is excluded from centerline metrics.",
   "return_planes": [
     {
-      "net": "/PGND",
-      "layer": "F.Cu",
-      "filled_area_mm2": 658.534
-    },
-    {
       "net": "/GND_ISO",
       "layer": "F.Cu",
       "filled_area_mm2": 602.78
     },
     {
       "net": "/PGND",
-      "layer": "B.Cu",
-      "filled_area_mm2": 842.554
+      "layer": "F.Cu",
+      "filled_area_mm2": 658.534
     },
     {
       "net": "/GND_ISO",
       "layer": "B.Cu",
       "filled_area_mm2": 711.544
+    },
+    {
+      "net": "/PGND",
+      "layer": "B.Cu",
+      "filled_area_mm2": 842.554
     }
   ],
   "U1_exposed_pad_ground_vias": [
@@ -570,14 +570,6 @@
     },
     {
       "position_mm": [
-        90.7,
-        58.45
-      ],
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3
-    },
-    {
-      "position_mm": [
         92.3,
         58.45
       ],
@@ -588,6 +580,14 @@
       "position_mm": [
         90.7,
         59.55
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "position_mm": [
+        90.7,
+        58.45
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3

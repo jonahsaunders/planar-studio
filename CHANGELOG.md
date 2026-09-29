@@ -2,6 +2,10 @@
 
 ## 1.6.0 — Transformer project workflow and GUI audit (development)
 
+- Move all four flyback mounting holes to 4.5 mm corner insets (41 × 95 mm
+  pattern), increasing capacitor clearance while preserving electronic
+  placement, routes and winding geometry. Refresh fabrication and 3D evidence.
+
 - Review every flyback component against manufacturer package, polarity, rating
   and use-case evidence. Improve UVLO startup margin, select a lower-voltage
   clamp and current capacitor variants, and replace the input diode with a

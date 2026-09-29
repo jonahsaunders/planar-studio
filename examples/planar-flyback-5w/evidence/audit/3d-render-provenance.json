@@ -40,7 +40,7 @@
   ],
   "scope": "All saved-board footprints have local STEP models. Core and connectors are nominal drawing-based geometry; H1-H4 and core retention are provisional envelopes. See 3D-MODELS.md.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
     "kicad/3dmodels/custom/EELP32_prepared_pair.step": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
     "kicad/3dmodels/custom/KF301_5mm_2P.step": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
     "kicad/3dmodels/custom/M3_8mm_mount_envelope.step": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
@@ -59,12 +59,12 @@
     "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27"
   },
   "output_SHA256": {
-    "evidence/audit/board-3d-top.png": "af984517524989ee45092ba1830c4c07747bb58cf7bd2b0b36d0b11dd0dd6bb0",
-    "evidence/audit/board-3d-bottom.png": "e918c449fdc04c54b5981646cbbf6a74ab8d6ed87355607bf2f1e81b70080cb3",
-    "evidence/audit/board-3d-assembled.png": "8f379b7d47da011c9d300889a4c63e246c5f3b00def2e463f46b5ccd61dfa7a4",
-    "evidence/audit/board-3d-underside.png": "7c680eaa9086c38166f1eca3c72ebe12e80432c102a812a1ab71438860b520c9",
-    "evidence/audit/board-3d-side.png": "ece6459e0fd01dbe7644822101b99487ece18178c652b5cebdf5960d60898a4f",
-    "3d/PS-FLYBACK-5W.glb": "f94dd29fad34d6665c6755b3fc36ca56da0abe955012b94db8a2e810346e92df",
-    "3d/PS-FLYBACK-5W.step": "57e89194403b760a3b6502cdfa83f3a751ec9a19318cc25c6b4bbd9906f8be8d"
+    "evidence/audit/board-3d-top.png": "8314527ed79e71e7baa5763b270df90a6c85efb194e26a2c9b21dad1b8868e0c",
+    "evidence/audit/board-3d-bottom.png": "22626a6fdb3d79a09d0a4356ee7c2fabb2af2f6ba1db5d8ae06ca4167e9de501",
+    "evidence/audit/board-3d-assembled.png": "f6e34da7ce66da6631ee96cf0e89938f1a334b1f69cdd924aa4569f9ce024fab",
+    "evidence/audit/board-3d-underside.png": "f5a03ca4d5c959751c606898758f64d5318fc06f5780bf58118a64011ecef275",
+    "evidence/audit/board-3d-side.png": "1915922d4167e70b4ed8d0f845612c2f7c5286b70b1e1abcebb9f185a2a776f2",
+    "3d/PS-FLYBACK-5W.glb": "5b64f2ca85aa28f189a7416bdf88ac014ccaa989a4da94b8587dfcaf5e76e538",
+    "3d/PS-FLYBACK-5W.step": "f331e0116266f7fb928730be6c1618cf787388054546130ce16fc5696ce2ef67"
   }
 }

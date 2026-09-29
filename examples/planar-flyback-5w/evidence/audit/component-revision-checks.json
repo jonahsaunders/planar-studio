@@ -17,5 +17,7 @@
   "ordinary_vias_before": 33,
   "ordinary_vias_after": 61,
   "added_ground_stitches": 26,
-  "added_capacitor_ground_vias": 2
+  "added_capacitor_ground_vias": 2,
+  "historical_record": true,
+  "historical_note": "Component/filtering revision at 007bcb5, before the subsequent corner mounting-hole relocation; see mounting-revision-checks.json for current geometry."
 }

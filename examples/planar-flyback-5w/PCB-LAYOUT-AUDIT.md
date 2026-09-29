@@ -12,6 +12,15 @@ saved PCB hash. No supplier was contacted and no purchase was made.
 
 [![Before and after top views of the actual KiCad assembly](evidence/audit/layout-before-after.png)](evidence/audit/layout-before-after.png)
 
+## Corner mounting clearance
+
+All four holes now sit 4.5 mm from both adjacent board edges (41 × 95 mm pattern).
+The top row moves 12.5 mm upward and the bottom row 2.5 mm downward. H2's maximum
+6.4 mm hardware-contact envelope clears C7's full footprint courtyard by
+**5.677 mm**, previously 0.625 mm. The [mounting revision check](evidence/audit/mounting-revision-checks.json)
+confirms all 25 non-mounting footprints, tracks, vias, filled pours, windings,
+outline and core slots are unchanged. Native clearance and nominal 3D checks pass.
+
 ## Added capacitors and stitching
 
 The [component audit](COMPONENT-AUDIT.md) adds C7/R8 input damping and C8 output bulk. C8 has a separate 1.5 mm-wide, 12.69 mm route from the rectifier cathode; R8-to-C7 is 6.67 mm at 1 mm width. The high-frequency bypasses remain close to their loads. The front PGND pour now matches the back region's extent.
@@ -70,7 +79,7 @@ Actual overshoot, EMI, regulation and temperature still need measurement.
 | Tracks and vias | All 72 routed segments are orthogonal or 45°. Minimum routed width is 0.25 mm; ordinary via annular ring is at least 0.15 mm. Native DRC reports no clearance or connection violations. | Fabricator must accept copper, drill and registration tolerances. |
 | Thermal and soldering | Four filled/capped U1 thermal vias and four paste windows remain. J1/J2 ground pins now use 0.30 mm thermal gaps and 0.50 mm spokes. Separate ground copper spreads heat locally. | No thermal simulation or temperature measurements; paste/process and solderability need validation. |
 | Probe access | Two new exposed 1.2 mm filled/capped ground lands, plus mapped VIN, SW, INTVCC and output component pads. PGND land is about 2.44 mm from U1 SW pin. No added SW stub. | Component pads require fine probes; no installed test-point components were added. |
-| Mounting and core | Four American Embedded 3.2 mm NPTH holes and 41 × 80 mm pattern retained; Edge mask openings face outward on both sides. The rotated extension keepouts are clear on all six layers. All-layer copper exclusion and drilled coordinates pass. T1 courtyard tightened around its unchanged winding/terminal extent; no courtyard overlaps. | Core preparation/retention and actual M3 hardware remain provisional. |
+| Mounting and core | Four American Embedded 3.2 mm NPTH holes moved toward the corners, forming a 41 × 95 mm pattern with 4.5 mm edge insets; Edge mask openings face outward on both sides. The rotated extension keepouts are clear on all six layers. All-layer copper exclusion and drilled coordinates pass. T1 courtyard tightened around its unchanged winding/terminal extent; no courtyard overlaps. | Core preparation/retention and actual M3 hardware remain provisional. |
 | Models and fit | All 29 footprints have visible local models; 16 STEP assets are valid. All 406 component pairs have disjoint conservative bounding boxes; 29 exact substrate checks have zero positive-volume intersections. Core clears nominal substrate by 0.318 mm. | Nominal models do not establish tolerance-stack, enclosure or process acceptance. |
 | Masks, paste and legends | Reviewed six copper Gerbers, both masks, front paste, both legends and outline. New ground lands are exposed only on top, without paste. Connector and M3 holes have no paste. Four U1 paste windows are present. | Images supplement native geometry checks; vendor CAM review remains open. |
 | Manufacturing consistency | 24 electronic BOM/CPL references (22 SMD, two THT) match. Revised placements and connector centroids exported. **66 filled/capped interlayer holes + four open connector holes = 70 plated holes**, plus four separate NPTH holes. | Panel fiducials/tooling, via fill/cap, stack and core installation need supplier acceptance. |
@@ -101,7 +110,7 @@ The input damping branch does not qualify hot-plug. Shorter routing is not a mea
 
 ## Evidence and reproduction
 
-- [Current component/geometry revision](evidence/audit/component-revision-checks.json), [baseline route snapshot](evidence/audit/layout-before.json)
+- [Current corner-mount revision](evidence/audit/mounting-revision-checks.json), [earlier component revision (historical)](evidence/audit/component-revision-checks.json), [baseline route snapshot](evidence/audit/layout-before.json)
 - [Current route detail](evidence/audit/pcb-layout-metrics.json), [complete geometry checks](evidence/audit/complete-layout-checks.json)
 - [Front/back view](evidence/layout-overview.svg), [six copper layers](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png)
 - [DRC](evidence/board-drc.json), [net/winding checks](evidence/independent-checks.json), [manufacturing checks](evidence/manufacturing-checks.json), [mounting checks](evidence/audit/mounting-checks.json)
@@ -115,6 +124,7 @@ via `audit-layout-revision.py --baseline-board PATH --baseline-id ID`.
 Add `--allow-mounting-footprint-change` when comparing the original center
 footprints with the requested Edge variants; only H1–H4 footprint/rotation
 changes are permitted by that option, with their centers preserved.
+For the current corner relocation, use `audit-mounting-revision.py --baseline-board PATH --baseline-id COMMIT` against `007bcb5`; it verifies unchanged electronics, routing, pours, windings and outline while measuring capacitor-courtyard clearance. The older identity/center-preservation comparisons are historical.
 The comparison figure pairs the archived top render with the current native
 render. Gerber views use a common viewport; render-only clear flashes outside
 the board fix tight-crop artifacts without changing fabrication files.

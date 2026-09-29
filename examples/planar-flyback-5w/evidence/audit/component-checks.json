@@ -1,10 +1,10 @@
 {
   "review_date": "2026-09-29",
-  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+  "board_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
   "source_SHA256": {
-    "sources/component-review.json": "9f2015ad7a590d8e6787e2c3d5c7cf1778d5bb374ca76d6d81aa11715a7b3d28",
+    "sources/component-review.json": "edadb7cc12a3df7883dc72615164d765bb650eeca9706cccd4e12aaff24cea84",
     "circuit.json": "15fa539ef96521a442ffd38adfdc0c76821fd1e8a411e1003d62aa0dfb20c14d",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "86bcaec636abdef1a79c3ed5d602da007da9c06dbe42e1bac92269eacec0fa26",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "8953899d1701342d271a490e902484d3e33b5cf060030906597a599911511256",
     "evidence/electrical-sizing.json": "9517705def1fd1b90c7aed7f609c4e051d5c471e752f297a99e809c2521c11cc"
   },
   "reviewed_footprints": 29,
@@ -2026,7 +2026,7 @@
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -2034,7 +2034,7 @@
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
         79.5,
-        50.0
+        37.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {},
@@ -2044,7 +2044,7 @@
           "net": "",
           "center_mm": [
             79.5,
-            50.0
+            37.5
           ],
           "size_mm": [
             3.2,
@@ -2063,7 +2063,7 @@
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -2071,7 +2071,7 @@
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
         120.5,
-        50.0
+        37.5
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {},
@@ -2081,7 +2081,7 @@
           "net": "",
           "center_mm": [
             120.5,
-            50.0
+            37.5
           ],
           "size_mm": [
             3.2,
@@ -2100,7 +2100,7 @@
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -2108,7 +2108,7 @@
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
         79.5,
-        130.0
+        132.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {},
@@ -2118,7 +2118,7 @@
           "net": "",
           "center_mm": [
             79.5,
-            130.0
+            132.5
           ],
           "size_mm": [
             3.2,
@@ -2137,7 +2137,7 @@
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -2145,7 +2145,7 @@
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
         120.5,
-        130.0
+        132.5
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {},
@@ -2155,7 +2155,7 @@
           "net": "",
           "center_mm": [
             120.5,
-            130.0
+            132.5
           ],
           "size_mm": [
             3.2,

@@ -220,7 +220,7 @@ for i,note in enumerate([
 ]):text(note,12.7,176.53+i*4.445,1.0)
 text('MOUNTING',120.65,171.45,1.27,True)
 text('4 x M3 / 3.2 mm NPTH',120.65,190.5,1.0)
-text('41 x 80 mm pattern',120.65,194.945,1.0)
+text(f"{mechanical['pattern_mm'][0]:g} x {mechanical['pattern_mm'][1]:g} mm pattern",120.65,194.945,1.0)
 root=f'''(kicad_sch (version 20250114) (generator "eeschema") (uuid {uid(NAME)}) (paper "A4")
 (title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-09-29") (rev "A1-development") (company "Planar Studio example"))
 (lib_symbols {''.join(definitions.values())}) {''.join(elements)} (embedded_fonts no))'''

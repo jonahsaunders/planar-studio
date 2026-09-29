@@ -55,13 +55,13 @@ These are nominal geometry checks, not tolerance or assembly-process acceptance.
 Qualify the prepared core, adhesive and retention process; select actual hardware;
 verify chassis clearance, wiring/bend radii and tool access against the intended
 enclosure. No enclosure was supplied. The [layout revision](PCB-LAYOUT-AUDIT.md)
-now changes placement, routes, pours, stitching and probe lands with the [documented component/filtering changes](COMPONENT-AUDIT.md); winding geometry, outline and mounting are preserved. All views and solid checks were regenerated
+now changes placement, routes, pours, stitching and probe lands with the [documented component/filtering changes](COMPONENT-AUDIT.md); winding geometry and outline are preserved. The subsequent mounting move places all four holes at 4.5 mm corner insets, increasing C7 clearance. All views and solid checks were regenerated
 for that board; manufacturing exports and placement data were refreshed.
 
 [Coverage/poses](evidence/audit/3d-model-checks.json) ·
 [Solid checks](evidence/audit/3d-solid-checks.json) ·
 [Render source hashes](evidence/audit/3d-render-provenance.json) ·
-[Current component revision](evidence/audit/component-revision-checks.json) ·
+[Current mounting revision](evidence/audit/mounting-revision-checks.json) ·
 [Earlier model-only revision (historical)](evidence/audit/3d-revision-checks.json)
 
 ## Reproduce

@@ -11,7 +11,7 @@
 | 18–36 V DC input; isolated 5 V / 1 A output | 50 × 104 mm board; 1.6 mm nominal thickness |
 | LT8302 primary-side regulation | Six copper layers; integral planar windings |
 | 4:2 turns; nominal primary inductance 11.95 µH | Prepared N87 core pair; 0.21 mm center-leg gap |
-| Separate primary and secondary returns | Four M3 edge-style holes: 3.2 mm NPTH, 41 × 80 mm pattern |
+| Separate primary and secondary returns | Four M3 edge-style holes: 3.2 mm NPTH, 41 × 95 mm pattern |
 
 ## Component audit and added filtering
 
@@ -62,7 +62,7 @@ The views below come from the actual KiCad copper, silkscreen and routed outline
 
 **Inspect:** [Front copper and silkscreen](evidence/board.svg) · [Back copper and silkscreen](evidence/board-back.svg) · [Component assembly drawing](manufacturing/assembly-top.svg) · [All six copper Gerbers](evidence/audit/gerber-copper-overview.png) · [Editable KiCad board](kicad/PS-FLYBACK-5W.kicad_pcb)
 
-The four mounting holes now use American Embedded’s **Edge** variant: an exposed-substrate opening runs outward to each side of the board. Drill size, mounting pattern and board outline are unchanged.
+The four mounting holes now use American Embedded’s **Edge** variant: an exposed-substrate opening runs outward to each side of the board. All four hole centers are now **4.5 mm from both adjacent board edges**, forming a **41 × 95 mm** pattern. The upper pair moves 12.5 mm toward the top corners to clear C7; the lower pair moves 2.5 mm toward the bottom corners. The 3.2 mm drills and board outline are unchanged. [Corner-mount clearance checks](evidence/audit/mounting-revision-checks.json).
 
 The front and back each carry a two-turn primary section, connected in series. In1.Cu and In4.Cu carry two-turn secondary sections in parallel. The center and two outer slots accept the prepared ferrite pair. The transformer winding reference file is separate from this complete converter board.
 
@@ -91,7 +91,7 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | 3D assembly | 29 visible local model instances; 16 valid STEP assets; 406 nominal component-pair checks and 29 substrate checks with no intersections |
 | Fabrication exports | Six copper Gerbers; 70 plated holes (66 filled/capped, four open connectors) and four M3 NPTH holes |
 
-[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Current component revision](evidence/audit/component-revision-checks.json)
+[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Current mounting revision](evidence/audit/mounting-revision-checks.json)
 
 These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The revised bulk-only ripple estimate is 50.58 mV. Clamp/RFB margin and hot-plug remain unqualified. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
 

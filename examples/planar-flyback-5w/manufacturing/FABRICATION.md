@@ -16,7 +16,7 @@ Build quantity for quotation: five complete converters. JLCPCB must procure all 
 | Through vias | 0.30, 0.40 and 0.45 mm drills; identify in via schedule |
 | Via-in-pad | Nonconductive epoxy filled and copper capped, including U1 thermal vias |
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
-| Mounting holes | Four 3.2 mm NPTH holes; 41 × 80 mm center spacing; do not fill/cap; see MOUNTING.md |
+| Mounting holes | Four 3.2 mm NPTH holes; 41 × 95 mm center spacing; do not fill/cap; see MOUNTING.md |
 | Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.10 mm routing requested |
 | Panelization | Supplier to propose rails/fiducials/tooling; no tabs inside core slots |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |

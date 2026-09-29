@@ -138,7 +138,7 @@ for p in data['parts']:
           'D2':(97.8,110),'C3':(97,122.6),'C4':(106.5,109),
           'C7':(111,54.5),'R8':(99,49.8),'C8':(90,122.8),
           'R7':(111.7,118.5),'J2':(94,129)}
-    if p['ref'].startswith('H'):f.Reference().SetPosition(pt(x,y-4.4))
+    if p['ref'].startswith('H'):f.Reference().SetPosition(pt(x,y+(4.4 if y<85 else -4.4)))
     if p['ref'] in refs:f.Reference().SetPosition(pt(*refs[p['ref']]))
     fps[p['ref']]=f
     for pd in f.Pads():pads.setdefault((p['ref'],pd.GetNumber()),[]).append(pd)

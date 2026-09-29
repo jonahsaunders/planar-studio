@@ -11,32 +11,32 @@
     {
       "ref": "H1",
       "x_mm": 79.5,
-      "y_mm": 50,
+      "y_mm": 37.5,
       "rotation_deg": 180
     },
     {
       "ref": "H2",
       "x_mm": 120.5,
-      "y_mm": 50,
+      "y_mm": 37.5,
       "rotation_deg": 0
     },
     {
       "ref": "H3",
       "x_mm": 79.5,
-      "y_mm": 130,
+      "y_mm": 132.5,
       "rotation_deg": 180
     },
     {
       "ref": "H4",
       "x_mm": 120.5,
-      "y_mm": 130,
+      "y_mm": 132.5,
       "rotation_deg": 0
     }
   ],
   "coordinate_system": "KiCad absolute millimetres; X right, Y down. Board bounds X75..125, Y33..137.",
   "pattern_mm": [
     41,
-    80
+    95
   ],
   "assembly_note": "NPTH holes only; no fasteners included in electronic BOM/CPL. Use nonconductive standoffs and hardware contact diameter no greater than 6.4 mm. Keep chassis clearance below the ferrite core.",
   "variant": "Edge",
@@ -59,5 +59,6 @@
   ],
   "courtyard_width_mm": 12.3,
   "courtyard_height_mm": 7.3,
-  "orientation_note": "Edge openings point outwards: H1/H3 left (180 degrees), H2/H4 right (0 degrees). Hole centers and routed board outline are unchanged."
+  "orientation_note": "Edge openings point outwards: H1/H3 left (180 degrees), H2/H4 right (0 degrees). All hole centers are 4.5 mm from their two adjacent board edges; the routed board outline is unchanged.",
+  "edge_inset_mm": 4.5
 }
