@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; CAD=ROOT/'kicad'; CAD.mkdir(exist_ok=True)
 NAME='PS-FLYBACK-5W'; NS=uuid.UUID('2de6335a-c764-42d6-868c-5643d180ba85')
 catalog=json.loads((ROOT/'parts.json').read_text())
+mechanical=json.loads((ROOT/'mechanical.json').read_text())
 def uid(s): return str(uuid.uuid5(NS,s))
 def q(s): return json.dumps(str(s))
 def effects(size=1.27,hide=False): return f'(effects (font (size {size} {size}))'+(' (hide yes)' if hide else '')+')'
@@ -36,22 +37,25 @@ define('T','T',line([(-2,-7.62),(-2,7.62)])+line([(2,-7.62),(2,7.62)])+rect((-6.
 define('LT8302','U',rect((-10.16,12.7),(10.16,-20.32)),[
  ('1','EN/UVLO',-12.7,0,0,'input'),('2','INTVCC',-12.7,-7.62,0,'power_out'),('3','VIN',-12.7,7.62,0,'power_in'),('4','GND',0,-22.86,90,'power_in'),('5','SW',12.7,7.62,180,'open_collector'),('6','RFB',12.7,0,180,'input'),('7','RREF',12.7,-7.62,180,'output'),('8','TC',12.7,-15.24,180,'output'),('9','EP_GND',5.08,-22.86,90,'power_in')],True)
 define('FLAG','#FLG',line([(-1,0),(1,0),(0,1),(-1,0)]),[('1','pwr',0,-2.54,90,'power_out')])
+define('Mount','H',circle(0,0,2.0)+circle(0,0,1.0),[])
 parts=[]; elements=[]; endpoints={}
 power_connected={'J1':{'1','2'},'F1':{'1','2'},'D1':{'1','2'},'C1':{'1','2'},'C2':{'1','2'},'T1':{'1','3','4'},'D2':{'1','2'},'C3':{'1','2'},'C4':{'1','2'},'J2':{'1','2'}}
+power_connected.update({'C5':{'1','2'},'U1':{'2','4','9'},'#FLG01':{'1'},'#FLG02':{'1'}})
 def add(ref,value,kind,x,y,nets,fp='',rot=0,mpn='',code='',purpose=''):
   part=catalog.get(ref,{})
   value=part.get('value',value);fp=part.get('footprint',fp);mpn=part.get('mpn',mpn);code=part.get('lcsc',code);purpose=part.get('purpose',purpose)
   if ref=='T1':nets['5']='unconnected-(T1-P_MID-Pad5)'
   source_fp=fp
-  if fp:fp='Flyback:'+fp.split(':')[1]
-  u=uid(ref); bom=not ref.startswith('#')
+  if fp and kind!='Mount':fp='Flyback:'+fp.split(':')[1]
+  u=uid(ref); onboard=not ref.startswith('#'); bom=onboard and kind!='Mount'
   if kind in ['R','C','CP','FUSE'] and rot==0 or kind in ['D','TVS'] and rot in [90,270]:
     props=prop('Reference',ref,x+4.5,y-1.27,just='left',angle=rot%180)+prop('Value',value,x+4.5,y+1.27,just='left',angle=rot%180)
   elif kind=='LT8302':props=prop('Reference',ref,x,y-16.51)+prop('Value',value,x,y-19.05)
   elif kind=='T':props=prop('Reference',ref,x,y-11.43)+prop('Value',value,x,y-13.97)
+  elif kind=='FLAG':props=prop('Reference',ref,x,y,True)+prop('Value',value,x,y,True)
   else:props=prop('Reference',ref,x,y-6.35,angle=rot%180)+prop('Value',value,x,y+6.35,angle=rot%180)
-  props+=prop('Footprint',fp,x,y,True)+prop('Datasheet',part.get('source',''),x,y,True)+prop('MPN',mpn,x,y,True)+prop('LCSC',code,x,y,True)
-  elements.append(f'(symbol (lib_id "Flyback:{kind}") (at {x} {y} {rot}) (unit 1) (in_bom {"yes" if bom else "no"}) (on_board {"yes" if bom else "no"}) (dnp no) (uuid {u}) {props} '+''.join(f'(pin "{p[0]}" (uuid {uid(ref+"pin"+p[0])}))' for p in pinmap[kind])+f'(instances (project "{NAME}" (path "/{uid(NAME)}" (reference {q(ref)}) (unit 1)))))')
+  props+=prop('Footprint',fp,x,y,True)+prop('Datasheet',part.get('source',''),x,y,True)+prop('MPN',mpn,x,y,True)+prop('Manufacturer',part.get('mfr',''),x,y,True)+prop('LCSC',code,x,y,True)
+  elements.append(f'(symbol (lib_id "Flyback:{kind}") (at {x} {y} {rot}) (unit 1) (in_bom {"yes" if bom else "no"}) (on_board {"yes" if onboard else "no"}) (dnp no) (uuid {u}) {props} '+''.join(f'(pin "{p[0]}" (uuid {uid(ref+"pin"+p[0])}))' for p in pinmap[kind])+f'(instances (project "{NAME}" (path "/{uid(NAME)}" (reference {q(ref)}) (unit 1)))))')
   for number,label,px,py,a,t in pinmap[kind]:
     # KiCad symbol Y is upward; sheet Y is downward.
     theta=math.radians(rot); xx=x+px*math.cos(theta)-py*math.sin(theta); yy=y-px*math.sin(theta)-py*math.cos(theta)
@@ -60,12 +64,13 @@ def add(ref,value,kind,x,y,nets,fp='',rot=0,mpn='',code='',purpose=''):
       elements.append(f'(no_connect (at {xx} {yy}) (uuid {uid("internal-midpoint-nc")}))')
       continue
     if number in power_connected.get(ref,set()):continue
-    angle=math.radians(a+rot); ex=xx-3.81*math.cos(angle); ey=yy+3.81*math.sin(angle)
+    angle=math.radians(a+rot);stub=7.62 if abs(math.cos(angle))>.5 else 3.81
+    ex=xx-stub*math.cos(angle); ey=yy+stub*math.sin(angle)
     net=nets[number]; points=f'(xy {xx:.6f} {yy:.6f})(xy {ex:.6f} {ey:.6f})'
     elements.append(f'(wire (pts {points}) (stroke (width 0) (type default)) (uuid {uid(ref+number+"wire")}))')
     la=0 if math.cos(angle)>-.5 else 180
-    elements.append(f'(label {q(net)} (at {ex:.6f} {ey:.6f} {la}) (effects (font (size 1.0 1.0)) (justify left bottom)) (uuid {uid(ref+number+"label")}))')
-  if bom:parts.append(dict(ref=ref,value=value,kind=kind,nets=nets,footprint=fp,source_footprint=source_fp,mpn=mpn,lcsc=code,mfr=part.get('mfr',''),source=part.get('source',''),purpose=purpose,uuid=u))
+    elements.append(f'(label {q(net)} (at {ex:.6f} {ey:.6f} {la}) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid {uid(ref+number+"label")}))')
+  if onboard:parts.append(dict(ref=ref,value=value,kind=kind,nets=nets,footprint=fp,source_footprint=source_fp,mpn=mpn,lcsc=code,mfr=part.get('mfr',''),source=part.get('source',''),purpose=purpose,uuid=u,exclude_from_bom=not bom))
 R='Resistor_SMD:R_0603_1608Metric'; C='Capacitor_SMD:C_1210_3225Metric'; D='Diode_SMD:D_SMA'
 add('J1','18-36 V DC','JIN',30.48,35.56,{'1':'VIN_RAW','2':'PGND'},'Flyback:Terminal_2P_5.08',mpn='KF301-5.08-2P',purpose='Input connector; exact vendor footprint pending')
 add('F1','1 A / >=63 V','FUSE',63.5,35.56,{'1':'VIN_RAW','2':'VIN_FUSED'},'Fuse:Fuse_1206_3216Metric',rot=90,purpose='Input fault protection; sourcing pending')
@@ -89,8 +94,10 @@ add('C6','470p / 100 V C0G','C',276.86,132.08,{'1':'SNUB','2':'SW'},'Capacitor_S
 add('D3','DFLS1100-7','D',320.04,132.08,{'1':'CLAMP','2':'SW'},'Diode_SMD:D_PowerDI-123',rot=270,mpn='DFLS1100-7')
 add('D4','SMAJ15A','TVS',320.04,101.6,{'1':'CLAMP','2':'VIN'},D,rot=270,mpn='SMAJ15A',purpose='Avalanche clamp; waveform validation required')
 add('R7','499R 0.25 W','R',355.6,101.6,{'1':'+5V_ISO','2':'GND_ISO'},'Resistor_SMD:R_1206_3216Metric',purpose='10 mA minimum load at 5 V')
-add('#FLG01','PWR_FLAG','FLAG',35.56,172.72,{'1':'VIN'})
-add('#FLG02','PWR_FLAG','FLAG',66.04,172.72,{'1':'PGND'})
+add('#FLG01','PWR_FLAG','FLAG',160.02,33.02,{'1':'VIN'})
+add('#FLG02','PWR_FLAG','FLAG',147.32,53.34,{'1':'PGND'})
+for i,hole in enumerate(mechanical['holes']):
+  add(hole['ref'],'M3 / 3.2 mm NPTH','Mount',187.96+40.64*i,170.18,{},mechanical['mounting_footprint'],purpose='Mechanical mounting hole; not an assembly component')
 
 def wire(points):
   for a,b in zip(points,points[1:]):
@@ -98,7 +105,10 @@ def wire(points):
     elements.append(f'(wire (pts (xy {a[0]:.6f} {a[1]:.6f})(xy {b[0]:.6f} {b[1]:.6f})) (stroke (width 0) (type default)) (uuid {uid(str(a)+str(b))}))')
 def at(ref,pin):return endpoints[(ref,str(pin))]
 def junction(x,y):elements.append(f'(junction (at {x} {y}) (diameter 0) (color 0 0 0 0) (uuid {uid("junction"+str((x,y)))}))')
-def netlabel(net,x,y):elements.append(f'(label {q(net)} (at {x} {y} 0) (effects (font (size 1 1)) (justify left bottom)) (uuid {uid("bus"+net)}))')
+def netlabel(net,x,y):elements.append(f'(label {q(net)} (at {x} {y} 0) (effects (font (size 1.27 1.27)) (justify left bottom)) (uuid {uid("bus"+net+str((x,y)))}))')
+wire([at('C5',1),at('U1',2)]);netlabel('INTVCC',50.8,119.38)
+wire([at('C5',2),(40.64,142.24),(88.9,142.24),(93.98,142.24),at('U1',9)])
+wire([at('U1',4),(88.9,142.24)]);junction(88.9,142.24);netlabel('PGND',93.98,142.24)
 wire([at('J1',1),(40.64,34.29),(40.64,35.56),(50.8,35.56),at('F1',1)])
 wire([at('F1',2),(73.66,35.56),at('D1',2)])
 netlabel('VIN_RAW',50.8,35.56);netlabel('VIN_FUSED',73.66,35.56)
@@ -120,7 +130,7 @@ text('PLANAR TRANSFORMER AND ISOLATED OUTPUT',190.5,22.86,1.6)
 text('PRIMARY-SIDE REGULATION',20.32,78.74,1.6)
 text('UVLO',129.54,78.74,1.6);text('FEEDBACK / TEMPERATURE TRIM',175.26,78.74,1.6)
 text('LEAKAGE CLAMP AND DAMPING',264.16,78.74,1.6)
-text('A0 DEVELOPMENT - NOT RELEASED FOR MANUFACTURE',20.32,195.58,2.5)
+text('A1 DEVELOPMENT - NOT RELEASED FOR MANUFACTURE',20.32,195.58,2.5)
 text('T1: F.Cu + B.Cu are two 2-turn primary sections in series; In1.Cu + In4.Cu are two 2-turn secondary sections in parallel.',20.32,208.28,1.5)
 text('Six-layer PCB. In2.Cu carries the secondary inner-terminal return. T1 pin 5 is the internal primary series via, not an external lead.',20.32,246.38,1.5)
 text('Primary dot = VIN; secondary dot = GND_ISO. PGND and GND_ISO must remain galvanically separate.',20.32,215.9,1.5)
@@ -128,13 +138,13 @@ text('Prepared EELP32 N87 set: nominal 0.21 mm center-leg gap. Target AL about 7
 text('JLCPCB must confirm procurement, gap preparation and core installation. Stock ungapped halves are NOT substitutes.',20.32,231.14,1.5)
 text('Functional low-voltage isolation only. Output trim, ringing, thermal performance and startup need prototype validation.',20.32,238.76,1.5)
 root=f'''(kicad_sch (version 20250114) (generator "eeschema") (uuid {uid(NAME)}) (paper "A3")
-(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-09-29") (rev "A0-development") (company "Planar Studio example"))
+(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-09-29") (rev "A1-development") (company "Planar Studio example"))
 (lib_symbols {''.join(definitions.values())}) {''.join(elements)} (embedded_fonts no))'''
 (CAD/f'{NAME}.kicad_sch').write_text(root,encoding='utf8')
 lib='(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(v.replace(f'"Flyback:{k}"',q(k),1) for k,v in definitions.items())+')'
 (CAD/'Flyback.kicad_sym').write_text(lib,encoding='utf8')
 (CAD/'sym-lib-table').write_text('(sym_lib_table (lib (name "Flyback") (type "KiCad") (uri "${KIPRJMOD}/Flyback.kicad_sym") (options "") (descr "Project symbols")))')
-(CAD/'fp-lib-table').write_text('(fp_lib_table (lib (name "Flyback") (type "KiCad") (uri "${KIPRJMOD}/Flyback.pretty") (options "") (descr "Project footprints")))')
+(CAD/'fp-lib-table').write_text('(fp_lib_table (lib (name "Flyback") (type "KiCad") (uri "${KIPRJMOD}/Flyback.pretty") (options "") (descr "Project footprints")) (lib (name "amemb-MountingHole") (type "KiCad") (uri "${KIPRJMOD}/amemb-MountingHole.pretty") (options "") (descr "American Embedded M3 mounting footprint")))')
 (CAD/f'{NAME}.kicad_pro').write_text(json.dumps({'meta':{'filename':f'{NAME}.kicad_pro','version':1},'board':{'design_settings':{'rules':{'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,'min_through_hole_diameter':.3}}}},indent=2))
 (ROOT/'circuit.json').write_text(json.dumps({'project':NAME,'root_uuid':uid(NAME),'parts':parts},indent=2))
 print(f'Generated {len(parts)} components and native KiCad schematic.')

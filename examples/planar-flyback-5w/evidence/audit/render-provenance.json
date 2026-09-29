@@ -1,0 +1,36 @@
+{
+  "kistack_commit": "8494dbde095669df081950cbb6b24d08a21e25b0",
+  "pygerber_version": "2.4.3",
+  "dots_per_mm": 25,
+  "gerber_layers": [
+    "F_Cu",
+    "In1_Cu",
+    "In2_Cu",
+    "In3_Cu",
+    "In4_Cu",
+    "B_Cu",
+    "F_Mask",
+    "B_Mask",
+    "F_Paste",
+    "F_Silkscreen",
+    "B_Silkscreen",
+    "Edge_Cuts"
+  ],
+  "3D_scope": "KiCad installed stock models. U1, C3, J1, J2 and T1 custom footprints have no 3D body models; review their drawings and mechanical envelopes separately.",
+  "review_scope": "Rendered actual exported Gerbers. Visual review is supplementary to DRC, netlist and mounting geometry checks.",
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "09c0a0c3256ed80d5a82c909fa83685ecebaad14160484a6e6bf7316d4f0416d",
+    "manufacturing/gerbers/PS-FLYBACK-5W-F_Cu.gtl": "21c54e47d91d46c770881df2bb9ba94b463228313eda7ee0be4af82fdce43cf6",
+    "manufacturing/gerbers/PS-FLYBACK-5W-In1_Cu.g1": "ce46765ab5540c86697c19c387df6d524cb580132efaa8d5d11343c691b7e82c",
+    "manufacturing/gerbers/PS-FLYBACK-5W-In2_Cu.g2": "4241acae85a04aa022c2861e6b622b0ef2f237bd78d55f6eca25dd13ab6f5c2f",
+    "manufacturing/gerbers/PS-FLYBACK-5W-In3_Cu.g3": "6bdda8a780471708ab00296918c32efbf238c2c1cb49c23466a23b5e23470098",
+    "manufacturing/gerbers/PS-FLYBACK-5W-In4_Cu.g4": "ec66cd27e9a78f5efc7913f2f5b523b6c884098c203b97229df9217ed66d1602",
+    "manufacturing/gerbers/PS-FLYBACK-5W-B_Cu.gbl": "51c3a5efd565d27d31cdc4c5657dcb4efb9227ebf794eeb3e985e53387ce58f7",
+    "manufacturing/gerbers/PS-FLYBACK-5W-F_Mask.gts": "f503e106c15eec095ff29fcec943810add1cf5bcf3d935ec847ff917b15c2349",
+    "manufacturing/gerbers/PS-FLYBACK-5W-B_Mask.gbs": "64da365c63b0af6732b3aa8371423a4511629d618897657151ecdf5d40ac9054",
+    "manufacturing/gerbers/PS-FLYBACK-5W-F_Paste.gtp": "c63334d53a8cfcc56027cda82bd8b07c834c37c417cbdd45f3a234fd35cbd3c2",
+    "manufacturing/gerbers/PS-FLYBACK-5W-F_Silkscreen.gto": "e1afc6724604383803819971edf7ea2545000c6aeff958bcf3ba59088088b00e",
+    "manufacturing/gerbers/PS-FLYBACK-5W-B_Silkscreen.gbo": "b0929612cb7631c662d051fdb5cc565d9b8e99458e141919b71c0ff2e922ded3",
+    "manufacturing/gerbers/PS-FLYBACK-5W-Edge_Cuts.gm1": "47829b4e9bb8f6e7bc4a75c3ac51715f9b11f7b898aa15afca0df9b8cbf5d4b0"
+  }
+}

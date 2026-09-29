@@ -33,7 +33,9 @@ with `python scripts/build_package.py`; the published download below remains 1.3
 The [5 W planar flyback example](examples/planar-flyback-5w/README.md) includes an
 18–36 V DC to isolated 5 V / 1 A converter with integral PCB windings, an editable
 KiCad 10 project, winding configuration, calculations, manufacturing schedules,
-source references and validation evidence. **Untested A0 engineering prototype;
+source references and validation evidence. A1 includes four American Embedded
+M3 mounting holes and a [KiStack audit](examples/planar-flyback-5w/KISTACK-AUDIT.md).
+**Untested A1 engineering prototype;
 full-turnkey supplier feasibility is unconfirmed.** No JLCPCB submission or
 purchase was made. See its validation record before reusing manufacturing data.
 

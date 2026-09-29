@@ -2,11 +2,13 @@
 
 18–36 V DC input → isolated 5 V / 1 A output. Native KiCad 10 source, a routed six-layer PCB with integral planar windings, and an importable Planar Studio transformer design.
 
-**A0 engineering prototype. No hardware has been built or tested. JLCPCB full-turnkey feasibility is unconfirmed. No request or files were submitted to JLCPCB, and no purchases were made.**
+**A1 engineering prototype. No hardware has been built or tested. JLCPCB full-turnkey feasibility is unconfirmed. No request or files were submitted to JLCPCB, and no purchases were made.**
 
-[Validation and open issues](VALIDATION.md) · [Schematic](evidence/schematic.svg) · [Core assembly drawing](manufacturing/core-assembly.svg) · [Manufacturing notes](manufacturing/FABRICATION.md)
+[KiStack audit](KISTACK-AUDIT.md) · [M3 mounting specification](manufacturing/MOUNTING.md) · [Validation and open issues](VALIDATION.md) · [Schematic](evidence/schematic.svg) · [Core assembly drawing](manufacturing/core-assembly.svg) · [Manufacturing notes](manufacturing/FABRICATION.md)
 
 <p><img src="evidence/board.svg" alt="Routed front copper and silkscreen of the planar flyback board" width="270"></p>
+
+A1 adds four American Embedded M3 mounting footprints (3.2 mm NPTH on a 41 × 80 mm pattern), preserves the board outline, fixes saved design-rule limits and part metadata, and includes a KiStack audit with rendered fabrication evidence. The [audit](KISTACK-AUDIT.md) distinguishes corrected findings from remaining prototype gates.
 
 ## Open the example
 
@@ -32,7 +34,7 @@ The LT8302 stage uses a 4:2-turn transformer, nominal 11.95 µH primary inductan
 
 ## Verification and limits
 
-KiCad reports zero ERC messages, zero DRC violations and zero unconnected items. A separate checker matches all 54 logical schematic pins to 55 numbered physical pads, verifies the four winding polygons' intended terminal contacts and checks 19,229 centerline samples against final-board copper. Electronic BOM and placement references match; six copper Gerbers and 27 plated holes are accounted for.
+KiCad reports zero ERC messages, zero DRC violations and zero unconnected items. A separate checker matches all 54 logical schematic pins to 55 numbered physical pads, verifies the four winding polygons' intended terminal contacts and checks 19,229 centerline samples against final-board copper. Electronic BOM and placement references match; six copper Gerbers, 27 plated holes and four NPTH mounting holes are accounted for. Native schematic-parity checks also report zero issues.
 
 Calculations cover current and voltage stresses, minimum inductance, preload, capacitor derating and approximate ripple. A separate charge-balanced boundary/DCM calculation includes winding resistance and a nominal 380 kHz frequency ceiling. It is **not an LT8302 closed-loop SPICE model**, and the assumed 75% efficiency in the stress worksheet is not a measured result.
 
@@ -60,10 +62,12 @@ On other platforms, use a Python interpreter configured to import KiCad's `pcbne
 
 Rebuild overwrites generated CAD, exports, calculations, previews and evidence, then refreshes the integrity manifest. It stops on ERC/DRC violations or independent-check failures. Save manual CAD changes before rebuilding. Geometry and electrical checks are repeatable; UUIDs, timestamps and export ordering need not be byte-identical. Review the resulting drawings and changed files before sharing revised manufacturing data.
 
-The packager writes a complete review folder and ZIP to repository `dist/examples/`; it sends nothing. It requires a fresh destination to avoid silently retaining stale files. Use `--output /path/to/fresh-directory` for another destination. In an extracted standalone review package, set `PLANAR_STUDIO_ROOT` to a checkout of this branch before rebuilding, and pass `--output` explicitly when packaging.
+The packager writes a complete review folder and ZIP to repository `dist/examples/`; it sends nothing. It requires a fresh destination to avoid silently retaining stale files. Use `--output /path/to/fresh-directory` for another destination. After design changes, rerun the additional visual audit described in `KISTACK-AUDIT.md`; stored audit pictures and findings are snapshots. In an extracted standalone review package, set `PLANAR_STUDIO_ROOT` to a checkout of this branch before rebuilding, and pass `--output` explicitly when packaging.
 
-Changes to stack, terminals, footprints or components require regeneration and renewed engineering checks before reusing manufacturing exports. The exact “I2CJack” workflow could not be identified from the supplied name, so this example does not claim to implement it.
+Changes to stack, terminals, footprints or components require regeneration and renewed engineering checks before reusing manufacturing exports. A0 did not identify the named “I2CJack” workflow. A1 explicitly uses the subsequently requested American Embedded KiStack audit skills, pinned in `KISTACK-AUDIT.md`.
 
 ## Attribution
 
 Custom example files and Planar Studio are MIT licensed; see [LICENSE](LICENSE). Standard KiCad footprints are by the KiCad library contributors and redistributed under CC BY-SA 4.0 with KiCad's design exception; see [footprint license](kicad/Flyback.pretty/LICENSE.md). Vendor names and part identifiers establish design provenance, not supplier endorsement or availability.
+
+The additional American Embedded mounting footprint is CC BY 4.0; see [its attribution](kicad/amemb-MountingHole.pretty/LICENSE.md). The unmodified KiStack placement converter retains [its upstream license](scripts/vendor/KISTACK-LICENSE.txt).

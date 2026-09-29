@@ -12,6 +12,7 @@ CAD=ROOT/'kicad'; LIB=CAD/'Flyback.pretty'; LIB.mkdir(exist_ok=True)
 stock_path=os.environ.get('KICAD10_FOOTPRINT_DIR') or os.environ.get('KICAD_FOOTPRINT_DIR')
 STOCK=Path(stock_path) if stock_path else None
 data=json.loads((ROOT/'circuit.json').read_text())
+mechanical=json.loads((ROOT/'mechanical.json').read_text())
 art=json.loads((ROOT/'planar-studio/T1-artwork.json').read_text())
 model=json.loads((ROOT/'evidence/winding-model.json').read_text())
 NAME=data['project']
@@ -36,7 +37,7 @@ def footprint(name,body,attr='smd',refy=-4):
 for p in data['parts']:
     library,name=p.get('source_footprint',p['footprint']).split(':')
     destination=LIB/(name+'.kicad_mod')
-    if library!='Flyback' and not destination.exists():
+    if library not in ['Flyback','amemb-MountingHole'] and not destination.exists():
         if STOCK is None:
             raise FileNotFoundError(f'{destination} missing; restore the bundled footprint or set KICAD10_FOOTPRINT_DIR')
         shutil.copy2(STOCK/(library+'.pretty')/(name+'.kicad_mod'),destination)
@@ -93,7 +94,7 @@ for x,y,txt in [(4,-21,'1 VIN'),(-5,-21,'2 SW'),(-3,21,'3 GND'),(4,12.8,'4 SEC')
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A0-development');title.SetDate('2026-09-29');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A1-development');title.SetDate('2026-09-29');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(1.6))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -110,10 +111,13 @@ placement={
     'R7':(109,116,270),'J2':(103,129,180),
 }
 fps={};pads={}
+placement.update({h['ref']:(h['x_mm'],h['y_mm'],0) for h in mechanical['holes']})
 for p in data['parts']:
-    name=p['footprint'].split(':')[1]
-    f=pcb.FootprintLoad(str(LIB),name); assert f,name
-    f.SetReference(p['ref']);f.SetValue(p['value']);f.SetFPID(pcb.LIB_ID('Flyback',name))
+    library,name=p['footprint'].split(':')
+    f=pcb.FootprintLoad(str(CAD/(library+'.pretty')),name); assert f,name
+    f.SetReference(p['ref']);f.SetValue(p['value']);f.SetFPID(pcb.LIB_ID(library,name))
+    for key,value in {'MPN':p['mpn'],'Manufacturer':p['mfr'],'LCSC':p['lcsc'],'Datasheet':p['source']}.items():
+        f.SetField(key,value);f.GetField(key).SetVisible(False)
     f.SetPath(pcb.KIID_PATH('/'+data['root_uuid']+'/'+p['uuid']))
     for pd in f.Pads():
         key=pd.GetNumber()
@@ -151,12 +155,12 @@ for loop in model['assembly']['openings']:
 def txt(s,x,y,size=1,layer=pcb.F_SilkS):
     t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);board.Add(t)
     if layer==pcb.B_SilkS:t.SetMirrored(True)
-txt('PS-FLYBACK-5W  A0',103,35.5,1.2)
+txt('PS-FLYBACK-5W  A1',103,35.5,1.2)
 txt('18-36V DC',86,46.5);txt('INPUT +   -',86.5,34.8,.85)
 txt('5V 1A',100.5,122);txt('OUT -    +',100.5,135,.85)
 txt('PCB PLANAR 4:2',100,72,1.1);txt('0.21 mm GAPPED N87 CORE',100,73.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8)
-txt('A0 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Routes are hand-authored for controlled current loops. Short circuit ground
 # connections use a primary local plane; the secondary remains isolated.
@@ -240,5 +244,14 @@ for i,name in enumerate(names):
 stack+='(layer "B.Mask" (type "Bottom Solder Mask")) (copper_finish "ENIG") (dielectric_constraints no))'
 contents=out.read_text().replace('(setup','(setup\n'+stack,1).replace('(capping no)','(capping yes)',1).replace('(filling no)','(filling yes)',1)
 out.write_text(contents)
+# SaveBoard serializes a fresh BOARD's default project rules. Restore explicit
+# fabrication limits after that save so subsequent DRC uses the intended rules.
+project_file=CAD/(NAME+'.kicad_pro')
+project=json.loads(project_file.read_text())
+project['board']['design_settings']['rules'].update({
+    'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,
+    'min_through_hole_diameter':.3,'min_copper_edge_clearance':.5,
+    'min_hole_clearance':.25,'min_hole_to_hole':.25})
+project_file.write_text(json.dumps(project,indent=2))
 (ROOT/'evidence/pad-positions.json').write_text(json.dumps({f'{r}.{n}':[xy(p.GetPosition()) for p in ps] for (r,n),ps in pads.items()},indent=2))
 print(f'{out}: {len(fps)} footprints, {len(list(board.GetTracks()))} routes/vias')

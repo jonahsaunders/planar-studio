@@ -1,6 +1,6 @@
 {
   "project": "PS-FLYBACK-5W",
-  "revision": "A0-development",
+  "revision": "A1-development",
   "input_voltage_V": {
     "min": 18,
     "nominal": 24,

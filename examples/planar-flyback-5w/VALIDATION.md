@@ -1,19 +1,23 @@
-# A0 validation record
+# A1 validation record
 
 The files describe a proposed 18–36 V DC to isolated 5 V / 1 A converter. The
 following checks concern the saved design and analytical models. **No hardware
 has been built or tested, and full-turnkey manufacturing has not been accepted
 by a supplier.** No request or files were submitted to JLCPCB.
 
+A1 was reviewed using [KiStack](KISTACK-AUDIT.md). Four M3 mounting holes,
+corrected fabrication-rule persistence, native schematic parity and metadata
+checks supplement the original validation.
+
 ## Checks and evidence
 
 | Area | Recorded result | Evidence |
 | --- | --- | --- |
 | Schematic electrical rules | 0 messages, KiCad 10.0.6 | [ERC](evidence/erc.rpt) |
-| Board design rules | 0 violations, 0 unconnected items | [DRC](evidence/board-drc.json) |
+| Board design rules | 0 violations, 0 unconnected items, 0 schematic-parity issues | [DRC](evidence/board-drc.json) |
 | Schematic/board agreement | 54 logical pins, 55 numbered physical pads | [Independent checks](evidence/independent-checks.json) |
 | Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
-| Assembly/export consistency | 21 electronic BOM/CPL references, six copper Gerbers, 23 filled/capped holes plus four open connector holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
+| Assembly/export consistency | 21 electronic BOM/CPL references, six copper Gerbers, 23 filled/capped holes plus four open connector holes and four separate NPTH mounting holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
 | Transformer sizing | 4:2 turns, nominal 11.95 µH, proposed 0.21 mm prepared center-leg gap | [Winding model](evidence/winding-model.json) |
 | Electrical stresses | 2.05 A worst full-load primary peak under assumed 75% efficiency | [Sizing and limitations](evidence/electrical-sizing.json), [operating points](evidence/operating-points.csv) |
 | Boundary/DCM stage | Charge-balanced analytical current cycles at 18, 24 and 36 V, fixed 5 V output | [Cycle model](evidence/cycle-model.json), [results](evidence/boundary-cycle.csv), [waveforms](evidence/idealized-waveforms.csv) |
@@ -61,5 +65,7 @@ The netlist's `<source>` field is normalized to a relative path for publication.
 This does not modify connectivity. ERC/DRC rule checks and polygon sampling do
 not establish manufacturability or measured circuit behavior.
 
-The exact workflow attributed to “I2CJack” was not identified from the supplied
-name. This example does not claim to implement that workflow.
+The earlier A0 workflow attribution was unresolved. A1 uses the specifically
+requested American Embedded KiStack skills; see the audit for pinned versions
+and coverage. Full 3D assembly interference remains unverified because custom
+body models are missing.

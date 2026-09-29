@@ -1,0 +1,87 @@
+{
+  "holes": [
+    {
+      "reference": "H1",
+      "drill_mm": 3.2,
+      "x_mm": 79.5,
+      "y_mm": 50,
+      "nearest_copper_from_center_mm": {
+        "F.Cu": 9.19633,
+        "In1.Cu": 9.234717,
+        "In2.Cu": 9.234717,
+        "In3.Cu": 9.234717,
+        "In4.Cu": 9.234717,
+        "B.Cu": 3.400499
+      },
+      "excluded_from_BOM_CPL": true
+    },
+    {
+      "reference": "H2",
+      "drill_mm": 3.2,
+      "x_mm": 120.5,
+      "y_mm": 50,
+      "nearest_copper_from_center_mm": {
+        "F.Cu": 7.066373,
+        "In1.Cu": 14.381642,
+        "In2.Cu": 14.381642,
+        "In3.Cu": 14.381642,
+        "In4.Cu": 14.381642,
+        "B.Cu": 3.5
+      },
+      "excluded_from_BOM_CPL": true
+    },
+    {
+      "reference": "H3",
+      "drill_mm": 3.2,
+      "x_mm": 79.5,
+      "y_mm": 130,
+      "nearest_copper_from_center_mm": {
+        "F.Cu": 9.75,
+        "In1.Cu": 17.327008,
+        "In2.Cu": 17.327008,
+        "In3.Cu": 17.327008,
+        "In4.Cu": 17.327008,
+        "B.Cu": 6.5
+      },
+      "excluded_from_BOM_CPL": true
+    },
+    {
+      "reference": "H4",
+      "drill_mm": 3.2,
+      "x_mm": 120.5,
+      "y_mm": 130,
+      "nearest_copper_from_center_mm": {
+        "F.Cu": 14.817602,
+        "In1.Cu": 14.867601,
+        "In2.Cu": 14.867601,
+        "In3.Cu": 14.867601,
+        "In4.Cu": 14.867601,
+        "B.Cu": 6.5
+      },
+      "excluded_from_BOM_CPL": true
+    }
+  ],
+  "required_copper_radius_mm": 3.4,
+  "geometry_tolerance_mm": 0.01,
+  "rules": {
+    "max_error": 0.005,
+    "min_clearance": 0.2,
+    "min_connection": 0.0,
+    "min_copper_edge_clearance": 0.5,
+    "min_groove_width": 0.0,
+    "min_hole_clearance": 0.25,
+    "min_hole_to_hole": 0.25,
+    "min_microvia_diameter": 0.2,
+    "min_microvia_drill": 0.1,
+    "min_resolved_spokes": 2,
+    "min_silk_clearance": 0.0,
+    "min_text_height": 0.8,
+    "min_text_thickness": 0.08,
+    "min_through_hole_diameter": 0.3,
+    "min_track_width": 0.2,
+    "min_via_annular_width": 0.1,
+    "min_via_diameter": 0.6,
+    "solder_mask_to_copper_clearance": 0.0,
+    "use_height_for_length_calcs": true
+  }
+}

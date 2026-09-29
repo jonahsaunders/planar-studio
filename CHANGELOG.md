@@ -25,6 +25,9 @@
   six-layer windings, analytical calculations, BOM/CPL, Gerbers, core assembly
   notes, prototype test plan and clean ERC/DRC evidence. Mark supplier acceptance
   and physical performance as unverified; no supplier submission was made.
+- Audit the flyback example with KiStack; add four American Embedded M3
+  mounting holes, preserve explicit fabrication limits, check native schematic
+  parity and part metadata, and publish rendered Gerber/mounting evidence.
 - Extend engineering, project-state and whole-app interaction regression tests.
 
 ## 1.4.0 — Transformer design workflow (development)

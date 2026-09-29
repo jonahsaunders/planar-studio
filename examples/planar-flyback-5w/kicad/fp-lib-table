@@ -1,1 +1,1 @@
-(fp_lib_table (lib (name "Flyback") (type "KiCad") (uri "${KIPRJMOD}/Flyback.pretty") (options "") (descr "Project footprints")))
+(fp_lib_table (lib (name "Flyback") (type "KiCad") (uri "${KIPRJMOD}/Flyback.pretty") (options "") (descr "Project footprints")) (lib (name "amemb-MountingHole") (type "KiCad") (uri "${KIPRJMOD}/amemb-MountingHole.pretty") (options "") (descr "American Embedded M3 mounting footprint")))

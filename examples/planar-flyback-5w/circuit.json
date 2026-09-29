@@ -17,7 +17,8 @@
       "mfr": "Cixi Kefa",
       "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
       "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
-      "uuid": "75d795fa-e501-5278-9560-ecfa5d62195c"
+      "uuid": "75d795fa-e501-5278-9560-ecfa5d62195c",
+      "exclude_from_bom": false
     },
     {
       "ref": "F1",
@@ -34,7 +35,8 @@
       "mfr": "Littelfuse",
       "source": "https://www.lcsc.com/product-detail/Fuses_Littelfuse_C151134.html",
       "purpose": "Input fuse; verify inrush and coordination in prototype",
-      "uuid": "bb0780a7-d1d4-508c-93a5-7309ac78b8f3"
+      "uuid": "bb0780a7-d1d4-508c-93a5-7309ac78b8f3",
+      "exclude_from_bom": false
     },
     {
       "ref": "D1",
@@ -51,7 +53,8 @@
       "mfr": "MDD",
       "source": "https://jlcpcb.com/partdetail/Mdd-SS110/C2482",
       "purpose": "Input reverse-polarity protection",
-      "uuid": "07c9d955-7e4d-5bc2-b579-33f83d00a7b4"
+      "uuid": "07c9d955-7e4d-5bc2-b579-33f83d00a7b4",
+      "exclude_from_bom": false
     },
     {
       "ref": "C1",
@@ -68,7 +71,8 @@
       "mfr": "Samsung Electro-Mechanics",
       "source": "https://www.lcsc.com/product-detail/C138687.html",
       "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
-      "uuid": "dbf35f00-b299-5c6c-a125-4177cdab07ab"
+      "uuid": "dbf35f00-b299-5c6c-a125-4177cdab07ab",
+      "exclude_from_bom": false
     },
     {
       "ref": "C2",
@@ -85,7 +89,8 @@
       "mfr": "Samsung Electro-Mechanics",
       "source": "https://www.lcsc.com/product-detail/C138687.html",
       "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
-      "uuid": "25d24e89-c39e-5ffb-8b80-26249b5bce0c"
+      "uuid": "25d24e89-c39e-5ffb-8b80-26249b5bce0c",
+      "exclude_from_bom": false
     },
     {
       "ref": "T1",
@@ -105,7 +110,8 @@
       "mfr": "Prepared core assembly to drawing",
       "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
       "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Supplier procurement and assembly acceptance required.",
-      "uuid": "b7eb1bbf-a860-5fb5-b6bb-9b4653298a1e"
+      "uuid": "b7eb1bbf-a860-5fb5-b6bb-9b4653298a1e",
+      "exclude_from_bom": false
     },
     {
       "ref": "D2",
@@ -122,7 +128,8 @@
       "mfr": "Diodes Incorporated",
       "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-PDS835L13/C444972",
       "purpose": "",
-      "uuid": "f4249b5c-721b-5ba8-b5d3-12c0410c0923"
+      "uuid": "f4249b5c-721b-5ba8-b5d3-12c0410c0923",
+      "exclude_from_bom": false
     },
     {
       "ref": "C3",
@@ -139,7 +146,8 @@
       "mfr": "Panasonic",
       "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M",
       "purpose": "22 mOhm ESR, 3.3 A ripple at 100 kHz; C6 case 6.3 x 5.9 mm",
-      "uuid": "ef407ca9-da0d-540c-9372-080112a9f508"
+      "uuid": "ef407ca9-da0d-540c-9372-080112a9f508",
+      "exclude_from_bom": false
     },
     {
       "ref": "C4",
@@ -156,7 +164,8 @@
       "mfr": "Murata",
       "source": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226ke18l_C711059.html",
       "purpose": "",
-      "uuid": "0982d176-3b1f-5a20-9822-0de39fb7698f"
+      "uuid": "0982d176-3b1f-5a20-9822-0de39fb7698f",
+      "exclude_from_bom": false
     },
     {
       "ref": "J2",
@@ -173,7 +182,8 @@
       "mfr": "Cixi Kefa",
       "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
       "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
-      "uuid": "499f9370-01db-57d3-8ace-6b7e02b9e410"
+      "uuid": "499f9370-01db-57d3-8ace-6b7e02b9e410",
+      "exclude_from_bom": false
     },
     {
       "ref": "U1",
@@ -197,7 +207,8 @@
       "mfr": "Analog Devices",
       "source": "https://www.analog.com/en/products/lt8302.html",
       "purpose": "",
-      "uuid": "2173e669-e2b8-5e97-a7cd-2c16f0d7a0a9"
+      "uuid": "2173e669-e2b8-5e97-a7cd-2c16f0d7a0a9",
+      "exclude_from_bom": false
     },
     {
       "ref": "C5",
@@ -214,7 +225,8 @@
       "mfr": "Samsung Electro-Mechanics",
       "source": "https://jlcpcb.com/partdetail/CL10A475KO8NNNC/C19666",
       "purpose": "INTVCC local bypass with margin for DC-bias capacitance loss",
-      "uuid": "4aad4761-e749-5a59-b80e-92e8864b8283"
+      "uuid": "4aad4761-e749-5a59-b80e-92e8864b8283",
+      "exclude_from_bom": false
     },
     {
       "ref": "R1",
@@ -231,7 +243,8 @@
       "mfr": "Yageo",
       "source": "https://www.futureelectronics.com/p/5767843",
       "purpose": "",
-      "uuid": "df3c6290-28c6-5a9c-bb8c-b1dbfdf4363f"
+      "uuid": "df3c6290-28c6-5a9c-bb8c-b1dbfdf4363f",
+      "exclude_from_bom": false
     },
     {
       "ref": "R2",
@@ -248,7 +261,8 @@
       "mfr": "Yageo",
       "source": "https://www.digikey.com/en/products/detail/yageo/RC0603FR-0761K9L/727332",
       "purpose": "",
-      "uuid": "ed556aac-d5c3-5cad-9c14-0b3b27e5fcb0"
+      "uuid": "ed556aac-d5c3-5cad-9c14-0b3b27e5fcb0",
+      "exclude_from_bom": false
     },
     {
       "ref": "R3",
@@ -265,7 +279,8 @@
       "mfr": "Yageo",
       "source": "https://www.ti.com.cn/cn/lit/df/tidmck8a/tidmck8a.pdf",
       "purpose": "106 kOhm 0.1%; primary reflected-voltage sense; output must be trimmed on prototype",
-      "uuid": "92ed126b-fd69-5052-bafb-91be8d346cf9"
+      "uuid": "92ed126b-fd69-5052-bafb-91be8d346cf9",
+      "exclude_from_bom": false
     },
     {
       "ref": "R4",
@@ -282,7 +297,8 @@
       "mfr": "Yageo",
       "source": "https://jlcpcb.com/partdetail/YAGEO-RT0603BRD0710KL/C95204",
       "purpose": "",
-      "uuid": "640db86d-489a-5b09-a234-797726924510"
+      "uuid": "640db86d-489a-5b09-a234-797726924510",
+      "exclude_from_bom": false
     },
     {
       "ref": "R5",
@@ -299,7 +315,8 @@
       "mfr": "Yageo",
       "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL",
       "purpose": "Initial temperature compensation; bench trim required",
-      "uuid": "a02e3a3b-088a-5b1f-9a79-5722b1095f3e"
+      "uuid": "a02e3a3b-088a-5b1f-9a79-5722b1095f3e",
+      "exclude_from_bom": false
     },
     {
       "ref": "R6",
@@ -316,7 +333,8 @@
       "mfr": "Panasonic",
       "source": "https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-P08F39R0V/9812947",
       "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning",
-      "uuid": "e30db11a-e47e-5486-baed-0eff5471e107"
+      "uuid": "e30db11a-e47e-5486-baed-0eff5471e107",
+      "exclude_from_bom": false
     },
     {
       "ref": "C6",
@@ -333,7 +351,8 @@
       "mfr": "TDK",
       "source": "https://jlcpcb.com/partdetail/TDK-CGA4C2C0G2A471J060AA/C3851794",
       "purpose": "",
-      "uuid": "97afcc15-eb1f-599f-b32a-86a68a5f88c0"
+      "uuid": "97afcc15-eb1f-599f-b32a-86a68a5f88c0",
+      "exclude_from_bom": false
     },
     {
       "ref": "D3",
@@ -350,7 +369,8 @@
       "mfr": "Diodes Incorporated",
       "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-DFLS11007/C107674",
       "purpose": "",
-      "uuid": "b535e49e-094e-5889-bf30-3491fac0a36d"
+      "uuid": "b535e49e-094e-5889-bf30-3491fac0a36d",
+      "exclude_from_bom": false
     },
     {
       "ref": "D4",
@@ -367,7 +387,8 @@
       "mfr": "Diodes Incorporated",
       "source": "https://www.diodes.com/part/view/SMAJ13A",
       "purpose": "13 V unidirectional TVS, 21.5 V maximum specified clamp; verify SW peak below 60 V on prototype",
-      "uuid": "a7645207-3c9d-5610-9c6c-4ab4646d5fd3"
+      "uuid": "a7645207-3c9d-5610-9c6c-4ab4646d5fd3",
+      "exclude_from_bom": false
     },
     {
       "ref": "R7",
@@ -384,7 +405,68 @@
       "mfr": "Yageo",
       "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
       "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
-      "uuid": "01726ee0-1cfa-5098-a317-73af0ab3b333"
+      "uuid": "01726ee0-1cfa-5098-a317-73af0ab3b333",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "H1",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "51261c4e-141a-500d-a706-92c7d80c9ff1",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H2",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "c60ff40d-3471-5ae4-899a-0779569d0724",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H3",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "c84ee875-4b0a-5a0a-8232-73f04c6acae5",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H4",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "67c2b891-2219-5862-acb7-39a8f621630c",
+      "exclude_from_bom": true
     }
   ]
 }

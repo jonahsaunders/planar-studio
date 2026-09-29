@@ -32,6 +32,14 @@ for f in board.GetFootprints():
         bp[key]=net
 assert set(bp)==set(sch),(set(sch)-set(bp),set(bp)-set(sch))
 assert {x.attrib['ref'] for x in xml.findall('components/comp')}=={f.GetReference() for f in board.GetFootprints()}
+parts={p['ref']:p for p in json.loads((ROOT/'circuit.json').read_text())['parts']}
+for comp in xml.findall('components/comp'):
+    part=parts[comp.attrib['ref']]
+    fields={x.attrib['name']:x.text or '' for x in comp.findall('fields/field')}
+    for name,key in [('MPN','mpn'),('Manufacturer','mfr'),('LCSC','lcsc')]:
+        assert fields.get(name,'')==part[key],('BOM field mismatch',part['ref'],name)
+    assert comp.findtext('value')==part['value']
+    assert comp.findtext('footprint')==part['footprint']
 tree=parse((ROOT/'kicad/PS-FLYBACK-5W.kicad_pcb').read_text())
 f=next(f for f in children(tree,'footprint') if f[1].endswith('Planar_EELP32_4T_2T'))
 polys={child(p,'layer')[1]:[(float(x[1]),float(x[2])) for x in child(p,'pts')[1:]] for p in children(f,'fp_poly')}
@@ -59,7 +67,41 @@ assert board.GetCopperLayerCount()==6
 assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==75
 assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==137
 drc=json.loads((ROOT/'evidence/board-drc.json').read_text())
-assert not drc['violations'] and not drc['unconnected_items']
+assert not drc['violations'] and not drc['unconnected_items'] and not drc.get('schematic_parity',[])
+rules=json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['board']['design_settings']['rules']
+for key,value in {'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,'min_through_hole_diameter':.3}.items():
+    assert rules[key]==value,('inactive fabrication rule',key,rules[key])
+mechanical=json.loads((ROOT/'mechanical.json').read_text())
+mounting=[]
+copper_layers=[pcb.F_Cu,pcb.In1_Cu,pcb.In2_Cu,pcb.In3_Cu,pcb.In4_Cu,pcb.B_Cu]
+for h in mechanical['holes']:
+    f=next(f for f in board.GetFootprints() if f.GetReference()==h['ref'])
+    assert f.GetFPID().GetLibItemName()==mechanical['mounting_footprint'].split(':')[1]
+    pads=list(f.Pads());assert len(pads)==1
+    pad=pads[0];assert pad.GetAttribute()==pcb.PAD_ATTRIB_NPTH and not pad.GetNetCode()
+    assert abs(pcb.ToMM(pad.GetDrillSize().x)-3.2)<1e-6
+    assert abs(pcb.ToMM(pad.GetLocalClearance())-1.8)<1e-6
+    assert abs(pcb.ToMM(f.GetPosition().x)-h['x_mm'])<1e-6 and abs(pcb.ToMM(f.GetPosition().y)-h['y_mm'])<1e-6
+    assert f.IsExcludedFromBOM() and f.IsExcludedFromPosFiles()
+    per_layer={}
+    for layer in copper_layers:
+        shapes=[]
+        for t in board.GetTracks():
+            if t.IsOnLayer(layer):shapes.append(t.GetEffectiveShape(layer))
+        for other in board.GetFootprints():
+            for p in other.Pads():
+                if p.GetAttribute()!=pcb.PAD_ATTRIB_NPTH and p.IsOnLayer(layer):shapes.append(p.GetEffectiveShape(layer))
+            for g in other.GraphicalItems():
+                if g.GetLayer()==layer:shapes.append(g.GetEffectiveShape())
+        for zone in board.Zones():
+            if zone.IsOnLayer(layer) and not zone.GetIsRuleArea():shapes.append(zone.GetFilledPolysList(layer))
+        distances=[pcb.ToMM(s.Distance(f.GetPosition())) for s in shapes]
+        nearest=min(distances) if distances else None
+        assert nearest is None or nearest>=3.39,(h['ref'],board.GetLayerName(layer),nearest)
+        per_layer[board.GetLayerName(layer)]=nearest
+    mounting.append({'reference':h['ref'],'drill_mm':3.2,'x_mm':h['x_mm'],'y_mm':h['y_mm'],
+                     'nearest_copper_from_center_mm':per_layer,'excluded_from_BOM_CPL':True})
+(ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':3.4,'geometry_tolerance_mm':.01,'rules':rules},indent=2))
 out={'schematic_board_logical_pins_matched':len(bp),'physical_numbered_pads_checked':physical,'winding_polygon_count':len(polys),'polygon_terminal_contacts':{k:sorted(v) for k,v in expect.items()},'centerline_samples_inside_final_copper':samples,'stack_thickness_mm':thickness,'copper_layers':6,'drc_violations':0,'unconnected_items':0,'scope':'Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.'}
 (ROOT/'evidence/independent-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

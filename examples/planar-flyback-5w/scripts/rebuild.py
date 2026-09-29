@@ -28,7 +28,7 @@ py('generate-board.py')
 sch = 'kicad/PS-FLYBACK-5W.kicad_sch'
 pcb = 'kicad/PS-FLYBACK-5W.kicad_pcb'
 run(args.kicad_cli, 'sch', 'erc', '--exit-code-violations', '-o', 'evidence/erc.rpt', sch)
-run(args.kicad_cli, 'pcb', 'drc', '--exit-code-violations', '--format', 'json', '-o', 'evidence/board-drc.json', pcb)
+run(args.kicad_cli, 'pcb', 'drc', '--exit-code-violations', '--refill-zones', '--schematic-parity', '--format', 'json', '-o', 'evidence/board-drc.json', pcb)
 run(args.kicad_cli, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', 'evidence/schematic-netlist.xml', sch)
 # KiCad records an absolute source path; retain a portable reference in published evidence.
 netlist = R / 'evidence/schematic-netlist.xml'
@@ -54,7 +54,7 @@ for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A0'
+    package = Path(temp) / 'PS-FLYBACK-5W-A1'
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

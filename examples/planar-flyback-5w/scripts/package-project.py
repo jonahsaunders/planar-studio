@@ -4,25 +4,31 @@ from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output',type=Path,default=R.parents[1]/'dist/examples',help='Fresh output directory (default: repository dist/examples)')
-OUT=parser.parse_args().output.resolve();P=OUT/'PS-FLYBACK-5W-A0'
+OUT=parser.parse_args().output.resolve();P=OUT/'PS-FLYBACK-5W-A1'
 if P==R or R in P.parents:
     parser.error('Output must be outside the example source directory')
 P.mkdir(parents=True,exist_ok=False)
 parts=json.loads((R/'circuit.json').read_text())['parts'];m=json.loads((R/'evidence/winding-model.json').read_text())
 calc=json.loads((R/'evidence/electrical-sizing.json').read_text());cycles=json.loads((R/'evidence/cycle-model.json').read_text())['operating_points']
 def copy(src,dst):dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,dst)
-for name in ['README.md','LICENSE','VALIDATION.md','requirements.json','parts.json','circuit.json','.gitattributes','.gitignore']:copy(R/name,P/name)
+for name in ['README.md','LICENSE','VALIDATION.md','requirements.json','parts.json','circuit.json','mechanical.json','.gitattributes','.gitignore']:copy(R/name,P/name)
 for folder in ['scripts','manufacturing']:
     for f in (R/folder).rglob('*'):
         if f.is_file() and '__pycache__' not in str(f):copy(f,P/f.relative_to(R))
 for name in ['PS-FLYBACK-5W.kicad_pro','PS-FLYBACK-5W.kicad_sch','PS-FLYBACK-5W.kicad_pcb','Flyback.kicad_sym','sym-lib-table','fp-lib-table']:copy(R/'kicad'/name,P/'kicad'/name)
-for name in {p['footprint'].split(':')[1]+'.kicad_mod' for p in parts}|{'LICENSE.md'}:copy(R/'kicad/Flyback.pretty'/name,P/'kicad/Flyback.pretty'/name)
+for p in parts:
+    library,name=p['footprint'].split(':');rel=Path('kicad')/(library+'.pretty')/(name+'.kicad_mod')
+    copy(R/rel,P/rel)
+for f in (R/'kicad').glob('*.pretty/LICENSE.md'):copy(f,P/f.relative_to(R))
 for f in (R/'planar-studio').iterdir():
     if f.is_file() and f.suffix!='.kicad_prl':copy(f,P/'planar-studio'/f.name)
 evidence=['board-drc.json','erc.rpt','independent-checks.json','manufacturing-checks.json','schematic-netlist.xml','winding-model.json','electrical-sizing.json','operating-points.csv','cycle-model.json','boundary-cycle.csv','idealized-waveforms.csv','pad-positions.json','board.svg']
 for name in evidence:copy(R/'evidence'/name,P/'evidence'/name)
 copy(R/'evidence/schematic.svg',P/'evidence/schematic.svg')
 copy(R/'sources/references.md',P/'sources/references.md')
+for f in (R/'evidence/audit').rglob('*'):
+    if f.is_file():copy(f,P/f.relative_to(R))
+if (R/'KISTACK-AUDIT.md').exists():copy(R/'KISTACK-AUDIT.md',P/'KISTACK-AUDIT.md')
 
 # Original explanatory drawing using the final winding centerlines and slot geometry.
 svg=['<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850"><rect width="1200" height="850" fill="white"/><style>text{font-family:Arial,sans-serif;fill:#17334b} .small{font-size:16px}.label{font-size:19px}.title{font-size:28px;font-weight:700}</style>']
@@ -30,6 +36,9 @@ def text(x,y,s,cl='label'):svg.append(f'<text x="{x}" y="{y}" class="{cl}">{html
 text(45,48,'PS-MAG-001 A0  |  Planar core installation','title');text(45,80,'Supplier review drawing • dimensions in mm • 2026-09-29','small')
 text(45,121,'Top view: PCB and windings')
 svg.append('<rect x="70" y="155" width="200" height="416" rx="8" fill="#edf6f3" stroke="#497465" stroke-width="2"/>')
+for h in json.loads((R/'mechanical.json').read_text())['holes']:
+    x=170+4*(h['x_mm']-100);y=363+4*(h['y_mm']-85)
+    svg.append(f'<circle cx="{x}" cy="{y}" r="12.8" fill="#ddd9cc"/><circle cx="{x}" cy="{y}" r="6.4" fill="white" stroke="#497465"/>')
 art=json.loads((R/'planar-studio/T1-artwork.json').read_text())
 for t in art['tracks']:
     color='#205bcb' if t['layer'] in ['F.Cu','B.Cu'] else '#d27619'
@@ -87,24 +96,24 @@ for f in (P/'manufacturing').glob('*.md'):
     body=markdown(f.read_text(encoding='utf8'))
     (f.with_suffix('.html')).write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+html.escape(f.stem)+'</title>'+style+'<main><a href="../report.html">← Project overview</a><article>'+body+'</article></main></html>',encoding='utf8')
 table=''.join(f'<tr><td>{r["Vin_V"]:.0f} V</td><td>{r["Ipk_A"]:.2f} A</td><td>{r["frequency_Hz"]/1000:.0f} kHz</td><td>{r["copper_DC_W"]:.3f} W</td></tr>' for r in cycles)
-report=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PS-FLYBACK-5W • A0 review package</title>{style}</head><body><main>
+report=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PS-FLYBACK-5W • A1 review package</title>{style}</head><body><main>
 <div class="eyebrow">PLANAR STUDIO EXAMPLE · 29 SEPTEMBER 2026</div><h1>A flyback converter with<br>the windings in the PCB.</h1>
-<p class="status"><strong>A0 engineering prototype.</strong> Editable design and manufacturing review files are complete. JLCPCB sourcing, stack and core installation are unconfirmed. No request or files have been sent to JLCPCB. Hardware performance has not been measured.</p>
+<p class="status"><strong>A1 engineering prototype.</strong> Editable design and manufacturing review files are complete. JLCPCB sourcing, stack and core installation are unconfirmed. No request or files have been sent to JLCPCB. Hardware performance has not been measured.</p>
 <section class="hero"><div><h2>18–36 V in. Isolated 5 V, 1 A out.</h2><p>An LT8302 controller drives four primary turns distributed across the front and back copper. Two internal secondary windings operate in parallel. A prepared N87 core pair closes the magnetic circuit around the finished board.</p><div class="metrics"><div class="metric"><strong>6</strong>copper layers</div><div class="metric"><strong>11.95 µH</strong>nominal primary L</div><div class="metric"><strong>0.21 mm</strong>prepared center gap</div></div><p>50 × 104 mm board; 1.6 mm nominal thickness; top-side electronics. Both core halves are part of the requested turnkey assembly.</p><div class="links"><a href="kicad/PS-FLYBACK-5W.kicad_pro">KiCad project</a><a href="evidence/schematic.svg">Schematic</a><a href="manufacturing/assembly-top.svg">Assembly drawing</a></div></div><a href="evidence/board.svg"><img src="evidence/board.svg" alt="Actual routed front copper and silkscreen of the planar flyback board"></a></section>
-<section><h2>Checks completed</h2><table><tr><th>Check</th><th>Result</th></tr><tr><td>KiCad electrical rules</td><td>0 messages</td></tr><tr><td>KiCad board rules</td><td>0 violations; 0 unconnected items</td></tr><tr><td>Schematic to board</td><td>54 logical pins / 55 physical numbered pads agree</td></tr><tr><td>Planar winding copper</td><td>4 polygons with intended terminal contacts; 19,229 centerline samples within final copper</td></tr><tr><td>Assembly data</td><td>21 BOM/CPL references match; 19 SMD parts and 2 connectors</td></tr><tr><td>Fabrication exports</td><td>6 copper Gerbers; 23 filled/capped interlayer holes plus 4 open connector holes</td></tr></table><p>These checks establish file consistency and checked geometry. They do not establish physical converter performance or manufacturing acceptance. <a href="evidence/independent-checks.json">Independent check record</a> · <a href="evidence/board-drc.json">DRC record</a> · <a href="evidence/erc.rpt">ERC record</a></p></section>
+<section><h2>KiStack audit and M3 mounting</h2><p>A1 adds four American Embedded 3.2 mm NPTH mounting holes on a 41 × 80 mm pattern, without changing the board outline. All-layer copper clearance, drill coordinates and BOM/CPL exclusion are checked. The audit also corrected saved fabrication-rule limits, schematic/PCB metadata and label overlaps.</p><p><a href="KISTACK-AUDIT.md">Read the complete audit and remaining findings</a> · <a href="manufacturing/MOUNTING.html">Mounting specification</a> · <a href="evidence/audit/gerber-copper-overview.png">Actual copper Gerber review</a></p><p>Complete 3D assembly interference remains unverified: the core and several custom footprints lack body models.</p></section><section><h2>Checks completed</h2><table><tr><th>Check</th><th>Result</th></tr><tr><td>KiCad electrical rules</td><td>0 messages</td></tr><tr><td>KiCad board rules</td><td>0 violations; 0 unconnected items; 0 schematic-parity issues</td></tr><tr><td>Schematic to board</td><td>54 logical pins / 55 physical numbered pads agree</td></tr><tr><td>Planar winding copper</td><td>4 polygons with intended terminal contacts; 19,229 centerline samples within final copper</td></tr><tr><td>Assembly data</td><td>21 BOM/CPL references match; 19 SMD parts and 2 connectors</td></tr><tr><td>Fabrication exports</td><td>6 copper Gerbers; 23 filled/capped interlayer holes plus 4 open connector holes and 4 NPTH M3 mounting holes</td></tr></table><p>These checks establish file consistency and checked geometry. They do not establish physical converter performance or manufacturing acceptance. <a href="evidence/independent-checks.json">Independent check record</a> · <a href="evidence/board-drc.json">DRC record</a> · <a href="evidence/erc.rpt">ERC record</a></p></section>
 <section><h2>Electrical margins and model limits</h2><p>The current-stress worksheet estimates {calc['worst_full_load_primary_peak_A']:.2f} A primary peak at full load, below the controller's 3.6 A minimum peak-current limit. Its 75% efficiency is an assumption. Worst-case steady switch plateau is 47.7 V; the selected 13 V TVS gives a rating-based clamp estimate of 58.5 V before dynamic overshoot. Prototype target: SW peak below 60 V.</p><p>The 220 Ω preload covers the calculated minimum-energy delivery at maximum L, minimum output voltage, 1.04 A minimum-current ceiling and 12.7 kHz. Input capacitors are sized assuming only 4 µF combined effective capacitance after DC-bias loss. The bulk-only ripple estimate is about 100 mV; the parallel ceramic helps, but the ripple target remains unverified.</p><table><tr><th>Full-load input</th><th>Cycle-model peak</th><th>Cycle-model frequency</th><th>Winding DC loss</th></tr>{table}</table><p><strong>Model scope:</strong> charge-balanced boundary/DCM power-stage calculations at a fixed 5 V output, with winding resistance, assumed switch resistance and a nominal 380 kHz ceiling. Core loss, switching loss, gap fringing, loop dynamics and burst behavior are excluded. This is not a closed-loop LT8302 SPICE simulation or measured efficiency.</p><div class="links"><a href="evidence/electrical-sizing.json">Stress sizing</a><a href="evidence/boundary-cycle.csv">Cycle results</a><a href="evidence/idealized-waveforms.csv">Idealized waveform data</a><a href="manufacturing/PROTOTYPE-TEST-PLAN.html">Prototype test plan</a></div></section>
 <section><h2>The core is an assembly operation</h2><img class="wide" src="manufacturing/core-assembly.svg" alt="Planar PCB, prepared EELP32 core pair and six-layer winding connection drawing"><p>The supplier must source a prepared pair, install both halves and qualify bonding and retention. Two ungapped catalog halves are not substitutes. The proposed stack also needs fabricator acceptance before the magnetic model can be finalized.</p><div class="links"><a href="manufacturing/CORE-ASSEMBLY.html">Core process and acceptance</a><a href="manufacturing/FABRICATION.html">Fabrication specification</a><a href="manufacturing/CORE-BOM.csv">Core materials schedule</a></div></section>
 <section><h2>Manufacturing reference information</h2><p>The package includes an unsent feasibility-request template for full turnkey procurement and assembly. It is retained for reference; no supplier contact or purchase is authorized by this example. Catalog identifiers establish part identity; they do not reserve inventory or confirm JLCPCB sourcing.</p><div class="links"><a href="manufacturing/JLCPCB-REVIEW-REQUEST.html">Unsent feasibility template</a><a href="manufacturing/BOM-MASTER.csv">Sourcing BOM</a><a href="manufacturing/BOM-JLCPCB.csv">JLCPCB BOM</a><a href="manufacturing/CPL-JLCPCB.csv">Placement file</a></div><p>Before production: vendor DFM acceptance, confirmed stack and sourcing, prepared-core qualification, and first-article regulation, ripple, switching-stress, startup, overload and thermal results. Functional low-voltage isolation only; no mains or safety-isolation certification.</p></section>
-<p><small>Designed with <a href="https://github.com/jonahsaunders/planar-studio/pull/11">Planar Studio's transformer workflow</a>. Prepared-gap support: commit 9210fce. The named I2CJack workflow could not be verified. Sources: <a href="sources/references.md">reference list</a>, component links in the sourcing BOM. Native KiCad files and reproducible generators are included.</small></p></main></body></html>'''
+<p><small>Designed with <a href="https://github.com/jonahsaunders/planar-studio/pull/11">Planar Studio's transformer workflow</a>. Prepared-gap support: commit 9210fce. A1 audit: American Embedded KiStack, commit 8494dbd. Sources: <a href="sources/references.md">reference list</a>, component links in the sourcing BOM. Native KiCad files and reproducible generators are included.</small></p></main></body></html>'''
 (P/'report.html').write_text(report,encoding='utf8')
 # Fabrication exports remain explicitly marked for review; this script sends nothing.
 with zipfile.ZipFile(P/'manufacturing/GERBERS-REVIEW-ONLY.zip','w',zipfile.ZIP_DEFLATED) as z:
     for f in sorted((P/'manufacturing/gerbers').iterdir()):
         if f.suffix not in ['.svg','.rpt']:z.write(f,f.name)
-    z.writestr('REVIEW-ONLY.txt','A0 engineering prototype. Confirm FABRICATION.md and CORE-ASSEMBLY.md before release. Not an order authorization.\n')
+    z.writestr('REVIEW-ONLY.txt','A1 engineering prototype. Confirm FABRICATION.md and CORE-ASSEMBLY.md before release. Not an order authorization.\n')
 manifest={str(f.relative_to(P)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(P.rglob('*')) if f.is_file() and f.name!='SHA256SUMS.json'}
 (P/'SHA256SUMS.json').write_text(json.dumps(manifest,indent=2))
-with zipfile.ZipFile(OUT/'PS-FLYBACK-5W-A0-review-package.zip','w',zipfile.ZIP_DEFLATED) as z:
+with zipfile.ZipFile(OUT/'PS-FLYBACK-5W-A1-review-package.zip','w',zipfile.ZIP_DEFLATED) as z:
     for f in sorted(P.rglob('*')):
         if f.is_file():z.write(f,str(Path(P.name)/f.relative_to(P)))
-print(json.dumps({'project':str(P),'archive':str(OUT/'PS-FLYBACK-5W-A0-review-package.zip'),'files':len(manifest)},indent=2))
+print(json.dumps({'project':str(P),'archive':str(OUT/'PS-FLYBACK-5W-A1-review-package.zip'),'files':len(manifest)},indent=2))
