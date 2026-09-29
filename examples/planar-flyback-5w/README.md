@@ -15,7 +15,7 @@
 
 ## Schematic
 
-The input, controller, transformer and clamp share continuous drawn wiring. The snubber and avalanche clamp connect directly between **VIN** and **SW** beside T1. Primary and secondary returns have separate signal-ground symbols; neither denotes protective earth.
+The input, controller, transformer and clamp share continuous drawn wiring. The snubber and avalanche clamp connect directly between **VIN** and **SW** beside T1. Primary and secondary returns have separate signal-ground symbols; neither denotes protective earth. Every branch is a staggered three-way connection: there are no four-way junctions, including at symbol pins. Both KiCad ERC and the independent geometry check enforce this.
 
 [![Complete A4 schematic with the clamp wired directly to the transformer and controller](evidence/audit/schematic-overview.png)](evidence/schematic.svg)
 
@@ -24,6 +24,8 @@ The input, controller, transformer and clamp share continuous drawn wiring. The 
 **Power-net naming:** `VIN` is the single protected input rail feeding T1, U1 and both clamp branches. `VIN_RAW` and `VIN_FUSED` are the distinct nodes before and after F1, upstream of D1. `INTVCC` is U1's internal bias supply; `+5V_ISO` is the isolated output. These names cannot be merged without changing the circuit. `PGND` and `GND_ISO` remain separate.
 
 ## PCB layout
+
+**Layout audit: revise the primary power routing before fabrication.** The input-capacitor feed to T1 is 34.87 mm and the clamp return to T1 is 57.54 mm. The audit also identifies a long output feed, missing dedicated probe pads and incomplete mechanical models. These are open layout findings despite clean DRC. Read the [illustrated PCB audit](PCB-LAYOUT-AUDIT.md) and [measured-route detail](evidence/audit/pcb-layout-audit.svg).
 
 The views below come from the actual KiCad copper, silkscreen and routed outline. Both use the same top-view coordinates, so the mounting holes and ferrite openings align. Silkscreen and outline display colors are darkened for readability; the manufacturing geometry is unchanged.
 
@@ -49,6 +51,7 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | Saved-design check | Result |
 | --- | --- |
 | KiCad electrical rules | 0 messages |
+| Four-way schematic connections | 0; maximum three arms, including power/ground symbol pins; four-way ERC rule enabled as an error |
 | Board rules / connectivity / schematic parity | 0 violations / 0 unconnected items / 0 parity issues |
 | Schematic-to-board comparison | 54 logical pins agree with 55 numbered pads |
 | Drawn-wire continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect physically on the sheet; the five nets stay distinct |
@@ -56,7 +59,7 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | Electronic assembly data | 21 BOM/CPL references agree |
 | Fabrication exports | Six copper Gerbers; 27 plated holes and four M3 NPTH holes |
 
-[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Schematic revision comparison](evidence/audit/schematic-layout-checks.json)
+[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Schematic revision comparison](evidence/audit/schematic-layout-checks.json)
 
 These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The bulk-only ripple estimate is about 100 mV with little margin. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
 

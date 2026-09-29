@@ -68,5 +68,11 @@
       "R7.2",
       "J2.2"
     ]
+  },
+  "schematic_junctions": {
+    "four_way_connections": 0,
+    "maximum_connection_arms": 3,
+    "three_way_connections": 27,
+    "includes_symbol_pin_stubs": true
   }
 }

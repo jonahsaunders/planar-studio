@@ -35,6 +35,9 @@
   ground symbols from net labels, and check drawn-wire continuity. Present the
   schematic and front/back PCB layout prominently in the example README.
 - Extend engineering, project-state and whole-app interaction regression tests.
+- Eliminate four-way schematic junctions and enforce both native ERC and
+  symbol-aware geometry checks. Publish a measured PCB layout audit identifying
+  primary input/clamp routing, output-feed, probe-access and assembly work.
 
 ## 1.4.0 — Transformer design workflow (development)
 

@@ -44,7 +44,7 @@ for comp in xml.findall('components/comp'):
 # The main rails and clamp must not regress to disconnected label-only blocks.
 schematic=parse((ROOT/'kicad/PS-FLYBACK-5W.kicad_sch').read_text())
 libraries={s[1]:s for s in children(child(schematic,'lib_symbols'),'symbol')}
-sheet_pins={}
+sheet_pins={};pin_directions={}
 for symbol in children(schematic,'symbol'):
     ref=next(p[2] for p in children(symbol,'property') if p[1]=='Reference')
     position=child(symbol,'at');x,y,angle=map(float,position[1:4]);theta=math.radians(angle)
@@ -52,9 +52,31 @@ for symbol in children(schematic,'symbol'):
     for unit in children(library,'symbol'):
         for pin in children(unit,'pin'):
             px,py=map(float,child(pin,'at')[1:3])
-            sheet_pins[(ref,child(pin,'number')[1])]=(round(x+px*math.cos(theta)-py*math.sin(theta),6),round(y-px*math.sin(theta)-py*math.cos(theta),6))
+            position=(round(x+px*math.cos(theta)-py*math.sin(theta),6),round(y-px*math.sin(theta)-py*math.cos(theta),6))
+            sheet_pins[(ref,child(pin,'number')[1])]=position
+            direction=math.radians(float(child(pin,'at')[3])+angle)
+            if float(child(pin,'length')[1])>0:
+                pin_directions.setdefault(position,set()).add((round(math.cos(direction),6),round(-math.sin(direction),6)))
 segments=[tuple((float(p[1]),float(p[2])) for p in child(w,'pts')[1:]) for w in children(schematic,'wire')]
 points=set(sheet_pins.values())|{p for segment in segments for p in segment}
+points|={tuple(map(float,child(j,'at')[1:3])) for j in children(schematic,'junction')}
+def on_segment(p,a,b):
+    return (abs((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]))<1e-6
+            and min(a[0],b[0])-1e-6<=p[0]<=max(a[0],b[0])+1e-6
+            and min(a[1],b[1])-1e-6<=p[1]<=max(a[1],b[1])+1e-6)
+# A symbol pin opposite a branch is still a fourth arm. Counting only wire
+# endpoints would miss the ground symbols and power flags that prompted this gate.
+junction_arms={}
+for p in sorted(points):
+    arms=set(pin_directions.get(p,set()))
+    for a,b in segments:
+        if on_segment(p,a,b):
+            for end in (a,b):
+                length=math.dist(p,end)
+                if length>1e-6:arms.add((round((end[0]-p[0])/length,6),round((end[1]-p[1])/length,6)))
+    junction_arms[p]=len(arms)
+four_way=[p for p,arms in junction_arms.items() if arms>=4]
+assert not four_way,('Four-way schematic connections (including symbol pins)',four_way)
 parent={p:p for p in points}
 def wire_root(p):
     while parent[p]!=p:
@@ -108,6 +130,7 @@ assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==137
 drc=json.loads((ROOT/'evidence/board-drc.json').read_text())
 assert not drc['violations'] and not drc['unconnected_items'] and not drc.get('schematic_parity',[])
 rules=json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['board']['design_settings']['rules']
+assert json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['erc']['rule_severities']['four_way_junction']=='error'
 for key,value in {'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,'min_through_hole_diameter':.3}.items():
     assert rules[key]==value,('inactive fabrication rule',key,rules[key])
 mechanical=json.loads((ROOT/'mechanical.json').read_text())
@@ -143,5 +166,7 @@ for h in mechanical['holes']:
 (ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':3.4,'geometry_tolerance_mm':.01,'rules':rules},indent=2))
 out={'schematic_board_logical_pins_matched':len(bp),'physical_numbered_pads_checked':physical,'winding_polygon_count':len(polys),'polygon_terminal_contacts':{k:sorted(v) for k,v in expect.items()},'centerline_samples_inside_final_copper':samples,'stack_thickness_mm':thickness,'copper_layers':6,'drc_violations':0,'unconnected_items':0,'scope':'Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.'}
 out['schematic_continuous_wire_groups']=continuous
+out['schematic_junctions']={'four_way_connections':len(four_way),'maximum_connection_arms':max(junction_arms.values()),
+                           'three_way_connections':sum(n==3 for n in junction_arms.values()),'includes_symbol_pin_stubs':True}
 (ROOT/'evidence/independent-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

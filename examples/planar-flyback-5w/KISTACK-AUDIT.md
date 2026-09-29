@@ -1,6 +1,9 @@
 # KiStack audit — PS-FLYBACK-5W A1
 
 **Result: file and mounting checks pass; hardware and manufacturing release remain on hold.**
+The subsequent [PCB layout audit](PCB-LAYOUT-AUDIT.md) recommends revising the
+primary input/clamp routing before fabrication and includes measured paths,
+annotated close-ups, output-feed and probing findings.
 Audited 2026-09-29 using American Embedded's
 [KiStack](https://github.com/American-Embedded/kistack/tree/8494dbde095669df081950cbb6b24d08a21e25b0)
 schematic, PCB, footprint, export and Gerber workflows. KiStack supplies review
@@ -16,6 +19,7 @@ unchanged. No supplier was contacted and no purchasing was performed.
 
 | Finding | Impact | A1 correction and evidence |
 | --- | --- | --- |
+| Three four-way schematic connections at power/ground symbols | A symbol stem opposite a component branch made each node ambiguous to read. | Offset the VIN flag, PGND marker and GND_ISO marker onto separate three-way junctions. Enable native four-way ERC as an error and count wires plus symbol-pin stubs independently. The geometry check rejects the preceding sheet's three nodes and accepts the revised sheet with zero. [Evidence](evidence/audit/schematic-layout-checks.json). |
 | Intended fabrication limits did not all survive board generation | The saved A0 project had a 0 mm global minimum clearance and 0.5 mm minimum via diameter, rather than the intended 0.2 / 0.6 mm. Its 0.2 mm net-class clearance still applied; the earlier clean DRC did not verify every intended global limit. | Restore explicit limits after `SaveBoard`, assert the saved values, then rerun DRC. [Baseline rules](evidence/audit/A0-project-rules.json), [current rules](evidence/audit/mounting-checks.json). |
 | Native schematic parity was absent from the export gate | Enabling it exposed missing MPN fields in PCB footprints. Electrical pin comparison alone did not catch missing part metadata. | Propagate MPN, Manufacturer, LCSC and Datasheet fields. Export now checks schematic parity and zone refill, stopping on violations. Final parity issues: zero. [DRC](evidence/board-drc.json). |
 | Schematic blocks and overlapping power/ground markings obscured the power path | Earlier versions used labels to link the clamp to the converter and put ground/flag graphics too close to their net names. | Draw a continuous A4 circuit: VIN, SW and PGND wire directly between the input, T1, clamp and controller. Use separated signal-ground triangles, diamond power flags and one consistent VIN label. Preserve distinct raw/fused, internal-bias and isolated-output nets. Check actual wire geometry as well as the netlist. [Controller](evidence/audit/schematic-controller.png), [complete sheet](evidence/audit/schematic-overview.png), [unchanged-net comparison](evidence/audit/schematic-layout-checks.json). |
@@ -28,6 +32,7 @@ These are release gates, not claims that the circuit has already failed a bench 
 
 | Priority | Finding | Required action |
 | --- | --- | --- |
+| High | Primary input/clamp paths are unnecessarily long: C2-to-T1 34.87 mm; D4 VIN return-to-T1 57.54 mm. | Re-place the power cluster and tighten both suppression loops before fabrication. Preserve short bias/feedback connections. See the [measured PCB audit](PCB-LAYOUT-AUDIT.md) for output, probing, mechanical and fabrication findings as well. |
 | High | Full-load bulk-only ripple sizing is **100.018 mV**, slightly above the 100 mV target. | Measure ripple across line/load and temperature, including burst operation. C4 may reduce ripple, but that is not established by the bulk-only model. Revise capacitance/ESR or the specification if needed. |
 | High | The 58.5 V rating-based clamp estimate excludes dynamic switch overshoot and layout parasitics. | Measure SW with an appropriate probe and tune R6/C6/D3/D4 to the below-60 V prototype target. Inspect the primary input loop and long VIN feed to T1 during this test; clean DRC does not establish EMI performance. |
 | High | Planar gap fringing, core loss, inductance under bias and thermal performance are unverified. | Characterize the prepared core assembly, including fault-current behavior; run the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Small-signal AL and DC winding resistance are insufficient for thermal release. |
@@ -86,6 +91,9 @@ These are release gates, not claims that the circuit has already failed a bench 
 - Reopen the schematic SVG and layer images after any design edit. Refresh the
   audit findings and manifest before sharing a new package; saved screenshots
   and prose do not automatically validate later edits.
+- After refreshing board/Gerber renders, run `scripts/audit-layout.py` with
+  KiCad Python and `scripts/render-layout-audit.py` for measured PCB paths and
+  close-ups. Update the written findings against the new board hash.
 
 Functional low-voltage galvanic isolation only. This audit does not establish
 a safety-isolation rating, regulatory compliance or production readiness.

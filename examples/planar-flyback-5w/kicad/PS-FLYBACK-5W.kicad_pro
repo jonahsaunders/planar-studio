@@ -320,5 +320,10 @@
       "version": 0
     },
     "tuning_profiles_impedance_geometric": []
+  },
+  "erc": {
+    "rule_severities": {
+      "four_way_junction": "error"
+    }
   }
 }

@@ -14,6 +14,8 @@ checks supplement the original validation.
 | Area | Recorded result | Evidence |
 | --- | --- | --- |
 | Schematic electrical rules | 0 messages, KiCad 10.0.6 | [ERC](evidence/erc.rpt) |
+| Schematic branch geometry | 0 four-way junctions; 27 three-way connections, including symbol pins; native four-way ERC enabled as an error | [Independent checks](evidence/independent-checks.json) |
+| PCB layout review | Open input/clamp routing, output-feed, probing and assembly findings; measured paths and actual-board close-ups | [PCB audit](PCB-LAYOUT-AUDIT.md) |
 | Board design rules | 0 violations, 0 unconnected items, 0 schematic-parity issues | [DRC](evidence/board-drc.json) |
 | Schematic/board agreement | 54 logical pins, 55 numbered physical pads | [Independent checks](evidence/independent-checks.json) |
 | Drawn power-path continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect through actual wires; no label-only clamp block | [Wire groups](evidence/independent-checks.json) |
@@ -36,6 +38,9 @@ prediction or a physically charge-balanced waveform.
 
 - Confirm the six-layer stack and core-slot tolerances. Recalculate winding
   parameters if the fabricator changes copper or dielectric dimensions.
+- Revise the long primary input and clamp paths identified in the
+  [PCB layout audit](PCB-LAYOUT-AUDIT.md); shorten the output feed and provide
+  deliberate probe access. Clean DRC does not close these findings.
 - Source and qualify a prepared EELP32 N87 pair. Stock B66457G0000X187 halves
   are ungapped; the specified prepared pair needs center-leg grinding.
 - Qualify adhesive, retention, positioning and inductance acceptance. The

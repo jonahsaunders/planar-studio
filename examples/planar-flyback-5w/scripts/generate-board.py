@@ -248,6 +248,7 @@ out.write_text(contents)
 # fabrication limits after that save so subsequent DRC uses the intended rules.
 project_file=CAD/(NAME+'.kicad_pro')
 project=json.loads(project_file.read_text())
+project.setdefault('erc',{}).setdefault('rule_severities',{})['four_way_junction']='error'
 project['board']['design_settings']['rules'].update({
     'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,
     'min_through_hole_diameter':.3,'min_copper_edge_clearance':.5,
