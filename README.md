@@ -1,6 +1,14 @@
 # Planar Studio
 
-## Transformer design workflow — 1.4 development
+## Transformer design workflow — 1.5 development
+
+The workspace now follows Requirements → Candidates → Windings → Verify → Export,
+with undo/redo, automatic checkpoints and preset previews. Search respects locks
+and explains rejected and nearly feasible designs. Compare up to three designs
+at a shared operating point, check operating ranges and fabrication tolerances,
+overlay open/short/loaded measurements, and fit small-signal AL and leakage.
+A destination placement review and coordinated ZIP build dossier complete the
+handoff. Unknown thermal/core-loss results remain explicitly unknown.
 
 Independent core and winding choices, parallel sections with solved current
 sharing, physical board heights, geometry-based leakage, AC copper and

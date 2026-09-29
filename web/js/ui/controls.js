@@ -168,7 +168,7 @@ export class Panel {
 
   /** Push state values into the controls, and apply `when` visibility. */
   sync() {
-    for (const group of this.groups) group.hidden = !!group._when && !group._when(this.state);
+    for (const group of this.groups) group.hidden = (!!group._when && !group._when(this.state)) || (!!group._steps && !group._steps.includes(this.workflowStep()));
     for (const [key, entry] of this.fields) {
       if (entry.when) {
         const visible = entry.when(this.state);

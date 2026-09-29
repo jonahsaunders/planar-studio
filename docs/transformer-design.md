@@ -1,8 +1,90 @@
-# Transformer design workflow — 1.4 development
+# Transformer design workflow — 1.5 development
 
 The Transformer workspace combines a winding layout, a sinusoidal circuit and
 explicit engineering estimates. Old saved designs keep their previous family,
 DC-loss and supplied-leakage behavior until their settings are changed.
+
+## Guided workspace and reversible editing
+
+Move freely through **Requirements → Candidates → Windings → Verify → Export**.
+The pinned summary keeps target and predicted output, copper/core loss and the
+limiting selected constraint visible. Raw stack parameters and physical model
+controls live in the collapsed Windings groups.
+
+**Undo / Redo** restores the complete configuration during the session (up to
+50 edits; Ctrl/Cmd+Z, Shift+Ctrl/Cmd+Z or Ctrl/Cmd+Y outside text fields).
+Applying a starting design, a candidate, a preset or a measurement calibration
+creates an automatic checkpoint first. The latest five checkpoints persist
+with the design. Preset selection previews the exact fields being replaced;
+**Apply preset** commits them. Restore checkpoints from the navigation area.
+
+Search locks preserve the selected core, turns, per-winding widths, layer
+assignments/heights, connections or footprint. Unlocked searches explore a
+bounded set of turns, widths, series/parallel connections and stacks; unlocking
+Core includes the supported catalog cores. Rejection counts overlap when a
+trial fails multiple constraints. The closest valid geometries show actual
+values and missed limits. Suggested larger footprints or extra layers appear
+only after another search finds a feasible candidate with that change. Results
+are starting points, not globally optimal designs; search supports one output.
+
+Pin up to three candidates and use **Compare table and curves** for aligned
+metrics and gain, phase, copper-loss and flux overlays. Each snapshot retains
+its operating point. **Use current operating point for all candidates** copies
+the current frequency, source, loads and temperatures for the comparison only.
+Badges identify the smallest, lowest copper loss and highest flux margin among
+the displayed candidates. Differences in area, loss, leakage and capacitance
+make the tradeoffs explicit.
+
+## Verification and fabrication variation
+
+**Check operating envelope** evaluates every combination of entered minimum,
+nominal and maximum input voltage, frequency, resistive S load and ambient
+temperature (up to 81 points). Limits include target voltage tolerance, absolute
+no-load/load regulation, peak flux and assembly temperature. Other output loads
+stay fixed. Grid samples are not a continuous worst-case proof. Copper and
+core-loss-data temperatures retain their selected values; ambient changes only
+the assembly thermal estimate. Missing loss/thermal data remain unknown and
+are never counted as a pass.
+
+**Study fabrication tolerances** samples copper thickness, layer spacing and
+core AL using independent uniform variations and a repeatable seed. Planar
+copper centerlines and turns stay fixed. Reports include output percentiles,
+pass/unknown counts and one-variable endpoint sensitivity. This is conditional
+model yield, not a measured manufacturing yield. Air-core studies omit AL.
+Both studies can be canceled and export every case with the input configuration.
+
+## Measurement workflow
+
+Record a fixture/reference plane and copper temperature before importing each
+test. Open/short tests use primary R and X CSV columns versus frequency or a
+one-port Touchstone file. Keep other outputs open. Loaded tests require CSV
+`Frequency (Hz), Gain_dB`, where gain is Vout/source RMS voltage; scattering
+S21 is deliberately not accepted as this voltage ratio. Loaded tests retain
+their source and load settings. Overlays label measured and estimated curves
+and report RMS error, with a warning when the current design differs.
+
+For two series windings on ferrite, matching open and short tests can fit AL
+and primary leakage at the operating frequency. Tests must share the unchanged
+design, temperature and fixture, and bracket the fit frequency. Review fitted
+parameters and before/after curves before applying the measured calibration.
+Resistance, capacitance, core loss and large-signal behavior are not fitted.
+The calibration retains source files, conditions, date, frequency and residual.
+
+## Placement and coordinated handoff
+
+**Review board placement** brings destination, origin, layers, nets, terminals
+and required core openings into one review. Read a live snapshot or inspect a
+saved board. Located findings zoom the board preview to their position. Direct
+placement requires a live review with no findings/warnings; the board is read
+again immediately before placement and a changed snapshot requires a refresh.
+Saved-board checks are previews only. These geometric checks do not replace
+live KiCad DRC; placement does not machine missing core openings.
+
+**Transformer build package (.zip)** contains the matching KiCad PCB and
+footprint, SVG, design JSON, and a printable HTML dossier with copper drawing,
+stack/connections, terminals, core part list, predictions and data provenance.
+All files derive from one solved configuration. Estimated,
+manufacturer-derived and measured data remain explicitly identified.
 
 ## Choose the design independently
 

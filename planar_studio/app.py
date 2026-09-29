@@ -230,18 +230,30 @@ class Application:
             """
             name = os.path.basename(str(params.get("name") or "export.txt"))
             text = params.get("text")
-            if not isinstance(text, str):
+            binary = None
+            if "base64" in params:
+                import base64
+                import binascii
+                try:
+                    binary = base64.b64decode(params["base64"], validate=True)
+                except (ValueError, TypeError, binascii.Error) as exc:
+                    raise RpcError("invalid binary export", kind="invalid") from exc
+            if binary is None and not isinstance(text, str):
                 raise RpcError("nothing to save", kind="empty")
             base = self.link.project_dir() or os.path.join(self.store.dir, "exports")
             outdir = os.path.join(base, "planar-studio-exports") if self.link.project_dir() else base
             try:
                 os.makedirs(outdir, exist_ok=True)
                 path = os.path.join(outdir, name)
-                with open(path, "w", encoding="utf-8", newline="\n") as fh:
-                    fh.write(text)
+                if binary is not None:
+                    with open(path, "wb") as fh:
+                        fh.write(binary)
+                else:
+                    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+                        fh.write(text)
             except OSError as exc:
                 raise RpcError(f"could not write {name}: {exc}", kind="io") from exc
-            return {"path": path, "bytes": len(text.encode("utf-8"))}
+            return {"path": path, "bytes": len(binary) if binary is not None else len(text.encode("utf-8"))}
 
         # ---- persistence ---------------------------------------------------
 

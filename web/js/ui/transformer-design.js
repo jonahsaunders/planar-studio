@@ -4,6 +4,8 @@ import { transformerMode } from '../engine/transformer-config.js';
 import { CORE_CATALOG, corePresetPatch, checkCoreCutouts } from '../engine/transformer-cores.js';
 import { parseBoard } from '../engine/boardcheck.js';
 import { N87_SOURCE } from '../engine/transformer-physics.js';
+import { openComparison } from './transformer-review.js';
+import { presetPicker } from './transformer-workspace.js';
 
 const colors={P:'#e99158',S:'#5dabdf',S2:'#b69beb',S3:'#7cc5a1'};
 const button=(text,fn)=>el('button',{type:'button',class:'btn small',text,onClick:fn});
@@ -63,7 +65,10 @@ function assemblyPreview(c,r,api) {
 }
 
 export function designWorkflow(panel,api) {
-  const node=el('div',{class:'transformer-workflow'}), requirements=el('div',{class:'transformer-requirements'});
+  const node=el('div',{class:'transformer-workflow'}), requirements=el('div',{class:'transformer-requirements'}),locks=el('fieldset',{class:'transformer-locks'},el('legend',{text:'Keep fixed during search'}));
+  for(const [key,label] of [['core','Core'],['turns','Turns'],['widths','Widths'],['stack','Layers and heights'],['connections','Connections'],['footprint','Footprint']]){
+    const input=el('input',{type:'checkbox','aria-label':`Lock ${label.toLowerCase()}`,dataset:{lock:key}});input.addEventListener('change',()=>api.set('searchLocks',{...panel.state.searchLocks,[key]:input.checked}));locks.append(el('label',{},input,` ${label}`));
+  }
   let worker=null,generation=0,signature='', configAtRun='';
   const status=el('p',{class:'hint',role:'status'}),results=el('div',{class:'transformer-search-results'});
   const fields=[['voltage','Source RMS voltage',.01,1000],['outputVoltage','Target output RMS voltage',.01,1000],['outputCurrent','Target output RMS current',.0001,100],['frequency','Design frequency (Hz)',100,1e7],['diameter','Maximum board width / height (mm)',5,200],['layers','Available PCB layers',2,8],['voltageTolerance','Output voltage tolerance (%)',.1,50]];
@@ -82,20 +87,26 @@ export function designWorkflow(panel,api) {
       if(token!==generation)return;if(data.progress){status.textContent=`${data.progress.done}/${data.progress.total} · ${data.progress.message}`;return;}
       stop();if(data.error){status.textContent=data.error;return;}
       status.textContent=`${data.result.message} ${data.result.tried} combinations checked.`;
+      const diagnostics=el('details',{},el('summary',{text:'Search exclusions and closest designs'}),el('p',{class:'hint',text:'A trial can violate more than one constraint; counts overlap.'}),specTable(Object.entries(data.result.rejected).map(([key,n])=>[key,String(n)])));
+      for(const [reason,n] of Object.entries(data.result.geometryReasons||{}).sort((a,b)=>b[1]-a[1]).slice(0,5))diagnostics.append(el('p',{class:'hint',text:`${n} trials: ${reason}`}));
+      for(const q of data.result.nearMisses||[])diagnostics.append(el('p',{class:'hint',text:`${q.name}: ${q.issues.map(i=>`${i.message} Actual ${num(i.actual,3)}, limit ${num(i.limit,3)}.`).join(' ')}`}));
+      results.append(diagnostics);
+      for(const s of data.result.suggestions||[])results.append(button(`Try tested requirement change: ${Object.entries(s.patch).map(([k,v])=>`${k} → ${v}`).join(', ')}`,()=>{api.set('requirements',{...panel.state.requirements,...s.patch});status.textContent='Requirement updated. Search again to refresh the candidates.';results.replaceChildren();}));
       for(const candidate of data.result.candidates){const card=el('article',{class:'transformer-candidate'},el('strong',{text:candidate.name}),
         el('p',{class:'hint',text:`${eng(candidate.metrics.voltage,'V',3)} output · ${eng(candidate.metrics.copper,'W',3)} copper loss · ${num(candidate.metrics.width,1)} × ${num(candidate.metrics.height,1)} mm`}));
         card.append(button('Apply starting design',()=>{
           const current=JSON.parse(JSON.stringify(panel.state));delete current.candidates;
           if(JSON.stringify(current)!==configAtRun){status.textContent='Settings changed. Run the search again before applying a result.';return;}
-          api.applyDesign({...candidate.config,candidates:panel.state.candidates,requirements:panel.state.requirements});
+          api.applyDesign({...candidate.config,candidates:panel.state.candidates,requirements:panel.state.requirements},'Before applying search candidate');api.navigateTransformer?.('windings');
         }));results.append(card);}
     };
     worker.postMessage({task:'transformerDesign',args:{cfg,requirements:cfg.requirements,env:{board:api.boardContext(),name:api.designName()}}});
   });
   const observer=new window.MutationObserver(()=>{if(!node.isConnected){stop();observer.disconnect();}});
   queueMicrotask(()=>{if(node.isConnected)observer.observe(document.body,{childList:true,subtree:true});});
-  node.append(el('p',{class:'hint',text:'Sinusoidal voltage source and resistive output. Search uses the selected core and source impedance; candidates must meet size, layer, voltage and flux limits.'}),requirements,run,cancel,status,results);
+  node.append(el('p',{class:'hint',text:'Sinusoidal source and resistive output. Search varies turns, widths, series/parallel connections, stacks and size within your locks. Unlock Core to include supported catalog assemblies.'}),requirements,locks,run,cancel,status,results);
   return {node,set:()=>{const next=JSON.stringify(panel.state.requirements);if(next!==signature){signature=next;for(const input of requirements.querySelectorAll('input'))input.value=panel.state.requirements[input.dataset.requirement];}
+    locks.querySelectorAll('input').forEach(input=>input.checked=!!panel.state.searchLocks[input.dataset.lock]);
     if(worker){const cfg={...panel.state};delete cfg.candidates;if(JSON.stringify(cfg)!==configAtRun){stop();status.textContent='Settings changed; search canceled.';}}}};
 }
 
@@ -104,18 +115,15 @@ export function candidateControls(panel,api) {
   const status=el('p',{class:'hint',role:'status'});
   const pin=button('Pin current design',()=>{const r=api.result();if(!r?.analysis){status.textContent='Wait for a valid solved design.';return;}const saved=panel.state.candidates||[];if(saved.length>=3){status.textContent='Remove a candidate before pinning another (maximum three).';return;}
     api.set('candidates',[...saved,candidateSnapshot(panel.state,r,name.value||`Candidate ${saved.length+1}`)]);name.value='';});
-  node.append(name,pin,status,list);
+  node.append(name,pin,button('Compare table and curves',()=>openComparison(api)),status,list);
   let signature='';
   return {node,set:()=>{const candidates=panel.state.candidates||[],next=JSON.stringify(candidates);if(next===signature)return;signature=next;list.replaceChildren();
-    candidates.slice(0,3).forEach((q,i)=>{const m=q.metrics;const card=el('article',{class:'transformer-candidate'},el('strong',{text:q.name}),specTable([
-      ['Board',`${num(m.width,1)} × ${num(m.height,1)} mm`],['Copper loss',eng(m.copper,'W',3)],['Primary leakage',eng(m.leakage,'H',3)],['Interwinding C',eng(m.capacitance,'F',3)],['Flux margin',m.fluxMargin==null?'Air-core':`${num(m.fluxMargin*100,1)}%`],['Output',eng(m.voltage,'V',3)],['Operating point',`${eng(m.frequency,'Hz',3)} · ${eng(m.sourceVoltage,'V',3)}`],['Model',`${m.model} · ${m.lossModel} copper`]]));
-      card.append(button('Restore candidate',()=>{api.applyDesign({...q.config,candidates:panel.state.candidates});}),button('Remove candidate',()=>api.set('candidates',candidates.filter((_,j)=>j!==i))));list.append(card);});
+    const table=el('table',{class:'transformer-table'},el('tr',{},['Candidate','Output / copper loss'].map(text=>el('th',{text}))));
+    candidates.slice(0,3).forEach((q,i)=>{const m=q.metrics,card=el('tr',{class:'transformer-candidate'},el('td',{},el('strong',{text:q.name}),button('Restore candidate',()=>api.applyDesign({...q.config,candidates:panel.state.candidates},'Before restoring candidate')),button('Remove candidate',()=>api.set('candidates',candidates.filter((_,j)=>j!==i)))),el('td',{text:`${eng(m.voltage,'V',3)} / ${eng(m.copper,'W',3)}`}));table.append(card);});
+    if(candidates.length)list.append(table);
     if(candidates.length)list.append(el('p',{class:'hint',text:'Snapshots retain their own source, load and model settings. Compare candidates at the same operating point. Saved with the design and JSON export.'}));}};
 }
 
 export function corePicker(panel,api) {
-  const node=el('div'),select=el('select',{'aria-label':'Catalog core assembly'},el('option',{value:'custom',text:'Custom core'}),Object.entries(CORE_CATALOG).map(([id,p])=>el('option',{value:id,text:p.name})));
-  select.addEventListener('change',()=>{if(select.value==='custom')api.set('corePreset','custom');else api.applyDesign(corePresetPatch(select.value));});
-  node.append(select,el('p',{class:'hint',text:'Selecting a catalog assembly loads its dimensions and a fitting rectangular starting winding. It replaces turns, widths and diameter; winding connections remain editable.'}));
-  return {node,set:()=>{select.value=panel.state.corePreset||'custom';}};
+  return presetPicker(panel,api,'Catalog core assembly',[{value:'custom',label:'Custom core'},...Object.entries(CORE_CATALOG).map(([value,p])=>({value,label:p.name}))],value=>value==='custom'?{corePreset:'custom',coreALMeasured:0,calibration:null}:{...corePresetPatch(value),coreALMeasured:0,calibration:null},'corePreset');
 }

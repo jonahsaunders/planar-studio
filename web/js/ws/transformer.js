@@ -6,6 +6,8 @@ import { transformerMode, transformerName } from '../engine/transformer-config.j
 import { transformerSweep } from '../engine/transformer-studies.js';
 import { coreLossAt } from '../engine/transformer-physics.js';
 import { transformerPreview, designWorkflow, candidateControls, corePicker } from '../ui/transformer-design.js';
+import { presetPicker, verificationControls, exportControls } from '../ui/transformer-workspace.js';
+export { finishRail, updateWorkflow } from '../ui/transformer-workspace.js';
 export const id = 'transformer', title = 'Transformer';
 export const defaults = () => ({ ...transformerExtras(), shape: 'circle', primaryTurns: 6, secondaryTurns: 3, dOuter: 30, traceW: 0.5, traceS: 0.3, boardT: 1.6, copperOz: 1, tempC: 25, freq: 1e5, current: 1, secondaryCurrent: 1, ppt: 128, tolerance: 0.004 });
 const advanced = c => !transformerMode(c).surface;
@@ -31,12 +33,12 @@ export function reconcile(c, key, value) {
   }
 }
 export function rail(panel, api) {
-  panel.group({key:'transformer-requirements',title:'Design from requirements',open:false,fields:[{key:'_requirements',type:'custom',build:p=>designWorkflow(p,api)}]});
+  panel.group({key:'transformer-requirements',title:'Design from requirements',fields:[{key:'_requirements',type:'custom',build:p=>designWorkflow(p,api)}]});
   panel.group({ key: 'layer-assistant', title: 'Layer setup assistant', fields: [
     { key: '_layerAssistant', type: 'custom', build: p => layerAssistant(p, api) },
   ] });
   panel.group({ key: 'windings', title: 'Planar transformer', fields: [
-    { key: 'family', type: 'select', label: 'Transformer type', options: options(TRANSFORMER_FAMILIES) },
+    {key:'family',type:'custom',build:p=>presetPicker(p,api,'Transformer type',options(TRANSFORMER_FAMILIES),value=>{const next={...p.state,family:value};reconcile(next,'family',value);return Object.fromEntries(Object.keys(next).filter(k=>JSON.stringify(next[k])!==JSON.stringify(p.state[k])).map(k=>[k,next[k]]));},'family')},
     { key:'magneticModel',type:'select',label:'Magnetic model',options:options({auto:'From starting preset',air:'Air-core',ferrite:'Ferrite core'}),hint:'Core choice is independent of taps, output count and layer arrangement.' },
     { key:'windingTopology',type:'select',label:'Winding connections',options:options({auto:'From starting preset',standard:'One secondary',tapped:'Center-tapped secondary',multiple:'Multiple secondaries','multiple-tapped':'Multiple secondaries + S center tap'}) },
     { key:'routedWindings',type:'check',label:'Route multilayer winding terminals',hint:'Enables section editing and accessible drilled terminals.',when:c=>!ferrite(c)&&transformerMode(c).topology==='standard' },
@@ -122,7 +124,9 @@ export function rail(panel, api) {
     {key:'loadSweepMin',type:'number',label:'S load sweep minimum',unit:'Ω'},{key:'loadSweepMax',type:'number',label:'S load sweep maximum',unit:'Ω'},
     {type:'note',text:'Load sweep varies a resistive S load while retaining the other outputs. Frequency sweeps preserve each selected termination.'},
   ]});
-  panel.group({key:'transformer-candidates',title:'Compare up to three designs',open:false,fields:[{key:'_candidates',type:'custom',build:p=>candidateControls(p,api)}]});
+  panel.group({key:'transformer-candidates',title:'Compare up to three designs',fields:[{key:'_candidates',type:'custom',build:p=>candidateControls(p,api)}]});
+  panel.group({key:'transformer-verification',title:'Verification studies',fields:[{key:'_verification',type:'custom',build:p=>verificationControls(p,api)}]});
+  panel.group({key:'transformer-export',title:'Build and place',fields:[{key:'_handoff',type:'custom',build:p=>exportControls(p,api)}]});
 }
 export const compute = buildTransformer;
 export const handles = () => [];

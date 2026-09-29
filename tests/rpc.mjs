@@ -109,6 +109,9 @@ try {
     fs.rmSync(saved.result.path, { force: true });
   }
   check('file.save refuses an empty payload', (await rpc('file.save', { name: 'x.txt' })).kind === 'empty');
+  const binary=Buffer.from([80,75,0,255,128,1]),zip=await rpc('file.save',{name:'test.zip',base64:binary.toString('base64')});
+  check('file.save preserves binary ZIP bytes',zip.ok&&fs.readFileSync(zip.result.path).equals(binary));
+  check('file.save rejects malformed binary data',(await rpc('file.save',{name:'test.zip',base64:'!invalid!'})).kind==='invalid');
   check('file.save cannot escape its directory', await (async () => {
     const r = await rpc('file.save', { name: '../../escape.txt', text: 'x' });
     return r.ok && !r.result.path.includes('..') && path.basename(r.result.path) === 'escape.txt';

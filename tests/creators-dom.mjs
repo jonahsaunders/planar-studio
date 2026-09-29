@@ -1,6 +1,13 @@
 /* Whole application DOM/events with real engines; canvas/layout are stubbed. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { Worker as NodeWorker } from 'node:worker_threads';
+let liveWorkers=0;
+globalThis.Worker=class {
+  constructor(url){liveWorkers++;this.queue=[];this.ready=false;this.ended=false;this.worker=new NodeWorker(new URL('./helpers/study-node-worker.mjs',import.meta.url),{workerData:{url:String(url)}});this.worker.on('message',data=>{if(data.ready){this.ready=true;this.queue.forEach(m=>this.worker.postMessage(m));this.queue=[];}else this.onmessage?.({data});});this.worker.on('error',error=>this.onerror?.({message:error.message}));}
+  postMessage(m){this.ready?this.worker.postMessage(m):this.queue.push(m);}
+  terminate(){if(!this.ended){this.ended=true;liveWorkers--;}this.worker.terminate();}
+};
 const { Window } = await import(process.env.PLANAR_DOM_MODULE || 'happy-dom');
 const w = new Window({ url: 'http://localhost/', settings: { disableCSSFileLoading: true, disableJavaScriptFileLoading: true } });
 for (const key of ['window', 'document', 'HTMLElement', 'HTMLCanvasElement', 'Event', 'KeyboardEvent', 'MouseEvent', 'File', 'Blob', 'ResizeObserver', 'localStorage']) globalThis[key] = key === 'window' ? w : w[key];
@@ -24,7 +31,7 @@ for (const [kind, field, value] of [['antenna', 'Length tuning', 1.1], ['transfo
   button('Save'); await until(() => localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
   const saved = JSON.parse(localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
   assert.equal(saved.config[kind === 'antenna' ? 'lengthScale' : 'primaryTurns'], value);
-  document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close');
+  document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, kind==='transformer'?7:6); button('Close');
   document.querySelector('#btn-tools').click();
   assert.equal(document.querySelector('[data-tool="board"]').getAttribute('aria-pressed'), 'true');
   document.querySelector('[data-tool="tolerance"]').click();
@@ -40,6 +47,7 @@ assert.equal(Number(document.querySelector('[aria-label="Length tuning"]').value
 const choose = async (label, value) => {
   const select = document.querySelector(`select[aria-label="${label}"]`);
   assert.ok(select, label); select.value = value; select.dispatchEvent(new w.Event('change', { bubbles: true }));
+  if(['Transformer type','Catalog core assembly'].includes(label)) { const apply=[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply preset');if(apply)apply.click(); }
   await new Promise(r => setTimeout(r, 220)); await solved();
 };
 for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
@@ -72,6 +80,7 @@ button('Save');
 await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayCols === 32);
 assert.equal(JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayRows, 32);
 document.querySelector('[data-ws="transformer"]').click(); await solved();
+button('3 Windings');
 for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
   await choose('Transformer type', family);
   assert.equal(document.querySelector('[data-key="core"]').hidden, family !== 'ferrite');
@@ -167,6 +176,22 @@ button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.tr
 assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.candidates.length,1);
 button('Remove candidate');await new Promise(r=>setTimeout(r,220));await solved();
 assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,0);
+// Guided workflow, reversible edits, review-before-apply and real study workers.
+button('4 Verify');assert.equal(document.querySelector('[data-key="transformer-verification"]').hidden,false);assert.equal(document.querySelector('[data-key="windings"]').hidden,true);
+button('3 Windings');const originalTurns=Number(document.querySelector('[aria-label="Primary turns"]').value);
+set('Primary turns',originalTurns+1);await new Promise(r=>setTimeout(r,220));await solved();button('Undo');await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),originalTurns);
+button('Redo');await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),originalTurns+1);
+const core=document.querySelector('[aria-label="Catalog core assembly"]');core.value='eilp32';core.dispatchEvent(new w.Event('change',{bubbles:true}));assert.ok([...document.querySelectorAll('.transformer-preset-preview')].some(n=>n.textContent.includes('Review')));assert.match(document.querySelector('.core-assembly').textContent,/B66457/);button('Cancel preset');
+assert.ok(document.querySelector('[aria-label="Restore checkpoint"]').options.length>1);
+button('2 Candidates');button('Pin current design');await new Promise(r=>setTimeout(r,220));await solved();button('Compare table and curves');await until(()=>liveWorkers===0);assert.equal(document.querySelectorAll('.transformer-review-plot').length,4);
+const normalized=document.querySelector('[aria-label="Use current operating point for all candidates"]');normalized.checked=true;normalized.dispatchEvent(new w.Event('change'));await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Lowest copper loss/);button('Close');
+button('4 Verify');button('Check operating envelope');button('Run study');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/unknown temperature/);button('Close');
+button('Study fabrication tolerances');set('Samples (5–200)',5);button('Run study');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Sensitivity/);button('Run study');assert.equal(liveWorkers,1);button('Close');assert.equal(liveWorkers,0);
+button('Measure and calibrate');set('Fixture and reference plane','Terminals');const measurement=document.querySelector('[aria-label="Measurement test"]');measurement.value='loaded';measurement.dispatchEvent(new w.Event('change'));
+const file=document.querySelector('[aria-label="Transformer measurement file"]');Object.defineProperty(file,'files',{value:[{name:'loaded.csv',size:100,text:async()=> 'Frequency (Hz),Gain_dB\n80000,-6\n120000,-6'}]});file.dispatchEvent(new w.Event('change'));await until(()=>document.querySelector('.transformer-test'));button('Compare measured and predicted');await until(()=>liveWorkers===0);assert.equal(document.querySelectorAll('.transformer-review-plot').length,1);assert.match(document.querySelector('.transformer-review-body').textContent,/RMSE/);button('Close');
+button('Review board placement');assert.ok(document.querySelector('[aria-label="Destination KiCad board file"]'));assert.equal([...document.querySelectorAll('button')].find(b=>b.textContent==='Place reviewed transformer').disabled,true);button('Close');
+button('5 Export');assert.equal(document.querySelector('[data-key="transformer-export"]').hidden,false);button('Export build package and files');assert.match(document.querySelector('.export-grid').textContent,/Transformer build package/);button('Close');
+console.log('Guided workflow, undo/redo, preset preview, checkpoints, comparison, operating envelope, tolerances, worker cleanup, measurement overlays and placement review passed.');
 console.log('Whole-app creator DOM flows passed, including composed transformers, parallel windings, charts, selection, candidate restore and catalog persistence. Canvas/layout not tested.');
 await w.happyDOM.abort();
 process.exit(0);

@@ -17,6 +17,11 @@ import { Panel, el, icon, ICONS, tile, specTable, noteList, num } from './ui/con
 import { Viewport } from './ui/canvas.js';
 import { LineChart, legendFor } from './ui/charts.js';
 import { openDesignTools, withMeasurements } from './ui/design-tools.js';
+import { DesignHistory, checkpoint } from './engine/design-history.js';
+import { modelSignature } from './engine/transformer-workflow.js';
+import { openTransformerPreflight } from './ui/transformer-review.js';
+import { transformerDossier } from './engine/transformer-handoff.js';
+import { zipTextFiles } from './engine/zip-text.js';
 import { applyBoardContext, designId } from './ws/common.js';
 import { toKicad, boundsCopper } from './engine/artwork.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, exportSpec, estimate } from './engine/exporters.js';
@@ -52,6 +57,15 @@ const app = {
 const $ = (id) => document.getElementById(id);
 const current = () => WORKSPACES[app.ws];
 const cfg = () => app.configs[app.ws];
+const histories = new Map();
+let transformerStep = 'requirements';
+function history() { if(!histories.has(app.ws))histories.set(app.ws,new DesignHistory(cfg()));return histories.get(app.ws); }
+function record(label='Edit settings') { history().record(cfg(),label); }
+function restoreHistory(direction) {
+  const state=history()[direction]();if(!state)return;
+  Object.keys(cfg()).forEach(k=>delete cfg()[k]);Object.assign(cfg(),state);
+  app.dirty=true;app.fitPending=true;renderRail();scheduleQuick();
+}
 
 /* ------------------------------------------------------------------ theme */
 
@@ -142,12 +156,14 @@ function runCompute(quick) {
     $('side').replaceChildren();
     $('st-solve').textContent = 'Fix parameters to continue';
     $('st-algo').textContent = 'geometry failed';
+    ws.updateWorkflow?.(cfg(),null,err.message);
     toast(`Could not build the geometry: ${err.message}`, 'error');
     return false;
   }
   if (!quick) lastSolveMs = performance.now() - t0;
   app.result = res;
   res.configSignature=JSON.stringify(cfg());
+  if(!quick)ws.updateWorkflow?.(cfg(),res);
 
   app.view.setArtwork(res.art, ws.layerList(cfg(), res));
   renderLayerChips(ws.layerList(cfg(), res));
@@ -172,10 +188,24 @@ function refreshHandles() {
 
 /* Public surface the workspaces use to write back into the config. */
 const api = {
+  config: cfg,
+  workflowStep: () => transformerStep,
+  navigateTransformer(step) {transformerStep=step;app.panel.sync();},
+  undo: () => restoreHistory('undo'), redo: () => restoreHistory('redo'),
+  historyState: () => history(),
+  designId: () => designId(app.ws,app.names[app.ws]),
+  openExport,
+  saveFile: bridge.saveFile,
+  reviewPlacement: () => {if(runCompute(false))openTransformerPreflight(api,app.result);},
+  placeReviewed: review => placeIntoBoard(review),
   result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
   designName: () => app.names[app.ws],
-  applyDesign(values) {
-    Object.assign(cfg(),values); app.dirty=true; app.fitPending=true;
+  applyDesign(values,label='Apply design',makeCheckpoint=true) {
+    history();
+    const saved=app.ws==='transformer'&&makeCheckpoint ? [...(cfg().checkpoints||[]),checkpoint(cfg(),label)].slice(-5) : cfg().checkpoints;
+    Object.assign(cfg(),values);
+    if(app.ws==='transformer')cfg().checkpoints=saved;
+    record(label);app.dirty=true; app.fitPending=true;
     renderRail();scheduleQuick();
   },
   focusWinding(layer) {
@@ -198,16 +228,20 @@ const api = {
     } catch (err) { toast(`Could not refresh board settings: ${err.message}`, 'error'); throw err; }
   },
   setMany(values) {
+    history();
     Object.assign(cfg(), values);
     for (const [key, value] of Object.entries(values)) reconcile(key, value);
+    record();
     app.dirty = true;
     app.panel.sync();
     scheduleQuick();
   },
   set(key, value) {
     if (cfg()[key] === value) return;
+    history();
     cfg()[key] = value;
     reconcile(key, value);
+    record();
     app.dirty = true;
     app.panel.sync();
     scheduleQuick();
@@ -235,8 +269,10 @@ function reconcile(key, value) {
 }
 
 function renderRail() {
+  history();
   app.panel = new Panel($('rail'), cfg(), (key, value) => {
     reconcile(key, value);
+    record();
     app.dirty = true;
     app.panel.sync();
     scheduleQuick();
@@ -261,6 +297,7 @@ function renderRail() {
       { type: 'note', text: 'Saved designs live with the plugin, not with the board, so they follow you between projects.' },
     ],
   });
+  current().finishRail?.(app.panel,api);
   app.panel.sync();
 }
 
@@ -386,10 +423,19 @@ function showDesignTools(tab = 'optimize') {
   }, tab);
 }
 
-async function placeIntoBoard() {
+async function placeIntoBoard(review=null) {
   if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
+  if(app.ws==='transformer') {
+    if(!review?.ready||review.signature!==modelSignature(cfg())){openTransformerPreflight(api,res);return;}
+    try {
+      const latest=await bridge.call('board.snapshot',{designId:api.designId()});
+      if(app.ws!=='transformer'){toast('Workspace changed; placement canceled.','info');return;}
+      if(review.signature!==modelSignature(cfg())){toast('Design changed. Review the updated placement.','warn');api.reviewPlacement();return;}
+      if(latest.text!==review.boardText||(latest.name||'')!==review.boardName){toast('Board changed. Review the updated destination.','warn');openTransformerPreflight(api,res);return;}
+    } catch(error){toast(error.message,'error');return;}
+  }
   if (!bridge.state.hasBoard) {
     toast('No board is open in KiCad. Open a PCB and try again.', 'warn');
     return;
@@ -480,6 +526,7 @@ function exportOptions() {
   const tol = cfg().tolerance;
   const est = estimate(res.art, tol);
   return [
+    ...(app.ws==='transformer'?[{title:'Transformer build package (.zip)',desc:'Coordinated copper, stack and connections, terminals, core parts and analysis dossier.',file:`${name}-build.zip`,binary:true,make:()=>zipTextFiles(transformerDossier(cfg(),res,name).files)}]:[]),
     {
       title: 'KiCad footprint (.kicad_mod)',
       desc: 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
@@ -550,7 +597,7 @@ function openExport() {
       el('span', { class: 't', text: o.title }),
       el('span', { class: 'd', text: o.desc }));
     card.addEventListener('click', async () => {
-      const saved = await bridge.saveFile(o.file, o.make(), o.mime);
+      const saved = await (o.binary?bridge.saveBytes:bridge.saveFile)(o.file, o.make(), o.mime);
       toast(saved.local ? `Downloaded ${o.file}.` : `Wrote ${o.file}.`, 'ok', { path: saved.path });
       close();
     });
@@ -611,6 +658,7 @@ function importDesignJson() {
       if (!data.config || typeof data.config !== 'object') throw new Error('no config in that file');
       app.ws = kind;
       app.configs[kind] = { ...WORKSPACES[kind].defaults(), ...data.config };
+      histories.delete(kind);
       app.names[kind] = data.name || app.names[kind];
       $('design-name').value = app.names[kind];
       document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === kind)));
@@ -647,6 +695,7 @@ async function openDesignPicker() {
         const entry = await bridge.api.loadDesign(d.id);
         app.ws = entry.kind && WORKSPACES[entry.kind] ? entry.kind : app.ws;
         app.configs[app.ws] = { ...WORKSPACES[app.ws].defaults(), ...entry.config };
+        histories.delete(app.ws);
         app.names[app.ws] = entry.name;
         $('design-name').value = entry.name;
         document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === app.ws)));
@@ -704,6 +753,7 @@ function adoptBoard(ctx) {
   for (const key of Object.keys(app.configs)) {
     const { applied, cfg: next } = applyBoardContext(app.configs[key], ctx);
     Object.assign(app.configs[key], next);
+    histories.get(key)?.record(app.configs[key],'Refresh board stackup');
     if (key === app.ws && applied.length) notes.push(...applied);
   }
   // The filter workspace measures to the reference plane, not through the board.
@@ -786,6 +836,7 @@ function wireChrome() {
   document.addEventListener('keydown', (e) => {
     if (document.querySelector('.tools-scrim')) return;
     if (e.target.matches('input, select, textarea')) return;
+    if(app.ws==='transformer'&&(e.ctrlKey||e.metaKey)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();restoreHistory(e.key.toLowerCase()==='y'||e.shiftKey?'redo':'undo');return;}
     if (e.key === 'f' || e.key === 'F') { if (app.result) app.view.fit(app.result.bounds); }
     if (e.key === 'g' || e.key === 'G') $('t-grid').click();
     if (e.key === 'h' || e.key === 'H') $('t-handles').click();

@@ -22,6 +22,10 @@ export const designDefaults = () => ({
   dielectricEr: 4.2, measuredCapacitance: 20e-12, corePreset: 'custom', coreLossModel: 'density',
   steinmetzK: 1, steinmetzAlpha: 1.3, steinmetzBeta: 2.5, coreTemperature: 100,
   thermalResistance: 0, ambientTemperature: 25,
+  coreALMeasured: 0, coreALScale: 1, checkpoints: [], transformerTests: [], calibration: null,
+  searchLocks: { core: true, turns: false, widths: false, stack: false, connections: false, footprint: false },
+  operatingRange: { voltage: [10.8,12,13.2], frequency: [90000,100000,110000], load: [40,60,100], ambient: [0,25,60], maxTemperature: 100, maxRegulation: 20 },
+  transformerTolerances: { samples: 30, seed: 42, copper: 10, spacing: 5, al: 10 },
   sweepMin: 1000, sweepMax: 1000000, sweepPoints: 41, loadSweepMin: 1, loadSweepMax: 1000,
   candidates: [], requirements: { voltage: 12, outputVoltage: 6, outputCurrent: 0.1, frequency: 100000, diameter: 50, layers: 4, voltageTolerance: 10 },
 });
