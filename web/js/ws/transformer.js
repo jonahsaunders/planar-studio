@@ -20,7 +20,7 @@ export function reconcile(c, key, value) {
     if (value === 'ferrite') c.dOuter = Math.max(40, c.dOuter);
   }
   if(key==='family'&&value==='aircore'){c.magneticModel='auto';c.windingTopology='auto';c.routedWindings=false;c.corePreset='custom';}
-  if(key==='magneticModel'&&value==='ferrite'){c.routedWindings=true;c.dOuter=Math.max(c.dOuter,40);}
+  if(key==='magneticModel'&&value==='ferrite'){c.routedWindings=true;if(!c.corePreset||c.corePreset==='custom')c.dOuter=Math.max(c.dOuter,40);}
   if(key==='windingTopology'&&value!=='auto') {
     c.routedWindings=true;
     const previous=c.stackPlan, plan=c.stackPlan.split(',').map(s=>s.trim());

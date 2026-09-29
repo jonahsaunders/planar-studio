@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { defaults, compute, charts, spec } from '../web/js/ws/transformer.js';
+import { defaults, compute, charts, spec, reconcile } from '../web/js/ws/transformer.js';
 import { transformerMode } from '../web/js/engine/transformer-config.js';
 import { loadedBranches, effectiveInductance } from '../web/js/engine/transformer-network.js';
 import { loadedTransformer, loadImpedance } from '../web/js/engine/transformer-load.js';
@@ -85,6 +85,7 @@ check('Loss fits reject temperature/frequency/flux extrapolation and unknown los
 });
 for(const id of Object.keys(CORE_CATALOG))check(`${id}: mechanical fit, complete core openings and destination verification`,()=>{
   const c={...defaults(),...corePresetPatch(id)},r=compute(c);assert.ok(r.assembly.fits);assert.equal(r.art.outline.length,4);
+  reconcile(c,'magneticModel','ferrite');assert.equal(c.dOuter,22);
   near(r.core.AL,CORE_CATALOG[id].al);
   const board=parseBoard(exportKicadPcb(r.art));assert.equal(board.loops.length,4);
   // The UI replaces display bounds with copper-only bounds. Comparison sizes
