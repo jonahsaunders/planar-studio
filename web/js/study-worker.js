@@ -2,11 +2,13 @@ import { optimizeCoil, toleranceStudy, fitMeasurement, tuneToMask } from './engi
 import { coupledCoils, fieldSlice, rotorDesign } from './engine/magnetics.js';
 import { parseBoard, checkPlacement } from './engine/boardcheck.js';
 import { plain } from './engine/filtertune.js';
+import { designFromRequirements } from './engine/transformer-studies.js';
 
 self.onmessage = ({ data: { task, args } }) => {
   const progress = (value) => self.postMessage({ progress: value });
   try {
     const jobs = {
+      transformerDesign: () => designFromRequirements(args.cfg, args.requirements, args.env, progress),
       optimize: () => optimizeCoil(args.cfg, args.opt, progress),
       tolerance: () => toleranceStudy(args.kind, args.cfg, args.opt, progress),
       fit: () => fitMeasurement(args.kind, args.cfg, args.data, args.opt, progress),

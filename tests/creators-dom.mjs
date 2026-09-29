@@ -137,6 +137,36 @@ assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).co
 bridge.api.context = async () => { throw new Error('No PCB open'); };
 button('Refresh board settings'); await until(() => document.querySelector('.layer-assistant').textContent.includes('No PCB open'));
 assert.equal([...document.querySelectorAll('button')].find(b => b.textContent === 'Refresh board settings').disabled, false);
-console.log('Whole-app creator DOM flows passed: tabs, edits, saved configs, export dialogs, tools, all antenna/transformer families, target sizing, core materials and invalid-state recovery. Canvas/layout not tested.');
+// Independent magnetic/topology controls, cross-section, parallel branches,
+// immutable comparison snapshots and catalog assembly survive the real UI.
+bridge.state.context=null;bridge.state.standalone=true;
+await choose('Transformer type','ferrite');
+set('Primary turns',6);await new Promise(r=>setTimeout(r,220));await solved();
+await choose('Winding connections','multiple-tapped');
+assert.match(document.querySelector('#side').textContent,/S_CT/);
+assert.equal(document.querySelectorAll('.winding-row').length,5);
+await choose('Winding connections','standard');
+await choose('Leakage calculation','geometry');
+await choose('S section connection','parallel');
+assert.match(document.querySelector('#side').textContent,/parallel/);
+assert.equal(document.querySelectorAll('#side .chart').length,5);
+document.querySelector('[aria-label="Highlight section 2"]').click();
+assert.ok(document.querySelectorAll('[data-transformer-layer][data-selected="true"]').length>=2);
+set('Candidate name','Parallel candidate'); // generic helper dispatches change
+document.querySelector('[aria-label="Candidate name"]').value='Parallel candidate';
+button('Pin current design');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,1);
+set('Primary turns',8);await new Promise(r=>setTimeout(r,220));await solved();
+button('Restore candidate');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),6);
+await choose('Catalog core assembly','eelp32');
+assert.match(document.querySelector('.core-assembly').textContent,/B66457G0000X187/);
+assert.equal(Number(document.querySelector('[aria-label="Outer diameter"]').value),22);
+assert.ok(document.querySelector('.transformer-preview svg'));
+button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.corePreset==='eelp32');
+assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.candidates.length,1);
+button('Remove candidate');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,0);
+console.log('Whole-app creator DOM flows passed, including composed transformers, parallel windings, charts, selection, candidate restore and catalog persistence. Canvas/layout not tested.');
 await w.happyDOM.abort();
 process.exit(0);

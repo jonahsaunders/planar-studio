@@ -5,10 +5,11 @@ import { C } from './complex.js';
 import { range, choice, positiveMatrix } from './creator-validation.js';
 
 export const loadDefaults = () => ({ driveMode: 'current', sourceVoltage: 1, sourceR: 1, sourceX: 0,
+  loadKind:'impedance',loadL:0,loadC:0,load2Kind:'impedance',load2L:0,load2C:0,load3Kind:'impedance',load3L:0,load3C:0,
   loadMode: 'load', loadR: 50, loadX: 0, load2Mode: 'load', load2R: 50, load2X: 0,
   load3Mode: 'load', load3R: 50, load3X: 0 });
 
-function solve(A, b) {
+export function solveComplex(A, b) {
   A = A.map((row, i) => [...row.map(z => [...z]), [...b[i]]]);
   const n = b.length;
   for (let col = 0; col < n; col++) {
@@ -28,6 +29,22 @@ function solve(A, b) {
   return result;
 }
 
+export function loadImpedance(c, prefix, frequency = c.freq) {
+  const mode = c[`${prefix}Mode`] || 'load';
+  if (!['load', 'open', 'short'].includes(mode)) throw new Error(`Unknown ${prefix}Mode: ${mode}.`);
+  if (mode !== 'load') return { mode, z: [0, 0] };
+  const kind = c[`${prefix}Kind`] || 'impedance';
+  if (!['impedance', 'rlc'].includes(kind)) throw new Error(`Unknown ${prefix} load representation.`);
+  range(c, `${prefix}R`, 0, 1e9);
+  let x = c[`${prefix}X`];
+  if (kind === 'rlc') {
+    const L = c[`${prefix}L`] ?? 0, cap = c[`${prefix}C`] ?? 0;
+    if (![L, cap].every(v => Number.isFinite(v) && v >= 0 && v <= 1000)) throw new Error('Load L and C must be finite and nonnegative. Zero omits the component.');
+    x = 2 * Math.PI * frequency * L - (cap ? 1 / (2 * Math.PI * frequency * cap) : 0);
+  } else range(c, `${prefix}X`, -1e9, 1e9);
+  return { mode, z: [c[`${prefix}R`], x] };
+}
+
 export function loadedTransformer(input, matrix, resistances, names = ['P', 'S']) {
   const c = { ...loadDefaults(), ...input }, n = names.length;
   range(c, 'freq', 1, 1e8); range(c, 'sourceVoltage', 0.000001, 1000);
@@ -37,16 +54,12 @@ export function loadedTransformer(input, matrix, resistances, names = ['P', 'S']
   const w = 2 * Math.PI * c.freq, sourceZ = [c.sourceR, c.sourceX];
   const loads = names.slice(1).map(name => {
     const prefix = name === 'S' ? 'load' : `load${name.slice(1)}`;
-    choice(c, `${prefix}Mode`, ['load', 'open', 'short']);
-    if (c[`${prefix}Mode`] === 'load') {
-      range(c, `${prefix}R`, 0, 1e9); range(c, `${prefix}X`, -1e9, 1e9);
-    }
-    return { name, mode: c[`${prefix}Mode`], z: c[`${prefix}Mode`] === 'load' ? [c[`${prefix}R`], c[`${prefix}X`]] : [0, 0] };
+    return { name, ...loadImpedance(c, prefix) };
   });
   const active = [0, ...loads.flatMap((q, i) => q.mode === 'open' ? [] : [i + 1])];
   const Z = active.map(i => active.map(j => C.add([i === j ? resistances[i] : 0, w * matrix[i][j]],
     i !== j ? [0, 0] : i === 0 ? sourceZ : loads[i - 1].z)));
-  const solved = solve(Z, active.map(i => [i === 0 ? c.sourceVoltage : 0, 0]));
+  const solved = solveComplex(Z, active.map(i => [i === 0 ? c.sourceVoltage : 0, 0]));
   const currents = names.map(() => [0, 0]); active.forEach((i, j) => { currents[i] = solved[j]; });
   const voltages = matrix.map((row, i) => row.reduce((sum, L, j) => C.add(sum, C.mul([i === j ? resistances[i] : 0, w * L], currents[j])), [0, 0]));
   const unloadedI = C.div([c.sourceVoltage, 0], [resistances[0] + c.sourceR, w * matrix[0][0] + c.sourceX]);

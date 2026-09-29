@@ -1,5 +1,17 @@
 # Planar Studio
 
+## Transformer design workflow — 1.4 development
+
+Independent core and winding choices, parallel sections with solved current
+sharing, physical board heights, geometry-based leakage, AC copper and
+capacitance estimates, response plots, saved comparisons, and a constrained
+sinusoidal design search are now available. Two TDK N87 ELP core assemblies add
+mechanical previews, complete leg cutouts and destination-board checks.
+
+See the [transformer design guide](docs/transformer-design.md) for controls,
+manufacturer sources, validation and model limits. Build the development package
+with `python scripts/build_package.py`; the published download below remains 1.3.0.
+
 ## Download and install
 
 ### [Download planar-studio-1.3.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.3.0/planar-studio-1.3.0.zip)

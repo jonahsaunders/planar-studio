@@ -147,6 +147,7 @@ function runCompute(quick) {
   }
   if (!quick) lastSolveMs = performance.now() - t0;
   app.result = res;
+  res.configSignature=JSON.stringify(cfg());
 
   app.view.setArtwork(res.art, ws.layerList(cfg(), res));
   renderLayerChips(ws.layerList(cfg(), res));
@@ -171,6 +172,18 @@ function refreshHandles() {
 
 /* Public surface the workspaces use to write back into the config. */
 const api = {
+  result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
+  designName: () => app.names[app.ws],
+  applyDesign(values) {
+    Object.assign(cfg(),values); app.dirty=true; app.fitPending=true;
+    renderRail();scheduleQuick();
+  },
+  focusWinding(layer) {
+    if(app.ws!=='transformer')return;
+    app.view.windingSelection=layer ? app.result?.art.tracks.find(t=>t.layer===layer) : null;
+    app.view.draw();
+    document.querySelectorAll('[data-transformer-layer]').forEach(n=>{n.dataset.selected=String(n.dataset.transformerLayer===layer);});
+  },
   boardContext: () => bridge.state.context,
   canRefreshBoard: () => !bridge.state.standalone,
   async refreshBoard() {
@@ -285,6 +298,8 @@ function renderSide(res) {
   app.charts.clear();
   host.replaceChildren();
 
+  const preview=ws.preview?.(cfg(),res,api);
+  if(preview && app.ws==='transformer')host.append(preview);
   const tilesData = ws.tiles(cfg(), res);
   if (tilesData.length) {
     const grid = el('div', { class: 'tiles' });
@@ -292,8 +307,7 @@ function renderSide(res) {
     host.append(grid);
   }
 
-  const preview=ws.preview?.(cfg(),res,api);
-  if(preview)host.append(preview);
+  if(preview && app.ws!=='transformer')host.append(preview);
   const notes = ws.notes(cfg(), res);
   if (notes.length) {
     host.append(el('div', { class: 'side-section' },
@@ -339,6 +353,7 @@ function renderSide(res) {
 function switchWorkspace(next) {
   if (next === app.ws) return;
   app.ws = next;
+  app.view.windingSelection = null;
   document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === next)));
   $('design-name').value = app.names[next];
   app.charts.forEach((c) => c.destroy());
@@ -698,7 +713,10 @@ function adoptBoard(ctx) {
     f.subH = Number((ctx.thickness / (layerCount - 1)).toFixed(4));
     f.boardT = Number(ctx.thickness.toFixed(4));
   }
-  if (ctx.epsR > 1.2) app.configs.filter.subEr = Number(ctx.epsR.toFixed(3));
+  if (ctx.epsR > 1.2) {
+    app.configs.filter.subEr = Number(ctx.epsR.toFixed(3));
+    app.configs.transformer.dielectricEr = Number(ctx.epsR.toFixed(3));
+  }
   if (ctx.copperThicknessMm > 0.005) app.configs.filter.subT = Number(ctx.copperThicknessMm.toFixed(4));
 
   app.panel.sync();

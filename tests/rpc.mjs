@@ -21,13 +21,17 @@ const check = (name, ok, detail = '') => {
   console.log(`${ok ? '  ok  ' : ' FAIL '} ${name}${detail ? `  — ${detail}` : ''}`);
 };
 
-const proc = spawn('python3', ['ipc_entry.py', '--print-url'], {
+// This suite deliberately tests offline RPCs, even if KiCad is running on the
+// developer's machine. Keep test state and exports away from the real project.
+const offlineEntry = "import sys, runpy; import planar_studio.kicad_link as k; k.HAVE_KIPY=False; k.KIPY_IMPORT_ERROR='offline RPC test'; sys.argv=['ipc_entry.py','--print-url']; runpy.run_path('ipc_entry.py',run_name='__main__')";
+const proc = spawn(process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3'), ['-c', offlineEntry], {
   cwd: ROOT,
   env: { ...process.env, PLANAR_STUDIO_HOME: HOME },
 });
 const url = await new Promise((resolve, reject) => {
   let buf = '';
   const t = setTimeout(() => reject(new Error('no URL')), 12000);
+  proc.on('error', error => { clearTimeout(t); reject(error); });
   proc.stdout.on('data', (d) => { buf += d; const m = buf.match(/http\S+/); if (m) { clearTimeout(t); resolve(m[0]); } });
 });
 const base = url.split('/?')[0];

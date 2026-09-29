@@ -177,6 +177,7 @@ export class Viewport {
 
   setArtwork(art, layers) {
     this.art = art;
+    if(this.windingSelection) this.windingSelection=art?.tracks.find(t=>t.layer===this.windingSelection.layer)||null;
     if (layers) {
       for (const [name, colour] of layers) {
         this.layerColor.set(name, colour);
@@ -299,6 +300,7 @@ export class Viewport {
       ctx.strokeStyle = colour;
       for (const t of this.art.tracks) {
         if (t.layer !== name || t.pts.length < 2) continue;
+        ctx.globalAlpha = this.windingSelection ? t === this.windingSelection ? 1 : .12 : front || layers.length === 1 ? 1 : .82;
         const w = Math.max(t.width * this.scale, 0.8);
         ctx.lineWidth = w;
         ctx.beginPath();
@@ -366,6 +368,7 @@ export class Viewport {
 
   drawVias(ctx) {
     for (const v of this.art.vias) {
+      ctx.globalAlpha=this.windingSelection && !this.selectedNode(v) ? .15 : 1;
       const [x, y] = this.toScreen(v.x, v.y);
       const r = Math.max(v.diameter * this.scale / 2, 1.4);
       ctx.fillStyle = '#D8D2C4';
@@ -377,6 +380,7 @@ export class Viewport {
       }
     }
     for (const p of this.art.pads.filter(p => p.drill > 0)) {
+      ctx.globalAlpha=this.windingSelection && !this.selectedNode(p) ? .15 : 1;
       const [x, y] = this.toScreen(p.x, p.y);
       const r = Math.max(Math.max(p.w, p.h) * this.scale / 2, 2);
       ctx.fillStyle = '#E8B23A';
@@ -392,6 +396,12 @@ export class Viewport {
         ctx.fillText(p.number, x, y - r - 4);
       }
     }
+    ctx.globalAlpha=1;
+  }
+
+  selectedNode(p) {
+    const t=this.windingSelection;
+    return !t || [t.pts[0],t.pts.at(-1)].some(q=>Math.hypot(q[0]-p.x,q[1]-p.y)<1e-5);
   }
 
   drawLabels(ctx) {

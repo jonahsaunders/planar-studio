@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.4.0 — Transformer design workflow (development)
+
+- Compose magnetic model, taps, multiple outputs and winding stack independently.
+- Add per-winding widths, series/parallel sections, solved branch currents, linked
+  cross-section/connection/copper selection and physical KiCad copper heights.
+- Add current-sheet leakage, measured leakage/capacitance overrides, AC foil
+  copper loss, bounded N87 material loss fits and explicit thermal estimates.
+- Add RLC loads, frequency/load responses, three saved candidate comparisons and
+  a cancelable constrained search for sinusoidal starting designs.
+- Add TDK EELP/EILP 32/6/20 N87 assemblies, mechanical clearance validation,
+  complete core-leg board openings and read-only destination cutout checks.
+- Preserve legacy family behavior; add engineering and UI regression coverage,
+  offline RPC isolation and a portable PCM packager.
+
 ## Winding designer and obstacle-aware coils — development
 
 - Add rotary/dual-rotor phase, polarity and series/parallel branch assignments,
