@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.6.0 — Transformer project workflow and GUI audit (development)
+
+- Link new nominal input/frequency/load values to requirements, with explicit
+  experimental overrides; preserve imported legacy operating points.
+- Provide dedicated requirements, candidate, verification and export work areas
+  around the winding canvas. Add keyboard stage navigation, visible focus,
+  adaptive layout, clearer text and accessible chart data tables.
+- Save revision-tagged verification reports and plots, named operating cases,
+  and dependency-based Pass / Fail / Unknown / Outdated states.
+- Add field-linked findings and bounded, recalculated repair previews.
+- Search multiple outputs and selected load combinations; retain up to 24
+  refined candidates with worst-case margin and size/loss exploration.
+- Add constrained terminal offsets and handles, destination-net mapping,
+  snapped/rotated placement, immediate conflict checks and replacement previews.
+- Retain multiple tests per prototype and test type, matched calibration pairs,
+  overlapping-frequency prototype comparisons and alternative calibration fits.
+- Correct copper-temperature scaling in reused circuit solves, preserve exact
+  zero external open-circuit current, and align catalog multi-output windings
+  with rectangular core slots.
+- Extend engineering, project-state and whole-app interaction regression tests.
+
 ## 1.4.0 — Transformer design workflow (development)
 
 - Compose magnetic model, taps, multiple outputs and winding stack independently.

@@ -11,6 +11,7 @@ import { designDefaults, transformerMode, windingSettings, windingTurns } from '
 import { sheetModel, acResistance, windingCapacitance, lossBreakdown, coreLossAt } from './transformer-physics.js';
 import { effectiveInductance, loadedBranches, imposedBranches } from './transformer-network.js';
 import { catalogFor, coreOpenings, assemblyStatus } from './transformer-cores.js';
+import { windingNet } from './transformer-project.js';
 
 export const TRANSFORMER_FAMILIES = {
   aircore: 'Two-layer air-core', multilayer: 'Multilayer air-core',
@@ -111,13 +112,21 @@ export function buildTransformer(input, env = {}, opt = {}) {
     const indices = stack.map((n, i) => n === name ? i : -1).filter(i => i >= 0), count = indices.length;
     const { width, connection } = windingSettings(c, name), parallel = connection === 'parallel';
     const nodeCount = parallel ? 1 : count;
-    const angle = wi * 2 * Math.PI / names.length + (catalog ? Math.PI / 2 : 0);
+    // Catalog rectangular spirals must stay aligned with the core's leg slots.
+    const sector=catalog&&names.length>2?Math.PI/2:2*Math.PI/names.length;
+    const angle = wi * sector + (catalog ? Math.PI / 2 : 0);
     const delta = 2 * Math.asin((c.viaPad + c.traceS + maxWidth + 0.15) / (2 * inner));
-    if (delta * (nodeCount + 1) > 2 * Math.PI / names.length * 0.85) throw new Error('Transition vias need more angular clearance. Increase diameter or reduce layer count.');
-    const net = `${slug}_${name === 'P' ? 'PRI' : name === 'S' ? 'SEC' : `SEC${name.slice(1)}`}`;
+    if (delta * (nodeCount + 1) > sector * 0.85) throw new Error('Transition vias need more angular clearance. Increase diameter or reduce layer count.');
+    const net = windingNet(c,name,`${slug}_${name === 'P' ? 'PRI' : name === 'S' ? 'SEC' : `SEC${name.slice(1)}`}`);
+    if(windings.some(w=>w.net===net))throw new Error('Separate windings must use separate nets.');
     const nodes = Array.from({ length: nodeCount + 1 }, (_, j) => {
-      const theta = angle + (j - nodeCount / 2) * delta, radius = j % 2 ? inner : outer;
-      return { x: radius * Math.cos(theta), y: radius * Math.sin(theta), theta, radius, id: `${name}:${j}` };
+      const theta = angle + (j - nodeCount / 2) * delta, baseRadius = j % 2 ? inner : outer;
+      const terminal=j===0||j===nodeCount||(tappedSecondary&&name==='S'&&j===count/2),offset=terminal?(c.terminalOffsets?.[`${name}:${j}`]||0):0;
+      if(!Number.isFinite(offset)||offset<0||offset>3)throw new Error('Terminal offsets must be between 0 and 3 mm.');
+      const direction=j%2?-1:1,radius=baseRadius+direction*offset;
+      if(radius<c.viaPad+c.traceS)throw new Error('Terminal is too close to the winding center.');
+      if(core&&direction<0&&offset>0)coreParameters(c,radius);
+      return { x: radius * Math.cos(theta), y: radius * Math.sin(theta), theta, radius, baseRadius, direction, terminal, id: `${name}:${j}` };
     });
     const paths = [], sections = [], terminalNames = [];
     for (let j = 0; j <= nodeCount; j++) {
@@ -125,7 +134,7 @@ export function buildTransformer(input, env = {}, opt = {}) {
       if (j === 0 || j === nodeCount || tapped) {
         const text = tapped ? 'S_CT' : `${name}${j === 0 ? '+ (dot)' : '−'}`;
         A.pads.push(pad(node.x, node.y, { w: c.viaPad, drill: c.viaDrill, number: String(padNumber++), net, role: 'terminal', nodeId: node.id, winding: name }));
-        A.ports.push({ x: node.x, y: node.y, name: text, net });
+        A.ports.push({ x: node.x, y: node.y, name: text, net, nodeId:node.id,winding:name });
         A.labels.push(label(node.x, node.y + c.viaPad + 0.5, text));
         terminalNames.push(text);
       } else A.vias.push(via(node.x, node.y, { diameter: c.viaPad, drill: c.viaDrill, net, role: 'transition', nodeId: node.id, winding: name }));
@@ -175,7 +184,7 @@ export function buildTransformer(input, env = {}, opt = {}) {
   if (core) notes.push(...core.notes);
   const model = core ? `Ferrite reluctance + ${c.leakageModel === 'geometry' ? 'current-sheet leakage' : c.leakageModel === 'measured' ? 'measured primary leakage' : 'supplied leakage fraction'}` : 'Air-core multi-winding Neumann matrix';
   A.meta.model = model; A.meta.stack = stack.map((winding, i) => ({ layer: layers[i], winding, z: z[i] }));
-  const r = { art: A, bounds: bounds(A), layers, notes, model, windings, core, mode };
+  const r = { art: A, bounds: bounds(A), layers, notes, model, windings, core, mode,temperature:c.tempC };
   r.assembly = catalog ? assemblyStatus(c, A) : null;
   if (r.assembly && !r.assembly.fits) throw new Error(r.assembly.issues[0]);
   if (opt.quick) return r;

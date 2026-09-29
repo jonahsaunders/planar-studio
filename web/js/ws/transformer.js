@@ -3,19 +3,22 @@ import { layerAssistant, windingEditor } from '../ui/winding-stack.js';
 import { eng, num } from '../ui/controls.js';
 import { colourFor, fmtHz } from './common.js';
 import { transformerMode, transformerName } from '../engine/transformer-config.js';
+import { reconcileOperating } from '../engine/transformer-project.js';
 import { transformerSweep } from '../engine/transformer-studies.js';
 import { coreLossAt } from '../engine/transformer-physics.js';
 import { transformerPreview, designWorkflow, candidateControls, corePicker } from '../ui/transformer-design.js';
 import { presetPicker, verificationControls, exportControls } from '../ui/transformer-workspace.js';
+import { terminalControls } from '../ui/transformer-project.js';
 export { finishRail, updateWorkflow } from '../ui/transformer-workspace.js';
 export const id = 'transformer', title = 'Transformer';
-export const defaults = () => ({ ...transformerExtras(), shape: 'circle', primaryTurns: 6, secondaryTurns: 3, dOuter: 30, traceW: 0.5, traceS: 0.3, boardT: 1.6, copperOz: 1, tempC: 25, freq: 1e5, current: 1, secondaryCurrent: 1, ppt: 128, tolerance: 0.004 });
+export const defaults = () => ({ ...transformerExtras(), operatingLinked:true,driveMode:'voltage',sourceVoltage:12,loadMode:'load',loadR:60, shape: 'circle', primaryTurns: 6, secondaryTurns: 3, dOuter: 30, traceW: 0.5, traceS: 0.3, boardT: 1.6, copperOz: 1, tempC: 25, freq: 1e5, current: 1, secondaryCurrent: 1, ppt: 128, tolerance: 0.004 });
 const advanced = c => !transformerMode(c).surface;
 const loaded = c => c.driveMode === 'voltage';
 const ferrite = c => transformerMode(c).magnetic === 'ferrite';
 const multiple = c => transformerMode(c).topology.startsWith('multiple');
 const options = o => Object.entries(o).map(([value, label]) => ({ value, label }));
 export function reconcile(c, key, value) {
+  reconcileOperating(c,key);
   if (key === 'family' && STACK_PRESETS[value]) {
     c.stackPlan = STACK_PRESETS[value]; c.copperLayers = ''; c.layerPositions = '';
     c.magneticModel='auto';c.windingTopology='auto';c.corePreset='custom';c.routedWindings=false;
@@ -54,6 +57,7 @@ export function rail(panel, api) {
   panel.group({ key: 'visual-stack', title: 'Interactive winding stack', when: advanced, fields: [
     { key: '_windingEditor', type: 'custom', build: p => windingEditor(p, api), when: advanced },
   ] });
+  panel.group({key:'terminals',title:'Terminal positions',fields:[{key:'_terminals',type:'custom',build:p=>terminalControls(p,api)}]});
   panel.group({ key: 'stack', title: 'Stack details and copper', fields: [
     { key: 'stackPlan', type: 'text', label: 'Winding assignment, front to back', hint: 'One entry per used layer: P,P,S,S or P,S,P,S. Use S2/S3 for additional secondaries. Choose series or parallel connections in the winding editor.', when: advanced },
     { key: 'copperLayers', type: 'text', label: 'Copper layer names (optional)', hint: 'Example: F.Cu,In1.Cu,In2.Cu,B.Cu. Blank selects available layers in order, including the back.', when: advanced },
@@ -96,6 +100,7 @@ export function rail(panel, api) {
     {type:'note',text:'Capacitance is reported separately for stack comparison. Differential sweeps exclude parasitic resonance. Thermal estimates require known core loss and do not feed back into material properties.'},
   ]});
   panel.group({ key: 'drive', title: 'Operating point', fields: [
+    {key:'operatingLinked',type:'check',label:'Use nominal requirements',hint:'Links frequency, input voltage and resistive loads. Editing an operating value creates an explicit experiment override.'},
     { key: 'driveMode', type: 'select', label: 'Drive model', options: options({ current: 'Imposed currents / open-circuit estimate', voltage: 'Voltage source with secondary loads' }) },
     { key: 'freq', type: 'number', label: 'Frequency', unit: 'Hz', si: true, format: fmtHz },
     { key: 'current', type: 'range', label: 'Primary RMS current', when: c => !loaded(c), unit: 'A', min: 0.01, max: 20, step: 0.01 },
@@ -129,7 +134,11 @@ export function rail(panel, api) {
   panel.group({key:'transformer-export',title:'Build and place',fields:[{key:'_handoff',type:'custom',build:p=>exportControls(p,api)}]});
 }
 export const compute = buildTransformer;
-export const handles = () => [];
+export const handles = (c,r,api) => (r.windings||[]).flatMap(w=>w.nodes.filter(n=>n.terminal).map(n=>({id:n.id,x:n.x,y:n.y,cursor:'grab',hint:`${n.id} terminal · radial offset`,drag:(x,y)=>{
+  const extension=r.assembly?(c.corePostH-c.corePostW)/2:0,localY=y-Math.sign(y)*extension,grid=c.placementGrid||.5;
+  const offset=Math.max(0,Math.min(3,Math.round(((x*Math.cos(n.theta)+localY*Math.sin(n.theta)-n.baseRadius)*n.direction)/grid)*grid));
+  const error=api.tryGeometryPatch({terminalOffsets:{...c.terminalOffsets,[n.id]:offset}});if(error){const status=document.querySelector('[data-key="terminals"] [role="status"]');if(status)status.textContent=error;}
+}})));
 export const layerList = (c, r) => r.layers.map((n, i) => [n, colourFor(n, i)]);
 export const notes = (c, r) => r.notes;
 export const preview = transformerPreview;

@@ -3,6 +3,7 @@ import { buildTransformer } from './transformer.js';
 import { evaluateOperatingPoint } from './transformer-studies.js';
 import { modelSignature } from './transformer-workflow.js';
 import { C } from './complex.js';
+import { designSnapshot, physicsSignature, recordId, revisionId } from './transformer-project.js';
 
 export function importTransformerTest(text, name, kind, conditions, config) {
   if(!['open','short','loaded'].includes(kind))throw new Error('Choose open, short or loaded test.');
@@ -18,7 +19,7 @@ export function importTransformerTest(text, name, kind, conditions, config) {
   if(data.rows.length>5000)throw new Error('Reduce each test to at most 5,000 points.');
   if(kind!=='loaded'&&(data.ports===2||data.rows.some(q=>!Number.isFinite(q.zRe)||!Number.isFinite(q.zIm))))throw new Error('Open/short tests need primary R and X versus frequency, or a one-port S1P measurement.');
   if(kind==='loaded'&&data.rows.some(q=>!Number.isFinite(q.s21db)))throw new Error('Every loaded row needs Gain_dB.');
-  return {kind,data,conditions:{...conditions},date:new Date().toISOString(),signature:modelSignature(config),configuration:JSON.parse(JSON.stringify({...config,candidates:[],checkpoints:[],transformerTests:[]}))};
+  return {id:recordId(),kind,data,prototype:conditions.prototype?.trim()||'Unassigned prototype',conditions:{...conditions},date:new Date().toISOString(),signature:modelSignature(config),geometry:physicsSignature(config,true),revision:revisionId(config),configuration:designSnapshot(config)};
 }
 
 function testConfig(c,test) {
@@ -46,7 +47,9 @@ export function compareTransformerTest(c,test,env={}) {
 export function calibrateTransformer(c, tests, env={}) {
   const open=tests.find(q=>q.kind==='open'),short=tests.find(q=>q.kind==='short');
   if(!open||!short)throw new Error('Import both open and short tests first.');
-  if(open.signature!==short.signature||open.signature!==modelSignature(c))throw new Error('Open and short tests must describe this unchanged design. Restore their design or remeasure it.');
+  const geometry=q=>q.geometry||physicsSignature(q.configuration,true);
+  if(geometry(open)!==geometry(short)||geometry(open)!==physicsSignature(c,true))throw new Error('Open and short tests must describe this unchanged geometry. Restore their design or remeasure it.');
+  if(open.prototype!==short.prototype)throw new Error('Choose open and short tests from the same physical prototype.');
   if(open.conditions.temperature!==short.conditions.temperature||open.conditions.fixture!==short.conditions.fixture)throw new Error('Open and short tests must share copper temperature and fixture reference plane.');
   const r=buildTransformer(c,env);
   if(!r.core||r.windings.length!==2||r.windings.some(w=>w.connection!=='series'))throw new Error('AL/leakage calibration supports two series windings on a ferrite core.');
@@ -75,6 +78,15 @@ export function calibrateTransformer(c, tests, env={}) {
   }
   const baseline=tests.map(test=>compareTransformerTest(c,test,env)),fitted=tests.map(test=>compareTransformerTest({...c,...patch},test,env));
   return {patch,baseline,fitted,residual:Math.sqrt(best/2),fields:['coreALMeasured','measuredLeakage'],
-    source:{date:new Date().toISOString(),frequency:c.freq,temperature:open.conditions.temperature,fixture:open.conditions.fixture,files:[open.data.name,short.data.name]},
+    source:{date:new Date().toISOString(),frequency:c.freq,prototype:open.prototype,temperature:open.conditions.temperature,fixture:open.conditions.fixture,testIds:[open.id,short.id],files:[open.data.name,short.data.name]},
     scope:'Small-signal AL and primary leakage fitted at the operating frequency. Resistance, capacitance, core loss and large-signal behavior are not calibrated.'};
+}
+
+export function comparePrototypes(tests) {
+  if(tests.length<2||tests.length>4)throw new Error('Select two to four tests for comparison.');
+  if(new Set(tests.map(q=>q.kind)).size!==1)throw new Error('Compare the same test type across prototypes.');
+  const min=Math.max(...tests.map(t=>t.data.rows[0].f)),max=Math.min(...tests.map(t=>t.data.rows.at(-1).f));
+  if(max<=min)throw new Error('Selected tests need overlapping frequency ranges; no extrapolation is used.');
+  const xs=[...new Set(tests.flatMap(t=>t.data.rows.map(q=>q.f)).filter(f=>f>=min&&f<=max))].sort((a,b)=>a-b);
+  return {xs,unit:tests[0].kind==='loaded'?'dB':'Ω',series:tests.map(t=>({name:`${t.prototype||'Unassigned'} · ${t.data.name} · ${t.conditions.temperature} °C`,values:xs.map(f=>interpolate(t.data.rows.map(q=>q.f),t.data.rows.map(q=>t.kind==='loaded'?q.s21db:q.Z),f))})),conditionsDiffer:new Set(tests.map(t=>JSON.stringify([t.conditions.fixture,t.conditions.temperature]))).size>1};
 }

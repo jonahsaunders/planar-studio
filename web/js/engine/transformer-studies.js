@@ -5,6 +5,8 @@ import { acResistance } from './transformer-physics.js';
 import { transformerMode } from './transformer-config.js';
 import { C } from './complex.js';
 import { range } from './creator-validation.js';
+import { designSnapshot } from './transformer-project.js';
+import { ALPHA_CU } from './coil.js';
 
 const logspace=(a,b,n)=>Array.from({length:n},(_,i)=>a*(b/a)**(i/(n-1)));
 function boardSize(result) {
@@ -16,9 +18,12 @@ function boardSize(result) {
 // Reuse the geometry and inductance solve. Sweeps only solve the small circuit.
 export function evaluateOperatingPoint(input, result, frequency = input.freq) {
   const c={...transformerExtras(),...input,freq:frequency,driveMode:'voltage'}, a=result.analysis;
-  const network=result.network ? {...result.network,resistanceMatrix:acResistance(c,result.network.branches,result.network.sheet,frequency).matrix} : null;
-  const loaded=network ? loadedBranches(c,network) : loadedTransformer(c,a.matrix||[[a.L1,a.M],[a.M,a.L2]],a.resistances||[a.R1,a.R2]);
-  const r={...result,network,analysis:{...a,loaded},core:result.core?{...result.core}:null};
+  range(c,'tempC',-40,125);
+  const scale=(1+ALPHA_CU*(c.tempC-20))/(1+ALPHA_CU*((result.temperature??c.tempC)-20)),resistances=(a.resistances||[a.R1,a.R2]).map(r=>r*scale);
+  const branches=result.network?.branches.map(q=>({...q,resistance:q.resistance*scale}));
+  const network=result.network ? {...result.network,branches,resistanceMatrix:acResistance(c,branches,result.network.sheet,frequency).matrix} : null;
+  const loaded=network ? loadedBranches(c,network) : loadedTransformer(c,a.matrix||[[a.L1,a.M],[a.M,a.L2]],resistances);
+  const r={...result,temperature:c.tempC,network,analysis:{...a,R1:resistances[0],R2:resistances[1],resistances,loss:loaded.copperLoss,loaded},core:result.core?{...result.core}:null};
   if(r.core){const flux=loaded.branchCurrents.reduce((sum,I,i)=>C.add(sum,C.scale(I,r.core.AL*network.branches[i].turns)),[0,0]);r.core.Bpeak=Math.SQRT2*C.abs(flux)/(c.coreAe*1e-6);r.core.fluxUtilization=r.core.Bpeak/c.coreFluxLimit;}
   finishLosses(c,r);
   return r;
@@ -41,7 +46,7 @@ export function transformerSweep(input, result) {
 }
 
 export function candidateSnapshot(c,r,name) {
-  const config=JSON.parse(JSON.stringify(c));delete config.candidates;delete config.checkpoints;
+  const config=designSnapshot(c);
   const size=boardSize(r);
   return { name:String(name||'Candidate').slice(0,80), config,
     metrics:{ area:size.width*size.height, ...size,

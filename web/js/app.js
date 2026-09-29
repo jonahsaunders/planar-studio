@@ -20,7 +20,7 @@ import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { DesignHistory, checkpoint } from './engine/design-history.js';
 import { modelSignature } from './engine/transformer-workflow.js';
 import { openTransformerPreflight } from './ui/transformer-review.js';
-import { transformerDossier } from './engine/transformer-handoff.js';
+import { transformerDossier, placementArtwork } from './engine/transformer-handoff.js';
 import { zipTextFiles } from './engine/zip-text.js';
 import { applyBoardContext, designId } from './ws/common.js';
 import { toKicad, boundsCopper } from './engine/artwork.js';
@@ -175,6 +175,7 @@ function runCompute(quick) {
     scheduleFull();
   } else {
     renderSide(res);
+    for(const key of ['_verification','_terminals'])app.panel.fields.get(key)?.set?.();
   }
   return true;
 }
@@ -190,15 +191,18 @@ function refreshHandles() {
 const api = {
   config: cfg,
   workflowStep: () => transformerStep,
-  navigateTransformer(step) {transformerStep=step;app.panel.sync();},
+  navigateTransformer(step) {api.reviewHost?.dispose?.();transformerStep=step;app.panel.sync();const page=$('transformer-page');if(page)page.scrollTop=0;$(`transformer-tab-${step}`)?.focus();},
+  focusField(key,step='windings') {api.navigateTransformer(step);const node=app.panel.fields.get(key)?.node;if(node){const group=node.closest('details');if(group)group.open=true;node.scrollIntoView?.({block:'center'});node.querySelector('input,select,button')?.focus();}},
+  tryGeometryPatch(patch) {try {current().compute({...cfg(),...patch},environment(),{quick:true});api.setMany(patch);return null;}catch(error){return error.message;}},
   undo: () => restoreHistory('undo'), redo: () => restoreHistory('redo'),
   historyState: () => history(),
   designId: () => designId(app.ws,app.names[app.ws]),
   openExport,
   saveFile: bridge.saveFile,
-  reviewPlacement: () => {if(runCompute(false))openTransformerPreflight(api,app.result);},
+  reviewPlacement: () => {if(app.ws==='transformer'&&!['verify','export'].includes(transformerStep))api.navigateTransformer('export');if(runCompute(false))openTransformerPreflight(api,app.result);},
   placeReviewed: review => placeIntoBoard(review),
   result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
+  solveDesign: () => current().compute(cfg(),environment()),
   designName: () => app.names[app.ws],
   applyDesign(values,label='Apply design',makeCheckpoint=true) {
     history();
@@ -269,6 +273,9 @@ function reconcile(key, value) {
 }
 
 function renderRail() {
+  api.reviewHost?.dispose?.();api.reviewHost=null;api.overviewHost=null;
+  document.getElementById('transformer-page')?.remove();
+  $('app').dataset.workspace=app.ws;
   history();
   app.panel = new Panel($('rail'), cfg(), (key, value) => {
     reconcile(key, value);
@@ -428,11 +435,11 @@ async function placeIntoBoard(review=null) {
   const res = app.result;
   if (!res) return;
   if(app.ws==='transformer') {
-    if(!review?.ready||review.signature!==modelSignature(cfg())){openTransformerPreflight(api,res);return;}
+    if(!review?.ready||review.signature!==modelSignature(cfg())||review.designName!==api.designName()){api.reviewPlacement();return;}
     try {
       const latest=await bridge.call('board.snapshot',{designId:api.designId()});
       if(app.ws!=='transformer'){toast('Workspace changed; placement canceled.','info');return;}
-      if(review.signature!==modelSignature(cfg())){toast('Design changed. Review the updated placement.','warn');api.reviewPlacement();return;}
+      if(review.signature!==modelSignature(cfg())||review.designName!==api.designName()){toast('Design changed. Review the updated placement.','warn');api.reviewPlacement();return;}
       if(latest.text!==review.boardText||(latest.name||'')!==review.boardName){toast('Board changed. Review the updated destination.','warn');openTransformerPreflight(api,res);return;}
     } catch(error){toast(error.message,'error');return;}
   }
@@ -440,7 +447,7 @@ async function placeIntoBoard(review=null) {
     toast('No board is open in KiCad. Open a PCB and try again.', 'warn');
     return;
   }
-  const existingNets = bridge.state.context?.nets || [];
+  const existingNets = app.ws==='transformer'&&review ? review.nets : bridge.state.context?.nets || [];
   if (['antenna', 'transformer'].includes(app.ws) || (app.ws === 'motor' && ['stepper','planar'].includes(res.family))) {
     const required = [...new Set([...res.art.tracks, ...res.art.pads].map(p => p.net).filter(Boolean))];
     const missing = required.filter(n => !existingNets.includes(n));
@@ -457,10 +464,10 @@ async function placeIntoBoard(review=null) {
     if (!ok) return;
   }
 
-  const payload = toKicad(res.art, { tolerance: cfg().tolerance });
+  const payload = toKicad(app.ws==='transformer'?placementArtwork(cfg(),res.art):res.art, { tolerance: cfg().tolerance });
   const did = designId(app.ws, app.names[app.ws]);
   const known = (bridge.state.context && bridge.state.context.placements) || [];
-  const replace = known.some((p) => p.designId === did);
+  const replace = app.ws==='transformer'&&review ? review.replacement.removed>0 : known.some((p) => p.designId === did);
 
   const btn = $('btn-place');
   btn.disabled = true;
@@ -607,22 +614,23 @@ function openExport() {
 }
 
 function modal(title, body, buttons) {
+  const previous=document.activeElement;
   const scrim = el('div', { class: 'scrim' });
   const footer = el('footer');
-  const box = el('div', { class: 'modal' },
+  const box = el('div', { class: 'modal',role:'dialog','aria-modal':'true','aria-label':title },
     el('header', {}, el('h2', { text: title })),
     el('div', { class: 'body' }, body),
     footer);
-  const close = () => scrim.remove();
+  const close = () => {scrim.remove();document.removeEventListener('keydown',keys);if(previous?.isConnected)previous.focus();};
+  const keys=e=>{if(e.key==='Escape'){e.preventDefault();close();return;}if(e.key!=='Tab')return;const controls=[...box.querySelectorAll('button,input,select,textarea,a[href]')].filter(n=>!n.disabled&&!n.hidden),first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}};
   for (const b of buttons || []) {
-    footer.append(el('button', { class: `btn ${b.variant || ''}`, text: b.label, onClick: () => b.onClick(close) }));
+    footer.append(el('button', { type:'button',class: `btn ${b.variant || ''}`, text: b.label, onClick: () => b.onClick(close) }));
   }
   scrim.append(box);
   scrim.addEventListener('pointerdown', (e) => { if (e.target === scrim) close(); });
-  document.addEventListener('keydown', function esc(e) {
-    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
-  });
+  document.addEventListener('keydown',keys);
   document.body.append(scrim);
+  box.querySelector('button,input,select,textarea,a[href]')?.focus();
   return { close, box };
 }
 
@@ -658,6 +666,7 @@ function importDesignJson() {
       if (!data.config || typeof data.config !== 'object') throw new Error('no config in that file');
       app.ws = kind;
       app.configs[kind] = { ...WORKSPACES[kind].defaults(), ...data.config };
+      if(kind==='transformer'&&data.config.operatingLinked===undefined)app.configs[kind].operatingLinked=false;
       histories.delete(kind);
       app.names[kind] = data.name || app.names[kind];
       $('design-name').value = app.names[kind];
@@ -695,6 +704,7 @@ async function openDesignPicker() {
         const entry = await bridge.api.loadDesign(d.id);
         app.ws = entry.kind && WORKSPACES[entry.kind] ? entry.kind : app.ws;
         app.configs[app.ws] = { ...WORKSPACES[app.ws].defaults(), ...entry.config };
+        if(app.ws==='transformer'&&entry.config.operatingLinked===undefined)app.configs[app.ws].operatingLinked=false;
         histories.delete(app.ws);
         app.names[app.ws] = entry.name;
         $('design-name').value = entry.name;

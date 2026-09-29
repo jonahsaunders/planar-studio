@@ -1,6 +1,14 @@
 # Planar Studio
 
-## Transformer design workflow — 1.5 development
+## Transformer design workflow — 1.6 development
+
+Dedicated work areas now link nominal requirements to operating values, retain
+verification by design revision, and check multiple outputs across named load
+conditions. Explore up to 24 checked candidates on a size/loss chart, review
+calculated repairs, adjust constrained terminal handles, map destination nets,
+rotate and snap board placement, and compare physical prototypes with retained
+calibration alternatives. The interface audit applies Apple's Human Interface
+Guidelines to this cross-platform webview; see the [audit](docs/transformer-gui-audit.md).
 
 The workspace now follows Requirements → Candidates → Windings → Verify → Export,
 with undo/redo, automatic checkpoints and preset previews. Search respects locks

@@ -205,7 +205,7 @@ check('Sparse board layers and explicit asymmetric heights retain their identity
   assert.throws(() => transformer.compute(tc('multilayer'), { board: { layerCount: 2 } }), /needs 4/);
 });
 check('Ferrite AL and flux follow independent SI calculations and preserve core cutouts', () => {
-  const c = tc('ferrite', { coreLossDensity: 100 }), r = transformer.compute(c);
+  const c = tc('ferrite', { driveMode:'current',coreLossDensity: 100 }), r = transformer.compute(c);
   const AL = 4 * Math.PI * 1e-7 * 25e-6 / (0.05 / 2200 + 0.0001);
   near(r.core.AL, AL);
   near(r.analysis.L1 * (1 - c.leakageFraction), AL * 12 ** 2);

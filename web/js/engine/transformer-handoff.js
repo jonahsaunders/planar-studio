@@ -2,8 +2,12 @@ import { parseBoard, sexpr, checkPlacement } from './boardcheck.js';
 import { checkCoreCutouts } from './transformer-cores.js';
 import { modelSignature, assessTransformer } from './transformer-workflow.js';
 import { exportKicadPcb, exportKicadMod, exportSvg } from './exporters.js';
+import { transform, toKicad } from './artwork.js';
+
+export const placementArtwork=(c,art)=>transform(art,{angle:-(c.placementRotation||0)*Math.PI/180});
 
 export function transformerPreflight(c,r,text,context={},excluded=[]) {
+  r={...r,art:placementArtwork(c,r.art)};
   const board=parseBoard(text,excluded),root=sexpr(text),list=key=>root.filter(x=>Array.isArray(x)&&x[0]===key);
   const layers=(list('layers')[0]||[]).filter(Array.isArray).map(x=>x[1]).filter(n=>/\.Cu$/.test(n));
   const nets=[...new Set(list('net').map(x=>x[2]))];
@@ -15,7 +19,10 @@ export function transformerPreflight(c,r,text,context={},excluded=[]) {
   const cutouts=checkCoreCutouts(openings,board,origin);
   cutouts.results.forEach((q,i)=>{if(!q.found){const pts=openings[i];issues.push({type:'cutout',message:`Required core opening ${i+1} is missing or different.`,point:[pts.reduce((s,p)=>s+p[0],0)/pts.length+origin[0],pts.reduce((s,p)=>s+p[1],0)/pts.length-origin[1]]});}});
   if(!board.loops.length)issues.push({type:'outline',message:'No complete destination board outline was found.'});
-  return {...checked,issues,cutouts,layers,nets,requiredNets:required,signature:modelSignature(c),ready:issues.length===0&&checked.warnings.length===0,
+  const previous=parseBoard(text).copper.filter(q=>excluded.includes(q.id));
+  const payload=toKicad(r.art,{tolerance:c.tolerance}),added=payload.tracks.reduce((n,t)=>n+t.pts.length-1,0)+payload.arcs.length+payload.vias.length+payload.pads.length;
+  for(const q of previous)if(q.pts)checked.preview.tracks.push({layer:'Previous placement',width:q.width||.2,pts:q.pts});
+  return {...checked,issues,cutouts,layers,nets,replacement:{removed:excluded.length,added,previousCopper:previous.length},requiredNets:required,signature:modelSignature(c),ready:issues.length===0&&checked.warnings.length===0,
     terminals:r.art.ports.map(p=>({name:p.name,net:p.net,x:p.x+origin[0],y:-p.y+origin[1]})),
     stack:r.art.meta.stack||r.layers.map(layer=>({layer})),destination:context.name||board.name,
     scope:'Supported geometric checks only. Live KiCad DRC and assembly inspection remain separate; direct placement does not cut board edges.'};

@@ -313,7 +313,7 @@ function buildSeg(spec, panel) {
 }
 
 function buildCheck(spec, panel) {
-  const input = el('input', { type: 'checkbox' });
+  const input = el('input', { type: 'checkbox', 'aria-label': spec.label });
   input.addEventListener('change', () => panel.commit(spec.key, input.checked, spec));
   const node = el('label', { class: 'check', title: spec.hint || '' }, input, el('span', { text: spec.label }));
   return { node, set: (v) => { input.checked = !!v; }, spec };

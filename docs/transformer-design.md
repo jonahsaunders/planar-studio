@@ -1,8 +1,74 @@
-# Transformer design workflow — 1.5 development
+# Transformer design workflow — 1.6 development
 
 The Transformer workspace combines a winding layout, a sinusoidal circuit and
 explicit engineering estimates. Old saved designs keep their previous family,
 DC-loss and supplied-leakage behavior until their settings are changed.
+
+## Project workflow additions
+
+1. **Nominal and experimental conditions.** New designs start linked to the
+   Requirements voltage, frequency and resistive output loads. Editing an
+   operating value detaches that link and labels predictions **Experiment
+   override**. Re-enable **Use nominal requirements** to restore nominal values.
+   Imported designs without this setting keep their previous operating point.
+   Optional S2/S3 requirements specify voltage, current and voltage tolerance;
+   S3 requires S2. Enable matching windings or run the candidate search.
+2. **Working areas.** Requirements, Candidates, Verify and Export use the full
+   content area. Windings keeps the drawing, stack and analysis together.
+   Comparison, studies, measurements and placement open within those working
+   areas. Arrow keys and Home/End navigate the stage tabs; ordinary Tab moves
+   through controls. Advanced geometry and material fields remain disclosed
+   on demand. Narrow windows stack the navigation and working area.
+3. **Saved evidence.** Envelope, tolerance and named-condition studies retain
+   their numerical cases, curves, original inputs and revision identifier.
+   Verify lists **Pass**, **Fail**, **Unknown** or **Outdated**. Changes to a
+   tolerance invalidate tolerance reports; envelope range changes invalidate
+   envelope reports. Physics, requirements and relevant physical board-stack
+   changes invalidate affected evidence. Renaming nets, moving the placement,
+   or adding unrelated reports does not. Open a report to inspect its chart or
+   data table, download all cases, or restore the tested inputs. Save the design
+   or export its JSON to persist reports (20 most recent), scenarios and tests.
+4. **Repairs.** Findings link to related controls. **Calculate repair options**
+   tests a bounded set of turn, width and footprint changes against the current
+   requirements and selected cases. Each suggestion previews voltage, copper
+   loss, area, passing cases and unknowns before application. Suggestions must
+   reduce a violation without introducing a new violation class. Measured AL
+   or leakage blocks geometry repair exploration until the estimated model is
+   selected. Applying a repair creates a checkpoint.
+5. **Robust candidate exploration.** Save up to 16 named operating conditions
+   and select at most eight for search/verification. Each retains input, source
+   impedance, independent output loads and temperatures. Search checks all
+   enabled output targets plus flux, footprint, layer and known thermal and
+   regulation limits at nominal and selected cases. Unknown losses/temperature
+   remain Unknown, never Pass. Up to 24 candidates are refined at export
+   resolution; the initial three remain available for comparison. Select a
+   size/loss point or its card to inspect exact values. Worst-case margin is the
+   minimum remaining output-voltage or flux allowance, not a reliability rating.
+6. **Board-aware editing.** Routed terminal handles move radially in a safe
+   direction, limited to 0–3 mm and snapped to the selected grid. Numeric controls
+   provide the same operation without dragging. Routes that violate clearance
+   or core openings are rejected. Changes update both copper and model paths.
+   Placement adds clockwise rotation, snapped coordinates, a movable origin,
+   winding-to-destination-net mapping, and immediate geometric findings. Separate
+   windings cannot map to the same net. Replacement previews identify the count
+   of previous generated items and overlay their copper in gray. Existing edits
+   to generated items are replaced; unrelated board items are retained. The live
+   snapshot and design are checked again before placing the reviewed transform.
+7. **Physical prototypes.** Imports append instead of replacing the previous
+   test of that type. Record specimen, fixture/reference plane and copper
+   temperature; each test retains its design revision. Compare two to four tests
+   of the same kind over their shared frequency interval (no extrapolation).
+   Differing fixtures or temperatures are called out. Choose the exact open and
+   short tests for a fit; geometry, prototype, fixture and temperature must match.
+   Up to 24 tests and 12 alternative fits persist with the design. Review a saved
+   fit, restore its baseline, or apply it to compatible geometry. Loaded transfer
+   still means source-referenced voltage gain, not S21.
+
+Searches and repairs are bounded explorations, not global optimization or proof
+over continuous operating ranges. Terminal edits are radial, not a general
+manual router. Actual KiCad DRC, large-signal validation and assembly inspection
+remain separate. See the [GUI audit](transformer-gui-audit.md) for interface
+changes, Apple guideline references and accessibility test limits.
 
 ## Guided workspace and reversible editing
 
@@ -25,7 +91,8 @@ Core includes the supported catalog cores. Rejection counts overlap when a
 trial fails multiple constraints. The closest valid geometries show actual
 values and missed limits. Suggested larger footprints or extra layers appear
 only after another search finds a feasible candidate with that change. Results
-are starting points, not globally optimal designs; search supports one output.
+are starting points, not globally optimal designs; search supports up to three
+enabled output requirements and the selected named operating conditions.
 
 Pin up to three candidates and use **Compare table and curves** for aligned
 metrics and gain, phase, copper-loss and flux overlays. Each snapshot retains
@@ -156,20 +223,21 @@ frequency and load for a useful tradeoff.
 
 ## Design from requirements
 
-Enter source RMS voltage, target output RMS voltage/current, frequency, maximum
-board width/height, available layers and voltage tolerance. The search uses the
-selected magnetic model/core, source impedance and fabrication settings. It
-evaluates integer turns, grouped/interleaved two-to-eight-layer series stacks
-and two footprint scales. Output V/I defines a resistive load. It checks geometry,
-board footprint, available layers, loaded voltage and peak flux before offering
-up to three candidates, refined at production solver resolution.
+Enter nominal input voltage, each enabled output's voltage/current target,
+frequency, maximum board width/height, available layers and voltage tolerance.
+Output V/I defines a nominal resistive load. The bounded search explores turns,
+widths, connections, grouped/interleaved stacks and footprint scales within the
+selected locks; unlocking Core includes the supported catalog assemblies.
+Every output is checked at nominal and selected named conditions, including
+known flux, regulation and thermal limits. Up to 24 candidates are refined at
+production solver resolution and shown in the size/loss plot; three can be
+pinned for detailed comparison. Missing thermal or material data stays Unknown.
 
-The search provides feasible single-output sinusoidal starting designs, not a
-global optimum or a switching-converter design. It does not vary core catalog
-selection, winding width or parallel topology automatically. Apply a result,
-then edit those choices and compare. Changing settings cancels an active search
-and prevents stale results being applied. An impossible request reports no
-feasible candidate instead of relaxing its requirements.
+These are sinusoidal starting designs, not a global optimum or a switching-
+converter design. Changing relevant settings cancels an active search and
+prevents stale results being applied. An impossible request reports no feasible
+candidate; any suggested requirement change is separately tested and requires
+explicit application.
 
 ## Catalog assemblies and board cutouts
 

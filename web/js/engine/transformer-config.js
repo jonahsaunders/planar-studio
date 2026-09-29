@@ -18,6 +18,8 @@ export function transformerName(c) {
 }
 export const designDefaults = () => ({
   magneticModel: 'auto', windingTopology: 'auto', routedWindings: false, windingOptions: {},
+  operatingLinked: false, scenarios: [], studies: [], calibrations: [], searchResults: null,
+  prototypeName: '', windingNets: {}, terminalOffsets: {}, placementRotation: 0, placementGrid: 0.5,
   leakageModel: 'supplied', measuredLeakage: 1e-6, lossModel: 'dc', capacitanceModel: 'estimate',
   dielectricEr: 4.2, measuredCapacitance: 20e-12, corePreset: 'custom', coreLossModel: 'density',
   steinmetzK: 1, steinmetzAlpha: 1.3, steinmetzBeta: 2.5, coreTemperature: 100,

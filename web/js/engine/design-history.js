@@ -26,6 +26,7 @@ export function checkpoint(state, label) {
   const config = clone(state); delete config.checkpoints;
   // Candidate snapshots already contain complete configs; avoid nested copies.
   delete config.candidates;
+  for(const key of ['studies','transformerTests','calibrations','searchResults'])delete config[key];
   return { label, date: new Date().toISOString(), config };
 }
 

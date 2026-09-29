@@ -45,7 +45,7 @@ export function loadedBranches(input, network) {
   const r = circuit(L, R, ports, names.length, constraints, 2 * Math.PI * c.freq);
   const open = circuit(L, R, ports, names.length, [constraints[0], ...loads.map(() => ({ current: true }))], 2 * Math.PI * c.freq);
   const outputs = loads.map((q, j) => {
-    const i = j + 1, voltage = C.abs(r.voltages[i]), current = C.abs(r.currents[i]), openVoltage = C.abs(open.voltages[i]);
+    const i = j + 1, voltage = C.abs(r.voltages[i]), current = q.mode==='open'?0:C.abs(r.currents[i]), openVoltage = C.abs(open.voltages[i]);
     return { name: q.name, mode: q.mode, voltage, current, voltagePhasor: r.voltages[i], loadCurrentPhasor: C.neg(r.currents[i]), phaseDeg: C.arg(r.voltages[i]) * 180 / Math.PI,
       power: current ** 2 * q.z[0], openVoltage, regulation: q.mode === 'load' && voltage > 1e-12 ? (openVoltage - voltage) / voltage : null };
   });

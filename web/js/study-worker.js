@@ -3,8 +3,9 @@ import { coupledCoils, fieldSlice, rotorDesign } from './engine/magnetics.js';
 import { parseBoard, checkPlacement } from './engine/boardcheck.js';
 import { plain } from './engine/filtertune.js';
 import { designFromRequirements } from './engine/transformer-studies.js';
-import { compareTransformers, operatingEnvelope, transformerTolerance } from './engine/transformer-workflow.js';
-import { compareTransformerTest, calibrateTransformer } from './engine/transformer-measurements.js';
+import { compareTransformers, operatingEnvelope, transformerTolerance, assessConditions, transformerRepairs } from './engine/transformer-workflow.js';
+import { buildTransformer } from './engine/transformer.js';
+import { compareTransformerTest, calibrateTransformer, comparePrototypes } from './engine/transformer-measurements.js';
 
 self.onmessage = ({ data: { task, args } }) => {
   const progress = (value) => self.postMessage({ progress: value });
@@ -16,6 +17,9 @@ self.onmessage = ({ data: { task, args } }) => {
       transformerTolerance: () => transformerTolerance(args.cfg,args.env,progress),
       transformerTest: () => compareTransformerTest(args.cfg,args.test,args.env),
       transformerCalibrate: () => calibrateTransformer(args.cfg,args.tests,args.env),
+      transformerPrototypes: () => comparePrototypes(args.tests),
+      transformerScenarios: () => assessConditions(args.cfg,buildTransformer(args.cfg,args.env),args.env),
+      transformerRepairs: () => transformerRepairs(args.cfg,args.env,progress),
       optimize: () => optimizeCoil(args.cfg, args.opt, progress),
       tolerance: () => toleranceStudy(args.kind, args.cfg, args.opt, progress),
       fit: () => fitMeasurement(args.kind, args.cfg, args.data, args.opt, progress),
