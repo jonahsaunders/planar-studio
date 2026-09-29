@@ -1,0 +1,58 @@
+[
+  {
+    "name": "PGND",
+    "net": "PGND",
+    "position_mm": [
+      92.4,
+      62.65
+    ],
+    "land_diameter_mm": 1.2,
+    "type": "Top-exposed filled/capped via land; no installed part"
+  },
+  {
+    "name": "ISO_GND",
+    "net": "GND_ISO",
+    "position_mm": [
+      108.2,
+      114
+    ],
+    "land_diameter_mm": 1.2,
+    "type": "Top-exposed filled/capped via land; no installed part"
+  },
+  {
+    "name": "VIN",
+    "net": "VIN",
+    "position_mm": [
+      103.621977,
+      65.806807
+    ],
+    "type": "Existing exposed T1 pad 1; no added SW stub"
+  },
+  {
+    "name": "SW",
+    "net": "SW",
+    "position_mm": [
+      96.378023,
+      65.806807
+    ],
+    "type": "Existing exposed T1 pad 2; no added SW stub"
+  },
+  {
+    "name": "BIAS",
+    "net": "INTVCC",
+    "position_mm": [
+      87.275,
+      58.2
+    ],
+    "type": "Existing exposed C5 pad 1; soldered component present"
+  },
+  {
+    "name": "OUT",
+    "net": "+5V_ISO",
+    "position_mm": [
+      105.025,
+      111.12
+    ],
+    "type": "Existing exposed C4 pad 1; soldered component present"
+  }
+]

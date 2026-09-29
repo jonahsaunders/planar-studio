@@ -1,0 +1,48 @@
+{
+  "baseline_commit": "976a184e7dc62a84c94099042ebde564a1a12c8d",
+  "page": "A4 landscape",
+  "logical_pin_names_and_nets_unchanged": 54,
+  "component_records_unchanged": 26,
+  "pcb_and_manufacturing_files_byte_identical": 40,
+  "project_change": "Enable four_way_junction ERC severity as error; every other project setting unchanged.",
+  "four_way_connections_before": [
+    [
+      78.74,
+      41.91
+    ],
+    [
+      88.9,
+      152.4
+    ],
+    [
+      238.76,
+      66.04
+    ]
+  ],
+  "four_way_connections_after": 0,
+  "maximum_connection_arms": 3,
+  "three_way_connections": 27,
+  "regression_check": "The updated symbol-aware validator rejects the preceding schematic at exactly the three listed coordinates.",
+  "schematic_sha256": "798bdebbe415b5b2984552fe9a78e294f06aa390206abc0c6fa2f442bc93ae80",
+  "svg_sha256": "d9d66120e5c3a35d8571e059f442d68b319b35e4cc61da9ee22c0f6dc31ff23f",
+  "continuous_wire_nets": [
+    "VIN",
+    "SW",
+    "PGND",
+    "+5V_ISO",
+    "GND_ISO"
+  ],
+  "ground_symbols": "Staggered signal-ground triangles; no protective earth connection.",
+  "render_review": [
+    "full sheet",
+    "input",
+    "isolated output",
+    "controller",
+    "feedback",
+    "clamp",
+    "footer"
+  ],
+  "scope": "Schematic presentation and ERC gate update. Circuit and PCB unchanged. PCB findings documented separately; hardware remains untested.",
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
+}

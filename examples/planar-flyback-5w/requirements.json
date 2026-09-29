@@ -1,0 +1,42 @@
+{
+  "project": "PS-FLYBACK-5W",
+  "revision": "A1-development",
+  "input_voltage_V": {
+    "min": 18,
+    "nominal": 24,
+    "max": 36
+  },
+  "output_voltage_V": 5,
+  "output_current_A": 1,
+  "topology": "isolated flyback",
+  "transformer": "PCB planar windings on the final converter board",
+  "manufacturing": "JLCPCB full-turnkey: source and install every part, including prepared ferrite core assembly",
+  "cad": "KiCad 10",
+  "design_tool": "Planar Studio",
+  "requested_workflow": "I2CJack LLM KiCad workflow; exact source not yet identified",
+  "provisional_design_targets": {
+    "output_tolerance_percent": 5,
+    "ripple_mV_pp": 100,
+    "ambient_temperature_C": [
+      0,
+      50
+    ],
+    "isolation_scope": "functional galvanic isolation for low-voltage DC, no mains or reinforced safety-insulation certification",
+    "board_layers": 6,
+    "board_thickness_mm": 1.6,
+    "assembly_sides": "top-side electronic components; ferrite halves above and below PCB",
+    "quantity_for_sourcing_review": 5
+  },
+  "release_gates": [
+    "Manufacturer-confirmed gapped-core procurement and installation at JLCPCB",
+    "Complete KiCad schematic with verified pin mapping and clean ERC",
+    "PCB planar winding continuity, isolation separation, core clearance and clean DRC",
+    "Complete routing and schematic-to-board net agreement",
+    "Flyback switching calculation/simulation across input and load conditions",
+    "Traceable, orderable BOM and matching assembly positions",
+    "Gerber, drill, stackup, core assembly drawing and manufacturing notes",
+    "Explicit validation report separating simulated results from unperformed bench tests"
+  ],
+  "publication_status": "Public GitHub engineering example; no supplier submission, purchase or fabrication authorization",
+  "manufacturing_status": "Proposed JLCPCB full-turnkey process; feasibility and sourcing unconfirmed"
+}

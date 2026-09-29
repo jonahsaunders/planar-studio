@@ -1,8 +1,9 @@
 import { layerNames, OZ_MM } from './coil.js';
+import { transformerMode } from './transformer-config.js';
 export const tokens = text => String(text || '').split(',').map(s => s.trim()).filter(Boolean);
 export function windingSetup(c, board) {
-  const plan = c.family === 'aircore' || !c.family ? ['P', 'S'] : tokens(c.stackPlan);
-  const inner = tokens(c.family === 'aircore' || !c.family ? '' : c.copperLayers).filter(n => /^In\d+\.Cu$/.test(n)).map(n => Number(n.match(/\d+/)[0]) + 2);
+  const plan = transformerMode(c).surface ? ['P', 'S'] : tokens(c.stackPlan);
+  const inner = tokens(transformerMode(c).surface ? '' : c.copperLayers).filter(n => /^In\d+\.Cu$/.test(n)).map(n => Number(n.match(/\d+/)[0]) + 2);
   const count = Math.max(2, plan.length, ...inner), required = count + count % 2;
   const available = board?.copperLayers?.length || board?.layerCount || null;
   return { plan, required, available, insufficient: available != null && available < required };
@@ -23,6 +24,11 @@ export function resolveStack(c, board, count) {
   if (tokens(c.layerPositions).length) {
     z = tokens(c.layerPositions).map(Number);
     if (z.length !== count || z.some((v, i) => !Number.isFinite(v) || v < 0 || v > c.boardT || (i > 0 && v - z[i - 1] < c.copperOz * OZ_MM + 0.01))) throw new Error('Enter increasing copper center heights in mm within board thickness, one per assigned layer, with dielectric clearance.');
+  } else if (board?.copperLayers?.length && layers.every(name => Number.isFinite(board.copperLayers.find(l => l.name === name)?.centerHeightMm))) {
+    const reference = board.copperLayers[0].centerHeightMm;
+    z = layers.map(name => board.copperLayers.find(l => l.name === name).centerHeightMm - reference);
+    if (z.some((v, i) => v < 0 || v > c.boardT || (i && v-z[i-1] < c.copperOz*OZ_MM))) throw new Error('Imported copper center heights are inconsistent with the board thickness.');
+    return { layers, z, fullLayers, assumedZ: false, source: 'KiCad physical stack' };
   } else {
     z = layers.map(n => fullLayers.indexOf(n) / (fullLayers.length - 1) * c.boardT);
     if (z.some((v, i) => !Number.isFinite(v) || v < 0 || (i > 0 && v - z[i - 1] < c.copperOz * OZ_MM + 0.01))) throw new Error('Layer separation is too small for the selected copper thickness.');

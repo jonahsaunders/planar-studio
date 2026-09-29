@@ -1,0 +1,37 @@
+import { el, eng, num, specTable } from './controls.js';
+import { button, scalar, jobs, openVerification } from './transformer-review.js';
+import { saveScenario, studyStatus, studySignature } from '../engine/transformer-project.js';
+import { assessTransformer } from '../engine/transformer-workflow.js';
+
+const hint=text=>el('p',{class:'hint',text});
+const repairLabels={primaryTurns:'Primary turns per layer',secondaryTurns:'S turns per layer',secondary2Turns:'S2 turns per layer',secondary3Turns:'S3 turns per layer',traceW:'Track width (mm)',dOuter:'Outer diameter (mm)',windingOptions:'Winding widths'};
+export function scenarioControls(panel,api) {
+  const name=el('input',{type:'text',placeholder:'e.g. Light load at low line','aria-label':'Operating condition name',maxlength:80}),list=el('div'),status=el('p',{role:'status'}),node=el('details',{class:'group transformer-scenarios'},el('summary',{text:'Named operating conditions'}),hint('Save the current frequency, input, loads and temperatures. Select conditions to include in candidate search and verification (maximum eight).'),name,button('Save current operating condition',()=>{try{if((panel.state.scenarios||[]).length>=16)throw new Error('Remove an unused condition before adding another (maximum sixteen).');api.set('scenarios',[...(panel.state.scenarios||[]),saveScenario(panel.state,name.value)]);name.value='';status.textContent='Operating condition saved.';}catch(error){status.textContent=error.message;}}),status,list);
+  let sig='';return {node,set(){const values=panel.state.scenarios||[],next=JSON.stringify(values);if(sig===next)return;sig=next;list.replaceChildren();if(!values.length)list.append(hint('No saved conditions yet. Edit the operating point, then save it here.'));
+    values.forEach(q=>{const selected=el('input',{type:'checkbox',checked:q.enabled,'aria-label':`Include ${q.name}`});selected.addEventListener('change',()=>{if(selected.checked&&values.filter(v=>v.enabled).length>=8){selected.checked=false;status.textContent='Select at most eight conditions.';return;}api.set('scenarios',values.map(v=>v.id===q.id?{...v,enabled:selected.checked}:v));});
+      list.append(el('article',{class:'transformer-test'},el('label',{},selected,` ${q.name}`),hint(`${eng(q.point.sourceVoltage,'V',3)} · ${eng(q.point.freq,'Hz',3)} · S ${eng(q.point.loadR,'Ω',3)} · ${q.point.tempC} °C copper`),button(`Use ${q.name}`,()=>{api.setMany({...q.point,operatingLinked:false});api.navigateTransformer('requirements');}),button(`Remove ${q.name}`,()=>api.set('scenarios',values.filter(v=>v.id!==q.id)))));
+    });}};
+}
+
+export function ledgerControls(panel,api) {
+  const list=el('div'),node=el('section',{class:'transformer-ledger'},el('h2',{text:'Saved verification'}),hint('Results retain their inputs and design revision. Unrelated edits keep results valid; affected studies become Outdated. Up to 20 recent reports are saved with the design.'),list);
+  let sig='';return {node,set(){const reports=panel.state.studies||[],next=JSON.stringify(reports.map(r=>[r.id,studyStatus(r,panel.state,api.boardContext())]));if(sig===next)return;sig=next;list.replaceChildren();if(!reports.length)list.append(hint('No studies saved. Run an envelope, tolerance or named-condition study to build an evidence history.'));
+    for(const record of [...reports].reverse()){const state=studyStatus(record,panel.state,api.boardContext());list.append(el('article',{class:'transformer-test'},el('strong',{class:'transformer-status',dataset:{state},text:state}),el('span',{text:` ${record.label} · ${record.revision}`}),button('Open saved report',()=>openVerification(api,record.kind,record)),button('Remove report',()=>api.set('studies',reports.filter(r=>r.id!==record.id)))));}}};
+}
+
+export function repairControls(panel,api) {
+  const findings=el('div'),output=el('div'),footer=el('footer'),node=el('section',{class:'transformer-repairs'},el('h2',{text:'Resolve findings'}),findings),d={footer,cleanups:[]},j=jobs(d,api);
+  const fields={voltage:'secondaryTurns',area:'dOuter',layers:'stackPlan',flux:'primaryTurns',temperature:'thermalResistance',regulation:'_windingEditor'};
+  const run=button('Calculate repair options',()=>{const signature=studySignature(panel.state,'scenarios',api.boardContext());j.run('transformerRepairs',{},result=>{output.replaceChildren(hint(result.message));for(const q of result.repairs){const before=q.before.points[0].metrics,after=q.after.points[0].metrics;output.append(el('article',{class:'transformer-candidate'},el('h3',{text:Object.entries(q.patch).map(([k,v])=>`${repairLabels[k]||k}: ${typeof v==='object'?'updated widths':num(v,3)}`).join(' · ')}),specTable([['Output',`${eng(before.voltage,'V',4)} → ${eng(after.voltage,'V',4)}`],['Copper loss',`${eng(before.copper,'W',4)} → ${eng(after.copper,'W',4)}`],['Board area',`${num(before.area,1)} → ${num(after.area,1)} mm²`],['Cases passing',`${q.before.passed} → ${q.after.passed}`],['Unknown cases',String(q.after.unknown)]]),button('Apply reviewed repair',()=>{if(signature!==studySignature(panel.state,'scenarios',api.boardContext())){j.status.textContent='Design or selected conditions changed. Calculate fresh options.';return;}api.applyDesign(q.patch,'Before applying checked repair');})));}});});
+  node.append(run,footer,output);let sig='';const observer=new window.MutationObserver(()=>{if(!node.isConnected){d.cleanups.forEach(fn=>fn());observer.disconnect();}});queueMicrotask(()=>{if(node.isConnected)observer.observe(document.body,{childList:true,subtree:true});});
+  return {node,set(){const r=api.result();if(!r?.analysis)return;const a=assessTransformer(panel.state,r,panel.state.requirements,panel.state.operatingRange.maxTemperature,panel.state.operatingRange.maxRegulation),next=JSON.stringify(a.issues)+JSON.stringify(a.unknown);if(next===sig)return;sig=next;findings.replaceChildren();
+    a.issues.forEach(q=>findings.append(button(`${q.message} Edit related setting`,()=>api.focusField(q.key==='voltage'&&q.winding?.length>1?`secondary${q.winding.slice(1)}Turns`:fields[q.key]||'primaryTurns'))));a.unknown.forEach(text=>findings.append(button(`${text} Review related settings`,()=>text.includes('loaded voltage')?api.focusField('driveMode','requirements'):text.includes('regulation')?api.focusField('loadMode','requirements'):api.focusField('thermalResistance'))));if(!a.issues.length&&!a.unknown.length)findings.append(hint('No violations at the current operating point.'));
+  }};
+}
+
+export function terminalControls(panel,api) {
+  const node=el('div'),status=el('p',{role:'status'}),list=el('div');node.append(hint('Move a terminal along its safe radial direction with a handle, or enter an offset here. Offsets snap to the placement grid and are limited to 0–3 mm. Invalid routes are rejected.'),status,list);let sig='';
+  return {node,set(){const r=api.result(),nodes=r?.windings?.flatMap(w=>w.nodes.filter(n=>n.terminal))||[],next=JSON.stringify(nodes.map(n=>[n.id,panel.state.terminalOffsets?.[n.id]||0]));if(sig===next)return;sig=next;list.replaceChildren();if(!nodes.length)list.append(hint('Enable routed winding terminals to edit their positions.'));
+    nodes.forEach(n=>list.append(scalar(`${n.id} terminal offset (mm)`,panel.state.terminalOffsets?.[n.id]||0,v=>{const grid=panel.state.placementGrid||.5,value=Math.round(v/grid)*grid,error=api.tryGeometryPatch({terminalOffsets:{...panel.state.terminalOffsets,[n.id]:value}});status.textContent=error||'Terminal route updated.';if(error){sig='';this?.set?.();}})));
+  }};
+}

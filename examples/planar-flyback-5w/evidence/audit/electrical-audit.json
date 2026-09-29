@@ -1,0 +1,21 @@
+{
+  "baseline_commit": "1ce60b1439dc9da05624a2dd59ab9c51a2def92e",
+  "electronic_pin_net_map_unchanged": true,
+  "logical_pins": 54,
+  "datasheet_reference": "LT8302/LT8302-3 Rev G, pin configuration page 2 and applications pages 17-20",
+  "controller_pin_nets": {
+    "1": "/UVLO",
+    "2": "/INTVCC",
+    "3": "/VIN",
+    "4": "/PGND",
+    "5": "/SW",
+    "6": "/RFB",
+    "7": "/RREF",
+    "8": "/TC",
+    "9": "/PGND"
+  },
+  "mounting_symbols_pinless": true,
+  "hardware_test_status": "Not built or tested",
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
+}

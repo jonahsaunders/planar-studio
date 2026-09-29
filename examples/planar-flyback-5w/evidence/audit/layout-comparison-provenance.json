@@ -1,0 +1,9 @@
+{
+  "baseline_commit": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
+  "method": "Identical margin crop and proportional scaling of archived/current native KiCad orthographic top views; no board pixels retouched.",
+  "image_SHA256": {
+    "board-3d-top-before.png": "6d723efc3fc1e878bd04875593519b86860c37249cd26cebf48c4f58dc1b5e02",
+    "board-3d-top.png": "8314527ed79e71e7baa5763b270df90a6c85efb194e26a2c9b21dad1b8868e0c"
+  },
+  "current_board_SHA256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9"
+}

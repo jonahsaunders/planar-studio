@@ -195,3 +195,11 @@ export async function saveFile(name, text, mime) {
     return { path: name, local: true, fallback: err.message };
   }
 }
+
+export async function saveBytes(name, bytes) {
+  if(!STANDALONE)try {
+    let raw='';for(let i=0;i<bytes.length;i+=8192)raw+=String.fromCharCode(...bytes.subarray(i,i+8192));
+    return {...await call('file.save',{name,base64:btoa(raw)},{timeout:60000}),local:false};
+  }catch { /* Preserve the export as a browser download if the host is older. */ }
+  downloadLocally(name,bytes,'application/zip');return {path:name,local:true};
+}

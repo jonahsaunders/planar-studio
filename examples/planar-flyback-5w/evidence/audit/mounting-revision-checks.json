@@ -1,0 +1,129 @@
+{
+  "baseline_id": "007bcb593f1f21b1ebdc0973f4ca01abff903f31",
+  "baseline_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+  "board_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
+  "pattern_mm": [
+    41,
+    95
+  ],
+  "holes": [
+    {
+      "reference": "H1",
+      "before_mm": [
+        79.5,
+        50.0
+      ],
+      "after_mm": [
+        79.5,
+        37.5
+      ],
+      "adjacent_edge_center_inset_mm": 4.5,
+      "drilled_hole_edge_to_adjacent_board_edge_mm": 2.9,
+      "maximum_hardware_contact_diameter_mm": 6.4,
+      "capacitor_courtyard_clearance_mm": {
+        "C3": {
+          "before": 63.78917799999999,
+          "after": 75.956122
+        },
+        "C7": {
+          "before": 21.625,
+          "after": 23.56161
+        },
+        "C8": {
+          "before": 62.01992299999999,
+          "after": 74.464446
+        }
+      }
+    },
+    {
+      "reference": "H2",
+      "before_mm": [
+        120.5,
+        50.0
+      ],
+      "after_mm": [
+        120.5,
+        37.5
+      ],
+      "adjacent_edge_center_inset_mm": 4.5,
+      "drilled_hole_edge_to_adjacent_board_edge_mm": 2.9,
+      "maximum_hardware_contact_diameter_mm": 6.4,
+      "capacitor_courtyard_clearance_mm": {
+        "C3": {
+          "before": 63.31896999999999,
+          "after": 75.558564
+        },
+        "C7": {
+          "before": 0.625,
+          "after": 5.677247
+        },
+        "C8": {
+          "before": 66.216342,
+          "after": 78.02061499999999
+        }
+      }
+    },
+    {
+      "reference": "H3",
+      "before_mm": [
+        79.5,
+        130.0
+      ],
+      "after_mm": [
+        79.5,
+        132.5
+      ],
+      "adjacent_edge_center_inset_mm": 4.5,
+      "drilled_hole_edge_to_adjacent_board_edge_mm": 2.9,
+      "maximum_hardware_contact_diameter_mm": 6.4,
+      "capacitor_courtyard_clearance_mm": {
+        "C3": {
+          "before": 15.249306,
+          "after": 16.448586000000002
+        },
+        "C7": {
+          "before": 78.118546,
+          "after": 80.47399899999999
+        },
+        "C8": {
+          "before": 7.133570999999999,
+          "after": 9.146338
+        }
+      }
+    },
+    {
+      "reference": "H4",
+      "before_mm": [
+        120.5,
+        130.0
+      ],
+      "after_mm": [
+        120.5,
+        132.5
+      ],
+      "adjacent_edge_center_inset_mm": 4.5,
+      "drilled_hole_edge_to_adjacent_board_edge_mm": 2.9,
+      "maximum_hardware_contact_diameter_mm": 6.4,
+      "capacitor_courtyard_clearance_mm": {
+        "C3": {
+          "before": 13.463319000000002,
+          "after": 14.781943000000002
+        },
+        "C7": {
+          "before": 73.472458,
+          "after": 75.966225
+        },
+        "C8": {
+          "before": 22.707605,
+          "after": 23.575186000000002
+        }
+      }
+    }
+  ],
+  "all_25_non_mounting_footprints_preserved": true,
+  "tracks_vias_and_filled_pours_preserved": true,
+  "winding_copper_preserved": true,
+  "routed_outline_and_core_slots_preserved": true,
+  "stack_and_setup_preserved": true,
+  "clearance_method": "Minimum distance from hole center to capacitor F.CrtYd strokes minus maximum permitted 3.2 mm hardware-contact radius. The full courtyard includes solder lands; nominal planar check, not a screwdriver or tolerance model."
+}

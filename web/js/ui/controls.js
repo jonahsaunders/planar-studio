@@ -168,7 +168,7 @@ export class Panel {
 
   /** Push state values into the controls, and apply `when` visibility. */
   sync() {
-    for (const group of this.groups) group.hidden = !!group._when && !group._when(this.state);
+    for (const group of this.groups) group.hidden = (!!group._when && !group._when(this.state)) || (!!group._steps && !group._steps.includes(this.workflowStep()));
     for (const [key, entry] of this.fields) {
       if (entry.when) {
         const visible = entry.when(this.state);
@@ -313,7 +313,7 @@ function buildSeg(spec, panel) {
 }
 
 function buildCheck(spec, panel) {
-  const input = el('input', { type: 'checkbox' });
+  const input = el('input', { type: 'checkbox', 'aria-label': spec.label });
   input.addEventListener('change', () => panel.commit(spec.key, input.checked, spec));
   const node = el('label', { class: 'check', title: spec.hint || '' }, input, el('span', { text: spec.label }));
   return { node, set: (v) => { input.checked = !!v; }, spec };

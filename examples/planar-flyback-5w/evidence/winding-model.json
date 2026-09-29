@@ -1,0 +1,330 @@
+{
+  "scope": "Geometry, small-signal inductance and resistance only. Sinusoidal loaded voltage is not flyback output validation.",
+  "core": {
+    "AL": 7.46733667586595e-7,
+    "muR": 2200,
+    "material": "TDK N87 (nominal μi)",
+    "notes": [
+      {
+        "level": "warn",
+        "text": "Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss."
+      },
+      {
+        "level": "info",
+        "text": "Catalog AL uses the manufacturer’s nominal ungapped value or published prepared-gap curve. No nonlinear B-H curve, DC bias or temperature-dependent permeability."
+      },
+      {
+        "level": "info",
+        "text": "Leakage integrates current-sheet field energy through the actual winding stack. It excludes fringing and finite-core effects."
+      },
+      {
+        "level": "info",
+        "text": "Flux uses the entered sinusoidal primary RMS voltage; copper loss separately uses entered RMS currents, with secondaries in antiphase to the primary. These are independent estimates."
+      },
+      {
+        "level": "warn",
+        "text": "All three core-leg openings are included in the board export. Use the destination cutout check before direct placement, which does not modify board edges. Mechanical clearance does not establish an isolation rating."
+      }
+    ],
+    "Bpeak": 0.002164221913839198,
+    "fluxUtilization": 0.01082110956919599,
+    "loss": null,
+    "lossSource": "Entered operating-point density"
+  },
+  "assembly": {
+    "manufacturer": "TDK",
+    "material": "N87",
+    "width": 31.75,
+    "depth": 20.35,
+    "postW": 6.35,
+    "postH": 20.35,
+    "postMaxW": 6.5,
+    "postMaxH": 20.75,
+    "innerLegSpan": 25.4,
+    "innerLegSpanMin": 24.9,
+    "outerLegW": 3.175,
+    "ae": 130,
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
+    "mounting": "Adhesive or an external fixture; no integral screw holes. No clamp recess on B66457.",
+    "name": "TDK EELP 32/6/20 · E + E · N87",
+    "parts": [
+      "Prepared EELP32 N87 set: 0.21 mm total center-leg gap; supplier drawing required",
+      "Base geometry: 2 × B66457G0000X187; do not substitute an ungapped pair"
+    ],
+    "le": 41.4,
+    "volume": 5390,
+    "al": 0.0000057,
+    "height": 12.7,
+    "windowHeight": 6.4,
+    "windowMin": 6.1,
+    "modified": true,
+    "issues": [],
+    "fits": true,
+    "openings": [
+      [
+        [
+          -3.5,
+          -10.625
+        ],
+        [
+          3.5,
+          -10.625
+        ],
+        [
+          3.5,
+          10.625
+        ],
+        [
+          -3.5,
+          10.625
+        ],
+        [
+          -3.5,
+          -10.625
+        ]
+      ],
+      [
+        [
+          -16.45,
+          -10.625
+        ],
+        [
+          -12.2,
+          -10.625
+        ],
+        [
+          -12.2,
+          10.625
+        ],
+        [
+          -16.45,
+          10.625
+        ],
+        [
+          -16.45,
+          -10.625
+        ]
+      ],
+      [
+        [
+          12.2,
+          -10.625
+        ],
+        [
+          16.45,
+          -10.625
+        ],
+        [
+          16.45,
+          10.625
+        ],
+        [
+          12.2,
+          10.625
+        ],
+        [
+          12.2,
+          -10.625
+        ]
+      ]
+    ],
+    "cutoutStatus": "Not checked against destination board"
+  },
+  "analysis": {
+    "L1": 0.000011953082477142482,
+    "L2": 0.0000030038156414233304,
+    "M": 0.000005977876437510481,
+    "k": 0.9976319254443075,
+    "ratio": 2,
+    "R1": 0.25357225583709364,
+    "R2": 0.06292732552621233,
+    "leakage": 5.654455073022524e-8,
+    "induced": 7.5120210800601805,
+    "loss": 0.31649958136330597,
+    "matrix": [
+      [
+        0.000011953082477142482,
+        0.000005977876437510481
+      ],
+      [
+        0.000005977876437510481,
+        0.0000030038156414233304
+      ]
+    ],
+    "coupling": [
+      [
+        1,
+        0.9976319254443075
+      ],
+      [
+        0.9976319254443075,
+        1
+      ]
+    ],
+    "resistances": [
+      0.25357225583709364,
+      0.06292732552621233
+    ],
+    "outputs": [
+      {
+        "name": "S",
+        "turns": 2,
+        "ratio": 2,
+        "induced": 7.5120210800601805
+      }
+    ],
+    "turns": [
+      4,
+      2
+    ],
+    "capacitance": {
+      "pairs": [
+        {
+          "pair": "P ↔ S",
+          "value": 1.3579440474750636e-10
+        }
+      ],
+      "value": 1.3579440474750636e-10,
+      "source": "estimate"
+    },
+    "branchCurrents": [
+      [
+        1,
+        -1.734723475976807e-18
+      ],
+      [
+        -0.49999999999999994,
+        -1.1102230246251565e-16
+      ],
+      [
+        -0.5000000000000001,
+        1.1102230246251565e-16
+      ]
+    ],
+    "losses": {
+      "dc": 0.31649958136330597,
+      "acExcess": 0.000011161375570778453,
+      "copper": 0.31651074273887675,
+      "core": null,
+      "total": null,
+      "temperature": null
+    },
+    "estimatedEfficiency": null
+  },
+  "windings": [
+    {
+      "name": "P",
+      "turns": 4,
+      "connection": "series"
+    },
+    {
+      "name": "S",
+      "turns": 2,
+      "connection": "parallel"
+    }
+  ],
+  "layerStack": [
+    {
+      "layer": "F.Cu",
+      "winding": "P",
+      "z": 0
+    },
+    {
+      "layer": "In1.Cu",
+      "winding": "S",
+      "z": 0.135
+    },
+    {
+      "layer": "In4.Cu",
+      "winding": "S",
+      "z": 1.43
+    },
+    {
+      "layer": "B.Cu",
+      "winding": "P",
+      "z": 1.565
+    }
+  ],
+  "ports": [
+    {
+      "x": 3.621976964716772,
+      "y": 19.193193024105184,
+      "name": "P+ (dot)",
+      "net": "T1_PRI",
+      "nodeId": "P:0",
+      "winding": "P"
+    },
+    {
+      "x": -3.6219769647167706,
+      "y": 19.193193024105184,
+      "name": "P−",
+      "net": "T1_PRI",
+      "nodeId": "P:2",
+      "winding": "P"
+    },
+    {
+      "x": -1.8304054054054115,
+      "y": -19.591339320420516,
+      "name": "S+ (dot)",
+      "net": "T1_SEC",
+      "nodeId": "S:0",
+      "winding": "S"
+    },
+    {
+      "x": 1.0750000000000008,
+      "y": -14.44650087072316,
+      "name": "S−",
+      "net": "T1_SEC",
+      "nodeId": "S:1",
+      "winding": "S"
+    }
+  ],
+  "notes": [
+    {
+      "level": "info",
+      "text": "Turns are per section. Series sections add turns; parallel sections share terminal voltage and retain the section turn count. Through-hole terminals expose internal layers."
+    },
+    {
+      "level": "info",
+      "text": "All terminals of a DC-connected winding share one net; separate windings have separate nets. Use net-tie symbols/footprints as appropriate when integrating winding terminals into a schematic."
+    },
+    {
+      "level": "info",
+      "text": "Return wiring, conducting planes/shields, gap fringing and parasitic resonance are excluded. Interwinding capacitance is a separate common-mode estimate, not part of the differential load circuit."
+    },
+    {
+      "level": "warn",
+      "text": "Current-sheet leakage and Dowell copper loss are first-order estimates for thin concentric stacks below resonance. Validate against measurements or a field solver; gap fringing is excluded."
+    },
+    {
+      "level": "warn",
+      "text": "Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss."
+    },
+    {
+      "level": "info",
+      "text": "Catalog AL uses the manufacturer’s nominal ungapped value or published prepared-gap curve. No nonlinear B-H curve, DC bias or temperature-dependent permeability."
+    },
+    {
+      "level": "info",
+      "text": "Leakage integrates current-sheet field energy through the actual winding stack. It excludes fringing and finite-core effects."
+    },
+    {
+      "level": "info",
+      "text": "Flux uses the entered sinusoidal primary RMS voltage; copper loss separately uses entered RMS currents, with secondaries in antiphase to the primary. These are independent estimates."
+    },
+    {
+      "level": "warn",
+      "text": "All three core-leg openings are included in the board export. Use the destination cutout check before direct placement, which does not modify board edges. Mechanical clearance does not establish an isolation rating."
+    },
+    {
+      "level": "info",
+      "text": "Barrel plating is 25 µm. Parallel terminal buses are ideal equipotential connections; their shared barrel impedance and external leads are excluded."
+    }
+  ],
+  "gapFormula": {
+    "source": "TDK ELP32/6/20 October 2022, page 6",
+    "AL_nH": 746.733667586595,
+    "totalCenterGap_mm": 0.21
+  },
+  "magnetizingInductance_H": 0.00001194773868138552
+}

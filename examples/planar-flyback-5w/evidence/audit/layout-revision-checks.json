@@ -1,0 +1,333 @@
+{
+  "baseline_id": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
+  "baseline_sha256": "172f2113a81b07d94f710b557b5bdd75c358370d41be587edb6cf786b917d4a7",
+  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
+  "physical_numbered_pad_net_size_drill_shape_records_preserved": 55,
+  "component_identities_preserved": 22,
+  "intentional_mounting_footprint_changes": {
+    "H3": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H1": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H2": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H4": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    }
+  },
+  "transformer_copper_and_pose_preserved": true,
+  "routed_outline_and_core_slots_preserved": true,
+  "mounting_hole_centers_preserved": true,
+  "copper_layers_and_board_thickness_preserved": true,
+  "changed_component_poses": {
+    "C1": {
+      "before": [
+        96.0,
+        48.0,
+        -90.0
+      ],
+      "after": [
+        85.5,
+        60.635,
+        180.0
+      ]
+    },
+    "R4": {
+      "before": [
+        102.5,
+        62.0,
+        -90.0
+      ],
+      "after": [
+        96.65,
+        57.8,
+        0.0
+      ]
+    },
+    "R7": {
+      "before": [
+        109.0,
+        116.0,
+        -90.0
+      ],
+      "after": [
+        109.0,
+        118.5,
+        -90.0
+      ]
+    },
+    "J1": {
+      "before": [
+        83.5,
+        40.0,
+        0.0
+      ],
+      "after": [
+        97.5,
+        40.0,
+        0.0
+      ]
+    },
+    "D1": {
+      "before": [
+        102.0,
+        41.5,
+        180.0
+      ],
+      "after": [
+        88.0,
+        46.0,
+        90.0
+      ]
+    },
+    "D2": {
+      "before": [
+        101.0,
+        110.0,
+        0.0
+      ],
+      "after": [
+        101.0,
+        110.0,
+        90.0
+      ]
+    },
+    "J2": {
+      "before": [
+        103.0,
+        129.0,
+        180.0
+      ],
+      "after": [
+        102.5,
+        129.0,
+        180.0
+      ]
+    },
+    "H3": {
+      "before": [
+        79.5,
+        130.0,
+        0.0
+      ],
+      "after": [
+        79.5,
+        130.0,
+        180.0
+      ]
+    },
+    "H1": {
+      "before": [
+        79.5,
+        50.0,
+        0.0
+      ],
+      "after": [
+        79.5,
+        50.0,
+        180.0
+      ]
+    },
+    "R2": {
+      "before": [
+        105.7,
+        54.5,
+        0.0
+      ],
+      "after": [
+        93.5,
+        51.0,
+        0.0
+      ]
+    },
+    "R1": {
+      "before": [
+        108.0,
+        50.0,
+        -90.0
+      ],
+      "after": [
+        90.5,
+        51.0,
+        0.0
+      ]
+    },
+    "C6": {
+      "before": [
+        109.5,
+        62.1,
+        0.0
+      ],
+      "after": [
+        100.0,
+        63.4,
+        180.0
+      ]
+    },
+    "R5": {
+      "before": [
+        105.0,
+        59.0,
+        0.0
+      ],
+      "after": [
+        94.1015,
+        54.5,
+        90.0
+      ]
+    },
+    "R3": {
+      "before": [
+        99.365,
+        61.5,
+        90.0
+      ],
+      "after": [
+        96.65,
+        59.635,
+        180.0
+      ]
+    },
+    "C2": {
+      "before": [
+        104.0,
+        47.0,
+        -90.0
+      ],
+      "after": [
+        104.0,
+        59.0,
+        90.0
+      ]
+    },
+    "C4": {
+      "before": [
+        102.0,
+        116.0,
+        -90.0
+      ],
+      "after": [
+        106.5,
+        111.12,
+        0.0
+      ]
+    },
+    "C3": {
+      "before": [
+        94.0,
+        117.0,
+        0.0
+      ],
+      "after": [
+        101.0,
+        118.5,
+        180.0
+      ]
+    },
+    "C5": {
+      "before": [
+        100.635,
+        50.5,
+        90.0
+      ],
+      "after": [
+        86.5,
+        58.2,
+        180.0
+      ]
+    },
+    "R6": {
+      "before": [
+        109.5,
+        58.0,
+        -90.0
+      ],
+      "after": [
+        104.0,
+        63.4,
+        180.0
+      ]
+    },
+    "D4": {
+      "before": [
+        89.0,
+        55.5,
+        90.0
+      ],
+      "after": [
+        109.0,
+        60.9,
+        -90.0
+      ]
+    },
+    "F1": {
+      "before": [
+        95.0,
+        40.0,
+        0.0
+      ],
+      "after": [
+        90.5,
+        40.0,
+        180.0
+      ]
+    },
+    "D3": {
+      "before": [
+        93.3,
+        60.9,
+        -90.0
+      ],
+      "after": [
+        100.0,
+        59.7,
+        -90.0
+      ]
+    },
+    "U1": {
+      "before": [
+        100.0,
+        56.0,
+        -90.0
+      ],
+      "after": [
+        91.5,
+        59.0,
+        0.0
+      ]
+    }
+  },
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
+}

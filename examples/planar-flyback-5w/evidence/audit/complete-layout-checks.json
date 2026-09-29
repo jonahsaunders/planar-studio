@@ -1,0 +1,544 @@
+{
+  "board_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
+  "baseline_commit": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
+  "method": "Actual KiCad objects, filled ground polygons, netted probe features and explicit routed-centerline comparison. Corridor sampling is a projected geometry check, not a current-density model.",
+  "route_comparison": [
+    {
+      "from": "C2.1",
+      "to": "T1.1",
+      "before_mm": 34.869,
+      "after_mm": 6.7,
+      "reduction_percent": 80.8,
+      "minimum_width_mm": 1.2,
+      "layer_transitions": 0
+    },
+    {
+      "from": "C1.1",
+      "to": "U1.3",
+      "before_mm": 16.8681,
+      "after_mm": 2.9235,
+      "reduction_percent": 82.7,
+      "minimum_width_mm": 0.9,
+      "layer_transitions": 0
+    },
+    {
+      "from": "U1.5",
+      "to": "T1.2",
+      "before_mm": 7.8933,
+      "after_mm": 5.8448,
+      "reduction_percent": 26.0,
+      "minimum_width_mm": 1.2,
+      "layer_transitions": 0
+    },
+    {
+      "from": "T1.2",
+      "to": "D3.2",
+      "before_mm": 5.46,
+      "after_mm": 6.6222,
+      "reduction_percent": -21.3,
+      "minimum_width_mm": 0.8,
+      "layer_transitions": 0
+    },
+    {
+      "from": "D3.1",
+      "to": "D4.1",
+      "before_mm": 6.85,
+      "after_mm": 9.1036,
+      "reduction_percent": -32.9,
+      "minimum_width_mm": 0.6,
+      "layer_transitions": 0
+    },
+    {
+      "from": "D4.2",
+      "to": "T1.1",
+      "before_mm": 57.5358,
+      "after_mm": 6.9138,
+      "reduction_percent": 88.0,
+      "minimum_width_mm": 1.0,
+      "layer_transitions": 0
+    },
+    {
+      "from": "T1.2",
+      "to": "C6.2",
+      "before_mm": 17.7788,
+      "after_mm": 4.0537,
+      "reduction_percent": 77.2,
+      "minimum_width_mm": 0.8,
+      "layer_transitions": 0
+    },
+    {
+      "from": "R6.1",
+      "to": "T1.1",
+      "before_mm": 21.2562,
+      "after_mm": 3.1692,
+      "reduction_percent": 85.1,
+      "minimum_width_mm": 1.2,
+      "layer_transitions": 0
+    },
+    {
+      "from": "R6.2",
+      "to": "C6.1",
+      "before_mm": 3.031,
+      "after_mm": 1.5875,
+      "reduction_percent": 47.6,
+      "minimum_width_mm": 0.6,
+      "layer_transitions": 0
+    },
+    {
+      "from": "C5.1",
+      "to": "U1.2",
+      "before_mm": 2.1235,
+      "after_mm": 1.6918,
+      "reduction_percent": 20.3,
+      "minimum_width_mm": 0.4,
+      "layer_transitions": 0
+    },
+    {
+      "from": "R3.2",
+      "to": "U1.6",
+      "before_mm": 2.0735,
+      "after_mm": 1.7235,
+      "reduction_percent": 16.9,
+      "minimum_width_mm": 0.25,
+      "layer_transitions": 0
+    },
+    {
+      "from": "U1.7",
+      "to": "R4.1",
+      "before_mm": 4.4385,
+      "after_mm": 1.9575,
+      "reduction_percent": 55.9,
+      "minimum_width_mm": 0.25,
+      "layer_transitions": 0
+    },
+    {
+      "from": "D2.1",
+      "to": "C3.1",
+      "before_mm": 11.9754,
+      "after_mm": 11.9124,
+      "reduction_percent": 0.5,
+      "minimum_width_mm": 1.5,
+      "layer_transitions": 0
+    },
+    {
+      "from": "D2.1",
+      "to": "C4.1",
+      "before_mm": 5.6115,
+      "after_mm": 4.025,
+      "reduction_percent": 28.3,
+      "minimum_width_mm": 1.5,
+      "layer_transitions": 0
+    },
+    {
+      "from": "C3.1",
+      "to": "J2.1",
+      "before_mm": 33.2,
+      "after_mm": 11.0385,
+      "reduction_percent": 66.8,
+      "minimum_width_mm": 2.0,
+      "layer_transitions": 0
+    }
+  ],
+  "new_filter_routes": [
+    {
+      "from": "D1.1",
+      "to": "R8.1",
+      "net": "/VIN",
+      "routed_centerline_mm": 9.3088,
+      "straight_pad_distance_mm": 7.0391,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 46.85
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.5375,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 95.0375,
+          "y_mm": 47.0
+        }
+      ]
+    },
+    {
+      "from": "R8.2",
+      "to": "C7.1",
+      "net": "/VIN_DAMP",
+      "routed_centerline_mm": 6.6659,
+      "straight_pad_distance_mm": 6.1706,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 100.9625,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 104.8,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 106.8,
+          "y_mm": 49.0
+        }
+      ]
+    },
+    {
+      "from": "D2.1",
+      "to": "C8.1",
+      "net": "/+5V_ISO",
+      "routed_centerline_mm": 12.6908,
+      "straight_pad_distance_mm": 10.3104,
+      "minimum_track_width_mm": 1.5,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 101.0,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 97.025,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 114.345
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 118.5
+        }
+      ]
+    }
+  ],
+  "orthogonal_or_45_degree_tracks": 72,
+  "other_track_angles": [],
+  "SW_routing_layers": [
+    "F.Cu"
+  ],
+  "SW_added_vias": 0,
+  "return_planes": [
+    {
+      "net": "/GND_ISO",
+      "layer": "F.Cu",
+      "connected_filled_outlines": 1,
+      "area_mm2": 602.7795665047975
+    },
+    {
+      "net": "/PGND",
+      "layer": "F.Cu",
+      "connected_filled_outlines": 1,
+      "area_mm2": 658.534402229979
+    },
+    {
+      "net": "/GND_ISO",
+      "layer": "B.Cu",
+      "connected_filled_outlines": 1,
+      "area_mm2": 711.543517545314
+    },
+    {
+      "net": "/PGND",
+      "layer": "B.Cu",
+      "connected_filled_outlines": 1,
+      "area_mm2": 842.553859667716
+    }
+  ],
+  "sampled_return_corridors": [
+    {
+      "from": "C1.2",
+      "to": "U1.9",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 7.6517,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": false,
+      "straight_miss_count": 37,
+      "review_path_mm": [
+        [
+          84.025,
+          60.635
+        ],
+        [
+          86,
+          58.66
+        ],
+        [
+          91.5,
+          59.0
+        ]
+      ],
+      "review_path_length_mm": 8.303570855644136,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C2.2",
+      "to": "U1.9",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 12.5867,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          104.0,
+          57.525
+        ],
+        [
+          91.5,
+          59.0
+        ]
+      ],
+      "review_path_length_mm": 12.586724156824921,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C5.2",
+      "to": "U1.4",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 4.1699,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          85.725,
+          58.2
+        ],
+        [
+          88.8985,
+          60.905
+        ]
+      ],
+      "review_path_length_mm": 4.169907343095289,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "R4.2",
+      "to": "U1.9",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 6.0943,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          97.475,
+          57.8
+        ],
+        [
+          91.5,
+          59.0
+        ]
+      ],
+      "review_path_length_mm": 6.094310871624448,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C7.2",
+      "to": "U1.9",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 24.805,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          114.2,
+          49.0
+        ],
+        [
+          91.5,
+          59.0
+        ]
+      ],
+      "review_path_length_mm": 24.80503981049013,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C8.2",
+      "to": "secondary_return_vias",
+      "net": "/GND_ISO",
+      "plane": "B.Cu",
+      "straight_distance_mm": 15.6011,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          88.2,
+          118.5
+        ],
+        [
+          98.169595,
+          106.5
+        ]
+      ],
+      "review_path_length_mm": 15.601052030681295,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C3.2",
+      "to": "secondary_return_vias",
+      "net": "/GND_ISO",
+      "plane": "B.Cu",
+      "straight_distance_mm": 12.0,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          98.2,
+          118.5
+        ],
+        [
+          98.169595,
+          106.5
+        ]
+      ],
+      "review_path_length_mm": 12.000038519272552,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C4.2",
+      "to": "secondary_return_vias",
+      "net": "/GND_ISO",
+      "plane": "B.Cu",
+      "straight_distance_mm": 10.8393,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": false,
+      "straight_miss_count": 60,
+      "review_path_mm": [
+        [
+          107.975,
+          111.12
+        ],
+        [
+          104,
+          108.8
+        ],
+        [
+          99.5,
+          108.8
+        ],
+        [
+          98.169595,
+          106.5
+        ]
+      ],
+      "review_path_length_mm": 11.759563847286854,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    }
+  ],
+  "through_vias": 61,
+  "minimum_via_annular_ring_mm": 0.15,
+  "connector_ground_thermals": [
+    {
+      "reference": "J1.2",
+      "gap_mm": 0.3,
+      "spoke_width_mm": 0.5
+    },
+    {
+      "reference": "J2.2",
+      "gap_mm": 0.3,
+      "spoke_width_mm": 0.5
+    }
+  ],
+  "named_probe_locations": [
+    {
+      "name": "PGND",
+      "net": "PGND",
+      "position_mm": [
+        92.4,
+        62.65
+      ],
+      "land_diameter_mm": 1.2,
+      "type": "Top-exposed filled/capped via land; no installed part"
+    },
+    {
+      "name": "ISO_GND",
+      "net": "GND_ISO",
+      "position_mm": [
+        108.2,
+        114
+      ],
+      "land_diameter_mm": 1.2,
+      "type": "Top-exposed filled/capped via land; no installed part"
+    },
+    {
+      "name": "VIN",
+      "net": "VIN",
+      "position_mm": [
+        103.621977,
+        65.806807
+      ],
+      "type": "Existing exposed T1 pad 1; no added SW stub"
+    },
+    {
+      "name": "SW",
+      "net": "SW",
+      "position_mm": [
+        96.378023,
+        65.806807
+      ],
+      "type": "Existing exposed T1 pad 2; no added SW stub"
+    },
+    {
+      "name": "BIAS",
+      "net": "INTVCC",
+      "position_mm": [
+        87.275,
+        58.2
+      ],
+      "type": "Existing exposed C5 pad 1; soldered component present"
+    },
+    {
+      "name": "OUT",
+      "net": "+5V_ISO",
+      "position_mm": [
+        105.025,
+        111.12
+      ],
+      "type": "Existing exposed C4 pad 1; soldered component present"
+    }
+  ],
+  "unpopulated_ground_probe_lands": 2,
+  "dedicated_testpoint_component_footprints": 0,
+  "component_sides": [
+    "F.Cu"
+  ],
+  "review_limits": [
+    "No extracted parasitics, EMI or current-density solution.",
+    "No hardware ripple, overshoot, thermal or isolation test.",
+    "Enclosure, wire/tool access, process tolerance and supplier acceptance remain open."
+  ]
+}

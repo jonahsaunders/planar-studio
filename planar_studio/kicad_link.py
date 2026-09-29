@@ -677,6 +677,7 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
     copper: List[Dict[str, Any]] = []
     dielectrics: List[Dict[str, Any]] = []
     total = 0.0
+    heights_known = True
 
     layers = None
     for attr in ("layers", "layer", "stackup_layers"):
@@ -697,6 +698,8 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
             if isinstance(raw, (int, float)) and raw:
                 thickness = to_mm(int(raw))
                 break
+        if not thickness:
+            heights_known = False
         if thickness:
             total += thickness
 
@@ -709,6 +712,7 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
                     "name": name,
                     "index": len(copper),
                     "thicknessMm": round(thickness, 6) if thickness else None,
+                    "centerHeightMm": round(total - thickness / 2, 6) if thickness else None,
                 }
             )
             continue
@@ -743,4 +747,7 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
                 }
             )
 
+    if not heights_known:
+        for layer in copper:
+            layer.pop("centerHeightMm", None)
     return copper, dielectrics, round(total, 6)

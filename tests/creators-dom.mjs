@@ -1,6 +1,13 @@
 /* Whole application DOM/events with real engines; canvas/layout are stubbed. */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { Worker as NodeWorker } from 'node:worker_threads';
+let liveWorkers=0;
+globalThis.Worker=class {
+  constructor(url){liveWorkers++;this.queue=[];this.ready=false;this.ended=false;this.worker=new NodeWorker(new URL('./helpers/study-node-worker.mjs',import.meta.url),{workerData:{url:String(url)}});this.worker.on('message',data=>{if(data.ready){this.ready=true;this.queue.forEach(m=>this.worker.postMessage(m));this.queue=[];}else this.onmessage?.({data});});this.worker.on('error',error=>this.onerror?.({message:error.message}));}
+  postMessage(m){this.ready?this.worker.postMessage(m):this.queue.push(m);}
+  terminate(){if(!this.ended){this.ended=true;liveWorkers--;}this.worker.terminate();}
+};
 const { Window } = await import(process.env.PLANAR_DOM_MODULE || 'happy-dom');
 const w = new Window({ url: 'http://localhost/', settings: { disableCSSFileLoading: true, disableJavaScriptFileLoading: true } });
 for (const key of ['window', 'document', 'HTMLElement', 'HTMLCanvasElement', 'Event', 'KeyboardEvent', 'MouseEvent', 'File', 'Blob', 'ResizeObserver', 'localStorage']) globalThis[key] = key === 'window' ? w : w[key];
@@ -24,7 +31,7 @@ for (const [kind, field, value] of [['antenna', 'Length tuning', 1.1], ['transfo
   button('Save'); await until(() => localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
   const saved = JSON.parse(localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
   assert.equal(saved.config[kind === 'antenna' ? 'lengthScale' : 'primaryTurns'], value);
-  document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close');
+  document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, kind==='transformer'?7:6); button('Close');
   document.querySelector('#btn-tools').click();
   assert.equal(document.querySelector('[data-tool="board"]').getAttribute('aria-pressed'), 'true');
   document.querySelector('[data-tool="tolerance"]').click();
@@ -40,6 +47,7 @@ assert.equal(Number(document.querySelector('[aria-label="Length tuning"]').value
 const choose = async (label, value) => {
   const select = document.querySelector(`select[aria-label="${label}"]`);
   assert.ok(select, label); select.value = value; select.dispatchEvent(new w.Event('change', { bubbles: true }));
+  if(['Transformer type','Catalog core assembly'].includes(label)) { const apply=[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply preset');if(apply)apply.click(); }
   await new Promise(r => setTimeout(r, 220)); await solved();
 };
 for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
@@ -72,6 +80,7 @@ button('Save');
 await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayCols === 32);
 assert.equal(JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayRows, 32);
 document.querySelector('[data-ws="transformer"]').click(); await solved();
+button('3 Windings');
 for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
   await choose('Transformer type', family);
   assert.equal(document.querySelector('[data-key="core"]').hidden, family !== 'ferrite');
@@ -137,6 +146,66 @@ assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).co
 bridge.api.context = async () => { throw new Error('No PCB open'); };
 button('Refresh board settings'); await until(() => document.querySelector('.layer-assistant').textContent.includes('No PCB open'));
 assert.equal([...document.querySelectorAll('button')].find(b => b.textContent === 'Refresh board settings').disabled, false);
-console.log('Whole-app creator DOM flows passed: tabs, edits, saved configs, export dialogs, tools, all antenna/transformer families, target sizing, core materials and invalid-state recovery. Canvas/layout not tested.');
+// Independent magnetic/topology controls, cross-section, parallel branches,
+// immutable comparison snapshots and catalog assembly survive the real UI.
+bridge.state.context=null;bridge.state.standalone=true;
+await choose('Transformer type','ferrite');
+set('Primary turns',6);await new Promise(r=>setTimeout(r,220));await solved();
+await choose('Winding connections','multiple-tapped');
+assert.match(document.querySelector('#side').textContent,/S_CT/);
+assert.equal(document.querySelectorAll('.winding-row').length,5);
+await choose('Winding connections','standard');
+await choose('Leakage calculation','geometry');
+await choose('S section connection','parallel');
+assert.match(document.querySelector('#side').textContent,/parallel/);
+assert.equal(document.querySelectorAll('#side .chart').length,5);
+document.querySelector('[aria-label="Highlight section 2"]').click();
+assert.ok(document.querySelectorAll('[data-transformer-layer][data-selected="true"]').length>=2);
+set('Candidate name','Parallel candidate'); // generic helper dispatches change
+document.querySelector('[aria-label="Candidate name"]').value='Parallel candidate';
+button('Pin current design');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,1);
+set('Primary turns',8);await new Promise(r=>setTimeout(r,220));await solved();
+button('Restore candidate');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),6);
+await choose('Catalog core assembly','eelp32');
+assert.match(document.querySelector('.core-assembly').textContent,/B66457G0000X187/);
+assert.equal(Number(document.querySelector('[aria-label="Outer diameter"]').value),22);
+assert.ok(document.querySelector('.transformer-preview svg'));
+button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.corePreset==='eelp32');
+assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.candidates.length,1);
+button('Remove candidate');await new Promise(r=>setTimeout(r,220));await solved();
+assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,0);
+// Guided workflow, reversible edits, review-before-apply and real study workers.
+button('4 Verify');assert.equal(document.querySelector('[data-key="transformer-verification"]').hidden,false);assert.equal(document.querySelector('[data-key="windings"]').hidden,true);
+button('3 Windings');const originalTurns=Number(document.querySelector('[aria-label="Primary turns"]').value);
+set('Primary turns',originalTurns+1);await new Promise(r=>setTimeout(r,220));await solved();button('Undo');await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),originalTurns);
+button('Redo');await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="Primary turns"]').value),originalTurns+1);
+const core=document.querySelector('[aria-label="Catalog core assembly"]');core.value='eilp32';core.dispatchEvent(new w.Event('change',{bubbles:true}));assert.ok([...document.querySelectorAll('.transformer-preset-preview')].some(n=>n.textContent.includes('Review')));assert.match(document.querySelector('.core-assembly').textContent,/B66457/);button('Cancel preset');
+assert.ok(document.querySelector('[aria-label="Restore checkpoint"]').options.length>1);
+button('2 Candidates');button('Pin current design');await new Promise(r=>setTimeout(r,220));await solved();button('Compare table and curves');await until(()=>liveWorkers===0);assert.equal(document.querySelectorAll('.transformer-review-plot').length,4);
+const normalized=document.querySelector('[aria-label="Use current operating point for all candidates"]');normalized.checked=true;normalized.dispatchEvent(new w.Event('change'));await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Lowest copper loss/);button('Back to overview');
+button('4 Verify');button('Check operating envelope');button('Run study');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/with unknown results/);button('Back to overview');
+button('Study fabrication tolerances');set('Samples (5–200)',5);button('Run study');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Sensitivity/);button('Run study');assert.equal(liveWorkers,1);button('Back to overview');assert.equal(liveWorkers,0);
+button('Measure and calibrate');set('Fixture and reference plane','Terminals');const measurement=document.querySelector('[aria-label="Measurement test"]');measurement.value='loaded';measurement.dispatchEvent(new w.Event('change'));
+const file=document.querySelector('[aria-label="Transformer measurement file"]');Object.defineProperty(file,'files',{value:[{name:'loaded.csv',size:100,text:async()=> 'Frequency (Hz),Gain_dB\n80000,-6\n120000,-6'}]});file.dispatchEvent(new w.Event('change'));await until(()=>document.querySelector('.transformer-test'));button('Compare measured and predicted');await until(()=>liveWorkers===0);assert.equal(document.querySelectorAll('.transformer-review-plot').length,1);assert.match(document.querySelector('.transformer-review-body').textContent,/RMSE/);button('Back to overview');
+button('Review board placement');assert.ok(document.querySelector('[aria-label="Destination KiCad board file"]'));assert.equal([...document.querySelectorAll('button')].find(b=>b.textContent==='Place reviewed transformer').disabled,true);button('Back to overview');
+button('5 Export');assert.equal(document.querySelector('[data-key="transformer-export"]').hidden,false);button('Export build package and files');assert.match(document.querySelector('.export-grid').textContent,/Transformer build package/);button('Close');
+// Project workflow: links, persistent evidence, repeated imports and keyboard tabs.
+button('1 Requirements');const nominal=document.querySelector('[aria-label="Use nominal requirements"]');if(!nominal.checked){nominal.checked=true;nominal.dispatchEvent(new w.Event('change',{bubbles:true}));}
+set('Nominal input RMS voltage (V)',13);assert.equal(Number(document.querySelector('[aria-label="Source RMS voltage"]').value),13);
+set('Source RMS voltage',12);assert.equal(nominal.checked,false);await new Promise(r=>setTimeout(r,220));await solved();assert.match(document.querySelector('.transformer-summary').textContent,/Experiment override/);
+set('Operating condition name','Bench condition');button('Save current operating condition');assert.match(document.querySelector('.transformer-scenarios').textContent,/Bench condition/);
+const reqTab=document.querySelector('#transformer-tab-requirements');reqTab.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));assert.equal(document.activeElement.id,'transformer-tab-candidates');assert.equal(document.activeElement.getAttribute('aria-selected'),'true');assert.equal(document.querySelectorAll('.transformer-steps [tabindex="0"]').length,1);
+button('4 Verify');assert.ok(document.querySelectorAll('.transformer-ledger .transformer-test').length>=2);button('Open saved report');assert.equal(liveWorkers,0);assert.match(document.querySelector('.transformer-review-body').textContent,/Report inputs/);assert.ok(document.querySelector('.transformer-review-plot details table'));button('Back to overview');
+button('Check named conditions');button('Run study');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Bench condition/);button('Back to overview');
+button('Measure and calibrate');set('Fixture and reference plane','Terminals');set('Prototype identifier','Prototype B');const againKind=document.querySelector('[aria-label="Measurement test"]');againKind.value='loaded';againKind.dispatchEvent(new w.Event('change'));const againFile=document.querySelector('[aria-label="Transformer measurement file"]');Object.defineProperty(againFile,'files',{value:[{name:'loaded-b.csv',size:100,text:async()=> 'Frequency (Hz),Gain_dB\n80000,-7\n120000,-7'}]});againFile.dispatchEvent(new w.Event('change'));await until(()=>document.querySelectorAll('.transformer-review-body .transformer-test').length===2);
+for(const c of document.querySelectorAll('.transformer-review-body .transformer-test input[type="checkbox"]')){c.checked=true;c.dispatchEvent(new w.Event('change'));}button('Compare selected prototypes');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Prototype comparison/);button('Fit AL and leakage from open / short tests');assert.match(document.querySelector('.transformer-embedded footer').textContent,/Choose the exact/);button('Back to overview');
+button('3 Windings');set('P:0 terminal offset (mm)',.5);await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="P:0 terminal offset (mm)"]').value),.5);set('P:0 terminal offset (mm)',4);assert.match(document.querySelector('[data-key="terminals"]').textContent,/0 and 3/);assert.equal(Number(document.querySelector('[aria-label="P:0 terminal offset (mm)"]').value),.5);
+button('4 Verify');assert.match(document.querySelector('.transformer-ledger').textContent,/Outdated/);button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.transformerTests.length===2);
+const projectSaved=JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config;assert.ok(projectSaved.studies.length>=3);assert.equal(projectSaved.scenarios[0].name,'Bench condition');
+console.log('Project DOM flows passed: linked overrides, named cases, keyboard tabs, saved reports and plots, repeated prototype imports, matched calibration selection and rejected terminal edits.');
+console.log('Guided workflow, undo/redo, preset preview, checkpoints, comparison, operating envelope, tolerances, worker cleanup, measurement overlays and placement review passed.');
+console.log('Whole-app creator DOM flows passed, including composed transformers, parallel windings, charts, selection, candidate restore and catalog persistence. Canvas/layout not tested.');
 await w.happyDOM.abort();
 process.exit(0);

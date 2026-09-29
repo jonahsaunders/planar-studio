@@ -1,0 +1,82 @@
+{
+  "schematic_board_logical_pins_matched": 60,
+  "physical_numbered_pads_checked": 61,
+  "winding_polygon_count": 4,
+  "polygon_terminal_contacts": {
+    "F.Cu": [
+      "1",
+      "5"
+    ],
+    "B.Cu": [
+      "2",
+      "5"
+    ],
+    "In1.Cu": [
+      "3",
+      "4"
+    ],
+    "In4.Cu": [
+      "3",
+      "4"
+    ]
+  },
+  "centerline_samples_inside_final_copper": 19229,
+  "stack_thickness_mm": 1.6,
+  "copper_layers": 6,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "scope": "Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.",
+  "schematic_continuous_wire_groups": {
+    "VIN": [
+      "D1.1",
+      "T1.1",
+      "R6.1",
+      "D4.2",
+      "U1.3",
+      "R1.1",
+      "C1.1",
+      "C2.1",
+      "R8.1"
+    ],
+    "SW": [
+      "T1.2",
+      "U1.5",
+      "R3.1",
+      "C6.2",
+      "D3.2"
+    ],
+    "PGND": [
+      "J1.2",
+      "C1.2",
+      "C2.2",
+      "U1.4",
+      "U1.9",
+      "C5.2",
+      "R2.2",
+      "R4.2",
+      "C7.2"
+    ],
+    "+5V_ISO": [
+      "D2.1",
+      "C3.1",
+      "C4.1",
+      "C8.1",
+      "R7.1",
+      "J2.1"
+    ],
+    "GND_ISO": [
+      "T1.3",
+      "C3.2",
+      "C4.2",
+      "C8.2",
+      "R7.2",
+      "J2.2"
+    ]
+  },
+  "schematic_junctions": {
+    "four_way_connections": 0,
+    "maximum_connection_arms": 3,
+    "three_way_connections": 31,
+    "includes_symbol_pin_stubs": true
+  }
+}

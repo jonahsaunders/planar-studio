@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "615bb34db079df08285bba9d12964a08dc4da2c7",
+  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
+  "unchanged_non_mounting_footprint_geometry_and_metadata": 22,
+  "all_tracks_vias_pours_stack_and_outline_unchanged": true,
+  "all_four_drill_centers_sizes_and_NPTH_attributes_preserved": true,
+  "all_electronic_part_records_unchanged": true,
+  "mounting_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+  "footprint_matches_unmodified_upstream": true,
+  "footprint_sha256": "46693027ddd1bb0f938133d0348b8b22a16dace3a00c9588f37079e2d17b5c7e",
+  "rotations_degrees": {
+    "H1": 180,
+    "H2": 0,
+    "H3": 180,
+    "H4": 0
+  },
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
+}

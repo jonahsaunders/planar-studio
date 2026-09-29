@@ -1,0 +1,526 @@
+{
+  "project": "PS-FLYBACK-5W",
+  "root_uuid": "bb81aa0a-873e-523c-8fb4-735fe49123af",
+  "parts": [
+    {
+      "ref": "J1",
+      "value": "18-36 V DC",
+      "kind": "JIN",
+      "nets": {
+        "1": "VIN_RAW",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:Terminal_KF301_2P_5.00",
+      "source_footprint": "Flyback:Terminal_KF301_2P_5.00",
+      "mpn": "KF301-5.0-2P",
+      "lcsc": "C474881",
+      "mfr": "Cixi Kefa",
+      "source": "https://www.cxkefa.com/kf301-50",
+      "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
+      "uuid": "75d795fa-e501-5278-9560-ecfa5d62195c",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "F1",
+      "value": "1 A / 63 V fast",
+      "kind": "FUSE",
+      "nets": {
+        "1": "VIN_RAW",
+        "2": "VIN_FUSED"
+      },
+      "footprint": "Flyback:Fuse_1206_3216Metric",
+      "source_footprint": "Fuse:Fuse_1206_3216Metric",
+      "mpn": "0466001.NR",
+      "lcsc": "C151134",
+      "mfr": "Littelfuse",
+      "source": "https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f",
+      "purpose": "Input fuse; verify inrush and coordination in prototype",
+      "uuid": "bb0780a7-d1d4-508c-93a5-7309ac78b8f3",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "D1",
+      "value": "DFLS1100-7",
+      "kind": "D",
+      "nets": {
+        "1": "VIN",
+        "2": "VIN_FUSED"
+      },
+      "footprint": "Flyback:D_PowerDI-123",
+      "source_footprint": "Diode_SMD:D_PowerDI-123",
+      "mpn": "DFLS1100-7",
+      "lcsc": "C107674",
+      "mfr": "Diodes Incorporated",
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf",
+      "purpose": "Traceable 1 A / 100 V reverse-input protection; shared exact MPN with D3. Apply 20% capacitive-load derating and verify temperature/inrush.",
+      "uuid": "07c9d955-7e4d-5bc2-b579-33f83d00a7b4",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C1",
+      "value": "10u 50V X7R",
+      "kind": "C",
+      "nets": {
+        "1": "VIN",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:C_1210_3225Metric",
+      "source_footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "mpn": "CL32B106KBJNNNE",
+      "lcsc": "C138687",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do",
+      "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
+      "uuid": "dbf35f00-b299-5c6c-a125-4177cdab07ab",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C2",
+      "value": "10u 50V X7R",
+      "kind": "C",
+      "nets": {
+        "1": "VIN",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:C_1210_3225Metric",
+      "source_footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "mpn": "CL32B106KBJNNNE",
+      "lcsc": "C138687",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do",
+      "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
+      "uuid": "25d24e89-c39e-5ffb-8b80-26249b5bce0c",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "T1",
+      "value": "PLANAR 4:2 / Lm 12uH",
+      "kind": "T",
+      "nets": {
+        "1": "VIN",
+        "2": "SW",
+        "3": "GND_ISO",
+        "4": "SEC_A",
+        "5": "unconnected-(T1-P_MID-Pad5)"
+      },
+      "footprint": "Flyback:Planar_EELP32_4T_2T",
+      "source_footprint": "Flyback:Planar_EELP32_4T_2T",
+      "mpn": "PS-MAG-001 A0",
+      "lcsc": "",
+      "mfr": "Prepared core assembly to drawing",
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
+      "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Supplier procurement and assembly acceptance required.",
+      "uuid": "b7eb1bbf-a860-5fb5-b6bb-9b4653298a1e",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "D2",
+      "value": "PDS835L-13",
+      "kind": "D",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "SEC_A"
+      },
+      "footprint": "Flyback:D_PowerDI-5",
+      "source_footprint": "Diode_SMD:D_PowerDI-5",
+      "mpn": "PDS835L-13",
+      "lcsc": "C444972",
+      "mfr": "Diodes Incorporated",
+      "source": "https://www.diodes.com/datasheet/download/PDS835L.pdf",
+      "purpose": "",
+      "uuid": "f4249b5c-721b-5ba8-b5d3-12c0410c0923",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C3",
+      "value": "180u 16V",
+      "kind": "CP",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:CP_Panasonic_C6",
+      "source_footprint": "Flyback:CP_Panasonic_C6",
+      "mpn": "16SVPF180M",
+      "lcsc": "C136277",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M",
+      "purpose": "22 mOhm ESR, 3.3 A ripple at 100 kHz; C6 case 6.3 x 5.9 mm",
+      "uuid": "ef407ca9-da0d-540c-9372-080112a9f508",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C4",
+      "value": "22u 16V X7R",
+      "kind": "C",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:C_1210_3225Metric",
+      "source_footprint": "Capacitor_SMD:C_1210_3225Metric",
+      "mpn": "CL32B226KOJNNNE",
+      "lcsc": "",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do",
+      "purpose": "Current-production 1210 output bypass. Not credited in conservative bulk-ripple sizing; verify effective C and ripple temperature.",
+      "uuid": "0982d176-3b1f-5a20-9822-0de39fb7698f",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "J2",
+      "value": "5 V / 1 A isolated",
+      "kind": "J",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:Terminal_KF301_2P_5.00",
+      "source_footprint": "Flyback:Terminal_KF301_2P_5.00",
+      "mpn": "KF301-5.0-2P",
+      "lcsc": "C474881",
+      "mfr": "Cixi Kefa",
+      "source": "https://www.cxkefa.com/kf301-50",
+      "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
+      "uuid": "499f9370-01db-57d3-8ace-6b7e02b9e410",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "U1",
+      "value": "LT8302ES8E#PBF",
+      "kind": "LT8302",
+      "nets": {
+        "1": "UVLO",
+        "2": "INTVCC",
+        "3": "VIN",
+        "4": "PGND",
+        "5": "SW",
+        "6": "RFB",
+        "7": "RREF",
+        "8": "TC",
+        "9": "PGND"
+      },
+      "footprint": "Flyback:SOIC8_EP_LT_S8E",
+      "source_footprint": "Flyback:SOIC8_EP_LT_S8E",
+      "mpn": "LT8302ES8E#PBF",
+      "lcsc": "C117331",
+      "mfr": "Analog Devices",
+      "source": "https://www.analog.com/en/products/lt8302.html",
+      "purpose": "",
+      "uuid": "2173e669-e2b8-5e97-a7cd-2c16f0d7a0a9",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C5",
+      "value": "4.7u / 16 V X5R",
+      "kind": "C",
+      "nets": {
+        "1": "INTVCC",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:C_0603_1608Metric",
+      "source_footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "mpn": "CL10A475KO8NQNC",
+      "lcsc": "",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do",
+      "purpose": "Manufacturer-recommended replacement for NRND CL10A475KO8NNNC. Nominal 4.7 uF; acceptance >=1 uF effective at approximately 3.1 V bias.",
+      "uuid": "4aad4761-e749-5a59-b80e-92e8864b8283",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R1",
+      "value": "649k 1%",
+      "kind": "R",
+      "nets": {
+        "1": "VIN",
+        "2": "UVLO"
+      },
+      "footprint": "Flyback:R_0603_1608Metric",
+      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "mpn": "RC0603FR-07649KL",
+      "lcsc": "",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL",
+      "purpose": "Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start.",
+      "uuid": "df3c6290-28c6-5a9c-bb8c-b1dbfdf4363f",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R2",
+      "value": "61.9k 1%",
+      "kind": "R",
+      "nets": {
+        "1": "UVLO",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:R_0603_1608Metric",
+      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "mpn": "RC0603FR-0761K9L",
+      "lcsc": "C137696",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0761K9L",
+      "purpose": "",
+      "uuid": "ed556aac-d5c3-5cad-9c14-0b3b27e5fcb0",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R3",
+      "value": "106k 0.1%",
+      "kind": "R",
+      "nets": {
+        "1": "SW",
+        "2": "RFB"
+      },
+      "footprint": "Flyback:R_0603_1608Metric",
+      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "mpn": "RT0603BRD07106KL",
+      "lcsc": "",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL",
+      "purpose": "106 kOhm 0.1%; primary reflected-voltage sense; output must be trimmed on prototype",
+      "uuid": "92ed126b-fd69-5052-bafb-91be8d346cf9",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R4",
+      "value": "10k 0.1%",
+      "kind": "R",
+      "nets": {
+        "1": "RREF",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:R_0603_1608Metric",
+      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "mpn": "RT0603BRD0710KL",
+      "lcsc": "C95204",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL",
+      "purpose": "",
+      "uuid": "640db86d-489a-5b09-a234-797726924510",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R5",
+      "value": "118k 1%",
+      "kind": "R",
+      "nets": {
+        "1": "TC",
+        "2": "RREF"
+      },
+      "footprint": "Flyback:R_0603_1608Metric",
+      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "mpn": "RC0603FR-07118KL",
+      "lcsc": "C137804",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL",
+      "purpose": "Initial temperature compensation; bench trim required",
+      "uuid": "a02e3a3b-088a-5b1f-9a79-5722b1095f3e",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R6",
+      "value": "39R 0.66 W",
+      "kind": "R",
+      "nets": {
+        "1": "VIN",
+        "2": "SNUB"
+      },
+      "footprint": "Flyback:R_1206_3216Metric",
+      "source_footprint": "Resistor_SMD:R_1206_3216Metric",
+      "mpn": "ERJ-P08F39R0V",
+      "lcsc": "",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf",
+      "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning",
+      "uuid": "e30db11a-e47e-5486-baed-0eff5471e107",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C6",
+      "value": "470p / 450 V C0G",
+      "kind": "C",
+      "nets": {
+        "1": "SNUB",
+        "2": "SW"
+      },
+      "footprint": "Flyback:C_0805_2012Metric",
+      "source_footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "mpn": "CGA4C4C0G2W471J060AA",
+      "lcsc": "",
+      "mfr": "TDK",
+      "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA",
+      "purpose": "Current-production 0805 replacement for NRND 100 V part; same 470 pF C0G damping function.",
+      "uuid": "97afcc15-eb1f-599f-b32a-86a68a5f88c0",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "D3",
+      "value": "DFLS1100-7",
+      "kind": "D",
+      "nets": {
+        "1": "CLAMP",
+        "2": "SW"
+      },
+      "footprint": "Flyback:D_PowerDI-123",
+      "source_footprint": "Diode_SMD:D_PowerDI-123",
+      "mpn": "DFLS1100-7",
+      "lcsc": "C107674",
+      "mfr": "Diodes Incorporated",
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf",
+      "purpose": "",
+      "uuid": "b535e49e-094e-5889-bf30-3491fac0a36d",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "D4",
+      "value": "SMAJ12A-13-F",
+      "kind": "TVS",
+      "nets": {
+        "1": "CLAMP",
+        "2": "VIN"
+      },
+      "footprint": "Flyback:D_SMA",
+      "source_footprint": "Diode_SMD:D_SMA",
+      "mpn": "SMAJ12A-13-F",
+      "lcsc": "",
+      "mfr": "Diodes Incorporated",
+      "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
+      "purpose": "12 V unidirectional TVS, 19.9 V specified clamp. Check SW-VIN <20.5 V including overshoot, RFB injected current <200 uA and TVS temperature on hardware.",
+      "uuid": "a7645207-3c9d-5610-9c6c-4ab4646d5fd3",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R7",
+      "value": "220R 0.25 W",
+      "kind": "R",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:R_1206_3216Metric",
+      "source_footprint": "Resistor_SMD:R_1206_3216Metric",
+      "mpn": "RC1206FR-07220RL",
+      "lcsc": "C137353",
+      "mfr": "Yageo",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
+      "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
+      "uuid": "01726ee0-1cfa-5098-a317-73af0ab3b333",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R8",
+      "value": "2.2R 1.5 W",
+      "kind": "R",
+      "nets": {
+        "1": "VIN",
+        "2": "VIN_DAMP"
+      },
+      "footprint": "Flyback:R_2512_6332Metric",
+      "source_footprint": "Resistor_SMD:R_2512_6332Metric",
+      "mpn": "CRCW25122R20FKEGHP",
+      "lcsc": "",
+      "mfr": "Vishay",
+      "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf",
+      "purpose": "Pulse-proof series damping in C7 shunt branch, not in converter DC feed. 1.5 W at 70 C; hot-plug is not qualified.",
+      "uuid": "c394c20f-67a3-5ff4-a9aa-d39bc45ea3d4",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C7",
+      "value": "47u / 63 V",
+      "kind": "CP",
+      "nets": {
+        "1": "VIN_DAMP",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:CP_Elec_8x10.5",
+      "source_footprint": "Capacitor_SMD:CP_Elec_8x10.5",
+      "mpn": "EEHZC1J470P",
+      "lcsc": "",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P",
+      "purpose": "Input damping reservoir through R8; 1.1 A ripple at 100 kHz, 40 mOhm maximum ESR, 8 x 10.2 mm. Not a surge clamp.",
+      "uuid": "5990d7f6-e0bb-50ac-a0c6-639ea72ecdcf",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C8",
+      "value": "180u 16V",
+      "kind": "CP",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:CP_Panasonic_C6",
+      "source_footprint": "Flyback:CP_Panasonic_C6",
+      "mpn": "16SVPF180M",
+      "lcsc": "C136277",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M",
+      "purpose": "Second output reservoir beside C3: combined 360 uF nominal / 288 uF at -20%, 11 mOhm parallel ESR bound at 100 kHz. Startup and ripple sharing require bench validation.",
+      "uuid": "90d612c2-825a-5183-acfb-7078d55d0af0",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "H1",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "51261c4e-141a-500d-a706-92c7d80c9ff1",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H2",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "c60ff40d-3471-5ae4-899a-0779569d0724",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H3",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "c84ee875-4b0a-5a0a-8232-73f04c6acae5",
+      "exclude_from_bom": true
+    },
+    {
+      "ref": "H4",
+      "value": "M3 / 3.2 mm NPTH",
+      "kind": "Mount",
+      "nets": {},
+      "footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "source_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "mpn": "",
+      "lcsc": "",
+      "mfr": "",
+      "source": "",
+      "purpose": "Mechanical mounting hole; not an assembly component",
+      "uuid": "67c2b891-2219-5862-acb7-39a8f621630c",
+      "exclude_from_bom": true
+    }
+  ]
+}

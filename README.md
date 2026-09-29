@@ -1,5 +1,44 @@
 # Planar Studio
 
+## Transformer design workflow — 1.6 development
+
+Dedicated work areas now link nominal requirements to operating values, retain
+verification by design revision, and check multiple outputs across named load
+conditions. Explore up to 24 checked candidates on a size/loss chart, review
+calculated repairs, adjust constrained terminal handles, map destination nets,
+rotate and snap board placement, and compare physical prototypes with retained
+calibration alternatives. The interface audit applies Apple's Human Interface
+Guidelines to this cross-platform webview; see the [audit](docs/transformer-gui-audit.md).
+
+The workspace now follows Requirements → Candidates → Windings → Verify → Export,
+with undo/redo, automatic checkpoints and preset previews. Search respects locks
+and explains rejected and nearly feasible designs. Compare up to three designs
+at a shared operating point, check operating ranges and fabrication tolerances,
+overlay open/short/loaded measurements, and fit small-signal AL and leakage.
+A destination placement review and coordinated ZIP build dossier complete the
+handoff. Unknown thermal/core-loss results remain explicitly unknown.
+
+Independent core and winding choices, parallel sections with solved current
+sharing, physical board heights, geometry-based leakage, AC copper and
+capacitance estimates, response plots, saved comparisons, and a constrained
+sinusoidal design search are now available. Two TDK N87 ELP core assemblies add
+mechanical previews, complete leg cutouts and destination-board checks.
+
+See the [transformer design guide](docs/transformer-design.md) for controls,
+manufacturer sources, validation and model limits. Build the development package
+with `python scripts/build_package.py`; the published download below remains 1.3.0.
+
+## Planar flyback example
+
+The [5 W planar flyback example](examples/planar-flyback-5w/README.md) includes an
+18–36 V DC to isolated 5 V / 1 A converter with integral PCB windings, an editable
+KiCad 10 project, winding configuration, calculations, manufacturing schedules,
+source references and validation evidence. A1 includes four American Embedded
+M3 mounting holes and a [KiStack audit](examples/planar-flyback-5w/KISTACK-AUDIT.md).
+**Untested A1 engineering prototype;
+full-turnkey supplier feasibility is unconfirmed.** No JLCPCB submission or
+purchase was made. See its validation record before reusing manufacturing data.
+
 ## Download and install
 
 ### [Download planar-studio-1.3.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.3.0/planar-studio-1.3.0.zip)

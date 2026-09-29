@@ -2,6 +2,7 @@
    All electrical calculations use the same polylines emitted as artwork. */
 import { buildCoil, toFilaments, inductanceOf, discretisationCorrection, mutualOf, OZ_MM, RHO_CU20, ALPHA_CU } from './coil.js';
 import { artwork, track, pad, rect, bounds } from './artwork.js';
+import { windingNet } from './transformer-project.js';
 
 export function buildAirTransformer(c, env = {}, opt = {}) {
   for (const key of ['primaryTurns', 'secondaryTurns', 'dOuter', 'traceW', 'traceS', 'boardT', 'copperOz', 'freq', 'current', 'secondaryCurrent', 'ppt']) {
@@ -17,7 +18,8 @@ export function buildAirTransformer(c, env = {}, opt = {}) {
     if (Math.abs(coil.spiral.turnsUsed - turns) > 0.001 || coil.innerR < c.traceW) throw new Error('Requested turns do not fit. Increase outer diameter or reduce turns, width or clearance.');
     // Pads are exactly track width: an inner terminal must not bridge turns.
     const pts = coil.layers[0].pts;
-    const net = `${String(env.name || 'T1').replace(/[^a-zA-Z0-9_.-]/g, '_')}_${i === 0 ? 'PRI' : 'SEC'}`;
+    const net = windingNet(c,i?'S':'P',`${String(env.name || 'T1').replace(/[^a-zA-Z0-9_.-]/g, '_')}_${i === 0 ? 'PRI' : 'SEC'}`);
+    if(i&&art.tracks[0].net===net)throw new Error('Separate windings must use separate nets.');
     art.tracks.push(track(names[i], c.traceW, pts, { net, role: i === 0 ? 'primary' : 'secondary' }));
     [pts[0], pts.at(-1)].forEach(([x, y], j) => {
       const number = String(i * 2 + j + 1);
@@ -30,7 +32,7 @@ export function buildAirTransformer(c, env = {}, opt = {}) {
   art.outline.push({ layer: 'Edge.Cuts', pts: rect(-R, -R, R, R) });
   const notes = [{ level: 'info', text: 'Air-core partial-inductance model: no ferrite core, shielding, interwinding capacitance, skin/proximity losses or external return paths. Use below self-resonance; this is not a power-transformer rating.' }, { level: 'warn', text: 'Inner terminals P2 and S2 are enclosed by their windings. Use insulated jumpers or a separately designed breakout layer. Do not add through vias across the opposite winding.' }, { level: 'info', text: 'Pads 1–2 are primary (front); 3–4 are secondary (back). Dotted terminals are 1 and 3. Winding nets remain separate; board dielectric thickness is not an isolation-voltage rating.' }];
   if (env.board?.layerCount > 2) notes.push({ level: 'warn', text: 'Keep intermediate copper planes clear of both windings. Eddy currents in planes or shields are not modeled.' });
-  const result = { art, layers: names, bounds: bounds(art), notes };
+  const result = { art, layers: names, bounds: bounds(art), notes,temperature:c.tempC };
   if (opt.quick) return result;
   const cap = opt.segmentCap || 1800, step = Math.max(0.12, Math.min(0.8, (c.traceW + c.traceS) * 0.6));
   const F = coils.map(p => toFilaments([p], step, cap));

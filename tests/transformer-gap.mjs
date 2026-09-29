@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {defaults,compute} from '../web/js/ws/transformer.js';
+import {corePresetPatch,catalogFor,catalogAL,CORE_CATALOG} from '../web/js/engine/transformer-cores.js';
+const c={...defaults(),...corePresetPatch('eelp32'),driveMode:'current',coreGap:.56};
+assert.throws(()=>compute(c),/ungapped/);
+c.coreGapTreatment='ground-center-leg';
+const r=compute(c);
+assert.ok(Math.abs(r.core.AL-208e-9*Math.pow(.56,-.819))<1e-15);
+assert.equal(r.assembly.modified,true);
+assert.ok(r.assembly.parts.join(' ').includes('do not substitute'));
+assert.throws(()=>catalogFor({...c,corePreset:'eilp32'}),/Published/);
+assert.throws(()=>catalogFor({...c,coreGap:.01}),/Published/);
+for(const coreGap of [.1,1.5])assert.throws(()=>catalogFor({...c,coreGap}),/Published/);
+assert.equal(catalogAL({...c,coreGap:0},CORE_CATALOG.eelp32),5700e-9);
+assert.equal(corePresetPatch('eelp32').coreGapTreatment,'unmodified');
+console.log('Prepared-gap model, limits, explicit opt-in and unmodified catalog regression passed.');

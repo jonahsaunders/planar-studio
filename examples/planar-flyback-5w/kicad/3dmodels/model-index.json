@@ -1,0 +1,249 @@
+{
+  "model_root": "${KIPRJMOD}/3dmodels",
+  "covered_footprints": 29,
+  "electronic_components": 24,
+  "planar_core_assemblies": 1,
+  "provisional_mounting_assemblies": 4,
+  "footprints": [
+    {
+      "reference": "C1",
+      "footprint": "C_1210_3225Metric",
+      "model": "stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C2",
+      "footprint": "C_1210_3225Metric",
+      "model": "stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C3",
+      "footprint": "CP_Panasonic_C6",
+      "model": "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C4",
+      "footprint": "C_1210_3225Metric",
+      "model": "stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C5",
+      "footprint": "C_0603_1608Metric",
+      "model": "stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C6",
+      "footprint": "C_0805_2012Metric",
+      "model": "stock/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C7",
+      "footprint": "CP_Elec_8x10.5",
+      "model": "stock/Capacitor_SMD.3dshapes/CP_Elec_8x10.5.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C8",
+      "footprint": "CP_Panasonic_C6",
+      "model": "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "D1",
+      "footprint": "D_PowerDI-123",
+      "model": "stock/Diode_SMD.3dshapes/D_PowerDI-123.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "D2",
+      "footprint": "D_PowerDI-5",
+      "model": "custom/PowerDI5.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "D3",
+      "footprint": "D_PowerDI-123",
+      "model": "stock/Diode_SMD.3dshapes/D_PowerDI-123.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "D4",
+      "footprint": "D_SMA",
+      "model": "stock/Diode_SMD.3dshapes/D_SMA.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "F1",
+      "footprint": "Fuse_1206_3216Metric",
+      "model": "stock/Fuse.3dshapes/Fuse_1206_3216Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "H1",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "model": "custom/M3_8mm_mount_envelope.step",
+      "provisional_hardware": true
+    },
+    {
+      "reference": "H2",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "model": "custom/M3_8mm_mount_envelope.step",
+      "provisional_hardware": true
+    },
+    {
+      "reference": "H3",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "model": "custom/M3_8mm_mount_envelope.step",
+      "provisional_hardware": true
+    },
+    {
+      "reference": "H4",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "model": "custom/M3_8mm_mount_envelope.step",
+      "provisional_hardware": true
+    },
+    {
+      "reference": "J1",
+      "footprint": "Terminal_KF301_2P_5.00",
+      "model": "custom/KF301_5mm_2P.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "J2",
+      "footprint": "Terminal_KF301_2P_5.00",
+      "model": "custom/KF301_5mm_2P.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R1",
+      "footprint": "R_0603_1608Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R2",
+      "footprint": "R_0603_1608Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R3",
+      "footprint": "R_0603_1608Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R4",
+      "footprint": "R_0603_1608Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R5",
+      "footprint": "R_0603_1608Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R6",
+      "footprint": "R_1206_3216Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R7",
+      "footprint": "R_1206_3216Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "R8",
+      "footprint": "R_2512_6332Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "T1",
+      "footprint": "Planar_EELP32_4T_2T",
+      "model": "custom/EELP32_prepared_pair.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "U1",
+      "footprint": "SOIC8_EP_LT_S8E",
+      "model": "stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step",
+      "provisional_hardware": false
+    }
+  ],
+  "assets": {
+    "custom/EELP32_prepared_pair.step": {
+      "sha256": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
+      "type": "Original nominal geometry"
+    },
+    "custom/KF301_5mm_2P.step": {
+      "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
+      "type": "Original nominal geometry"
+    },
+    "custom/M3_8mm_mount_envelope.step": {
+      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "type": "Original nominal geometry"
+    },
+    "custom/PowerDI5.step": {
+      "sha256": "d86ad87c76c085b52d90c869fd750b830df55d443c970e34d16cbfa5bbecbf52",
+      "type": "Original nominal geometry"
+    },
+    "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": {
+      "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
+      "type": "KiCad generic package"
+    },
+    "stock/Capacitor_SMD.3dshapes/CP_Elec_8x10.5.step": {
+      "sha256": "ae35c4f1043bc64d44be9822563a47867ce2b6bed1663a1144d81c9b58368562",
+      "type": "KiCad generic package"
+    },
+    "stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": {
+      "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+      "type": "KiCad generic package"
+    },
+    "stock/Capacitor_SMD.3dshapes/C_0805_2012Metric.step": {
+      "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+      "type": "KiCad generic package"
+    },
+    "stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": {
+      "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+      "type": "KiCad generic package"
+    },
+    "stock/Diode_SMD.3dshapes/D_PowerDI-123.step": {
+      "sha256": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
+      "type": "KiCad generic package"
+    },
+    "stock/Diode_SMD.3dshapes/D_SMA.step": {
+      "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+      "type": "KiCad generic package"
+    },
+    "stock/Fuse.3dshapes/Fuse_1206_3216Metric.step": {
+      "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+      "type": "KiCad generic package"
+    },
+    "stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step": {
+      "sha256": "2d6f7e774e8143e3320cbd59eb5be9f3b7864614644e3b072006e1eb05fb7fa6",
+      "type": "KiCad generic package"
+    },
+    "stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step": {
+      "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+      "type": "KiCad generic package"
+    },
+    "stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step": {
+      "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
+      "type": "KiCad generic package"
+    },
+    "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step": {
+      "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
+      "type": "KiCad generic package"
+    }
+  }
+}

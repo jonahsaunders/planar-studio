@@ -1,5 +1,84 @@
 # Changelog
 
+## 1.6.0 — Transformer project workflow and GUI audit (development)
+
+- Move all four flyback mounting holes to 4.5 mm corner insets (41 × 95 mm
+  pattern), increasing capacitor clearance while preserving electronic
+  placement, routes and winding geometry. Refresh fabrication and 3D evidence.
+
+- Review every flyback component against manufacturer package, polarity, rating
+  and use-case evidence. Improve UVLO startup margin, select a lower-voltage
+  clamp and current capacitor variants, and replace the input diode with a
+  verified PowerDI123 part. Document conditional ratings and hardware gates.
+- Add a damped 47 µF input reservoir, a second 180 µF output polymer capacitor,
+  26 ground stitches and two capacitor return vias. Preserve the winding,
+  outline and mounting geometry; keep schematic labels readable and all
+  connections three-way. Publish a per-component audit, refreshed manufacturing
+  files and 3D views; estimated ripple is 50.58 mV, not a measured result.
+
+- Link new nominal input/frequency/load values to requirements, with explicit
+  experimental overrides; preserve imported legacy operating points.
+- Provide dedicated requirements, candidate, verification and export work areas
+  around the winding canvas. Add keyboard stage navigation, visible focus,
+  adaptive layout, clearer text and accessible chart data tables.
+- Save revision-tagged verification reports and plots, named operating cases,
+  and dependency-based Pass / Fail / Unknown / Outdated states.
+- Add field-linked findings and bounded, recalculated repair previews.
+- Search multiple outputs and selected load combinations; retain up to 24
+  refined candidates with worst-case margin and size/loss exploration.
+- Add constrained terminal offsets and handles, destination-net mapping,
+  snapped/rotated placement, immediate conflict checks and replacement previews.
+- Retain multiple tests per prototype and test type, matched calibration pairs,
+  overlapping-frequency prototype comparisons and alternative calibration fits.
+- Correct copper-temperature scaling in reused circuit solves, preserve exact
+  zero external open-circuit current, and align catalog multi-output windings
+  with rectangular core slots.
+- Model explicitly prepared EELP32 center-leg gaps using the published AL/gap
+  relation; retain ungapped behavior unless preparation is selected.
+- Include a complete 5 W planar flyback example with KiCad source, integral
+  six-layer windings, analytical calculations, BOM/CPL, Gerbers, core assembly
+  notes, prototype test plan and clean ERC/DRC evidence. Mark supplier acceptance
+  and physical performance as unverified; no supplier submission was made.
+- Audit the flyback example with KiStack; add four American Embedded M3
+  mounting holes, preserve explicit fabrication limits, check native schematic
+  parity and part metadata, and publish rendered Gerber/mounting evidence.
+- Redraw the flyback schematic on A4 with connected controller passives,
+  complete clamp branches, compact symbols and readable fields; verify that
+  every electrical pin, part record and PCB/manufacturing file is unchanged.
+- Wire the clamp and controller directly to the power stage, separate signal
+  ground symbols from net labels, and check drawn-wire continuity. Present the
+  schematic and front/back PCB layout prominently in the example README.
+- Extend engineering, project-state and whole-app interaction regression tests.
+- Eliminate four-way schematic junctions and enforce both native ERC and
+  symbol-aware geometry checks. Publish a measured PCB layout audit identifying
+  primary input/clamp routing, output-feed, probe-access and assembly work.
+- Bundle 3D models for all 29 flyback footprints, including the prepared core
+  pair and provisional M3 hardware. Publish five assembly views, STEP/GLB
+  exports, asset validation and nominal solid-interference evidence.
+- Complete the KiStack PCB review and rework flyback placement/routing: shorten
+  input, clamp and output paths, keep SW on the front, add separate outer-layer
+  return copper, ground stitching, connector thermals and ground probe lands.
+  Preserve the circuit and winding geometry; refresh manufacturing, 3D and
+  before/after evidence, including full-layer Gerber framing and solid checks.
+
+- Use American Embedded M3 Edge mounting footprints on the flyback example,
+  oriented outward with the same drill pattern, checked six-layer extension
+  clearances and refreshed manufacturing/3D views.
+
+## 1.4.0 — Transformer design workflow (development)
+
+- Compose magnetic model, taps, multiple outputs and winding stack independently.
+- Add per-winding widths, series/parallel sections, solved branch currents, linked
+  cross-section/connection/copper selection and physical KiCad copper heights.
+- Add current-sheet leakage, measured leakage/capacitance overrides, AC foil
+  copper loss, bounded N87 material loss fits and explicit thermal estimates.
+- Add RLC loads, frequency/load responses, three saved candidate comparisons and
+  a cancelable constrained search for sinusoidal starting designs.
+- Add TDK EELP/EILP 32/6/20 N87 assemblies, mechanical clearance validation,
+  complete core-leg board openings and read-only destination cutout checks.
+- Preserve legacy family behavior; add engineering and UI regression coverage,
+  offline RPC isolation and a portable PCM packager.
+
 ## Winding designer and obstacle-aware coils — development
 
 - Add rotary/dual-rotor phase, polarity and series/parallel branch assignments,

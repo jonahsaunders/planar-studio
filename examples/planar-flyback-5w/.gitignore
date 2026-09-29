@@ -1,0 +1,5 @@
+.kicad-config/
+*.kicad_prl
+*.lck
+*-backups/
+evidence/schematic-svg/

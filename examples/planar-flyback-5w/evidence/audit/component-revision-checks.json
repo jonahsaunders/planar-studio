@@ -1,0 +1,23 @@
+{
+  "baseline_id": "9bc061412a87071c32e7d89d0bbc7274ac753907",
+  "baseline_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
+  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
+  "added_components": [
+    "C7",
+    "C8",
+    "R8"
+  ],
+  "original_component_nets_preserved": true,
+  "original_pad_geometry_preserved_except_D1": true,
+  "D1_package_change": "SMA to PowerDI123 for verified DFLS1100-7; polarity/net identities preserved",
+  "transformer_footprint_and_copper_preserved": true,
+  "routed_outline_and_core_slots_preserved": true,
+  "mounting_footprints_centers_and_rotations_preserved": true,
+  "copper_layers_and_thickness_preserved": true,
+  "ordinary_vias_before": 33,
+  "ordinary_vias_after": 61,
+  "added_ground_stitches": 26,
+  "added_capacitor_ground_vias": 2,
+  "historical_record": true,
+  "historical_note": "Component/filtering revision at 007bcb5, before the subsequent corner mounting-hole relocation; see mounting-revision-checks.json for current geometry."
+}
