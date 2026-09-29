@@ -2,6 +2,9 @@
 
 ## 1.6.0 — Transformer project workflow and GUI audit (development)
 
+- Supply the missing 1.6.0 release notes and check release inputs in both local
+  package builders and pull requests. Retry publication when release notes change.
+
 - Move all four flyback mounting holes to 4.5 mm corner insets (41 × 95 mm
   pattern), increasing capacitor clearance while preserving electronic
   placement, routes and winding geometry. Refresh fabrication and 3D evidence.

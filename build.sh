@@ -11,6 +11,8 @@
 # plugin.json there.
 set -e
 
+python3 scripts/check_release.py
+
 VERSION=$(sed -n 's/.*"version": "\([0-9][^"]*\)".*/\1/p' metadata.json | head -1)
 NAME=planar-studio
 OUT=dist
