@@ -21,7 +21,7 @@ export const designDefaults = () => ({
   operatingLinked: false, scenarios: [], studies: [], calibrations: [], searchResults: null,
   prototypeName: '', windingNets: {}, terminalOffsets: {}, placementRotation: 0, placementGrid: 0.5,
   leakageModel: 'supplied', measuredLeakage: 1e-6, lossModel: 'dc', capacitanceModel: 'estimate',
-  dielectricEr: 4.2, measuredCapacitance: 20e-12, corePreset: 'custom', coreLossModel: 'density',
+  dielectricEr: 4.2, measuredCapacitance: 20e-12, corePreset: 'custom', coreLossModel: 'density', coreGapTreatment: 'unmodified',
   steinmetzK: 1, steinmetzAlpha: 1.3, steinmetzBeta: 2.5, coreTemperature: 100,
   thermalResistance: 0, ambientTemperature: 25,
   coreALMeasured: 0, coreALScale: 1, checkpoints: [], transformerTests: [], calibration: null,

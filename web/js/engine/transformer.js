@@ -10,7 +10,7 @@ import { resolveStack } from './winding-stack.js';
 import { designDefaults, transformerMode, windingSettings, windingTurns } from './transformer-config.js';
 import { sheetModel, acResistance, windingCapacitance, lossBreakdown, coreLossAt } from './transformer-physics.js';
 import { effectiveInductance, loadedBranches, imposedBranches } from './transformer-network.js';
-import { catalogFor, coreOpenings, assemblyStatus } from './transformer-cores.js';
+import { catalogFor, catalogAL, coreOpenings, assemblyStatus } from './transformer-cores.js';
 import { windingNet } from './transformer-project.js';
 
 export const TRANSFORMER_FAMILIES = {
@@ -284,12 +284,14 @@ function coreParameters(c, inner) {
   if (radius + c.viaPad / 2 + c.traceS >= inner) throw new Error('Core opening intersects the transition-via area. Increase winding diameter or reduce core post/turns.');
   if (c.boardT + 2 * c.coreClearance > c.coreWindowHeight) throw new Error('PCB plus assembly clearance exceeds the core window height.');
   const muR = CORE_MATERIALS[c.coreMaterial].muR || c.coreMuR;
-  let AL = catalog ? 1 / (1/catalog.al + c.coreGap*1e-3/(MU0*c.coreAe*1e-6)) : MU0 * c.coreAe * 1e-6 / (c.coreLe * 1e-3 / muR + c.coreGap * 1e-3);
+  let AL = catalog ? catalogAL(c,catalog) : MU0 * c.coreAe * 1e-6 / (c.coreLe * 1e-3 / muR + c.coreGap * 1e-3);
   range(c, 'coreALMeasured', 0, 1); range(c, 'coreALScale', .1, 10);
   if(c.coreALMeasured>0)AL=c.coreALMeasured;
   AL *= c.coreALScale;
+  const gapNote = catalog && c.coreGap > 0 ? [warn('Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss.')] : [];
   return { AL, muR, material: CORE_MATERIALS[c.coreMaterial].name, notes: [
-    info(c.coreALMeasured>0 ? 'Measured AL calibration overrides the magnetic-circuit/catalog value. Small-signal fit only; no nonlinear B-H curve, DC bias or temperature-dependent permeability.' : catalog ? 'Catalog AL uses the manufacturer’s nominal ungapped value. No nonlinear B-H curve, DC bias or temperature-dependent permeability.' : 'Linear magnetic-circuit estimate: AL = μ0·Ae/(le/μr + gap). No gap fringing, nonlinear B-H curve, DC bias or temperature-dependent permeability. Material presets supply nominal initial μ at 25 °C only.'),
+    ...gapNote,
+    info(c.coreALMeasured>0 ? 'Measured AL calibration overrides the magnetic-circuit/catalog value. Small-signal fit only; no nonlinear B-H curve, DC bias or temperature-dependent permeability.' : catalog ? 'Catalog AL uses the manufacturer’s nominal ungapped value or published prepared-gap curve. No nonlinear B-H curve, DC bias or temperature-dependent permeability.' : 'Linear magnetic-circuit estimate: AL = μ0·Ae/(le/μr + gap). No gap fringing, nonlinear B-H curve, DC bias or temperature-dependent permeability. Material presets supply nominal initial μ at 25 °C only.'),
     info(c.leakageModel === 'geometry' ? 'Leakage integrates current-sheet field energy through the actual winding stack. It excludes fringing and finite-core effects.' : c.leakageModel === 'measured' ? 'Leakage is calibrated to the supplied primary short-circuit inductance for two series windings.' : 'Leakage is an entered fraction of winding self-inductance. Coupling follows that assumption; interleaving does not change this estimate.'),
     info(c.driveMode === 'voltage' ? 'Loaded flux uses solved winding currents. Core dissipation is evaluated at that flux, frequency and the selected loss-data temperature, separately from the circuit.' : 'Flux uses the entered sinusoidal primary RMS voltage; copper loss separately uses entered RMS currents, with secondaries in antiphase to the primary. These are independent estimates.'),
     warn(catalog ? 'All three core-leg openings are included in the board export. Use the destination cutout check before direct placement, which does not modify board edges. Mechanical clearance does not establish an isolation rating.' : 'The core post cutout is included in the board export. Direct placement does not modify board edges: create this cutout and check the complete core assembly separately. Post geometry does not specify a purchasable core or an isolation rating.'),

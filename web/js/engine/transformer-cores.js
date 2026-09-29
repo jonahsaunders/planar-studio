@@ -15,7 +15,7 @@ export function corePresetPatch(id) {
   if (!p) { if (id === 'custom') return { corePreset: id }; throw new Error('Unknown catalog core.'); }
   return { corePreset: id, magneticModel: 'ferrite', routedWindings: true, coreMaterial: 'N87', coreShape: 'rectangular',
     corePostW: p.postMaxW, corePostH: p.postMaxH, coreWindowHeight: p.windowMin, coreClearance: .25,
-    coreAe: p.ae, coreLe: p.le, coreGap: 0, shape: 'polygon', dOuter: 22,
+    coreAe: p.ae, coreLe: p.le, coreGap: 0, coreGapTreatment: 'unmodified', shape: 'polygon', dOuter: 22,
     primaryTurns: 3, secondaryTurns: 2, traceW: .35, traceS: .2, windingOptions: {},
     leakageModel: 'geometry', coreLossModel: 'n87-fit', coreTemperature: 100, lossModel: 'ac' };
 }
@@ -23,10 +23,16 @@ export function catalogFor(c) {
   if (!c.corePreset || c.corePreset === 'custom') return null;
   const p = CORE_CATALOG[c.corePreset];
   if (!p) throw new Error('Unknown catalog core.');
-  if (c.coreGap !== 0) throw new Error('Catalog parts are ungapped. Select Custom core to model an added magnetic gap.');
+  if (c.coreGap !== 0 && c.coreGapTreatment !== 'ground-center-leg') throw new Error('Catalog parts are ungapped. Select Custom core or explicitly specify a ground center-leg assembly.');
+  if (c.coreGap !== 0 && (c.corePreset !== 'eelp32' || c.coreGap <= .1 || c.coreGap >= 1.5)) throw new Error('Published EELP32 N87 gap data requires 0.10 < gap < 1.50 mm.');
   if (c.corePostW !== p.postMaxW || c.corePostH !== p.postMaxH || c.coreAe !== p.ae || c.coreLe !== p.le || c.coreWindowHeight !== p.windowMin || c.coreMaterial !== p.material || c.coreShape !== 'rectangular') throw new Error('Catalog dimensions were edited. Select Custom core before changing the assembly or magnetic data.');
   if (c.shape !== 'polygon') throw new Error('Catalog E cores require the rectangular winding shape. Select Square or use a custom core.');
   return p;
+}
+export function catalogAL(c, p) {
+  // TDK EELP32 N87: AL[nH] = K1 * s[mm]^K2, page 6.
+  // This is an ordered/prepared center-leg gap, not an ungapped stock part.
+  return c.coreGap > 0 ? 208e-9 * c.coreGap ** -.819 : p.al;
 }
 export function coreOpenings(c) {
   const p = catalogFor(c), clearance = c.coreClearance;
@@ -53,7 +59,7 @@ export function assemblyStatus(c, art) {
       if(v.x>=Math.min(...xs)-m&&v.x<=Math.max(...xs)+m&&v.y>=Math.min(...ys)-m&&v.y<=Math.max(...ys)+m)issues.push(`Terminal or via intersects core opening ${slot+1}.`);}
   });
   if(c.boardT+2*c.coreClearance>p.windowMin)issues.push('PCB and clearance exceed the minimum core window.');
-  return { ...p, issues: [...new Set(issues)], fits: !issues.length, openings: slots, cutoutStatus: 'Not checked against destination board' };
+  return { ...p, parts: c.coreGap > 0 ? [`Prepared EELP32 N87 set: ${c.coreGap} mm total center-leg gap; supplier drawing required`, 'Base geometry: 2 × B66457G0000X187; do not substitute an ungapped pair'] : p.parts, modified: c.coreGap > 0, issues: [...new Set(issues)], fits: !issues.length, openings: slots, cutoutStatus: 'Not checked against destination board' };
 }
 
 export function checkCoreCutouts(required, board, origin = [0,0], tolerance = .08) {

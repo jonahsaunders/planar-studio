@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/rpc.mjs && node tests/python-tests.mjs",
+    "test": "node tests/verify.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/transformer-gap.mjs && node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/rpc.mjs && node tests/python-tests.mjs",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
@@ -26,7 +26,7 @@
     "test:design-layout:browser": "node tests/design-layout-browser.mjs",
     "test:design-layout:dom": "node tests/design-layout-dom.mjs",
     "test:antennas": "node tests/directional-antennas.mjs && node tests/creator-families.mjs",
-    "test:transformer": "node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/creators-dom.mjs"
+    "test:transformer": "node tests/transformer-gap.mjs && node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/creators-dom.mjs"
   },
   "license": "MIT",
   "repository": {

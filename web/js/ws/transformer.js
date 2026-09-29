@@ -79,6 +79,7 @@ export function rail(panel, api) {
     { key: 'coreMuR', type: 'number', label: 'Material relative permeability', when: c => ferrite(c) && c.coreMaterial === 'custom' },
     { key: 'coreAe', type: 'number', label: 'Effective core area Ae', unit: 'mm²', when: ferrite },
     { key: 'coreLe', type: 'number', label: 'Effective magnetic path le', unit: 'mm', when: ferrite },
+    { key: 'coreGapTreatment', type: 'select', label: 'Catalog core preparation', options: options({unmodified:'Unmodified catalog parts', 'ground-center-leg':'Ground center leg per supplier drawing'}), when:c=>ferrite(c)&&c.corePreset==='eelp32', hint:'A prepared gap requires a separately sourced assembly; it is not included in the ungapped catalog part number.' },
     { key: 'coreGap', type: 'number', label: 'Total magnetic gap', unit: 'mm', when: ferrite },
     {key:'leakageModel',type:'select',label:'Leakage calculation',options:options({supplied:'Supplied fraction (legacy)',geometry:'From winding stack (current-sheet estimate)',measured:'Measured primary short-circuit inductance'}),when:ferrite},
     {key:'measuredLeakage',type:'number',label:'Measured primary leakage',unit:'H',si:true,when:c=>ferrite(c)&&c.leakageModel==='measured',hint:'Secondary shorted; two series windings only.'},
