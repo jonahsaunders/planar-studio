@@ -37,7 +37,7 @@ These are release gates, not claims that the circuit has already failed a bench 
 | High | The 58.5 V rating-based clamp estimate excludes dynamic switch overshoot and layout parasitics. | Measure SW with an appropriate probe and tune R6/C6/D3/D4 to the below-60 V prototype target. Inspect the primary input loop and long VIN feed to T1 during this test; clean DRC does not establish EMI performance. |
 | High | Planar gap fringing, core loss, inductance under bias and thermal performance are unverified. | Characterize the prepared core assembly, including fault-current behavior; run the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Small-signal AL and DC winding resistance are insufficient for thermal release. |
 | High | The proposed stack, ground center leg, adhesive/retention process and turnkey assembly have no supplier acceptance. | Obtain engineering and manufacturing approval before treating Gerbers as production data. Stock ungapped halves cannot replace the prepared pair. |
-| Medium | The 3D interference review is incomplete. | Add verified body models for U1, C3, J1, J2 and T1, then check the complete enclosure/fastener/core assembly. Current top/bottom renders cover the PCB and available stock models only. Drawings and 2D courtyards remain relevant, but are not a complete assembled 3D check. |
+| Medium | Final mechanical qualification remains open. | All 26 footprints now have local models; nominal solid checks show no intersections. The missing-model finding is closed. Qualify actual fasteners, enclosure, tolerances, wire/tool access and core retention; the displayed hardware and bond/strap shapes are provisional. See [3D-MODELS.md](3D-MODELS.md). |
 | Medium | R1, R3 and R6 lack verified LCSC identifiers; catalog availability is not reserved. | Confirm sourcing or engineer substitutions. T1 is a separate custom core operation. No new component search or availability claim was made in this audit. |
 | Medium | Output trim, temperature compensation, startup at 18 V, transients, overload and control behavior remain untested. | Verify these on hardware. The standalone cycle calculation is not a closed-loop LT8302 simulation. |
 
@@ -72,9 +72,11 @@ These are release gates, not claims that the circuit has already failed a bench 
   KiStack conversion uses T/B layer names and preserves corrected connector
   centroids. A named JLCPCB GUI BOM preset is not installed; the bundled
   deterministic BOM exporter is checked against schematic fields instead.
-- **3D:** reviewed KiCad top and bottom renders with installed stock models;
-  missing custom models are explicitly listed above. No complete-assembly
-  interference pass is claimed.
+- **3D:** reviewed five KiCad views covering all 26 footprints. All 14 local STEP
+  assets import as valid solids; 325 component pairs and 26 component/substrate
+  checks have no nominal intersections. This closes missing model coverage,
+  including D2's previously broken path. It does not close tolerance/process or
+  enclosure qualification; see [3D-MODELS.md](3D-MODELS.md).
 
 ## Provenance and reproduction
 
@@ -86,8 +88,8 @@ These are release gates, not claims that the circuit has already failed a bench 
   manufacturing exports and geometric checks. See [README](README.md).
 - For the additional Gerber/3D review, create a local Python virtual environment,
   install `pygerber==2.4.3` and `Pillow`, then run `scripts/audit-renders.py`
-  with `--kicad-cli` as needed. Use the installed KiCad model directory for
-  `KICAD9_3DMODEL_DIR` if the copied stock footprints reference that variable.
+  with `--kicad-cli` as needed. All model files are bundled with project-relative
+  paths; no installed stock model directory is required.
 - Reopen the schematic SVG and layer images after any design edit. Refresh the
   audit findings and manifest before sharing a new package; saved screenshots
   and prose do not automatically validate later edits.

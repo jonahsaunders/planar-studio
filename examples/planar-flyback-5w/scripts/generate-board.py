@@ -256,3 +256,5 @@ project['board']['design_settings']['rules'].update({
 project_file.write_text(json.dumps(project,indent=2))
 (ROOT/'evidence/pad-positions.json').write_text(json.dumps({f'{r}.{n}':[xy(p.GetPosition()) for p in ps] for (r,n),ps in pads.items()},indent=2))
 print(f'{out}: {len(fps)} footprints, {len(list(board.GetTracks()))} routes/vias')
+from models_3d import attach_models
+attach_models(out)

@@ -16,10 +16,10 @@
     "B_Silkscreen",
     "Edge_Cuts"
   ],
-  "3D_scope": "KiCad installed stock models. U1, C3, J1, J2 and T1 custom footprints have no 3D body models; review their drawings and mechanical envelopes separately.",
+  "3D_scope": "All 26 footprints have bundled models. Nominal package/core geometry and provisional mounting/retention envelopes; see 3D-MODELS.md and 3d-render-provenance.json.",
   "review_scope": "Rendered actual exported Gerbers. Visual review is supplementary to DRC, netlist and mounting geometry checks.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "09c0a0c3256ed80d5a82c909fa83685ecebaad14160484a6e6bf7316d4f0416d",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "172f2113a81b07d94f710b557b5bdd75c358370d41be587edb6cf786b917d4a7",
     "manufacturing/gerbers/PS-FLYBACK-5W-F_Cu.gtl": "21c54e47d91d46c770881df2bb9ba94b463228313eda7ee0be4af82fdce43cf6",
     "manufacturing/gerbers/PS-FLYBACK-5W-In1_Cu.g1": "ce46765ab5540c86697c19c387df6d524cb580132efaa8d5d11343c691b7e82c",
     "manufacturing/gerbers/PS-FLYBACK-5W-In2_Cu.g2": "4241acae85a04aa022c2861e6b622b0ef2f237bd78d55f6eca25dd13ab6f5c2f",
@@ -31,6 +31,20 @@
     "manufacturing/gerbers/PS-FLYBACK-5W-F_Paste.gtp": "c63334d53a8cfcc56027cda82bd8b07c834c37c417cbdd45f3a234fd35cbd3c2",
     "manufacturing/gerbers/PS-FLYBACK-5W-F_Silkscreen.gto": "e1afc6724604383803819971edf7ea2545000c6aeff958bcf3ba59088088b00e",
     "manufacturing/gerbers/PS-FLYBACK-5W-B_Silkscreen.gbo": "b0929612cb7631c662d051fdb5cc565d9b8e99458e141919b71c0ff2e922ded3",
-    "manufacturing/gerbers/PS-FLYBACK-5W-Edge_Cuts.gm1": "47829b4e9bb8f6e7bc4a75c3ac51715f9b11f7b898aa15afca0df9b8cbf5d4b0"
+    "manufacturing/gerbers/PS-FLYBACK-5W-Edge_Cuts.gm1": "47829b4e9bb8f6e7bc4a75c3ac51715f9b11f7b898aa15afca0df9b8cbf5d4b0",
+    "kicad/3dmodels/custom/EELP32_prepared_pair.step": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
+    "kicad/3dmodels/custom/KF301_5mm_2P.step": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
+    "kicad/3dmodels/custom/M3_8mm_mount_envelope.step": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+    "kicad/3dmodels/custom/PowerDI5.step": "d86ad87c76c085b52d90c869fd750b830df55d443c970e34d16cbfa5bbecbf52",
+    "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
+    "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+    "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0805_2012Metric.step": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+    "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
+    "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_PowerDI-123.step": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
+    "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+    "kicad/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+    "kicad/3dmodels/stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step": "2d6f7e774e8143e3320cbd59eb5be9f3b7864614644e3b072006e1eb05fb7fa6",
+    "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+    "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc"
   }
 }

@@ -98,15 +98,5 @@
 		(roundrect_rratio 0.2)
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Fuse.3dshapes/Fuse_1206_3216Metric.step"
-		(offset
-			(xyz 0 0 0)
-		)
-		(scale
-			(xyz 1 1 1)
-		)
-		(rotate
-			(xyz 0 0 0)
-		)
-	)
+ (model "${KIPRJMOD}/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
 )

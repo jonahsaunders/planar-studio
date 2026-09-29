@@ -265,15 +265,5 @@
 		(uuid "e882a68b-de47-4a6f-bab6-66a450a5928d")
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_PowerDI-5.step"
-		(offset
-			(xyz 0 0 0)
-		)
-		(scale
-			(xyz 1 1 1)
-		)
-		(rotate
-			(xyz 0 0 0)
-		)
-	)
+ (model "${KIPRJMOD}/3dmodels/custom/PowerDI5.step" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
 )

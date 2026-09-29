@@ -20,10 +20,7 @@ args=p.parse_args()
 os.environ.setdefault('KICAD_CONFIG_HOME',str(R/'.kicad-config'))
 gerber_cli=Path(sys.executable).parent/('pygerber.exe' if os.name=='nt' else 'pygerber')
 if not gerber_cli.exists():raise SystemExit('Install pygerber==2.4.3 and Pillow in this Python environment first.')
-for side in ['top','bottom']:
-    subprocess.run([args.kicad_cli,'pcb','render','--output',str(out/f'board-3d-{side}.png'),
-        '--width','1600','--height','1600','--background','opaque','--quality','basic','--side',side,
-        str(R/'kicad/PS-FLYBACK-5W.kicad_pcb')],check=True,cwd=R)
+subprocess.run([sys.executable,str(R/'scripts/render-3d.py'),'--kicad-cli',args.kicad_cli],check=True,cwd=R)
 files=[('F_Cu','gtl'),('In1_Cu','g1'),('In2_Cu','g2'),('In3_Cu','g3'),('In4_Cu','g4'),('B_Cu','gbl'),
        ('F_Mask','gts'),('B_Mask','gbs'),('F_Paste','gtp'),('F_Silkscreen','gto'),('B_Silkscreen','gbo'),('Edge_Cuts','gm1')]
 for name,ext in files:
@@ -39,9 +36,10 @@ for group,names in [('copper',[n for n,_ in files[:6]]),('technical',[n for n,_ 
     sheet.save(out/f'gerber-{group}-overview.png')
 record={'kistack_commit':'8494dbde095669df081950cbb6b24d08a21e25b0','pygerber_version':'2.4.3',
         'dots_per_mm':args.dpmm,'gerber_layers':[n for n,_ in files],
-        '3D_scope':'KiCad installed stock models. U1, C3, J1, J2 and T1 custom footprints have no 3D body models; review their drawings and mechanical envelopes separately.',
+        '3D_scope':'All 26 footprints have bundled models. Nominal package/core geometry and provisional mounting/retention envelopes; see 3D-MODELS.md and 3d-render-provenance.json.',
         'review_scope':'Rendered actual exported Gerbers. Visual review is supplementary to DRC, netlist and mounting geometry checks.'}
 inputs=[R/'kicad/PS-FLYBACK-5W.kicad_pcb']+[R/f'manufacturing/gerbers/PS-FLYBACK-5W-{n}.{e}' for n,e in files]
+inputs+=sorted((R/'kicad/3dmodels').rglob('*.step'))
 record['source_SHA256']={f.relative_to(R).as_posix():hashlib.sha256(f.read_bytes()).hexdigest() for f in inputs}
 (out/'render-provenance.json').write_text(json.dumps(record,indent=2))
-print('Rendered 12 Gerber layers, two contact sheets and top/bottom 3D views.')
+print('Rendered 12 Gerber layers, two contact sheets and five assembly views.')

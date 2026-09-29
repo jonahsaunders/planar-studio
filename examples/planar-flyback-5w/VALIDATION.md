@@ -22,6 +22,7 @@ checks supplement the original validation.
 | Schematic layout redraw | A4 sheet; all 54 pin names/nets and 26 part records unchanged; PCB and manufacturing bytes unchanged | [Redraw comparison](evidence/audit/schematic-layout-checks.json), [render](evidence/audit/schematic-overview.png) |
 | Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
 | Assembly/export consistency | 21 electronic BOM/CPL references, six copper Gerbers, 23 filled/capped holes plus four open connector holes and four separate NPTH mounting holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
+| 3D assembly | All 26 footprints have local models; 14 valid STEP assets; no nominal intersections in 325 component pairs or 26 substrate checks | [Model coverage and limits](3D-MODELS.md), [solid checks](evidence/audit/3d-solid-checks.json) |
 | Transformer sizing | 4:2 turns, nominal 11.95 µH, proposed 0.21 mm prepared center-leg gap | [Winding model](evidence/winding-model.json) |
 | Electrical stresses | 2.05 A worst full-load primary peak under assumed 75% efficiency | [Sizing and limitations](evidence/electrical-sizing.json), [operating points](evidence/operating-points.csv) |
 | Boundary/DCM stage | Charge-balanced analytical current cycles at 18, 24 and 36 V, fixed 5 V output | [Cycle model](evidence/cycle-model.json), [results](evidence/boundary-cycle.csv), [waveforms](evidence/idealized-waveforms.csv) |
@@ -74,5 +75,6 @@ not establish manufacturability or measured circuit behavior.
 
 The earlier A0 workflow attribution was unresolved. A1 uses the specifically
 requested American Embedded KiStack skills; see the audit for pinned versions
-and coverage. Full 3D assembly interference remains unverified because custom
-body models are missing.
+and coverage. Complete model coverage and nominal solid checks are recorded in
+[3D-MODELS.md](3D-MODELS.md). Final tolerances, enclosure, actual mounting hardware
+and core retention qualification remain open.

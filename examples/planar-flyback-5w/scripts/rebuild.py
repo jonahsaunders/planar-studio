@@ -34,6 +34,7 @@ run(args.kicad_cli, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', 'e
 netlist = R / 'evidence/schematic-netlist.xml'
 netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', netlist.read_text(encoding='utf8')), encoding='utf8')
 py('verify-project.py')
+py('verify-3d-models.py')
 py('calculate.py')
 py('cycle-model.py')
 run(args.kicad_cli, 'pcb', 'export', 'gerbers', '--layers',
@@ -53,6 +54,7 @@ for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
     run(args.kicad_cli, 'pcb', 'export', 'svg', '--mode-single', '--fit-page-to-board',
         '--exclude-drawing-sheet', '--layers', layers, '-o', output, pcb)
 py('render-layout.py')
+run(sys.executable, R / 'scripts/render-3d.py', '--kicad-cli', args.kicad_cli)
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)

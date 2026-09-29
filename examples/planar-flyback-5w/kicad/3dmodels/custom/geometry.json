@@ -1,0 +1,110 @@
+{
+  "generator": "CadQuery 2.6.1",
+  "models": {
+    "KF301_5mm_2P": {
+      "file": "kicad/3dmodels/custom/KF301_5mm_2P.step",
+      "description": "Original simplified KEFA drawing-based connector; front wire-entry face is +Y.",
+      "dimensions": {
+        "pitch_mm": 5,
+        "body_width_mm": 10,
+        "body_depth_mm": 7.6,
+        "body_height_mm": 10,
+        "pin_diameter_mm": 1,
+        "pin_projection_mm": 3.6
+      },
+      "bounds_mm": {
+        "min": [
+          -2.5,
+          -3.6,
+          -3.6
+        ],
+        "max": [
+          7.5,
+          4.0,
+          10.000000000000359
+        ]
+      },
+      "valid_solid": true,
+      "volume_mm3": 644.5779888630263
+    },
+    "PowerDI5": {
+      "file": "kicad/3dmodels/custom/PowerDI5.step",
+      "description": "Original simplified typical PowerDI5 outline; cathode left, two anode leads right; no vendor marking.",
+      "dimensions": {
+        "body_length_mm": 5.37,
+        "body_width_mm": 3.966,
+        "height_mm": 1.1,
+        "lead_span_mm": 6.51,
+        "lead_pitch_mm": 1.84
+      },
+      "bounds_mm": {
+        "min": [
+          -3.255,
+          -1.983,
+          0.0
+        ],
+        "max": [
+          3.255,
+          1.983,
+          1.1
+        ]
+      },
+      "valid_solid": true,
+      "volume_mm3": 23.95092295
+    },
+    "EELP32_prepared_pair": {
+      "file": "kicad/3dmodels/custom/EELP32_prepared_pair.step",
+      "description": "Original nominal E+E geometry with 0.21 mm center-only gap; strap/bond envelopes are provisional.",
+      "dimensions": {
+        "core_width_mm": 31.75,
+        "core_depth_mm": 20.35,
+        "core_height_mm": 12.7,
+        "total_center_gap_mm": 0.21,
+        "board_thickness_mm": 1.6,
+        "mating_plane_z_mm": -0.8,
+        "window_height_mm": 6.4,
+        "strap_thickness_mm": 0.18,
+        "strap_width_mm": 12.7
+      },
+      "bounds_mm": {
+        "min": [
+          -16.075,
+          -10.175,
+          -7.33
+        ],
+        "max": [
+          16.075,
+          10.175,
+          5.73
+        ]
+      },
+      "valid_solid": true,
+      "volume_mm3": 5903.251345000003
+    },
+    "M3_8mm_mount_envelope": {
+      "file": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
+      "description": "Provisional unthreaded nylon hardware envelope; not included in the BOM/CPL.",
+      "dimensions": {
+        "standoff_height_mm": 8,
+        "standoff_diameter_mm": 6,
+        "head_diameter_mm": 5.5,
+        "shank_diameter_mm": 2.9,
+        "board_thickness_mm": 1.6
+      },
+      "bounds_mm": {
+        "min": [
+          -3.0,
+          -3.0,
+          -9.6
+        ],
+        "max": [
+          3.0,
+          3.0,
+          2.5
+        ]
+      },
+      "valid_solid": true,
+      "volume_mm3": 258.7509465680835
+    }
+  }
+}

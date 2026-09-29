@@ -251,15 +251,5 @@
 		(uuid "7c00314a-7875-4f2e-ac99-32554d25fcd6")
 	)
 	(embedded_fonts no)
-	(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SMA.step"
-		(offset
-			(xyz 0 0 0)
-		)
-		(scale
-			(xyz 1 1 1)
-		)
-		(rotate
-			(xyz 0 0 0)
-		)
-	)
+ (model "${KIPRJMOD}/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
 )

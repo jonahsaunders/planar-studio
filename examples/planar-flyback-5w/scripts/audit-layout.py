@@ -104,7 +104,8 @@ ep_vias = [{'position_mm':xy(v.GetPosition()),'diameter_mm':pcb.ToMM(v.GetWidth(
             'drill_mm':pcb.ToMM(v.GetDrill())} for v in board.GetTracks()
            if isinstance(v,pcb.PCB_VIA) and v.GetNetname() == '/PGND'
            and ep.GetEffectiveShape(pcb.F_Cu).Distance(v.GetPosition()) == 0]
-missing_models = sorted(ref for ref,f in footprints.items() if not list(f.Models()) and not ref.startswith('H'))
+missing_models = sorted(ref for ref,f in footprints.items() if not list(f.Models()) or
+    any(not m.m_Show or not Path(m.m_Filename.replace('${KIPRJMOD}',str(R/'kicad'))).is_file() for m in f.Models()))
 track_totals = {}
 for track in board.GetTracks():
     if isinstance(track,pcb.PCB_VIA):

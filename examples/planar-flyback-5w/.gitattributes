@@ -2,6 +2,9 @@
 * text eol=lf
 *.png binary
 *.zip binary
+*.glb binary
+# Preserve native/vendor STEP formatting, including generated trailing spaces.
+*.step linguist-generated=true -whitespace
 evidence/** linguist-generated=true
 manufacturing/gerbers/** linguist-generated=true
 *.svg linguist-generated=true

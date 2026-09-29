@@ -6,9 +6,9 @@ power paths are a credible source of unwanted inductance and switch overshoot.
 This is a layout review, not a measured failure or a parasitic simulation.
 
 Reviewed 2026-09-29 using the pinned [KiStack PCB/layout workflows](KISTACK-AUDIT.md).
-The board is unchanged from commit `976a184e7dc62a84c94099042ebde564a1a12c8d`;
+The routing, placement and manufacturing geometry are unchanged from commit `976a184e7dc62a84c94099042ebde564a1a12c8d`; the current board adds complete local 3D model references;
 its SHA-256 is recorded in the [measurement file](evidence/audit/pcb-layout-metrics.json).
-This revision fixes the schematic junctions and documents the PCB findings;
+The schematic junctions are fixed and nominal 3D model coverage is complete;
 it does **not** claim that the routing findings have been corrected.
 
 [![Actual-board close-ups with measured clamp and output routes](evidence/audit/pcb-layout-audit.svg)](evidence/audit/pcb-layout-audit.svg)
@@ -71,10 +71,12 @@ Place a short PGND probe contact near SW; avoid enlarging the SW copper solely
 for a large test loop. Existing component pads permit limited probing, but the
 board does not provide a deliberate repeatable measurement interface.
 
-U1, C3, J1, J2 and T1 still lack body models. Existing renders therefore cannot
-establish complete connector access, core/adhesive fit, fastener tool clearance
-or underside assembly interference. Add verified body/envelope models and check
-the intended mounting assembly. The M3 drill pattern and copper exclusions pass
+All 26 footprints now have loadable local models, including both prepared core
+halves and provisional M3 hardware. Nominal solid checks find no component or
+substrate intersections; see [3D model evidence](3D-MODELS.md). The prior missing
+model finding is closed, including an additional broken D2 model reference.
+Enclosure, wiring/tool access, actual fasteners, tolerances and core retention
+process remain to be qualified. The M3 drill pattern and copper exclusions pass
 the independent 2D checks.
 
 ### 5. Medium — via processing and assembly acceptance remain open
@@ -103,7 +105,7 @@ No supplier has accepted this process, and no supplier was contacted.
 
 - [Measured paths, widths, return-plane areas and model coverage](evidence/audit/pcb-layout-metrics.json)
 - [Full front/back overview](evidence/layout-overview.svg), [six copper layers](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png)
-- [Top 3D view](evidence/audit/board-3d-top.png), [bottom 3D view](evidence/audit/board-3d-bottom.png); missing bodies listed above
+- [Top 3D view](evidence/audit/board-3d-top.png), [bottom 3D view](evidence/audit/board-3d-bottom.png); [assembled and underside views](3D-MODELS.md) now include every footprint
 - [DRC](evidence/board-drc.json), [mounting checks](evidence/audit/mounting-checks.json), [broader electrical/manufacturing audit](KISTACK-AUDIT.md)
 
 Run `scripts/audit-layout.py` with KiCad 10's Python, then

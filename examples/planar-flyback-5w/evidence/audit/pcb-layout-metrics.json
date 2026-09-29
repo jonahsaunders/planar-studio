@@ -1,5 +1,5 @@
 {
-  "board_sha256": "09c0a0c3256ed80d5a82c909fa83685ecebaad14160484a6e6bf7316d4f0416d",
+  "board_sha256": "172f2113a81b07d94f710b557b5bdd75c358370d41be587edb6cf786b917d4a7",
   "method": "Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.",
   "scope": "Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.",
   "routes": [
@@ -590,13 +590,7 @@
       "drill_mm": 0.3
     }
   ],
-  "footprints_without_body_models": [
-    "C3",
-    "J1",
-    "J2",
-    "T1",
-    "U1"
-  ],
+  "footprints_without_body_models": [],
   "dedicated_testpoint_footprints": 0,
   "existing_Gerber_and_3D_render_source_hashes_match": true
 }

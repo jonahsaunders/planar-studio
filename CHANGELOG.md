@@ -38,6 +38,9 @@
 - Eliminate four-way schematic junctions and enforce both native ERC and
   symbol-aware geometry checks. Publish a measured PCB layout audit identifying
   primary input/clamp routing, output-feed, probe-access and assembly work.
+- Bundle 3D models for all 26 flyback footprints, including the prepared core
+  pair and provisional M3 hardware. Publish five assembly views, STEP/GLB
+  exports, asset validation and nominal solid-interference evidence.
 
 ## 1.4.0 — Transformer design workflow (development)
 

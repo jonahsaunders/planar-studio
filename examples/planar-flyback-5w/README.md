@@ -4,7 +4,7 @@
 
 > **A1 engineering prototype — unbuilt and untested.** The files pass the checks below; hardware performance and manufacturing feasibility remain unconfirmed. No design files were submitted to JLCPCB and no purchase was made.
 
-[Download the complete A1 package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true) · [Schematic](#schematic) · [PCB layout](#pcb-layout) · [Open in KiCad](#open-the-example) · [Audit and open issues](KISTACK-AUDIT.md)
+[Download the complete A1 package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true) · [3D assembly](#3d-assembly) · [Schematic](#schematic) · [PCB layout](#pcb-layout) · [Open in KiCad](#open-the-example) · [Audit and open issues](KISTACK-AUDIT.md)
 
 | Electrical target | Physical design |
 | --- | --- |
@@ -12,6 +12,23 @@
 | LT8302 primary-side regulation | Six copper layers; integral planar windings |
 | 4:2 turns; nominal primary inductance 11.95 µH | Prepared N87 core pair; 0.21 mm center-leg gap |
 | Separate primary and secondary returns | Four M3 holes: 3.2 mm NPTH, 41 × 80 mm pattern |
+
+## 3D assembly
+
+Every one of the **26 footprints has a bundled 3D model**, including the controller,
+bulk capacitor, both connectors, diode packages, prepared core pair and illustrative
+M3 mounting hardware. The extracted KiCad project loads them without an installed
+model library. All 14 STEP assets load successfully; nominal solid checks found
+no component-to-component or component-to-board intersections.
+
+[![Complete assembled converter with electronics, prepared planar core and provisional M3 hardware](evidence/audit/board-3d-assembled.png)](evidence/audit/board-3d-assembled.png)
+
+**Inspect:** [Underside](evidence/audit/board-3d-underside.png) · [Top](evidence/audit/board-3d-top.png) · [Bottom](evidence/audit/board-3d-bottom.png) · [Side](evidence/audit/board-3d-side.png) · [STEP assembly](3d/PS-FLYBACK-5W.step) · [GLB assembly](3d/PS-FLYBACK-5W.glb)
+
+For interactive rotation and zoom, open the board in KiCad and choose **View → 3D Viewer**.
+Models use nominal dimensions; the mounting hardware and core retention materials
+are provisional envelopes. No fasteners have been added to the procurement BOM.
+See [model sources, checks and limits](3D-MODELS.md).
 
 ## Schematic
 
@@ -25,7 +42,7 @@ The input, controller, transformer and clamp share continuous drawn wiring. The 
 
 ## PCB layout
 
-**Layout audit: revise the primary power routing before fabrication.** The input-capacitor feed to T1 is 34.87 mm and the clamp return to T1 is 57.54 mm. The audit also identifies a long output feed, missing dedicated probe pads and incomplete mechanical models. These are open layout findings despite clean DRC. Read the [illustrated PCB audit](PCB-LAYOUT-AUDIT.md) and [measured-route detail](evidence/audit/pcb-layout-audit.svg).
+**Layout audit: revise the primary power routing before fabrication.** The input-capacitor feed to T1 is 34.87 mm and the clamp return to T1 is 57.54 mm. The audit also identifies a long output feed, missing dedicated probe pads and unfinished mechanical qualification. These are open layout findings despite clean DRC. Read the [illustrated PCB audit](PCB-LAYOUT-AUDIT.md) and [measured-route detail](evidence/audit/pcb-layout-audit.svg).
 
 The views below come from the actual KiCad copper, silkscreen and routed outline. Both use the same top-view coordinates, so the mounting holes and ferrite openings align. Silkscreen and outline display colors are darkened for readability; the manufacturing geometry is unchanged.
 
@@ -40,7 +57,7 @@ The front and back each carry a two-turn primary section, connected in series. I
 ## Open the example
 
 1. Download and extract the [A1 package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true), or clone this branch.
-2. Open `kicad/PS-FLYBACK-5W.kicad_pro` in **KiCad 10**. In the repository, this is under `examples/planar-flyback-5w/`. The schematic, placed/routed board, symbols and used footprints are included.
+2. Open `kicad/PS-FLYBACK-5W.kicad_pro` in **KiCad 10**. In the repository, this is under `examples/planar-flyback-5w/`. The schematic, placed/routed board, symbols, used footprints and all 3D models are included. In the board editor, choose **View → 3D Viewer** to inspect the assembly.
 3. Open `report.html` locally for the illustrated engineering report. GitHub displays the HTML source; the previews above work directly on GitHub.
 4. Import `planar-studio/T1.planar.json` into Planar Studio to inspect the winding design. Use this development branch with prepared-core support (commit `9210fce` or later); the published 1.3.0 plugin lacks that feature.
 
@@ -57,13 +74,14 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | Drawn-wire continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect physically on the sheet; the five nets stay distinct |
 | Winding copper | Four polygon terminal sets and 19,229 centerline samples checked |
 | Electronic assembly data | 21 BOM/CPL references agree |
+| 3D assembly | 26 visible local model instances; 14 valid STEP assets; 325 nominal component-pair checks and 26 substrate checks with no intersections |
 | Fabrication exports | Six copper Gerbers; 27 plated holes and four M3 NPTH holes |
 
 [Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Schematic revision comparison](evidence/audit/schematic-layout-checks.json)
 
 These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The bulk-only ripple estimate is about 100 mV with little margin. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
 
-The proposed supplier must accept the stack, sourcing, core preparation and retention/installation process. **Stock ungapped cores are not substitutes** for the prepared pair. Several resistor lines still need sourcing confirmation, and complete 3D fit remains unverified because custom body models are incomplete. Functional low-voltage isolation only; no mains or safety-isolation rating is claimed.
+The proposed supplier must accept the stack, sourcing, core preparation and retention/installation process. **Stock ungapped cores are not substitutes** for the prepared pair. Several resistor lines still need sourcing confirmation, and nominal 3D geometry passes the checks in [3D-MODELS.md](3D-MODELS.md). Actual hardware, enclosure, tolerances and core retention still need qualification. Functional low-voltage isolation only; no mains or safety-isolation rating is claimed.
 
 [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md) · [Fabrication requirements](manufacturing/FABRICATION.md) · [Unsent feasibility-request template](manufacturing/JLCPCB-REVIEW-REQUEST.md)
 
@@ -72,6 +90,7 @@ The proposed supplier must accept the stack, sourcing, core preparation and rete
 | Folder / file | Use |
 | --- | --- |
 | `kicad/` | Editable project, schematic, complete board and local libraries |
+| `kicad/3dmodels/`, `3d/`, `3D-MODELS.md` | Portable component models, STEP/GLB assembly and model provenance |
 | `planar-studio/` | Importable T1 project, winding artwork and model exports |
 | `manufacturing/` | Gerbers/drills, BOM/CPL, stack, via schedule, mounting/core instructions and test plan; review only |
 | `evidence/` | Schematic/layout previews, ERC/DRC, geometric checks, calculations and waveform data |
@@ -83,7 +102,7 @@ The proposed supplier must accept the stack, sourcing, core preparation and rete
 
 ## Rebuild and package
 
-Existing generated files open without running any scripts. To reproduce the design, use Node.js and **KiCad 10's Python with `pcbnew`**, plus the matching `kicad-cli`. Version 10.0.6 was used for the recorded validation. No third-party Python packages are required. Commands below run from this example directory.
+Existing generated files open without running any scripts. To reproduce the design, use Node.js and **KiCad 10's Python with `pcbnew`**, plus the matching `kicad-cli`. Version 10.0.6 was used for the recorded validation. No third-party Python packages are required for the standard rebuild; it reuses the bundled STEP models. Optional model regeneration and solid interference checks use a separate CadQuery environment; see [3D-MODELS.md](3D-MODELS.md). Commands below run from this example directory.
 
 ```sh
 python scripts/check-manifest.py
@@ -107,6 +126,6 @@ Changes to stack, terminals, footprints or components require regeneration and r
 
 ## Attribution
 
-Custom example files and Planar Studio are MIT licensed; see [LICENSE](LICENSE). Standard KiCad footprints are by the KiCad library contributors and redistributed under CC BY-SA 4.0 with KiCad's design exception; see [footprint license](kicad/Flyback.pretty/LICENSE.md). Vendor names and part identifiers establish design provenance, not supplier endorsement or availability.
+Custom example files and Planar Studio are MIT licensed; see [LICENSE](LICENSE). Standard KiCad footprints and stock 3D models are by the KiCad library contributors and redistributed under CC BY-SA 4.0 with KiCad's design exception; see [footprint license](kicad/Flyback.pretty/LICENSE.md) and [model license](kicad/3dmodels/stock/LICENSE.md). Vendor names and part identifiers establish design provenance, not supplier endorsement or availability.
 
 The additional American Embedded mounting footprint is CC BY 4.0; see [its attribution](kicad/amemb-MountingHole.pretty/LICENSE.md). The unmodified KiStack placement converter retains [its upstream license](scripts/vendor/KISTACK-LICENSE.txt).
