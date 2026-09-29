@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "fed8504efe3cc8a33d4a813c2a7143f13545cd25",
+  "page": "A4 landscape",
+  "logical_pin_names_and_nets_unchanged": 54,
+  "component_records_unchanged": 26,
+  "pcb_project_and_manufacturing_files_byte_identical": 41,
+  "schematic_sha256": "4cf11763b637585dbc1a59467de38f66b63609fb990e9053be10e76d7db15391",
+  "svg_sha256": "5abe1ff0eeb0a06a001a7ddade6d2f125f43d926a133410e1e20eb8e4ca099eb",
+  "render_review": [
+    "full sheet",
+    "input",
+    "isolated output",
+    "controller",
+    "feedback",
+    "clamp",
+    "footer"
+  ],
+  "scope": "Presentation and local wiring redraw; no component, connectivity or PCB changes. Hardware remains untested."
+}

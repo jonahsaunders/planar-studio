@@ -28,6 +28,9 @@
 - Audit the flyback example with KiStack; add four American Embedded M3
   mounting holes, preserve explicit fabrication limits, check native schematic
   parity and part metadata, and publish rendered Gerber/mounting evidence.
+- Redraw the flyback schematic on A4 with connected controller passives,
+  complete clamp branches, compact symbols and readable fields; verify that
+  every electrical pin, part record and PCB/manufacturing file is unchanged.
 - Extend engineering, project-state and whole-app interaction regression tests.
 
 ## 1.4.0 — Transformer design workflow (development)

@@ -10,6 +10,10 @@
 
 A1 adds four American Embedded M3 mounting footprints (3.2 mm NPTH on a 41 × 80 mm pattern), preserves the board outline, fixes saved design-rule limits and part metadata, and includes a KiStack audit with rendered fabrication evidence. The [audit](KISTACK-AUDIT.md) distinguishes corrected findings from remaining prototype gates.
 
+The schematic has been redrawn on one A4 sheet: a left-to-right power path, controller passives wired beside U1, complete clamp branches, readable component fields and separate primary/isolated returns. All 54 pin connections and 26 part records match the earlier A1 design; the PCB and manufacturing files are unchanged. [Redraw verification](evidence/audit/schematic-layout-checks.json).
+
+[![Connected A4 schematic](evidence/audit/schematic-overview.png)](evidence/schematic.svg)
+
 ## Open the example
 
 Clone this branch or use GitHub's **Code → Download ZIP** to get the repository. Open `examples/planar-flyback-5w/kicad/PS-FLYBACK-5W.kicad_pro` in KiCad 10. Symbols and all used footprints are included locally. The board is already placed and routed. Open `report.html` locally for the illustrated overview; GitHub displays its source.

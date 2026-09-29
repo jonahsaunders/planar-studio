@@ -16,6 +16,7 @@ checks supplement the original validation.
 | Schematic electrical rules | 0 messages, KiCad 10.0.6 | [ERC](evidence/erc.rpt) |
 | Board design rules | 0 violations, 0 unconnected items, 0 schematic-parity issues | [DRC](evidence/board-drc.json) |
 | Schematic/board agreement | 54 logical pins, 55 numbered physical pads | [Independent checks](evidence/independent-checks.json) |
+| Schematic layout redraw | A4 sheet; all 54 pin names/nets and 26 part records unchanged; PCB and manufacturing bytes unchanged | [Redraw comparison](evidence/audit/schematic-layout-checks.json), [render](evidence/audit/schematic-overview.png) |
 | Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
 | Assembly/export consistency | 21 electronic BOM/CPL references, six copper Gerbers, 23 filled/capped holes plus four open connector holes and four separate NPTH mounting holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
 | Transformer sizing | 4:2 turns, nominal 11.95 µH, proposed 0.21 mm prepared center-leg gap | [Winding model](evidence/winding-model.json) |
