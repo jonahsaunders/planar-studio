@@ -86,8 +86,8 @@ for layer,poly in bylayer.items():
         body+=f'(fp_poly (pts {pts}) (stroke (width 0) (type default)) (fill solid) (layer "{layer}"))'
 for i,p in enumerate(art['pads'],1):body+=pad(i,p['x'],-p['y'],p['w'],p['h'],p['drill'],'circle')
 for v in art['vias']:body+=pad(5,v['x'],-v['y'],v['diameter'],v['diameter'],v['drill'],'circle',layers='"*.Cu"')
-body+=rect(-18.2,-21.4,18.2,21.4)+rect(-15.875,-10.175,15.875,10.175,'F.Fab',.1)
-for x,y,txt in [(4,-21,'1 VIN'),(-5,-21,'2 SW'),(-3,21,'3 GND'),(4,12.8,'4 SEC')]:
+body+=rect(-18.2,-19.95,18.2,21.0)+rect(-15.875,-10.175,15.875,10.175,'F.Fab',.1)
+for x,y,txt in [(7,-18,'1 VIN'),(-6,-18,'2 SW'),(-3,21,'3 GND'),(4,12.8,'4 SEC')]:
     body+=f'(fp_text user "{txt}" (at {x} {y}) (layer "F.SilkS") (effects (font (size .8 .8) (thickness .12))))'
 (LIB/'Planar_EELP32_4T_2T.kicad_mod').write_text(footprint('Planar_EELP32_4T_2T',body,'exclude_from_pos_files',0),encoding='utf8')
 # A single polygon per winding layer gives KiCad a continuous net-tie
@@ -100,15 +100,15 @@ nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
     n=pcb.NETINFO_ITEM(board,name if name.startswith('unconnected-') else '/'+name); board.Add(n); nets[name]=n
 placement={
-    'T1':(100,85,0),'U1':(100,56,270),
-    'J1':(83.5,40,0),'F1':(95,40,0),'D1':(102,41.5,180),
-    'C1':(96,48,270),'C2':(104,47,270),
-    'C5':(100.635,50.5,90),'R1':(108,50,270),'R2':(105.7,54.5,0),
-    'R3':(99.365,61.5,90),'R4':(102.5,62,270),'R5':(105,59,0),
-    'R6':(109.5,58,270),'C6':(109.5,62.1,0),
-    'D3':(93.3,60.9,270),'D4':(89,55.5,90),
-    'D2':(101,110,0),'C3':(94,117,0),'C4':(102,116,270),
-    'R7':(109,116,270),'J2':(103,129,180),
+    'T1':(100,85,0),'U1':(91.5,59,0),
+    'J1':(97.5,40,0),'F1':(90.5,40,180),'D1':(88,46,90),
+    'C1':(85.5,60.635,180),'C2':(104,59,90),
+    'C5':(86.5,58.2,180),'R1':(90.5,51,0),'R2':(93.5,51,0),
+    'R3':(96.65,59.635,180),'R4':(96.65,57.8,0),'R5':(94.1015,54.5,90),
+    'R6':(104,63.4,180),'C6':(100,63.4,180),
+    'D3':(100,59.7,270),'D4':(109,60.9,270),
+    'D2':(101,110,90),'C3':(101,118.5,180),'C4':(106.5,111.12,0),
+    'R7':(109,118.5,270),'J2':(102.5,129,180),
 }
 fps={};pads={}
 placement.update({h['ref']:(h['x_mm'],h['y_mm'],0) for h in mechanical['holes']})
@@ -122,11 +122,20 @@ for p in data['parts']:
     for pd in f.Pads():
         key=pd.GetNumber()
         if key:pd.SetNet(nets[p['nets'][key]])
+        if p['ref'] in ['J1','J2'] and key=='2':
+            pd.SetLocalZoneConnection(pcb.ZONE_CONNECTION_THERMAL)
+            pd.SetThermalGap(mm(.3));pd.SetLocalThermalSpokeWidthOverride(mm(.5))
     board.Add(f);x,y,angle=placement[p['ref']];f.SetPosition(pt(x,y));f.SetOrientationDegrees(angle)
     f.Value().SetVisible(False)
     f.Reference().SetTextSize(pt(.9,.9));f.Reference().SetTextThickness(mm(.14));f.Reference().SetTextAngle(pcb.EDA_ANGLE(0,pcb.DEGREES_T))
     if p['ref']=='T1':f.Reference().SetVisible(False)
-    refs={'J1':(78,39),'D1':(102,39),'D4':(85.8,55.5),'C6':(113,62.1),'R6':(107,58),'R2':(107.7,54.5)}
+    refs={'J1':(100,47.3),'F1':(90.5,37.8),'D1':(84.5,46),'U1':(91.5,54.8),
+          'C1':(84.2,62.8),'C2':(104,55.8),'C5':(84.6,57.3),
+          'R1':(90.5,49.5),'R2':(93.5,49.5),'R3':(96.65,61.1),
+          'R4':(98.3,56.7),'R5':(96.2,54.5),'D3':(100,55.7),
+          'D4':(112.3,60.9),'R6':(107,65.3),'C6':(100,65.2),
+          'D2':(97.8,110),'C3':(97,122.6),'C4':(106.5,109),
+          'R7':(111.7,118.5),'J2':(94,129)}
     if p['ref'] in refs:f.Reference().SetPosition(pt(*refs[p['ref']]))
     fps[p['ref']]=f
     for pd in f.Pads():pads.setdefault((p['ref'],pd.GetNumber()),[]).append(pd)
@@ -138,6 +147,7 @@ def path(net,points,layer=pcb.F_Cu,width=.5):
         t=pcb.PCB_TRACK(board);t.SetStart(pt(*a));t.SetEnd(pt(*b));t.SetWidth(mm(width));t.SetLayer(layer);t.SetNet(nets[net]);board.Add(t)
 def via(net,p,diameter=.8,drill=.4):
     v=pcb.PCB_VIA(board);v.SetPosition(pt(*p));v.SetWidth(mm(diameter));v.SetDrill(mm(drill));v.SetViaType(pcb.VIATYPE_THROUGH);v.SetLayerPair(pcb.F_Cu,pcb.B_Cu);v.SetNet(nets[net]);board.Add(v)
+    return v
 def edge(a,b):
     s=pcb.PCB_SHAPE();s.SetShape(pcb.SHAPE_T_SEGMENT);s.SetStart(pt(*a));s.SetEnd(pt(*b));s.SetWidth(mm(.05));s.SetLayer(pcb.Edge_Cuts);board.Add(s)
 def rounded_rect(x0,y0,x1,y1,r):
@@ -155,51 +165,53 @@ for loop in model['assembly']['openings']:
 def txt(s,x,y,size=1,layer=pcb.F_SilkS):
     t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);board.Add(t)
     if layer==pcb.B_SilkS:t.SetMirrored(True)
-txt('PS-FLYBACK-5W  A1',103,35.5,1.2)
-txt('18-36V DC',86,46.5);txt('INPUT +   -',86.5,34.8,.85)
-txt('5V 1A',100.5,122);txt('OUT -    +',100.5,135,.85)
+txt('PS-FLYBACK-5W  A1',100,34.8,1.1)
+txt('18-36V DC',113,42,.8);txt('INPUT +   -',100,45.5,.85)
+txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,72,1.1);txt('0.21 mm GAPPED N87 CORE',100,73.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8)
 txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
-# Routes are hand-authored for controlled current loops. Short circuit ground
-# connections use a primary local plane; the secondary remains isolated.
-path('VIN_RAW',[pos('J1',1),(83.5,37),(92,37),pos('F1',1)],width=1)
-path('VIN_FUSED',[pos('F1',2),(98,40),pos('D1',2)],width=1)
-path('VIN',[pos('D1',1),(107,41.5),(107,44.95),pos('C2',1)],width=1)
-path('VIN',[pos('C2',1),pos('C1',1)],width=1.3)
-path('VIN',[pos('C1',1),(93,45.95),(93,52.05),(99.365,52.05),pos('U1',3)],width=.9)
-path('VIN',[pos('C2',1),(107,44.95),(113,51),(113,64.1),(105,64.1),pos('T1',1)],width=1)
-path('VIN',[pos('R1',1),(108,48.5),(109.5,47.5)],width=.3)
-path('VIN',[pos('R6',1),(113,56.5375)],width=.6)
-path('SNUB',[pos('R6',2),(108.55,60.4125),pos('C6',1)],width=.5)
-path('SW',[pos('U1',5),(96.378023,60.4),pos('T1',2)],width=1)
-path('SW',[pos('T1',2),(96.378023,64.3),(110.45,64.3),pos('C6',2)],pcb.In3_Cu,1)
-via('SW',pos('C6',2))
-path('SW',[pos('T1',2),(94.5,65.8),pos('D3',2)],width=.8)
-path('CLAMP',[pos('D3',1),(93.3,58.5),(89,58.5),pos('D4',1)],width=.7)
-path('VIN',[pos('D4',2),(89,52.05),(93,52.05)],width=.8)
-path('SW',[pos('R3',1),(97,62.4125),(96.378023,62.4125)],width=.35)
+# Placement follows the two pulsed-current loops. SW, clamp and damping stay
+# on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
+path('VIN_RAW',[pos('J1',1),pos('F1',1)],width=1.2)
+path('VIN_FUSED',[pos('F1',2),(88,41.1),pos('D1',2)],width=1.2)
+via('VIN',pos('D1',1),.8,.4)
+via('VIN',pos('C1',1),.8,.4)
+via('VIN',pos('C2',1),.8,.4)
+path('VIN',[pos('D1',1),(89.8,49.8),(89.8,52.7),(88.8,53.7),(88.8,58.81),pos('C1',1)],pcb.In3_Cu,1.3)
+path('VIN',[pos('C1',1),(86.975,62),(89.275,64.3),(100.175,64.3),pos('C2',1)],pcb.In3_Cu,1.5)
+path('VIN',[pos('C1',1),(86.975,59.635),pos('U1',3)],width=.9)
+path('VIN',[pos('C2',1),(104,61.9375),pos('R6',1),(105.4625,63.966284),pos('T1',1)],width=1.2)
+path('VIN',[pos('D4',2),(108.5,63.4),pos('R6',1)],width=1)
+path('SNUB',[pos('R6',2),pos('C6',1)],width=.6)
+path('SW',[pos('U1',5),(94.1015,63.530284),pos('T1',2)],width=1.2)
+path('SW',[pos('T1',2),(96.378023,65.15),(98.128023,63.4),pos('C6',2)],width=.8)
+path('SW',[pos('D3',2),(99.05,62.175),pos('C6',2)],width=.8)
+path('CLAMP',[pos('D3',1),(100.15,59),(108.9,59),pos('D4',1)],width=.6)
+path('SW',[pos('R3',1),(97.475,62.875),(98,63.4),(98.128023,63.4)],width=.35)
 path('RFB',[pos('R3',2),pos('U1',6)],width=.25)
-path('RREF',[pos('U1',7),(100.635,60.6),(102.5,60.6),pos('R4',1)],width=.25)
-path('RREF',[pos('R4',1),(103,60.6),(105.825,60.6),pos('R5',2)],width=.25)
-path('TC',[pos('U1',8),(102.7,59),pos('R5',1)],width=.25)
-path('UVLO',[pos('R1',2),(108,52),(103.3,52),pos('U1',1)],width=.25)
-path('UVLO',[(103.3,52),pos('R2',1)],width=.25)
-path('INTVCC',[pos('C5',1),pos('U1',2)],width=.4)
+path('RREF',[pos('U1',7),(95.26,58.365),pos('R4',1)],width=.25)
+path('RREF',[pos('R5',2),(96.65,53.675),(96.65,56.975),pos('R4',1)],width=.25)
+path('TC',[pos('U1',8),pos('R5',1)],width=.25)
+path('UVLO',[pos('R1',2),pos('R2',1)],width=.25)
+path('UVLO',[pos('R1',2),(89.5,52.825),(89.5,56.4935),pos('U1',1)],width=.25)
+via('VIN',pos('R1',1),.6,.3)
+path('VIN',[pos('R1',1),(89.8,51)],pcb.In3_Cu,.3)
+path('INTVCC',[pos('C5',1),(87.44,58.365),pos('U1',2)],width=.4)
 
-# Inner secondary end escapes on an otherwise unoccupied routing layer.
+# Secondary rectifier faces the winding; capacitors and connector follow below.
 sec=pos('T1',4)
-path('SEC_A',[sec,(103.862,102.3),(103.862,107.3)],pcb.In2_Cu,1.3)
-for x in [103.45,104.25]:via('SEC_A',(x,107.3),.9,.45)
-path('SEC_A',[(103.45,107.3),(104.25,107.3),(103.862,107.3),pos('D2',2,0),pos('D2',2,1)],width=1.1)
-path('+5V_ISO',[pos('D2',1),(97,110),(94,113.85),pos('C3',1)],width=1.5)
-path('+5V_ISO',[pos('D2',1),(99.88,113),pos('C4',1)],width=1.3)
-path('+5V_ISO',[pos('C4',1),(109,113),pos('R7',1)],width=1)
-path('+5V_ISO',[pos('C3',1),(90,117),(90,132.5),(103,132.5),pos('J2',1)],width=1.5)
-path('GND_ISO',[pos('T1',3),(96,106.8),(96,108.5)],width=1.3)
-for x in [95.6,96.4]:via('GND_ISO',(x,108.5),.9,.45)
-path('GND_ISO',[(95.6,108.5),(96.4,108.5)],width=1.3)
+path('SEC_A',[sec,(101.075,103.0),(101,103.075),(101,107.138)],pcb.In2_Cu,1.3)
+for x in [100.55,101.45]:via('SEC_A',(x,107.138),.9,.45)
+path('SEC_A',[pos('D2',2,0),(100.55,107.138),(101,107.138),(101.45,107.138),pos('D2',2,1)],width=1.1)
+path('+5V_ISO',[pos('D2',1),pos('C4',1)],width=1.5)
+path('+5V_ISO',[pos('C4',1),(105.025,117.275),pos('C3',1)],width=1.5)
+path('+5V_ISO',[pos('C3',1),(107.5375,118.5),pos('R7',1)],width=1)
+path('+5V_ISO',[pos('C3',1),(103.8,127.7),pos('J2',1)],width=2)
+path('GND_ISO',[pos('T1',3),(98.169595,106.5)],width=1.5)
+for x in [97.269595,98.169595]:via('GND_ISO',(x,106.5),.9,.45)
+path('GND_ISO',[(97.269595,106.5),(98.169595,106.5)],width=1.3)
 
 # Ground pads join planes on their own side of the transformer. Thermal vias
 # in the exposed pad require filled/capped via-in-pad manufacture.
@@ -208,8 +220,10 @@ def ground_plane(net,x0,y0,x1,y1,layer):
     outline=z.Outline();outline.NewOutline()
     for x,y in [(x0,y0),(x1,y0),(x1,y1),(x0,y1)]:outline.Append(mm(x),mm(y))
     board.Add(z)
-ground_plane('PGND',79,38,117,63.3,pcb.B_Cu)
-ground_plane('GND_ISO',86,108,114,132,pcb.B_Cu)
+ground_plane('PGND',83.5,38,116,64.5,pcb.B_Cu)
+ground_plane('PGND',83.5,48,116,64.5,pcb.F_Cu)
+ground_plane('GND_ISO',86,106,114,132,pcb.B_Cu)
+ground_plane('GND_ISO',86,106,114,132,pcb.F_Cu)
 for ref in ['J1','C1','C2','C5','R2','R4','U1']:
     for (r,pn),ps in pads.items():
         if r!=ref:continue
@@ -221,15 +235,35 @@ for ref in ['J1','C1','C2','C5','R2','R4','U1']:
                 for dx in [-.8,.8]:
                     for dy in [-.55,.55]:via('PGND',(x+dx,y+dy),.6,.3)
             else:
-                v=(x-1.4,y) if ref in ['C1','C2'] else (x,y)
+                v=(x,y)
                 path('PGND',[(x,y),v],width=.6);via('PGND',v,.6,.3)
+for v in [(85,52),(100,50),(113,54),(112,63),(84.5,64)]:via('PGND',v,.6,.3)
+for v in [(92,112),(111,112),(92,123),(111,123),(100,126)]:via('GND_ISO',v,.6,.3)
 for ref in ['C3','C4','R7','J2']:
     for (r,pn),ps in pads.items():
         if r!=ref:continue
         for pd in ps:
             if pd.GetNetname()!='/GND_ISO' or ref=='J2':continue
-            x,y=xy(pd.GetPosition());v=(x+1.2,y+1.2)
+            x,y=xy(pd.GetPosition());v=(x,y)
             path('GND_ISO',[(x,y),v],width=1);via('GND_ISO',v,.9,.45)
+
+# Filled/capped bare lands provide spring-probe contacts without adding parts
+# to the electrical BOM. T1's exposed primary terminals already serve VIN/SW.
+probe_sites=[]
+for name,net,point in [('PGND','PGND',(92.4,62.65)),('ISO_GND','GND_ISO',(108.2,114))]:
+    v=via(net,point,1.2,.3)
+    v.SetFrontTentingMode(pcb.TENTING_MODE_NOT_TENTED)
+    v.SetBackTentingMode(pcb.TENTING_MODE_TENTED)
+    probe_sites.append({'name':name,'net':net,'position_mm':point,'land_diameter_mm':1.2,
+                        'type':'Top-exposed filled/capped via land; no installed part'})
+txt('PGND',90,63.2,.8);txt('ISO GND',111.5,115.3,.8)
+for name,pin in [('VIN',1),('SW',2)]:
+    probe_sites.append({'name':name,'net':name,'position_mm':pos('T1',pin),
+                        'type':f'Existing exposed T1 pad {pin}; no added SW stub'})
+for name,net,ref,pin in [('BIAS','INTVCC','C5',1),('OUT','+5V_ISO','C4',1)]:
+    probe_sites.append({'name':name,'net':net,'position_mm':pos(ref,pin),
+                        'type':f'Existing exposed {ref} pad {pin}; soldered component present'})
+(ROOT/'evidence/audit/probe-sites.json').write_text(json.dumps(probe_sites,indent=2)+'\n',encoding='utf8')
 
 board.GetDesignSettings().SetAuxOrigin(pt(75,137))
 pcb.ZONE_FILLER(board).Fill(board.Zones())

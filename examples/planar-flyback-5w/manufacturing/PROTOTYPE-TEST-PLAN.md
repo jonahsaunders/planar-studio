@@ -14,6 +14,8 @@ No hardware tests below have been performed. Results must be recorded per unit. 
 
 Use an isolated bench DC supply, electronic load, DMM, current probe, and appropriately rated differential oscilloscope probes. Keep PGND and GND_ISO separate; ordinary earth-referenced probe grounds can defeat the isolation. Probe SW relative to PGND and output relative to GND_ISO.
 
+The current layout provides top-exposed PGND and ISO GND probe lands at native KiCad coordinates (92.40, 62.65) and (108.20, 114.00) mm. Use T1 pad 1 for VIN, T1 pad 2 or U1 pin 5 for SW, C5 pad 1 for INTVCC, and C4 pad 1/J2 pin 1 for local/delivered output. Use a short probe return; the nearby PGND land is about 2.44 mm from U1 pin 5. These are two ground lands plus existing component pads, not six installed test points. See [probe map](../evidence/audit/probe-sites.json). Repeat output trim and switching-stress measurements after the routing revision.
+
 Begin at 18 V with no external load and a 0.15 A input limit. Observe startup/output before increasing current limit. If limiting persists, shut down and investigate rather than increasing it blindly. For full-load testing, use up to 0.6 A input limit, with fuse F1 populated. Never apply mains directly.
 
 | Test | Conditions | Provisional acceptance / record |

@@ -45,7 +45,8 @@ for f in b.GetFootprints():
     if f.GetReference()=='T1':
         for p in f.Pads():add('T1-pad-'+p.GetNumber(),p.GetPosition(),p.GetDrillSize().x)
 write('via-fill.csv',vias)
-assert len(cpl)==21 and len(bom)==21 and len(vias)==23
+assert len(cpl)==len(expected) and len(bom)==len(expected)
+assert len(vias)==len([t for t in b.GetTracks() if isinstance(t,pcb.PCB_VIA)])+5
 job=json.loads((M/'gerbers/PS-FLYBACK-5W-job.gbrjob').read_text())
 assert job['GeneralSpecs']['LayerNumber']==6
 assert len([x for x in job['FilesAttributes'] if x['FileFunction'].startswith('Copper')])==6
@@ -59,7 +60,7 @@ mechanical=json.loads((R/'mechanical.json').read_text())
 expected_holes={f"X{h['x_mm']-75:.1f}Y{137-h['y_mm']:.1f}" for h in mechanical['holes']}
 assert {line for line in npth.splitlines() if line.startswith('X')}==expected_holes
 write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-75,'Y_mm':137-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
-out={'BOM_electronic_references':21,'CPL_references':21,'BOM_CPL_match':True,'SMD_components':19,'THT_connectors':2,'core_sets_per_board':1,'filled_capped_holes':23,'open_connector_holes':4,'copper_Gerbers':6,'coordinate_origin':'Bottom-left board datum; X right/Y up','connector_CPL_origin':'Body centroid corrected from pin-1 footprint origin','release_status':'Supplier review only; no manufacturing approval'}
+out={'BOM_electronic_references':len(bom),'CPL_references':len(cpl),'BOM_CPL_match':True,'SMD_components':19,'THT_connectors':2,'core_sets_per_board':1,'filled_capped_holes':len(vias),'open_connector_holes':4,'copper_Gerbers':6,'coordinate_origin':'Bottom-left board datum; X right/Y up','connector_CPL_origin':'Body centroid corrected from pin-1 footprint origin','release_status':'Supplier review only; no manufacturing approval'}
 out.update({'nonplated_M3_mounting_holes':4,'mounting_holes_match_drill_coordinates':True,'mounting_holes_excluded_from_BOM_CPL':True,'CPL_converter':'KiStack convert_position.py, upstream commit 8494dbd; connector centroids corrected first'})
 (R/'evidence/manufacturing-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

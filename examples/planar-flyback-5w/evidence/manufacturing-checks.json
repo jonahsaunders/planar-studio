@@ -5,7 +5,7 @@
   "SMD_components": 19,
   "THT_connectors": 2,
   "core_sets_per_board": 1,
-  "filled_capped_holes": 23,
+  "filled_capped_holes": 38,
   "open_connector_holes": 4,
   "copper_Gerbers": 6,
   "coordinate_origin": "Bottom-left board datum; X right/Y up",

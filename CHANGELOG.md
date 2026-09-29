@@ -41,6 +41,11 @@
 - Bundle 3D models for all 26 flyback footprints, including the prepared core
   pair and provisional M3 hardware. Publish five assembly views, STEP/GLB
   exports, asset validation and nominal solid-interference evidence.
+- Complete the KiStack PCB review and rework flyback placement/routing: shorten
+  input, clamp and output paths, keep SW on the front, add separate outer-layer
+  return copper, ground stitching, connector thermals and ground probe lands.
+  Preserve the circuit and winding geometry; refresh manufacturing, 3D and
+  before/after evidence, including full-layer Gerber framing and solid checks.
 
 ## 1.4.0 — Transformer design workflow (development)
 

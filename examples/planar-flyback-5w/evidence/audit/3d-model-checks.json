@@ -10,10 +10,10 @@
       "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
-        96.0,
-        48.0
+        85.5,
+        60.635
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -22,9 +22,9 @@
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
         104.0,
-        47.0
+        59.0
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 90.0,
       "side": "top"
     },
     {
@@ -32,10 +32,10 @@
       "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step",
       "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
       "position_mm": [
-        94.0,
-        117.0
+        101.0,
+        118.5
       ],
-      "rotation_deg": 0.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -43,10 +43,10 @@
       "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step",
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
-        102.0,
-        116.0
+        106.5,
+        111.12
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 0.0,
       "side": "top"
     },
     {
@@ -54,10 +54,10 @@
       "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
       "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
       "position_mm": [
-        100.635,
-        50.5
+        86.5,
+        58.2
       ],
-      "rotation_deg": 90.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -65,10 +65,10 @@
       "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
       "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
       "position_mm": [
-        109.5,
-        62.1
+        100.0,
+        63.4
       ],
-      "rotation_deg": 0.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -76,10 +76,10 @@
       "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step",
       "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
       "position_mm": [
-        102.0,
-        41.5
+        88.0,
+        46.0
       ],
-      "rotation_deg": 180.0,
+      "rotation_deg": 90.0,
       "side": "top"
     },
     {
@@ -90,7 +90,7 @@
         101.0,
         110.0
       ],
-      "rotation_deg": 0.0,
+      "rotation_deg": 90.0,
       "side": "top"
     },
     {
@@ -98,8 +98,8 @@
       "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_PowerDI-123.step",
       "sha256": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
       "position_mm": [
-        93.3,
-        60.9
+        100.0,
+        59.7
       ],
       "rotation_deg": -90.0,
       "side": "top"
@@ -109,10 +109,10 @@
       "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step",
       "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
       "position_mm": [
-        89.0,
-        55.5
+        109.0,
+        60.9
       ],
-      "rotation_deg": 90.0,
+      "rotation_deg": -90.0,
       "side": "top"
     },
     {
@@ -120,10 +120,10 @@
       "model": "kicad/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step",
       "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
       "position_mm": [
-        95.0,
+        90.5,
         40.0
       ],
-      "rotation_deg": 0.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -175,7 +175,7 @@
       "model": "kicad/3dmodels/custom/KF301_5mm_2P.step",
       "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
       "position_mm": [
-        83.5,
+        97.5,
         40.0
       ],
       "rotation_deg": 0.0,
@@ -186,7 +186,7 @@
       "model": "kicad/3dmodels/custom/KF301_5mm_2P.step",
       "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
       "position_mm": [
-        103.0,
+        102.5,
         129.0
       ],
       "rotation_deg": 180.0,
@@ -197,10 +197,10 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
-        108.0,
-        50.0
+        90.5,
+        51.0
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 0.0,
       "side": "top"
     },
     {
@@ -208,8 +208,8 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
-        105.7,
-        54.5
+        93.5,
+        51.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -219,10 +219,10 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
-        99.365,
-        61.5
+        96.65,
+        59.635
       ],
-      "rotation_deg": 90.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -230,10 +230,10 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
-        102.5,
-        62.0
+        96.65,
+        57.8
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 0.0,
       "side": "top"
     },
     {
@@ -241,10 +241,10 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
-        105.0,
-        59.0
+        94.1015,
+        54.5
       ],
-      "rotation_deg": 0.0,
+      "rotation_deg": 90.0,
       "side": "top"
     },
     {
@@ -252,10 +252,10 @@
       "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
       "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
       "position_mm": [
-        109.5,
-        58.0
+        104.0,
+        63.4
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 180.0,
       "side": "top"
     },
     {
@@ -264,7 +264,7 @@
       "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
       "position_mm": [
         109.0,
-        116.0
+        118.5
       ],
       "rotation_deg": -90.0,
       "side": "top"
@@ -285,10 +285,10 @@
       "model": "kicad/3dmodels/stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step",
       "sha256": "2d6f7e774e8143e3320cbd59eb5be9f3b7864614644e3b072006e1eb05fb7fa6",
       "position_mm": [
-        100.0,
-        56.0
+        91.5,
+        59.0
       ],
-      "rotation_deg": -90.0,
+      "rotation_deg": 0.0,
       "side": "top"
     }
   ]

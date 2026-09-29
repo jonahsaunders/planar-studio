@@ -8,10 +8,14 @@ import hashlib
 import heapq
 import json
 import math
+import argparse
 from pathlib import Path
 import pcbnew as pcb
 
 R = Path(__file__).resolve().parents[1]
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--measure-only',action='store_true',help='Measure geometry before refreshing visual evidence; does not claim render freshness.')
+args=parser.parse_args()
 source = R / 'kicad/PS-FLYBACK-5W.kicad_pcb'
 board = pcb.LoadBoard(str(source))
 layers = [pcb.F_Cu, pcb.In1_Cu, pcb.In2_Cu, pcb.In3_Cu, pcb.In4_Cu, pcb.B_Cu]
@@ -113,16 +117,17 @@ for track in board.GetTracks():
     key = track.GetNetname()+' / '+board.GetLayerName(track.GetLayer())
     track_totals[key] = track_totals.get(key,0)+pcb.ToMM(track.GetLength())
 provenance = json.loads((R/'evidence/audit/render-provenance.json').read_text())
-for name,expected in provenance['source_SHA256'].items():
-    assert hashlib.sha256((R/name).read_bytes()).hexdigest() == expected, ('Stale Gerber/3D audit render',name)
+if not args.measure_only:
+    for name,expected in provenance['source_SHA256'].items():
+        assert hashlib.sha256((R/name).read_bytes()).hexdigest() == expected, ('Stale Gerber/3D audit render',name)
 out = {'board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
        'method':'Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.',
        'scope':'Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.',
        'routes':routes,'track_length_totals_by_net_and_layer_mm':{k:round(v,4) for k,v in sorted(track_totals.items())},
-       'secondary_escape_note':'SEC_A uses two off-center vias touching the wide In2.Cu trace. Its per-layer totals include branched front routing; no fictitious pad-center shortest path is reported.',
+       'secondary_escape_note':'SEC_A escapes on In2.Cu to two parallel vias immediately above the rectifier anode pads. Pad/plane spreading is excluded from centerline metrics.',
        'return_planes':zones,'U1_exposed_pad_ground_vias':ep_vias,
        'footprints_without_body_models':missing_models,'dedicated_testpoint_footprints':sum(ref.startswith('TP') for ref in footprints),
-       'existing_Gerber_and_3D_render_source_hashes_match':True}
+       'existing_Gerber_and_3D_render_source_hashes_match':not args.measure_only}
 (R/'evidence/audit/pcb-layout-metrics.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf8')
 for route in routes:
     print(f"{route['from']} -> {route['to']}: {route['routed_centerline_mm']:.2f} mm, {route['minimum_track_width_mm']:.2f} mm min width")

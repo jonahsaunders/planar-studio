@@ -30,7 +30,7 @@ All electronic parts are on the front. Core halves occupy both faces. Complete r
 | L1 F.Cu | Components; primary section P1 (2 turns) | 0.035 / 0.100 mm |
 | L2 In1.Cu | Secondary S1 (2 turns) | 0.035 / 0.400 mm |
 | L3 In2.Cu | Secondary inner-terminal escape | 0.035 / 0.390 mm |
-| L4 In3.Cu | SW/snubber route | 0.035 / 0.400 mm |
+| L4 In3.Cu | Quiet VIN feed; SW and suppression stay on F.Cu | 0.035 / 0.400 mm |
 | L5 In4.Cu | Secondary S2 (2 turns, parallel with S1) | 0.035 / 0.100 mm |
 | L6 B.Cu | Primary P2 (series with P1); separated local ground pours | 0.035 mm |
 
@@ -41,7 +41,8 @@ Total copper plus dielectric is 1.600 mm; solder mask is additional. These dimen
 - Gerbers and drills share the bottom-left board datum: original KiCad coordinate (75, 137) mm. Export X is right, Y is up; the board envelope is X=0…50 and Y=0…104 mm.
 - `BOM-JLCPCB.csv` and `CPL-JLCPCB.csv` contain the same 21 electronic references, including two through-hole connectors for the quoted manual process. T1 is integral board copper and a separately quoted mechanical operation, not an SMT placement.
 - `CORE-BOM.csv` adds the prepared core set, bonding materials and insulating retention strap. Do not omit this schedule from the turnkey quotation.
-- `via-fill.csv` distinguishes vias and planar interlayer holes from connector holes. Fill/cap all listed vias and T1 interlayer holes. **Do not fill J1/J2 connector holes or H1–H4 mounting holes.** T1 pads 1–5 are electrical test/interlayer locations, not component leads.
+- `via-fill.csv` lists 38 filled/capped interlayer holes (33 vias and five T1 holes); four connector holes remain open. Total plated drill count is 42, plus four NPTH mounting holes. It distinguishes vias and planar interlayer holes from connector holes. Fill/cap all listed vias and T1 interlayer holes. **Do not fill J1/J2 connector holes or H1–H4 mounting holes.** T1 pads 1–5 are electrical test/interlayer locations, not component leads.
+- PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
 - CPL angles are KiCad angles. JLCPCB must reconcile its library zero rotations against the assembly drawing, especially U1, D1–D4 and C3; verify pin 1 and polarity in the assembly preview before approval.
 - J1 pin 1 is positive at the left when viewed from the top. J2 pin 1 is positive at the right. Wire-entry sides face their nearest board end.
 - All exported manufacturing data is A1 review data. A release requires agreement on stack, component sourcing, core preparation, retention and tests.

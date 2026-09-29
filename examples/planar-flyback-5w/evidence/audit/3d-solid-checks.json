@@ -6,16 +6,13 @@
   "component_pairs_checked": 325,
   "component_intersections": [],
   "substrate_intersections": [],
-  "minimum_between_different_footprints_mm": 1.7000000000000028,
-  "closest_footprints": [
-    "C5",
-    "U1"
-  ],
+  "pair_screening": "Disjoint axis-aligned boxes rejected conservatively; every overlapping box pair checked by exact common solid volume, without distance-based pruning.",
+  "overlapping_box_pairs_boolean_checked": 0,
   "core_to_nominal_substrate_clearance_mm": 0.31799693770897236,
   "core_below_board_mm": 5.73,
   "provisional_mount_plane_to_core_clearance_mm": 2.2699999999999996,
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "172f2113a81b07d94f710b557b5bdd75c358370d41be587edb6cf786b917d4a7",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "c2932d59a33e6ab9fd00ef86d56ddefcfcf85c967e335476461063cea8bff248",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",

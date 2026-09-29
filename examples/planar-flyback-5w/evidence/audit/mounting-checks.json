@@ -6,12 +6,12 @@
       "x_mm": 79.5,
       "y_mm": 50,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 9.19633,
-        "In1.Cu": 9.234717,
-        "In2.Cu": 9.234717,
-        "In3.Cu": 9.234717,
-        "In4.Cu": 9.234717,
-        "B.Cu": 3.400499
+        "F.Cu": 4.0,
+        "In1.Cu": 5.55235,
+        "In2.Cu": 5.55235,
+        "In3.Cu": 5.55235,
+        "In4.Cu": 5.55235,
+        "B.Cu": 4.0
       },
       "excluded_from_BOM_CPL": true
     },
@@ -21,12 +21,12 @@
       "x_mm": 120.5,
       "y_mm": 50,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 7.066373,
-        "In1.Cu": 14.381642,
-        "In2.Cu": 14.381642,
-        "In3.Cu": 14.381642,
-        "In4.Cu": 14.381642,
-        "B.Cu": 3.5
+        "F.Cu": 4.5,
+        "In1.Cu": 8.2,
+        "In2.Cu": 8.2,
+        "In3.Cu": 8.2,
+        "In4.Cu": 8.2,
+        "B.Cu": 4.5
       },
       "excluded_from_BOM_CPL": true
     },
@@ -36,11 +36,11 @@
       "x_mm": 79.5,
       "y_mm": 130,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 9.75,
-        "In1.Cu": 17.327008,
-        "In2.Cu": 17.327008,
-        "In3.Cu": 17.327008,
-        "In4.Cu": 17.327008,
+        "F.Cu": 6.5,
+        "In1.Cu": 14.026548,
+        "In2.Cu": 14.026548,
+        "In3.Cu": 14.026548,
+        "In4.Cu": 14.026548,
         "B.Cu": 6.5
       },
       "excluded_from_BOM_CPL": true
@@ -51,11 +51,11 @@
       "x_mm": 120.5,
       "y_mm": 130,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 14.817602,
-        "In1.Cu": 14.867601,
-        "In2.Cu": 14.867601,
-        "In3.Cu": 14.867601,
-        "In4.Cu": 14.867601,
+        "F.Cu": 6.5,
+        "In1.Cu": 11.500423,
+        "In2.Cu": 11.500423,
+        "In3.Cu": 11.500423,
+        "In4.Cu": 11.500423,
         "B.Cu": 6.5
       },
       "excluded_from_BOM_CPL": true

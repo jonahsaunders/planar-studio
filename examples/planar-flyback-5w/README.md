@@ -42,9 +42,11 @@ The input, controller, transformer and clamp share continuous drawn wiring. The 
 
 ## PCB layout
 
-**Layout audit: revise the primary power routing before fabrication.** The input-capacitor feed to T1 is 34.87 mm and the clamp return to T1 is 57.54 mm. The audit also identifies a long output feed, missing dedicated probe pads and unfinished mechanical qualification. These are open layout findings despite clean DRC. Read the [illustrated PCB audit](PCB-LAYOUT-AUDIT.md) and [measured-route detail](evidence/audit/pcb-layout-audit.svg).
+**Layout revised after a complete KiStack audit.** The input-capacitor feed is now **6.70 mm** (was 34.87 mm), clamp return **6.91 mm** (was 57.54 mm), and output feed **11.04 mm** (was 33.20 mm). The controller, bypass capacitors and suppression parts form a compact primary cluster; connectors align, SW stays on the front, and separate ground regions gain stitching and two exposed ground probe lands. DRC and nominal model checks pass. Hardware and manufacturing qualification remain open. Read the [complete illustrated audit](PCB-LAYOUT-AUDIT.md).
 
-The views below come from the actual KiCad copper, silkscreen and routed outline. Both use the same top-view coordinates, so the mounting holes and ferrite openings align. Silkscreen and outline display colors are darkened for readability; the manufacturing geometry is unchanged.
+[![Before and after the KiStack layout revision](evidence/audit/layout-before-after.png)](evidence/audit/layout-before-after.png)
+
+The views below come from the actual KiCad copper, silkscreen and routed outline. Both use the same top-view coordinates, so the mounting holes and ferrite openings align. Silkscreen and outline display colors are darkened for readability; the views use the current manufacturing geometry.
 
 [![Front and back PCB layout, showing the winding copper, electronics, ferrite openings and four M3 holes](evidence/layout-overview.svg)](evidence/layout-overview.svg)
 
@@ -75,7 +77,7 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | Winding copper | Four polygon terminal sets and 19,229 centerline samples checked |
 | Electronic assembly data | 21 BOM/CPL references agree |
 | 3D assembly | 26 visible local model instances; 14 valid STEP assets; 325 nominal component-pair checks and 26 substrate checks with no intersections |
-| Fabrication exports | Six copper Gerbers; 27 plated holes and four M3 NPTH holes |
+| Fabrication exports | Six copper Gerbers; 42 plated holes (38 filled/capped, four open connectors) and four M3 NPTH holes |
 
 [Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Schematic revision comparison](evidence/audit/schematic-layout-checks.json)
 

@@ -53,14 +53,16 @@ records each reference and asset hash.
 These are nominal geometry checks, not tolerance or assembly-process acceptance.
 Qualify the prepared core, adhesive and retention process; select actual hardware;
 verify chassis clearance, wiring/bend radii and tool access against the intended
-enclosure. No enclosure was supplied. The existing [routing findings](PCB-LAYOUT-AUDIT.md)
-remain open. This model update changes no nets, pads, copper, holes, component
-placement, BOM/CPL or manufacturing exports.
+enclosure. No enclosure was supplied. The [layout revision](PCB-LAYOUT-AUDIT.md)
+now changes placement, routes, pours, stitching and probe lands while preserving
+the circuit and winding geometry. All views and solid checks were regenerated
+for that board; manufacturing exports and placement data were refreshed.
 
 [Coverage/poses](evidence/audit/3d-model-checks.json) ·
 [Solid checks](evidence/audit/3d-solid-checks.json) ·
 [Render source hashes](evidence/audit/3d-render-provenance.json) ·
-[Geometry-preservation check](evidence/audit/3d-revision-checks.json)
+[Current layout comparison](evidence/audit/layout-revision-checks.json) ·
+[Earlier model-only revision (historical)](evidence/audit/3d-revision-checks.json)
 
 ## Reproduce
 

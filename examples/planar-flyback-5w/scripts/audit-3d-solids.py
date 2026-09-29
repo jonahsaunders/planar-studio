@@ -33,18 +33,23 @@ with tempfile.TemporaryDirectory(prefix='flyback-solids-') as temp:
 for ref,shape in placed.items():
     volume=shape.intersect(substrate).Volume()
     if volume>1e-6:substrate_collisions.append({'reference':ref,'volume_mm3':volume})
-minimum=(float('inf'),None)
+boolean_pairs=0
 for (ref1,s1),(ref2,s2) in itertools.combinations(placed.items(),2):
-    distance=s1.distance(s2)
-    if distance<minimum[0]:minimum=(distance,[ref1,ref2])
-    if distance<1e-6:
+    # OpenCascade distance can report zero for remote compound solids. Use
+    # conservative bounding-box rejection and exact common volume instead.
+    a,b=s1.BoundingBox(),s2.BoundingBox()
+    separated=any(getattr(a,axis+'max') < getattr(b,axis+'min')-1e-6 or
+                  getattr(b,axis+'max') < getattr(a,axis+'min')-1e-6 for axis in 'xyz')
+    if not separated:
+        boolean_pairs+=1
         volume=s1.intersect(s2).Volume()
         if volume>1e-6:collisions.append({'references':[ref1,ref2],'volume_mm3':volume})
 record={'method':'OpenCascade STEP import validity, exact solid pair intersections, and nominal 1.6 mm substrate extruded from KiCad-exported routed outline and drilled holes; model top datum Z=0.',
         'scope':'Nominal geometry only. No enclosure, tolerance stack, solder, tool/wire access or process qualification. Provisional M3 hardware and retention envelopes are illustrative.',
         'valid_STEP_assets':len(assets),'placed_footprints':len(placed),'component_pairs_checked':len(placed)*(len(placed)-1)//2,
         'component_intersections':collisions,'substrate_intersections':substrate_collisions,
-        'minimum_between_different_footprints_mm':minimum[0],'closest_footprints':minimum[1],
+        'pair_screening':'Disjoint axis-aligned boxes rejected conservatively; every overlapping box pair checked by exact common solid volume, without distance-based pruning.',
+        'overlapping_box_pairs_boolean_checked':boolean_pairs,
         'core_to_nominal_substrate_clearance_mm':placed['T1'].distance(substrate),
         'core_below_board_mm':-placed['T1'].BoundingBox().zmin-checks['board_thickness_mm'],
         'provisional_mount_plane_to_core_clearance_mm':placed['T1'].BoundingBox().zmin-placed['H1'].BoundingBox().zmin,
