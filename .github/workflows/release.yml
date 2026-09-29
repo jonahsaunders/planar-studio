@@ -5,17 +5,33 @@ on:
     branches: [main]
     paths:
       - metadata.json
+      - docs/releases/**
       - .github/workflows/release.yml
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: planar-studio-release
+  group: planar-studio-release-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
   cancel-in-progress: false
 
 jobs:
+  validate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check release preflight regressions
+        run: python3 -m unittest discover -s tests -p test_release.py
+      - name: Build and validate the installer
+        run: ./build.sh
+
   publish:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
@@ -30,20 +46,7 @@ jobs:
         run: ./build.sh
       - name: Read validated package version
         id: package
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          from pathlib import Path
-
-          package = json.loads(Path('metadata.json').read_text())['versions'][0]
-          version = package['version']
-          notes = Path(f'docs/releases/{version}.md')
-          if not notes.is_file():
-              raise SystemExit(f'Missing release notes: {notes}')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write(f'version={version}\nstatus={package["status"]}\n')
-          PY
+        run: python3 scripts/check_release.py --github-output "$GITHUB_OUTPUT"
       - name: Publish the versioned installer
         env:
           GH_TOKEN: ${{ github.token }}

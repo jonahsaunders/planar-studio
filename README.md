@@ -26,7 +26,7 @@ mechanical previews, complete leg cutouts and destination-board checks.
 
 See the [transformer design guide](docs/transformer-design.md) for controls,
 manufacturer sources, validation and model limits. Build the development package
-with `python scripts/build_package.py`; the published download below remains 1.3.0.
+with `python scripts/build_package.py`, or use the 1.6.0 installer below.
 
 ## Planar flyback example
 
@@ -41,12 +41,12 @@ purchase was made. See its validation record before reusing manufacturing data.
 
 ## Download and install
 
-### [Download planar-studio-1.3.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.3.0/planar-studio-1.3.0.zip)
+### [Download planar-studio-1.6.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)
 
-Ready-to-install package for **KiCad 9.0.1 or newer** on Windows, macOS and Linux.
-[Release details](https://github.com/jonahsaunders/planar-studio/releases/tag/v1.3.0).
+Development package for **KiCad 9.0.1 or newer** on Windows, macOS and Linux.
+[Release details](https://github.com/jonahsaunders/planar-studio/releases/tag/v1.6.0).
 
-1. Download **planar-studio-1.3.0.zip** using the link above. **Keep it zipped.**
+1. Download **planar-studio-1.6.0.zip** using the link above. **Keep it zipped.**
 2. In KiCad's main Project Manager window, open **Plugin and Content Manager**.
 3. Click **Install from File**, select the ZIP, and apply any pending changes.
 4. Restart KiCad and open the PCB Editor. Allow a moment for the plugin's Python

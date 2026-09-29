@@ -4,17 +4,18 @@ Usage: python scripts/build_package.py [--output PATH]
 """
 import argparse
 import hashlib
-import json
 import subprocess
 import sys
 from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
+from check_release import check_release
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def main():
-    version = json.loads((ROOT / "metadata.json").read_text())["versions"][0]["version"]
+    version = check_release(ROOT)["version"]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "dist" / f"planar-studio-{version}.zip")
     output = parser.parse_args().output.resolve()
