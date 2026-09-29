@@ -53,7 +53,7 @@ for group,names in [('copper',[n for n,_ in files[:6]]),('technical',[n for n,_ 
 record={'kistack_commit':'8494dbde095669df081950cbb6b24d08a21e25b0','pygerber_version':'2.4.3',
         'dots_per_mm':args.dpmm,'gerber_layers':[n for n,_ in files],
         'render_viewport':'Common approximately -5..55 by -1..105 mm viewport, including intentional off-board mask extensions, using two render-only clear flashes outside the board. Original manufacturing files are unmodified.',
-        '3D_scope':'All 26 footprints have bundled models. Nominal package/core geometry and provisional mounting/retention envelopes; see 3D-MODELS.md and 3d-render-provenance.json.',
+        '3D_scope':'All saved-board footprints have bundled models. Nominal package/core geometry and provisional mounting/retention envelopes; see 3D-MODELS.md and 3d-render-provenance.json.',
         'review_scope':'Rendered actual exported Gerbers. Visual review is supplementary to DRC, netlist and mounting geometry checks.'}
 inputs=[R/'kicad/PS-FLYBACK-5W.kicad_pcb']+[R/f'manufacturing/gerbers/PS-FLYBACK-5W-{n}.{e}' for n,e in files]
 inputs+=sorted((R/'kicad/3dmodels').rglob('*.step'))

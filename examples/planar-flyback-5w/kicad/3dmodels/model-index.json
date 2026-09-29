@@ -1,7 +1,7 @@
 {
   "model_root": "${KIPRJMOD}/3dmodels",
-  "covered_footprints": 26,
-  "electronic_components": 21,
+  "covered_footprints": 29,
+  "electronic_components": 24,
   "planar_core_assemblies": 1,
   "provisional_mounting_assemblies": 4,
   "footprints": [
@@ -42,9 +42,21 @@
       "provisional_hardware": false
     },
     {
+      "reference": "C7",
+      "footprint": "CP_Elec_8x10.5",
+      "model": "stock/Capacitor_SMD.3dshapes/CP_Elec_8x10.5.step",
+      "provisional_hardware": false
+    },
+    {
+      "reference": "C8",
+      "footprint": "CP_Panasonic_C6",
+      "model": "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step",
+      "provisional_hardware": false
+    },
+    {
       "reference": "D1",
-      "footprint": "D_SMA",
-      "model": "stock/Diode_SMD.3dshapes/D_SMA.step",
+      "footprint": "D_PowerDI-123",
+      "model": "stock/Diode_SMD.3dshapes/D_PowerDI-123.step",
       "provisional_hardware": false
     },
     {
@@ -150,6 +162,12 @@
       "provisional_hardware": false
     },
     {
+      "reference": "R8",
+      "footprint": "R_2512_6332Metric",
+      "model": "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
+      "provisional_hardware": false
+    },
+    {
       "reference": "T1",
       "footprint": "Planar_EELP32_4T_2T",
       "model": "custom/EELP32_prepared_pair.step",
@@ -181,6 +199,10 @@
     },
     "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": {
       "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
+      "type": "KiCad generic package"
+    },
+    "stock/Capacitor_SMD.3dshapes/CP_Elec_8x10.5.step": {
+      "sha256": "ae35c4f1043bc64d44be9822563a47867ce2b6bed1663a1144d81c9b58368562",
       "type": "KiCad generic package"
     },
     "stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": {
@@ -217,6 +239,10 @@
     },
     "stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step": {
       "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
+      "type": "KiCad generic package"
+    },
+    "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step": {
+      "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
       "type": "KiCad generic package"
     }
   }

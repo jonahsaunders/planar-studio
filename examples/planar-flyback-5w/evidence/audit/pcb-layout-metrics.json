@@ -1,5 +1,5 @@
 {
-  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
+  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
   "method": "Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.",
   "scope": "Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.",
   "routes": [
@@ -427,10 +427,98 @@
           "y_mm": 129.0
         }
       ]
+    },
+    {
+      "from": "D1.1",
+      "to": "R8.1",
+      "net": "/VIN",
+      "routed_centerline_mm": 9.3088,
+      "straight_pad_distance_mm": 7.0391,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 46.85
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.5375,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 95.0375,
+          "y_mm": 47.0
+        }
+      ]
+    },
+    {
+      "from": "R8.2",
+      "to": "C7.1",
+      "net": "/VIN_DAMP",
+      "routed_centerline_mm": 6.6659,
+      "straight_pad_distance_mm": 6.1706,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 100.9625,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 104.8,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 106.8,
+          "y_mm": 49.0
+        }
+      ]
+    },
+    {
+      "from": "D2.1",
+      "to": "C8.1",
+      "net": "/+5V_ISO",
+      "routed_centerline_mm": 12.6908,
+      "straight_pad_distance_mm": 10.3104,
+      "minimum_track_width_mm": 1.5,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 101.0,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 97.025,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 114.345
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 118.5
+        }
+      ]
     }
   ],
   "track_length_totals_by_net_and_layer_mm": {
-    "/+5V_ISO / F.Cu": 28.7567,
+    "/+5V_ISO / F.Cu": 41.4475,
     "/CLAMP / F.Cu": 9.1036,
     "/GND_ISO / F.Cu": 2.8087,
     "/INTVCC / F.Cu": 1.6918,
@@ -442,9 +530,10 @@
     "/SW / F.Cu": 16.5774,
     "/TC / F.Cu": 1.77,
     "/UVLO / F.Cu": 8.4501,
-    "/VIN / F.Cu": 13.3681,
-    "/VIN / In3.Cu": 35.6028,
-    "/VIN_FUSED / F.Cu": 4.4556,
+    "/VIN / F.Cu": 22.6769,
+    "/VIN / In3.Cu": 36.7528,
+    "/VIN_DAMP / F.Cu": 6.6659,
+    "/VIN_FUSED / F.Cu": 4.9306,
     "/VIN_RAW / F.Cu": 5.6
   },
   "secondary_escape_note": "SEC_A escapes on In2.Cu to two parallel vias immediately above the rectifier anode pads. Pad/plane spreading is excluded from centerline metrics.",
@@ -452,12 +541,12 @@
     {
       "net": "/PGND",
       "layer": "F.Cu",
-      "filled_area_mm2": 413.833
+      "filled_area_mm2": 658.534
     },
     {
       "net": "/GND_ISO",
       "layer": "F.Cu",
-      "filled_area_mm2": 630.534
+      "filled_area_mm2": 602.78
     },
     {
       "net": "/PGND",
@@ -474,6 +563,14 @@
     {
       "position_mm": [
         92.3,
+        59.55
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "position_mm": [
+        90.7,
         58.45
       ],
       "diameter_mm": 0.6,
@@ -482,23 +579,15 @@
     {
       "position_mm": [
         92.3,
-        59.55
-      ],
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3
-    },
-    {
-      "position_mm": [
-        90.7,
-        59.55
-      ],
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3
-    },
-    {
-      "position_mm": [
-        90.7,
         58.45
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "position_mm": [
+        90.7,
+        59.55
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3

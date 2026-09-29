@@ -1,5 +1,5 @@
 {
-  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
+  "board_sha256": "005390841893df489ea096dcb5094d93fdc74adc4dba3cfb97e4c486dcef9d44",
   "baseline_commit": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
   "method": "Actual KiCad objects, filled ground polygons, netted probe features and explicit routed-centerline comparison. Corridor sampling is a projected geometry check, not a current-density model.",
   "route_comparison": [
@@ -139,7 +139,97 @@
       "layer_transitions": 0
     }
   ],
-  "orthogonal_or_45_degree_tracks": 64,
+  "new_filter_routes": [
+    {
+      "from": "D1.1",
+      "to": "R8.1",
+      "net": "/VIN",
+      "routed_centerline_mm": 9.3088,
+      "straight_pad_distance_mm": 7.0391,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 46.85
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 88.0,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.5375,
+          "y_mm": 48.5
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 95.0375,
+          "y_mm": 47.0
+        }
+      ]
+    },
+    {
+      "from": "R8.2",
+      "to": "C7.1",
+      "net": "/VIN_DAMP",
+      "routed_centerline_mm": 6.6659,
+      "straight_pad_distance_mm": 6.1706,
+      "minimum_track_width_mm": 1.0,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 100.9625,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 104.8,
+          "y_mm": 47.0
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 106.8,
+          "y_mm": 49.0
+        }
+      ]
+    },
+    {
+      "from": "D2.1",
+      "to": "C8.1",
+      "net": "/+5V_ISO",
+      "routed_centerline_mm": 12.6908,
+      "straight_pad_distance_mm": 10.3104,
+      "minimum_track_width_mm": 1.5,
+      "layer_transitions": 0,
+      "path": [
+        {
+          "layer": "F.Cu",
+          "x_mm": 101.0,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 97.025,
+          "y_mm": 111.12
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 114.345
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 93.8,
+          "y_mm": 118.5
+        }
+      ]
+    }
+  ],
+  "orthogonal_or_45_degree_tracks": 72,
   "other_track_angles": [],
   "SW_routing_layers": [
     "F.Cu"
@@ -150,13 +240,13 @@
       "net": "/PGND",
       "layer": "F.Cu",
       "connected_filled_outlines": 1,
-      "area_mm2": 413.8333881857025
+      "area_mm2": 658.534402229979
     },
     {
       "net": "/GND_ISO",
       "layer": "F.Cu",
       "connected_filled_outlines": 1,
-      "area_mm2": 630.533675861302
+      "area_mm2": 602.7795665047975
     },
     {
       "net": "/PGND",
@@ -269,6 +359,52 @@
       "review_miss_count": 0
     },
     {
+      "from": "C7.2",
+      "to": "U1.9",
+      "net": "/PGND",
+      "plane": "B.Cu",
+      "straight_distance_mm": 24.805,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          114.2,
+          49.0
+        ],
+        [
+          91.5,
+          59.0
+        ]
+      ],
+      "review_path_length_mm": 24.80503981049013,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
+      "from": "C8.2",
+      "to": "secondary_return_vias",
+      "net": "/GND_ISO",
+      "plane": "B.Cu",
+      "straight_distance_mm": 15.6011,
+      "corridor_width_mm": 0.5,
+      "sampled_straight_corridor_in_filled_plane": true,
+      "straight_miss_count": 0,
+      "review_path_mm": [
+        [
+          88.2,
+          118.5
+        ],
+        [
+          98.169595,
+          106.5
+        ]
+      ],
+      "review_path_length_mm": 15.601052030681295,
+      "sampled_review_corridor_in_filled_plane": true,
+      "review_miss_count": 0
+    },
+    {
       "from": "C3.2",
       "to": "secondary_return_vias",
       "net": "/GND_ISO",
@@ -323,7 +459,7 @@
       "review_miss_count": 0
     }
   ],
-  "through_vias": 33,
+  "through_vias": 61,
   "minimum_via_annular_ring_mm": 0.15,
   "connector_ground_thermals": [
     {

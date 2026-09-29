@@ -15,7 +15,7 @@
       "mpn": "KF301-5.0-2P",
       "lcsc": "C474881",
       "mfr": "Cixi Kefa",
-      "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
+      "source": "https://www.cxkefa.com/kf301-50",
       "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
       "uuid": "75d795fa-e501-5278-9560-ecfa5d62195c",
       "exclude_from_bom": false
@@ -33,32 +33,32 @@
       "mpn": "0466001.NR",
       "lcsc": "C151134",
       "mfr": "Littelfuse",
-      "source": "https://www.lcsc.com/product-detail/Fuses_Littelfuse_C151134.html",
+      "source": "https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f",
       "purpose": "Input fuse; verify inrush and coordination in prototype",
       "uuid": "bb0780a7-d1d4-508c-93a5-7309ac78b8f3",
       "exclude_from_bom": false
     },
     {
       "ref": "D1",
-      "value": "SS110",
+      "value": "DFLS1100-7",
       "kind": "D",
       "nets": {
         "1": "VIN",
         "2": "VIN_FUSED"
       },
-      "footprint": "Flyback:D_SMA",
-      "source_footprint": "Diode_SMD:D_SMA",
-      "mpn": "SS110",
-      "lcsc": "C2482",
-      "mfr": "MDD",
-      "source": "https://jlcpcb.com/partdetail/Mdd-SS110/C2482",
-      "purpose": "Input reverse-polarity protection",
+      "footprint": "Flyback:D_PowerDI-123",
+      "source_footprint": "Diode_SMD:D_PowerDI-123",
+      "mpn": "DFLS1100-7",
+      "lcsc": "C107674",
+      "mfr": "Diodes Incorporated",
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf",
+      "purpose": "Traceable 1 A / 100 V reverse-input protection; shared exact MPN with D3. Apply 20% capacitive-load derating and verify temperature/inrush.",
       "uuid": "07c9d955-7e4d-5bc2-b579-33f83d00a7b4",
       "exclude_from_bom": false
     },
     {
       "ref": "C1",
-      "value": "10u / 50 V X7R",
+      "value": "10u 50V X7R",
       "kind": "C",
       "nets": {
         "1": "VIN",
@@ -69,14 +69,14 @@
       "mpn": "CL32B106KBJNNNE",
       "lcsc": "C138687",
       "mfr": "Samsung Electro-Mechanics",
-      "source": "https://www.lcsc.com/product-detail/C138687.html",
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do",
       "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
       "uuid": "dbf35f00-b299-5c6c-a125-4177cdab07ab",
       "exclude_from_bom": false
     },
     {
       "ref": "C2",
-      "value": "10u / 50 V X7R",
+      "value": "10u 50V X7R",
       "kind": "C",
       "nets": {
         "1": "VIN",
@@ -87,7 +87,7 @@
       "mpn": "CL32B106KBJNNNE",
       "lcsc": "C138687",
       "mfr": "Samsung Electro-Mechanics",
-      "source": "https://www.lcsc.com/product-detail/C138687.html",
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do",
       "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
       "uuid": "25d24e89-c39e-5ffb-8b80-26249b5bce0c",
       "exclude_from_bom": false
@@ -126,14 +126,14 @@
       "mpn": "PDS835L-13",
       "lcsc": "C444972",
       "mfr": "Diodes Incorporated",
-      "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-PDS835L13/C444972",
+      "source": "https://www.diodes.com/datasheet/download/PDS835L.pdf",
       "purpose": "",
       "uuid": "f4249b5c-721b-5ba8-b5d3-12c0410c0923",
       "exclude_from_bom": false
     },
     {
       "ref": "C3",
-      "value": "180u / 16 V polymer",
+      "value": "180u 16V",
       "kind": "CP",
       "nets": {
         "1": "+5V_ISO",
@@ -151,7 +151,7 @@
     },
     {
       "ref": "C4",
-      "value": "22u / 16 V",
+      "value": "22u 16V X7R",
       "kind": "C",
       "nets": {
         "1": "+5V_ISO",
@@ -159,11 +159,11 @@
       },
       "footprint": "Flyback:C_1210_3225Metric",
       "source_footprint": "Capacitor_SMD:C_1210_3225Metric",
-      "mpn": "GRM32ER71C226KE18L",
-      "lcsc": "C711059",
-      "mfr": "Murata",
-      "source": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226ke18l_C711059.html",
-      "purpose": "",
+      "mpn": "CL32B226KOJNNNE",
+      "lcsc": "",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do",
+      "purpose": "Current-production 1210 output bypass. Not credited in conservative bulk-ripple sizing; verify effective C and ripple temperature.",
       "uuid": "0982d176-3b1f-5a20-9822-0de39fb7698f",
       "exclude_from_bom": false
     },
@@ -180,7 +180,7 @@
       "mpn": "KF301-5.0-2P",
       "lcsc": "C474881",
       "mfr": "Cixi Kefa",
-      "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
+      "source": "https://www.cxkefa.com/kf301-50",
       "purpose": "5.00 mm pitch; manual/wave soldering before core installation",
       "uuid": "499f9370-01db-57d3-8ace-6b7e02b9e410",
       "exclude_from_bom": false
@@ -220,17 +220,17 @@
       },
       "footprint": "Flyback:C_0603_1608Metric",
       "source_footprint": "Capacitor_SMD:C_0603_1608Metric",
-      "mpn": "CL10A475KO8NNNC",
-      "lcsc": "C19666",
+      "mpn": "CL10A475KO8NQNC",
+      "lcsc": "",
       "mfr": "Samsung Electro-Mechanics",
-      "source": "https://jlcpcb.com/partdetail/CL10A475KO8NNNC/C19666",
-      "purpose": "INTVCC local bypass with margin for DC-bias capacitance loss",
+      "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do",
+      "purpose": "Manufacturer-recommended replacement for NRND CL10A475KO8NNNC. Nominal 4.7 uF; acceptance >=1 uF effective at approximately 3.1 V bias.",
       "uuid": "4aad4761-e749-5a59-b80e-92e8864b8283",
       "exclude_from_bom": false
     },
     {
       "ref": "R1",
-      "value": "681k 1%",
+      "value": "649k 1%",
       "kind": "R",
       "nets": {
         "1": "VIN",
@@ -238,11 +238,11 @@
       },
       "footprint": "Flyback:R_0603_1608Metric",
       "source_footprint": "Resistor_SMD:R_0603_1608Metric",
-      "mpn": "RC0603FR-07681KL",
+      "mpn": "RC0603FR-07649KL",
       "lcsc": "",
       "mfr": "Yageo",
-      "source": "https://www.futureelectronics.com/p/5767843",
-      "purpose": "",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL",
+      "purpose": "Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start.",
       "uuid": "df3c6290-28c6-5a9c-bb8c-b1dbfdf4363f",
       "exclude_from_bom": false
     },
@@ -259,7 +259,7 @@
       "mpn": "RC0603FR-0761K9L",
       "lcsc": "C137696",
       "mfr": "Yageo",
-      "source": "https://www.digikey.com/en/products/detail/yageo/RC0603FR-0761K9L/727332",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0761K9L",
       "purpose": "",
       "uuid": "ed556aac-d5c3-5cad-9c14-0b3b27e5fcb0",
       "exclude_from_bom": false
@@ -277,7 +277,7 @@
       "mpn": "RT0603BRD07106KL",
       "lcsc": "",
       "mfr": "Yageo",
-      "source": "https://www.ti.com.cn/cn/lit/df/tidmck8a/tidmck8a.pdf",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL",
       "purpose": "106 kOhm 0.1%; primary reflected-voltage sense; output must be trimmed on prototype",
       "uuid": "92ed126b-fd69-5052-bafb-91be8d346cf9",
       "exclude_from_bom": false
@@ -295,7 +295,7 @@
       "mpn": "RT0603BRD0710KL",
       "lcsc": "C95204",
       "mfr": "Yageo",
-      "source": "https://jlcpcb.com/partdetail/YAGEO-RT0603BRD0710KL/C95204",
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL",
       "purpose": "",
       "uuid": "640db86d-489a-5b09-a234-797726924510",
       "exclude_from_bom": false
@@ -320,7 +320,7 @@
     },
     {
       "ref": "R6",
-      "value": "39R 0.667 W",
+      "value": "39R 0.66 W",
       "kind": "R",
       "nets": {
         "1": "VIN",
@@ -331,14 +331,14 @@
       "mpn": "ERJ-P08F39R0V",
       "lcsc": "",
       "mfr": "Panasonic",
-      "source": "https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-P08F39R0V/9812947",
+      "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf",
       "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning",
       "uuid": "e30db11a-e47e-5486-baed-0eff5471e107",
       "exclude_from_bom": false
     },
     {
       "ref": "C6",
-      "value": "470p / 100 V C0G",
+      "value": "470p / 450 V C0G",
       "kind": "C",
       "nets": {
         "1": "SNUB",
@@ -346,11 +346,11 @@
       },
       "footprint": "Flyback:C_0805_2012Metric",
       "source_footprint": "Capacitor_SMD:C_0805_2012Metric",
-      "mpn": "CGA4C2C0G2A471J060AA",
-      "lcsc": "C3851794",
+      "mpn": "CGA4C4C0G2W471J060AA",
+      "lcsc": "",
       "mfr": "TDK",
-      "source": "https://jlcpcb.com/partdetail/TDK-CGA4C2C0G2A471J060AA/C3851794",
-      "purpose": "",
+      "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA",
+      "purpose": "Current-production 0805 replacement for NRND 100 V part; same 470 pF C0G damping function.",
       "uuid": "97afcc15-eb1f-599f-b32a-86a68a5f88c0",
       "exclude_from_bom": false
     },
@@ -367,14 +367,14 @@
       "mpn": "DFLS1100-7",
       "lcsc": "C107674",
       "mfr": "Diodes Incorporated",
-      "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-DFLS11007/C107674",
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf",
       "purpose": "",
       "uuid": "b535e49e-094e-5889-bf30-3491fac0a36d",
       "exclude_from_bom": false
     },
     {
       "ref": "D4",
-      "value": "SMAJ13A-13-F",
+      "value": "SMAJ12A-13-F",
       "kind": "TVS",
       "nets": {
         "1": "CLAMP",
@@ -382,11 +382,11 @@
       },
       "footprint": "Flyback:D_SMA",
       "source_footprint": "Diode_SMD:D_SMA",
-      "mpn": "SMAJ13A-13-F",
-      "lcsc": "C110519",
+      "mpn": "SMAJ12A-13-F",
+      "lcsc": "",
       "mfr": "Diodes Incorporated",
-      "source": "https://www.diodes.com/part/view/SMAJ13A",
-      "purpose": "13 V unidirectional TVS, 21.5 V maximum specified clamp; verify SW peak below 60 V on prototype",
+      "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
+      "purpose": "12 V unidirectional TVS, 19.9 V specified clamp. Check SW-VIN <20.5 V including overshoot, RFB injected current <200 uA and TVS temperature on hardware.",
       "uuid": "a7645207-3c9d-5610-9c6c-4ab4646d5fd3",
       "exclude_from_bom": false
     },
@@ -406,6 +406,60 @@
       "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
       "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
       "uuid": "01726ee0-1cfa-5098-a317-73af0ab3b333",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "R8",
+      "value": "2.2R 1.5 W",
+      "kind": "R",
+      "nets": {
+        "1": "VIN",
+        "2": "VIN_DAMP"
+      },
+      "footprint": "Flyback:R_2512_6332Metric",
+      "source_footprint": "Resistor_SMD:R_2512_6332Metric",
+      "mpn": "CRCW25122R20FKEGHP",
+      "lcsc": "",
+      "mfr": "Vishay",
+      "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf",
+      "purpose": "Pulse-proof series damping in C7 shunt branch, not in converter DC feed. 1.5 W at 70 C; hot-plug is not qualified.",
+      "uuid": "c394c20f-67a3-5ff4-a9aa-d39bc45ea3d4",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C7",
+      "value": "47u / 63 V",
+      "kind": "CP",
+      "nets": {
+        "1": "VIN_DAMP",
+        "2": "PGND"
+      },
+      "footprint": "Flyback:CP_Elec_8x10.5",
+      "source_footprint": "Capacitor_SMD:CP_Elec_8x10.5",
+      "mpn": "EEHZC1J470P",
+      "lcsc": "",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P",
+      "purpose": "Input damping reservoir through R8; 1.1 A ripple at 100 kHz, 40 mOhm maximum ESR, 8 x 10.2 mm. Not a surge clamp.",
+      "uuid": "5990d7f6-e0bb-50ac-a0c6-639ea72ecdcf",
+      "exclude_from_bom": false
+    },
+    {
+      "ref": "C8",
+      "value": "180u 16V",
+      "kind": "CP",
+      "nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "footprint": "Flyback:CP_Panasonic_C6",
+      "source_footprint": "Flyback:CP_Panasonic_C6",
+      "mpn": "16SVPF180M",
+      "lcsc": "C136277",
+      "mfr": "Panasonic",
+      "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M",
+      "purpose": "Second output reservoir beside C3: combined 360 uF nominal / 288 uF at -20%, 11 mOhm parallel ESR bound at 100 kHz. Startup and ripple sharing require bench validation.",
+      "uuid": "90d612c2-825a-5183-acfb-7078d55d0af0",
       "exclude_from_bom": false
     },
     {

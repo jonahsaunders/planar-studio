@@ -74,7 +74,7 @@ def attach_models(board_path,stock_dir=None):
     assert re.sub(r'\s+','',without_models(text))==re.sub(r'\s+','',without_models(original))
     board_path.write_text(text,encoding='utf8',newline='\n')
     record={'model_root':'${KIPRJMOD}/3dmodels','covered_footprints':len(coverage),
-            'electronic_components':21,'planar_core_assemblies':1,'provisional_mounting_assemblies':4,
+            'electronic_components':sum(not c['reference'].startswith('H') and c['reference']!='T1' for c in coverage),'planar_core_assemblies':1,'provisional_mounting_assemblies':4,
             'footprints':sorted(coverage,key=lambda f:f['reference']),'assets':dict(sorted(sources.items()))}
     (MODELS/'model-index.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8',newline='\n')
     print(f'Attached local STEP models to all {len(coverage)} footprints; board geometry preserved.')

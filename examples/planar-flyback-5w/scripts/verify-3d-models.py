@@ -21,7 +21,7 @@ for fp in sorted(board.GetFootprints(),key=lambda f:f.GetReference()):
     records.append({'reference':fp.GetReference(),'model':file.relative_to(R).as_posix(),
                     'sha256':digest,'position_mm':[pcb.ToMM(fp.GetPosition().x),pcb.ToMM(fp.GetPosition().y)],
                     'rotation_deg':fp.GetOrientationDegrees(),'side':'top'})
-assert len(records)==index['covered_footprints']==26
+assert len(records)==index['covered_footprints']==len(json.loads((R/'circuit.json').read_text())['parts'])
 assert {x['reference'] for x in records}=={x['reference'] for x in index['footprints']}
 result={'footprints':len(records),'unique_STEP_assets':len({x['model'] for x in records}),
         'missing_or_hidden_models':[],'board_thickness_mm':pcb.ToMM(board.GetDesignSettings().GetBoardThickness()),

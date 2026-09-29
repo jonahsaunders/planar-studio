@@ -42,5 +42,7 @@
     "clamp",
     "footer"
   ],
-  "scope": "Schematic presentation and ERC gate update. Circuit and PCB unchanged. PCB findings documented separately; hardware remains untested."
+  "scope": "Schematic presentation and ERC gate update. Circuit and PCB unchanged. PCB findings documented separately; hardware remains untested.",
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
 }

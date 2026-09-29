@@ -34,7 +34,7 @@ routed contours in Edge.Cuts, not drill hits.
 - The footprint courtyard spans 12.3 × 7.3 mm, including its off-board extension. H1–H4 have no electrical net
   and are excluded from the electronic BOM and placement file.
 - Do not plate, fill or copper-cap these four holes. They are separate from the
-  38 interlayer holes requiring filling/capping and the four open connector holes.
+  66 interlayer holes requiring filling/capping and the four open connector holes.
 
 Use nonconductive standoffs. Limit washer/head/standoff contact diameter to
 **6.4 mm**; a 7 mm washer extends beyond this footprint's exposed area. Fasteners

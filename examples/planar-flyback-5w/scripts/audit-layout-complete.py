@@ -27,7 +27,7 @@ for z in b.Zones():
 # Native DRC and via/pad connectivity remain the authoritative connectivity checks.
 returns=[]
 pairs=[('C1.2','U1.9'),('C2.2','U1.9'),('C5.2','U1.4'),('R4.2','U1.9'),
-       ('C3.2','secondary_return_vias'),('C4.2','secondary_return_vias')]
+       ('C7.2','U1.9'),('C8.2','secondary_return_vias'),('C3.2','secondary_return_vias'),('C4.2','secondary_return_vias')]
 for first,last in pairs:
     a=xy(pad[first].GetPosition());c=xy(pad[last].GetPosition()) if last in pad else [98.169595,106.5]
     net=pad[first].GetNetname();poly=plane_by_net[net];length=math.dist(a,c)
@@ -79,14 +79,15 @@ now=json.loads((R/'evidence/audit/pcb-layout-metrics.json').read_text())
 assert now['board_sha256']==hashlib.sha256(source.read_bytes()).hexdigest(),'Refresh route measurements for this board first'
 changes=[]
 for r in now['routes']:
-    old=next(x for x in before['routes'] if (x['from'],x['to'])==(r['from'],r['to']))
+    old=next((x for x in before['routes'] if (x['from'],x['to'])==(r['from'],r['to'])),None)
+    if old is None:continue
     changes.append({'from':r['from'],'to':r['to'],'before_mm':old['routed_centerline_mm'],
                     'after_mm':r['routed_centerline_mm'],'reduction_percent':round(100*(1-r['routed_centerline_mm']/old['routed_centerline_mm']),1),
                     'minimum_width_mm':r['minimum_track_width_mm'],'layer_transitions':r['layer_transitions']})
 result={'board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'baseline_commit':'46460970e0e223c8738fd1d8be9bf6b80ef8369b',
         'method':'Actual KiCad objects, filled ground polygons, netted probe features and explicit routed-centerline comparison. Corridor sampling is a projected geometry check, not a current-density model.',
-        'route_comparison':changes,'orthogonal_or_45_degree_tracks':len(tracks)-len(non45),'other_track_angles':non45,
+        'route_comparison':changes,'new_filter_routes':[r for r in now['routes'] if any(t.startswith(('C7.','C8.','R8.')) for t in [r['from'],r['to']])],'orthogonal_or_45_degree_tracks':len(tracks)-len(non45),'other_track_angles':non45,
         'SW_routing_layers':sorted({b.GetLayerName(t.GetLayer()) for t in tracks if t.GetNetname()=='/SW'}),
         'SW_added_vias':sum(v.GetNetname()=='/SW' for v in vias),
         'return_planes':planes,'sampled_return_corridors':returns,

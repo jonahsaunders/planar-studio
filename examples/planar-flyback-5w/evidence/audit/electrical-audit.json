@@ -15,5 +15,7 @@
     "9": "/PGND"
   },
   "mounting_symbols_pinless": true,
-  "hardware_test_status": "Not built or tested"
+  "hardware_test_status": "Not built or tested",
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
 }

@@ -13,8 +13,10 @@ not an independent certification or a KiStack electrical simulator.
 The baseline is repository commit `1ce60b1439dc9da05624a2dd59ab9c51a2def92e`
 (A0). A1 adds four mounting holes, strengthens validation and improves schematic
 readability. The later layout revision, compared with commit `4646097`, re-places
-and reroutes the power stages. Circuit values, topology, winding geometry and board outline are
-unchanged. No supplier was contacted and no purchasing was performed.
+and reroutes the power stages. The current [component revision](COMPONENT-AUDIT.md),
+compared with `9bc0614`, corrects selected parts and adds input/output filtering
+and ground stitching. Winding geometry, board outline and mounting are unchanged.
+No supplier was contacted and no purchasing was performed.
 
 ## Findings corrected
 
@@ -34,12 +36,12 @@ These are release gates, not claims that the circuit has already failed a bench 
 
 | Priority | Finding | Required action |
 | --- | --- | --- |
-| High | Full-load bulk-only ripple sizing is **100.018 mV**, slightly above the 100 mV target. | Measure ripple across line/load and temperature, including burst operation. C4 may reduce ripple, but that is not established by the bulk-only model. Revise capacitance/ESR or the specification if needed. |
-| High | The 58.5 V rating-based clamp estimate excludes dynamic switch overshoot and layout parasitics. | Measure SW with an appropriate probe and tune R6/C6/D3/D4 to the below-60 V prototype target. Verify the revised local power paths under line/load extremes; clean DRC does not establish EMI performance. |
+| High | Full-load bulk-only ripple sizing is now **50.58 mV** after adding C8; burst/transient behavior is unverified. | Measure ripple across line/load and temperature, including burst operation. C4 is not credited in the bulk-only model. Confirm startup and load-step response with 360 µF bulk. |
+| High | The 56.9 V rating-based clamp estimate excludes dynamic overshoot and temperature behavior; RFB current screening is 197.84 µA against a 200 µA absolute limit. | Measure SW below 60 V and SW−VIN below 20.5 V; tune R6/C6/D3/D4 if limits are exceeded. Verify the revised local power paths under line/load extremes; clean DRC does not establish EMI performance. |
 | High | Planar gap fringing, core loss, inductance under bias and thermal performance are unverified. | Characterize the prepared core assembly, including fault-current behavior; run the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Small-signal AL and DC winding resistance are insufficient for thermal release. |
 | High | The proposed stack, ground center leg, adhesive/retention process and turnkey assembly have no supplier acceptance. | Obtain engineering and manufacturing approval before treating Gerbers as production data. Stock ungapped halves cannot replace the prepared pair. |
-| Medium | Final mechanical qualification remains open. | All 26 footprints now have local models; nominal solid checks show no intersections. The missing-model finding is closed. Qualify actual fasteners, enclosure, tolerances, wire/tool access and core retention; the displayed hardware and bond/strap shapes are provisional. See [3D-MODELS.md](3D-MODELS.md). |
-| Medium | R1, R3 and R6 lack verified LCSC identifiers; catalog availability is not reserved. | Confirm sourcing or engineer substitutions. T1 is a separate custom core operation. No new component search or availability claim was made in this audit. |
+| Medium | Final mechanical qualification remains open. | All 29 footprints now have local models; nominal solid checks show no intersections. The missing-model finding is closed. Qualify actual fasteners, enclosure, tolerances, wire/tool access and core retention; the displayed hardware and bond/strap shapes are provisional. See [3D-MODELS.md](3D-MODELS.md). |
+| Medium | Several exact selections, including new/replaced components, lack verified LCSC identifiers; catalog availability is not reserved. | Confirm sourcing or engineer substitutions. T1 is a separate custom core operation. Manufacturer identities and ratings are documented in the [component audit](COMPONENT-AUDIT.md); no stock availability is claimed. |
 | Medium | Output trim, temperature compensation, startup at 18 V, transients, overload and control behavior remain untested. | Verify these on hardware. The standalone cycle calculation is not a closed-loop LT8302 simulation. |
 
 ## Review coverage
@@ -49,10 +51,10 @@ These are release gates, not claims that the circuit has already failed a bench 
   separated grounds with the existing netlist and
   [LT8302 Rev G reference](https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf).
   Reviewed the complete rendered sheet plus input, output, controller, feedback
-  and clamp close-ups. No electronic pin or value changes were introduced.
+  and clamp close-ups. The subsequent [component audit](COMPONENT-AUDIT.md) adds C7/R8/C8 and corrects selected parts; the original component net assignments remain intact.
 - **Connectivity:** zero ERC messages; zero DRC violations, unconnected items
-  and schematic-parity issues. Independent comparison checks 54 logical pins
-  and 55 numbered physical pads, including exact MPN/manufacturer/LCSC fields.
+  and schematic-parity issues. Independent comparison checks 60 logical pins
+  and 61 numbered physical pads, including exact MPN/manufacturer/LCSC fields.
   The four pinless mounting symbols add four mechanical footprints.
 - **Windings:** four intended terminal-contact sets and 19,229 centerline samples
   match final copper. Primary sections remain in series; secondary sections
@@ -68,13 +70,13 @@ These are release gates, not claims that the circuit has already failed a bench 
   [technical layers](evidence/audit/gerber-technical-overview.png) and detailed
   renders. No additional visible short or missing winding was found. The four
   circular M3 holes belong in the NPTH drill file; the three core slots belong
-  in Edge.Cuts. There are 42 plated holes (38 filled/capped and four open connector holes), plus four NPTH mounting holes. Images use a common viewport to avoid tight-bounds aperture clipping.
-- **Assembly data:** 21 electronic BOM/CPL references agree (19 SMD, two THT).
+  in Edge.Cuts. There are 70 plated holes (66 filled/capped and four open connector holes), plus four NPTH mounting holes. Images use a common viewport to avoid tight-bounds aperture clipping.
+- **Assembly data:** 24 electronic BOM/CPL references agree (22 SMD, two THT).
   KiStack conversion uses T/B layer names and preserves corrected connector
   centroids. A named JLCPCB GUI BOM preset is not installed; the bundled
   deterministic BOM exporter is checked against schematic fields instead.
-- **3D:** reviewed five KiCad views covering all 26 footprints. All 14 local STEP
-  assets import as valid solids; 325 component pairs and 26 component/substrate
+- **3D:** reviewed five KiCad views covering all 29 footprints. All 16 local STEP
+  assets import as valid solids; 406 component pairs and 29 component/substrate
   checks have no nominal intersections. This closes missing model coverage,
   including D2's previously broken path. It does not close tolerance/process or
   enclosure qualification; see [3D-MODELS.md](3D-MODELS.md).

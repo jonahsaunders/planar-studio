@@ -108,6 +108,7 @@ placement={
     'R6':(104,63.4,180),'C6':(100,63.4,180),
     'D3':(100,59.7,270),'D4':(109,60.9,270),
     'D2':(101,110,90),'C3':(101,118.5,180),'C4':(106.5,111.12,0),
+    'C7':(110.5,49,0),'R8':(98,47,0),'C8':(91,118.5,180),
     'R7':(109,118.5,270),'J2':(102.5,129,180),
 }
 fps={};pads={}
@@ -129,12 +130,13 @@ for p in data['parts']:
     f.Value().SetVisible(False)
     f.Reference().SetTextSize(pt(.9,.9));f.Reference().SetTextThickness(mm(.14));f.Reference().SetTextAngle(pcb.EDA_ANGLE(0,pcb.DEGREES_T))
     if p['ref']=='T1':f.Reference().SetVisible(False)
-    refs={'J1':(100,47.3),'F1':(90.5,37.8),'D1':(84.5,46),'U1':(91.5,54.8),
+    refs={'J1':(108.5,38.5),'F1':(90.5,37.8),'D1':(84.5,46),'U1':(91.5,54.8),
           'C1':(84.2,62.8),'C2':(104,55.8),'C5':(84.6,57.3),
           'R1':(90.5,49.5),'R2':(93.5,49.5),'R3':(96.65,61.1),
           'R4':(98.3,56.7),'R5':(96.2,54.5),'D3':(100,55.7),
           'D4':(112.3,60.9),'R6':(107,65.3),'C6':(100,65.2),
           'D2':(97.8,110),'C3':(97,122.6),'C4':(106.5,109),
+          'C7':(111,54.5),'R8':(99,49.8),'C8':(90,122.8),
           'R7':(111.7,118.5),'J2':(94,129)}
     if p['ref'].startswith('H'):f.Reference().SetPosition(pt(x,y-4.4))
     if p['ref'] in refs:f.Reference().SetPosition(pt(*refs[p['ref']]))
@@ -166,8 +168,8 @@ for loop in model['assembly']['openings']:
 def txt(s,x,y,size=1,layer=pcb.F_SilkS):
     t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);board.Add(t)
     if layer==pcb.B_SilkS:t.SetMirrored(True)
-txt('PS-FLYBACK-5W  A1',100,34.8,1.1)
-txt('18-36V DC',113,42,.8);txt('INPUT +   -',100,45.5,.85)
+txt('IN +    -',100,35,.85)
+txt('18-36V DC',113,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,72,1.1);txt('0.21 mm GAPPED N87 CORE',100,73.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8)
@@ -177,10 +179,13 @@ txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
 path('VIN_RAW',[pos('J1',1),pos('F1',1)],width=1.2)
 path('VIN_FUSED',[pos('F1',2),(88,41.1),pos('D1',2)],width=1.2)
+# R8/C7 are a shunt damping branch; there is no DC feed resistor.
+path('VIN',[pos('D1',1),(88,48.5),(93.5375,48.5),pos('R8',1)],width=1)
+path('VIN_DAMP',[pos('R8',2),(104.8,47),pos('C7',1)],width=1)
 via('VIN',pos('D1',1),.8,.4)
 via('VIN',pos('C1',1),.8,.4)
 via('VIN',pos('C2',1),.8,.4)
-path('VIN',[pos('D1',1),(89.8,49.8),(89.8,52.7),(88.8,53.7),(88.8,58.81),pos('C1',1)],pcb.In3_Cu,1.3)
+path('VIN',[pos('D1',1),(89.8,pos('D1',1)[1]+1.8),(89.8,52.7),(88.8,53.7),(88.8,58.81),pos('C1',1)],pcb.In3_Cu,1.3)
 path('VIN',[pos('C1',1),(86.975,62),(89.275,64.3),(100.175,64.3),pos('C2',1)],pcb.In3_Cu,1.5)
 path('VIN',[pos('C1',1),(86.975,59.635),pos('U1',3)],width=.9)
 path('VIN',[pos('C2',1),(104,61.9375),pos('R6',1),(105.4625,63.966284),pos('T1',1)],width=1.2)
@@ -207,6 +212,7 @@ path('SEC_A',[sec,(101.075,103.0),(101,103.075),(101,107.138)],pcb.In2_Cu,1.3)
 for x in [100.55,101.45]:via('SEC_A',(x,107.138),.9,.45)
 path('SEC_A',[pos('D2',2,0),(100.55,107.138),(101,107.138),(101.45,107.138),pos('D2',2,1)],width=1.1)
 path('+5V_ISO',[pos('D2',1),pos('C4',1)],width=1.5)
+path('+5V_ISO',[pos('D2',1),(97.025,111.12),(93.8,114.345),pos('C8',1)],width=1.5)
 path('+5V_ISO',[pos('C4',1),(105.025,117.275),pos('C3',1)],width=1.5)
 path('+5V_ISO',[pos('C3',1),(107.5375,118.5),pos('R7',1)],width=1)
 path('+5V_ISO',[pos('C3',1),(103.8,127.7),pos('J2',1)],width=2)
@@ -222,10 +228,10 @@ def ground_plane(net,x0,y0,x1,y1,layer):
     for x,y in [(x0,y0),(x1,y0),(x1,y1),(x0,y1)]:outline.Append(mm(x),mm(y))
     board.Add(z)
 ground_plane('PGND',83.5,38,116,64.5,pcb.B_Cu)
-ground_plane('PGND',83.5,48,116,64.5,pcb.F_Cu)
+ground_plane('PGND',83.5,38,116,64.5,pcb.F_Cu)
 ground_plane('GND_ISO',86,106,114,132,pcb.B_Cu)
 ground_plane('GND_ISO',86,106,114,132,pcb.F_Cu)
-for ref in ['J1','C1','C2','C5','R2','R4','U1']:
+for ref in ['J1','C1','C2','C5','C7','R2','R4','U1']:
     for (r,pn),ps in pads.items():
         if r!=ref:continue
         for pd in ps:
@@ -239,8 +245,13 @@ for ref in ['J1','C1','C2','C5','R2','R4','U1']:
                 v=(x,y)
                 path('PGND',[(x,y),v],width=.6);via('PGND',v,.6,.3)
 for v in [(85,52),(100,50),(113,54),(112,63),(84.5,64)]:via('PGND',v,.6,.3)
+# Additional local stitching: never cross the isolation corridor or winding area.
+for v in [(84.5,40),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
+          (99,52.5),(103,54),(114.5,42),(115,54),(114,58),(114,63)]:via('PGND',v,.6,.3)
+for v in [(87,108),(90,108),(94,108),(111,108),(112.5,115),(87,115),
+          (87,123),(95.5,122.8),(107,123),(112,128),(91,130),(107,130),(100,131.5),(99,115)]:via('GND_ISO',v,.6,.3)
 for v in [(92,112),(111,112),(92,123),(111,123),(100,126)]:via('GND_ISO',v,.6,.3)
-for ref in ['C3','C4','R7','J2']:
+for ref in ['C3','C4','C8','R7','J2']:
     for (r,pn),ps in pads.items():
         if r!=ref:continue
         for pd in ps:

@@ -99,7 +99,7 @@ def route_between(first, last):
 pairs = [('C2.1','T1.1'),('C1.1','U1.3'),('U1.5','T1.2'),('T1.2','D3.2'),
          ('D3.1','D4.1'),('D4.2','T1.1'),('T1.2','C6.2'),('R6.1','T1.1'),
          ('R6.2','C6.1'),('C5.1','U1.2'),('R3.2','U1.6'),('U1.7','R4.1'),
-         ('D2.1','C3.1'),('D2.1','C4.1'),('C3.1','J2.1')]
+         ('D2.1','C3.1'),('D2.1','C4.1'),('C3.1','J2.1'),('D1.1','R8.1'),('R8.2','C7.1'),('D2.1','C8.1')]
 routes = [route_between(a,b) for a,b in pairs]
 zones = [{'net':z.GetNetname(),'layer':board.GetLayerName(z.GetLayer()),
           'filled_area_mm2':round(z.GetFilledArea()/1e12,3)} for z in board.Zones() if not z.GetIsRuleArea()]

@@ -13,12 +13,22 @@
 | 4:2 turns; nominal primary inductance 11.95 µH | Prepared N87 core pair; 0.21 mm center-leg gap |
 | Separate primary and secondary returns | Four M3 edge-style holes: 3.2 mm NPTH, 41 × 80 mm pattern |
 
+## Component audit and added filtering
+
+All **29 placed footprints** have a recorded part, package, pin/polarity, rating and use-case review. The revision improves the 18 V startup divider, reduces the TVS clamp voltage, replaces aging or poorly supported part selections, adds a **47 µF damped input reservoir**, and doubles output bulk to **360 µF**. The updated bulk-only ripple estimate is **50.58 mV**, pending hardware measurement.
+
+There are **26 additional ground stitches** and two new capacitor return vias. Their nets and attachment to both ground planes are checked. The schematic retains continuous wiring and zero four-way connections; refreshed previews show the actual design. Perreault's research boards informed compact switching-cell and local-bypass placement principles; this is not his topology or an endorsed design.
+
+[Full component audit and primary references](COMPONENT-AUDIT.md) · [Per-component CSV](evidence/audit/component-audit.csv) · [Measured pads and stitching checks](evidence/audit/component-checks.json)
+
+The remaining critical gates are clamp/RFB transient margin, input hot-plug, core and thermal behavior, and startup/control validation. This example is not released for manufacture.
+
 ## 3D assembly
 
-Every one of the **26 footprints has a bundled 3D model**, including the controller,
+Every one of the **29 footprints has a bundled 3D model**, including the controller,
 bulk capacitor, both connectors, diode packages, prepared core pair and illustrative
 M3 mounting hardware. The extracted KiCad project loads them without an installed
-model library. All 14 STEP assets load successfully; nominal solid checks found
+model library. All 16 STEP assets load successfully; nominal solid checks found
 no component-to-component or component-to-board intersections.
 
 [![Complete assembled converter with electronics, prepared planar core and provisional M3 hardware](evidence/audit/board-3d-assembled.png)](evidence/audit/board-3d-assembled.png)
@@ -38,7 +48,7 @@ The input, controller, transformer and clamp share continuous drawn wiring. The 
 
 **Inspect:** [Zoomable schematic](evidence/schematic.svg) · [Editable KiCad schematic](kicad/PS-FLYBACK-5W.kicad_sch) · [Controller detail](evidence/audit/schematic-controller.png) · [Clamp detail](evidence/audit/schematic-clamp.png)
 
-**Power-net naming:** `VIN` is the single protected input rail feeding T1, U1 and both clamp branches. `VIN_RAW` and `VIN_FUSED` are the distinct nodes before and after F1, upstream of D1. `INTVCC` is U1's internal bias supply; `+5V_ISO` is the isolated output. These names cannot be merged without changing the circuit. `PGND` and `GND_ISO` remain separate.
+**Power-net naming:** `VIN` is the single protected input rail feeding T1, U1 and both clamp branches. `VIN_RAW` and `VIN_FUSED` are the distinct nodes before and after F1, upstream of D1. `VIN_DAMP` is the node between the added R8 and C7; `INTVCC` is U1's internal bias supply; `+5V_ISO` is the isolated output. These names cannot be merged without changing the circuit. `PGND` and `GND_ISO` remain separate.
 
 ## PCB layout
 
@@ -74,16 +84,16 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | KiCad electrical rules | 0 messages |
 | Four-way schematic connections | 0; maximum three arms, including power/ground symbol pins; four-way ERC rule enabled as an error |
 | Board rules / connectivity / schematic parity | 0 violations / 0 unconnected items / 0 parity issues |
-| Schematic-to-board comparison | 54 logical pins agree with 55 numbered pads |
+| Schematic-to-board comparison | 60 logical pins agree with 61 numbered pads |
 | Drawn-wire continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect physically on the sheet; the five nets stay distinct |
 | Winding copper | Four polygon terminal sets and 19,229 centerline samples checked |
-| Electronic assembly data | 21 BOM/CPL references agree |
-| 3D assembly | 26 visible local model instances; 14 valid STEP assets; 325 nominal component-pair checks and 26 substrate checks with no intersections |
-| Fabrication exports | Six copper Gerbers; 42 plated holes (38 filled/capped, four open connectors) and four M3 NPTH holes |
+| Electronic assembly data | 24 BOM/CPL references agree |
+| 3D assembly | 29 visible local model instances; 16 valid STEP assets; 406 nominal component-pair checks and 29 substrate checks with no intersections |
+| Fabrication exports | Six copper Gerbers; 70 plated holes (66 filled/capped, four open connectors) and four M3 NPTH holes |
 
-[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Schematic revision comparison](evidence/audit/schematic-layout-checks.json)
+[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Current component revision](evidence/audit/component-revision-checks.json)
 
-These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The bulk-only ripple estimate is about 100 mV with little margin. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
+These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The revised bulk-only ripple estimate is 50.58 mV. Clamp/RFB margin and hot-plug remain unqualified. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
 
 The proposed supplier must accept the stack, sourcing, core preparation and retention/installation process. **Stock ungapped cores are not substitutes** for the prepared pair. Several resistor lines still need sourcing confirmation, and nominal 3D geometry passes the checks in [3D-MODELS.md](3D-MODELS.md). Actual hardware, enclosure, tolerances and core retention still need qualification. Functional low-voltage isolation only; no mains or safety-isolation rating is claimed.
 
@@ -133,3 +143,19 @@ Changes to stack, terminals, footprints or components require regeneration and r
 Custom example files and Planar Studio are MIT licensed; see [LICENSE](LICENSE). Standard KiCad footprints and stock 3D models are by the KiCad library contributors and redistributed under CC BY-SA 4.0 with KiCad's design exception; see [footprint license](kicad/Flyback.pretty/LICENSE.md) and [model license](kicad/3dmodels/stock/LICENSE.md). Vendor names and part identifiers establish design provenance, not supplier endorsement or availability.
 
 The additional American Embedded mounting footprint is CC BY 4.0; see [its attribution](kicad/amemb-MountingHole.pretty/LICENSE.md). The unmodified KiStack placement converter retains [its upstream license](scripts/vendor/KISTACK-LICENSE.txt).
+
+After a component or layout edit, run the current audit scripts in KiCad Python:
+
+```sh
+python scripts/audit-layout.py
+python scripts/audit-layout-complete.py
+python scripts/audit-components.py
+python scripts/render-component-audit.py
+node scripts/render-schematic.mjs /path/to/sharp
+```
+
+Refresh Gerber renders before the layout audit, and CadQuery solid checks after
+geometry changes. The schematic rasterizer uses Node and `sharp` (resolved from
+the environment, or supplied as an explicit module path); it renders the native
+KiCad SVG and records source/output hashes. The human component review must be
+renewed whenever its expected MPN, footprint or pin mapping changes.

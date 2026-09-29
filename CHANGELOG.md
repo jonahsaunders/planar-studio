@@ -2,6 +2,16 @@
 
 ## 1.6.0 — Transformer project workflow and GUI audit (development)
 
+- Review every flyback component against manufacturer package, polarity, rating
+  and use-case evidence. Improve UVLO startup margin, select a lower-voltage
+  clamp and current capacitor variants, and replace the input diode with a
+  verified PowerDI123 part. Document conditional ratings and hardware gates.
+- Add a damped 47 µF input reservoir, a second 180 µF output polymer capacitor,
+  26 ground stitches and two capacitor return vias. Preserve the winding,
+  outline and mounting geometry; keep schematic labels readable and all
+  connections three-way. Publish a per-component audit, refreshed manufacturing
+  files and 3D views; estimated ripple is 50.58 mV, not a measured result.
+
 - Link new nominal input/frequency/load values to requirements, with explicit
   experimental overrides; preserve imported legacy operating points.
 - Provide dedicated requirements, candidate, verification and export work areas
@@ -38,7 +48,7 @@
 - Eliminate four-way schematic junctions and enforce both native ERC and
   symbol-aware geometry checks. Publish a measured PCB layout audit identifying
   primary input/clamp routing, output-feed, probe-access and assembly work.
-- Bundle 3D models for all 26 flyback footprints, including the prepared core
+- Bundle 3D models for all 29 flyback footprints, including the prepared core
   pair and provisional M3 hardware. Publish five assembly views, STEP/GLB
   exports, asset validation and nominal solid-interference evidence.
 - Complete the KiStack PCB review and rework flyback placement/routing: shorten

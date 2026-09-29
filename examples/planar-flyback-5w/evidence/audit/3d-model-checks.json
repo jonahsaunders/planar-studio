@@ -1,6 +1,6 @@
 {
-  "footprints": 26,
-  "unique_STEP_assets": 14,
+  "footprints": 29,
+  "unique_STEP_assets": 16,
   "missing_or_hidden_models": [],
   "board_thickness_mm": 1.6,
   "coordinate_convention": "KiCad board X right / Y down; model world uses X right / Y up, top PCB surface Z=0; footprint angles are degrees CCW.",
@@ -72,9 +72,31 @@
       "side": "top"
     },
     {
+      "reference": "C7",
+      "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_8x10.5.step",
+      "sha256": "ae35c4f1043bc64d44be9822563a47867ce2b6bed1663a1144d81c9b58368562",
+      "position_mm": [
+        110.5,
+        49.0
+      ],
+      "rotation_deg": 0.0,
+      "side": "top"
+    },
+    {
+      "reference": "C8",
+      "model": "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step",
+      "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
+      "position_mm": [
+        91.0,
+        118.5
+      ],
+      "rotation_deg": 180.0,
+      "side": "top"
+    },
+    {
       "reference": "D1",
-      "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step",
-      "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
+      "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_PowerDI-123.step",
+      "sha256": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
       "position_mm": [
         88.0,
         46.0
@@ -267,6 +289,17 @@
         118.5
       ],
       "rotation_deg": -90.0,
+      "side": "top"
+    },
+    {
+      "reference": "R8",
+      "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
+      "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
+      "position_mm": [
+        98.0,
+        47.0
+      ],
+      "rotation_deg": 0.0,
       "side": "top"
     },
     {

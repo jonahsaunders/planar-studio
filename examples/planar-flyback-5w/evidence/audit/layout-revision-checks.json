@@ -327,5 +327,7 @@
         0.0
       ]
     }
-  }
+  },
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
 }

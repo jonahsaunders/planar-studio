@@ -1,6 +1,6 @@
 {
-  "schematic_board_logical_pins_matched": 54,
-  "physical_numbered_pads_checked": 55,
+  "schematic_board_logical_pins_matched": 60,
+  "physical_numbered_pads_checked": 61,
   "winding_polygon_count": 4,
   "polygon_terminal_contacts": {
     "F.Cu": [
@@ -35,7 +35,8 @@
       "U1.3",
       "R1.1",
       "C1.1",
-      "C2.1"
+      "C2.1",
+      "R8.1"
     ],
     "SW": [
       "T1.2",
@@ -52,12 +53,14 @@
       "U1.9",
       "C5.2",
       "R2.2",
-      "R4.2"
+      "R4.2",
+      "C7.2"
     ],
     "+5V_ISO": [
       "D2.1",
       "C3.1",
       "C4.1",
+      "C8.1",
       "R7.1",
       "J2.1"
     ],
@@ -65,6 +68,7 @@
       "T1.3",
       "C3.2",
       "C4.2",
+      "C8.2",
       "R7.2",
       "J2.2"
     ]
@@ -72,7 +76,7 @@
   "schematic_junctions": {
     "four_way_connections": 0,
     "maximum_connection_arms": 3,
-    "three_way_connections": 27,
+    "three_way_connections": 31,
     "includes_symbol_pin_stubs": true
   }
 }

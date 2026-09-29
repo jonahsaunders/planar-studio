@@ -60,6 +60,7 @@ def add(ref,value,kind,x,y,nets,fp='',rot=0,mpn='',code='',purpose=''):
   elif kind=='Mount':props=prop('Reference',ref,x,y-4.445)+prop('Value',value,x,y,True)
   elif kind in ['FLAG','Ground','Supply']:props=prop('Reference',ref,x,y,True)+prop('Value',value,x,y,True)
   else:props=prop('Reference',ref,x,y-6.35,angle=rot%180)+prop('Value',value,x,y+6.35,angle=rot%180)
+  if ref in ['F1','D1','D2']:props=prop('Reference',ref,x,y-9.525,angle=rot%180)+prop('Value',value,x,y-6.35,angle=rot%180)
   if ref=='C5':props=prop('Reference',ref,x-3.81,y-1.27,just='right')+prop('Value',value,x-3.81,y+1.27,just='right')
   if ref=='R7':props=prop('Reference',ref,x-3.81,y-1.27,just='right')+prop('Value',value,x-3.81,y+1.27,just='right')
   if ref in ['J1','J2']:props=prop('Reference',ref,x,y-6.35)+prop('Value',value,x,y,True)
@@ -78,17 +79,17 @@ def add(ref,value,kind,x,y,nets,fp='',rot=0,mpn='',code='',purpose=''):
 R='Resistor_SMD:R_0603_1608Metric'; C='Capacitor_SMD:C_1210_3225Metric'; D='Diode_SMD:D_SMA'
 add('J1','18-36 V DC','JIN',20.32,43.18,{'1':'VIN_RAW','2':'PGND'},'Flyback:Terminal_2P_5.08',mpn='KF301-5.08-2P',purpose='Input connector; exact vendor footprint pending')
 add('F1','1 A / >=63 V','FUSE',43.18,41.91,{'1':'VIN_RAW','2':'VIN_FUSED'},'Fuse:Fuse_1206_3216Metric',rot=90,purpose='Input fault protection; sourcing pending')
-add('D1','SS110','D',66.04,41.91,{'1':'VIN','2':'VIN_FUSED'},D,rot=180,mpn='SS110',purpose='Input reverse-polarity protection')
-add('C1','10u / 100 V','C',40.64,57.15,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB',purpose='Input reservoir; DC-bias curve must be checked')
-add('C2','10u / 100 V','C',68.58,57.15,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB')
+add('D1','DFLS1100-7','D',66.04,41.91,{'1':'VIN','2':'VIN_FUSED'},D,rot=180,mpn='DFLS1100-7',purpose='Input reverse-polarity protection')
+add('C1','10u / 100 V','C',40.64,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB',purpose='Input reservoir; DC-bias curve must be checked')
+add('C2','10u / 100 V','C',60.96,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB')
 add('T1','PLANAR 4:2 / Lm 12uH','T',177.8,46.99,{'1':'VIN','2':'SW','3':'GND_ISO','4':'SEC_A','5':'PRI_MID'},'Flyback:Planar_EELP32_4T_2T',mpn='PS-MAG-001 prepared assembly',purpose='Four winding layers on a six-layer PCB; pad 5 is the internal primary series via; prepared N87 core pair')
 add('D2','PDS835L-13','D',200.66,41.91,{'1':'+5V_ISO','2':'SEC_A'},'Diode_SMD:D_PowerDI-5',rot=180,mpn='PDS835L-13',code='C444972')
-add('C3','180u / 16 V polymer','CP',210.82,46.99,{'1':'+5V_ISO','2':'GND_ISO'},'Flyback:CP_Panasonic_C6',mpn='16SVPF180M')
-add('C4','22u / 16 V','C',238.76,46.99,{'1':'+5V_ISO','2':'GND_ISO'},C,mpn='GRM32ER71C226KE18L')
+add('C3','180u / 16 V polymer','CP',208.28,46.99,{'1':'+5V_ISO','2':'GND_ISO'},'Flyback:CP_Panasonic_C6',mpn='16SVPF180M')
+add('C4','22u / 16 V','C',248.92,46.99,{'1':'+5V_ISO','2':'GND_ISO'},C,mpn='GRM32ER71C226KE18L')
 add('J2','5 V / 1 A isolated','J',279.4,43.18,{'1':'+5V_ISO','2':'GND_ISO'},'Flyback:Terminal_2P_5.08',mpn='KF301-5.08-2P')
 add('U1','LT8302ES8E#PBF','LT8302',88.9,116.84,{'1':'UVLO','2':'INTVCC','3':'VIN','4':'PGND','5':'SW','6':'RFB','7':'RREF','8':'TC','9':'PGND'},'Flyback:SOIC8_EP_LT_S8E',mpn='LT8302ES8E#PBF',code='C117331')
 add('C5','1u / 10 V','C',68.58,134.62,{'1':'INTVCC','2':'PGND'},'Capacitor_SMD:C_0603_1608Metric')
-add('R1','681k 1%','R',40.64,106.68,{'1':'VIN','2':'UVLO'},R)
+add('R1','649k 1%','R',40.64,106.68,{'1':'VIN','2':'UVLO'},R)
 add('R2','61.9k 1%','R',40.64,129.54,{'1':'UVLO','2':'PGND'},R)
 add('R3','106k 0.1%','R',119.38,106.68,{'1':'SW','2':'RFB'},R)
 add('R4','10k 0.1%','R',144.78,137.16,{'1':'RREF','2':'PGND'},R)
@@ -97,7 +98,11 @@ add('R6','39R 0.5 W','R',106.68,57.15,{'1':'VIN','2':'SNUB'},'Resistor_SMD:R_120
 add('C6','470p / 100 V C0G','C',106.68,77.47,{'1':'SNUB','2':'SW'},'Capacitor_SMD:C_0805_2012Metric')
 add('D3','DFLS1100-7','D',139.7,77.47,{'1':'CLAMP','2':'SW'},'Diode_SMD:D_PowerDI-123',rot=270,mpn='DFLS1100-7')
 add('D4','SMAJ15A','TVS',139.7,57.15,{'1':'CLAMP','2':'VIN'},D,rot=90,mpn='SMAJ15A',purpose='Avalanche clamp; waveform validation required')
-add('R7','499R 0.25 W','R',261.62,54.61,{'1':'+5V_ISO','2':'GND_ISO'},'Resistor_SMD:R_1206_3216Metric',purpose='10 mA minimum load at 5 V')
+add('R7','499R 0.25 W','R',266.7,54.61,{'1':'+5V_ISO','2':'GND_ISO'},'Resistor_SMD:R_1206_3216Metric',purpose='10 mA minimum load at 5 V')
+add('R8','2.2R 1.5 W','R',81.28,54.61,{'1':'VIN','2':'VIN_DAMP'},'Resistor_SMD:R_2512_6332Metric')
+add('C7','47u / 63 V','CP',81.28,69.85,{'1':'VIN_DAMP','2':'PGND'},'Capacitor_SMD:CP_Elec_8x10.5')
+add('C8','180u / 16 V polymer','CP',228.6,46.99,{'1':'+5V_ISO','2':'GND_ISO'},'Flyback:CP_Panasonic_C6')
+
 add('#FLG01','PWR_FLAG','FLAG',83.82,39.37,{'1':'VIN'})
 add('#FLG02','PWR_FLAG','FLAG',55.88,73.66,{'1':'PGND'})
 for i,hole in enumerate(mechanical['holes']):
@@ -123,7 +128,7 @@ def drawing(points,colour='100 120 140 1',width=.254):
 def ground(net,x,y):
   # Local power symbols retain the board's /PGND and /GND_ISO net identities.
   add(f'#PWR{next(power_references):03d}',net,'Ground',x,y,{'1':net})
-  netlabel(net,x-3.81,y,'right')
+  netlabel(net,x-(8.89 if net=='GND_ISO' else 3.81),y,'right')
 def supply(net,x,y):
   add(f'#PWR{next(power_references):03d}',net,'Supply',x,y,{'1':net})
   netlabel(net,x+3.81,y)
@@ -136,17 +141,19 @@ def box(x0,y0,x1,y1,title):
 wire([at('J1',1),at('F1',1)])
 wire([at('F1',2),at('D1',2)])
 netlabel('VIN_RAW',30.48,41.91);netlabel('VIN_FUSED',50.8,41.91)
-wire([at('D1',1),(78.74,41.91),(83.82,41.91),(91.44,41.91),(106.68,41.91),(139.7,41.91),at('T1',1)])
+wire([at('D1',1),(78.74,41.91),(81.28,41.91),(83.82,41.91),(97.79,41.91),(106.68,41.91),(139.7,41.91),at('T1',1)])
 netlabel('VIN',86.36,41.91)
-wire([(78.74,41.91),(78.74,52.07),(68.58,52.07),at('C1',1)])
-for x in [78.74,83.82,91.44,106.68,139.7]:junction(x,41.91)
-junction(68.58,52.07)
-wire([at('J1',2),(30.48,44.45),(30.48,76.2),(40.64,76.2),(55.88,76.2),(68.58,76.2),at('C2',2)])
-wire([at('C1',2),(40.64,76.2)]);junction(40.64,76.2);junction(55.88,76.2)
-# PGND returns directly from the input to the controller, with one signal-ground
-# marker, located away from the power flags and component text.
+wire([(78.74,41.91),(78.74,46.99),(60.96,46.99),(40.64,46.99),at('C1',1)])
+wire([(60.96,46.99),at('C2',1)]);junction(60.96,46.99)
+for x in [78.74,81.28,83.82,97.79,106.68,139.7]:junction(x,41.91)
+wire([(81.28,41.91),at('R8',1)])
+wire([at('R8',2),at('C7',1)]);netlabel('VIN_DAMP',81.28,62.23)
+wire([at('J1',2),(30.48,44.45),(30.48,76.2),(40.64,76.2),(55.88,76.2),(60.96,76.2),(81.28,76.2),at('C7',2)])
+for ref,x in [('C1',40.64),('C2',60.96)]:
+  wire([at(ref,2),(x,76.2)]);junction(x,76.2)
+junction(55.88,76.2)
 wire([(30.48,76.2),(30.48,152.4),(40.64,152.4)]);junction(30.48,76.2)
-wire([(91.44,41.91),(91.44,91.44),(40.64,91.44),(40.64,96.52)],'VIN')
+wire([(97.79,41.91),(97.79,91.44),(40.64,91.44),(40.64,96.52)],'VIN')
 
 # Snubber and avalanche clamp are adjacent to T1 and wired to its actual VIN
 # and SW nodes. There is no separate label-only clamp/damping section.
@@ -162,12 +169,12 @@ netlabel('SW',149.86,99.06)
 
 # Rectification, reservoir and preload share a separate isolated return rail.
 wire([at('T1',4),at('D2',2)]);netlabel('SEC_A',189.23,41.91)
-wire([at('D2',1),(210.82,41.91),(238.76,41.91),(261.62,41.91),at('J2',1)])
-wire([(261.62,41.91),at('R7',1)])
-wire([at('T1',3),(195.58,52.07),(195.58,66.04),(210.82,66.04),(238.76,66.04),(254,66.04),(261.62,66.04),(274.32,66.04),at('J2',2)])
-for ref,x in [('C3',210.82),('C4',238.76),('R7',261.62)]:
+wire([at('D2',1),(208.28,41.91),(228.6,41.91),(248.92,41.91),(266.7,41.91),at('J2',1)])
+wire([(266.7,41.91),at('R7',1)])
+wire([at('T1',3),(195.58,52.07),(195.58,66.04),(208.28,66.04),(228.6,66.04),(248.92,66.04),(254,66.04),(266.7,66.04),(274.32,66.04),at('J2',2)])
+for ref,x in [('C3',208.28),('C8',228.6),('C4',248.92),('R7',266.7)]:
   wire([at(ref,2),(x,66.04)]);junction(x,41.91);junction(x,66.04)
-netlabel('+5V_ISO',263.525,41.91);ground('GND_ISO',254,66.04);junction(254,66.04)
+netlabel('+5V_ISO',256.54,41.91);ground('GND_ISO',254,66.04);junction(254,66.04)
 
 # The controller and all its local passive networks have explicit wires.
 wire([at('R1',1),(40.64,96.52),(60.96,96.52),(60.96,106.68),at('U1',3)])
@@ -195,11 +202,13 @@ for i,note in enumerate([
   'Secondary: In1.Cu + In4.Cu in parallel.',
   'Prepared N87 core: 0.21 mm center gap.',
   'Stock ungapped cores are not substitutes.',
+  'R8/C7 damp the input; qualify hot-plug.',
+  'C3/C8: 360 uF polymer output reservoir.',
   'INTVCC is U1 internal bias, not VIN.',
   'Keep PGND and GND_ISO separate.',
   'Functional isolation; no earth connection.',
   'T1 pin 5 is the internal primary series via.',
-]):text(note,184.15,110.49+i*5.715,1.0)
+]):text(note,184.15,110.49+i*4.445,1.0)
 text('PLANAR FLYBACK  /  5 W',12.7,13.97,2.54,True)
 text('18-36 V input  |  isolated 5 V / 1 A  |  A1 engineering prototype',12.7,19.05,1.27)
 box(12.7,22.86,284.48,163.83,'18-36 V INPUT / FLYBACK POWER STAGE')

@@ -12,6 +12,12 @@ saved PCB hash. No supplier was contacted and no purchase was made.
 
 [![Before and after top views of the actual KiCad assembly](evidence/audit/layout-before-after.png)](evidence/audit/layout-before-after.png)
 
+## Added capacitors and stitching
+
+The [component audit](COMPONENT-AUDIT.md) adds C7/R8 input damping and C8 output bulk. C8 has a separate 1.5 mm-wide, 12.69 mm route from the rectifier cathode; R8-to-C7 is 6.67 mm at 1 mm width. The high-frequency bypasses remain close to their loads. The front PGND pour now matches the back region's extent.
+
+There are 12 added PGND and 14 added GND_ISO stitches, plus two capacitor ground vias. All 26 new stitches are checked for their intended net and annular connection to both filled ground planes; none enters the winding/isolation area. Total ordinary vias: 61. Eight return corridors pass the sampled 0.5 mm-wide geometry check. Perreault's research-board placement principles are discussed with primary references in the component audit; no EMI/current-density result is inferred from via count.
+
 ## Placement and power routing
 
 Input protection feeds a compact controller/primary-terminal cluster. C1 now
@@ -56,21 +62,21 @@ Actual overshoot, EMI, regulation and temperature still need measurement.
 | Placement and appearance | Connector body axes align at x=100 mm, with wire entries facing opposite board ends. Electronics follow input → controller/primary → transformer → rectifier/filter → output. References are horizontal; legends and polarities were checked in copper, assembly and 3D views. | Enclosure, cable bends and screwdriver access have not been supplied. |
 | Primary switching paths | Local C1/C2 and suppression placement replaces long perimeter returns. SW and CLAMP stay on F.Cu. CLAMP crosses between C2 pads with native clearance verified. | No extracted parasitics or current-density solution; clamp tuning remains a bench task. |
 | Secondary current paths | D2 anodes face T1; parallel escape vias remain adjacent to its anode pads. C4 is beside D2, with C3 above J2. Output feed is 2 mm wide and 11.04 mm long. | Confirm rectifier temperature and drop/ripple at both C3 and J2. |
-| Return copper | Separate PGND and GND_ISO regions occupy both outer layers, with five additional stitching vias in each domain. Each of the four filled regions has one connected outline. U1 retains four exposed-pad ground vias. | Connected copper alone does not prove low impedance or favorable current sharing. |
-| Return-path detail | Six 0.5 mm projected B.Cu corridors were sampled between capacitor/reference grounds and controller/secondary return. Four are straight. C1 and C4 require detours around power-via antipads; reviewed routes are 8.30 and 11.76 mm, versus 7.65 and 10.84 mm straight-line distances. All six reviewed corridors stay inside filled copper. | Feasible geometric paths, not predictions of current flow. Endpoint spreading and via impedance are excluded. |
+| Return copper | Separate PGND and GND_ISO regions occupy both outer layers. In addition to the earlier five stitches per domain, this revision adds 12 PGND and 14 GND_ISO stitches. Each of the four filled regions has one connected outline. U1 retains four exposed-pad ground vias. | Connected copper alone does not prove low impedance or favorable current sharing. |
+| Return-path detail | Eight 0.5 mm projected B.Cu corridors were sampled between capacitor/reference grounds and controller/secondary return. Six are straight. C1 and C4 require detours around power-via antipads; reviewed routes are 8.30 and 11.76 mm, versus 7.65 and 10.84 mm straight-line distances. All eight reviewed corridors stay inside filled copper. | Feasible geometric paths, not predictions of current flow. Endpoint spreading and via impedance are excluded. |
 | Bias, feedback and reference | C5-to-U1 is 1.69 mm; R3-to-RFB 1.72 mm; U1 RREF-to-R4 1.96 mm. R4 returns through nearby PGND. Quiet signals stay within the local controller cluster. | Output trim and temperature compensation must be retested after the placement change. |
-| Circuit and windings | Same 22 electrical/winding footprint identities and 55 numbered pad/net/size/drill/shape records. Four mechanical footprints now use the requested M3 Edge variant. T1 pose and copper, 19,229 winding samples, outline, core slots, thickness and six layers preserved. | Nominal magnetic calculations do not establish biased inductance, fringing or core loss. |
+| Circuit and windings | Three new filter components give 29 footprints / 61 numbered pads. D1 changes package and several selections/values are corrected; original component net assignments are preserved. Four mechanical footprints retain the requested M3 Edge variant. T1 pose and copper, 19,229 winding samples, outline, core slots, thickness and six layers preserved. | Nominal magnetic calculations do not establish biased inductance, fringing or core loss. |
 | Isolation | PGND and GND_ISO remain separate. Local ground regions stop outside the winding area. Existing net ties preserve series primary and parallel secondary sections. | Proposed 0.10 mm outer interlayer dielectrics and 0.20 mm clearance rules provide no safety-isolation rating. |
-| Tracks and vias | All 64 routed segments are orthogonal or 45°. Minimum routed width is 0.25 mm; ordinary via annular ring is at least 0.15 mm. Native DRC reports no clearance or connection violations. | Fabricator must accept copper, drill and registration tolerances. |
+| Tracks and vias | All 72 routed segments are orthogonal or 45°. Minimum routed width is 0.25 mm; ordinary via annular ring is at least 0.15 mm. Native DRC reports no clearance or connection violations. | Fabricator must accept copper, drill and registration tolerances. |
 | Thermal and soldering | Four filled/capped U1 thermal vias and four paste windows remain. J1/J2 ground pins now use 0.30 mm thermal gaps and 0.50 mm spokes. Separate ground copper spreads heat locally. | No thermal simulation or temperature measurements; paste/process and solderability need validation. |
 | Probe access | Two new exposed 1.2 mm filled/capped ground lands, plus mapped VIN, SW, INTVCC and output component pads. PGND land is about 2.44 mm from U1 SW pin. No added SW stub. | Component pads require fine probes; no installed test-point components were added. |
 | Mounting and core | Four American Embedded 3.2 mm NPTH holes and 41 × 80 mm pattern retained; Edge mask openings face outward on both sides. The rotated extension keepouts are clear on all six layers. All-layer copper exclusion and drilled coordinates pass. T1 courtyard tightened around its unchanged winding/terminal extent; no courtyard overlaps. | Core preparation/retention and actual M3 hardware remain provisional. |
-| Models and fit | All 26 footprints have visible local models; 14 STEP assets are valid. All 325 component pairs have disjoint conservative bounding boxes; 26 exact substrate checks have zero positive-volume intersections. Core clears nominal substrate by 0.318 mm. | Nominal models do not establish tolerance-stack, enclosure or process acceptance. |
+| Models and fit | All 29 footprints have visible local models; 16 STEP assets are valid. All 406 component pairs have disjoint conservative bounding boxes; 29 exact substrate checks have zero positive-volume intersections. Core clears nominal substrate by 0.318 mm. | Nominal models do not establish tolerance-stack, enclosure or process acceptance. |
 | Masks, paste and legends | Reviewed six copper Gerbers, both masks, front paste, both legends and outline. New ground lands are exposed only on top, without paste. Connector and M3 holes have no paste. Four U1 paste windows are present. | Images supplement native geometry checks; vendor CAM review remains open. |
-| Manufacturing consistency | 21 electronic BOM/CPL references (19 SMD, two THT) match. Revised placements and connector centroids exported. **38 filled/capped interlayer holes + four open connector holes = 42 plated holes**, plus four separate NPTH holes. | Panel fiducials/tooling, via fill/cap, stack and core installation need supplier acceptance. |
+| Manufacturing consistency | 24 electronic BOM/CPL references (22 SMD, two THT) match. Revised placements and connector centroids exported. **66 filled/capped interlayer holes + four open connector holes = 70 plated holes**, plus four separate NPTH holes. | Panel fiducials/tooling, via fill/cap, stack and core installation need supplier acceptance. |
 
 Return-plane areas in [complete-layout-checks.json](evidence/audit/complete-layout-checks.json):
-PGND F/B = 413.83/842.55 mm²; GND_ISO F/B = 630.53/711.54 mm².
+PGND F/B = 658.53/842.55 mm²; GND_ISO F/B = 602.78/711.54 mm².
 Areas are descriptive, not an estimate of thermal capacity or current rating.
 
 ## Probe map and unresolved release gates
@@ -89,13 +95,13 @@ secondary probe returns separate.
 Before fabrication release, obtain stack/via-fill/core-process acceptance and
 review actual hardware, wiring and enclosure constraints. On prototypes, verify
 switch overshoot, rectifier stress, ripple, output trim/regulation, startup,
-load transients, overload, biased inductance, temperature and EMI. The previous
-58.5 V rating-based clamp estimate and approximately 100 mV bulk-only ripple
-calculation still leave little margin; shorter routing is not a measured pass.
+load transients, overload, biased inductance, temperature and EMI. The revised rating-based clamp estimate is 56.9 V and bulk-only ripple estimate
+is 50.58 mV. RFB current margin is still tight; measure SW−VIN below 20.5 V.
+The input damping branch does not qualify hot-plug. Shorter routing is not a measured pass.
 
 ## Evidence and reproduction
 
-- [Circuit/geometry preservation](evidence/audit/layout-revision-checks.json), [baseline route snapshot](evidence/audit/layout-before.json)
+- [Current component/geometry revision](evidence/audit/component-revision-checks.json), [baseline route snapshot](evidence/audit/layout-before.json)
 - [Current route detail](evidence/audit/pcb-layout-metrics.json), [complete geometry checks](evidence/audit/complete-layout-checks.json)
 - [Front/back view](evidence/layout-overview.svg), [six copper layers](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png)
 - [DRC](evidence/board-drc.json), [net/winding checks](evidence/independent-checks.json), [manufacturing checks](evidence/manufacturing-checks.json), [mounting checks](evidence/audit/mounting-checks.json)

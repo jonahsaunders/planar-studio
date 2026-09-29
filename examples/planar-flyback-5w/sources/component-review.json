@@ -1,0 +1,410 @@
+{
+  "review_date": "2026-09-29",
+  "status": "All components reviewed; analytical/package checks complete with explicit hardware/process qualification gates. Not a production release.",
+  "components": [
+    {
+      "reference": "J1",
+      "expected_mpn": "KF301-5.0-2P",
+      "expected_footprint": "Terminal_KF301_2P_5.00",
+      "rating": "300 V; use conservative 10 A rating (approval-dependent); -30 to 120 C; 22-14 AWG.",
+      "package_review": "Manufacturer drawing: 5.00 mm pitch, 1.00 mm round leads, recommended 1.30 mm holes. Actual 5.00 mm pitch / 1.30 mm drills / 2.40 mm lands. Pin 1 positive, pin 2 return; wire entries face outward.",
+      "use_case": "36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.",
+      "remaining_validation": "Qualify wire range, solder fill, 0.4 Nm screw torque, tool access and manual assembly.",
+      "expected_nets": {
+        "1": "VIN_RAW",
+        "2": "PGND"
+      },
+      "source": "https://www.cxkefa.com/kf301-50"
+    },
+    {
+      "reference": "J2",
+      "expected_mpn": "KF301-5.0-2P",
+      "expected_footprint": "Terminal_KF301_2P_5.00",
+      "rating": "300 V; use conservative 10 A rating (approval-dependent); -30 to 120 C; 22-14 AWG.",
+      "package_review": "Manufacturer drawing: 5.00 mm pitch, 1.00 mm round leads, recommended 1.30 mm holes. Actual 5.00 mm pitch / 1.30 mm drills / 2.40 mm lands. Pin 1 positive, pin 2 return; wire entries face outward.",
+      "use_case": "36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.",
+      "remaining_validation": "Qualify wire range, solder fill, 0.4 Nm screw torque, tool access and manual assembly.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "source": "https://www.cxkefa.com/kf301-50"
+    },
+    {
+      "reference": "F1",
+      "expected_mpn": "0466001.NR",
+      "expected_footprint": "Fuse_1206_3216Metric",
+      "rating": "1 A, 63 V AC/DC, fast; 50 A interrupt; nominal cold resistance 0.075 ohm, nominal melting I2t 0.0423 A2s.",
+      "package_review": "1206 body 3.175 x 1.524 mm nominal matches the selected metric fuse footprint. Generic KiCad land geometry is not represented as an exact manufacturer stencil recommendation.",
+      "use_case": "Input average approximately 0.40 A; 0.75 application factor and approximately 0.8 temperature factor at 70 C give 0.60 A continuous screening capacity.",
+      "remaining_validation": "Verify inrush and time-current coordination. Source fault current must not exceed 50 A for the stated interrupt rating; this fuse does not guarantee semiconductor protection.",
+      "expected_nets": {
+        "1": "VIN_RAW",
+        "2": "VIN_FUSED"
+      },
+      "source": "https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f"
+    },
+    {
+      "reference": "D1",
+      "expected_mpn": "DFLS1100-7",
+      "expected_footprint": "D_PowerDI-123",
+      "rating": "100 V reverse; 1 A average, 0.8 A after 20% capacitive-load derating; 50 A nonrepetitive 8.3 ms surge.",
+      "package_review": "PowerDI123 asymmetric lands: large pad 1 is cathode, small pad 2 anode. Replaces the insufficiently traceable SS110 selection and its SMA footprint.",
+      "use_case": "Series input reverse-polarity protection; approximately 0.40 A forward and at most 72 V conservative reverse with a charged 36 V reservoir and -36 V input.",
+      "remaining_validation": "Measure temperature and inrush. Datasheet thermal resistance assumes its stated copper/test conditions, not this six-layer board.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "VIN_FUSED"
+      },
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf"
+    },
+    {
+      "reference": "C1",
+      "expected_mpn": "CL32B106KBJNNNE",
+      "expected_footprint": "C_1210_3225Metric",
+      "rating": "10 uF +/-10%, 50 V X7R, -55 to 125 C.",
+      "package_review": "Manufacturer 3.2 x 2.5 mm body matches 1210 (3225 metric), nonpolar lands; maximum height approximately 2.7 mm.",
+      "use_case": "Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.",
+      "remaining_validation": "Confirm effective capacitance at voltage/temperature and ripple heating. A typical bias curve is not a guaranteed minimum. Keep actual VIN transients below the controller 42 V limit.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "PGND"
+      },
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do"
+    },
+    {
+      "reference": "C2",
+      "expected_mpn": "CL32B106KBJNNNE",
+      "expected_footprint": "C_1210_3225Metric",
+      "rating": "10 uF +/-10%, 50 V X7R, -55 to 125 C.",
+      "package_review": "Manufacturer 3.2 x 2.5 mm body matches 1210 (3225 metric), nonpolar lands; maximum height approximately 2.7 mm.",
+      "use_case": "Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.",
+      "remaining_validation": "Confirm effective capacitance at voltage/temperature and ripple heating. A typical bias curve is not a guaranteed minimum. Keep actual VIN transients below the controller 42 V limit.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "PGND"
+      },
+      "source": "https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do"
+    },
+    {
+      "reference": "C3",
+      "expected_mpn": "16SVPF180M",
+      "expected_footprint": "CP_Panasonic_C6",
+      "rating": "180 uF +/-20%, 16 V polymer; 22 milliohm max ESR and 3.3 A ripple at 100 kHz; -55 to 105 C.",
+      "package_review": "Panasonic C6 case: 6.3 mm diameter x 5.9 mm. Custom lands 3.5 x 1.6 mm, centers +/-2.8 mm, 2.1 mm gap; match manufacturer recommended land drawing. Pad 1 is positive.",
+      "use_case": "Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.",
+      "remaining_validation": "Measure burst ripple, current sharing, startup/inrush and load-step response. ESR bound is specified at 100 kHz, not at every frequency or temperature.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M"
+    },
+    {
+      "reference": "C8",
+      "expected_mpn": "16SVPF180M",
+      "expected_footprint": "CP_Panasonic_C6",
+      "rating": "180 uF +/-20%, 16 V polymer; 22 milliohm max ESR and 3.3 A ripple at 100 kHz; -55 to 105 C.",
+      "package_review": "Panasonic C6 case: 6.3 mm diameter x 5.9 mm. Custom lands 3.5 x 1.6 mm, centers +/-2.8 mm, 2.1 mm gap; match manufacturer recommended land drawing. Pad 1 is positive.",
+      "use_case": "Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.",
+      "remaining_validation": "Measure burst ripple, current sharing, startup/inrush and load-step response. ESR bound is specified at 100 kHz, not at every frequency or temperature.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M"
+    },
+    {
+      "reference": "C4",
+      "expected_mpn": "CL32B226KOJNNNE",
+      "expected_footprint": "C_1210_3225Metric",
+      "rating": "22 uF +/-10%, 16 V X7R; -55 to 125 C.",
+      "package_review": "Current Samsung manufacturer listing; 3.2 x 2.5 mm 1210 body. Same nonpolar footprint as the previous part; replaces an inadequately supported old selection.",
+      "use_case": "Local rectifier/output high-frequency bypass. 5.25 V below 16 V; deliberately not credited in conservative output-capacity/ripple calculation.",
+      "remaining_validation": "Confirm effective capacitance and temperature under ripple; verify procurement for this exact suffix.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "source": "https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do"
+    },
+    {
+      "reference": "C5",
+      "expected_mpn": "CL10A475KO8NQNC",
+      "expected_footprint": "C_0603_1608Metric",
+      "rating": "4.7 uF +/-10%, 16 V X5R; -55 to 85 C.",
+      "package_review": "1.6 x 0.8 mm 0603 nonpolar package; manufacturer recommended replacement for NRND CL10A475KO8NNNC.",
+      "use_case": "INTVCC decoupling, about 3.1 V maximum bias. Close 1.69 mm explicit feed to U1. LT8302 requires at least 1 uF effective local bypass.",
+      "remaining_validation": "Verify >=1 uF after bias/tolerance/temperature and keep the capacitor below 85 C; nominal 4.7 uF alone does not establish effective capacitance.",
+      "expected_nets": {
+        "1": "INTVCC",
+        "2": "PGND"
+      },
+      "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do"
+    },
+    {
+      "reference": "C6",
+      "expected_mpn": "CGA4C4C0G2W471J060AA",
+      "expected_footprint": "C_0805_2012Metric",
+      "rating": "470 pF +/-5%, 450 V C0G; -55 to 125 C.",
+      "package_review": "TDK production part, 2.0 x 1.25 x 0.6 mm nominal 0805. Replaces NRND 100 V CGA4C2C0G2A471J060AA without changing capacitance or lands.",
+      "use_case": "Series RC snubber capacitor from SNUB to SW; conservative 60 V amplitude is below 450 V; stable dielectric avoids MLCC bias loss in tuning.",
+      "remaining_validation": "Tune using measured ringing and verify resistor loss; voltage rating alone does not qualify repetitive switching-current/EMI behavior.",
+      "expected_nets": {
+        "1": "SNUB",
+        "2": "SW"
+      },
+      "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA"
+    },
+    {
+      "reference": "C7",
+      "expected_mpn": "EEHZC1J470P",
+      "expected_footprint": "CP_Elec_8x10.5",
+      "rating": "47 uF +/-20%, 63 V hybrid; 40 milliohm max ESR; 1.1 A ripple at 100 kHz/125 C; -55 to 125 C.",
+      "package_review": "Manufacturer 8 mm diameter x 10.2 +/-0.3 mm body uses polarized 8 mm electrolytic lands. 10.5 mm stock model is the maximum-height envelope, not a different capacitor. Pad 1 positive; square/chamfer polarity marks verified.",
+      "use_case": "Input reservoir in VIN -> R8 -> C7 -> PGND shunt branch; 36 V and full converter capacitor-ripple bound approximately 0.63 A are below ratings.",
+      "remaining_validation": "This is not a surge clamp. Validate cable/source impedance, hot-plug, ESR over temperature and ripple heating; begin with controlled input ramp.",
+      "expected_nets": {
+        "1": "VIN_DAMP",
+        "2": "PGND"
+      },
+      "source": "https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P"
+    },
+    {
+      "reference": "R1",
+      "expected_mpn": "RC0603FR-07649KL",
+      "expected_footprint": "R_0603_1608Metric",
+      "rating": "649 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.",
+      "package_review": "0603 / 1.6 x 0.8 mm resistor lands; no polarity.",
+      "use_case": "Upper UVLO divider. Reduced from 681 kohm: 17.55 V connector startup screening corner, including resistor/threshold/current limits and 1 V diode drop. At 42 V, less than 2.8 mW even assigning full voltage to R1.",
+      "remaining_validation": "UVLO hysteresis is only typical in the datasheet: verify startup at 18 V, full load and 0-50 C; this calculation is not a guaranteed production corner.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "UVLO"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL"
+    },
+    {
+      "reference": "R2",
+      "expected_mpn": "RC0603FR-0761K9L",
+      "expected_footprint": "R_0603_1608Metric",
+      "rating": "61.9 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.",
+      "package_review": "0603 / 1.6 x 0.8 mm resistor lands; no polarity.",
+      "use_case": "Lower UVLO divider. Under 3.7 V and 0.23 mW for VIN <=42 V. Nominal UVLO after D1 is 15.73 V rising / 13.94 V falling with R1.",
+      "remaining_validation": "Verify startup threshold/hysteresis and resistor substitution tolerances with R1.",
+      "expected_nets": {
+        "1": "UVLO",
+        "2": "PGND"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0761K9L"
+    },
+    {
+      "reference": "R3",
+      "expected_mpn": "RT0603BRD07106KL",
+      "expected_footprint": "R_0603_1608Metric",
+      "rating": "106 kohm +/-0.1%, 25 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage.",
+      "package_review": "Exact Yageo RT spec sheet confirms 0603 thin-film part and tolerance; previous unrelated source link replaced. Pad 1 SW, pad 2 RFB.",
+      "use_case": "Reflected-voltage sensing; R3/R4/2 - diode-drop relation gives nominal 5 V. Even assigning 60 V continuously gives <34 mW; RFB pin current, not resistor heating, sets the tighter constraint.",
+      "remaining_validation": "At the rating-based 19.9 V TVS clamp plus 1 V diode and 50 mV sense offset, approximately 197.84 uA versus 200 uA absolute pin limit. Scope SW-VIN <20.5 V; qualify temperature/dynamic peaks and final output trim.",
+      "expected_nets": {
+        "1": "SW",
+        "2": "RFB"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL"
+    },
+    {
+      "reference": "R4",
+      "expected_mpn": "RT0603BRD0710KL",
+      "expected_footprint": "R_0603_1608Metric",
+      "rating": "10 kohm +/-0.1%, 25 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage.",
+      "package_review": "Exact Yageo 0603 thin-film spec sheet, correct 10 kohm reference part.",
+      "use_case": "RREF to PGND establishes the controller reference. At an intentionally conservative 2 V, 0.4 mW; the actual reference is approximately 1 V.",
+      "remaining_validation": "Retain tolerance and temperature coefficient; confirm output ratio and thermal regulation with R3/R5.",
+      "expected_nets": {
+        "1": "RREF",
+        "2": "PGND"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL"
+    },
+    {
+      "reference": "R5",
+      "expected_mpn": "RC0603FR-07118KL",
+      "expected_footprint": "R_0603_1608Metric",
+      "rating": "118 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.",
+      "package_review": "0603 resistor lands; no polarity.",
+      "use_case": "TC-to-RREF temperature compensation, not a supply bias resistor. Even 2 V differential is <35 uW.",
+      "remaining_validation": "Value is an initial compensation setting. Tune against rectifier forward-drop versus temperature and actual regulation data.",
+      "expected_nets": {
+        "1": "TC",
+        "2": "RREF"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL"
+    },
+    {
+      "reference": "R6",
+      "expected_mpn": "ERJ-P08F39R0V",
+      "expected_footprint": "R_1206_3216Metric",
+      "rating": "39 ohm +/-1%, 0.66 W; pulse-withstanding Panasonic ERJ-P08; full-rating terminal temperature <=125 C.",
+      "package_review": "1206 / 3.2 x 1.6 mm lands match ERJ-P08. Documentation corrected from approximate 0.667 W to specified 0.66 W.",
+      "use_case": "Series RC damping of SW ringing. Full-load C*V^2*f estimate approximately 0.485 W, below 0.66 W. This consumes substantial thermal margin.",
+      "remaining_validation": "Measure repetitive pulse amplitude and dissipation, apply terminal-temperature derating. The 500 V limiting-element specification does not allow 500 V DC across 39 ohm.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "SNUB"
+      },
+      "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf"
+    },
+    {
+      "reference": "R7",
+      "expected_mpn": "RC1206FR-07220RL",
+      "expected_footprint": "R_1206_3216Metric",
+      "rating": "220 ohm +/-1%, 0.25 W at 70 C, 200 V limiting element voltage.",
+      "package_review": "1206 / 3.2 x 1.6 mm resistor lands; no polarity.",
+      "use_case": "Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.",
+      "remaining_validation": "Verify no-load burst ripple and temperature; derate above 70 C. Minimum switching timing/hysteresis assumptions need hardware confirmation.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "GND_ISO"
+      },
+      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL"
+    },
+    {
+      "reference": "R8",
+      "expected_mpn": "CRCW25122R20FKEGHP",
+      "expected_footprint": "R_2512_6332Metric",
+      "rating": "2.2 ohm +/-1%, 1.5 W at 70 C ambient; pulse-proof CRCW-HP e3.",
+      "package_review": "2512 / 6.3 x 3.2 mm lands match the exact Vishay high-pulse package; larger than the snubber resistor deliberately.",
+      "use_case": "Damping resistance only in C7 shunt branch; no DC converter load flows through it. Screening bound assigning all input ripple to it is <0.9 W. A 10 ms, 36 V ramp charges C7 at <=0.204 A, approximately 0.093 W.",
+      "remaining_validation": "A hard step can demand roughly 595 W initially and 36.55 mJ at C7 +20%; pulse graph, repetition, thermal and source dynamics require qualification. Do not assume hot-plug is qualified.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "VIN_DAMP"
+      },
+      "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf"
+    },
+    {
+      "reference": "D2",
+      "expected_mpn": "PDS835L-13",
+      "expected_footprint": "D_PowerDI-5",
+      "rating": "35 V reverse, 8 A average under datasheet thermal conditions.",
+      "package_review": "Manufacturer PowerDI5 drawing: large cathode pad 1 and two physical anode pads numbered 2. Custom copper matches 4.86 x 3.36 mm cathode and 1.40 x 1.39 mm anode lands.",
+      "use_case": "Secondary rectifier. Worst ideal reverse is 23.25 V before overshoot; average full-load approximately 1.023 A including preload. Conservative 6.48 A fault-average screening value is below 8 A.",
+      "remaining_validation": "Measure reverse spikes <30 V prototype target and junction temperature. 8 A catalog rating and transient surge numbers are not unconditional PCB thermal/fault qualification.",
+      "expected_nets": {
+        "1": "+5V_ISO",
+        "2": "SEC_A"
+      },
+      "source": "https://www.diodes.com/datasheet/download/PDS835L.pdf"
+    },
+    {
+      "reference": "D3",
+      "expected_mpn": "DFLS1100-7",
+      "expected_footprint": "D_PowerDI-123",
+      "rating": "100 V reverse, 1 A average, 2 A RMS under stated conditions; 50 A nonrepetitive surge.",
+      "package_review": "PowerDI123 cathode pad 1 faces CLAMP; anode pad 2 faces SW. Asymmetric package/pad mapping checked against the exact Diodes drawing.",
+      "use_case": "Steers leakage current into the TVS only while SW exceeds VIN plus clamp voltage; primary full-load peak approximately 2.065 A is a brief pulse, not continuous average current.",
+      "remaining_validation": "Measure clamp pulse width, average/RMS current and junction temperature with measured leakage inductance. Surge rating must not be used as repetitive-current permission.",
+      "expected_nets": {
+        "1": "CLAMP",
+        "2": "SW"
+      },
+      "source": "https://www.diodes.com/datasheet/download/DFLS1100.pdf"
+    },
+    {
+      "reference": "D4",
+      "expected_mpn": "SMAJ12A-13-F",
+      "expected_footprint": "D_SMA",
+      "rating": "12 V standoff, 13.3-14.7 V breakdown, 19.9 V clamp at 20.1 A / 10-1000 us; 400 W pulse rating.",
+      "package_review": "Unidirectional SMA / DO-214AC. Cathode pad 1 CLAMP, anode pad 2 VIN. The A suffix matters; bidirectional CA is not the reviewed substitution.",
+      "use_case": "Replaces 13 V TVS to reduce rating-based SW clamp from 58.5 to 56.9 V at VIN=36 V including 1 V D3. Ideal reflected plateau <=11.7 V remains below 12 V standoff.",
+      "remaining_validation": "Small RFB injected-current margin remains: SW-VIN <20.5 V, SW <60 V on prototypes. TVS voltage varies with pulse current/temperature; 400 W is not a continuous dissipation rating.",
+      "expected_nets": {
+        "1": "CLAMP",
+        "2": "VIN"
+      },
+      "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf"
+    },
+    {
+      "reference": "U1",
+      "expected_mpn": "LT8302ES8E#PBF",
+      "expected_footprint": "SOIC8_EP_LT_S8E",
+      "rating": "LT8302 (not -3), E grade guaranteed 0-125 C junction range; VIN abs max 42 V, SW abs max 65 V; 3.6 A minimum / 5.4 A maximum peak-current limit.",
+      "package_review": "ADI S8E exposed-pad SOIC8: 1.27 mm lead pitch; lands 1.143 x 0.760 mm, EP 2.26 x 2.99 mm; four paste windows and four filled/capped EP vias. Nine electrical pad numbers including EP.",
+      "use_case": "Primary-side regulated low-voltage isolated flyback. Pin map: 1 UVLO, 2 INTVCC, 3 VIN, 4 PGND, 5 SW, 6 RFB, 7 RREF, 8 TC, 9 PGND. Full-load 2.065 A peak below 3.6 A minimum limit.",
+      "remaining_validation": "No mains use. Measure temperature (<110 C junction target), VIN<42 V, SW<60 V and RFB current<200 uA including transients. Validate startup, burst, stability, overload and output trim.",
+      "expected_nets": {
+        "1": "UVLO",
+        "2": "INTVCC",
+        "3": "VIN",
+        "4": "PGND",
+        "5": "SW",
+        "6": "RFB",
+        "7": "RREF",
+        "8": "TC",
+        "9": "PGND"
+      },
+      "source": "https://www.analog.com/en/products/lt8302.html"
+    },
+    {
+      "reference": "T1",
+      "expected_mpn": "PS-MAG-001 A0",
+      "expected_footprint": "Planar_EELP32_4T_2T",
+      "rating": "Prepared TDK N87 EELP32 pair, nominal 0.21 mm center-only gap; 4:2 turns; nominal primary 11.95 uH, acceptance 10.16-13.74 uH.",
+      "package_review": "Custom integral winding footprint, five 0.40 mm plated interlayer holes. Two primary layers series, two secondary layers parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.",
+      "use_case": "Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.",
+      "remaining_validation": "Custom magnetic assembly remains unqualified: measure L versus DC bias/temperature, leakage, core/fringing/AC losses, gap tolerance and retention. Functional low-voltage isolation only; no safety rating.",
+      "expected_nets": {
+        "1": "VIN",
+        "2": "SW",
+        "3": "GND_ISO",
+        "4": "SEC_A",
+        "5": "unconnected-(T1-P_MID-Pad5)"
+      },
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf"
+    },
+    {
+      "reference": "H1",
+      "expected_mpn": "",
+      "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
+      "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
+      "expected_nets": {},
+      "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod"
+    },
+    {
+      "reference": "H2",
+      "expected_mpn": "",
+      "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
+      "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
+      "expected_nets": {},
+      "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod"
+    },
+    {
+      "reference": "H3",
+      "expected_mpn": "",
+      "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
+      "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
+      "expected_nets": {},
+      "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod"
+    },
+    {
+      "reference": "H4",
+      "expected_mpn": "",
+      "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
+      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 80 mm hole pattern. No electrical pad/net.",
+      "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
+      "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
+      "expected_nets": {},
+      "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod"
+    }
+  ]
+}

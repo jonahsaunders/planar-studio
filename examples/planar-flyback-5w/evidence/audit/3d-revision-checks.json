@@ -46,5 +46,7 @@
     "manufacturing/PROTOTYPE-TEST-PLAN.html": "1084d580c45b80f6ddaa056257fec966d8ff24e3e60037096adcc99f929f4b86",
     "manufacturing/PROTOTYPE-TEST-PLAN.md": "2c1df876dde0ac99ec6f305d9638dbc03058001f586916931638deeba32404d3",
     "manufacturing/via-fill.csv": "fd5fe20a20eab9d5286b03897a03307c41d2e2527a77e5b423ab135fd28ff6c6"
-  }
+  },
+  "historical_record": true,
+  "current_design_evidence": "component-audit.json, component-revision-checks.json, independent-checks.json and current native ERC/DRC"
 }
