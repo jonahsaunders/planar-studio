@@ -1,11 +1,20 @@
 {
-  "baseline_commit": "fed8504efe3cc8a33d4a813c2a7143f13545cd25",
+  "baseline_commit": "f9153243a104c22a227a9419eb7d545f0659b6f5",
   "page": "A4 landscape",
   "logical_pin_names_and_nets_unchanged": 54,
   "component_records_unchanged": 26,
   "pcb_project_and_manufacturing_files_byte_identical": 41,
-  "schematic_sha256": "4cf11763b637585dbc1a59467de38f66b63609fb990e9053be10e76d7db15391",
-  "svg_sha256": "5abe1ff0eeb0a06a001a7ddade6d2f125f43d926a133410e1e20eb8e4ca099eb",
+  "schematic_sha256": "8e2665c3abe90ea437e069178f24f918b8585ee3b20729093b45595a5d8852a6",
+  "svg_sha256": "6f9961e25fb4227cd32fc3b33b4b46fd4d5f86951d7f5e83876865719b144c6c",
+  "continuous_wire_nets": [
+    "VIN",
+    "SW",
+    "PGND",
+    "+5V_ISO",
+    "GND_ISO"
+  ],
+  "supply_labels": "One VIN label on the protected input rail. VIN_RAW and VIN_FUSED are distinct protection nodes; INTVCC and +5V_ISO are separate supplies.",
+  "ground_symbols": "Separate signal-ground triangles; no protective earth connection.",
   "render_review": [
     "full sheet",
     "input",
@@ -15,5 +24,5 @@
     "clamp",
     "footer"
   ],
-  "scope": "Presentation and local wiring redraw; no component, connectivity or PCB changes. Hardware remains untested."
+  "scope": "Presentation and visible-wire redraw; no component, electrical-connectivity or PCB changes. Hardware remains untested."
 }

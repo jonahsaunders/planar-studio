@@ -48,9 +48,11 @@ with tempfile.TemporaryDirectory(prefix='flyback-svg-') as temp:
     run(args.kicad_cli, 'sch', 'export', 'svg', '-o', temp, sch)
     shutil.copy2(Path(temp) / 'PS-FLYBACK-5W.svg', R / 'evidence/schematic.svg')
 for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
+                       ('evidence/board-back.svg', 'B.Cu,B.Silkscreen,Edge.Cuts'),
                        ('manufacturing/assembly-top.svg', 'F.Fab,F.Silkscreen,Edge.Cuts')]:
     run(args.kicad_cli, 'pcb', 'export', 'svg', '--mode-single', '--fit-page-to-board',
         '--exclude-drawing-sheet', '--layers', layers, '-o', output, pcb)
+py('render-layout.py')
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)

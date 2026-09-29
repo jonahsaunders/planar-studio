@@ -31,6 +31,9 @@
 - Redraw the flyback schematic on A4 with connected controller passives,
   complete clamp branches, compact symbols and readable fields; verify that
   every electrical pin, part record and PCB/manufacturing file is unchanged.
+- Wire the clamp and controller directly to the power stage, separate signal
+  ground symbols from net labels, and check drawn-wire continuity. Present the
+  schematic and front/back PCB layout prominently in the example README.
 - Extend engineering, project-state and whole-app interaction regression tests.
 
 ## 1.4.0 — Transformer design workflow (development)

@@ -40,6 +40,45 @@ for comp in xml.findall('components/comp'):
         assert fields.get(name,'')==part[key],('BOM field mismatch',part['ref'],name)
     assert comp.findtext('value')==part['value']
     assert comp.findtext('footprint')==part['footprint']
+# Follow actual wire geometry independently of KiCad's named-net merging.
+# The main rails and clamp must not regress to disconnected label-only blocks.
+schematic=parse((ROOT/'kicad/PS-FLYBACK-5W.kicad_sch').read_text())
+libraries={s[1]:s for s in children(child(schematic,'lib_symbols'),'symbol')}
+sheet_pins={}
+for symbol in children(schematic,'symbol'):
+    ref=next(p[2] for p in children(symbol,'property') if p[1]=='Reference')
+    position=child(symbol,'at');x,y,angle=map(float,position[1:4]);theta=math.radians(angle)
+    library=libraries[child(symbol,'lib_id')[1]]
+    for unit in children(library,'symbol'):
+        for pin in children(unit,'pin'):
+            px,py=map(float,child(pin,'at')[1:3])
+            sheet_pins[(ref,child(pin,'number')[1])]=(round(x+px*math.cos(theta)-py*math.sin(theta),6),round(y-px*math.sin(theta)-py*math.cos(theta),6))
+segments=[tuple((float(p[1]),float(p[2])) for p in child(w,'pts')[1:]) for w in children(schematic,'wire')]
+points=set(sheet_pins.values())|{p for segment in segments for p in segment}
+parent={p:p for p in points}
+def wire_root(p):
+    while parent[p]!=p:
+        parent[p]=parent[parent[p]];p=parent[p]
+    return p
+for a,b in segments:
+    hits=sorted(p for p in points if abs((b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]))<1e-6
+                and min(a[0],b[0])-1e-6<=p[0]<=max(a[0],b[0])+1e-6
+                and min(a[1],b[1])-1e-6<=p[1]<=max(a[1],b[1])+1e-6)
+    for p in hits:parent[wire_root(p)]=wire_root(a)
+continuous={
+    'VIN':['D1.1','T1.1','R6.1','D4.2','U1.3','R1.1','C1.1','C2.1'],
+    'SW':['T1.2','U1.5','R3.1','C6.2','D3.2'],
+    'PGND':['J1.2','C1.2','C2.2','U1.4','U1.9','C5.2','R2.2','R4.2'],
+    '+5V_ISO':['D2.1','C3.1','C4.1','R7.1','J2.1'],
+    'GND_ISO':['T1.3','C3.2','C4.2','R7.2','J2.2'],
+}
+wire_groups={}
+for name,members in continuous.items():
+    roots={wire_root(sheet_pins[tuple(member.split('.'))]) for member in members}
+    assert len(roots)==1,('label-only connection or broken wire',name)
+    wire_groups[name]=next(iter(roots))
+assert len(set(wire_groups.values()))==len(wire_groups),'Different supply/return rails are joined by wires'
+
 tree=parse((ROOT/'kicad/PS-FLYBACK-5W.kicad_pcb').read_text())
 f=next(f for f in children(tree,'footprint') if f[1].endswith('Planar_EELP32_4T_2T'))
 polys={child(p,'layer')[1]:[(float(x[1]),float(x[2])) for x in child(p,'pts')[1:]] for p in children(f,'fp_poly')}
@@ -103,5 +142,6 @@ for h in mechanical['holes']:
                      'nearest_copper_from_center_mm':per_layer,'excluded_from_BOM_CPL':True})
 (ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':3.4,'geometry_tolerance_mm':.01,'rules':rules},indent=2))
 out={'schematic_board_logical_pins_matched':len(bp),'physical_numbered_pads_checked':physical,'winding_polygon_count':len(polys),'polygon_terminal_contacts':{k:sorted(v) for k,v in expect.items()},'centerline_samples_inside_final_copper':samples,'stack_thickness_mm':thickness,'copper_layers':6,'drc_violations':0,'unconnected_items':0,'scope':'Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.'}
+out['schematic_continuous_wire_groups']=continuous
 (ROOT/'evidence/independent-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))
