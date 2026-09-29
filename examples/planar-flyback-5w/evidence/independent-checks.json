@@ -1,0 +1,29 @@
+{
+  "schematic_board_logical_pins_matched": 54,
+  "physical_numbered_pads_checked": 55,
+  "winding_polygon_count": 4,
+  "polygon_terminal_contacts": {
+    "F.Cu": [
+      "1",
+      "5"
+    ],
+    "B.Cu": [
+      "2",
+      "5"
+    ],
+    "In1.Cu": [
+      "3",
+      "4"
+    ],
+    "In4.Cu": [
+      "3",
+      "4"
+    ]
+  },
+  "centerline_samples_inside_final_copper": 19229,
+  "stack_thickness_mm": 1.6,
+  "copper_layers": 6,
+  "drc_violations": 0,
+  "unconnected_items": 0,
+  "scope": "Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality."
+}

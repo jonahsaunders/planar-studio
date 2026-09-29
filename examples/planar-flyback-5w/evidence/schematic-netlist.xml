@@ -1,0 +1,867 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
+    <date>2026-09-29T14:16:36</date>
+    <tool>Eeschema 10.0.6</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>18-36 V to isolated 5 V / 1 A planar flyback</title>
+        <company>Planar Studio example</company>
+        <rev>A0-development</rev>
+        <date>2026-09-29</date>
+        <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>10u / 50 V X7R</value>
+      <footprint>Flyback:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C138687.html</datasheet>
+      <fields>
+        <field name="MPN">CL32B106KBJNNNE</field>
+        <field name="LCSC">C138687</field>
+        <field name="Footprint">Flyback:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C138687.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="C" description=""/>
+      <property name="MPN" value="CL32B106KBJNNNE"/>
+      <property name="LCSC" value="C138687"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>dbf35f00-b299-5c6c-a125-4177cdab07ab</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C2">
+      <value>10u / 50 V X7R</value>
+      <footprint>Flyback:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C138687.html</datasheet>
+      <fields>
+        <field name="MPN">CL32B106KBJNNNE</field>
+        <field name="LCSC">C138687</field>
+        <field name="Footprint">Flyback:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C138687.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="C" description=""/>
+      <property name="MPN" value="CL32B106KBJNNNE"/>
+      <property name="LCSC" value="C138687"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>25d24e89-c39e-5ffb-8b80-26249b5bce0c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C3">
+      <value>180u / 16 V polymer</value>
+      <footprint>Flyback:CP_Panasonic_C6</footprint>
+      <datasheet>https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M</datasheet>
+      <fields>
+        <field name="MPN">16SVPF180M</field>
+        <field name="LCSC">C136277</field>
+        <field name="Footprint">Flyback:CP_Panasonic_C6</field>
+        <field name="Datasheet">https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="CP" description=""/>
+      <property name="MPN" value="16SVPF180M"/>
+      <property name="LCSC" value="C136277"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ef407ca9-da0d-540c-9372-080112a9f508</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C4">
+      <value>22u / 16 V</value>
+      <footprint>Flyback:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226ke18l_C711059.html</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71C226KE18L</field>
+        <field name="LCSC">C711059</field>
+        <field name="Footprint">Flyback:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226ke18l_C711059.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="C" description=""/>
+      <property name="MPN" value="GRM32ER71C226KE18L"/>
+      <property name="LCSC" value="C711059"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0982d176-3b1f-5a20-9822-0de39fb7698f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C5">
+      <value>4.7u / 16 V X5R</value>
+      <footprint>Flyback:C_0603_1608Metric</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/CL10A475KO8NNNC/C19666</datasheet>
+      <fields>
+        <field name="MPN">CL10A475KO8NNNC</field>
+        <field name="LCSC">C19666</field>
+        <field name="Footprint">Flyback:C_0603_1608Metric</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/CL10A475KO8NNNC/C19666</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="C" description=""/>
+      <property name="MPN" value="CL10A475KO8NNNC"/>
+      <property name="LCSC" value="C19666"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4aad4761-e749-5a59-b80e-92e8864b8283</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C6">
+      <value>470p / 100 V C0G</value>
+      <footprint>Flyback:C_0805_2012Metric</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/TDK-CGA4C2C0G2A471J060AA/C3851794</datasheet>
+      <fields>
+        <field name="MPN">CGA4C2C0G2A471J060AA</field>
+        <field name="LCSC">C3851794</field>
+        <field name="Footprint">Flyback:C_0805_2012Metric</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/TDK-CGA4C2C0G2A471J060AA/C3851794</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="C" description=""/>
+      <property name="MPN" value="CGA4C2C0G2A471J060AA"/>
+      <property name="LCSC" value="C3851794"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>97afcc15-eb1f-599f-b32a-86a68a5f88c0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D1">
+      <value>SS110</value>
+      <footprint>Flyback:D_SMA</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/Mdd-SS110/C2482</datasheet>
+      <fields>
+        <field name="MPN">SS110</field>
+        <field name="LCSC">C2482</field>
+        <field name="Footprint">Flyback:D_SMA</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/Mdd-SS110/C2482</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="D" description=""/>
+      <property name="MPN" value="SS110"/>
+      <property name="LCSC" value="C2482"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>07c9d955-7e4d-5bc2-b579-33f83d00a7b4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D2">
+      <value>PDS835L-13</value>
+      <footprint>Flyback:D_PowerDI-5</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/DiodesIncorporated-PDS835L13/C444972</datasheet>
+      <fields>
+        <field name="MPN">PDS835L-13</field>
+        <field name="LCSC">C444972</field>
+        <field name="Footprint">Flyback:D_PowerDI-5</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/DiodesIncorporated-PDS835L13/C444972</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="D" description=""/>
+      <property name="MPN" value="PDS835L-13"/>
+      <property name="LCSC" value="C444972"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f4249b5c-721b-5ba8-b5d3-12c0410c0923</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D3">
+      <value>DFLS1100-7</value>
+      <footprint>Flyback:D_PowerDI-123</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/DiodesIncorporated-DFLS11007/C107674</datasheet>
+      <fields>
+        <field name="MPN">DFLS1100-7</field>
+        <field name="LCSC">C107674</field>
+        <field name="Footprint">Flyback:D_PowerDI-123</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/DiodesIncorporated-DFLS11007/C107674</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="D" description=""/>
+      <property name="MPN" value="DFLS1100-7"/>
+      <property name="LCSC" value="C107674"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b535e49e-094e-5889-bf30-3491fac0a36d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D4">
+      <value>SMAJ13A-13-F</value>
+      <footprint>Flyback:D_SMA</footprint>
+      <datasheet>https://www.diodes.com/part/view/SMAJ13A</datasheet>
+      <fields>
+        <field name="MPN">SMAJ13A-13-F</field>
+        <field name="LCSC">C110519</field>
+        <field name="Footprint">Flyback:D_SMA</field>
+        <field name="Datasheet">https://www.diodes.com/part/view/SMAJ13A</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="TVS" description=""/>
+      <property name="MPN" value="SMAJ13A-13-F"/>
+      <property name="LCSC" value="C110519"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a7645207-3c9d-5610-9c6c-4ab4646d5fd3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="F1">
+      <value>1 A / 63 V fast</value>
+      <footprint>Flyback:Fuse_1206_3216Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/Fuses_Littelfuse_C151134.html</datasheet>
+      <fields>
+        <field name="MPN">0466001.NR</field>
+        <field name="LCSC">C151134</field>
+        <field name="Footprint">Flyback:Fuse_1206_3216Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/Fuses_Littelfuse_C151134.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="FUSE" description=""/>
+      <property name="MPN" value="0466001.NR"/>
+      <property name="LCSC" value="C151134"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bb0780a7-d1d4-508c-93a5-7309ac78b8f3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J1">
+      <value>18-36 V DC</value>
+      <footprint>Flyback:Terminal_KF301_2P_5.00</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881</datasheet>
+      <fields>
+        <field name="MPN">KF301-5.0-2P</field>
+        <field name="LCSC">C474881</field>
+        <field name="Footprint">Flyback:Terminal_KF301_2P_5.00</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="JIN" description=""/>
+      <property name="MPN" value="KF301-5.0-2P"/>
+      <property name="LCSC" value="C474881"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>75d795fa-e501-5278-9560-ecfa5d62195c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J2">
+      <value>5 V / 1 A isolated</value>
+      <footprint>Flyback:Terminal_KF301_2P_5.00</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881</datasheet>
+      <fields>
+        <field name="MPN">KF301-5.0-2P</field>
+        <field name="LCSC">C474881</field>
+        <field name="Footprint">Flyback:Terminal_KF301_2P_5.00</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="J" description=""/>
+      <property name="MPN" value="KF301-5.0-2P"/>
+      <property name="LCSC" value="C474881"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>499f9370-01db-57d3-8ace-6b7e02b9e410</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R1">
+      <value>681k 1%</value>
+      <footprint>Flyback:R_0603_1608Metric</footprint>
+      <datasheet>https://www.futureelectronics.com/p/5767843</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07681KL</field>
+        <field name="LCSC"/>
+        <field name="Footprint">Flyback:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.futureelectronics.com/p/5767843</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RC0603FR-07681KL"/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>df3c6290-28c6-5a9c-bb8c-b1dbfdf4363f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R2">
+      <value>61.9k 1%</value>
+      <footprint>Flyback:R_0603_1608Metric</footprint>
+      <datasheet>https://www.digikey.com/en/products/detail/yageo/RC0603FR-0761K9L/727332</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0761K9L</field>
+        <field name="LCSC">C137696</field>
+        <field name="Footprint">Flyback:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.digikey.com/en/products/detail/yageo/RC0603FR-0761K9L/727332</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RC0603FR-0761K9L"/>
+      <property name="LCSC" value="C137696"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ed556aac-d5c3-5cad-9c14-0b3b27e5fcb0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R3">
+      <value>106k 0.1%</value>
+      <footprint>Flyback:R_0603_1608Metric</footprint>
+      <datasheet>https://www.ti.com.cn/cn/lit/df/tidmck8a/tidmck8a.pdf</datasheet>
+      <fields>
+        <field name="MPN">RT0603BRD07106KL</field>
+        <field name="LCSC"/>
+        <field name="Footprint">Flyback:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.ti.com.cn/cn/lit/df/tidmck8a/tidmck8a.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RT0603BRD07106KL"/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>92ed126b-fd69-5052-bafb-91be8d346cf9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R4">
+      <value>10k 0.1%</value>
+      <footprint>Flyback:R_0603_1608Metric</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/YAGEO-RT0603BRD0710KL/C95204</datasheet>
+      <fields>
+        <field name="MPN">RT0603BRD0710KL</field>
+        <field name="LCSC">C95204</field>
+        <field name="Footprint">Flyback:R_0603_1608Metric</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/YAGEO-RT0603BRD0710KL/C95204</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RT0603BRD0710KL"/>
+      <property name="LCSC" value="C95204"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>640db86d-489a-5b09-a234-797726924510</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R5">
+      <value>118k 1%</value>
+      <footprint>Flyback:R_0603_1608Metric</footprint>
+      <datasheet>https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07118KL</field>
+        <field name="LCSC">C137804</field>
+        <field name="Footprint">Flyback:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RC0603FR-07118KL"/>
+      <property name="LCSC" value="C137804"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a02e3a3b-088a-5b1f-9a79-5722b1095f3e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R6">
+      <value>39R 0.667 W</value>
+      <footprint>Flyback:R_1206_3216Metric</footprint>
+      <datasheet>https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-P08F39R0V/9812947</datasheet>
+      <fields>
+        <field name="MPN">ERJ-P08F39R0V</field>
+        <field name="LCSC"/>
+        <field name="Footprint">Flyback:R_1206_3216Metric</field>
+        <field name="Datasheet">https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-P08F39R0V/9812947</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="ERJ-P08F39R0V"/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e30db11a-e47e-5486-baed-0eff5471e107</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R7">
+      <value>220R 0.25 W</value>
+      <footprint>Flyback:R_1206_3216Metric</footprint>
+      <datasheet>https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL</datasheet>
+      <fields>
+        <field name="MPN">RC1206FR-07220RL</field>
+        <field name="LCSC">C137353</field>
+        <field name="Footprint">Flyback:R_1206_3216Metric</field>
+        <field name="Datasheet">https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="R" description=""/>
+      <property name="MPN" value="RC1206FR-07220RL"/>
+      <property name="LCSC" value="C137353"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>01726ee0-1cfa-5098-a317-73af0ab3b333</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="T1">
+      <value>PLANAR 4:2 / Lm 12uH</value>
+      <footprint>Flyback:Planar_EELP32_4T_2T</footprint>
+      <datasheet>https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf</datasheet>
+      <fields>
+        <field name="MPN">PS-MAG-001 A0</field>
+        <field name="LCSC"/>
+        <field name="Footprint">Flyback:Planar_EELP32_4T_2T</field>
+        <field name="Datasheet">https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="T" description=""/>
+      <property name="MPN" value="PS-MAG-001 A0"/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b7eb1bbf-a860-5fb5-b6bb-9b4653298a1e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="5"/>
+            <pin num="2"/>
+            <pin num="4"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U1">
+      <value>LT8302ES8E#PBF</value>
+      <footprint>Flyback:SOIC8_EP_LT_S8E</footprint>
+      <datasheet>https://www.analog.com/en/products/lt8302.html</datasheet>
+      <fields>
+        <field name="MPN">LT8302ES8E#PBF</field>
+        <field name="LCSC">C117331</field>
+        <field name="Footprint">Flyback:SOIC8_EP_LT_S8E</field>
+        <field name="Datasheet">https://www.analog.com/en/products/lt8302.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Flyback" part="LT8302" description=""/>
+      <property name="MPN" value="LT8302ES8E#PBF"/>
+      <property name="LCSC" value="C117331"/>
+      <property name="Sheetname" value="PS-FLYBACK-5W"/>
+      <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2173e669-e2b8-5e97-a7cd-2c16f0d7a0a9</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="3"/>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="4"/>
+            <pin num="9"/>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Flyback" part="C">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="CP">
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="D">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="FUSE">
+      <fields>
+        <field name="Reference">F</field>
+        <field name="Value">FUSE</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="J">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">J</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="JIN">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">JIN</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="+" type="passive"/>
+        <pin num="2" name="-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="LT8302">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LT8302</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="EN/UVLO" type="input"/>
+        <pin num="2" name="INTVCC" type="power_out"/>
+        <pin num="3" name="VIN" type="power_in"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="SW" type="open_collector"/>
+        <pin num="6" name="RFB" type="input"/>
+        <pin num="7" name="RREF" type="output"/>
+        <pin num="8" name="TC" type="output"/>
+        <pin num="9" name="EP_GND" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="R">
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+        <pin num="2" name="2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="T">
+      <fields>
+        <field name="Reference">T</field>
+        <field name="Value">T</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P_DOT" type="passive"/>
+        <pin num="2" name="P_END" type="passive"/>
+        <pin num="3" name="S_DOT" type="passive"/>
+        <pin num="4" name="S_END" type="passive"/>
+        <pin num="5" name="P_MID" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Flyback" part="TVS">
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">TVS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Flyback">
+      <uri>${KIPRJMOD}/Flyback.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/+5V_ISO" class="Default">
+      <node ref="C3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="C4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="D2" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="+_1" pintype="passive"/>
+      <node ref="R7" pin="1" pinfunction="1_1" pintype="passive"/>
+    </net>
+    <net code="2" name="/CLAMP" class="Default">
+      <node ref="D3" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D4" pin="1" pinfunction="K_1" pintype="passive"/>
+    </net>
+    <net code="3" name="/GND_ISO" class="Default">
+      <node ref="C3" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C4" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="J2" pin="2" pinfunction="-_2" pintype="passive"/>
+      <node ref="R7" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="T1" pin="3" pinfunction="S_DOT_3" pintype="passive"/>
+    </net>
+    <net code="4" name="/INTVCC" class="Default">
+      <node ref="C5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="INTVCC_2" pintype="power_out"/>
+    </net>
+    <net code="5" name="/PGND" class="Default">
+      <node ref="C1" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C2" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="C5" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="J1" pin="2" pinfunction="-_2" pintype="passive"/>
+      <node ref="R2" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="R4" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="4" pinfunction="GND_4" pintype="power_in"/>
+      <node ref="U1" pin="9" pinfunction="EP_GND_9" pintype="power_in"/>
+    </net>
+    <net code="6" name="/RFB" class="Default">
+      <node ref="R3" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="RFB_6" pintype="input"/>
+    </net>
+    <net code="7" name="/RREF" class="Default">
+      <node ref="R4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R5" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="U1" pin="7" pinfunction="RREF_7" pintype="output"/>
+    </net>
+    <net code="8" name="/SEC_A" class="Default">
+      <node ref="D2" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="T1" pin="4" pinfunction="S_END_4" pintype="passive"/>
+    </net>
+    <net code="9" name="/SNUB" class="Default">
+      <node ref="C6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R6" pin="2" pinfunction="2_2" pintype="passive"/>
+    </net>
+    <net code="10" name="/SW" class="Default">
+      <node ref="C6" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="D3" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="T1" pin="2" pinfunction="P_END_2" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="SW_5" pintype="open_collector"/>
+    </net>
+    <net code="11" name="/TC" class="Default">
+      <node ref="R5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="8" pinfunction="TC_8" pintype="output"/>
+    </net>
+    <net code="12" name="/UVLO" class="Default">
+      <node ref="R1" pin="2" pinfunction="2_2" pintype="passive"/>
+      <node ref="R2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="EN/UVLO_1" pintype="input"/>
+    </net>
+    <net code="13" name="/VIN" class="Default">
+      <node ref="C1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="C2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="K_1" pintype="passive"/>
+      <node ref="D4" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="R1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="R6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="T1" pin="1" pinfunction="P_DOT_1" pintype="passive"/>
+      <node ref="U1" pin="3" pinfunction="VIN_3" pintype="power_in"/>
+    </net>
+    <net code="14" name="/VIN_FUSED" class="Default">
+      <node ref="D1" pin="2" pinfunction="A_2" pintype="passive"/>
+      <node ref="F1" pin="2" pinfunction="2_2" pintype="passive"/>
+    </net>
+    <net code="15" name="/VIN_RAW" class="Default">
+      <node ref="F1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="J1" pin="1" pinfunction="+_1" pintype="passive"/>
+    </net>
+    <net code="16" name="unconnected-(T1-P_MID-Pad5)" class="Default">
+      <node ref="T1" pin="5" pinfunction="P_MID_5" pintype="passive+no_connect"/>
+    </net>
+  </nets>
+</export>

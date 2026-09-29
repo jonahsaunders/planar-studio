@@ -19,6 +19,12 @@
 - Correct copper-temperature scaling in reused circuit solves, preserve exact
   zero external open-circuit current, and align catalog multi-output windings
   with rectangular core slots.
+- Model explicitly prepared EELP32 center-leg gaps using the published AL/gap
+  relation; retain ungapped behavior unless preparation is selected.
+- Include a complete 5 W planar flyback example with KiCad source, integral
+  six-layer windings, analytical calculations, BOM/CPL, Gerbers, core assembly
+  notes, prototype test plan and clean ERC/DRC evidence. Mark supplier acceptance
+  and physical performance as unverified; no supplier submission was made.
 - Extend engineering, project-state and whole-app interaction regression tests.
 
 ## 1.4.0 — Transformer design workflow (development)

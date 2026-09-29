@@ -1,0 +1,155 @@
+{
+  "J1": {
+    "mpn": "KF301-5.0-2P",
+    "mfr": "Cixi Kefa",
+    "lcsc": "C474881",
+    "footprint": "Flyback:Terminal_KF301_2P_5.00",
+    "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
+    "purpose": "5.00 mm pitch; manual/wave soldering before core installation"
+  },
+  "J2": {
+    "mpn": "KF301-5.0-2P",
+    "mfr": "Cixi Kefa",
+    "lcsc": "C474881",
+    "footprint": "Flyback:Terminal_KF301_2P_5.00",
+    "source": "https://jlcpcb.com/partdetail/Cixi_KefaElec-KF301_5_02P/C474881",
+    "purpose": "5.00 mm pitch; manual/wave soldering before core installation"
+  },
+  "F1": {
+    "value": "1 A / 63 V fast",
+    "mpn": "0466001.NR",
+    "mfr": "Littelfuse",
+    "lcsc": "C151134",
+    "source": "https://www.lcsc.com/product-detail/Fuses_Littelfuse_C151134.html",
+    "purpose": "Input fuse; verify inrush and coordination in prototype"
+  },
+  "D1": {
+    "mpn": "SS110",
+    "mfr": "MDD",
+    "lcsc": "C2482",
+    "source": "https://jlcpcb.com/partdetail/Mdd-SS110/C2482"
+  },
+  "C1": {
+    "value": "10u / 50 V X7R",
+    "mpn": "CL32B106KBJNNNE",
+    "mfr": "Samsung Electro-Mechanics",
+    "lcsc": "C138687",
+    "footprint": "Capacitor_SMD:C_1210_3225Metric",
+    "source": "https://www.lcsc.com/product-detail/C138687.html",
+    "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype"
+  },
+  "C2": {
+    "value": "10u / 50 V X7R",
+    "mpn": "CL32B106KBJNNNE",
+    "mfr": "Samsung Electro-Mechanics",
+    "lcsc": "C138687",
+    "footprint": "Capacitor_SMD:C_1210_3225Metric",
+    "source": "https://www.lcsc.com/product-detail/C138687.html",
+    "purpose": "Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype"
+  },
+  "C3": {
+    "value": "180u / 16 V polymer",
+    "mpn": "16SVPF180M",
+    "mfr": "Panasonic",
+    "lcsc": "C136277",
+    "source": "https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M",
+    "purpose": "22 mOhm ESR, 3.3 A ripple at 100 kHz; C6 case 6.3 x 5.9 mm",
+    "footprint": "Flyback:CP_Panasonic_C6"
+  },
+  "C4": {
+    "mpn": "GRM32ER71C226KE18L",
+    "mfr": "Murata",
+    "lcsc": "C711059",
+    "source": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71c226ke18l_C711059.html"
+  },
+  "C5": {
+    "value": "4.7u / 16 V X5R",
+    "mpn": "CL10A475KO8NNNC",
+    "mfr": "Samsung Electro-Mechanics",
+    "lcsc": "C19666",
+    "source": "https://jlcpcb.com/partdetail/CL10A475KO8NNNC/C19666",
+    "purpose": "INTVCC local bypass with margin for DC-bias capacitance loss"
+  },
+  "C6": {
+    "mpn": "CGA4C2C0G2A471J060AA",
+    "mfr": "TDK",
+    "lcsc": "C3851794",
+    "source": "https://jlcpcb.com/partdetail/TDK-CGA4C2C0G2A471J060AA/C3851794"
+  },
+  "R1": {
+    "mpn": "RC0603FR-07681KL",
+    "mfr": "Yageo",
+    "source": "https://www.futureelectronics.com/p/5767843"
+  },
+  "R2": {
+    "mpn": "RC0603FR-0761K9L",
+    "mfr": "Yageo",
+    "source": "https://www.digikey.com/en/products/detail/yageo/RC0603FR-0761K9L/727332",
+    "lcsc": "C137696"
+  },
+  "R3": {
+    "mpn": "RT0603BRD07106KL",
+    "mfr": "Yageo",
+    "source": "https://www.ti.com.cn/cn/lit/df/tidmck8a/tidmck8a.pdf",
+    "purpose": "106 kOhm 0.1%; primary reflected-voltage sense; output must be trimmed on prototype"
+  },
+  "R4": {
+    "mpn": "RT0603BRD0710KL",
+    "mfr": "Yageo",
+    "lcsc": "C95204",
+    "source": "https://jlcpcb.com/partdetail/YAGEO-RT0603BRD0710KL/C95204"
+  },
+  "R5": {
+    "mpn": "RC0603FR-07118KL",
+    "mfr": "Yageo",
+    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL",
+    "lcsc": "C137804"
+  },
+  "R6": {
+    "value": "39R 0.667 W",
+    "mpn": "ERJ-P08F39R0V",
+    "mfr": "Panasonic",
+    "source": "https://www.digikey.com/en/products/detail/panasonic-industry/ERJ-P08F39R0V/9812947",
+    "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning"
+  },
+  "R7": {
+    "value": "220R 0.25 W",
+    "mpn": "RC1206FR-07220RL",
+    "mfr": "Yageo",
+    "lcsc": "C137353",
+    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
+    "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz"
+  },
+  "D2": {
+    "mpn": "PDS835L-13",
+    "mfr": "Diodes Incorporated",
+    "lcsc": "C444972",
+    "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-PDS835L13/C444972"
+  },
+  "D3": {
+    "mpn": "DFLS1100-7",
+    "mfr": "Diodes Incorporated",
+    "lcsc": "C107674",
+    "source": "https://jlcpcb.com/partdetail/DiodesIncorporated-DFLS11007/C107674"
+  },
+  "D4": {
+    "value": "SMAJ13A-13-F",
+    "mpn": "SMAJ13A-13-F",
+    "mfr": "Diodes Incorporated",
+    "lcsc": "C110519",
+    "source": "https://www.diodes.com/part/view/SMAJ13A",
+    "purpose": "13 V unidirectional TVS, 21.5 V maximum specified clamp; verify SW peak below 60 V on prototype"
+  },
+  "U1": {
+    "mpn": "LT8302ES8E#PBF",
+    "mfr": "Analog Devices",
+    "lcsc": "C117331",
+    "source": "https://www.analog.com/en/products/lt8302.html"
+  },
+  "T1": {
+    "mpn": "PS-MAG-001 A0",
+    "mfr": "Prepared core assembly to drawing",
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
+    "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Supplier procurement and assembly acceptance required."
+  }
+}

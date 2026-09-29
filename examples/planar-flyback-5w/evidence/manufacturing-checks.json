@@ -1,0 +1,14 @@
+{
+  "BOM_electronic_references": 21,
+  "CPL_references": 21,
+  "BOM_CPL_match": true,
+  "SMD_components": 19,
+  "THT_connectors": 2,
+  "core_sets_per_board": 1,
+  "filled_capped_holes": 23,
+  "open_connector_holes": 4,
+  "copper_Gerbers": 6,
+  "coordinate_origin": "Bottom-left board datum; X right/Y up",
+  "connector_CPL_origin": "Body centroid corrected from pin-1 footprint origin",
+  "release_status": "Supplier review only; no manufacturing approval"
+}

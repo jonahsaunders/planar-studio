@@ -28,6 +28,15 @@ See the [transformer design guide](docs/transformer-design.md) for controls,
 manufacturer sources, validation and model limits. Build the development package
 with `python scripts/build_package.py`; the published download below remains 1.3.0.
 
+## Planar flyback example
+
+The [5 W planar flyback example](examples/planar-flyback-5w/README.md) includes an
+18–36 V DC to isolated 5 V / 1 A converter with integral PCB windings, an editable
+KiCad 10 project, winding configuration, calculations, manufacturing schedules,
+source references and validation evidence. **Untested A0 engineering prototype;
+full-turnkey supplier feasibility is unconfirmed.** No JLCPCB submission or
+purchase was made. See its validation record before reusing manufacturing data.
+
 ## Download and install
 
 ### [Download planar-studio-1.3.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.3.0/planar-studio-1.3.0.zip)

@@ -1,0 +1,53 @@
+{
+  "scope": "Charge-balanced boundary/DCM power-stage calculation, not LT8302 control.\n\nIntegrates the exponential winding currents and solves peak current for a\nspecified DC load at fixed 5 V. Ignores core/switching loss, leakage energy,\ncontrol dynamics and minimum-current/burst operation. A nominal 380 kHz\nfrequency ceiling introduces idle time for DCM. The separate\n75%-efficiency worksheet supplies enlarged current stresses for component sizing.\n",
+  "operating_points": [
+    {
+      "Vin_V": 18,
+      "Iout_A": 1,
+      "Ipreload_A": 0.022727272727272728,
+      "Ipk_A": 1.6956808271045922,
+      "frequency_Hz": 329964.97082098894,
+      "duty": 0.3929419160726074,
+      "idle_s": 0.0,
+      "primary_RMS_A": 0.6171567224069513,
+      "secondary_RMS_A": 1.5181681519502164,
+      "input_average_A": 0.3356621727975409,
+      "copper_DC_W": 0.24161828768251373,
+      "FET_conduction_W": 0.07617648400241815,
+      "diode_loss_W": 0.6104882127694318,
+      "energy_balance_residual_W": -2.3773496682366613e-07
+    },
+    {
+      "Vin_V": 24,
+      "Iout_A": 1,
+      "Ipreload_A": 0.022727272727272728,
+      "Ipk_A": 1.57871497497786,
+      "frequency_Hz": 380000.0,
+      "duty": 0.31109168332933473,
+      "idle_s": 9.779159195724044e-08,
+      "primary_RMS_A": 0.5103539761846082,
+      "secondary_RMS_A": 1.4650323934606455,
+      "input_average_A": 0.24683449657027715,
+      "copper_DC_W": 0.2011079011307369,
+      "FET_conduction_W": 0.05209223620148793,
+      "diode_loss_W": 0.5571916070330768,
+      "energy_balance_residual_W": -1.9031503095678914e-07
+    },
+    {
+      "Vin_V": 36,
+      "Iout_A": 1,
+      "Ipreload_A": 0.022727272727272728,
+      "Ipk_A": 1.57871497497786,
+      "frequency_Hz": 380000.0,
+      "duty": 0.2045500772511835,
+      "idle_s": 3.781642395313228e-07,
+      "primary_RMS_A": 0.41328634873910397,
+      "secondary_RMS_A": 1.4650323934606455,
+      "input_average_A": 0.16201304994975274,
+      "copper_DC_W": 0.17837373474144702,
+      "FET_conduction_W": 0.03416112121082006,
+      "diode_loss_W": 0.5062987390607622,
+      "energy_balance_residual_W": -1.604583116376901e-07
+    }
+  ]
+}

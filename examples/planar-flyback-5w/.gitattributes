@@ -1,0 +1,10 @@
+# Keep published checksums stable across Windows, macOS and Linux checkouts.
+* text eol=lf
+*.png binary
+*.zip binary
+evidence/** linguist-generated=true
+manufacturing/gerbers/** linguist-generated=true
+*.svg linguist-generated=true
+*.html linguist-generated=true
+kicad/** linguist-generated=true
+planar-studio/** linguist-generated=true
