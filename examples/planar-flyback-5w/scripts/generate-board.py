@@ -111,7 +111,7 @@ placement={
     'R7':(109,118.5,270),'J2':(102.5,129,180),
 }
 fps={};pads={}
-placement.update({h['ref']:(h['x_mm'],h['y_mm'],0) for h in mechanical['holes']})
+placement.update({h['ref']:(h['x_mm'],h['y_mm'],h.get('rotation_deg',0)) for h in mechanical['holes']})
 for p in data['parts']:
     library,name=p['footprint'].split(':')
     f=pcb.FootprintLoad(str(CAD/(library+'.pretty')),name); assert f,name
@@ -136,6 +136,7 @@ for p in data['parts']:
           'D4':(112.3,60.9),'R6':(107,65.3),'C6':(100,65.2),
           'D2':(97.8,110),'C3':(97,122.6),'C4':(106.5,109),
           'R7':(111.7,118.5),'J2':(94,129)}
+    if p['ref'].startswith('H'):f.Reference().SetPosition(pt(x,y-4.4))
     if p['ref'] in refs:f.Reference().SetPosition(pt(*refs[p['ref']]))
     fps[p['ref']]=f
     for pd in f.Pads():pads.setdefault((p['ref'],pd.GetNumber()),[]).append(pd)

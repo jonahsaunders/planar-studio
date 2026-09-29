@@ -37,7 +37,8 @@ for name,ext in files:
     # aperture macros and makes layer contact sheets directly comparable.
     # Two clear flashes outside the board exist only in this in-memory view;
     # they add no artwork and never enter any fabrication file.
-    frame='%ADD999C,0.010*%\n%LPC*%\nD999*\nX-1000000Y-1000000D03*\nX51000000Y105000000D03*\n'
+    # Include the intentional off-board mask extensions of the M3 Edge holes.
+    frame='%ADD999C,0.010*%\n%LPC*%\nD999*\nX-5000000Y-1000000D03*\nX55000000Y105000000D03*\n'
     assert source.count('M02*')==1 and '%ADD999' not in source
     parsed=GerberFile.from_str(source.replace('M02*',frame+'M02*'),FileTypeEnum.INFER_FROM_ATTRIBUTES).parse()
     parsed.render_raster(out/f'gerber-{name}.png',dpmm=args.dpmm,color_scheme=DEFAULT_COLOR_MAP[parsed.get_file_type()])
@@ -51,7 +52,7 @@ for group,names in [('copper',[n for n,_ in files[:6]]),('technical',[n for n,_ 
     sheet.save(out/f'gerber-{group}-overview.png')
 record={'kistack_commit':'8494dbde095669df081950cbb6b24d08a21e25b0','pygerber_version':'2.4.3',
         'dots_per_mm':args.dpmm,'gerber_layers':[n for n,_ in files],
-        'render_viewport':'Common approximately -1..51 by -1..105 mm viewport, using two render-only clear flashes outside the board. Original manufacturing files are unmodified.',
+        'render_viewport':'Common approximately -5..55 by -1..105 mm viewport, including intentional off-board mask extensions, using two render-only clear flashes outside the board. Original manufacturing files are unmodified.',
         '3D_scope':'All 26 footprints have bundled models. Nominal package/core geometry and provisional mounting/retention envelopes; see 3D-MODELS.md and 3d-render-provenance.json.',
         'review_scope':'Rendered actual exported Gerbers. Visual review is supplementary to DRC, netlist and mounting geometry checks.'}
 inputs=[R/'kicad/PS-FLYBACK-5W.kicad_pcb']+[R/f'manufacturing/gerbers/PS-FLYBACK-5W-{n}.{e}' for n,e in files]

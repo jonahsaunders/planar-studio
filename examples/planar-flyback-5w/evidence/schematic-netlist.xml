@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-09-29T18:10:27</date>
+    <date>2026-09-29T18:38:41</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -345,12 +345,12 @@
     </comp>
     <comp ref="H1">
       <value>M3 / 3.2 mm NPTH</value>
-      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</footprint>
+      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
       <fields>
         <field name="MPN"/>
         <field name="Manufacturer"/>
         <field name="LCSC"/>
-        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</field>
+        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
         <field name="Datasheet"/>
         <field name="Description"/>
       </fields>
@@ -371,12 +371,12 @@
     </comp>
     <comp ref="H2">
       <value>M3 / 3.2 mm NPTH</value>
-      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</footprint>
+      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
       <fields>
         <field name="MPN"/>
         <field name="Manufacturer"/>
         <field name="LCSC"/>
-        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</field>
+        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
         <field name="Datasheet"/>
         <field name="Description"/>
       </fields>
@@ -397,12 +397,12 @@
     </comp>
     <comp ref="H3">
       <value>M3 / 3.2 mm NPTH</value>
-      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</footprint>
+      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
       <fields>
         <field name="MPN"/>
         <field name="Manufacturer"/>
         <field name="LCSC"/>
-        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</field>
+        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
         <field name="Datasheet"/>
         <field name="Description"/>
       </fields>
@@ -423,12 +423,12 @@
     </comp>
     <comp ref="H4">
       <value>M3 / 3.2 mm NPTH</value>
-      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</footprint>
+      <footprint>amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
       <fields>
         <field name="MPN"/>
         <field name="Manufacturer"/>
         <field name="LCSC"/>
-        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate</field>
+        <field name="Footprint">amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
         <field name="Datasheet"/>
         <field name="Description"/>
       </fields>

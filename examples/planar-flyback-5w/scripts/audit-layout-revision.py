@@ -6,6 +6,7 @@ R=Path(__file__).resolve().parents[1]
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--baseline-board',type=Path,required=True)
 p.add_argument('--baseline-id',required=True)
+p.add_argument('--allow-mounting-footprint-change',action='store_true',help='Permit only H1-H4 footprint/rotation changes while keeping their centers and all numbered pads fixed.')
 a=p.parse_args()
 current=R/'kicad/PS-FLYBACK-5W.kicad_pcb'
 def parse(path):
@@ -32,18 +33,25 @@ def signature(path):
                 for f in fp.values() for pd in f.Pads() if pd.GetNumber())
     poses={k:[pcb.ToMM(f.GetPosition().x),pcb.ToMM(f.GetPosition().y),f.GetOrientationDegrees()] for k,f in fp.items()}
     return {'pins':pins,'copper':copper,'outline':outline,'poses':poses,
-            'identity':{k:[f.GetValue(),f.GetFPID().GetLibItemName()] for k,f in fp.items()},
+            'identity':{k:[f.GetValue(),str(f.GetFPID().GetLibItemName())] for k,f in fp.items()},
             'layers':children(tree,'layers'),'thickness':b.GetDesignSettings().GetBoardThickness()}
 before,after=signature(a.baseline_board),signature(current)
-for key in ['pins','copper','outline','identity','layers','thickness']:
+for key in ['pins','copper','outline','layers','thickness']:
     assert before[key]==after[key],('Unexpected change',key)
-assert all(before['poses'][k]==after['poses'][k] for k in ['T1','H1','H2','H3','H4'])
+allowed={'H1','H2','H3','H4'} if a.allow_mounting_footprint_change else set()
+changed_identity={k:{'before':v,'after':after['identity'][k]} for k,v in before['identity'].items() if v!=after['identity'][k]}
+assert set(before['identity'])==set(after['identity'])
+assert set(changed_identity)<=allowed
+assert before['poses']['T1']==after['poses']['T1']
+assert all(before['poses'][k][:2]==after['poses'][k][:2] for k in ['H1','H2','H3','H4'])
+if not allowed:assert all(before['poses'][k]==after['poses'][k] for k in ['H1','H2','H3','H4'])
 record={'baseline_id':a.baseline_id,'baseline_sha256':hashlib.sha256(a.baseline_board.read_bytes()).hexdigest(),
         'board_sha256':hashlib.sha256(current.read_bytes()).hexdigest(),
         'physical_numbered_pad_net_size_drill_shape_records_preserved':len(after['pins']),
-        'component_identities_preserved':len(after['identity']),
+        'component_identities_preserved':len(after['identity'])-len(changed_identity),
+        'intentional_mounting_footprint_changes':changed_identity,
         'transformer_copper_and_pose_preserved':True,'routed_outline_and_core_slots_preserved':True,
-        'mounting_hole_poses_preserved':True,'copper_layers_and_board_thickness_preserved':True,
+        'mounting_hole_centers_preserved':True,'copper_layers_and_board_thickness_preserved':True,
         'changed_component_poses':{k:{'before':v,'after':after['poses'][k]} for k,v in before['poses'].items() if v!=after['poses'][k]}}
 (R/'evidence/audit/layout-revision-checks.json').write_text(json.dumps(record,indent=2)+'\n')
 print(json.dumps({k:v for k,v in record.items() if k!='changed_component_poses'},indent=2))

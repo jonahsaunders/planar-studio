@@ -1,12 +1,54 @@
 {
   "baseline_id": "46460970e0e223c8738fd1d8be9bf6b80ef8369b",
   "baseline_sha256": "172f2113a81b07d94f710b557b5bdd75c358370d41be587edb6cf786b917d4a7",
-  "board_sha256": "c2932d59a33e6ab9fd00ef86d56ddefcfcf85c967e335476461063cea8bff248",
+  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
   "physical_numbered_pad_net_size_drill_shape_records_preserved": 55,
-  "component_identities_preserved": 26,
+  "component_identities_preserved": 22,
+  "intentional_mounting_footprint_changes": {
+    "H3": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H1": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H2": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    },
+    "H4": {
+      "before": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate"
+      ],
+      "after": [
+        "M3 / 3.2 mm NPTH",
+        "MountingHole_3.2mm_M3_ExposedSubstrate_Edge"
+      ]
+    }
+  },
   "transformer_copper_and_pose_preserved": true,
   "routed_outline_and_core_slots_preserved": true,
-  "mounting_hole_poses_preserved": true,
+  "mounting_hole_centers_preserved": true,
   "copper_layers_and_board_thickness_preserved": true,
   "changed_component_poses": {
     "C1": {
@@ -90,6 +132,30 @@
       "after": [
         102.5,
         129.0,
+        180.0
+      ]
+    },
+    "H3": {
+      "before": [
+        79.5,
+        130.0,
+        0.0
+      ],
+      "after": [
+        79.5,
+        130.0,
+        180.0
+      ]
+    },
+    "H1": {
+      "before": [
+        79.5,
+        50.0,
+        0.0
+      ],
+      "after": [
+        79.5,
+        50.0,
         180.0
       ]
     },
@@ -261,17 +327,5 @@
         0.0
       ]
     }
-  },
-  "unchanged_source_and_BOM_files": [
-    "circuit.json",
-    "mechanical.json",
-    "requirements.json",
-    "parts.json",
-    "kicad/PS-FLYBACK-5W.kicad_sch",
-    "kicad/PS-FLYBACK-5W.kicad_pro",
-    "planar-studio/T1-artwork.json",
-    "manufacturing/BOM-MASTER.csv",
-    "manufacturing/BOM-JLCPCB.csv"
-  ],
-  "upstream_mounting_library_unmodified": true
+  }
 }

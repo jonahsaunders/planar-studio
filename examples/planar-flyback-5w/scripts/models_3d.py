@@ -9,6 +9,7 @@ EXTRA={
  'Terminal_KF301_2P_5.00':'custom/KF301_5mm_2P.step',
  'Planar_EELP32_4T_2T':'custom/EELP32_prepared_pair.step',
  'MountingHole_3.2mm_M3_ExposedSubstrate':'custom/M3_8mm_mount_envelope.step',
+ 'MountingHole_3.2mm_M3_ExposedSubstrate_Edge':'custom/M3_8mm_mount_envelope.step',
 }
 def blocks(text,kind):
     result=[]
@@ -42,7 +43,7 @@ def attach_models(board_path,stock_dir=None):
             model=old[1].replace('${KIPRJMOD}/3dmodels/','')
             model=re.sub(r'^\$\{KICAD\d+_3DMODEL_DIR\}/','stock/',model)
         mapping[fp.stem]=model
-    mapping['MountingHole_3.2mm_M3_ExposedSubstrate']=EXTRA['MountingHole_3.2mm_M3_ExposedSubstrate']
+    mapping.update({name:model for name,model in EXTRA.items() if name.startswith('MountingHole_')})
     for model in set(mapping.values()):
         target=MODELS/model
         if not target.exists() and model.startswith('stock/') and stock_dir:

@@ -13,7 +13,10 @@
         "In4.Cu": 5.55235,
         "B.Cu": 4.0
       },
-      "excluded_from_BOM_CPL": true
+      "excluded_from_BOM_CPL": true,
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rotation_deg": 180.0,
+      "all_layer_extension_clear": true
     },
     {
       "reference": "H2",
@@ -28,7 +31,10 @@
         "In4.Cu": 8.2,
         "B.Cu": 4.5
       },
-      "excluded_from_BOM_CPL": true
+      "excluded_from_BOM_CPL": true,
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rotation_deg": 0.0,
+      "all_layer_extension_clear": true
     },
     {
       "reference": "H3",
@@ -43,7 +49,10 @@
         "In4.Cu": 14.026548,
         "B.Cu": 6.5
       },
-      "excluded_from_BOM_CPL": true
+      "excluded_from_BOM_CPL": true,
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rotation_deg": 180.0,
+      "all_layer_extension_clear": true
     },
     {
       "reference": "H4",
@@ -58,7 +67,10 @@
         "In4.Cu": 11.500423,
         "B.Cu": 6.5
       },
-      "excluded_from_BOM_CPL": true
+      "excluded_from_BOM_CPL": true,
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+      "rotation_deg": 0.0,
+      "all_layer_extension_clear": true
     }
   ],
   "required_copper_radius_mm": 3.4,

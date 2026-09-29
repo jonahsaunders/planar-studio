@@ -11,7 +11,7 @@
 | 18–36 V DC input; isolated 5 V / 1 A output | 50 × 104 mm board; 1.6 mm nominal thickness |
 | LT8302 primary-side regulation | Six copper layers; integral planar windings |
 | 4:2 turns; nominal primary inductance 11.95 µH | Prepared N87 core pair; 0.21 mm center-leg gap |
-| Separate primary and secondary returns | Four M3 holes: 3.2 mm NPTH, 41 × 80 mm pattern |
+| Separate primary and secondary returns | Four M3 edge-style holes: 3.2 mm NPTH, 41 × 80 mm pattern |
 
 ## 3D assembly
 
@@ -51,6 +51,8 @@ The views below come from the actual KiCad copper, silkscreen and routed outline
 [![Front and back PCB layout, showing the winding copper, electronics, ferrite openings and four M3 holes](evidence/layout-overview.svg)](evidence/layout-overview.svg)
 
 **Inspect:** [Front copper and silkscreen](evidence/board.svg) · [Back copper and silkscreen](evidence/board-back.svg) · [Component assembly drawing](manufacturing/assembly-top.svg) · [All six copper Gerbers](evidence/audit/gerber-copper-overview.png) · [Editable KiCad board](kicad/PS-FLYBACK-5W.kicad_pcb)
+
+The four mounting holes now use American Embedded’s **Edge** variant: an exposed-substrate opening runs outward to each side of the board. Drill size, mounting pattern and board outline are unchanged.
 
 The front and back each carry a two-turn primary section, connected in series. In1.Cu and In4.Cu carry two-turn secondary sections in parallel. The center and two outer slots accept the prepared ferrite pair. The transformer winding reference file is separate from this complete converter board.
 

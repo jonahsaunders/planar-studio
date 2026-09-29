@@ -1,5 +1,5 @@
 {
-  "board_sha256": "c2932d59a33e6ab9fd00ef86d56ddefcfcf85c967e335476461063cea8bff248",
+  "board_sha256": "d014b45def005701698c609a7a5bc4689bf0bcd730b0f82ac994e1b72676916b",
   "method": "Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.",
   "scope": "Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.",
   "routes": [
@@ -460,20 +460,20 @@
       "filled_area_mm2": 630.534
     },
     {
-      "net": "/GND_ISO",
-      "layer": "B.Cu",
-      "filled_area_mm2": 711.544
-    },
-    {
       "net": "/PGND",
       "layer": "B.Cu",
       "filled_area_mm2": 842.554
+    },
+    {
+      "net": "/GND_ISO",
+      "layer": "B.Cu",
+      "filled_area_mm2": 711.544
     }
   ],
   "U1_exposed_pad_ground_vias": [
     {
       "position_mm": [
-        90.7,
+        92.3,
         58.45
       ],
       "diameter_mm": 0.6,
@@ -482,7 +482,7 @@
     {
       "position_mm": [
         92.3,
-        58.45
+        59.55
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3
@@ -497,8 +497,8 @@
     },
     {
       "position_mm": [
-        92.3,
-        59.55
+        90.7,
+        58.45
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3

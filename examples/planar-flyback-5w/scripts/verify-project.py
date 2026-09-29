@@ -144,7 +144,14 @@ for h in mechanical['holes']:
     assert abs(pcb.ToMM(pad.GetDrillSize().x)-3.2)<1e-6
     assert abs(pcb.ToMM(pad.GetLocalClearance())-1.8)<1e-6
     assert abs(pcb.ToMM(f.GetPosition().x)-h['x_mm'])<1e-6 and abs(pcb.ToMM(f.GetPosition().y)-h['y_mm'])<1e-6
+    assert abs((f.GetOrientationDegrees()-h.get('rotation_deg',0))%360)<1e-6
     assert f.IsExcludedFromBOM() and f.IsExcludedFromPosFiles()
+    keepouts=list(f.Zones())
+    if mechanical.get('variant')=='Edge':
+        assert len(keepouts)==1 and keepouts[0].GetIsRuleArea()
+        assert all(keepouts[0].IsOnLayer(l) for l in copper_layers)
+        for layer in [pcb.F_Mask,pcb.B_Mask]:
+            assert any(g.GetLayer()==layer and g.GetShape()==pcb.SHAPE_T_POLY for g in f.GraphicalItems())
     per_layer={}
     for layer in copper_layers:
         shapes=[]
@@ -160,9 +167,15 @@ for h in mechanical['holes']:
         distances=[pcb.ToMM(s.Distance(f.GetPosition())) for s in shapes]
         nearest=min(distances) if distances else None
         assert nearest is None or nearest>=3.39,(h['ref'],board.GetLayerName(layer),nearest)
+        # The Edge variant also clears copper outside the circular exclusion.
+        # Check its complete transformed extension against actual layer copper.
+        for keepout in keepouts:
+            assert not any(keepout.Outline().Collide(s) for s in shapes),(h['ref'],board.GetLayerName(layer),'extension intersects copper')
         per_layer[board.GetLayerName(layer)]=nearest
     mounting.append({'reference':h['ref'],'drill_mm':3.2,'x_mm':h['x_mm'],'y_mm':h['y_mm'],
-                     'nearest_copper_from_center_mm':per_layer,'excluded_from_BOM_CPL':True})
+                     'nearest_copper_from_center_mm':per_layer,'excluded_from_BOM_CPL':True,
+                     'footprint':str(f.GetFPID().GetLibItemName()),'rotation_deg':f.GetOrientationDegrees(),
+                     'all_layer_extension_clear':True if keepouts else None})
 (ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':3.4,'geometry_tolerance_mm':.01,'rules':rules},indent=2))
 out={'schematic_board_logical_pins_matched':len(bp),'physical_numbered_pads_checked':physical,'winding_polygon_count':len(polys),'polygon_terminal_contacts':{k:sorted(v) for k,v in expect.items()},'centerline_samples_inside_final_copper':samples,'stack_thickness_mm':thickness,'copper_layers':6,'drc_violations':0,'unconnected_items':0,'scope':'Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.'}
 out['schematic_continuous_wire_groups']=continuous

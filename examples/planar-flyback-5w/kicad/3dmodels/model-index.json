@@ -73,25 +73,25 @@
     },
     {
       "reference": "H1",
-      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "model": "custom/M3_8mm_mount_envelope.step",
       "provisional_hardware": true
     },
     {
       "reference": "H2",
-      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "model": "custom/M3_8mm_mount_envelope.step",
       "provisional_hardware": true
     },
     {
       "reference": "H3",
-      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "model": "custom/M3_8mm_mount_envelope.step",
       "provisional_hardware": true
     },
     {
       "reference": "H4",
-      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate",
+      "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "model": "custom/M3_8mm_mount_envelope.step",
       "provisional_hardware": true
     },

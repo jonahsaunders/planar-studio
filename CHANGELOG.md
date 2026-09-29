@@ -47,6 +47,10 @@
   Preserve the circuit and winding geometry; refresh manufacturing, 3D and
   before/after evidence, including full-layer Gerber framing and solid checks.
 
+- Use American Embedded M3 Edge mounting footprints on the flyback example,
+  oriented outward with the same drill pattern, checked six-layer extension
+  clearances and refreshed manufacturing/3D views.
+
 ## 1.4.0 — Transformer design workflow (development)
 
 - Compose magnetic model, taps, multiple outputs and winding stack independently.
