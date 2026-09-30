@@ -18,7 +18,7 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
 | Mounting holes | Four 3.2 mm NPTH holes; 41 × 95 mm center spacing; do not fill/cap; see MOUNTING.md |
 | Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.10 mm routing requested |
-| Panelization | 70 × 124 mm one-board KiKit panel; rails/fiducials/tooling included; see PANEL.md |
+| Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after bonding the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
@@ -54,12 +54,14 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 ## Required vendor response
 
 1. Confirm sourcing and assembly of all 24 electronic placements per `BOM-JLCPCB.csv`; cores may be sourced separately from DigiKey.
-2. Confirm a compatible reflow profile for F1, R8 and C3/C8, a compliant Standard assembly panel, and any sourcing exceptions in `JLCPCB-SOURCING.md`. Core grinding, installation and magnetic acceptance require a separate agreement before the complete converter can be tested.
+2. Confirm a compatible reflow profile for F1, R8 and C3/C8, propose a compliant Standard assembly panel, and identify any sourcing exceptions in `JLCPCB-SOURCING.md`. Core grinding, installation and magnetic acceptance require a separate agreement before the complete converter can be tested.
 3. Confirm the stack, slot tolerance, via filling, connector soldering and component substitutions (if any).
 4. Return an assembly preview, sourcing exceptions, NRE/tooling charges, lead time and quotation. Do not substitute ungapped core halves, an ordinary catalog transformer, the LT8302-3, or a bidirectional TVS.
 
 No quotation has been requested and no supplier has accepted this build.
 
-## Matching panel files
+## JLCPCB-managed panelization
 
-For Standard assembly use the complete [panel set](PANEL.md), including its own Gerbers, CPL and via-fill schedule. Single-board exports remain available for design review; do not combine their coordinates with panel Gerbers.
+Supply `GERBERS-REVIEW-ONLY.zip`, `BOM-JLCPCB.csv`, `CPL-JLCPCB.csv` and `via-fill.csv` from this directory. All four describe one 50 × 104 mm board in the same coordinate system. Request panelization by JLCPCB, including assembly rails, tooling, fiducials and a suitable separation process. JLCPCB must transform the placement and selective fill/cap coordinates consistently into its panel.
+
+The earlier customer-designed panel is withdrawn and excluded from the current review package. Do not use its Gerbers or placement files from older downloads. Review JLCPCB's proposed panel, component orientation preview and finished-board quantity before authorizing fabrication. See [panelization requirements](PANEL.md).

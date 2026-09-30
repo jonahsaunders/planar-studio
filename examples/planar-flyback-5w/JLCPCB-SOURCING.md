@@ -35,7 +35,7 @@ U1 uses the pin-compatible industrial-temperature LT8302I. C5 is a Murata 4.7 µ
 
 ## Before manufacturing release
 
-- **Factory acceptance:** agree the six-layer 1 oz copper stack, filled/capped vias, core-slot tolerances, panel and through-hole connector assembly.
+- **Factory acceptance:** agree the six-layer 1 oz copper stack, filled/capped vias, core-slot tolerances and through-hole connector assembly. JLCPCB is to prepare the panel from the single-board files and return its drawing for review; the previous customer-designed panel is withdrawn.
 - **Reflow:** use Standard assembly with a component-level profile accepted for F1, R8 and C3/C8. Economic's fixed 255 ±5 °C profile is unsuitable for the fuse/capacitor limits. Manufacturer recommendations must be reconciled before assembly.
 - **Prototype qualification:** demonstrate the 17.5 V differential spike envelope, RFB pin limits, regulation, startup/fault recovery, magnetics and temperatures. R8's power rating is conditional on copper and temperature.
 
