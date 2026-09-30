@@ -45,6 +45,7 @@ run(args.kicad_cli, 'pcb', 'export', 'drill', '--format', 'excellon', '--drill-o
 run(args.kicad_cli, 'pcb', 'export', 'pos', '--format', 'csv', '--units', 'mm', '--side', 'front',
     '--use-drill-file-origin', '-o', 'manufacturing/KiCad-positions.csv', pcb)
 py('manufacturing-data.py')
+py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(prefix='flyback-svg-') as temp:
     run(args.kicad_cli, 'sch', 'export', 'svg', '-o', temp, sch)
     shutil.copy2(Path(temp) / 'PS-FLYBACK-5W.svg', R / 'evidence/schematic.svg')

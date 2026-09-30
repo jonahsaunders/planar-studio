@@ -42,6 +42,13 @@ for p in data['parts']:
             raise FileNotFoundError(f'{destination} missing; restore the bundled footprint or set KICAD10_FOOTPRINT_DIR')
         shutil.copy2(STOCK/(library+'.pretty')/(name+'.kicad_mod'),destination)
 
+# Bourns SF-1206F Rev J p2: 4.7 outside span, 2.2 gap, 1.65 width.
+# Nominal 3.10 x 1.55 body; keep 0.25 mm courtyard clearance to lands.
+body=rect(-1.55,-.775,1.55,.775,'F.Fab',.1)+rect(-2.60,-1.10,2.60,1.10)
+body+=line((-.85,-.94),(.85,-.94),.12)+line((-.85,.94),(.85,.94),.12)
+body+=pad(1,-1.725,0,1.25,1.65)+pad(2,1.725,0,1.25,1.65)
+(LIB/'Fuse_Bourns_SF1206F.kicad_mod').write_text(footprint('Fuse_Bourns_SF1206F',body,refy=-1.8),encoding='utf8')
+
 # S8E land pattern, ADI drawing 05-08-1857 Rev C, LT8302 Rev G page 24.
 body=rect(-1.95,-2.50,1.95,2.50,'F.Fab',.1)+rect(-3.5,-2.8,3.5,2.8)
 body+=line((-1.8,-2.65),(1.8,-2.65))+line((-1.8,2.65),(1.8,2.65))
@@ -178,7 +185,7 @@ txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
 path('VIN_RAW',[pos('J1',1),pos('F1',1)],width=1.2)
-path('VIN_FUSED',[pos('F1',2),(88,41.1),pos('D1',2)],width=1.2)
+path('VIN_FUSED',[pos('F1',2),(88,40.775),pos('D1',2)],width=1.2)
 # R8/C7 are a shunt damping branch; there is no DC feed resistor.
 path('VIN',[pos('D1',1),(88,48.5),(93.5375,48.5),pos('R8',1)],width=1)
 path('VIN_DAMP',[pos('R8',2),(104.8,47),pos('C7',1)],width=1)

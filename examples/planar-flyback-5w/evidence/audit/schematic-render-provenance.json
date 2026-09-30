@@ -1,12 +1,12 @@
 {
   "method": "Rasterization of the native KiCad SVG; no circuit illustration substitutes.",
   "source_SHA256": {
-    "evidence/schematic.svg": "cd4c2423c16d62862c88807a5e7a46856e46917db2bf305f2eaa1c1647ffa033",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "8953899d1701342d271a490e902484d3e33b5cf060030906597a599911511256"
+    "evidence/schematic.svg": "9793443cf36baf1ef57c78c1cf5a9319e8572a72d16d3bd69edf2ace0202a5f6",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "1374ecea19deb86b7b80204c0cdde284b9994e27a9c60c9ab4245852cfa9509b"
   },
   "output_SHA256": {
-    "evidence/audit/schematic-overview.png": "e808658f09b9e0370609d8a51de243fc8832f8182f1d89eca749fa033f822fa6",
-    "evidence/audit/schematic-input.png": "a855c84196f07a11970b773353b98c7aa22e166ddfb3164d43d2e5cf8be059cd",
+    "evidence/audit/schematic-overview.png": "1a824646373f9c5eb4e873e2e1769c148b82ffd57899439710a68ef769546955",
+    "evidence/audit/schematic-input.png": "67a1b7e186c1b696aba0a607bdd6a6844da9aaab50122e7e5f674c6ce34525d1",
     "evidence/audit/schematic-output.png": "d2ba69fff7f46b3a6b96f0880befe021e51f455e3233bc0bd3b041d5d887cc19",
     "evidence/audit/schematic-controller.png": "2f23c43cbe9f5ec03d7d470ab7541d3adbe13c6b4f58dde999a2f0810dede6ec",
     "evidence/audit/schematic-feedback.png": "ceb5ca73f9723e5a25529911bbfb275341298d5e965d5de8916b3b6090aa5148",

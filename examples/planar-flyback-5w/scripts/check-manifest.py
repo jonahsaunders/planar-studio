@@ -17,7 +17,7 @@ files = sorted(f for f in R.rglob('*') if f.is_file() and f != manifest
 hashes = {}
 for file in files:
     data = file.read_bytes()
-    if args.write and file.suffix not in {'.png', '.zip', '.glb'}:
+    if args.write and file.suffix not in {'.png', '.zip', '.glb', '.stp'}:
         data = data.decode('utf8').replace('\r\n', '\n').encode('utf8')
         if file.suffix == '.svg':
             # KiCad emits trailing spaces in SVG markup; preserve line breaks.

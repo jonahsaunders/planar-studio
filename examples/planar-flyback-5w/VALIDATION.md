@@ -23,7 +23,8 @@ See the [complete component audit](COMPONENT-AUDIT.md) for all 29 footprints and
 | Drawn power-path continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect through actual wires; no label-only clamp block | [Wire groups](evidence/independent-checks.json) |
 | Earlier schematic-only redraw (historical) | A4 sheet; all 54 pin names/nets and 26 part records unchanged at that revision; see the current layout comparison for subsequent copper/placement changes | [Redraw comparison](evidence/audit/schematic-layout-checks.json), [render](evidence/audit/schematic-overview.png) |
 | Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
-| Mounting footprint revision | Exact upstream M3 Edge footprints; extensions rotated outward; unchanged 3.2 mm drills; revised 41 × 95 mm pattern with 4.5 mm corner insets; all-layer extension clearance checked | [Mounting specification](manufacturing/MOUNTING.md), [current revision evidence](evidence/audit/mounting-revision-checks.json) |
+| Mounting footprint revision | Exact upstream M3 Edge footprints; extensions rotated outward; unchanged 3.2 mm drills; revised 41 × 95 mm pattern with 4.5 mm corner insets; all-layer extension clearance checked | [Mounting specification](manufacturing/MOUNTING.md), [historical mounting move](evidence/audit/mounting-revision-checks.json), [current fuse-only geometry comparison](evidence/audit/fuse-revision-checks.json) |
+| Fuse replacement and sourcing | Bourns SF-1206F100-2 / C3164649, recommended lands and normalized official series STEP geometry; other placement, routes, windings and corner mounts preserved | [Fuse checks](evidence/audit/fuse-revision-checks.json), [dated sourcing audit](JLCPCB-SOURCING.md) |
 | Assembly/export consistency | 24 electronic BOM/CPL references, six copper Gerbers, 66 filled/capped holes plus four open connector holes and four separate NPTH mounting holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
 | 3D assembly | All 29 footprints have local models; 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Model coverage and limits](3D-MODELS.md), [solid checks](evidence/audit/3d-solid-checks.json) |
 | Transformer sizing | 4:2 turns, nominal 11.95 µH, proposed 0.21 mm prepared center-leg gap | [Winding model](evidence/winding-model.json) |
@@ -47,9 +48,9 @@ prediction or a physically charge-balanced waveform.
   ripple, temperature or EMI. Repeat output trim after the layout change.
 - Source and qualify a prepared EELP32 N87 pair. Stock B66457G0000X187 halves
   are ungapped; the specified prepared pair needs center-leg grinding.
-- Qualify adhesive, retention, positioning and inductance acceptance. The
-  proposed core installation is part of turnkey assembly, with no acceptance
-  from JLCPCB or a subcontractor yet.
+- Qualify adhesive, retention, positioning and inductance acceptance. Raw cores
+  may be sourced separately from DigiKey. The separate preparation/installation
+  operation and its responsible supplier remain to be agreed.
 - Confirm component availability and substitute suitability. Catalog part
   identifiers do not establish stock, price or assembler acceptance.
 - Measure switch overshoot and tune the clamp/snubber. The 56.9 V rating-based

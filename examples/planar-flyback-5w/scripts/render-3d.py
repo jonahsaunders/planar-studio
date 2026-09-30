@@ -25,8 +25,14 @@ glb=(assembly/'PS-FLYBACK-5W.glb').read_bytes()
 size,kind=struct.unpack('<II',glb[12:20]);scene=json.loads(glb[20:20+size])
 expected={f['reference'] for f in json.loads((R/'kicad/3dmodels/model-index.json').read_text())['footprints']}
 assert expected.issubset({n.get('name') for n in scene['nodes']}),'Missing exported component'
+def has_geometry(index):
+    node=scene['nodes'][index]
+    return ('mesh' in node and bool(scene['meshes'][node['mesh']].get('primitives'))) or any(has_geometry(i) for i in node.get('children',[]))
+for ref in expected:
+    matches=[i for i,n in enumerate(scene['nodes']) if n.get('name')==ref]
+    assert any(has_geometry(i) for i in matches),('Exported component has no mesh geometry',ref)
 record={'tool':'KiCad 10 pcb render / export','views':list(views),
-        'GLB_component_references_verified':sorted(expected),
+        'GLB_component_references_verified':sorted(expected),'GLB_all_reference_subtrees_have_mesh_geometry':True,
         'scope':'All saved-board footprints have local STEP models. Core and connectors are nominal drawing-based geometry; H1-H4 and core retention are provisional envelopes. See 3D-MODELS.md.',
         'source_SHA256':{f.relative_to(R).as_posix():hashlib.sha256(f.read_bytes()).hexdigest() for f in inputs},
         'output_SHA256':{f.relative_to(R).as_posix():hashlib.sha256(f.read_bytes()).hexdigest()

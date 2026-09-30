@@ -99,7 +99,7 @@ result={'board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'review_limits':['No extracted parasitics, EMI or current-density solution.',
                          'No hardware ripple, overshoot, thermal or isolation test.',
                          'Enclosure, wire/tool access, process tolerance and supplier acceptance remain open.']}
-assert not non45
+assert not non45,non45
 assert result['SW_routing_layers']==['F.Cu'] and result['SW_added_vias']==0
 assert all(r['sampled_review_corridor_in_filled_plane'] for r in returns)
 assert all(p['connected_filled_outlines']==1 for p in planes)

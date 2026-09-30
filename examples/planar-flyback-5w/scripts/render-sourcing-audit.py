@@ -1,0 +1,94 @@
+"""Reconcile the dated catalog observations to the current electronics BOM."""
+import csv,hashlib,html,json
+from collections import Counter
+from pathlib import Path
+R=Path(__file__).resolve().parents[1]
+snapshot=json.loads((R/'sources/jlcpcb-stock.json').read_text())
+bom=list(csv.DictReader((R/'manufacturing/BOM-MASTER.csv').open(encoding='utf-8-sig')))
+electronics={r['Reference']:r for r in bom if r['Reference']!='T1'}
+rows=snapshot['rows'];covered=set()
+for row in rows:
+    for ref in row['references']:
+        assert ref not in covered
+        covered.add(ref)
+        assert electronics[ref]['MPN']==row['mpn']
+        assert electronics[ref]['LCSC']==(row['verified_jlcpcb_code'] or '')
+assert covered==set(electronics) and len(rows)==20 and len(covered)==24
+counts=Counter(row['status'] for row in rows)
+assert counts=={'Stocked':14,'Low stock':2,'Pre-order':4}
+record={**snapshot,'counts':dict(counts),'source_bom_sha256':hashlib.sha256((R/'manufacturing/BOM-MASTER.csv').read_bytes()).hexdigest(),
+        'conclusion':'16 electronic MPNs stocked (two low); four pre-order; all 20 have exact catalog matches. Core sourcing is separate and is not counted as a JLCPCB availability failure.',
+        'changes':'F1 replaced by Bourns SF-1206F100-2 with updated footprint and 3D model; R3 replaced by Vishay TNPW0603106KBEEN / C4185599 with unchanged 0603 footprint and feedback ratio; eight previously missing exact-MPN catalog codes added. No purchases, supplier messages or supplier uploads.'}
+(R/'evidence/audit/jlcpcb-sourcing.json').write_text(json.dumps(record,indent=2,ensure_ascii=False)+'\n',encoding='utf8')
+intro='''# Board-assembly sourcing audit
+
+**Scope:** JLCPCB sources and assembles the 24 electronic placements (20 unique MPNs), including both through-hole connectors. Raw ferrite cores may come separately from DigiKey. Integral PCB windings remain on the converter board. The custom core gap, retention, installation and magnetic acceptance still need a qualified process; an ungapped stock pair is not a substitute.
+
+Catalog observations: **September 29, 2026, America/New_York / September 30 UTC**. These are live-page snapshots, not reserved inventory, quotations or delivery promises. The F1 and R3 rows were checked when selecting their replacements; other rows retain the preceding all-part audit observations from the same date.
+
+**16 MPNs were stocked (including two low-stock lines); four require pre-order. All 20 MPNs now have exact catalog matches.** That covers 20 stocked placements and four requiring pre-order procurement. All 20 catalog matches are Extended parts. F1 and R3 are the reviewed substitutions described below; eight other exact-MPN catalog codes missing from the earlier BOM are also included.
+
+## Fuse replacement
+
+F1 changes from unavailable Littelfuse 0466001.NR / C151134 to **Bourns SF-1206F100-2 / C3164649**. JLCPCB showed 2,931 headline stock, **2,928 available to order**, minimum one, and $0.2405 at the one-piece tier before assembly/shipping. [JLCPCB listing](https://jlcpcb.com/partdetail/BOURNS-SF_1206F1002/C3164649).
+
+The replacement is 1 A, 63 V DC, fast acting, with 50 A interruption at 63 V DC. Its typical melting I²t is 0.034 A²s versus the old fuse's 0.0423 A²s, so repeat inrush/coordination validation. Approximately 0.40 A operating input current is a screening estimate, not a measured RMS or thermal result. Confirm the source fault current and startup behavior. [Manufacturer specification](https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf).
+
+The footprint now uses two 1.25 × 1.65 mm lands with a 2.20 mm gap and 4.70 mm outside span. Bourns' official series STEP geometry is bundled and oriented to KiCad's seating plane; the body is 3.10 × 1.55 × 0.60 mm. See [model provenance](3D-MODELS.md) and [change checks](evidence/audit/fuse-revision-checks.json).
+
+## Feedback resistor replacement
+
+R3 changes from uncatalogued Yageo RT0603BRD07106KL to **Vishay TNPW0603106KBEEN / C4185599**. JLCPCB showed 226 headline stock, **225 available to order**, minimum one, $1.1508 at one and $0.9427 at ten. It is an Extended SMT part, MSL 1, supported for Economic and Standard assembly. [JLCPCB listing](https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599).
+
+The replacement preserves 106 kΩ, ±0.1%, ±25 ppm/°C and the existing 0603 footprint, placement, routing and generic 0603 3D model. Retain conservative 0.1 W / 75 V design limits: the JLCPCB-linked Vishay datasheet (28758, September 26, 2023) meets both; newer family ratings are not needed for this substitution. The feedback ratio and nominal 5 V setting remain unchanged. RFB injected-current margin, switch-node transients and final output trim still require prototype measurements. [Manufacturer specification](https://www.vishay.com/docs/28758/tnpw_e3.pdf).
+
+## Remaining board-assembly work
+
+- **C5, C6, R6, R8:** exact parts are listed for pre-order, with lead times and minimum/attrition quantities unconfirmed. Preserve capacitor bias/dielectric behavior and resistor pulse capability if substituting.
+- **U1 and R5:** only five and six available respectively; insufficient margin to assume a five-board assembly run with attrition.
+- **Reflow:** Bourns recommends 245–250 °C peak for 5 seconds and ≥230 °C for 30 ±10 seconds. Economic's published fixed 255 ±5 °C is incompatible; Standard's 240 ±5 °C does not automatically establish a compliant fuse process either. Have JLCPCB accept a component-level profile covering F1 and the SVPF capacitors before ordering. The fuse's 260 °C resistance-to-solder-heat test is not a recommended production profile.
+- **Fabrication and panel:** the winding stack needs acceptance. The 50 × 104 mm board is narrower than Standard's published 70 × 70 mm minimum board/panel, so arrange a compliant panel/process frame, rails and fiducials. Include J1/J2 through-hole assembly.
+
+[JLCPCB assembly capabilities](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) · [Panasonic SVPF mounting limits](https://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000COL10.pdf) · [Global Sourcing](https://jlcpcb.com/help/article/how-to-use-jlcpcb-global-sourcing-parts-service) · [Pre-order conditions](https://jlcpcb.com/help/article/pre-ordering-parts-terms-conditions).
+
+## Every electronic part
+
+“Available” is the site's Available Order Qty, rather than headline inventory. “Not shown” does not mean zero. Displayed minimum is a purchasing minimum, not a confirmed PCBA allowance. The fuse is populated once; J1/J2, D1/D3, C1/C2 and C3/C8 share their respective MPNs.
+
+| References | Exact MPN | JLCPCB code | Status | Available | Minimum |
+| --- | --- | --- | --- | ---: | ---: |
+'''
+lines=[]
+for row in rows:
+    num=lambda n:'Not shown' if n is None else f'{n:,}'
+    lines.append('| '+ ' | '.join([', '.join(row['references']),row['mpn'],f"[{row['verified_jlcpcb_code'] or 'Search'}]({row['source_url']})",row['status'],num(row['available_order_quantity']),num(row['displayed_minimum'])])+' |')
+ending='''
+
+## Separate core procurement and qualification
+
+The raw TDK B66457G0000X187 halves may be purchased from DigiKey; this audit makes no new DigiKey inventory claim. Two raw halves still need the PS-MAG-001 prepared-pair process and magnetic checks. No JLCPCB code is applied to T1 as though a raw half were a complete transformer. Core adhesive, activator and retention remain in the separate core BOM, with their process and installation responsibility to be agreed. H1–H4 are fabricated holes; illustrative 3D screws/standoffs are not purchased BOM lines.
+
+## Five-board planning budget
+
+**Estimated USD 320–500 for five assembled electronic boards, approximately USD 65–100 each.** This is a planning allowance, not a design-accepted quotation. It assumes the stack can be accepted without custom-lamination engineering charges and allows for ordinary parts procurement. Excludes ferrite cores, grinding/installation, hardware, functional-test development, taxes/duties and redesign/re-spin costs.
+
+| Item | Five-board allowance, USD |
+| --- | ---: |
+| Six-layer ENIG fabrication, 1 oz inner copper, filled/capped vias and panel/routing allowance | 80–120 |
+| Electronic components, minimum purchases and attrition allowance | 110–150 |
+| Standard assembly, setup, feeders, stencil, handling and inspection | 100–150 |
+| Shipping allowance; destination/service not quoted | 25–60 |
+| Arithmetic total before rounding/contingency | 315–480 |
+
+The public JLCPCB calculator showed **$81.17** for five representative 70 × 114 mm blanks, six layers, 1.6 mm FR-4, ENIG, 1 oz inner/outer copper, epoxy filled/capped vias and precision outline routing. The larger rectangle is a budgeting allowance for rails, not a completed panel design. No Gerber, BOM or placement file was uploaded; no cart/order was submitted. The exact winding stack, internal slots and panel process were not priced or accepted by engineering. [Public calculator](https://cart.jlcpcb.com/quote).
+
+The assembly allowance uses JLCPCB's published Standard fees: $25.56 single-side setup, $8.21 stencil, $1.53 per SMT part type (19 types), handling from $14.93, plus fixtures, joints, inspection and connector labor. The single-side component placement does not require two-sided SMT just because the ferrite occupies both sides. [Assembly fee schedule](https://jlcpcb.com/help/article/pcb-assembly-price).
+
+Live catalog price checks on September 29, 2026: U1 $9.8505 each at quantities below ten; C3/C8 $0.9211 each at ten; C7 $0.6319 each; D2 $1.1290 each. The four listed pre-order minima total about **$36.95** (C5 $9.03, C6 $9.03, R6 $9.03, R8 $9.86), before sourcing adjustments and attrition. These minimum purchases are included in the parts allowance above, not an extra charge to add again. R3 is now sourced as Vishay TNPW0603106KBEEN / C4185599 ($1.1508 at one, $0.9427 at ten); U1/R5 replenishment remains open. All prices are unreserved snapshots and pre-order prices are estimates.
+
+**Fabrication action:** obtain a named stack with 1 oz inner copper (JLCPCB defaults to 0.5 oz), confirm precision processing of the internal slots at ±0.10 mm, and supply a compliant panel with rails, fiducials and alignment holes. Standard slot sizing is published as ±0.20 mm, so the precision-outline option alone is not acceptance of the core fit. Recalculate winding behavior for the final stack and validate first-article fit and electrical performance. [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities).
+
+This unbuilt engineering prototype is not released for fabrication. No purchase, reservation, supplier message or supplier upload was made. [Structured observations](evidence/audit/jlcpcb-sourcing.json) · [Electronic BOM](manufacturing/BOM-JLCPCB.csv) · [Core process](manufacturing/CORE-ASSEMBLY.md).
+'''
+(R/'JLCPCB-SOURCING.md').write_text(intro+'\n'.join(lines)+ending,encoding='utf8')
+print('Reconciled 20 MPNs / 24 placements; F1/R3 replacements and exact catalog codes match the current BOM.')

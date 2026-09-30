@@ -5,6 +5,14 @@ import pcbnew as pcb
 from vendor.convert_position import convert_positions
 R=Path(__file__).resolve().parents[1];M=R/'manufacturing'
 parts=json.loads((R/'circuit.json').read_text())['parts'];byref={p['ref']:p for p in parts}
+snapshot=json.loads((R/'sources/jlcpcb-stock.json').read_text())
+stock={ref:row for row in snapshot['rows'] for ref in row['references']}
+def sourcing_status(p):
+    if p['ref']=='T1':return 'Separate core procurement allowed; preparation and installation require qualification'
+    row=stock.get(p['ref'])
+    if row and row['mpn']==p['mpn']:
+        return row['status']+'; public catalog snapshot '+snapshot['observed_local_date']+'; not reserved; recheck stock, lead time and assembly acceptance'
+    return 'Catalog identity only; repeat sourcing review'
 positions=list(csv.DictReader((M/'KiCad-positions.csv').open()))
 expected={p['ref'] for p in parts if p['ref']!='T1' and not p.get('exclude_from_bom')}
 assert {p['Ref'] for p in positions}==expected
@@ -14,7 +22,7 @@ def write(name,rows):
 bom=[];cpl=[];master=[]
 for p in parts:
     if p.get('exclude_from_bom'):continue
-    ref=p['ref'];master.append({'Reference':ref,'Quantity':1,'Value':p['value'],'Manufacturer':p['mfr'],'MPN':p['mpn'],'LCSC':p['lcsc'],'Footprint':p['footprint'],'Source':p['source'],'Notes':p['purpose'],'Sourcing_status':'Custom assembly acceptance required' if ref=='T1' else 'Catalog identity verified; JLCPCB stock/lead time not confirmed' if p['lcsc'] else 'Global sourcing quote required; no verified LCSC code'})
+    ref=p['ref'];master.append({'Reference':ref,'Quantity':1,'Value':p['value'],'Manufacturer':p['mfr'],'MPN':p['mpn'],'LCSC':p['lcsc'],'Footprint':p['footprint'],'Source':p['source'],'Notes':p['purpose'],'Sourcing_status':sourcing_status(p)})
     if ref=='T1':continue
     bom.append({'Comment':p['mpn'],'Designator':ref,'Footprint':p['footprint'].split(':')[1],'LCSC Part #':p['lcsc']})
 corrected=[]
@@ -32,7 +40,7 @@ convert_positions(M/'KiCad-positions-centroid.csv',M/'CPL-JLCPCB.csv')
 cpl=list(csv.DictReader((M/'CPL-JLCPCB.csv').open()))
 write('BOM-JLCPCB.csv',bom);write('BOM-MASTER.csv',master)
 cores=[
- {'Item':'T1 core set','Quantity_per_board':'1 set / 2 halves','MPN':'PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187','Process':'Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing','Sourcing_status':'JLCPCB/subcontractor procurement and installation acceptance required'},
+ {'Item':'T1 core set','Quantity_per_board':'1 set / 2 halves','MPN':'PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187','Process':'Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing','Sourcing_status':'Separate raw-core procurement from DigiKey permitted; preparation and installation require qualification'},
  {'Item':'External core adhesive','Quantity_per_board':'Supplier-qualified dispense','MPN':'Henkel LOCTITE AA 330','Process':'External outer-leg joints only; qualify geometry and cure; no adhesive in mating faces or center gap','Sourcing_status':'Proposed; supplier process qualification and quote required'},
  {'Item':'Adhesive activator','Quantity_per_board':'Per adhesive TDS','MPN':'Henkel LOCTITE SF 7387','Process':'Per current AA330/SF7387 technical data','Sourcing_status':'Supplier procurement and process qualification required'},
  {'Item':'Nonconductive retention strap','Quantity_per_board':'Supplier-defined cut length','MPN':'3M 69 12.7 mm; 3M ID 7000031352','Process':'Around yokes parallel to 31.75 mm core span; no metal loop; confirm fit and retention','Sourcing_status':'Supplier procurement and process qualification required'}]

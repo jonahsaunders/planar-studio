@@ -32,7 +32,7 @@ These are unplated routed slots, not copper keepout rectangles. Use a first arti
 6. Hold alignment in the compliant fixture through the adhesive's qualified fixture time, then allow full cure under its current datasheet conditions (typically 24–72 hours). Do not interpret initial handling strength as full cure. Do not apply pressure to the center leg or use the PCB as a spring clamp.
 7. Recheck inductance after cure, inspect seating, and perform the prototype tests. Record adhesive and core lots, final gap/inductance, and any process deviations. Attach photos of top, bottom and both outer-leg joints to first-article documentation.
 
-The adhesive/strap combination, bond geometry, retention force and environmental durability are **approval items for the assembly supplier**, not a validated production process. All procurement and installation are assigned to JLCPCB or its approved subcontractor; no user assembly is intended.
+The adhesive/strap combination, bond geometry, retention force and environmental durability are **approval items for the assembly supplier**, not a validated production process. Raw core procurement from DigiKey is permitted separately from JLCPCB board assembly. Core preparation, retention, installation and magnetic acceptance remain a separate qualified operation; responsibility and process must be agreed before fabrication. An ordinary ungapped pair cannot be installed as a substitute for the prepared assembly.
 
 ## References
 

@@ -4,7 +4,7 @@
 
 > **A1 engineering prototype — unbuilt and untested.** The files pass the checks below; hardware performance and manufacturing feasibility remain unconfirmed. No design files were submitted to JLCPCB and no purchase was made.
 
-[Download the complete A1 package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true) · [3D assembly](#3d-assembly) · [Schematic](#schematic) · [PCB layout](#pcb-layout) · [Open in KiCad](#open-the-example) · [Audit and open issues](KISTACK-AUDIT.md)
+[Download the complete A1 package](https://github.com/jonahsaunders/planar-studio/blob/main/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true) · [3D assembly](#3d-assembly) · [Schematic](#schematic) · [PCB layout](#pcb-layout) · [Open in KiCad](#open-the-example) · [Audit and open issues](KISTACK-AUDIT.md)
 
 | Electrical target | Physical design |
 | --- | --- |
@@ -12,6 +12,12 @@
 | LT8302 primary-side regulation | Six copper layers; integral planar windings |
 | 4:2 turns; nominal primary inductance 11.95 µH | Prepared N87 core pair; 0.21 mm center-leg gap |
 | Separate primary and secondary returns | Four M3 edge-style holes: 3.2 mm NPTH, 41 × 95 mm pattern |
+
+## Board assembly sourcing
+
+JLCPCB sourcing covers the **24 board-mounted electronic components**. The ferrite cores may be purchased separately from DigiKey; they still require the specified center gap, retention and magnetic checks. F1 is now **Bourns SF-1206F100-2 / C3164649**, with manufacturer-recommended lands and the official series STEP geometry. The September 29, 2026 catalog check showed **2,928 available to order**. No stock is reserved.
+
+[All-part sourcing audit and remaining procurement/process gaps](JLCPCB-SOURCING.md) · [Fuse model detail](3D-MODELS.md)
 
 ## Component audit and added filtering
 
@@ -70,7 +76,7 @@ The front and back each carry a two-turn primary section, connected in series. I
 
 ## Open the example
 
-1. Download and extract the [A1 package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true), or clone this branch.
+1. Download and extract the [A1 package](https://github.com/jonahsaunders/planar-studio/blob/main/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true), or clone this branch.
 2. Open `kicad/PS-FLYBACK-5W.kicad_pro` in **KiCad 10**. In the repository, this is under `examples/planar-flyback-5w/`. The schematic, placed/routed board, symbols, used footprints and all 3D models are included. In the board editor, choose **View → 3D Viewer** to inspect the assembly.
 3. Open `report.html` locally for the illustrated engineering report. GitHub displays the HTML source; the previews above work directly on GitHub.
 4. Import `planar-studio/T1.planar.json` into Planar Studio to inspect the winding design. Use this development branch with prepared-core support (commit `9210fce` or later); the published 1.3.0 plugin lacks that feature.
@@ -91,11 +97,11 @@ Existing files open without running the generators. `kicad/PS-FLYBACK-5W.kicad_p
 | 3D assembly | 29 visible local model instances; 16 valid STEP assets; 406 nominal component-pair checks and 29 substrate checks with no intersections |
 | Fabrication exports | Six copper Gerbers; 70 plated holes (66 filled/capped, four open connectors) and four M3 NPTH holes |
 
-[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Current mounting revision](evidence/audit/mounting-revision-checks.json)
+[Validation record](VALIDATION.md) · [KiStack audit](KISTACK-AUDIT.md) · [PCB layout audit](PCB-LAYOUT-AUDIT.md) · [Independent checks](evidence/independent-checks.json) · [Mounting revision (historical)](evidence/audit/mounting-revision-checks.json) · [Current fuse revision](evidence/audit/fuse-revision-checks.json)
 
 These checks establish file consistency and the geometry tested, not working hardware. Prototype measurements must establish regulation, ripple, switch overshoot, startup, overload, inductance under bias, core/fringing losses and temperature. The revised bulk-only ripple estimate is 50.58 mV. Clamp/RFB margin and hot-plug remain unqualified. The standalone cycle model is not a closed-loop LT8302 simulation, and the assumed 75% efficiency is not a measured result.
 
-The proposed supplier must accept the stack, sourcing, core preparation and retention/installation process. **Stock ungapped cores are not substitutes** for the prepared pair. Several resistor lines still need sourcing confirmation, and nominal 3D geometry passes the checks in [3D-MODELS.md](3D-MODELS.md). Actual hardware, enclosure, tolerances and core retention still need qualification. Functional low-voltage isolation only; no mains or safety-isolation rating is claimed.
+JLCPCB must accept the stack, electronic sourcing and PCBA process. Separate core sourcing from DigiKey is permitted; core preparation and retention/installation still require a qualified process. **Stock ungapped cores are not substitutes** for the prepared pair. Several resistor lines still need sourcing confirmation, and nominal 3D geometry passes the checks in [3D-MODELS.md](3D-MODELS.md). Actual hardware, enclosure, tolerances and core retention still need qualification. Functional low-voltage isolation only; no mains or safety-isolation rating is claimed.
 
 [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md) · [Fabrication requirements](manufacturing/FABRICATION.md) · [Unsent feasibility-request template](manufacturing/JLCPCB-REVIEW-REQUEST.md)
 

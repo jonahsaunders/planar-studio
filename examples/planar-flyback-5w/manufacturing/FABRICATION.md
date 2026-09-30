@@ -2,7 +2,7 @@
 
 **Engineering prototype / quotation package. Not a production release.**
 
-Build quantity for quotation: five complete converters. JLCPCB must procure all components and the prepared ferrite assembly, assemble both ferrite halves, and deliver complete units. Customer installation or customer-supplied cores does not satisfy the requested turnkey scope.
+Budgeting quantity: five boards with all electronic components sourced and assembled by JLCPCB. Raw ferrite cores may be procured separately from DigiKey. Core preparation, retention, installation and magnetic acceptance require a separate qualified process; they are outside the electronic PCBA sourcing requirement.
 
 ## Board fabrication
 
@@ -23,6 +23,8 @@ Build quantity for quotation: five complete converters. JLCPCB must procure all 
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after bonding the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
 
+JLCPCB publishes ±0.20 mm for ordinary non-plated slot sizing, while its order form offers ±0.10 mm precision outline routing. Obtain explicit confirmation that the selected precision process covers all three internal core slots and their alignment. Precision routing requires at least three distributed alignment holes of at least 1.5 mm; the four M3 holes or panel tooling must be accepted for that purpose. Do not treat a clean KiCad DRC as this manufacturing acceptance. See the [published capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) and [budget/open actions](../JLCPCB-SOURCING.md).
+
 ## Proposed stack, top to bottom
 
 | Layer | Function | Copper / dielectric to next layer |
@@ -40,7 +42,7 @@ Total copper plus dielectric is 1.600 mm; solder mask is additional. These dimen
 
 - Gerbers and drills share the bottom-left board datum: original KiCad coordinate (75, 137) mm. Export X is right, Y is up; the board envelope is X=0…50 and Y=0…104 mm.
 - `BOM-JLCPCB.csv` and `CPL-JLCPCB.csv` contain the same 24 electronic references, including two through-hole connectors for the quoted manual process. T1 is integral board copper and a separately quoted mechanical operation, not an SMT placement.
-- `CORE-BOM.csv` adds the prepared core set, bonding materials and insulating retention strap. Do not omit this schedule from the turnkey quotation.
+- `CORE-BOM.csv` describes separate prepared-core, bonding and retention operations. Raw cores may be procured from DigiKey; these items are outside the board-electronics sourcing requirement and need a separately agreed process.
 - `via-fill.csv` lists 66 filled/capped interlayer holes (61 vias and five T1 holes); four connector holes remain open. Total plated drill count is 70, plus four NPTH mounting holes. It distinguishes vias and planar interlayer holes from connector holes. Fill/cap all listed vias and T1 interlayer holes. **Do not fill J1/J2 connector holes or H1–H4 mounting holes.** T1 pads 1–5 are electrical test/interlayer locations, not component leads.
 - PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
 - CPL angles are KiCad angles. JLCPCB must reconcile its library zero rotations against the assembly drawing, especially U1, D1–D4 and C3; verify pin 1 and polarity in the assembly preview before approval.
@@ -49,8 +51,8 @@ Total copper plus dielectric is 1.600 mm; solder mask is additional. These dimen
 
 ## Required vendor response
 
-1. Can JLCPCB procure the prepared PS-MAG-001 core set, using a subcontractor if necessary, without customer consignment?
-2. Can JLCPCB install, bond and retain both core halves per `CORE-ASSEMBLY.md`, including inductance and polarity checks?
+1. Confirm sourcing and assembly of all 24 electronic placements per `BOM-JLCPCB.csv`; cores may be sourced separately from DigiKey.
+2. Confirm a compatible reflow profile for F1 and C3/C8, a compliant Standard assembly panel, and any sourcing exceptions in `JLCPCB-SOURCING.md`. Core grinding, installation and magnetic acceptance require a separate agreement before the complete converter can be tested.
 3. Confirm the stack, slot tolerance, via filling, connector soldering and component substitutions (if any).
 4. Return an assembly preview, sourcing exceptions, NRE/tooling charges, lead time and quotation. Do not substitute ungapped core halves, an ordinary catalog transformer, the LT8302-3, or a bidirectional TVS.
 

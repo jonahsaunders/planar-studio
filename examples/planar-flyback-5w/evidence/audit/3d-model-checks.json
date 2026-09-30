@@ -139,8 +139,8 @@
     },
     {
       "reference": "F1",
-      "model": "kicad/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step",
-      "sha256": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+      "model": "kicad/3dmodels/vendor/Bourns/SF-1206F_KiCad.step",
+      "sha256": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495",
       "position_mm": [
         90.5,
         40.0

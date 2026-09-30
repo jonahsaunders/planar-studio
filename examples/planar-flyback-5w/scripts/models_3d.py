@@ -3,6 +3,7 @@ import argparse,hashlib,json,os,re,shutil
 from pathlib import Path
 R=Path(__file__).resolve().parents[1];CAD=R/'kicad';MODELS=CAD/'3dmodels'
 EXTRA={
+ 'Fuse_Bourns_SF1206F':'vendor/Bourns/SF-1206F_KiCad.step',
  'D_PowerDI-5':'custom/PowerDI5.step',
  'SOIC8_EP_LT_S8E':'stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step',
  'CP_Panasonic_C6':'stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step',
@@ -52,7 +53,7 @@ def attach_models(board_path,stock_dir=None):
         if not target.is_file():raise FileNotFoundError(f'Restore bundled model {target}; generate custom models or provide --stock-dir for stock assets.')
         target.write_bytes(target.read_bytes().replace(b'\r\n',b'\n'))
         sources[model]={'sha256':hashlib.sha256(target.read_bytes()).hexdigest(),
-                        'type':'KiCad generic package' if model.startswith('stock/') else 'Original nominal geometry'}
+                        'type':'Manufacturer geometry, normalized datum' if model.startswith('vendor/') else 'KiCad generic package' if model.startswith('stock/') else 'Original nominal geometry'}
     def replace_models(text,name):
         before=re.sub(r'[ \t]+\n','\n',without_models(text))
         model=mapping[name]
