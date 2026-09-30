@@ -64,11 +64,17 @@ npm run shots
 npm run shots:motor
 ```
 
-These commands require the Playwright Chromium installation above. The motor
-capture uses a local application server and replaces the README's marked gallery
-only after all five captures succeed. Set `PYTHON` to your Python executable if
-needed. Generated copper previews and application screenshots are labeled
-separately.
+These commands require the Playwright Chromium installation above. `shots`
+regenerates the vector cover from the current geometry engines and captures all
+15 application views in the [feature gallery](gallery.md). `shots:motor` refreshes
+only the five motor views.
+
+Captures use disposable settings and a local application server. Images are
+published only after every requested view succeeds; source revision, viewport,
+capture date and image hashes are recorded beside them. Set `PYTHON` to your
+Python executable if needed, or `PLAYWRIGHT_CHROMIUM` to an existing compatible
+Chromium executable. Screenshots retain the real interface and model readouts;
+the separately labeled cover is a vector illustration.
 
 ## KiCad integration
 

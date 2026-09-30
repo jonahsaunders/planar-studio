@@ -43,9 +43,9 @@ site or create a downloadable GitHub release.
 
 ## Capture actual application screenshots
 
-The supplied README currently uses accurately labeled generated geometry
-previews. Fresh UI screenshots could not be captured in the restricted cloud
-browser. To capture them on your computer, run these commands inside the clone:
+The README and [feature gallery](gallery.md) use current application screenshots.
+To refresh the five motor-family views on your computer, run these commands
+inside the clone:
 
 ```sh
 npm ci
@@ -55,15 +55,18 @@ npm run shots:motor
 
 You also need Python 3 available as `python3` (macOS/Linux) or `python` (Windows).
 If needed, set the `PYTHON` environment variable to your Python executable.
-The script launches Planar Studio's local preview, captures the original rotary
-motor and all four new families, and replaces the README gallery only after all
-five captures succeed. It does not require a live KiCad board. Screenshots show
-the browser application; they are not evidence of physical motor validation.
+The script launches Planar Studio with disposable settings and captures the
+rotary motor and all four additional families. It replaces their images only
+after all five captures succeed; the README and gallery keep their existing
+layout. It does not require a live KiCad board. Screenshots show the browser
+application; they are not evidence of physical motor validation. See
+[Development](development.md#screenshots) to refresh every workspace and the
+vector cover.
 
 Review the images and README, then add them to the same branch:
 
 ```sh
-git add README.md docs/screenshot-motor*.png
+git add docs/screenshot-motor*.png docs/motor-capture.json
 git commit -m "Refresh motor workspace screenshots"
 git push
 ```

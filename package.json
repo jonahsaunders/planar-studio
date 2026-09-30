@@ -9,7 +9,7 @@
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
     "test:ui": "node tests/smoke.mjs",
-    "shots": "node tests/shots.mjs",
+    "shots": "node scripts/render-feature-overview.mjs && node tests/shots.mjs",
     "build": "./build.sh",
     "dev": "python3 ipc_entry.py --browser --verbose",
     "test:tools": "node tests/design-tools.mjs",

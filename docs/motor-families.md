@@ -7,7 +7,14 @@ only where they apply. Each family has geometry, readouts, response plots and
 a drive or rotor preview. These are design and static-model tools, not a
 validated motor simulator or a controller firmware generator.
 
-![Generated family layouts](motor-families.png)
+| Two-phase stepper | Linear motor |
+| --- | --- |
+| [![Stepper workspace](screenshot-motor-stepper.png)](screenshot-motor-stepper.png) | [![Linear workspace](screenshot-motor-linear.png)](screenshot-motor-linear.png) |
+| **Dual-rotor axial flux** | **Two-axis planar motor** |
+| [![Dual-rotor workspace](screenshot-motor-dual-rotor.png)](screenshot-motor-dual-rotor.png) | [![Planar workspace](screenshot-motor-planar.png)](screenshot-motor-planar.png) |
+
+[Open the full feature gallery](gallery.md#pcb-motors) for current application
+views of all five motor families, including the original rotary motor.
 
 | Family | Layout and controls | Connections | Readouts |
 | --- | --- | --- | --- |

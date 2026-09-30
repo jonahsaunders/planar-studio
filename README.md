@@ -11,36 +11,58 @@ and places the generated copper into the PCB as one undoable operation.
 **[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
 · [Install](#install) · [Guides](#guides) · [Flyback example](#5-w-planar-flyback-example)
 
-![Planar Studio's inductor workspace](docs/screenshot-inductor.png)
+[![Five workspaces: inductors, transformers, PCB motors, filters and antennas](docs/feature-overview.svg)](docs/gallery.md)
 
-## What you can build
+## Explore the workspaces
 
-| Workspace | Design capabilities | Guide |
-| --- | --- | --- |
-| **Inductor** | Spiral and contour windings, series or parallel layers, and routing around board obstacles | [Windings and obstacles](docs/winding-obstacles.md) |
-| **Transformer** | Air-core and ferrite windings, multiple outputs, interleaving, candidate comparisons and verification studies | [Transformer design](docs/transformer-design.md) |
-| **PCB motor** | Rotary, stepper, linear, dual-rotor and two-axis planar layouts, with phase assignments and terminal routing | [Motor families](docs/motor-families.md) |
-| **Filter** | Lumped LC, stepped-impedance, coupled-line, hairpin, interdigital and EMI networks | [Filter models](docs/engineering-models.md#filter-families) |
-| **Antenna** | Patches, dipoles, inverted-F radiators, NFC loops, arrays and directional layouts | [Antenna families](docs/creator-families.md) |
+Current application captures. Click a view to open the full-size image.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+<h3>Inductors</h3>
+<a href="docs/screenshot-inductor.png"><img src="docs/screenshot-inductor.png" alt="Two parallel inductor layers with inductance, resistance and frequency-response readouts" width="100%"></a>
+<p>Shape windings, connect layers and route around obstacles.<br><a href="docs/winding-obstacles.md">Winding guide →</a></p>
+</td>
+<td width="50%" valign="top">
+<h3>Transformers</h3>
+<a href="docs/screenshot-transformer.png"><img src="docs/screenshot-transformer.png" alt="Ferrite transformer copper, winding connections and core cross-section" width="100%"></a>
+<p>Build ferrite stacks, compare candidates and verify operating limits.<br><a href="docs/transformer-design.md">Transformer guide →</a></p>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>PCB motors</h3>
+<a href="docs/screenshot-motor.png"><img src="docs/screenshot-motor.png" alt="Twelve-coil rotary stator with phase phasors and motor estimates" width="100%"></a>
+<p>Explore rotary, stepper, linear, dual-rotor and planar machines.<br><a href="docs/gallery.md#pcb-motors">See all five motor families →</a></p>
+</td>
+<td width="50%" valign="top">
+<h3>Filters</h3>
+<a href="docs/screenshot-filter.png"><img src="docs/screenshot-filter.png" alt="Hairpin filter geometry with calculated transmission and reflection" width="100%"></a>
+<p>Turn LC and microstrip networks into copper and response plots.<br><a href="docs/engineering-models.md#filter-families">Filter models →</a></p>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<h3>Antennas</h3>
+<a href="docs/screenshot-antenna.png"><img src="docs/screenshot-antenna.png" alt="Patch array with element dimensions and ideal array-factor plot" width="100%"></a>
+<p>Design patches, arrays, directional radiators and NFC loops.<br><a href="docs/gallery.md#antennas">Explore antenna layouts →</a></p>
+</td>
+<td width="50%" valign="top">
+<h3>Design tools</h3>
+<a href="docs/screenshot-tools.png"><img src="docs/screenshot-tools.png" alt="Calculated magnetic-field map in the Design tools workspace" width="100%"></a>
+<p>Inspect fields, optimize geometry and compare measurements.<br><a href="docs/design-tools.md">Design tools guide →</a></p>
+</td>
+</tr>
+</table>
+
+**[Open the full 15-image gallery →](docs/gallery.md)** — obstacle routing,
+transformer search, motor families, antenna variants and both interface themes.
 
 Save editable designs, compare calculated responses, and export KiCad boards or
 footprints, SVG, DXF, JSON and specification sheets. The **Design tools** panel
 adds constrained searches, measurement overlays, tolerance studies and board
 checks; see the [tools guide](docs/design-tools.md).
-
-<details>
-<summary>Motor geometry previews</summary>
-
-<!-- motor-gallery:start -->
-Generated from the PCB exporter; these are geometry previews, not application
-screenshots.
-
-![Stepper, dual-rotor stator, linear array and two-axis planar grid](docs/motor-families.png)
-<!-- motor-gallery:end -->
-
-See [coil shapes and terminal options](docs/motor-coils.md) for wiring details.
-
-</details>
 
 ## Install
 

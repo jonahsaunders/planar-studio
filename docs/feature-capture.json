@@ -1,0 +1,28 @@
+{
+  "capturedAt": "2026-09-30T16:32:56.203Z",
+  "applicationVersion": "1.6.0",
+  "applicationCommit": "01d66ac8ce6353fa8ea90cd00733299646f260af",
+  "viewport": {
+    "width": 1600,
+    "height": 1000,
+    "deviceScaleFactor": 1.5
+  },
+  "scope": "Real browser application, isolated settings, no live KiCad connection; numerical results are model predictions.",
+  "captures": {
+    "screenshot-inductor.png": "1ad6b625db8a6bcab0b7f63feb1b064efe57181a101370d50323b24b113a2500",
+    "screenshot-obstacles.png": "b5dd96be9b2a53c4cd6558459fcffe91aad4bca9d60fe6f95ec862b068ad8199",
+    "screenshot-tools.png": "56e1cf3e42ed96fda9d69977a09559e2c173e89f3a58af30b23777c0be7e229a",
+    "screenshot-filter.png": "f8d89b2f10a3900f0ab86847a7c64ad160f56cf03b67cd07ffd76e970cce9a04",
+    "screenshot-filter-light.png": "5d4970cf65b226d7b8617df5bd887c492f0686aa3c842cb6c471785bb753b641",
+    "screenshot-antenna.png": "16f2256bee262d7d7c724dd0bc50e2876c12a5618df0af71185f7fa9bf3e5bd7",
+    "screenshot-antenna-vivaldi.png": "23cc60566a639b2057bb04b4c3b986e7e148e851fe08f5a4e6c9154ae2c87345",
+    "screenshot-antenna-nfc.png": "b0a7b8c7424fb3a13bb225dc496ec5548a6e12323d4f3cb283db05a9ff4d32aa",
+    "screenshot-transformer.png": "12cb4a04e36f01e5ddfc860a63f640a1ac2fa2f4e70ce86938795b1174dd35c0",
+    "screenshot-transformer-search.png": "0299e1c618653a12c57b534d8f9c4cff190084becaed32bbd8949c3407b672d6",
+    "screenshot-motor.png": "7ea4e8231a9c1ae5577f0d91c29d226a72892cfcebeb6d69d2e7500fc0e8d287",
+    "screenshot-motor-stepper.png": "14607e66a64fa5a4f0b767ff2d7014c01dba0ca61855dfbf308daa6e80020c33",
+    "screenshot-motor-linear.png": "8b2befe1cdd807732ae00e0a58943f788368f4520528199b83e34dc88ae379c8",
+    "screenshot-motor-dual-rotor.png": "2d5c3c1996b6c0cfe9fe16d9ce2fd0afb868e9512ce909655ee40ff0a8ce00a6",
+    "screenshot-motor-planar.png": "720ac440c869af054fe7eaa66d9695658d2cd45220efdbcd7609cdaf6d07b76c"
+  }
+}
