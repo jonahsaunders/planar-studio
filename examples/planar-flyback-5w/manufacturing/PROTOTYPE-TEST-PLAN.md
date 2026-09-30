@@ -20,7 +20,7 @@ Begin with a controlled 0-to-18 V ramp of at least 10 ms, no external load and a
 
 | Test | Conditions | Provisional acceptance / record |
 |---|---|---|
-| DC regulation | 18, 24, 36 V; external load 0, 0.1, 0.5, 1 A | 4.75–5.25 V after settling; record the 115k/10.8k/128k starting values (5.024 V nominal); coordinate any trim with the reference range, R3/R5 compensation and RFB current budget |
+| DC regulation | 18, 24, 36 V; external load 0, 0.1, 0.5, 1 A | 4.75–5.25 V after settling; record the 113k/10.7k/127k starting values (4.980 V nominal); coordinate any trim with the reference range, R3/R5 compensation and RFB current budget |
 | Ripple | Same grid; short probe loop and 20 MHz bandwidth, then inspect full-bandwidth spikes | ≤100 mV peak-to-peak target; current bulk-only stress estimate is 50.58 mV and is not a pass result |
 | Switching stress | All input and temperature corners; startup, full load, light-load bursts, load steps, overload and short-circuit recovery | SW peak below 60 V target, never reaching 65 V rating; differential SW−VIN peak ≤17.5 V including initial overshoot and measurement uncertainty; independently verify RFB voltage remains within VIN−0.5 V to VIN and current below 200 µA absolute limits, including fast capacitive effects; measure diode reverse peak below 30 V target |
 | Startup/shutdown | Controlled ramp first at each input voltage; no/full load; qualify abrupt connection separately | Monotonic settling without sustained hiccup; record output overshoot, input inrush and fuse behavior |
@@ -38,7 +38,7 @@ Start with SMAJ12A, 39 Ω and 470 pF. Record simultaneous differential SW−VIN 
 
 Tune from measured ringing and leakage. If SMAJ12A cannot meet the envelope, evaluate SMAJ11A as a candidate only; confirm that its lower threshold does not absorb normal transfer energy (upper reflected estimate 11.7 V before winding drops, versus 12.2 V minimum breakdown plus D3 drop). Check repetitive pulse power and temperature. Keep the SW–D3–D4–VIN loop compact and RFB away from switching-current paths.
 
-The existing snubber estimate is 0.485 W at 470 pF. Scaling gives 0.702 W at 680 pF and 1.032 W at 1 nF; both exceed R6's 0.66 W nominal rating. A capacitance increase requires renewed pulse/thermal sizing, ambient derating and potentially a higher-power resistor and layout. Record ringing, regulation and clamp/snubber temperatures at every tested corner, including no-load bursts and short-circuit recovery.
+The existing snubber estimate is 0.485 W at 470 pF. Scaling gives 0.702 W at 680 pF and 1.032 W at 1 nF; 680 pF exceeds an 80%-of-rating allowance and 1 nF exceeds R6's 0.75 W nominal rating; the fitted 470 pF can approach 0.695 W when the full 53.5 V excursion is included. A capacitance increase requires renewed pulse/thermal sizing, ambient derating and potentially a higher-power resistor and layout. Record ringing, regulation and clamp/snubber temperatures at every tested corner, including no-load bursts and short-circuit recovery.
 
 R4 must remain inside 9.09–11.0 kΩ including applicable tolerance/temperature. Recompute the feedback current budget and compensation ratio after any trim; repeat all relevant waveform, regulation and temperature checks. The 100°C resistor-temperature excursion is a calculation assumption to verify against actual resistor temperature, not a declaration of the product's ambient rating. No fabrication release until the measured envelope, pin limits, regulation and thermal gates pass. See [revision and sources](../FEEDBACK-REVISION.md).
 

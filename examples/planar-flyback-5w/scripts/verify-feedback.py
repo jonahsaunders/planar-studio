@@ -20,9 +20,9 @@ parts = json.loads((R/'parts.json').read_text())
 circuit = {p['ref']: p for p in json.loads((R/'circuit.json').read_text())['parts']}
 calc = json.loads((R/'evidence/electrical-sizing.json').read_text())
 bom = {p['Reference']: p for p in csv.DictReader((R/'manufacturing/BOM-MASTER.csv').open(encoding='utf-8-sig'))}
-expected = {'R3': (115000, '115k 0.1%', 'TNPW0603115KBEEA', {'1': 'SW', '2': 'RFB'}),
-            'R4': (10800, '10.8k 0.1%', 'TNPW060310K8BEEA', {'1': 'RREF', '2': 'PGND'}),
-            'R5': (128000, '128k 0.1%', 'TNPW0603128KBEEA', {'1': 'TC', '2': 'RREF'})}
+expected = {'R3': (113000, '113k 0.1%', 'RT0603BRD07113KL', {'1': 'SW', '2': 'RFB'}),
+            'R4': (10700, '10.7k 0.1%', 'RT0603BRD0710K7L', {'1': 'RREF', '2': 'PGND'}),
+            'R5': (127000, '127k 0.1%', 'RT0603BRD07127KL', {'1': 'TC', '2': 'RREF'})}
 
 def parse(path):
     root = []; stack = []; node = root
@@ -51,33 +51,33 @@ for ref, (ohm, value, mpn, nets) in expected.items():
     assert parts[ref]['tolerance_fraction'] == .001 and parts[ref]['tcr_ppm_per_C'] <= 25
     assert circuit[ref]['value'] == value and circuit[ref]['mpn'] == mpn
     assert circuit[ref]['nets'] == nets
-    assert bom[ref]['MPN'] == mpn and bom[ref]['LCSC'] == ''
+    assert bom[ref]['MPN'] == mpn and bom[ref]['LCSC'] == parts[ref]['lcsc']
     for obj in [fps[ref], symbols[ref]]:
         props = {x[1].strip('"'): x[2].strip('"') for x in children(obj, 'property')}
-        assert props['Value'] == value and props['MPN'] == mpn and props['LCSC'] == ''
+        assert props['Value'] == value and props['MPN'] == mpn and props['LCSC'] == parts[ref]['lcsc']
     pads = {next(iter(children(p, 'net')))[-1].strip('"').lstrip('/'): p[1].strip('"') for p in children(fps[ref], 'pad')}
     assert pads == {net: number for number, net in nets.items()}
 assert parts['D4']['mpn'] == 'SMAJ12A-13-F'
-assert circuit['R6']['value'] == '39R 0.66 W' and circuit['C6']['value'] == '470p / 450 V C0G'
-assert math.isclose(calc['nominal_output_at_sample_diode_drop_0p3V'], 5.024074074074074)
-assert math.isclose(calc['RFB_minimum_resistance_at_temperature_ohm'], 114597.7875)
-assert math.isclose(calc['RFB_resistive_current_at_prototype_target_A'], 18/114597.7875)
+assert circuit['R6']['value'] == '39R 0.75 W' and circuit['C6']['value'] == '470p / 100 V C0G'
+assert math.isclose(calc['nominal_output_at_sample_diode_drop_0p3V'], 4.980373831775701)
+assert math.isclose(calc['RFB_minimum_resistance_at_temperature_ohm'], 112604.7825)
+assert math.isclose(calc['RFB_resistive_current_at_prototype_target_A'], 18/112604.7825)
 assert calc['RFB_resistive_separation_from_absolute_max_fraction'] >= .20
 assert calc['RFB_prototype_SW_minus_VIN_peak_target_V'] == 17.5
 assert calc['RFB_preliminary_pin_below_VIN_allowance_V'] == .5
 assert calc['RFB_hardware_qualified'] is False
-assert [p['exceeds_0p66W_rating'] for p in calc['snubber_capacitance_loss_sweep']] == [False, True, True]
+assert [p['exceeds_80pct_fitted_rating'] for p in calc['snubber_capacitance_loss_sweep']] == [False, True, True]
 stock = json.loads((R/'sources/jlcpcb-stock.json').read_text())
 for row in stock['rows']:
     if row['references'][0] in expected:
-        assert row['status'] == 'Unverified' and row['verified_jlcpcb_code'] is None
-        assert row['available_order_quantity'] is None
+        assert row['status'] == 'Stocked' and row['verified_jlcpcb_code'] == parts[row['references'][0]]['lcsc']
+        assert row['available_order_quantity'] >= 10
 
 record = {'feedback_values_ohm': {ref: p[0] for ref, p in expected.items()},
           'native_schematic_board_circuit_and_BOM_agree': True,
-          'unchanged_initial_clamp_and_snubber': True,
+          'retained_clamp_and_snubber_R_C_values': True,
           'preliminary_resistive_budget_verified': True,
-          'obsolete_resistor_sourcing_codes_cleared': True,
+          'exact_stocked_resistor_codes_match': True,
           'scope': 'File consistency and preliminary calculations only; no hardware qualification.'}
 if args.baseline_board:
     assert args.baseline_id, '--baseline-id is required with --baseline-board'

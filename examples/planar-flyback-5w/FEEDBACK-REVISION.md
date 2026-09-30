@@ -1,49 +1,37 @@
 # Feedback-current margin revision — September 30, 2026
 
-The preceding example used R3/R4/R5 = 106 kΩ / 10 kΩ / 118 kΩ. Its rating-based RFB screening current was 197.84 µA, only 1.08% below the 200 µA absolute maximum. That calculation did not establish transient compliance. This revision increases resistance and defines a tighter measured clamp envelope. **The prototype is unbuilt; hardware qualification remains open.**
+The original 106 kΩ / 10 kΩ / 118 kΩ network produced a 197.84 µA rating-based RFB screen, only 1.08% below the LT8302's 200 µA absolute maximum. It did not establish transient compliance. The initial 115k/10.8k/128k proposal improved that screen; the **stocked revision below** keeps at least 20% preliminary resistive separation while centering nominal output near 5 V. The user approved nearby stocked values. Hardware qualification remains open.
 
-## Coordinated component changes
-
-| Reference | Previous | Revised starting value | Selected manufacturer order code |
+| Reference | Fitted starting value | Exact MPN | JLCPCB |
 | --- | --- | --- | --- |
-| R3, feedback | 106 kΩ | 115 kΩ, 0.1%, 25 ppm/°C | Vishay TNPW0603115KBEEA |
-| R4, reference | 10 kΩ | 10.8 kΩ, 0.1%, 25 ppm/°C | Vishay TNPW060310K8BEEA |
-| R5, temperature compensation | 118 kΩ | 128 kΩ, 0.1%, 25 ppm/°C; temperature trim required | Vishay TNPW0603128KBEEA |
+| R3 | 113 kΩ, 0.1%, 25 ppm/°C | Yageo RT0603BRD07113KL | C705718 |
+| R4 | 10.7 kΩ, 0.1%, 25 ppm/°C | Yageo RT0603BRD0710K7L | C861078 |
+| R5 | 127 kΩ, 0.1%, 25 ppm/°C | Yageo RT0603BRD07127KL | C705722 |
 
-These 0603 selections use the resistance range and B/E/EA order-code options in the [Vishay TNPW specification](https://www.vishay.com/docs/28758/tnpw_e3.pdf), pages 1–4. Existing lands and generic models fit the stated package. Conservative 0.1 W / 75 V design limits remain. Exact supplier listings, stock and assembly eligibility are unverified; previous resistor catalog codes are cleared. Historical observations remain explicitly superseded in the sourcing record.
+These are 0603 thin-film resistors rated 0.1 W at 70 °C, with a 75 V limiting voltage. Both power and voltage limits apply. [Yageo RT specification](https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L).
 
-For the existing 2:1 turns ratio and 0.3 V sampled diode-drop assumption:
+For the 2:1 turns ratio and 0.3 V sampled diode-drop assumption, `VOUT = (113 / 10.7) / 2 − 0.3 = 4.9804 V`. Changing R3 alone against the old 10 kΩ reference gives 5.35 V, so all three values change together. R3/R5 is 0.889764, −0.9508% from the original 106/118 ratio; final temperature trim is required. R4 remains within 9.09–11.0 kΩ including 0.1% tolerance and 25 ppm/°C over 100 °C. [LT8302 datasheet, pages 2–3, 7 and 11–12](https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf).
 
-`VOUT = (115 / 10.8) / 2 − 0.3 = 5.0241 V`.
-
-Changing R3 alone would give 5.45 V. R3/R5 changes from 0.898305 to 0.898438 (0.0147%), preserving the nominal compensation slope. Final regulation and temperature trim remain necessary. R4 stays inside 9.09–11.0 kΩ, including the stated tolerance and 100°C drift assumptions. The [LT8302 datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf), pages 2–3, 7 and 11–12, supplies the pin limits, reference range, output equation and compensation guidance.
-
-## Preliminary current budget and acceptance target
+## Preliminary current budget
 
 Require **max(SW−VIN) ≤17.5 V**, including initial overshoot and measurement uncertainty across operating conditions.
 
 | Calculation | Result |
 | --- | ---: |
-| Historical-style screening, `(19.9 + 1 + 0.05) / (115000 × 0.999)` | 182.36 µA; 8.82% separation |
-| R3 minimum, `115000 × 0.999 × (1 − 25e−6 × 100)` | 114,597.79 Ω |
-| Preliminary resistive bound, `(17.5 + 0.5) / R3min` | 157.07 µA; 21.46% separation |
+| Historical screen: `(19.9 + 1 + 0.05) / (113000 × 0.999)` | 185.58 µA; 7.21% separation |
+| R3 minimum: `113000 × 0.999 × 0.9975` | 112,604.78 Ω |
+| Preliminary resistive bound: `(17.5 + 0.5) / R3min` | 159.85 µA; 20.07% separation |
 
-The 50 mV sensing specification applies at 75–125 µA; the historical calculation is a comparison, not a transient bound. The revised 0.5 V allowance uses the lower absolute pin boundary, **not a guaranteed transient offset**. Verify RFB voltage and current independently, including capacitive injection and probe loading. The assumed 100°C resistor excursion excludes aging and must be checked against actual temperatures. Absolute maxima are not operating targets. The cycle/stress models retain their fixed 5 V target; they do not simulate the controller's actual regulation.
+The 50 mV normal-sensing specification applies at 75–125 µA and is not a transient bound. The 0.5 V allowance comes from the lower absolute pin boundary, **not guaranteed transient behavior**. Verify pin voltage/current independently, including capacitive injection, probe loading and temperature. The 100 °C resistor excursion excludes aging. Absolute maxima are not operating targets. The cycle model uses a fixed 5 V output and does not simulate controller regulation.
 
-## Clamp and snubber tuning
+## Clamp and snubber
 
-Retain **SMAJ12A and 39 Ω / 470 pF** for initial measurements. The [Diodes SMAJ specification](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf), page 3, rates SMAJ12A at 19.9 V at 20.1 A; this does not determine its voltage at converter pulse currents or include layout overshoot.
+Retain **SMAJ12A and 39 Ω / 470 pF** for initial measurements. SMAJ12A's 19.9 V clamp specification is at 20.1 A and does not determine voltage at this converter's pulse current or include layout overshoot. [Diodes SMAJ specification](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf).
 
-If tuning cannot meet 17.5 V, evaluate **SMAJ11A** as a bench candidate, not an approved substitution. Its 18.2 V catalog clamp gives 167.56 µA in the historical-style calculation. Its 12.2 V minimum breakdown plus D3 drop must avoid excessive conduction during normal transfer: the upper reflected-voltage estimate is already 11.7 V before winding drops. Measure repetitive energy, ringing and temperature.
+SMAJ11A remains a bench candidate only. Its 18.2 V rating gives about 170.52 µA in the historical screen. Its 12.2 V minimum breakdown plus D3 drop must avoid excessive conduction during ordinary transfer: the upper reflected-voltage estimate is already 11.7 V before winding drops. Measure repetitive energy and temperature before substitution.
 
-| C6 | Scaled snubber estimate | Comparison with R6's 0.66 W rating |
-| --- | ---: | --- |
-| 470 pF | 0.485 W | Initial value; thermal/pulse checks still required |
-| 680 pF | 0.702 W | Exceeds nominal rating |
-| 1 nF | 1.032 W | Exceeds nominal rating |
-
-Increasing C6 requires renewed pulse-power sizing, temperature derating and potentially a larger resistor and revised layout. Keep the SW–D3–D4–VIN loop compact and RFB away from switching currents.
+R6 is now a stocked **Yageo SR1206FR-7T39RL, 0.75 W at 70 °C**, with a continuous-pulse specification. C6 is 470 pF ±5%, 100 V C0G. The existing worksheet's nominal-capacitance estimates remain approximately 0.485 W at 470 pF, 0.702 W at 680 pF and 1.032 W at 1 nF. Including +5% capacitance gives 0.509 W at the fitted value. These plateau-based CV²f estimates omit the measured ringing waveform: a conservative full 53.5 V swing at the worksheet's worst full-load frequency raises the estimate to about 0.695 W. This leaves little thermal headroom and makes waveform/temperature verification essential. 680 pF exceeds an 80%-of-rating design allowance; 1 nF exceeds the nominal rating. Neither is an approved fitted value. [SR specification](https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf).
 
 ## Release gate
 
-Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Record the differential peak envelope, RFB pin excursions/current, ringing, regulation and clamp/snubber temperatures at startup, full load, light-load bursts, overload and short-circuit recovery across input and temperature. Recompute the resistor budget after any trim. Neither the resistor substitution nor passing CAD checks closes this gate.
+Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md): record SW−VIN, RFB voltage/current, ringing, regulation and clamp/snubber temperatures at startup, full load, light-load bursts, overload and short-circuit recovery across input and temperature. Recompute the resistor budget after any trim. Resistor substitution and clean CAD checks do not close this gate.

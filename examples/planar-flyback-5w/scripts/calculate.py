@@ -22,7 +22,8 @@ assert rfb_tol<=.001 and rref_tol<=.001
 assert 9090 <= rref*(1-rref_tol)*(1-rref_tcr*1e-6*temperature_delta_C)
 assert rref*(1+rref_tol)*(1+rref_tcr*1e-6*temperature_delta_C) <= 11000
 assert 4.75 <= rfb/rref/n-.3 <= 5.25
-assert abs((rfb/rtc)/(106000/118000)-1)<.001
+# Stocked alternative preserves nominal compensation within 1%; final temperature trim is required.
+assert abs((rfb/rtc)/(106000/118000)-1)<.01
 # Absolute ratings are not a design target. Require >=20% analytical separation
 # under the stated resistive model; this is not hardware qualification.
 assert rfb_resistive_bound <= .8*rfb_abs_max
@@ -118,12 +119,17 @@ assert limits['Lm_low_acceptance_H']>max(limits['Lm_min_on_time_requirement_H'],
 full=[r for r in rows if r['Iout']==1]
 limits['full_load_ripple_sizing_max_V']=max(r['output_ripple_sizing_V'] for r in full)
 limits['full_load_snubber_CV2f_upper_W']=max(r['snubber_CV2f_upper_W'] for r in full)
-limits['snubber_capacitance_loss_sweep']=[{'capacitance_pF':cap,'estimated_W':limits['full_load_snubber_CV2f_upper_W']*cap/470,'exceeds_0p66W_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>.66} for cap in [470,680,1000]]
+limits['snubber_capacitance_loss_sweep']=[{'capacitance_pF':cap,'estimated_W':limits['full_load_snubber_CV2f_upper_W']*cap/470,'exceeds_fitted_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>parts['R6']['power_rating_W_at_70C'],'exceeds_80pct_fitted_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>.8*parts['R6']['power_rating_W_at_70C']} for cap in [470,680,1000]]
 limits['full_load_output_cap_rms_upper_A']=max(r['output_cap_rms_upper_A'] for r in full)
 limits['open_issues']=['TVS rating-based clamp is 56.9 V before dynamic overshoot; verify peak below 60 V and tune on hardware.', 'Core loss and AC/fringing winding loss are unknown; 75% efficiency is not a pass result.', 'Burst ripple, control stability, startup, load steps, temperature and EMC require hardware tests.', 'Demonstrate SW-VIN peak <=17.5 V including overshoot/uncertainty at all operating corners; verify RFB voltage/current and final regulation. Resistor changes and analytical separation do not qualify dynamic behavior.', 'R8/C7 add damping but do not qualify hot-plug: use a controlled input ramp; input surge voltage must remain below 42 V.', 'UVLO corner uses specified threshold/current limits but typical 14 mV hysteresis; verify 18 V startup at temperature.', 'Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples.']
 assert limits['minimum_preload_A_at_low_output']>limits['minimum_load_required_A_at_low_output']
 assert limits['full_load_output_cap_rms_upper_A']<3.3
-assert limits['full_load_snubber_CV2f_upper_W']<.66
+limits['snubber_resistor_rating_W_at_70C']=parts['R6']['power_rating_W_at_70C']
+limits['snubber_loss_with_capacitance_tolerance_W']=limits['full_load_snubber_CV2f_upper_W']*(1+parts['C6']['tolerance_fraction'])
+limits['snubber_loss_full_target_swing_CV2f_W']=max(parts['C6']['capacitance_F']*(1+parts['C6']['tolerance_fraction'])*(r['Vin']+sw_vin_target)**2*r['frequency_Hz']/.85 for r in full)
+limits['snubber_full_swing_scope']='Screening bound using full VIN+17.5 V excursion each cycle and worksheet Lmin frequency; not a measured repetitive-power result. Little thermal headroom remains; accept only after waveform and temperature checks, with redesign if necessary.'
+assert limits['snubber_loss_full_target_swing_CV2f_W']<parts['R6']['power_rating_W_at_70C']
+assert limits['snubber_loss_with_capacitance_tolerance_W']<.8*parts['R6']['power_rating_W_at_70C']
 assert limits['full_load_ripple_sizing_max_V']<.1
 with (ROOT/'evidence/operating-points.csv').open('w',newline='') as f:
   w=csv.DictWriter(f,rows[0].keys());w.writeheader();w.writerows(rows)

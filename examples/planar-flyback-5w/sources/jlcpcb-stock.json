@@ -1,8 +1,8 @@
 {
-  "observed_local_date": "2026-09-29",
+  "observed_local_date": "2026-09-30",
   "observed_utc_date": "2026-09-30",
-  "method": "Read-only public live JLCPCB product pages and exact-MPN catalog searches. LCSC/search-engine results used only to locate identities, never as JLCPCB stock evidence.",
-  "scope": "20 unique board-assembly MPNs / 24 placements. R3/R4/R5 manufacturer selections are unverified for JLCPCB; other observations retain their original date. Core procurement is separate.",
+  "method": "Read-only exact-MPN JLCPCB public detail pages; Available Order Qty, not headline stock, is the procurement quantity. Manufacturer datasheets reviewed separately. No reservations or purchases.",
+  "scope": "20 unique electronic MPNs / 24 placements, all stocked in the observed catalog. Five-board quantities fit the available inventory; final PCBA attrition and allocation require a quote. Core procurement is separate.",
   "rows": [
     {
       "references": [
@@ -14,16 +14,16 @@
       "manufacturer": "Cixi Kefa",
       "original_bom_code": "C474881",
       "verified_jlcpcb_code": "C474881",
-      "headline_stock": 77969,
-      "available_order_quantity": 75211,
+      "headline_stock": 77138,
+      "available_order_quantity": 74380,
       "displayed_minimum": 1,
       "package": "Plugin, P=5 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "Wave Soldering",
       "source_url": "https://jlcpcb.com/partdetail/C474881",
-      "note": "Exact 5.00 mm-pitch part. Catalog explicitly supports wave soldering; solder both connectors before fitting the core.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 5.00 mm pitch; manual/wave soldering before core installation",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -34,16 +34,16 @@
       "manufacturer": "Bourns",
       "original_bom_code": "C3164649",
       "verified_jlcpcb_code": "C3164649",
-      "headline_stock": 2931,
-      "available_order_quantity": 2928,
+      "headline_stock": 631,
+      "available_order_quantity": 628,
       "displayed_minimum": 1,
       "package": "1206",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/BOURNS-SF_1206F1002/C3164649",
-      "note": "Replacement for unavailable Littelfuse 0466001.NR / C151134. Exact 1 A, 63 V DC fast part; Bourns land pattern and series STEP model applied. Validate inrush and a compatible reflow profile.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C3164649",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Input fuse; JLCPCB stocked snapshot 2026-09-29; qualify inrush, 50 A interrupt limit and assembly thermal profile",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -55,16 +55,16 @@
       "manufacturer": "Diodes Incorporated",
       "original_bom_code": "C107674",
       "verified_jlcpcb_code": "C107674",
-      "headline_stock": 31118,
-      "available_order_quantity": 30800,
+      "headline_stock": 31121,
+      "available_order_quantity": 30803,
       "displayed_minimum": 1,
       "package": "PowerDI-123",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C107674",
-      "note": "Exact MPN for D1 and D3. Retain the PowerDI-123 footprint and polarity.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Traceable 1 A / 100 V reverse-input protection; shared exact MPN with D3. Apply 20% capacitive-load derating and verify temperature/inrush.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -76,16 +76,16 @@
       "manufacturer": "Samsung Electro-Mechanics",
       "original_bom_code": "C138687",
       "verified_jlcpcb_code": "C138687",
-      "headline_stock": 33868,
-      "available_order_quantity": 2369,
+      "headline_stock": 33727,
+      "available_order_quantity": 2228,
       "displayed_minimum": 1,
       "package": "1210",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C138687",
-      "note": "Use Available Order Qty, not headline stock: 2,369 versus 33,868. Two per board.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Input reservoir; sizing assumes 4 uF total effective capacitance at 36 V from typical bias curve with margin; verify on prototype",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -104,8 +104,8 @@
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C444972",
-      "note": "Exact output rectifier and PowerDI-5 package.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. ",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -117,16 +117,16 @@
       "manufacturer": "Panasonic",
       "original_bom_code": "C136277",
       "verified_jlcpcb_code": "C136277",
-      "headline_stock": 991,
-      "available_order_quantity": 938,
+      "headline_stock": 978,
+      "available_order_quantity": 925,
       "displayed_minimum": 1,
       "package": "SMD, 6.3 × 5.9 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C136277",
-      "note": "Two per board. Stocked, but Panasonic SVPF reflow peak is 250 °C; do not use the default Economic profile without an accepted process change.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 22 mOhm ESR, 3.3 A ripple at 100 kHz; C6 case 6.3 x 5.9 mm",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -137,56 +137,56 @@
       "manufacturer": "Samsung Electro-Mechanics",
       "original_bom_code": null,
       "verified_jlcpcb_code": "C55530",
-      "headline_stock": 65745,
-      "available_order_quantity": 63041,
+      "headline_stock": 65677,
+      "available_order_quantity": 62973,
       "displayed_minimum": 1,
       "package": "1210",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C55530",
-      "note": "New exact-match code for C4. The letter O in KOJNNNE matters; do not use the similarly named generic K0JNNNE listing.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Current-production 1210 output bypass. Not credited in conservative bulk-ripple sizing; verify effective C and ripple temperature.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "U1"
       ],
       "quantity_per_board": 1,
-      "mpn": "LT8302ES8E#PBF",
+      "mpn": "LT8302IS8E#PBF",
       "manufacturer": "Analog Devices",
       "original_bom_code": "C117331",
-      "verified_jlcpcb_code": "C117331",
-      "headline_stock": 5,
-      "available_order_quantity": 5,
+      "verified_jlcpcb_code": "C673679",
+      "headline_stock": 26,
+      "available_order_quantity": 26,
       "displayed_minimum": 1,
       "package": "SOIC-8 (S8E exposed pad)",
-      "status": "Low stock",
+      "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C117331",
-      "note": "Only five available. A five-board run has no nominal spare before attrition. Obtain more exact parts or qualify another grade; do not substitute LT8302-3.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C673679",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Industrial grade, same S8E package and pinout as LT8302E; guaranteed -40 to 125 C junction specification. Exact stocked normal LT8302, not LT8302-3.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "C5"
       ],
       "quantity_per_board": 1,
-      "mpn": "CL10A475KO8NQNC",
-      "manufacturer": "Samsung Electro-Mechanics",
+      "mpn": "GRM188R61C475KE11D",
+      "manufacturer": "Murata",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C377756",
-      "headline_stock": 0,
-      "available_order_quantity": null,
-      "displayed_minimum": 473,
+      "verified_jlcpcb_code": "C77045",
+      "headline_stock": 16280,
+      "available_order_quantity": 15637,
+      "displayed_minimum": 1,
       "package": "0603",
-      "status": "Pre-order",
+      "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C377756",
-      "note": "Exact current MPN exists but needs pre-ordering. Confirm lead time and minimum; catalog search also suggests a different manufacturer, which is not an approved substitute.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C77045",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 0603 bypass at about 3.1 V. Manufacturer typical DC-bias plot retains over 60% at 4 V; even 10% tolerance and 15% temperature allowance leave over 2 uF. Require >=1 uF effective on hardware; aging and actual bias/temperature behavior are not guaranteed by typical curves.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -197,16 +197,16 @@
       "manufacturer": "Yageo",
       "original_bom_code": null,
       "verified_jlcpcb_code": "C245991",
-      "headline_stock": 134,
-      "available_order_quantity": 94,
+      "headline_stock": 114,
+      "available_order_quantity": 74,
       "displayed_minimum": 1,
       "package": "0603",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C245991",
-      "note": "New exact-match code for the approved 649 kΩ UVLO resistor.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -217,116 +217,116 @@
       "manufacturer": "Yageo",
       "original_bom_code": "C137696",
       "verified_jlcpcb_code": "C137696",
-      "headline_stock": 2572,
-      "available_order_quantity": 2560,
+      "headline_stock": 2542,
+      "available_order_quantity": 2530,
       "displayed_minimum": 1,
       "package": "0603",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C137696",
-      "note": "Exact 61.9 kΩ, 1% resistor.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. ",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "R3"
       ],
       "quantity_per_board": 1,
-      "mpn": "TNPW0603115KBEEA",
-      "manufacturer": "Vishay",
+      "mpn": "RT0603BRD07113KL",
+      "manufacturer": "Yageo",
       "original_bom_code": "",
-      "verified_jlcpcb_code": null,
-      "headline_stock": null,
-      "available_order_quantity": null,
-      "displayed_minimum": null,
+      "verified_jlcpcb_code": "C705718",
+      "headline_stock": 4377,
+      "available_order_quantity": 3987,
+      "displayed_minimum": 1,
       "package": "0603",
-      "status": "Unverified",
-      "catalog_type": null,
-      "assembly_type": null,
-      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
-      "observed_local_date": null
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C705718",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "R4"
       ],
       "quantity_per_board": 1,
-      "mpn": "TNPW060310K8BEEA",
-      "manufacturer": "Vishay",
+      "mpn": "RT0603BRD0710K7L",
+      "manufacturer": "Yageo",
       "original_bom_code": "",
-      "verified_jlcpcb_code": null,
-      "headline_stock": null,
-      "available_order_quantity": null,
-      "displayed_minimum": null,
+      "verified_jlcpcb_code": "C861078",
+      "headline_stock": 991,
+      "available_order_quantity": 957,
+      "displayed_minimum": 1,
       "package": "0603",
-      "status": "Unverified",
-      "catalog_type": null,
-      "assembly_type": null,
-      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
-      "observed_local_date": null
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C861078",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "R5"
       ],
       "quantity_per_board": 1,
-      "mpn": "TNPW0603128KBEEA",
-      "manufacturer": "Vishay",
+      "mpn": "RT0603BRD07127KL",
+      "manufacturer": "Yageo",
       "original_bom_code": "",
-      "verified_jlcpcb_code": null,
-      "headline_stock": null,
-      "available_order_quantity": null,
-      "displayed_minimum": null,
+      "verified_jlcpcb_code": "C705722",
+      "headline_stock": 13063,
+      "available_order_quantity": 12509,
+      "displayed_minimum": 1,
       "package": "0603",
-      "status": "Unverified",
-      "catalog_type": null,
-      "assembly_type": null,
-      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
-      "observed_local_date": null
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C705722",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "R6"
       ],
       "quantity_per_board": 1,
-      "mpn": "ERJ-P08F39R0V",
-      "manufacturer": "Panasonic",
+      "mpn": "SR1206FR-7T39RL",
+      "manufacturer": "Yageo",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C4059605",
-      "headline_stock": 0,
-      "available_order_quantity": null,
-      "displayed_minimum": 594,
+      "verified_jlcpcb_code": "C6683830",
+      "headline_stock": 5000,
+      "available_order_quantity": 5000,
+      "displayed_minimum": 1,
       "package": "1206",
-      "status": "Pre-order",
+      "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C4059605",
-      "note": "Exact 39 Ω, 0.66 W pulse resistor exists but needs pre-ordering. Do not replace with a generic 0.25 W part.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C6683830",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "C6"
       ],
       "quantity_per_board": 1,
-      "mpn": "CGA4C4C0G2W471J060AA",
-      "manufacturer": "TDK",
+      "mpn": "CC0805JRNPO0BN471",
+      "manufacturer": "Yageo",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C2172062",
-      "headline_stock": 0,
-      "available_order_quantity": null,
-      "displayed_minimum": 590,
+      "verified_jlcpcb_code": "C513677",
+      "headline_stock": 52166,
+      "available_order_quantity": 51099,
+      "displayed_minimum": 1,
       "package": "0805",
-      "status": "Pre-order",
+      "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C2172062",
-      "note": "Exact 470 pF, 450 V capacitor exists but needs pre-ordering. Preserve C0G behavior and package when considering alternatives.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C513677",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Stocked 0805, 470 pF +/-5%, C0G, 100 V; above the 60 V absolute-to-ground prototype SW envelope. Retains the original damping capacitance; tune ringing on hardware.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -337,16 +337,16 @@
       "manufacturer": "Diodes Incorporated",
       "original_bom_code": null,
       "verified_jlcpcb_code": "C134947",
-      "headline_stock": 9711,
-      "available_order_quantity": 9677,
+      "headline_stock": 9529,
+      "available_order_quantity": 9495,
       "displayed_minimum": 1,
       "package": "SMA",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C134947",
-      "note": "New exact-match code for the 12 V unidirectional TVS. Keep the selected clamp type and polarity.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Retain SMAJ12A for initial prototype tuning. Its 19.9 V clamp rating at 20.1 A does not establish converter pulse voltage. Require measured SW-VIN peak <=17.5 V including overshoot/uncertainty, verify RFB pin voltage/current and temperature; SMAJ11A is only a bench candidate.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -357,36 +357,36 @@
       "manufacturer": "Yageo",
       "original_bom_code": "C137353",
       "verified_jlcpcb_code": "C137353",
-      "headline_stock": 311149,
-      "available_order_quantity": 303316,
+      "headline_stock": 311021,
+      "available_order_quantity": 303188,
       "displayed_minimum": 1,
       "package": "1206",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C137353",
-      "note": "Exact 220 Ω, 0.25 W preload resistor.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
         "R8"
       ],
       "quantity_per_board": 1,
-      "mpn": "CRCW25122R20FKEGHP",
-      "manufacturer": "Vishay",
+      "mpn": "CRM2512-JW-2R2ELF",
+      "manufacturer": "Bourns",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C4168885",
-      "headline_stock": 0,
-      "available_order_quantity": null,
-      "displayed_minimum": 8,
+      "verified_jlcpcb_code": "C840598",
+      "headline_stock": 3766,
+      "available_order_quantity": 3763,
+      "displayed_minimum": 1,
       "package": "2512",
-      "status": "Pre-order",
+      "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C4168885",
-      "note": "Exact 2.2 Ω, 1.5 W pulse-proof damping resistor exists but needs pre-ordering. Pulse capability remains a required characteristic.",
-      "observed_local_date": "2026-09-29"
+      "source_url": "https://jlcpcb.com/partdetail/C840598",
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Pulse-rated CRM2512 with manufacturer-recommended lands. 2 W at 70 C requires 300 mm2 combined pad/trace area; do not assume full rating on this board. Shunt damping branch only. Controlled input ramp first; board temperature and hard-step pulse qualification remain open.",
+      "observed_local_date": "2026-09-30"
     },
     {
       "references": [
@@ -405,8 +405,8 @@
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C454353",
-      "note": "New exact-match code for the 47 µF, 63 V hybrid reservoir. Exact 8 mm body, 10.2 mm height.",
-      "observed_local_date": "2026-09-29"
+      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Input damping reservoir through R8; 1.1 A ripple at 100 kHz, 40 mOhm maximum ESR, 8 x 10.2 mm. Not a surge clamp.",
+      "observed_local_date": "2026-09-30"
     }
   ],
   "policies": {

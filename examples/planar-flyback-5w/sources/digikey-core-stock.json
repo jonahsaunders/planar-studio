@@ -1,0 +1,11 @@
+{
+  "observed_date": "2026-09-30",
+  "method": "Read-only live DigiKey product page",
+  "mpn": "B66457G0000X187",
+  "manufacturer": "TDK",
+  "part_status": "Active",
+  "in_stock": 1146,
+  "quantity_per_board": 2,
+  "source": "https://www.digikey.com/en/products/detail/tdk/B66457G0000X187/3914980",
+  "scope": "Unreserved raw ungapped halves only. They are not a completed transformer; center-leg grinding, retention, installation and magnetic qualification remain separate."
+}

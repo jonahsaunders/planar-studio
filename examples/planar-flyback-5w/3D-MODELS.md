@@ -46,10 +46,10 @@ records each reference and asset hash.
 - All 16 STEP assets import as valid, nonempty OpenCascade solids.
 - All 406 pairs of different footprints and all 29 footprint-to-board checks
   have **zero positive-volume intersections** at nominal dimensions. The board
-  check uses the actual exported outline and drilled holes at 1.6 mm thickness.
+  check uses the actual exported outline and drilled holes at the published 1.618 mm copper/dielectric thickness.
 - The nominal core/retention assembly clears the routed substrate by **0.318 mm**
-  at its closest point. It projects **5.73 mm below the PCB**. The illustrative
-  8 mm standoffs leave **2.27 mm** to their support plane.
+  at its closest point. It projects **5.72 mm below the PCB**. The illustrative
+  8 mm standoffs leave **2.28 mm** to their support plane.
 - Top, bottom, side and both oblique views were visually inspected for placement,
   connector direction, pin alignment and underside core presence.
 

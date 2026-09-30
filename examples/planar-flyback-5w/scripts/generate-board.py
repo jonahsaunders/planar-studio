@@ -16,6 +16,8 @@ mechanical=json.loads((ROOT/'mechanical.json').read_text())
 art=json.loads((ROOT/'planar-studio/T1-artwork.json').read_text())
 model=json.loads((ROOT/'evidence/winding-model.json').read_text())
 NAME=data['project']
+stack_spec=json.loads((ROOT/'stackup.json').read_text())
+stack_thickness=stack_spec['published_copper_plus_dielectric_mm']
 def mm(v):return pcb.FromMM(v)
 def pt(x,y):return pcb.VECTOR2I(mm(x),mm(y))
 def xy(p):return (pcb.ToMM(p.x),pcb.ToMM(p.y))
@@ -48,6 +50,12 @@ body=rect(-1.55,-.775,1.55,.775,'F.Fab',.1)+rect(-2.60,-1.10,2.60,1.10)
 body+=line((-.85,-.94),(.85,-.94),.12)+line((-.85,.94),(.85,.94),.12)
 body+=pad(1,-1.725,0,1.25,1.65)+pad(2,1.725,0,1.25,1.65)
 (LIB/'Fuse_Bourns_SF1206F.kicad_mod').write_text(footprint('Fuse_Bourns_SF1206F',body,refy=-1.8),encoding='utf8')
+
+# Bourns CRM2512 >=1 ohm recommended land pattern, CRM Rev 08/21 p2.
+body=rect(-3.15,-1.55,3.15,1.55,'F.Fab',.1)+rect(-4.05,-2.1,4.05,2.1)
+body+=line((-1.1,-1.75),(1.1,-1.75),.12)+line((-1.1,1.75),(1.1,1.75),.12)
+body+=pad(1,-2.575,0,2.45,3.7)+pad(2,2.575,0,2.45,3.7)
+(LIB/'R_Bourns_CRM2512.kicad_mod').write_text(footprint('R_Bourns_CRM2512',body,refy=-2.6),encoding='utf8')
 
 # S8E land pattern, ADI drawing 05-08-1857 Rev C, LT8302 Rev G page 24.
 body=rect(-1.95,-2.50,1.95,2.50,'F.Fab',.1)+rect(-3.5,-2.8,3.5,2.8)
@@ -102,7 +110,7 @@ for x,y,txt in [(7,-18,'1 VIN'),(-6,-18,'2 SW'),(-3,21,'3 GND'),(4,12.8,'4 SEC')
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
 title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A1-development');title.SetDate('2026-09-29');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
-board.GetDesignSettings().SetBoardThickness(mm(1.6))
+board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
     n=pcb.NETINFO_ITEM(board,name if name.startswith('unconnected-') else '/'+name); board.Add(n); nets[name]=n
@@ -187,7 +195,7 @@ txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 path('VIN_RAW',[pos('J1',1),pos('F1',1)],width=1.2)
 path('VIN_FUSED',[pos('F1',2),(88,40.775),pos('D1',2)],width=1.2)
 # R8/C7 are a shunt damping branch; there is no DC feed resistor.
-path('VIN',[pos('D1',1),(88,48.5),(93.5375,48.5),pos('R8',1)],width=1)
+path('VIN',[pos('D1',1),(88,48.5),(93.925,48.5),pos('R8',1)],width=1)
 path('VIN_DAMP',[pos('R8',2),(104.8,47),pos('C7',1)],width=1)
 via('VIN',pos('D1',1),.8,.4)
 via('VIN',pos('C1',1),.8,.4)
@@ -290,9 +298,9 @@ out=CAD/(NAME+'.kicad_pcb');pcb.SaveBoard(str(out),board)
 # Proposed build. Fabricator acceptance is required before release.
 stack='(stackup (layer "F.Mask" (type "Top Solder Mask"))'
 names=['F.Cu','In1.Cu','In2.Cu','In3.Cu','In4.Cu','B.Cu']
-gaps=[.100,.400,.390,.400,.100]
+gaps=stack_spec['dielectric_mm']
 for i,name in enumerate(names):
-    stack+=f'(layer "{name}" (type "copper") (thickness 0.035))'
+    stack+=f'(layer "{name}" (type "copper") (thickness {stack_spec["copper_mm"][i]}))'
     if i<5:stack+=f'(layer "dielectric {i+1}" (type "{ "prepreg" if i%2==0 else "core" }") (thickness {gaps[i]}) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))'
 stack+='(layer "B.Mask" (type "Bottom Solder Mask")) (copper_finish "ENIG") (dielectric_constraints no))'
 contents=out.read_text().replace('(setup','(setup\n'+stack,1).replace('(capping no)','(capping yes)',1).replace('(filling no)','(filling yes)',1)

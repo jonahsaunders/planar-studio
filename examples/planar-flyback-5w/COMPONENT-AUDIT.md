@@ -1,423 +1,375 @@
-# Component and filtering audit — PS-FLYBACK-5W A1
+# Component audit — PS-FLYBACK-5W A1
 
-Reviewed 2026-09-29; feedback network revised 2026-09-30. **Every placed footprint was reviewed: 24 electronic components, the custom transformer and four mounting holes.** Manufacturer part identity, package drawing, pin/polarity mapping, voltage/current/power ratings and intended circuit function were checked. Changes are incorporated in the native schematic and routed board.
+Reviewed 2026-09-30. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 
-**This remains an unbuilt engineering prototype.** The package/analytical review is complete; electrical suitability is conditional on the hardware and process tests identified below. The tightest outstanding electrical margin is RFB pin current during clamp spikes. Input hot-plug, magnetic losses, thermal performance and control behavior are not qualified. No supplier contact, purchase or fabrication release occurred.
+The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOURCING.md). This is an engineering prototype: ratings and calculations do not establish measured performance or factory process acceptance.
 
-[Per-component CSV](evidence/audit/component-audit.csv) · [Measured pads, pin nets and checks](evidence/audit/component-checks.json) · [Reviewed source records](sources/component-review.json) · [Current corner-mount revision](evidence/audit/mounting-revision-checks.json) · [Earlier component comparison](evidence/audit/component-revision-checks.json) · [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md)
+| Screening calculation | Result | Limitation |
+| --- | ---: | --- |
+| Nominal output at 0.3 V sampled diode drop | 4.980 V | Requires output and temperature trim |
+| RFB resistive current at 17.5 V SW−VIN | 159.85 µA | Excludes capacitive current and pin excursions |
+| Snubber loss including +5% capacitance | 0.509 W | 0.75 W R6 rating at 70 °C; measure pulses and temperature |
+| R8 loss if all input ripple enters its branch | 0.922 W | 2 W rating needs 300 mm² copper; actual thermal capacity unverified |
+| Bulk-only output ripple sizing | 50.58 mV | Boundary estimate; burst/control behavior not represented |
 
-## Corrections implemented
+R8 uses Bourns' recommended 2.45 × 3.7 mm lands, centered 5.15 mm apart. The stocked feedback network preserves the original compensation ratio within 1%. All three feedback resistors must change together. [Feedback assumptions](FEEDBACK-REVISION.md).
 
-| Reference | Change and reason |
-| --- | --- |
-| R1 | 681 kΩ → 649 kΩ. Improves the 18 V startup screening corner to 17.55 V including the input diode. Typical-only hysteresis prevents a guaranteed production-corner claim. |
-| R3 / R4 / R5 | Coordinated 115 kΩ / 10.8 kΩ / 128 kΩ, all 0.1%, 25 ppm/°C. Nominal output 5.024 V; R3/R5 compensation ratio preserved within 0.02%. Existing 0603 lands/models retained; new exact supplier matches remain unverified. |
-| D1 | SS110/SMA → DFLS1100-7/PowerDI123, with a verified exact manufacturer drawing and polarity. |
-| D4 | SMAJ13A → SMAJ12A-13-F. Rating-based SW clamp estimate falls from 58.5 to 56.9 V. Dynamic/temperature behavior still needs measurement. |
-| C4 | Current manufacturer-confirmed Samsung CL32B226KOJNNNE output ceramic, same 1210 package. |
-| C5 | Manufacturer-recommended CL10A475KO8NQNC replacement for the NRND bias capacitor. |
-| C6 | Current 470 pF C0G 450 V TDK CGA4C4C0G2W471J060AA replaces the NRND 100 V selection, same 0805 package. |
-| C7 + R8 | Add a 47 µF / 63 V hybrid reservoir through a 2.2 Ω / 1.5 W pulse-rated damping resistor in a shunt input branch. |
-| C8 | Add a second 180 µF / 16 V polymer output capacitor. C3/C8 now provide 360 µF nominal, 288 µF at −20%, and 11 mΩ parallel ESR at 100 kHz. |
-| PCB | Add 26 ground stitches plus two new capacitor return vias; expand front PGND copper. Keep all additions outside the winding/isolation region. |
+## Per-component review
 
-The subsequent mounting-only revision moves all four holes to **4.5 mm corner insets**, forming a **41 × 95 mm** pattern. The upper row moves 12.5 mm away from C7; the lower row moves 2.5 mm toward the bottom corners. Electronic placement, routes, filled copper, winding geometry and board/core-slot outline are unchanged by that move. Current capacitor/hardware clearance measurements are in the mounting comparison linked above.
-
-## Why add this filtering?
-
-The prior bulk-only output ripple calculation was about 100 mV, with essentially no margin to the 100 mV target. With C8, the updated conservative worksheet estimates **50.58 mV** at worst full load, without crediting C4. This uses the same analytical method, not a measured result; the worksheet also now allows a conservative 1 V input-diode drop. The separate charge-balanced cycle model retains its nominal 0.6 V assumption and excludes loop/burst behavior.
-
-C1/C2 remain close to U1 and the transformer terminal for high-frequency bypass. Their combined effective capacitance is provisionally taken as only 4 µF at high DC bias. C7 adds a low-frequency reservoir. R8 deliberately introduces loss in that capacitor branch so another low-ESR capacitor does not simply create an undamped cable/ceramic resonance. See [ADI AN88 on ceramic input capacitors and hot-plug](https://www.analog.com/media/en/technical-documentation/application-notes/an88f.pdf). R8 carries no steady converter load current.
-
-The input capacitor ripple screening bound is 0.625 A versus C7's 1.1 A rating. Assigning all that ripple to R8 gives 0.869 W versus its 1.5 W rating at 70 °C. A 10 ms / 36 V ramp with C7 at +20% gives about 0.203 A charging current and 0.092 W in R8. A hard step can instead start near **595 W** with **36.55 mJ** stored in C7. Those figures explain why the initial test plan requires a controlled ramp: source impedance, cable inductance, pulse repetition and temperature have not been qualified. C7 is not a surge clamp; VIN must remain below 42 V.
-
-No additional secondary LC stage was added: its control-loop and damping consequences would need a separate design. No primary-to-secondary capacitor was added; there is no defined EMI requirement that justifies increasing isolation capacitance.
-
-## Placement, stitching and Perreault reference
-
-Reviewed David Perreault's [MIT Power Electronics Research Group board gallery](https://per.mit.edu/project-gallery/) and his [ARPA-E power electronics presentation](https://arpa-e.energy.gov/sites/default/files/migrated/documents/files/PowerTech_Workshop_Perreault.pdf), especially the photographed 110 MHz Φ2 boost hardware on PDF page 11. The applicable visual lesson is a compact switching cell, nearby bypassing and short interconnects. That is an engineering inference from different research hardware, not an endorsement, a copied topology or a universal via-spacing rule.
-
-The revised board applies those principles to this flyback: SW/clamp/snubber stay on F.Cu, C1-to-U1 is 2.92 mm, C5-to-U1 1.69 mm, RFB feed 1.72 mm, and C4 is 4.03 mm from the rectifier cathode. C8 receives its own 1.5 mm-wide, 12.69 mm cathode route. The R8-to-C7 route is 6.67 mm at 1.0 mm width. These are explicit track-centerline lengths; they exclude pad/plane spreading and do not claim extracted inductance.
-
-There are **12 new PGND and 14 new GND_ISO stitches**, each 0.60 mm diameter / 0.30 mm drill. Independent checks verify their exact nets and solid annular attachment to both filled ground planes; none bridges the winding/isolation region. Including two added capacitor vias, ordinary vias rise from 33 to **61**. With five transformer interlayer holes, **66 holes require fill/cap**, while four connector holes remain open and four M3 holes remain NPTH. The four U1 thermal vias remain.
-
-All 72 routed segments are orthogonal or 45°. Eight sampled return corridors remain within continuous ground copper. Four pours each have one connected filled outline. The schematic retains continuous power wiring and **zero four-way connections**; long capacitor values and diode labels were rearranged to remove collisions. Copper, masks, paste, legends, schematic crops and all five 3D views were visually reviewed after generation.
-
-[![Revised schematic](evidence/audit/schematic-overview.png)](evidence/schematic.svg)
-
-[![Revised assembled board](evidence/audit/board-3d-top.png)](evidence/audit/board-3d-top.png)
-
-## Every component
-
-“Reviewed” below means that the selected part/package and stated analytical use are supported by the linked source. It does not close the explicit hardware/process validation requirement. Limiting resistor voltage and rated power are separate constraints; allowable continuous voltage is the smaller of the limiting voltage and √(P·R), with temperature derating.
+Allowable resistor voltage is the smaller of its limiting voltage and √(P·R), with thermal derating. Pulse ratings and average power are separate constraints. Generic 3D models are illustrative envelopes; footprints and datasheets govern assembly.
 
 ### C1 — CL32B106KBJNNNE
 
-[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do) · `C_1210_3225Metric`
+[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do) · C_1210_3225Metric
 
 **Rating:** 10 uF +/-10%, 50 V X7R, -55 to 125 C.
 
 **Footprint and pin mapping:** Manufacturer 3.2 x 2.5 mm body matches 1210 (3225 metric), nonpolar lands; maximum height approximately 2.7 mm.
 
-**Use and calculated stress:** Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.
+**Use:** Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.
 
 **Remaining validation:** Confirm effective capacitance at voltage/temperature and ripple heating. A typical bias curve is not a guaranteed minimum. Keep actual VIN transients below the controller 42 V limit.
 
 ### C2 — CL32B106KBJNNNE
 
-[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do) · `C_1210_3225Metric`
+[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B106KBJNNN.do) · C_1210_3225Metric
 
 **Rating:** 10 uF +/-10%, 50 V X7R, -55 to 125 C.
 
 **Footprint and pin mapping:** Manufacturer 3.2 x 2.5 mm body matches 1210 (3225 metric), nonpolar lands; maximum height approximately 2.7 mm.
 
-**Use and calculated stress:** Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.
+**Use:** Local VIN/U1 and transformer input bypass. 36 V DC is below 50 V. Combined effective capacitance assumed only 4 uF after bias and tolerance; typical manufacturer bias curve is approximately 2.8 uF each at 36 V.
 
 **Remaining validation:** Confirm effective capacitance at voltage/temperature and ripple heating. A typical bias curve is not a guaranteed minimum. Keep actual VIN transients below the controller 42 V limit.
 
 ### C3 — 16SVPF180M
 
-[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M) · `CP_Panasonic_C6`
+[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M) · CP_Panasonic_C6
 
 **Rating:** 180 uF +/-20%, 16 V polymer; 22 milliohm max ESR and 3.3 A ripple at 100 kHz; -55 to 105 C.
 
 **Footprint and pin mapping:** Panasonic C6 case: 6.3 mm diameter x 5.9 mm. Custom lands 3.5 x 1.6 mm, centers +/-2.8 mm, 2.1 mm gap; match manufacturer recommended land drawing. Pad 1 is positive.
 
-**Use and calculated stress:** Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.
+**Use:** Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.
 
 **Remaining validation:** Measure burst ripple, current sharing, startup/inrush and load-step response. ESR bound is specified at 100 kHz, not at every frequency or temperature.
 
 ### C4 — CL32B226KOJNNNE
 
-[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do) · `C_1210_3225Metric`
+[Manufacturer/source](https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do) · C_1210_3225Metric
 
 **Rating:** 22 uF +/-10%, 16 V X7R; -55 to 125 C.
 
 **Footprint and pin mapping:** Current Samsung manufacturer listing; 3.2 x 2.5 mm 1210 body. Same nonpolar footprint as the previous part; replaces an inadequately supported old selection.
 
-**Use and calculated stress:** Local rectifier/output high-frequency bypass. 5.25 V below 16 V; deliberately not credited in conservative output-capacity/ripple calculation.
+**Use:** Local rectifier/output high-frequency bypass. 5.25 V below 16 V; deliberately not credited in conservative output-capacity/ripple calculation.
 
 **Remaining validation:** Confirm effective capacitance and temperature under ripple; verify procurement for this exact suffix.
 
-### C5 — CL10A475KO8NQNC
+### C5 — GRM188R61C475KE11D
 
-[Manufacturer/source](https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do) · `C_0603_1608Metric`
+[Manufacturer/source](https://www.murata.com/products/productdetail?partno=GRM188R61C475KE11%23) · C_0603_1608Metric
 
-**Rating:** 4.7 uF +/-10%, 16 V X5R; -55 to 85 C.
+**Rating:** 4.7 uF +/-10%, 16 V DC, X5R (+/-15%, -55 to 85 C).
 
-**Footprint and pin mapping:** 1.6 x 0.8 mm 0603 nonpolar package; manufacturer recommended replacement for NRND CL10A475KO8NNNC.
+**Footprint and pin mapping:** Murata product dimensions: 1.6 x 0.8 x 0.8 mm nominal, +/-0.15 mm; retained 0603 lands; nonpolar. Generic model is an illustrative package envelope.
 
-**Use and calculated stress:** INTVCC decoupling, about 3.1 V maximum bias. Close 1.69 mm explicit feed to U1. LT8302 requires at least 1 uF effective local bypass.
+**Use:** 0603 bypass at about 3.1 V. Manufacturer typical DC-bias plot retains over 60% at 4 V; even 10% tolerance and 15% temperature allowance leave over 2 uF. Require >=1 uF effective on hardware; aging and actual bias/temperature behavior are not guaranteed by typical curves.
 
-**Remaining validation:** Verify >=1 uF after bias/tolerance/temperature and keep the capacitor below 85 C; nominal 4.7 uF alone does not establish effective capacitance.
+**Remaining validation:** Require >=1 uF effective at about 3.1 V across temperature and aging, verify INTVCC stability and temperature; typical DC-bias curves are not minimum guarantees.
 
-### C6 — CGA4C4C0G2W471J060AA
+### C6 — CC0805JRNPO0BN471
 
-[Manufacturer/source](https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA) · `C_0805_2012Metric`
+[Manufacturer/source](https://www.yageogroup.com/download/specsheet/CC0805JRNPO0BN471) · C_0805_2012Metric
 
-**Rating:** 470 pF +/-5%, 450 V C0G; -55 to 125 C.
+**Rating:** 470 pF +/-5%, 100 V DC, C0G/NP0; -55 to 125 C.
 
-**Footprint and pin mapping:** TDK production part, 2.0 x 1.25 x 0.6 mm nominal 0805. Replaces NRND 100 V CGA4C2C0G2A471J060AA without changing capacitance or lands.
+**Footprint and pin mapping:** Yageo exact specification: 2.0 x 1.25 x 0.6 mm nominal; retained 0805 lands and generic model; nonpolar.
 
-**Use and calculated stress:** Series RC snubber capacitor from SNUB to SW; conservative 60 V amplitude is below 450 V; stable dielectric avoids MLCC bias loss in tuning.
+**Use:** Stocked 0805, 470 pF +/-5%, C0G, 100 V; above the 60 V absolute-to-ground prototype SW envelope. Retains the original damping capacitance; tune ringing on hardware.
 
-**Remaining validation:** Tune using measured ringing and verify resistor loss; voltage rating alone does not qualify repetitive switching-current/EMI behavior.
+**Remaining validation:** Measure snubber waveform, capacitor pulse current and resistor temperature after tuning; no automatic approval for increasing capacitance.
 
 ### C7 — EEHZC1J470P
 
-[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P) · `CP_Elec_8x10.5`
+[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P) · CP_Elec_8x10.5
 
 **Rating:** 47 uF +/-20%, 63 V hybrid; 40 milliohm max ESR; 1.1 A ripple at 100 kHz/125 C; -55 to 125 C.
 
 **Footprint and pin mapping:** Manufacturer 8 mm diameter x 10.2 +/-0.3 mm body uses polarized 8 mm electrolytic lands. 10.5 mm stock model is the maximum-height envelope, not a different capacitor. Pad 1 positive; square/chamfer polarity marks verified.
 
-**Use and calculated stress:** Input reservoir in VIN -> R8 -> C7 -> PGND shunt branch; 36 V and full converter capacitor-ripple bound approximately 0.63 A are below ratings.
+**Use:** Input reservoir in VIN -> R8 -> C7 -> PGND shunt branch; 36 V and full converter capacitor-ripple bound approximately 0.63 A are below ratings.
 
 **Remaining validation:** This is not a surge clamp. Validate cable/source impedance, hot-plug, ESR over temperature and ripple heating; begin with controlled input ramp.
 
 ### C8 — 16SVPF180M
 
-[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M) · `CP_Panasonic_C6`
+[Manufacturer/source](https://industrial.panasonic.com/ww/products/pt/os-con/models/16SVPF180M) · CP_Panasonic_C6
 
 **Rating:** 180 uF +/-20%, 16 V polymer; 22 milliohm max ESR and 3.3 A ripple at 100 kHz; -55 to 105 C.
 
 **Footprint and pin mapping:** Panasonic C6 case: 6.3 mm diameter x 5.9 mm. Custom lands 3.5 x 1.6 mm, centers +/-2.8 mm, 2.1 mm gap; match manufacturer recommended land drawing. Pad 1 is positive.
 
-**Use and calculated stress:** Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.
+**Use:** Parallel output reservoirs: 360 uF nominal, 288 uF at -20%, 11 milliohm parallel ESR. 5.25 V maximum regulated target and 1.865 A total conservative capacitor RMS bound fit each part rating.
 
 **Remaining validation:** Measure burst ripple, current sharing, startup/inrush and load-step response. ESR bound is specified at 100 kHz, not at every frequency or temperature.
 
 ### D1 — DFLS1100-7
 
-[Manufacturer/source](https://www.diodes.com/datasheet/download/DFLS1100.pdf) · `D_PowerDI-123`
+[Manufacturer/source](https://www.diodes.com/datasheet/download/DFLS1100.pdf) · D_PowerDI-123
 
 **Rating:** 100 V reverse; 1 A average, 0.8 A after 20% capacitive-load derating; 50 A nonrepetitive 8.3 ms surge.
 
 **Footprint and pin mapping:** PowerDI123 asymmetric lands: large pad 1 is cathode, small pad 2 anode. Replaces the insufficiently traceable SS110 selection and its SMA footprint.
 
-**Use and calculated stress:** Series input reverse-polarity protection; approximately 0.40 A forward and at most 72 V conservative reverse with a charged 36 V reservoir and -36 V input.
+**Use:** Series input reverse-polarity protection; approximately 0.40 A forward and at most 72 V conservative reverse with a charged 36 V reservoir and -36 V input.
 
 **Remaining validation:** Measure temperature and inrush. Datasheet thermal resistance assumes its stated copper/test conditions, not this six-layer board.
 
 ### D2 — PDS835L-13
 
-[Manufacturer/source](https://www.diodes.com/datasheet/download/PDS835L.pdf) · `D_PowerDI-5`
+[Manufacturer/source](https://www.diodes.com/datasheet/download/PDS835L.pdf) · D_PowerDI-5
 
 **Rating:** 35 V reverse, 8 A average under datasheet thermal conditions.
 
 **Footprint and pin mapping:** Manufacturer PowerDI5 drawing: large cathode pad 1 and two physical anode pads numbered 2. Custom copper matches 4.86 x 3.36 mm cathode and 1.40 x 1.39 mm anode lands.
 
-**Use and calculated stress:** Secondary rectifier. Worst ideal reverse is 23.25 V before overshoot; average full-load approximately 1.023 A including preload. Conservative 6.48 A fault-average screening value is below 8 A.
+**Use:** Secondary rectifier. Worst ideal reverse is 23.25 V before overshoot; average full-load approximately 1.023 A including preload. Conservative 6.48 A fault-average screening value is below 8 A.
 
 **Remaining validation:** Measure reverse spikes <30 V prototype target and junction temperature. 8 A catalog rating and transient surge numbers are not unconditional PCB thermal/fault qualification.
 
 ### D3 — DFLS1100-7
 
-[Manufacturer/source](https://www.diodes.com/datasheet/download/DFLS1100.pdf) · `D_PowerDI-123`
+[Manufacturer/source](https://www.diodes.com/datasheet/download/DFLS1100.pdf) · D_PowerDI-123
 
 **Rating:** 100 V reverse, 1 A average, 2 A RMS under stated conditions; 50 A nonrepetitive surge.
 
 **Footprint and pin mapping:** PowerDI123 cathode pad 1 faces CLAMP; anode pad 2 faces SW. Asymmetric package/pad mapping checked against the exact Diodes drawing.
 
-**Use and calculated stress:** Steers leakage current into the TVS only while SW exceeds VIN plus clamp voltage; primary full-load peak approximately 2.065 A is a brief pulse, not continuous average current.
+**Use:** Steers leakage current into the TVS only while SW exceeds VIN plus clamp voltage; primary full-load peak approximately 2.065 A is a brief pulse, not continuous average current.
 
 **Remaining validation:** Measure clamp pulse width, average/RMS current and junction temperature with measured leakage inductance. Surge rating must not be used as repetitive-current permission.
 
 ### D4 — SMAJ12A-13-F
 
-[Manufacturer/source](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf) · `D_SMA`
+[Manufacturer/source](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf) · D_SMA
 
 **Rating:** 12 V standoff, 13.3-14.7 V breakdown, 19.9 V clamp at 20.1 A / 10-1000 us; 400 W pulse rating.
 
 **Footprint and pin mapping:** Unidirectional SMA / DO-214AC. Cathode pad 1 CLAMP, anode pad 2 VIN. The A suffix matters; bidirectional CA is not the reviewed substitution.
 
-**Use and calculated stress:** Replaces 13 V TVS to reduce rating-based SW clamp from 58.5 to 56.9 V at VIN=36 V including 1 V D3. Ideal reflected plateau <=11.7 V remains below 12 V standoff.
+**Use:** Replaces 13 V TVS to reduce rating-based SW clamp from 58.5 to 56.9 V at VIN=36 V including 1 V D3. Ideal reflected plateau <=11.7 V remains below 12 V standoff.
 
 **Remaining validation:** Retain SMAJ12A for initial prototype tuning. Its 19.9 V clamp rating at 20.1 A does not establish converter pulse voltage. Require measured SW-VIN peak <=17.5 V including overshoot/uncertainty, verify RFB pin voltage/current and temperature; SMAJ11A is only a bench candidate.
 
 ### F1 — SF-1206F100-2
 
-[Manufacturer/source](https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf) · `Fuse_Bourns_SF1206F`
+[Manufacturer/source](https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf) · Fuse_Bourns_SF1206F
 
 **Rating:** 1 A, 63 V DC fast; 50 A interrupt at 63 V DC; typical cold resistance 0.132 ohm +/-25%; typical melting I2t 0.034 A2s at 10 times rated current; -20 to 105 C.
 
 **Footprint and pin mapping:** Bourns Rev J p2: 3.10 x 1.55 x 0.60 mm nominal package. Two 1.25 x 1.65 mm rectangular lands, centers +/-1.725 mm: 4.70 mm outside span and 2.20 mm gap. Official series STEP normalized to seating plane; model height includes 0.005 mm surface detail.
 
-**Use and calculated stress:** 36 V maximum input below 63 V DC rating. Approximately 0.40 A average load versus roughly 0.93 A at 70 C from manufacturer derating curve (graph estimate, before additional application margin). At 0.40 A, typical cold loss is 21 mW. Switching RMS and self-heating require measurement.
+**Use:** 36 V maximum input below 63 V DC rating. Approximately 0.40 A average load versus roughly 0.93 A at 70 C from manufacturer derating curve (graph estimate, before additional application margin). At 0.40 A, typical cold loss is 21 mW. Switching RMS and self-heating require measurement.
 
 **Remaining validation:** New I2t is lower than old 0.0423 A2s value: repeat startup/inrush and time-current coordination; no hot-plug qualification. Fault current must not exceed 50 A. Reflow recommendation 245-250 C peak, 5 s; >=230 C for 30 +/-10 s. Obtain accepted profile; default Economic 255 +/-5 C is unsuitable and Standard 240 +/-5 C is not automatic approval. No guaranteed semiconductor protection.
 
-### H1 — M3 Edge mounting interface
+### H1 — M3 mounting interface
 
-[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · `MountingHole_3.2mm_M3_ExposedSubstrate_Edge`
+[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
 **Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
-**Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
+**Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
 **Remaining validation:** Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.
 
-### H2 — M3 Edge mounting interface
+### H2 — M3 mounting interface
 
-[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · `MountingHole_3.2mm_M3_ExposedSubstrate_Edge`
+[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
 **Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
-**Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
+**Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
 **Remaining validation:** Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.
 
-### H3 — M3 Edge mounting interface
+### H3 — M3 mounting interface
 
-[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · `MountingHole_3.2mm_M3_ExposedSubstrate_Edge`
+[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
 **Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
-**Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
+**Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
 **Remaining validation:** Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.
 
-### H4 — M3 Edge mounting interface
+### H4 — M3 mounting interface
 
-[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · `MountingHole_3.2mm_M3_ExposedSubstrate_Edge`
+[Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
 **Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
 
 **Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
 
-**Use and calculated stress:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
+**Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
 **Remaining validation:** Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.
 
 ### J1 — KF301-5.0-2P
 
-[Manufacturer/source](https://www.cxkefa.com/kf301-50) · `Terminal_KF301_2P_5.00`
+[Manufacturer/source](https://www.cxkefa.com/kf301-50) · Terminal_KF301_2P_5.00
 
 **Rating:** 300 V; use conservative 10 A rating (approval-dependent); -30 to 120 C; 22-14 AWG.
 
 **Footprint and pin mapping:** Manufacturer drawing: 5.00 mm pitch, 1.00 mm round leads, recommended 1.30 mm holes. Actual 5.00 mm pitch / 1.30 mm drills / 2.40 mm lands. Pin 1 positive, pin 2 return; wire entries face outward.
 
-**Use and calculated stress:** 36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.
+**Use:** 36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.
 
 **Remaining validation:** Qualify wire range, solder fill, 0.4 Nm screw torque, tool access and manual assembly.
 
 ### J2 — KF301-5.0-2P
 
-[Manufacturer/source](https://www.cxkefa.com/kf301-50) · `Terminal_KF301_2P_5.00`
+[Manufacturer/source](https://www.cxkefa.com/kf301-50) · Terminal_KF301_2P_5.00
 
 **Rating:** 300 V; use conservative 10 A rating (approval-dependent); -30 to 120 C; 22-14 AWG.
 
 **Footprint and pin mapping:** Manufacturer drawing: 5.00 mm pitch, 1.00 mm round leads, recommended 1.30 mm holes. Actual 5.00 mm pitch / 1.30 mm drills / 2.40 mm lands. Pin 1 positive, pin 2 return; wire entries face outward.
 
-**Use and calculated stress:** 36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.
+**Use:** 36 V input at approximately 0.40 A or 5 V output at 1 A is within electrical ratings.
 
 **Remaining validation:** Qualify wire range, solder fill, 0.4 Nm screw torque, tool access and manual assembly.
 
 ### R1 — RC0603FR-07649KL
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL) · `R_0603_1608Metric`
+[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL) · R_0603_1608Metric
 
 **Rating:** 649 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.
 
 **Footprint and pin mapping:** 0603 / 1.6 x 0.8 mm resistor lands; no polarity.
 
-**Use and calculated stress:** Upper UVLO divider. Reduced from 681 kohm: 17.55 V connector startup screening corner, including resistor/threshold/current limits and 1 V diode drop. At 42 V, less than 2.8 mW even assigning full voltage to R1.
+**Use:** Upper UVLO divider. Reduced from 681 kohm: 17.55 V connector startup screening corner, including resistor/threshold/current limits and 1 V diode drop. At 42 V, less than 2.8 mW even assigning full voltage to R1.
 
 **Remaining validation:** UVLO hysteresis is only typical in the datasheet: verify startup at 18 V, full load and 0-50 C; this calculation is not a guaranteed production corner.
 
 ### R2 — RC0603FR-0761K9L
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0761K9L) · `R_0603_1608Metric`
+[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-0761K9L) · R_0603_1608Metric
 
 **Rating:** 61.9 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.
 
 **Footprint and pin mapping:** 0603 / 1.6 x 0.8 mm resistor lands; no polarity.
 
-**Use and calculated stress:** Lower UVLO divider. Under 3.7 V and 0.23 mW for VIN <=42 V. Nominal UVLO after D1 is 15.73 V rising / 13.94 V falling with R1.
+**Use:** Lower UVLO divider. Under 3.7 V and 0.23 mW for VIN <=42 V. Nominal UVLO after D1 is 15.73 V rising / 13.94 V falling with R1.
 
 **Remaining validation:** Verify startup threshold/hysteresis and resistor substitution tolerances with R1.
 
-### R3 — TNPW0603115KBEEA
+### R3 — RT0603BRD07113KL
 
-[Manufacturer/source](https://www.vishay.com/docs/28758/tnpw_e3.pdf) · `R_0603_1608Metric`
+[Manufacturer/source](https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L) · R_0603_1608Metric
 
-**Rating:** 115 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.
+**Rating:** 113k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).
 
-**Footprint and pin mapping:** Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.
+**Footprint and pin mapping:** Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.
 
-**Use and calculated stress:** Primary reflected-voltage sense; nominal R3/R4/2 - 0.3 = 5.024 V. Preliminary current bound 157.1 uA at measured SW-VIN <=17.5 V, 0.5 V pin allowance, -0.1% tolerance and -25 ppm/C over 100 C. Fast capacitive current and pin excursions are not bounded by this estimate.
+**Use:** Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.
 
-**Remaining validation:** Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.
+**Remaining validation:** Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.
 
-### R4 — TNPW060310K8BEEA
+### R4 — RT0603BRD0710K7L
 
-[Manufacturer/source](https://www.vishay.com/docs/28758/tnpw_e3.pdf) · `R_0603_1608Metric`
+[Manufacturer/source](https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L) · R_0603_1608Metric
 
-**Rating:** 10.8 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.
+**Rating:** 10.7k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).
 
-**Footprint and pin mapping:** Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.
+**Footprint and pin mapping:** Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.
 
-**Use and calculated stress:** 10.8 kohm is within the LT8302 9.09-11.0 kohm reference range. Change with R3; R3 alone would give approximately 5.45 V.
+**Use:** Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.
 
-**Remaining validation:** Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.
+**Remaining validation:** Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.
 
-### R5 — TNPW0603128KBEEA
+### R5 — RT0603BRD07127KL
 
-[Manufacturer/source](https://www.vishay.com/docs/28758/tnpw_e3.pdf) · `R_0603_1608Metric`
+[Manufacturer/source](https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L) · R_0603_1608Metric
 
-**Rating:** 128 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.
+**Rating:** 127k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).
 
-**Footprint and pin mapping:** Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.
+**Footprint and pin mapping:** Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.
 
-**Use and calculated stress:** 128 kohm preserves R3/R5 temperature compensation ratio within 0.02% of 106k/118k. Selected 0.1% part; temperature trim remains required.
+**Use:** Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.
 
-**Remaining validation:** Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.
+**Remaining validation:** Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.
 
-### R6 — ERJ-P08F39R0V
+### R6 — SR1206FR-7T39RL
 
-[Manufacturer/source](https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf) · `R_1206_3216Metric`
+[Manufacturer/source](https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf) · R_1206_3216Metric
 
-**Rating:** 39 ohm +/-1%, 0.66 W; pulse-withstanding Panasonic ERJ-P08; full-rating terminal temperature <=125 C.
+**Rating:** 39 ohm +/-1%, 100 ppm/C; SR1206 7T = 0.75 W at 70 C, linear derating to zero at 155 C. Continuous-pulse curve applies in addition to average power.
 
-**Footprint and pin mapping:** 1206 / 3.2 x 1.6 mm lands match ERJ-P08. Documentation corrected from approximate 0.667 W to specified 0.66 W.
+**Footprint and pin mapping:** 3.1 x 1.6 x 0.55 mm body; retained 1206 land pattern and generic 3D envelope; interchangeable terminals.
 
-**Use and calculated stress:** Series RC damping of SW ringing. Full-load C*V^2*f estimate approximately 0.485 W, below 0.66 W. This consumes substantial thermal margin.
+**Use:** SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.
 
-**Remaining validation:** Start at 39 ohm/470 pF; estimate 0.485 W. Scaling to 680 pF/1 nF gives 0.702/1.032 W, above 0.66 W rating. Reassess pulse rating, ambient derating and layout before increasing C6; verify temperature on hardware.
+**Remaining validation:** Verify measured repetitive pulse/average power and body temperature; 680 pF or 1 nF are not approved substitutions. Tune from 39 ohm/470 pF.
 
 ### R7 — RC1206FR-07220RL
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL) · `R_1206_3216Metric`
+[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL) · R_1206_3216Metric
 
 **Rating:** 220 ohm +/-1%, 0.25 W at 70 C, 200 V limiting element voltage.
 
 **Footprint and pin mapping:** 1206 / 3.2 x 1.6 mm resistor lands; no polarity.
 
-**Use and calculated stress:** Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.
+**Use:** Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.
 
 **Remaining validation:** Verify no-load burst ripple and temperature; derate above 70 C. Minimum switching timing/hysteresis assumptions need hardware confirmation.
 
-### R8 — CRCW25122R20FKEGHP
+### R8 — CRM2512-JW-2R2ELF
 
-[Manufacturer/source](https://www.vishay.com/docs/20043/crcwhpe3.pdf) · `R_2512_6332Metric`
+[Manufacturer/source](https://www.bourns.com/docs/product-datasheets/crm.pdf) · R_Bourns_CRM2512
 
-**Rating:** 2.2 ohm +/-1%, 1.5 W at 70 C ambient; pulse-proof CRCW-HP e3.
+**Rating:** 2.2 ohm +/-5%, 200 ppm/C; 2 W at 70 C only with 300 mm2 total pad/trace area, derate above 70 C; single-pulse curve for >=1 ohm applies.
 
-**Footprint and pin mapping:** 2512 / 6.3 x 3.2 mm lands match the exact Vishay high-pulse package; larger than the snubber resistor deliberately.
+**Footprint and pin mapping:** Bourns CRM Rev 08/21 p2: nominal 6.3 x 3.1 x 0.6 mm. Recommended 2.45 x 3.7 mm lands, centers +/-2.575 mm, outside span 7.6 mm. New local footprint follows these lands; nonpolar.
 
-**Use and calculated stress:** Damping resistance only in C7 shunt branch; no DC converter load flows through it. Screening bound assigning all input ripple to it is <0.9 W. A 10 ms, 36 V ramp charges C7 at <=0.204 A, approximately 0.093 W.
+**Use:** Pulse-rated CRM2512 with manufacturer-recommended lands. 2 W at 70 C requires 300 mm2 combined pad/trace area; do not assume full rating on this board. Shunt damping branch only. Controlled input ramp first; board temperature and hard-step pulse qualification remain open.
 
-**Remaining validation:** A hard step can demand roughly 595 W initially and 36.55 mJ at C7 +20%; pulse graph, repetition, thermal and source dynamics require qualification. Do not assume hot-plug is qualified.
+**Remaining validation:** Measure R8 temperature at maximum ripple and ambient; 2 W rating is conditional on test copper. Qualify pulse stress for abrupt input separately. Obtain a compatible assembly profile including the CRM recommendation and F1/C3/C8 limits.
 
 ### T1 — PS-MAG-001 A0
 
-[Manufacturer/source](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf) · `Planar_EELP32_4T_2T`
+[Manufacturer/source](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf) · Planar_EELP32_4T_2T
 
 **Rating:** Prepared TDK N87 EELP32 pair, nominal 0.21 mm center-only gap; 4:2 turns; nominal primary 11.95 uH, acceptance 10.16-13.74 uH.
 
 **Footprint and pin mapping:** Custom integral winding footprint, five 0.40 mm plated interlayer holes. Two primary layers series, two secondary layers parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.
 
-**Use and calculated stress:** Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.
+**Use:** Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.
 
 **Remaining validation:** Custom magnetic assembly remains unqualified: measure L versus DC bias/temperature, leakage, core/fringing/AC losses, gap tolerance and retention. Functional low-voltage isolation only; no safety rating.
 
-### U1 — LT8302ES8E#PBF
+### U1 — LT8302IS8E#PBF
 
-[Manufacturer/source](https://www.analog.com/en/products/lt8302.html) · `SOIC8_EP_LT_S8E`
+[Manufacturer/source](https://www.analog.com/en/products/lt8302.html) · SOIC8_EP_LT_S8E
 
-**Rating:** LT8302 (not -3), E grade guaranteed 0-125 C junction range; VIN abs max 42 V, SW abs max 65 V; 3.6 A minimum / 5.4 A maximum peak-current limit.
+**Rating:** LT8302 (not -3), I grade guaranteed -40 to 125 C junction range; VIN abs max 42 V, SW abs max 65 V; 3.6 A minimum / 5.4 A maximum peak-current limit. Industrial LT8302I specification is guaranteed from -40 to 125 C junction; absolute maximum junction temperature is not an operating target.
 
 **Footprint and pin mapping:** ADI S8E exposed-pad SOIC8: 1.27 mm lead pitch; lands 1.143 x 0.760 mm, EP 2.26 x 2.99 mm; four paste windows and four filled/capped EP vias. Nine electrical pad numbers including EP.
 
-**Use and calculated stress:** Primary-side regulated low-voltage isolated flyback. Pin map: 1 UVLO, 2 INTVCC, 3 VIN, 4 PGND, 5 SW, 6 RFB, 7 RREF, 8 TC, 9 PGND. Full-load 2.065 A peak below 3.6 A minimum limit.
+**Use:** Industrial grade, same S8E package and pinout as LT8302E; guaranteed -40 to 125 C junction specification. Exact stocked normal LT8302, not LT8302-3.
 
 **Remaining validation:** No mains use. Measure temperature (<110 C junction target), VIN<42 V, SW<60 V and RFB current<200 uA including transients. Validate startup, burst, stability, overload and output trim.
 
-## Separate assembly materials
+## Release conditions
 
-The electronic BOM intentionally excludes the integral T1 winding, its separately quoted core operation and provisional mounting hardware. The [core materials schedule](manufacturing/CORE-BOM.csv) is also part of this review:
+The [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md) covers clamp/RFB waveforms, startup, full/light load, faults, temperature, magnetics and regulation. Require SW−VIN ≤17.5 V including uncertainty, SW <60 V and VIN <42 V. Controlled input ramp is the initial condition; abrupt hot-plug remains unqualified.
 
-- **Two TDK B66457G0000X187 N87 halves:** stock ungapped parts require a qualified center-leg grinding process to produce PS-MAG-001 A0. Verify dimensions, seating, measured inductance and biased/thermal behavior; a full-face shim is not an equivalent substitution.
-- **LOCTITE AA 330 plus SF 7387 activator:** [Henkel's adhesive data](https://datasheets.tdx.henkel.com/LOCTITE-AA-330-en_GL.pdf) supports ferrite bonding as a candidate process. External bond geometry, activation/cure, stress and compatibility with the laminate/core remain unqualified. Neither adhesive nor 3D bond envelope is a safety-insulation claim.
-- **3M 69, 12.7 mm strap:** [manufacturer product data](https://www.3m.com/3M/en_US/p/d/v000076478/) supports the proposed nonconductive glass-cloth retention material. Its actual wrap, clearance, aging and mechanical retention require qualification. It is not credited toward a safety-isolation rating.
-- **M3 fasteners/standoffs:** the displayed nonconductive 8 mm hardware remains a geometry envelope, not a procured part. Qualify the final hardware before installation.
+Raw DigiKey cores need center-leg preparation, retention and installation after soldering. Adhesive, strap and illustrative mounting hardware need process/mechanical qualification; none establishes a safety-isolation rating. The six-layer stack, slots, panel and reflow profile need factory acceptance.
 
-## Most important unresolved gates
-
-1. **RFB/clamp margin:** require measured SW−VIN peak ≤17.5 V including initial overshoot and uncertainty, SW <60 V, RFB within its voltage/current limits, and acceptable clamp/snubber temperatures across operating conditions. The preliminary resistive bound is 157.1 µA (21.46% separation); it excludes fast capacitive effects and is not qualification. Retain SMAJ12A and 39 Ω/470 pF for initial testing. See [feedback revision](FEEDBACK-REVISION.md) for assumptions, snubber power and the conditional SMAJ11A candidate.
-2. **Input transients and startup:** controlled ramp first; VIN <42 V; confirm cold 18 V full-load start. Qualify abrupt connection separately, including fuse, diode and R8 pulse stress.
-3. **Thermal and magnetic behavior:** measure core/fringing/AC losses, inductance under bias, semiconductor temperatures, R6/R8 dissipation and capacitor ripple temperatures. Nominal catalog ratings do not establish board thermal capacity.
-4. **Output behavior:** confirm ripple, burst, load steps, overload recovery, final voltage trim and temperature compensation with 360 µF output bulk.
-5. **Manufacturing:** confirm the exact parts, paste/solder process, via fill/cap, proposed stack, custom prepared core and retention. Empty sourcing codes are deliberate where a new exact code was not verified. Catalog existence does not establish available stock or turnkey acceptance.
-
-## Evidence and reproduction
-
-ERC reports zero messages. DRC reports zero violations, unconnected items or schematic-parity issues. Independent checks match 60 logical pins to 61 numbered pads and preserve the four winding polygons/19,229 samples. All 29 footprints have bundled models; 16 STEP assets are valid and 406 component-pair plus 29 substrate checks have no nominal positive-volume intersections.
-
-Run `scripts/rebuild.py`, refresh Gerber renders, then `audit-layout.py`, `audit-layout-complete.py`, `audit-components.py` and `render-component-audit.py`. The last two use KiCad Python and the human-reviewed `sources/component-review.json`; a changed MPN/package/pin mapping fails the applicability check and requires new review. The component comparison against 9bc0614 is historical. Run `audit-mounting-revision.py --baseline-board PATH --baseline-id COMMIT` against the preceding 007bcb5 board for the current corner move. Renew CadQuery solid checks, schematic renders and the manifest before publication. Historical evidence is explicitly marked and is not proof of the current board.
+Run rebuild.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py and audit-3d-solids.py, then refresh previews and manifest. Historical revision comparisons do not validate a changed board.

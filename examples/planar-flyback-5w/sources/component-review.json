@@ -130,31 +130,31 @@
     },
     {
       "reference": "C5",
-      "expected_mpn": "CL10A475KO8NQNC",
+      "expected_mpn": "GRM188R61C475KE11D",
       "expected_footprint": "C_0603_1608Metric",
-      "rating": "4.7 uF +/-10%, 16 V X5R; -55 to 85 C.",
-      "package_review": "1.6 x 0.8 mm 0603 nonpolar package; manufacturer recommended replacement for NRND CL10A475KO8NNNC.",
-      "use_case": "INTVCC decoupling, about 3.1 V maximum bias. Close 1.69 mm explicit feed to U1. LT8302 requires at least 1 uF effective local bypass.",
-      "remaining_validation": "Verify >=1 uF after bias/tolerance/temperature and keep the capacitor below 85 C; nominal 4.7 uF alone does not establish effective capacitance.",
+      "rating": "4.7 uF +/-10%, 16 V DC, X5R (+/-15%, -55 to 85 C).",
+      "package_review": "Murata product dimensions: 1.6 x 0.8 x 0.8 mm nominal, +/-0.15 mm; retained 0603 lands; nonpolar. Generic model is an illustrative package envelope.",
+      "use_case": "0603 bypass at about 3.1 V. Manufacturer typical DC-bias plot retains over 60% at 4 V; even 10% tolerance and 15% temperature allowance leave over 2 uF. Require >=1 uF effective on hardware; aging and actual bias/temperature behavior are not guaranteed by typical curves.",
+      "remaining_validation": "Require >=1 uF effective at about 3.1 V across temperature and aging, verify INTVCC stability and temperature; typical DC-bias curves are not minimum guarantees.",
       "expected_nets": {
         "1": "INTVCC",
         "2": "PGND"
       },
-      "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do"
+      "source": "https://www.murata.com/products/productdetail?partno=GRM188R61C475KE11%23"
     },
     {
       "reference": "C6",
-      "expected_mpn": "CGA4C4C0G2W471J060AA",
+      "expected_mpn": "CC0805JRNPO0BN471",
       "expected_footprint": "C_0805_2012Metric",
-      "rating": "470 pF +/-5%, 450 V C0G; -55 to 125 C.",
-      "package_review": "TDK production part, 2.0 x 1.25 x 0.6 mm nominal 0805. Replaces NRND 100 V CGA4C2C0G2A471J060AA without changing capacitance or lands.",
-      "use_case": "Series RC snubber capacitor from SNUB to SW; conservative 60 V amplitude is below 450 V; stable dielectric avoids MLCC bias loss in tuning.",
-      "remaining_validation": "Tune using measured ringing and verify resistor loss; voltage rating alone does not qualify repetitive switching-current/EMI behavior.",
+      "rating": "470 pF +/-5%, 100 V DC, C0G/NP0; -55 to 125 C.",
+      "package_review": "Yageo exact specification: 2.0 x 1.25 x 0.6 mm nominal; retained 0805 lands and generic model; nonpolar.",
+      "use_case": "Stocked 0805, 470 pF +/-5%, C0G, 100 V; above the 60 V absolute-to-ground prototype SW envelope. Retains the original damping capacitance; tune ringing on hardware.",
+      "remaining_validation": "Measure snubber waveform, capacitor pulse current and resistor temperature after tuning; no automatic approval for increasing capacitance.",
       "expected_nets": {
         "1": "SNUB",
         "2": "SW"
       },
-      "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA"
+      "source": "https://www.yageogroup.com/download/specsheet/CC0805JRNPO0BN471"
     },
     {
       "reference": "C7",
@@ -200,59 +200,59 @@
     },
     {
       "reference": "R3",
-      "expected_mpn": "TNPW0603115KBEEA",
+      "expected_mpn": "RT0603BRD07113KL",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "115 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
-      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
-      "use_case": "Primary reflected-voltage sense; nominal R3/R4/2 - 0.3 = 5.024 V. Preliminary current bound 157.1 uA at measured SW-VIN <=17.5 V, 0.5 V pin allowance, -0.1% tolerance and -25 ppm/C over 100 C. Fast capacitive current and pin excursions are not bounded by this estimate.",
-      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
+      "rating": "113k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).",
+      "package_review": "Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.",
+      "use_case": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "remaining_validation": "Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.",
       "expected_nets": {
         "1": "SW",
         "2": "RFB"
       },
-      "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
+      "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L"
     },
     {
       "reference": "R4",
-      "expected_mpn": "TNPW060310K8BEEA",
+      "expected_mpn": "RT0603BRD0710K7L",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "10.8 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
-      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
-      "use_case": "10.8 kohm is within the LT8302 9.09-11.0 kohm reference range. Change with R3; R3 alone would give approximately 5.45 V.",
-      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
+      "rating": "10.7k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).",
+      "package_review": "Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.",
+      "use_case": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "remaining_validation": "Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.",
       "expected_nets": {
         "1": "RREF",
         "2": "PGND"
       },
-      "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
+      "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L"
     },
     {
       "reference": "R5",
-      "expected_mpn": "TNPW0603128KBEEA",
+      "expected_mpn": "RT0603BRD07127KL",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "128 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
-      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
-      "use_case": "128 kohm preserves R3/R5 temperature compensation ratio within 0.02% of 106k/118k. Selected 0.1% part; temperature trim remains required.",
-      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
+      "rating": "127k 0.1%, 25 ppm/C, thin film; 0.1 W at 70 C; 75 V limiting voltage. Apply the smaller of 75 V and sqrt(P*R).",
+      "package_review": "Yageo RT0603 series: 1.6 x 0.8 x 0.45 mm nominal body; two interchangeable terminals on retained KiCad 0603 lands.",
+      "use_case": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+      "remaining_validation": "Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.",
       "expected_nets": {
         "1": "TC",
         "2": "RREF"
       },
-      "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
+      "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L"
     },
     {
       "reference": "R6",
-      "expected_mpn": "ERJ-P08F39R0V",
+      "expected_mpn": "SR1206FR-7T39RL",
       "expected_footprint": "R_1206_3216Metric",
-      "rating": "39 ohm +/-1%, 0.66 W; pulse-withstanding Panasonic ERJ-P08; full-rating terminal temperature <=125 C.",
-      "package_review": "1206 / 3.2 x 1.6 mm lands match ERJ-P08. Documentation corrected from approximate 0.667 W to specified 0.66 W.",
-      "use_case": "Series RC damping of SW ringing. Full-load C*V^2*f estimate approximately 0.485 W, below 0.66 W. This consumes substantial thermal margin.",
-      "remaining_validation": "Start at 39 ohm/470 pF; estimate 0.485 W. Scaling to 680 pF/1 nF gives 0.702/1.032 W, above 0.66 W rating. Reassess pulse rating, ambient derating and layout before increasing C6; verify temperature on hardware.",
+      "rating": "39 ohm +/-1%, 100 ppm/C; SR1206 7T = 0.75 W at 70 C, linear derating to zero at 155 C. Continuous-pulse curve applies in addition to average power.",
+      "package_review": "3.1 x 1.6 x 0.55 mm body; retained 1206 land pattern and generic 3D envelope; interchangeable terminals.",
+      "use_case": "SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
+      "remaining_validation": "Verify measured repetitive pulse/average power and body temperature; 680 pF or 1 nF are not approved substitutions. Tune from 39 ohm/470 pF.",
       "expected_nets": {
         "1": "VIN",
         "2": "SNUB"
       },
-      "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf"
+      "source": "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf"
     },
     {
       "reference": "R7",
@@ -270,17 +270,17 @@
     },
     {
       "reference": "R8",
-      "expected_mpn": "CRCW25122R20FKEGHP",
-      "expected_footprint": "R_2512_6332Metric",
-      "rating": "2.2 ohm +/-1%, 1.5 W at 70 C ambient; pulse-proof CRCW-HP e3.",
-      "package_review": "2512 / 6.3 x 3.2 mm lands match the exact Vishay high-pulse package; larger than the snubber resistor deliberately.",
-      "use_case": "Damping resistance only in C7 shunt branch; no DC converter load flows through it. Screening bound assigning all input ripple to it is <0.9 W. A 10 ms, 36 V ramp charges C7 at <=0.204 A, approximately 0.093 W.",
-      "remaining_validation": "A hard step can demand roughly 595 W initially and 36.55 mJ at C7 +20%; pulse graph, repetition, thermal and source dynamics require qualification. Do not assume hot-plug is qualified.",
+      "expected_mpn": "CRM2512-JW-2R2ELF",
+      "expected_footprint": "R_Bourns_CRM2512",
+      "rating": "2.2 ohm +/-5%, 200 ppm/C; 2 W at 70 C only with 300 mm2 total pad/trace area, derate above 70 C; single-pulse curve for >=1 ohm applies.",
+      "package_review": "Bourns CRM Rev 08/21 p2: nominal 6.3 x 3.1 x 0.6 mm. Recommended 2.45 x 3.7 mm lands, centers +/-2.575 mm, outside span 7.6 mm. New local footprint follows these lands; nonpolar.",
+      "use_case": "Pulse-rated CRM2512 with manufacturer-recommended lands. 2 W at 70 C requires 300 mm2 combined pad/trace area; do not assume full rating on this board. Shunt damping branch only. Controlled input ramp first; board temperature and hard-step pulse qualification remain open.",
+      "remaining_validation": "Measure R8 temperature at maximum ripple and ambient; 2 W rating is conditional on test copper. Qualify pulse stress for abrupt input separately. Obtain a compatible assembly profile including the CRM recommendation and F1/C3/C8 limits.",
       "expected_nets": {
         "1": "VIN",
         "2": "VIN_DAMP"
       },
-      "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf"
+      "source": "https://www.bourns.com/docs/product-datasheets/crm.pdf"
     },
     {
       "reference": "D2",
@@ -326,11 +326,11 @@
     },
     {
       "reference": "U1",
-      "expected_mpn": "LT8302ES8E#PBF",
+      "expected_mpn": "LT8302IS8E#PBF",
       "expected_footprint": "SOIC8_EP_LT_S8E",
-      "rating": "LT8302 (not -3), E grade guaranteed 0-125 C junction range; VIN abs max 42 V, SW abs max 65 V; 3.6 A minimum / 5.4 A maximum peak-current limit.",
+      "rating": "LT8302 (not -3), I grade guaranteed -40 to 125 C junction range; VIN abs max 42 V, SW abs max 65 V; 3.6 A minimum / 5.4 A maximum peak-current limit. Industrial LT8302I specification is guaranteed from -40 to 125 C junction; absolute maximum junction temperature is not an operating target.",
       "package_review": "ADI S8E exposed-pad SOIC8: 1.27 mm lead pitch; lands 1.143 x 0.760 mm, EP 2.26 x 2.99 mm; four paste windows and four filled/capped EP vias. Nine electrical pad numbers including EP.",
-      "use_case": "Primary-side regulated low-voltage isolated flyback. Pin map: 1 UVLO, 2 INTVCC, 3 VIN, 4 PGND, 5 SW, 6 RFB, 7 RREF, 8 TC, 9 PGND. Full-load 2.065 A peak below 3.6 A minimum limit.",
+      "use_case": "Industrial grade, same S8E package and pinout as LT8302E; guaranteed -40 to 125 C junction specification. Exact stocked normal LT8302, not LT8302-3.",
       "remaining_validation": "No mains use. Measure temperature (<110 C junction target), VIN<42 V, SW<60 V and RFB current<200 uA including transients. Validate startup, burst, stability, overload and output trim.",
       "expected_nets": {
         "1": "UVLO",

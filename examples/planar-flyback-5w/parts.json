@@ -70,19 +70,22 @@
   },
   "C5": {
     "value": "4.7u / 16 V X5R",
-    "mpn": "CL10A475KO8NQNC",
-    "mfr": "Samsung Electro-Mechanics",
-    "lcsc": "C377756",
-    "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do",
-    "purpose": "Manufacturer-recommended replacement for NRND CL10A475KO8NNNC. Nominal 4.7 uF; acceptance >=1 uF effective at approximately 3.1 V bias."
+    "mpn": "GRM188R61C475KE11D",
+    "mfr": "Murata",
+    "lcsc": "C77045",
+    "source": "https://www.murata.com/products/productdetail?partno=GRM188R61C475KE11%23",
+    "purpose": "0603 bypass at about 3.1 V. Manufacturer typical DC-bias plot retains over 60% at 4 V; even 10% tolerance and 15% temperature allowance leave over 2 uF. Require >=1 uF effective on hardware; aging and actual bias/temperature behavior are not guaranteed by typical curves."
   },
   "C6": {
-    "mpn": "CGA4C4C0G2W471J060AA",
-    "mfr": "TDK",
-    "lcsc": "C2172062",
-    "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA",
-    "value": "470p / 450 V C0G",
-    "purpose": "Current-production 0805 replacement for NRND 100 V part; same 470 pF C0G damping function."
+    "mpn": "CC0805JRNPO0BN471",
+    "mfr": "Yageo",
+    "lcsc": "C513677",
+    "source": "https://www.yageogroup.com/download/specsheet/CC0805JRNPO0BN471",
+    "value": "470p / 100 V C0G",
+    "purpose": "Stocked 0805, 470 pF +/-5%, C0G, 100 V; above the 60 V absolute-to-ground prototype SW envelope. Retains the original damping capacitance; tune ringing on hardware.",
+    "capacitance_F": 4.7e-10,
+    "tolerance_fraction": 0.05,
+    "voltage_rating_V": 100
   },
   "R1": {
     "mpn": "RC0603FR-07649KL",
@@ -99,45 +102,55 @@
     "lcsc": "C137696"
   },
   "R3": {
-    "mpn": "TNPW0603115KBEEA",
-    "mfr": "Vishay",
-    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required.",
-    "lcsc": "",
-    "value": "115k 0.1%",
-    "resistance_ohm": 115000,
+    "mpn": "RT0603BRD07113KL",
+    "mfr": "Yageo",
+    "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L",
+    "purpose": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+    "lcsc": "C705718",
+    "value": "113k 0.1%",
+    "resistance_ohm": 113000,
     "tolerance_fraction": 0.001,
-    "tcr_ppm_per_C": 25
+    "tcr_ppm_per_C": 25,
+    "power_rating_W_at_70C": 0.1,
+    "limiting_voltage_V": 75
   },
   "R4": {
-    "mpn": "TNPW060310K8BEEA",
-    "mfr": "Vishay",
-    "lcsc": "",
-    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-    "value": "10.8k 0.1%",
-    "resistance_ohm": 10800,
+    "mpn": "RT0603BRD0710K7L",
+    "mfr": "Yageo",
+    "lcsc": "C861078",
+    "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L",
+    "value": "10.7k 0.1%",
+    "resistance_ohm": 10700,
     "tolerance_fraction": 0.001,
     "tcr_ppm_per_C": 25,
-    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required."
+    "purpose": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+    "power_rating_W_at_70C": 0.1,
+    "limiting_voltage_V": 75
   },
   "R5": {
-    "mpn": "TNPW0603128KBEEA",
-    "mfr": "Vishay",
-    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-    "lcsc": "",
-    "value": "128k 0.1%",
-    "resistance_ohm": 128000,
+    "mpn": "RT0603BRD07127KL",
+    "mfr": "Yageo",
+    "source": "https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L",
+    "lcsc": "C705722",
+    "value": "127k 0.1%",
+    "resistance_ohm": 127000,
     "tolerance_fraction": 0.001,
     "tcr_ppm_per_C": 25,
-    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required."
+    "purpose": "Coordinated stocked 113k/10.7k/127k selection; 0.1%, 25 ppm/C. Nominal 4.980 V; >=20% preliminary resistive margin at 17.5 V differential peak. Temperature-compensation ratio changes by -0.95%; output and temperature trim remain required.",
+    "power_rating_W_at_70C": 0.1,
+    "limiting_voltage_V": 75
   },
   "R6": {
-    "value": "39R 0.66 W",
-    "mpn": "ERJ-P08F39R0V",
-    "mfr": "Panasonic",
-    "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf",
-    "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning",
-    "lcsc": "C4059605"
+    "value": "39R 0.75 W",
+    "mpn": "SR1206FR-7T39RL",
+    "mfr": "Yageo",
+    "source": "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf",
+    "purpose": "SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
+    "lcsc": "C6683830",
+    "resistance_ohm": 39,
+    "tolerance_fraction": 0.01,
+    "tcr_ppm_per_C": 100,
+    "power_rating_W_at_70C": 0.75
   },
   "R7": {
     "value": "220R 0.25 W",
@@ -168,10 +181,12 @@
     "purpose": "Retain SMAJ12A for initial prototype tuning. Its 19.9 V clamp rating at 20.1 A does not establish converter pulse voltage. Require measured SW-VIN peak <=17.5 V including overshoot/uncertainty, verify RFB pin voltage/current and temperature; SMAJ11A is only a bench candidate."
   },
   "U1": {
-    "mpn": "LT8302ES8E#PBF",
+    "value": "LT8302IS8E#PBF",
+    "mpn": "LT8302IS8E#PBF",
     "mfr": "Analog Devices",
-    "lcsc": "C117331",
-    "source": "https://www.analog.com/en/products/lt8302.html"
+    "lcsc": "C673679",
+    "source": "https://www.analog.com/en/products/lt8302.html",
+    "purpose": "Industrial grade, same S8E package and pinout as LT8302E; guaranteed -40 to 125 C junction specification. Exact stocked normal LT8302, not LT8302-3."
   },
   "T1": {
     "mpn": "PS-MAG-001 A0",
@@ -198,12 +213,16 @@
     "footprint": "Flyback:CP_Panasonic_C6"
   },
   "R8": {
-    "value": "2.2R 1.5 W",
-    "mpn": "CRCW25122R20FKEGHP",
-    "mfr": "Vishay",
-    "lcsc": "C4168885",
-    "footprint": "Resistor_SMD:R_2512_6332Metric",
-    "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf",
-    "purpose": "Pulse-proof series damping in C7 shunt branch, not in converter DC feed. 1.5 W at 70 C; hot-plug is not qualified."
+    "value": "2.2R 2 W",
+    "mpn": "CRM2512-JW-2R2ELF",
+    "mfr": "Bourns",
+    "lcsc": "C840598",
+    "footprint": "Flyback:R_Bourns_CRM2512",
+    "source": "https://www.bourns.com/docs/product-datasheets/crm.pdf",
+    "purpose": "Pulse-rated CRM2512 with manufacturer-recommended lands. 2 W at 70 C requires 300 mm2 combined pad/trace area; do not assume full rating on this board. Shunt damping branch only. Controlled input ramp first; board temperature and hard-step pulse qualification remain open.",
+    "resistance_ohm": 2.2,
+    "tolerance_fraction": 0.05,
+    "tcr_ppm_per_C": 200,
+    "power_rating_W_at_70C": 2
   }
 }

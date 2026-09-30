@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-09-30T10:28:11</date>
+    <date>2026-09-30T11:25:08</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -143,19 +143,19 @@
     <comp ref="C5">
       <value>4.7u / 16 V X5R</value>
       <footprint>Flyback:C_0603_1608Metric</footprint>
-      <datasheet>https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do</datasheet>
+      <datasheet>https://www.murata.com/products/productdetail?partno=GRM188R61C475KE11%23</datasheet>
       <fields>
-        <field name="MPN">CL10A475KO8NQNC</field>
-        <field name="Manufacturer">Samsung Electro-Mechanics</field>
-        <field name="LCSC">C377756</field>
+        <field name="MPN">GRM188R61C475KE11D</field>
+        <field name="Manufacturer">Murata</field>
+        <field name="LCSC">C77045</field>
         <field name="Footprint">Flyback:C_0603_1608Metric</field>
-        <field name="Datasheet">https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do</field>
+        <field name="Datasheet">https://www.murata.com/products/productdetail?partno=GRM188R61C475KE11%23</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="C" description=""/>
-      <property name="MPN" value="CL10A475KO8NQNC"/>
-      <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
-      <property name="LCSC" value="C377756"/>
+      <property name="MPN" value="GRM188R61C475KE11D"/>
+      <property name="Manufacturer" value="Murata"/>
+      <property name="LCSC" value="C77045"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -170,21 +170,21 @@
       </units>
     </comp>
     <comp ref="C6">
-      <value>470p / 450 V C0G</value>
+      <value>470p / 100 V C0G</value>
       <footprint>Flyback:C_0805_2012Metric</footprint>
-      <datasheet>https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA</datasheet>
+      <datasheet>https://www.yageogroup.com/download/specsheet/CC0805JRNPO0BN471</datasheet>
       <fields>
-        <field name="MPN">CGA4C4C0G2W471J060AA</field>
-        <field name="Manufacturer">TDK</field>
-        <field name="LCSC">C2172062</field>
+        <field name="MPN">CC0805JRNPO0BN471</field>
+        <field name="Manufacturer">Yageo</field>
+        <field name="LCSC">C513677</field>
         <field name="Footprint">Flyback:C_0805_2012Metric</field>
-        <field name="Datasheet">https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA</field>
+        <field name="Datasheet">https://www.yageogroup.com/download/specsheet/CC0805JRNPO0BN471</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="C" description=""/>
-      <property name="MPN" value="CGA4C4C0G2W471J060AA"/>
-      <property name="Manufacturer" value="TDK"/>
-      <property name="LCSC" value="C2172062"/>
+      <property name="MPN" value="CC0805JRNPO0BN471"/>
+      <property name="Manufacturer" value="Yageo"/>
+      <property name="LCSC" value="C513677"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -622,21 +622,21 @@
       </units>
     </comp>
     <comp ref="R3">
-      <value>115k 0.1%</value>
+      <value>113k 0.1%</value>
       <footprint>Flyback:R_0603_1608Metric</footprint>
-      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
+      <datasheet>https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</datasheet>
       <fields>
-        <field name="MPN">TNPW0603115KBEEA</field>
-        <field name="Manufacturer">Vishay</field>
-        <field name="LCSC"/>
+        <field name="MPN">RT0603BRD07113KL</field>
+        <field name="Manufacturer">Yageo</field>
+        <field name="LCSC">C705718</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
+        <field name="Datasheet">https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="TNPW0603115KBEEA"/>
-      <property name="Manufacturer" value="Vishay"/>
-      <property name="LCSC" value=""/>
+      <property name="MPN" value="RT0603BRD07113KL"/>
+      <property name="Manufacturer" value="Yageo"/>
+      <property name="LCSC" value="C705718"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -651,21 +651,21 @@
       </units>
     </comp>
     <comp ref="R4">
-      <value>10.8k 0.1%</value>
+      <value>10.7k 0.1%</value>
       <footprint>Flyback:R_0603_1608Metric</footprint>
-      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
+      <datasheet>https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</datasheet>
       <fields>
-        <field name="MPN">TNPW060310K8BEEA</field>
-        <field name="Manufacturer">Vishay</field>
-        <field name="LCSC"/>
+        <field name="MPN">RT0603BRD0710K7L</field>
+        <field name="Manufacturer">Yageo</field>
+        <field name="LCSC">C861078</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
+        <field name="Datasheet">https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="TNPW060310K8BEEA"/>
-      <property name="Manufacturer" value="Vishay"/>
-      <property name="LCSC" value=""/>
+      <property name="MPN" value="RT0603BRD0710K7L"/>
+      <property name="Manufacturer" value="Yageo"/>
+      <property name="LCSC" value="C861078"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -680,21 +680,21 @@
       </units>
     </comp>
     <comp ref="R5">
-      <value>128k 0.1%</value>
+      <value>127k 0.1%</value>
       <footprint>Flyback:R_0603_1608Metric</footprint>
-      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
+      <datasheet>https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</datasheet>
       <fields>
-        <field name="MPN">TNPW0603128KBEEA</field>
-        <field name="Manufacturer">Vishay</field>
-        <field name="LCSC"/>
+        <field name="MPN">RT0603BRD07127KL</field>
+        <field name="Manufacturer">Yageo</field>
+        <field name="LCSC">C705722</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
+        <field name="Datasheet">https://yageogroup.com/content/datasheet/asset/file/PYU-RT_1-TO-0-01_ROHS_L</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="TNPW0603128KBEEA"/>
-      <property name="Manufacturer" value="Vishay"/>
-      <property name="LCSC" value=""/>
+      <property name="MPN" value="RT0603BRD07127KL"/>
+      <property name="Manufacturer" value="Yageo"/>
+      <property name="LCSC" value="C705722"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -709,21 +709,21 @@
       </units>
     </comp>
     <comp ref="R6">
-      <value>39R 0.66 W</value>
+      <value>39R 0.75 W</value>
       <footprint>Flyback:R_1206_3216Metric</footprint>
-      <datasheet>https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf</datasheet>
+      <datasheet>https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf</datasheet>
       <fields>
-        <field name="MPN">ERJ-P08F39R0V</field>
-        <field name="Manufacturer">Panasonic</field>
-        <field name="LCSC">C4059605</field>
+        <field name="MPN">SR1206FR-7T39RL</field>
+        <field name="Manufacturer">Yageo</field>
+        <field name="LCSC">C6683830</field>
         <field name="Footprint">Flyback:R_1206_3216Metric</field>
-        <field name="Datasheet">https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf</field>
+        <field name="Datasheet">https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="ERJ-P08F39R0V"/>
-      <property name="Manufacturer" value="Panasonic"/>
-      <property name="LCSC" value="C4059605"/>
+      <property name="MPN" value="SR1206FR-7T39RL"/>
+      <property name="Manufacturer" value="Yageo"/>
+      <property name="LCSC" value="C6683830"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -767,21 +767,21 @@
       </units>
     </comp>
     <comp ref="R8">
-      <value>2.2R 1.5 W</value>
-      <footprint>Flyback:R_2512_6332Metric</footprint>
-      <datasheet>https://www.vishay.com/docs/20043/crcwhpe3.pdf</datasheet>
+      <value>2.2R 2 W</value>
+      <footprint>Flyback:R_Bourns_CRM2512</footprint>
+      <datasheet>https://www.bourns.com/docs/product-datasheets/crm.pdf</datasheet>
       <fields>
-        <field name="MPN">CRCW25122R20FKEGHP</field>
-        <field name="Manufacturer">Vishay</field>
-        <field name="LCSC">C4168885</field>
-        <field name="Footprint">Flyback:R_2512_6332Metric</field>
-        <field name="Datasheet">https://www.vishay.com/docs/20043/crcwhpe3.pdf</field>
+        <field name="MPN">CRM2512-JW-2R2ELF</field>
+        <field name="Manufacturer">Bourns</field>
+        <field name="LCSC">C840598</field>
+        <field name="Footprint">Flyback:R_Bourns_CRM2512</field>
+        <field name="Datasheet">https://www.bourns.com/docs/product-datasheets/crm.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="CRCW25122R20FKEGHP"/>
-      <property name="Manufacturer" value="Vishay"/>
-      <property name="LCSC" value="C4168885"/>
+      <property name="MPN" value="CRM2512-JW-2R2ELF"/>
+      <property name="Manufacturer" value="Bourns"/>
+      <property name="LCSC" value="C840598"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -828,21 +828,21 @@
       </units>
     </comp>
     <comp ref="U1">
-      <value>LT8302ES8E#PBF</value>
+      <value>LT8302IS8E#PBF</value>
       <footprint>Flyback:SOIC8_EP_LT_S8E</footprint>
       <datasheet>https://www.analog.com/en/products/lt8302.html</datasheet>
       <fields>
-        <field name="MPN">LT8302ES8E#PBF</field>
+        <field name="MPN">LT8302IS8E#PBF</field>
         <field name="Manufacturer">Analog Devices</field>
-        <field name="LCSC">C117331</field>
+        <field name="LCSC">C673679</field>
         <field name="Footprint">Flyback:SOIC8_EP_LT_S8E</field>
         <field name="Datasheet">https://www.analog.com/en/products/lt8302.html</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="LT8302" description=""/>
-      <property name="MPN" value="LT8302ES8E#PBF"/>
+      <property name="MPN" value="LT8302IS8E#PBF"/>
       <property name="Manufacturer" value="Analog Devices"/>
-      <property name="LCSC" value="C117331"/>
+      <property name="LCSC" value="C673679"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>

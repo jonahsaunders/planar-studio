@@ -1,0 +1,12 @@
+{
+  "layout": {"type": "grid", "rows": 1, "cols": 1, "hspace": "2mm", "vspace": "2mm", "renamenet": "{orig}", "renameref": "{orig}"},
+  "source": {"type": "auto", "stack": "inherit"},
+  "tabs": {"type": "fixed", "hcount": 3, "vcount": 0, "hwidth": "3mm", "vwidth": "3mm"},
+  "cuts": {"type": "mousebites", "drill": "0.5mm", "spacing": "0.8mm", "offset": "0mm"},
+  "framing": {"type": "frame", "width": "8mm", "hspace": "2mm", "vspace": "2mm", "cuts": "none", "fillet": "2mm"},
+  "tooling": {"type": "3hole", "hoffset": "2.5mm", "voffset": "2.5mm", "size": "1.5mm", "paste": true},
+  "fiducials": {"type": "3fid", "hoffset": "7.5mm", "voffset": "4mm", "coppersize": "1mm", "opening": "1mm", "paste": false},
+  "text": {"type": "simple", "text": "PS-FLYBACK-5W A1 | REVIEW", "anchor": "mt", "voffset": "4mm", "width": "1mm", "height": "1mm", "thickness": "0.15mm", "layer": "F.SilkS"},
+  "post": {"type": "auto", "millradius": "0.25mm", "reconstructarcs": true, "origin": "bl", "refillzones": true},
+  "debug": {"deterministic": true}
+}

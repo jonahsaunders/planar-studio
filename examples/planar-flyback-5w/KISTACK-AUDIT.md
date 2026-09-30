@@ -4,7 +4,7 @@
 The complete [PCB layout audit and revision](PCB-LAYOUT-AUDIT.md) now closes the
 long primary input/clamp and output-feed findings. It includes before/after
 measurements, return-plane checks, deliberate probe access and current renders.
-Audited 2026-09-29 using American Embedded's
+Updated 2026-09-30 using American Embedded's
 [KiStack](https://github.com/American-Embedded/kistack/tree/8494dbde095669df081950cbb6b24d08a21e25b0)
 schematic, PCB, footprint, export and Gerber workflows. KiStack supplies review
 instructions and helpers; this is an engineering review following those skills,
@@ -37,11 +37,11 @@ These are release gates, not claims that the circuit has already failed a bench 
 | Priority | Finding | Required action |
 | --- | --- | --- |
 | High | Full-load bulk-only ripple sizing is now **50.58 mV** after adding C8; burst/transient behavior is unverified. | Measure ripple across line/load and temperature, including burst operation. C4 is not credited in the bulk-only model. Confirm startup and load-step response with 360 µF bulk. |
-| High | The 56.9 V rating-based clamp estimate excludes dynamic overshoot and temperature behavior. Revised 115k/10.8k/128k feedback gives a preliminary 157.1 µA resistive bound under the stated 17.5 V envelope and tolerance/temperature assumptions; hardware is unqualified. | Measure SW below 60 V and SW−VIN peak ≤17.5 V including overshoot/uncertainty; independently verify RFB pin limits and tune R6/C6/D3/D4 from waveforms. See [feedback revision](FEEDBACK-REVISION.md). Verify all operating corners; clean DRC does not establish EMI performance. |
+| High | The 56.9 V rating-based clamp estimate excludes dynamic overshoot and temperature behavior. Revised 113k/10.7k/127k feedback gives a preliminary 159.85 µA resistive bound under the stated 17.5 V envelope and tolerance/temperature assumptions; hardware is unqualified. | Measure SW below 60 V and SW−VIN peak ≤17.5 V including overshoot/uncertainty; independently verify RFB pin limits and tune R6/C6/D3/D4 from waveforms. See [feedback revision](FEEDBACK-REVISION.md). Verify all operating corners; clean DRC does not establish EMI performance. |
 | High | Planar gap fringing, core loss, inductance under bias and thermal performance are unverified. | Characterize the prepared core assembly, including fault-current behavior; run the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Small-signal AL and DC winding resistance are insufficient for thermal release. |
-| High | The proposed stack, ground center leg, adhesive/retention process and turnkey assembly have no supplier acceptance. | Obtain engineering and manufacturing approval before treating Gerbers as production data. Stock ungapped halves cannot replace the prepared pair. |
+| High | The named JLC061611-1080A stack, ground center leg, adhesive/retention process and turnkey assembly have no supplier acceptance. | Obtain engineering and manufacturing approval before treating Gerbers as production data. Stock ungapped halves cannot replace the prepared pair. |
 | Medium | Final mechanical qualification remains open. | All 29 footprints now have local models; nominal solid checks show no intersections. The missing-model finding is closed. Qualify actual fasteners, enclosure, tolerances, wire/tool access and core retention; the displayed hardware and bond/strap shapes are provisional. See [3D-MODELS.md](3D-MODELS.md). |
-| Medium | Several exact selections, including new/replaced components, lack verified LCSC identifiers; catalog availability is not reserved. | Confirm sourcing or engineer substitutions. T1 is a separate custom core operation. Manufacturer identities and ratings are documented in the [component audit](COMPONENT-AUDIT.md); no stock availability is claimed. |
+| Medium | All 20 electronic MPNs have verified JLCPCB codes and stock in the September 30 snapshot; inventory is not reserved. | Recheck allocation and PCBA attrition before ordering. T1 is a separate custom core operation. Manufacturer identities and ratings are documented in the [component audit](COMPONENT-AUDIT.md); dated availability is recorded separately. |
 | Medium | Output trim, temperature compensation, startup at 18 V, transients, overload and control behavior remain untested. | Verify these on hardware. The standalone cycle calculation is not a closed-loop LT8302 simulation. |
 
 ## Review coverage
@@ -102,3 +102,5 @@ These are release gates, not claims that the circuit has already failed a bench 
 
 Functional low-voltage galvanic isolation only. This audit does not establish
 a safety-isolation rating, regulatory compliance or production readiness.
+
+The stocked-component revision uses direct JLCPCB/manufacturer sources as authorized in place of unavailable sourcing connectors. R8 now uses Bourns recommended lands; the named JLC stack and separate KiKit panel replace the earlier assumptions. These changes have new CAD, export, rating and solid checks. Thermal and waveform release gates remain open.

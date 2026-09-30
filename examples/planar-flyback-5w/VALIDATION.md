@@ -1,96 +1,33 @@
-# A1 validation record
+# A1 validation record — September 30, 2026
 
-The files describe a proposed 18–36 V DC to isolated 5 V / 1 A converter. The
-following checks concern the saved design and analytical models. **No hardware
-has been built or tested, and full-turnkey manufacturing has not been accepted
-by a supplier.** No request or files were submitted to JLCPCB.
+**CAD and analytical checks pass. Manufacturing release remains open.** No hardware has been built or tested; JLCPCB has not accepted the process or received these files.
 
-A1 was reviewed using [KiStack](KISTACK-AUDIT.md). Four M3 mounting holes,
-corrected fabrication-rule persistence, native schematic parity and metadata
-checks supplement the original validation.
-
-See the [complete component audit](COMPONENT-AUDIT.md) for all 29 footprints and the latest electrical/filtering corrections. The coordinated R3/R4/R5 revision gives a preliminary resistive bound of 157.1 µA at SW−VIN ≤17.5 V, including stated tolerance/temperature assumptions. Verify this full transient envelope and RFB pin voltage/current on hardware; see [feedback revision](FEEDBACK-REVISION.md). Input damping is not hot-plug protection.
-
-## Checks and evidence
-
-| Area | Recorded result | Evidence |
+| Check | Current result | Evidence |
 | --- | --- | --- |
-| Schematic electrical rules | 0 messages, KiCad 10.0.6 | [ERC](evidence/erc.rpt) |
-| Schematic branch geometry | 0 four-way junctions; 31 three-way connections, including symbol pins; native four-way ERC enabled as an error | [Independent checks](evidence/independent-checks.json) |
-| PCB layout review | Revised primary/secondary placement, shorter power routes, continuous separate ground regions and deliberate probe access; hardware/process qualification remains open | [PCB audit](PCB-LAYOUT-AUDIT.md) |
-| Board design rules | 0 violations, 0 unconnected items, 0 schematic-parity issues | [DRC](evidence/board-drc.json) |
-| Schematic/board agreement | 60 logical pins, 61 numbered physical pads | [Independent checks](evidence/independent-checks.json) |
-| Feedback revision, September 30 | R3/R4/R5 = 115k/10.8k/128k agree in schematic, board, circuit and BOM; current budget checked; obsolete sourcing codes cleared. Parsed comparison against 155e913 verifies unchanged PCB geometry, connectivity and unrelated properties. | [Feedback checks](evidence/audit/feedback-checks.json), [assumptions and bench gates](FEEDBACK-REVISION.md) |
-| Drawn power-path continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect through actual wires; no label-only clamp block | [Wire groups](evidence/independent-checks.json) |
-| Earlier schematic-only redraw (historical) | A4 sheet; all 54 pin names/nets and 26 part records unchanged at that revision; see the current layout comparison for subsequent copper/placement changes | [Redraw comparison](evidence/audit/schematic-layout-checks.json), [render](evidence/audit/schematic-overview.png) |
-| Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
-| Mounting footprint revision | Exact upstream M3 Edge footprints; extensions rotated outward; unchanged 3.2 mm drills; revised 41 × 95 mm pattern with 4.5 mm corner insets; all-layer extension clearance checked | [Mounting specification](manufacturing/MOUNTING.md), [historical mounting move](evidence/audit/mounting-revision-checks.json), [current fuse-only geometry comparison](evidence/audit/fuse-revision-checks.json) |
-| Fuse replacement and sourcing | Bourns SF-1206F100-2 / C3164649, recommended lands and normalized official series STEP geometry; other placement, routes, windings and corner mounts preserved | [Fuse checks](evidence/audit/fuse-revision-checks.json), [dated sourcing audit](JLCPCB-SOURCING.md) |
-| Assembly/export consistency | 24 electronic BOM/CPL references, six copper Gerbers, 66 filled/capped holes plus four open connector holes and four separate NPTH mounting holes | [Manufacturing checks](evidence/manufacturing-checks.json) |
-| 3D assembly | All 29 footprints have local models; 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Model coverage and limits](3D-MODELS.md), [solid checks](evidence/audit/3d-solid-checks.json) |
-| Transformer sizing | 4:2 turns, nominal 11.95 µH, proposed 0.21 mm prepared center-leg gap | [Winding model](evidence/winding-model.json) |
-| Electrical stresses | 2.06 A worst full-load primary peak under assumed 75% efficiency | [Sizing and limitations](evidence/electrical-sizing.json), [operating points](evidence/operating-points.csv) |
-| Boundary/DCM stage | Charge-balanced analytical current cycles at 18, 24 and 36 V, fixed 5 V output | [Cycle model](evidence/cycle-model.json), [results](evidence/boundary-cycle.csv), [waveforms](evidence/idealized-waveforms.csv) |
+| Native ERC / DRC | Zero violations, unconnected items or schematic-parity issues | [ERC](evidence/erc.rpt), [DRC](evidence/board-drc.json) |
+| Pin mapping and winding copper | 60 logical pins / 61 pads; four winding polygons / 19,229 contained centerline samples | [Independent checks](evidence/independent-checks.json) |
+| Component applicability | All 29 footprints match reviewed MPN, package and pin/net records; includes R8 recommended lands | [Component checks](evidence/audit/component-checks.json) |
+| Electronic sourcing | All 20 MPNs / 24 placements stocked; inventory covers twice the five-board requirement as a provisional allowance | [Dated catalog audit](JLCPCB-SOURCING.md) |
+| Feedback | 113k/10.7k/127k agree across schematic, board and BOM; 159.85 µA preliminary resistive bound at the 17.5 V envelope | [Checks](evidence/audit/feedback-checks.json), [assumptions](FEEDBACK-REVISION.md) |
+| Stack | JLC061611-1080A, 35 µm outer / 30 µm inner; published sum 1.618 mm in the 1.6 mm order class | [Stack data](stackup.json), [winding calculation](evidence/winding-model.json) |
+| Manufacturing exports | 24 electronic placements; six copper layers; 66 fill/cap holes; connector and mounting holes remain open | [Export checks](evidence/manufacturing-checks.json) |
+| Assembly panel | Separate 70 × 124 mm one-board panel; zero DRC violations; original component nets/lands preserved | [Panel documentation](manufacturing/PANEL.md), [checks](build/panel-A1/panel-checks.json) |
+| 3D | 29 footprints / 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Solid checks](evidence/audit/3d-solid-checks.json) |
+| Visual inspection | Actual schematic, copper/technical Gerber sheets, assembly and panel renders inspected | [Schematic](evidence/audit/schematic-overview.png), [copper](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png) |
 
-The winding generator uses Planar Studio's geometry and small-signal magnetic
-model. Its sinusoidal output-voltage calculation is **not flyback validation**.
-The separate cycle calculation includes DC winding resistance, an assumed
-switch resistance and a nominal 380 kHz ceiling. It excludes core loss,
-switching loss, gap fringing, controller feedback, burst mode and transients.
-The stress worksheet uses a 75% efficiency assumption; it is not an efficiency
-prediction or a physically charge-balanced waveform.
+The named-stack model uses 30 µm for all windings as a conservative DC-resistance screen. It uses actual published winding heights, a fixed 5 V output and an assumed switching-resistance/frequency model. It excludes core and AC/fringing losses, closed-loop controller behavior, burst dynamics and transients. The separate stress worksheet assumes 75% efficiency; it is not measured or predicted efficiency.
 
-The September 30 revision reran native ERC/DRC, schematic/board and winding
-checks, manufacturing checks, component and layout audits, feedback checks,
-schematic/Gerber renders and 3D exports. Negative calculation checks reject an
-R3-only edit, the old network's inadequate 20% separation, an out-of-range R4,
-and an unchanged R5. Earlier solid-intersection checks are retained as dated
-evidence; the new parsed PCB comparison proves identical geometry and models.
-They were not rerun as physical tolerances or hardware qualification.
+## Open release gates
 
-## Open design and manufacturing gates
+1. **Factory process:** accept JLC061611-1080A tolerances, ±0.10 mm internal core-slot routing, filled/capped vias, panel/depanelization, connector assembly and a component-temperature profile compatible with F1, R8 and C3/C8. Standard's nominal setpoint alone is insufficient; Economic's fixed profile is unsuitable. Recheck stock and attrition allocation before ordering.
+2. **Feedback and suppression:** demonstrate SW−VIN ≤17.5 V including overshoot and measurement uncertainty, SW <60 V, and independent RFB voltage/current compliance. The 159.85 µA resistive screen excludes capacitive current. Tune clamp/snubber from measured waveforms.
+3. **Power and temperature:** R6's plateau estimate is 0.509 W including capacitor tolerance; the full target-voltage swing screen reaches 0.695 W against a 0.75 W rating at 70 °C. R8's ripple screen is 0.922 W, but its 2 W catalog rating requires 300 mm² copper and does not establish this board's thermal capacity. Measure both; change parts/layout if necessary. Validate all semiconductor, capacitor and magnetic temperatures.
+4. **Core process and operation:** raw DigiKey halves require qualified center-leg grinding, retention and installation. Measure inductance under bias and temperature, startup, regulation, ripple, load steps, burst operation and fault recovery. Hot-plug is unqualified; begin with a controlled input ramp.
 
-- Confirm the six-layer stack and core-slot tolerances. Recalculate winding
-  parameters if the fabricator changes copper or dielectric dimensions.
-- Validate the [revised PCB layout](PCB-LAYOUT-AUDIT.md) on hardware. The measured
-  path reductions and continuous return copper do not establish switch stress,
-  ripple, temperature or EMI. Repeat output trim after the layout change.
-- Source and qualify a prepared EELP32 N87 pair. Stock B66457G0000X187 halves
-  are ungapped; the specified prepared pair needs center-leg grinding.
-- Qualify adhesive, retention, positioning and inductance acceptance. Raw cores
-  may be sourced separately from DigiKey. The separate preparation/installation
-  operation and its responsible supplier remain to be agreed.
-- Confirm component availability and substitute suitability. Catalog part
-  identifiers do not establish stock, price or assembler acceptance.
-- Measure switch overshoot and tune the clamp/snubber. Require SW−VIN peak
-  ≤17.5 V including initial overshoot and uncertainty, SW below 60 V and
-  independent RFB voltage/current checks. The catalog clamp estimate is not
-  a measured transient envelope. Verify temperatures and regulation across
-  startup, full load, light-load bursts, overload and short-circuit recovery.
-- Establish ripple and regulation. The bulk-only full-load ripple estimate is
-  50.58 mV with C3/C8; C4 is not credited in that calculation. Burst and transient
-  behavior remain unmeasured.
-- Measure inductance under bias, core/fringing losses, startup, minimum load,
-  overload, output trim, efficiency and temperature over the input/load range.
-  Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md).
+Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Functional low-voltage isolation only; no mains, reinforced insulation or safety certification is claimed.
 
-Functional low-voltage galvanic isolation is the design intent. No mains,
-reinforced-insulation, dielectric-withstand or safety certification is claimed.
+## Reproduction
 
-## Reproducibility and provenance
+Run scripts/rebuild.py using KiCad 10 Python and Node. Then refresh audit-renders.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py, render-schematic.mjs and audit-3d-solids.py. The render and solid tools require the documented Pillow/PyGerber, Sharp and CadQuery environments. Build the separate panel with build-panel.py and KiKit 1.8.1; all package/model references remain local.
 
-See [README](README.md) for rebuild and packaging commands. `SHA256SUMS.json`
-records the published bytes; `.gitattributes` preserves LF text across platforms.
-KiCad source, standard footprints used by the board, generated data and source
-references are bundled. Rebuilds can change KiCad UUIDs, timestamps, numeric
-formatting and export order; byte-identical CAD output is not promised.
-
-The netlist's `<source>` field is normalized to a relative path for publication.
-This does not modify connectivity. ERC/DRC rule checks and polygon sampling do
-not establish manufacturability or measured circuit behavior.
-
-The earlier A0 workflow attribution was unresolved. A1 uses the specifically
-requested American Embedded KiStack skills; see the audit for pinned versions
-and coverage. Complete model coverage and nominal solid checks are recorded in
-[3D-MODELS.md](3D-MODELS.md). Final tolerances, enclosure, actual mounting hardware
-and core retention qualification remain open.
+Earlier fuse, mounting and feedback-only revision comparisons are **historical**. The current revision also changes stocking selections, R8 lands and electrical stack dimensions; it does not claim unchanged geometry against those earlier commits. Current source hashes accompany the new checks. No supplier upload, contact, purchase or fabrication was performed.
