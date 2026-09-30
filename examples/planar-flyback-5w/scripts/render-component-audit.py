@@ -16,6 +16,7 @@ Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic compon
 | Reference | Change and reason |
 | --- | --- |
 | R1 | 681 kΩ → 649 kΩ. Improves the 18 V startup screening corner to 17.55 V including the input diode. Typical-only hysteresis prevents a guaranteed production-corner claim. |
+| R3 | Yageo RT0603BRD07106KL → Vishay TNPW0603106KBEEN / JLCPCB C4185599. Preserves 106 kΩ, 0.1%, 25 ppm/°C, the feedback ratio and existing 0603 footprint/model; resolves the exact catalog gap. |
 | D1 | SS110/SMA → DFLS1100-7/PowerDI123, with a verified exact manufacturer drawing and polarity. |
 | D4 | SMAJ13A → SMAJ12A-13-F. Rating-based SW clamp estimate falls from 58.5 to 56.9 V. Dynamic/temperature behavior still needs measurement. |
 | C4 | Current manufacturer-confirmed Samsung CL32B226KOJNNNE output ceramic, same 1210 package. |

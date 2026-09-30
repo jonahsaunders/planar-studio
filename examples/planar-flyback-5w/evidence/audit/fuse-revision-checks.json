@@ -1,7 +1,7 @@
 {
   "baseline_id": "bcfc83d2d7f4b80a07fb75b9e842c539c7a3d87b",
   "baseline_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
-  "board_sha256": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea",
+  "board_sha256": "abd1ac10c6c77924942c53c0895b084321e3c1adf795abbfe9410fbf10863ff9",
   "changed_component": "F1",
   "before": {
     "footprint": "Flyback:Fuse_1206_3216Metric",

@@ -1,8 +1,8 @@
 {
   "method": "Rasterization of the native KiCad SVG; no circuit illustration substitutes.",
   "source_SHA256": {
-    "evidence/schematic.svg": "5f0caa240f6ea122a3265477cc6bda606e9181f47bc3405a636e9157f2db85b3",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "ad96372a624a568852a26cde6eb38a108436bf2ef7b113baa8dbd3b639d9a7c0"
+    "evidence/schematic.svg": "9793443cf36baf1ef57c78c1cf5a9319e8572a72d16d3bd69edf2ace0202a5f6",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "1374ecea19deb86b7b80204c0cdde284b9994e27a9c60c9ab4245852cfa9509b"
   },
   "output_SHA256": {
     "evidence/audit/schematic-overview.png": "1a824646373f9c5eb4e873e2e1769c148b82ffd57899439710a68ef769546955",

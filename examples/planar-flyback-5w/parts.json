@@ -99,10 +99,11 @@
     "lcsc": "C137696"
   },
   "R3": {
-    "mpn": "RT0603BRD07106KL",
-    "mfr": "Yageo",
-    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL",
-    "purpose": "106 kOhm 0.1%; primary reflected-voltage sense; output must be trimmed on prototype"
+    "mpn": "TNPW0603106KBEEN",
+    "mfr": "Vishay",
+    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+    "purpose": "106 kOhm 0.1%, 25 ppm/C; primary reflected-voltage sense; stocked JLCPCB replacement preserving feedback ratio; output must be trimmed on prototype",
+    "lcsc": "C4185599"
   },
   "R4": {
     "mpn": "RT0603BRD0710KL",

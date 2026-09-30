@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-09-29T21:00:17</date>
+    <date>2026-09-29T21:34:29</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -624,19 +624,19 @@
     <comp ref="R3">
       <value>106k 0.1%</value>
       <footprint>Flyback:R_0603_1608Metric</footprint>
-      <datasheet>https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL</datasheet>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <fields>
-        <field name="MPN">RT0603BRD07106KL</field>
-        <field name="Manufacturer">Yageo</field>
-        <field name="LCSC"/>
+        <field name="MPN">TNPW0603106KBEEN</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="LCSC">C4185599</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="RT0603BRD07106KL"/>
-      <property name="Manufacturer" value="Yageo"/>
-      <property name="LCSC" value=""/>
+      <property name="MPN" value="TNPW0603106KBEEN"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="LCSC" value="C4185599"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>

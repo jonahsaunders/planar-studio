@@ -2,9 +2,9 @@
 
 **Scope:** JLCPCB sources and assembles the 24 electronic placements (20 unique MPNs), including both through-hole connectors. Raw ferrite cores may come separately from DigiKey. Integral PCB windings remain on the converter board. The custom core gap, retention, installation and magnetic acceptance still need a qualified process; an ungapped stock pair is not a substitute.
 
-Catalog observations: **September 29, 2026, America/New_York / September 30 UTC**. These are live-page snapshots, not reserved inventory, quotations or delivery promises. The fuse row was checked when selecting its replacement; other rows retain the preceding all-part audit observations from the same date.
+Catalog observations: **September 29, 2026, America/New_York / September 30 UTC**. These are live-page snapshots, not reserved inventory, quotations or delivery promises. The F1 and R3 rows were checked when selecting their replacements; other rows retain the preceding all-part audit observations from the same date.
 
-**15 MPNs were stocked (including two low-stock lines); four require pre-order; one has no exact catalog match.** That covers 19 stocked placements and five requiring procurement work. All 19 catalog matches are Extended parts. Eight exact-MPN catalog codes missing from the earlier BOM are now included; no other MPNs were substituted.
+**16 MPNs were stocked (including two low-stock lines); four require pre-order. All 20 MPNs now have exact catalog matches.** That covers 20 stocked placements and four requiring pre-order procurement. All 20 catalog matches are Extended parts. F1 and R3 are the reviewed substitutions described below; eight other exact-MPN catalog codes missing from the earlier BOM are also included.
 
 ## Fuse replacement
 
@@ -14,9 +14,14 @@ The replacement is 1 A, 63 V DC, fast acting, with 50 A interruption at 63 V DC.
 
 The footprint now uses two 1.25 × 1.65 mm lands with a 2.20 mm gap and 4.70 mm outside span. Bourns' official series STEP geometry is bundled and oriented to KiCad's seating plane; the body is 3.10 × 1.55 × 0.60 mm. See [model provenance](3D-MODELS.md) and [change checks](evidence/audit/fuse-revision-checks.json).
 
+## Feedback resistor replacement
+
+R3 changes from uncatalogued Yageo RT0603BRD07106KL to **Vishay TNPW0603106KBEEN / C4185599**. JLCPCB showed 226 headline stock, **225 available to order**, minimum one, $1.1508 at one and $0.9427 at ten. It is an Extended SMT part, MSL 1, supported for Economic and Standard assembly. [JLCPCB listing](https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599).
+
+The replacement preserves 106 kΩ, ±0.1%, ±25 ppm/°C and the existing 0603 footprint, placement, routing and generic 0603 3D model. Retain conservative 0.1 W / 75 V design limits: the JLCPCB-linked Vishay datasheet (28758, September 26, 2023) meets both; newer family ratings are not needed for this substitution. The feedback ratio and nominal 5 V setting remain unchanged. RFB injected-current margin, switch-node transients and final output trim still require prototype measurements. [Manufacturer specification](https://www.vishay.com/docs/28758/tnpw_e3.pdf).
+
 ## Remaining board-assembly work
 
-- **R3:** no exact match for RT0603BRD07106KL (106 kΩ, 0.1%). Obtain an exact supplier source or qualify an alternative; no code is invented.
 - **C5, C6, R6, R8:** exact parts are listed for pre-order, with lead times and minimum/attrition quantities unconfirmed. Preserve capacitor bias/dielectric behavior and resistor pulse capability if substituting.
 - **U1 and R5:** only five and six available respectively; insufficient margin to assume a five-board assembly run with attrition.
 - **Reflow:** Bourns recommends 245–250 °C peak for 5 seconds and ≥230 °C for 30 ±10 seconds. Economic's published fixed 255 ±5 °C is incompatible; Standard's 240 ±5 °C does not automatically establish a compliant fuse process either. Have JLCPCB accept a component-level profile covering F1 and the SVPF capacitors before ordering. The fuse's 260 °C resistance-to-solder-heat test is not a recommended production profile.
@@ -41,7 +46,7 @@ The footprint now uses two 1.25 × 1.65 mm lands with a 2.20 mm gap and 4.70 mm 
 | C5 | CL10A475KO8NQNC | [C377756](https://jlcpcb.com/partdetail/C377756) | Pre-order | Not shown | 473 |
 | R1 | RC0603FR-07649KL | [C245991](https://jlcpcb.com/partdetail/C245991) | Stocked | 94 | 1 |
 | R2 | RC0603FR-0761K9L | [C137696](https://jlcpcb.com/partdetail/C137696) | Stocked | 2,560 | 1 |
-| R3 | RT0603BRD07106KL | [Search](https://jlcpcb.com/parts/componentSearch?searchTxt=RT0603BRD07106KL) | No exact match | Not shown | Not shown |
+| R3 | TNPW0603106KBEEN | [C4185599](https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599) | Stocked | 225 | 1 |
 | R4 | RT0603BRD0710KL | [C95204](https://jlcpcb.com/partdetail/C95204) | Stocked | 942,116 | 1 |
 | R5 | RC0603FR-07118KL | [C137804](https://jlcpcb.com/partdetail/C137804) | Low stock | 6 | 1 |
 | R6 | ERJ-P08F39R0V | [C4059605](https://jlcpcb.com/partdetail/C4059605) | Pre-order | Not shown | 594 |
@@ -71,7 +76,7 @@ The public JLCPCB calculator showed **$81.17** for five representative 70 × 114
 
 The assembly allowance uses JLCPCB's published Standard fees: $25.56 single-side setup, $8.21 stencil, $1.53 per SMT part type (19 types), handling from $14.93, plus fixtures, joints, inspection and connector labor. The single-side component placement does not require two-sided SMT just because the ferrite occupies both sides. [Assembly fee schedule](https://jlcpcb.com/help/article/pcb-assembly-price).
 
-Live catalog price checks on September 29, 2026: U1 $9.8505 each at quantities below ten; C3/C8 $0.9211 each at ten; C7 $0.6319 each; D2 $1.1290 each. The four listed pre-order minima total about **$36.95** (C5 $9.03, C6 $9.03, R6 $9.03, R8 $9.86), before sourcing adjustments and attrition. These minimum purchases are included in the parts allowance above, not an extra charge to add again. R3 still requires a source, and U1/R5 replenishment remains open. All prices are unreserved snapshots and pre-order prices are estimates.
+Live catalog price checks on September 29, 2026: U1 $9.8505 each at quantities below ten; C3/C8 $0.9211 each at ten; C7 $0.6319 each; D2 $1.1290 each. The four listed pre-order minima total about **$36.95** (C5 $9.03, C6 $9.03, R6 $9.03, R8 $9.86), before sourcing adjustments and attrition. These minimum purchases are included in the parts allowance above, not an extra charge to add again. R3 is now sourced as Vishay TNPW0603106KBEEN / C4185599 ($1.1508 at one, $0.9427 at ten); U1/R5 replenishment remains open. All prices are unreserved snapshots and pre-order prices are estimates.
 
 **Fabrication action:** obtain a named stack with 1 oz inner copper (JLCPCB defaults to 0.5 oz), confirm precision processing of the internal slots at ±0.10 mm, and supply a compliant panel with rails, fiducials and alignment holes. Standard slot sizing is published as ±0.20 mm, so the precision-outline option alone is not acceptance of the core fit. Recalculate winding behavior for the final stack and validate first-article fit and electrical performance. [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities).
 

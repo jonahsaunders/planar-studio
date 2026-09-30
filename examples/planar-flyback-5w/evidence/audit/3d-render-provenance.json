@@ -38,9 +38,10 @@
     "T1",
     "U1"
   ],
+  "GLB_all_reference_subtrees_have_mesh_geometry": true,
   "scope": "All saved-board footprints have local STEP models. Core and connectors are nominal drawing-based geometry; H1-H4 and core retention are provisional envelopes. See 3D-MODELS.md.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "abd1ac10c6c77924942c53c0895b084321e3c1adf795abbfe9410fbf10863ff9",
     "kicad/3dmodels/custom/EELP32_prepared_pair.step": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
     "kicad/3dmodels/custom/KF301_5mm_2P.step": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
     "kicad/3dmodels/custom/M3_8mm_mount_envelope.step": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
@@ -60,13 +61,12 @@
     "kicad/3dmodels/vendor/Bourns/SF-1206F_KiCad.step": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495"
   },
   "output_SHA256": {
-    "evidence/audit/board-3d-top.png": "a3bbd9ce0cc61e3cb32f09f711ce99c13ed543812940fd71d24a9861c65e6b4c",
-    "evidence/audit/board-3d-bottom.png": "e9307dafc749d153fa028ef4da5ec7f9ec4e665bc5d1c88ec95f251924d96ba7",
-    "evidence/audit/board-3d-assembled.png": "f5e1394cb339f3e4c3de1d87a68d5c86c77d4c17c958566264eaa70bf7e587c2",
-    "evidence/audit/board-3d-underside.png": "06fbbc3e653e1145972ae9a3be5915e742af07ac3268c021e08a2a9278cdd1f8",
-    "evidence/audit/board-3d-side.png": "b396948341b62a2443ba52c68d41a3002c235bf25242a331f7f477bf39b7a30b",
-    "3d/PS-FLYBACK-5W.glb": "f4001e69d2d43f696282c0d7de13657e4bc0fcb997f2d33494c1c42050d1f3de",
-    "3d/PS-FLYBACK-5W.step": "e2a95829c2744d6b02810be3ea092ebfeeed023f58edc06ea66f0f524654926a"
-  },
-  "GLB_all_reference_subtrees_have_mesh_geometry": true
+    "evidence/audit/board-3d-top.png": "a6e81be3d68493d1377bb7b8347361d6fd165572426acaceaabffbe5ec7c6607",
+    "evidence/audit/board-3d-bottom.png": "ebe2ee9154ecdb4c600b59d500a284ae872d8bfb50ecfa959a96e00a97f4b558",
+    "evidence/audit/board-3d-assembled.png": "d586fc9dfa4ff4d7b554b0133d5932a0ff1f0b02108d1667356f48024efcfb5f",
+    "evidence/audit/board-3d-underside.png": "bb01c4ca4a1fc2c7c5bc74d00ad600f828e267be0daa3a83c486010331b69360",
+    "evidence/audit/board-3d-side.png": "3d2ee3b22bc77915ba3817bcd65cef391a1b58d008f09d3c1240fd94bbe33cab",
+    "3d/PS-FLYBACK-5W.glb": "2c34a51a2483863674e699d7cd5c111100d01f425628fc119a50be94d95caa93",
+    "3d/PS-FLYBACK-5W.step": "c650b8ad6b173bcf56baa747c82a35c5ce9d61ca114eca2eeb46d3802de090d6"
+  }
 }

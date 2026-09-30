@@ -12,7 +12,7 @@
   "core_below_board_mm": 5.73,
   "provisional_mount_plane_to_core_clearance_mm": 2.2699999999999996,
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "abd1ac10c6c77924942c53c0895b084321e3c1adf795abbfe9410fbf10863ff9",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",

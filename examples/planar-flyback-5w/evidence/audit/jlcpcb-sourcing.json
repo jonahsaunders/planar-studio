@@ -233,20 +233,23 @@
         "R3"
       ],
       "quantity_per_board": 1,
-      "mpn": "RT0603BRD07106KL",
-      "manufacturer": "Yageo",
+      "mpn": "TNPW0603106KBEEN",
+      "manufacturer": "Vishay",
       "original_bom_code": null,
-      "verified_jlcpcb_code": null,
-      "headline_stock": null,
-      "available_order_quantity": null,
-      "displayed_minimum": null,
-      "package": "0603 (design)",
-      "status": "No exact match",
-      "catalog_type": null,
-      "assembly_type": null,
-      "source_url": "https://jlcpcb.com/parts/componentSearch?searchTxt=RT0603BRD07106KL",
-      "note": "Exact JLCPCB search returned zero results. Global Sourcing review is required; no C-code or availability inferred. Preserve 106 kΩ and 0.1% unless the feedback design is requalified.",
-      "observed_local_date": "2026-09-29"
+      "verified_jlcpcb_code": "C4185599",
+      "headline_stock": 226,
+      "available_order_quantity": 225,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599",
+      "note": "Replacement for uncatalogued Yageo RT0603BRD07106KL. Exact 106 kohm, +/-0.1%, +/-25 ppm/C thin-film 0603 part; existing footprint and feedback ratio retained. Page showed USD 1.1508 at 1+, USD 0.9427 at 10+; MSL 1, Economic and Standard assembly. Stock is unreserved.",
+      "observed_local_date": "2026-09-29",
+      "observed_utc_date": "2026-09-30",
+      "unit_price_usd_1": 1.1508,
+      "unit_price_usd_10": 0.9427
     },
     {
       "references": [
@@ -419,12 +422,11 @@
     "tdk": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf"
   },
   "counts": {
-    "Stocked": 13,
+    "Stocked": 14,
     "Low stock": 2,
-    "Pre-order": 4,
-    "No exact match": 1
+    "Pre-order": 4
   },
-  "source_bom_sha256": "66dd0eed9760acfdd11d12b5f801006af60b26d8acc9216c23918f9e3b0abfaa",
-  "conclusion": "15 electronic MPNs stocked (two low); four pre-order; one without exact catalog match. Core sourcing is separate and is not counted as a JLCPCB availability failure.",
-  "changes": "F1 replaced by Bourns SF-1206F100-2, footprint and 3D model updated, and eight previously missing exact-MPN catalog codes added. No purchases, supplier messages or supplier uploads."
+  "source_bom_sha256": "f3423d5c083aa773944c9a68e4d3a8e8d8b80b47e301dee98e95a838132e701a",
+  "conclusion": "16 electronic MPNs stocked (two low); four pre-order; all 20 have exact catalog matches. Core sourcing is separate and is not counted as a JLCPCB availability failure.",
+  "changes": "F1 replaced by Bourns SF-1206F100-2 with updated footprint and 3D model; R3 replaced by Vishay TNPW0603106KBEEN / C4185599 with unchanged 0603 footprint and feedback ratio; eight previously missing exact-MPN catalog codes added. No purchases, supplier messages or supplier uploads."
 }

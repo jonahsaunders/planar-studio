@@ -11,6 +11,7 @@ Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic compon
 | Reference | Change and reason |
 | --- | --- |
 | R1 | 681 kΩ → 649 kΩ. Improves the 18 V startup screening corner to 17.55 V including the input diode. Typical-only hysteresis prevents a guaranteed production-corner claim. |
+| R3 | Yageo RT0603BRD07106KL → Vishay TNPW0603106KBEEN / JLCPCB C4185599. Preserves 106 kΩ, 0.1%, 25 ppm/°C, the feedback ratio and existing 0603 footprint/model; resolves the exact catalog gap. |
 | D1 | SS110/SMA → DFLS1100-7/PowerDI123, with a verified exact manufacturer drawing and polarity. |
 | D4 | SMAJ13A → SMAJ12A-13-F. Rating-based SW clamp estimate falls from 58.5 to 56.9 V. Dynamic/temperature behavior still needs measurement. |
 | C4 | Current manufacturer-confirmed Samsung CL32B226KOJNNNE output ceramic, same 1210 package. |
@@ -302,13 +303,13 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Remaining validation:** Verify startup threshold/hysteresis and resistor substitution tolerances with R1.
 
-### R3 — RT0603BRD07106KL
+### R3 — TNPW0603106KBEEN
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD07106KL) · `R_0603_1608Metric`
+[Manufacturer/source](https://www.vishay.com/docs/28758/tnpw_e3.pdf) · `R_0603_1608Metric`
 
-**Rating:** 106 kohm +/-0.1%, 25 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage.
+**Rating:** 106 kohm +/-0.1%, 25 ppm/C; retain conservative 0.1 W at 70 C and 75 V design limits. JLCPCB-linked Vishay datasheet 28758 Rev. 26-Sep-2023 specifies 0.110 W general operation / 0.210 W advanced operation and 75 V for TNPW0603.
 
-**Footprint and pin mapping:** Exact Yageo RT spec sheet confirms 0603 thin-film part and tolerance; previous unrelated source link replaced. Pad 1 SW, pad 2 RFB.
+**Footprint and pin mapping:** Vishay TNPW0603 e3 thin-film part: 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm. Compatible with existing 0603 lands (0.80 x 0.95 mm, 1.65 mm pitch); footprint, placement and existing generic 0603 3D model retained. Pad 1 SW, pad 2 RFB. JLCPCB C4185599 is the exact TNPW0603106KBEEN, +/-0.1%, +/-25 ppm/C part.
 
 **Use and calculated stress:** Reflected-voltage sensing; R3/R4/2 - diode-drop relation gives nominal 5 V. Even assigning 60 V continuously gives <34 mW; RFB pin current, not resistor heating, sets the tighter constraint.
 

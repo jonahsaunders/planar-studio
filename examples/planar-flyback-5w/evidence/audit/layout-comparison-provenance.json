@@ -3,7 +3,7 @@
   "method": "Identical margin crop and proportional scaling of archived/current native KiCad orthographic top views; no board pixels retouched.",
   "image_SHA256": {
     "board-3d-top-before.png": "6d723efc3fc1e878bd04875593519b86860c37249cd26cebf48c4f58dc1b5e02",
-    "board-3d-top.png": "a3bbd9ce0cc61e3cb32f09f711ce99c13ed543812940fd71d24a9861c65e6b4c"
+    "board-3d-top.png": "a6e81be3d68493d1377bb7b8347361d6fd165572426acaceaabffbe5ec7c6607"
   },
-  "current_board_SHA256": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea"
+  "current_board_SHA256": "abd1ac10c6c77924942c53c0895b084321e3c1adf795abbfe9410fbf10863ff9"
 }
