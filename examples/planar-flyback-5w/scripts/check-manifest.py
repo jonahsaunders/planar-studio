@@ -22,6 +22,8 @@ for file in files:
         if file.suffix == '.svg':
             # KiCad emits trailing spaces in SVG markup; preserve line breaks.
             data = b'\n'.join(line.rstrip(b' \t') for line in data.split(b'\n'))
+        if file.suffix == '.kicad_dru':
+            data = data.rstrip()+b'\n'
         file.write_bytes(data)
     hashes[file.relative_to(R).as_posix()] = hashlib.sha256(data).hexdigest()
 if args.write:
