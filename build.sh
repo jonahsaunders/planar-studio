@@ -24,14 +24,14 @@ mkdir -p "$STAGE/plugins" "$STAGE/resources"
 cp metadata.json "$STAGE/"
 cp resources/icon.png "$STAGE/resources/icon.png"
 
-# Everything the plugin needs at runtime, and nothing else. Tests, the dev
-# scratch files and the screenshots stay out of the archive.
+# Runtime files and user-facing documentation, including the feature gallery.
+# Tests and development scratch files stay out of the archive.
 cp plugin.json requirements.txt ipc_entry.py LICENSE README.md "$STAGE/plugins/"
 cp -R planar_studio "$STAGE/plugins/"
 cp -R web "$STAGE/plugins/"
 mkdir -p "$STAGE/plugins/docs"
 cp docs/development.md docs/engineering-models.md "$STAGE/plugins/docs/"
-cp docs/screenshot-inductor.png docs/screenshot-filter.png docs/screenshot-filter-light.png "$STAGE/plugins/docs/"
+cp docs/screenshot-*.png docs/feature-overview.svg docs/feature-capture.json docs/gallery.md "$STAGE/plugins/docs/"
 cp docs/transformer-design.md docs/directional-antennas.md "$STAGE/plugins/docs/"
 cp docs/winding-obstacles.md docs/publishing-motor-update.md docs/motor-families.png docs/motor-families.md docs/motor-shapes.png docs/motor-coils.md docs/design-tools.md docs/creators.md docs/creator-families.md docs/stack-load-antennas.md "$STAGE/plugins/docs/"
 mkdir -p "$STAGE/plugins/resources"
