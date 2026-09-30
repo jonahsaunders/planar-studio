@@ -29,6 +29,8 @@ All **20 electronic MPNs / 24 placements** have exact JLCPCB codes and orderable
 
 **[Start here: JLCPCB upload files](manufacturing/START-HERE.md).** Supply the single-board Gerber ZIP, BOM and CPL; JLCPCB is to prepare the assembly panel. The earlier customer-panel files are withdrawn and excluded from the current package.
 
+The September 30 [placement correction](manufacturing/PLACEMENT-REVIEW.md) fixes U1 rotation, connector orientation and diode origins in the CPL. Replace earlier placement uploads and review the [pin and polarity drawing](manufacturing/placement-review.svg) against the fresh JLCPCB preview before fabrication.
+
 [Electronic BOM](manufacturing/BOM-JLCPCB.csv) · [Placement file](manufacturing/CPL-JLCPCB.csv) · [JLCPCB panelization requirements](manufacturing/PANEL.md) · [Fabrication requirements](manufacturing/FABRICATION.md) · [Component/pinout audit](COMPONENT-AUDIT.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md)
 
 The project includes native ERC/DRC, schematic-to-board pin checks, winding continuity checks, component land-pattern/rating reviews and nominal 3D interference checks. Reproduce with [rebuild.py](scripts/rebuild.py) using KiCad 10 and Node; the bundled models keep the project portable.

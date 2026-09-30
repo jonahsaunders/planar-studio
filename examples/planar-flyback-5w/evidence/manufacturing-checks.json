@@ -9,10 +9,11 @@
   "open_connector_holes": 4,
   "copper_Gerbers": 6,
   "coordinate_origin": "Bottom-left board datum; X right/Y up",
-  "connector_CPL_origin": "Body centroid corrected from pin-1 footprint origin",
+  "connector_CPL_origin": "Exact catalog pin-row midpoint; openings outward; see PLACEMENT-REVIEW.md",
   "release_status": "Supplier review only; no manufacturing approval",
   "nonplated_M3_mounting_holes": 4,
   "mounting_holes_match_drill_coordinates": true,
   "mounting_holes_excluded_from_BOM_CPL": true,
-  "CPL_converter": "KiStack convert_position.py, upstream commit 8494dbd; connector centroids corrected first"
+  "CPL_converter": "KiStack convert_position.py, upstream commit 8494dbd; reviewed exact-part frame corrections applied first",
+  "placement_review": "sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required"
 }

@@ -1,6 +1,6 @@
 # A1 validation record — September 30, 2026
 
-**CAD and analytical checks pass. Manufacturing release remains open.** No hardware has been built or tested; JLCPCB has not accepted the process or received these files.
+**CAD and analytical checks pass. Manufacturing release remains open.** Hardware testing and factory process acceptance are unverified. The user's assembly preview exposed placement errors; the corrected CPL requires a fresh preview review.
 
 | Check | Current result | Evidence |
 | --- | --- | --- |
@@ -11,6 +11,7 @@
 | Feedback | 113k/10.7k/127k agree across schematic, board and BOM; 159.85 µA preliminary resistive bound at the 17.5 V envelope | [Checks](evidence/audit/feedback-checks.json), [assumptions](FEEDBACK-REVISION.md) |
 | Stack | JLC061611-1080A, 35 µm outer / 30 µm inner; published sum 1.618 mm in the 1.6 mm order class | [Stack data](stackup.json), [winding calculation](evidence/winding-model.json) |
 | Manufacturing exports | 24 electronic placements; six copper layers; 66 fill/cap holes; connector and mounting holes remain open | [Export checks](evidence/manufacturing-checks.json) |
+| Catalog placement and polarity | 24 placements / 56 catalog pad centers mapped to intended PCB pads/nets; six CPL entries corrected; fresh factory preview pending | [Placement checks](evidence/audit/placement-checks.json), [polarity guide](manufacturing/PLACEMENT-REVIEW.md) |
 | Assembly panel | JLCPCB to prepare and return a panel drawing from the single-board files; factory review outstanding. Earlier customer panel withdrawn | [Panelization requirements](manufacturing/PANEL.md), [upload guide](manufacturing/START-HERE.md) |
 | 3D | 29 footprints / 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Solid checks](evidence/audit/3d-solid-checks.json) |
 | Visual inspection | Actual schematic, single-board copper/technical Gerber sheets and assembly renders inspected | [Schematic](evidence/audit/schematic-overview.png), [copper](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png) |
@@ -30,4 +31,4 @@ Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Function
 
 Run scripts/rebuild.py using KiCad 10 Python and Node. Then refresh audit-renders.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py, render-schematic.mjs and audit-3d-solids.py. The render and solid tools require the documented Pillow/PyGerber, Sharp and CadQuery environments. Run scripts/package-project.py with a fresh output directory to package the single-board handoff; panelization is supplied by JLCPCB and has no local generation step. All package/model references remain local.
 
-Earlier fuse, mounting and feedback-only revision comparisons are **historical**. The current revision also changes stocking selections, R8 lands and electrical stack dimensions; it does not claim unchanged geometry against those earlier commits. Current source hashes accompany the new checks. No supplier upload, contact, purchase or fabrication was performed.
+Earlier fuse, mounting and feedback-only revision comparisons are **historical**. The current revision also changes stocking selections, R8 lands and electrical stack dimensions; it does not claim unchanged geometry against those earlier commits. Current source hashes accompany the new checks. The placement correction changes assembly export coordinates/angles, not circuit or copper. This audit did not upload the corrected files, contact a supplier, purchase parts or authorize fabrication.

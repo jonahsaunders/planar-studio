@@ -1,0 +1,969 @@
+{
+  "status": "PASS: saved catalog geometry and PCB net/pad mapping; live factory preview remains unverified",
+  "placements": 24,
+  "catalog_parts": 20,
+  "catalog_pads_checked": 56,
+  "regressions_rejected": [
+    "U1: wrong Rotation rejected",
+    "D1: wrong Rotation rejected",
+    "D2: wrong Rotation rejected",
+    "D3: wrong Rotation rejected",
+    "D4: wrong Rotation rejected",
+    "C3: wrong Rotation rejected",
+    "C7: wrong Rotation rejected",
+    "C8: wrong Rotation rejected",
+    "J1: wrong Rotation rejected",
+    "J2: wrong Rotation rejected",
+    "D1: wrong Mid Y rejected",
+    "D3: wrong Mid Y rejected",
+    "D2: wrong Mid Y rejected",
+    "J1: wrong Mid Y rejected",
+    "J2: wrong Mid Y rejected"
+  ],
+  "checks": [
+    {
+      "reference": "C1",
+      "lcsc": "C138687",
+      "x_mm": 10.5,
+      "y_mm": 76.365,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            8.982604,
+            76.365
+          ],
+          "pcb_center_mm": [
+            9.025,
+            76.365
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            12.017396,
+            76.365
+          ],
+          "pcb_center_mm": [
+            11.975,
+            76.365
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C2",
+      "lcsc": "C138687",
+      "x_mm": 29.0,
+      "y_mm": 78.0,
+      "rotation_deg": 90.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            29.0,
+            79.517396
+          ],
+          "pcb_center_mm": [
+            29.0,
+            79.475
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            29.0,
+            76.482604
+          ],
+          "pcb_center_mm": [
+            29.0,
+            76.525
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C3",
+      "lcsc": "C136277",
+      "x_mm": 26.0,
+      "y_mm": 18.5,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            28.670048,
+            18.5
+          ],
+          "pcb_center_mm": [
+            28.8,
+            18.5
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/GND_ISO",
+          "catalog_center_mm": [
+            23.329952,
+            18.5
+          ],
+          "pcb_center_mm": [
+            23.2,
+            18.5
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C4",
+      "lcsc": "C55530",
+      "x_mm": 31.5,
+      "y_mm": 25.88,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/GND_ISO",
+          "catalog_center_mm": [
+            33.017396,
+            25.88
+          ],
+          "pcb_center_mm": [
+            32.975,
+            25.88
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            29.982604,
+            25.88
+          ],
+          "pcb_center_mm": [
+            30.025,
+            25.88
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C5",
+      "lcsc": "C77045",
+      "x_mm": 11.5,
+      "y_mm": 78.8,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            10.799976,
+            78.8
+          ],
+          "pcb_center_mm": [
+            10.725,
+            78.8
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/INTVCC",
+          "catalog_center_mm": [
+            12.200024,
+            78.8
+          ],
+          "pcb_center_mm": [
+            12.275,
+            78.8
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C6",
+      "lcsc": "C513677",
+      "x_mm": 25.0,
+      "y_mm": 73.6,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/SW",
+          "catalog_center_mm": [
+            24.000002,
+            73.6
+          ],
+          "pcb_center_mm": [
+            24.05,
+            73.6
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/SNUB",
+          "catalog_center_mm": [
+            25.999998,
+            73.6
+          ],
+          "pcb_center_mm": [
+            25.95,
+            73.6
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C7",
+      "lcsc": "C454353",
+      "x_mm": 35.5,
+      "y_mm": 88.0,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            39.096386,
+            88.0
+          ],
+          "pcb_center_mm": [
+            39.2,
+            88.0
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN_DAMP",
+          "catalog_center_mm": [
+            31.903614,
+            88.0
+          ],
+          "pcb_center_mm": [
+            31.8,
+            88.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "C8",
+      "lcsc": "C136277",
+      "x_mm": 16.0,
+      "y_mm": 18.5,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            18.670048,
+            18.5
+          ],
+          "pcb_center_mm": [
+            18.8,
+            18.5
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/GND_ISO",
+          "catalog_center_mm": [
+            13.329952,
+            18.5
+          ],
+          "pcb_center_mm": [
+            13.2,
+            18.5
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "D1",
+      "lcsc": "C107674",
+      "x_mm": 13.0,
+      "y_mm": 91.3375,
+      "rotation_deg": 90.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            13.0,
+            90.15005
+          ],
+          "pcb_center_mm": [
+            13.0,
+            90.15
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/VIN_FUSED",
+          "catalog_center_mm": [
+            13.0,
+            92.52495
+          ],
+          "pcb_center_mm": [
+            13.0,
+            92.525
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "D2",
+      "lcsc": "C444972",
+      "x_mm": 26.0,
+      "y_mm": 27.9,
+      "rotation_deg": 90.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "2",
+          "net": "/SEC_A",
+          "catalog_center_mm": [
+            26.919988,
+            29.932
+          ],
+          "pcb_center_mm": [
+            26.92,
+            29.862
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/SEC_A",
+          "catalog_center_mm": [
+            25.080012,
+            29.932
+          ],
+          "pcb_center_mm": [
+            25.08,
+            29.862
+          ]
+        },
+        {
+          "catalog_pin": "3",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            26.0,
+            25.868
+          ],
+          "pcb_center_mm": [
+            26.0,
+            25.88
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "D3",
+      "lcsc": "C107674",
+      "x_mm": 25.0,
+      "y_mm": 76.9625,
+      "rotation_deg": 270.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/CLAMP",
+          "catalog_center_mm": [
+            25.0,
+            78.14995
+          ],
+          "pcb_center_mm": [
+            25.0,
+            78.15
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/SW",
+          "catalog_center_mm": [
+            25.0,
+            75.77505
+          ],
+          "pcb_center_mm": [
+            25.0,
+            75.775
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "D4",
+      "lcsc": "C134947",
+      "x_mm": 34.0,
+      "y_mm": 76.1,
+      "rotation_deg": 270.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            34.0,
+            73.907472
+          ],
+          "pcb_center_mm": [
+            34.0,
+            74.1
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/CLAMP",
+          "catalog_center_mm": [
+            34.0,
+            78.292528
+          ],
+          "pcb_center_mm": [
+            34.0,
+            78.1
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "F1",
+      "lcsc": "C3164649",
+      "x_mm": 15.5,
+      "y_mm": 97.0,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN_RAW",
+          "catalog_center_mm": [
+            16.945006,
+            97.0
+          ],
+          "pcb_center_mm": [
+            17.225,
+            97.0
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/VIN_FUSED",
+          "catalog_center_mm": [
+            14.054994,
+            97.0
+          ],
+          "pcb_center_mm": [
+            13.775,
+            97.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "J1",
+      "lcsc": "C474881",
+      "x_mm": 25.0,
+      "y_mm": 97.0,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            27.499995,
+            97.0
+          ],
+          "pcb_center_mm": [
+            27.5,
+            97.0
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "1",
+          "net": "/VIN_RAW",
+          "catalog_center_mm": [
+            22.500005,
+            97.0
+          ],
+          "pcb_center_mm": [
+            22.5,
+            97.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "J2",
+      "lcsc": "C474881",
+      "x_mm": 25.0,
+      "y_mm": 8.0,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "2",
+          "net": "/GND_ISO",
+          "catalog_center_mm": [
+            22.500005,
+            8.0
+          ],
+          "pcb_center_mm": [
+            22.5,
+            8.0
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            27.499995,
+            8.0
+          ],
+          "pcb_center_mm": [
+            27.5,
+            8.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R1",
+      "lcsc": "C245991",
+      "x_mm": 15.5,
+      "y_mm": 86.0,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/UVLO",
+          "catalog_center_mm": [
+            16.253364,
+            86.0
+          ],
+          "pcb_center_mm": [
+            16.325,
+            86.0
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            14.746636,
+            86.0
+          ],
+          "pcb_center_mm": [
+            14.675,
+            86.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R2",
+      "lcsc": "C137696",
+      "x_mm": 18.5,
+      "y_mm": 86.0,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            19.253364,
+            86.0
+          ],
+          "pcb_center_mm": [
+            19.325,
+            86.0
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/UVLO",
+          "catalog_center_mm": [
+            17.746636,
+            86.0
+          ],
+          "pcb_center_mm": [
+            17.675,
+            86.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R3",
+      "lcsc": "C705718",
+      "x_mm": 21.65,
+      "y_mm": 77.365,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/RFB",
+          "catalog_center_mm": [
+            20.896636,
+            77.365
+          ],
+          "pcb_center_mm": [
+            20.825,
+            77.365
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/SW",
+          "catalog_center_mm": [
+            22.403364,
+            77.365
+          ],
+          "pcb_center_mm": [
+            22.475,
+            77.365
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R4",
+      "lcsc": "C861078",
+      "x_mm": 21.65,
+      "y_mm": 79.2,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            22.403364,
+            79.2
+          ],
+          "pcb_center_mm": [
+            22.475,
+            79.2
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/RREF",
+          "catalog_center_mm": [
+            20.896636,
+            79.2
+          ],
+          "pcb_center_mm": [
+            20.825,
+            79.2
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R5",
+      "lcsc": "C705722",
+      "x_mm": 19.1015,
+      "y_mm": 82.5,
+      "rotation_deg": 90.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/RREF",
+          "catalog_center_mm": [
+            19.1015,
+            83.253364
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            83.325
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/TC",
+          "catalog_center_mm": [
+            19.1015,
+            81.746636
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            81.675
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R6",
+      "lcsc": "C6683830",
+      "x_mm": 29.0,
+      "y_mm": 73.6,
+      "rotation_deg": 180.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/SNUB",
+          "catalog_center_mm": [
+            27.521212,
+            73.6
+          ],
+          "pcb_center_mm": [
+            27.5375,
+            73.6
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            30.478788,
+            73.6
+          ],
+          "pcb_center_mm": [
+            30.4625,
+            73.6
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R7",
+      "lcsc": "C137353",
+      "x_mm": 34.0,
+      "y_mm": 18.5,
+      "rotation_deg": 270.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/GND_ISO",
+          "catalog_center_mm": [
+            34.0,
+            17.021212
+          ],
+          "pcb_center_mm": [
+            34.0,
+            17.0375
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/+5V_ISO",
+          "catalog_center_mm": [
+            34.0,
+            19.978788
+          ],
+          "pcb_center_mm": [
+            34.0,
+            19.9625
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "R8",
+      "lcsc": "C840598",
+      "x_mm": 23.0,
+      "y_mm": 90.0,
+      "rotation_deg": 0.0,
+      "pads": [
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/VIN_DAMP",
+          "catalog_center_mm": [
+            26.066288,
+            90.0
+          ],
+          "pcb_center_mm": [
+            25.575,
+            90.0
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            19.933712,
+            90.0
+          ],
+          "pcb_center_mm": [
+            20.425,
+            90.0
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "U1",
+      "lcsc": "C673679",
+      "x_mm": 16.5,
+      "y_mm": 78.0,
+      "rotation_deg": 270.0,
+      "pads": [
+        {
+          "catalog_pin": "9",
+          "pcb_pad": "9",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            16.5508,
+            78.0
+          ],
+          "pcb_center_mm": [
+            16.5,
+            78.0
+          ]
+        },
+        {
+          "catalog_pin": "5",
+          "pcb_pad": "5",
+          "net": "/SW",
+          "catalog_center_mm": [
+            19.5226,
+            76.095
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            76.095
+          ]
+        },
+        {
+          "catalog_pin": "6",
+          "pcb_pad": "6",
+          "net": "/RFB",
+          "catalog_center_mm": [
+            19.5226,
+            77.365
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            77.365
+          ]
+        },
+        {
+          "catalog_pin": "7",
+          "pcb_pad": "7",
+          "net": "/RREF",
+          "catalog_center_mm": [
+            19.5226,
+            78.635
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            78.635
+          ]
+        },
+        {
+          "catalog_pin": "8",
+          "pcb_pad": "8",
+          "net": "/TC",
+          "catalog_center_mm": [
+            19.5226,
+            79.905
+          ],
+          "pcb_center_mm": [
+            19.1015,
+            79.905
+          ]
+        },
+        {
+          "catalog_pin": "4",
+          "pcb_pad": "4",
+          "net": "/PGND",
+          "catalog_center_mm": [
+            13.4774,
+            76.095
+          ],
+          "pcb_center_mm": [
+            13.8985,
+            76.095
+          ]
+        },
+        {
+          "catalog_pin": "3",
+          "pcb_pad": "3",
+          "net": "/VIN",
+          "catalog_center_mm": [
+            13.4774,
+            77.365
+          ],
+          "pcb_center_mm": [
+            13.8985,
+            77.365
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/INTVCC",
+          "catalog_center_mm": [
+            13.4774,
+            78.635
+          ],
+          "pcb_center_mm": [
+            13.8985,
+            78.635
+          ]
+        },
+        {
+          "catalog_pin": "1",
+          "pcb_pad": "1",
+          "net": "/UVLO",
+          "catalog_center_mm": [
+            13.4774,
+            79.905
+          ],
+          "pcb_center_mm": [
+            13.8985,
+            79.905
+          ]
+        }
+      ]
+    }
+  ]
+}
