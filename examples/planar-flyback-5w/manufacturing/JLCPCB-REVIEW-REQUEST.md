@@ -1,6 +1,6 @@
 # Feasibility-request template — not sent
 
-Reference only. This example was published to GitHub instead of being submitted to JLCPCB. No supplier has received this request or the design files, and no purchase or fabrication is authorized. The following is a reusable draft, not an active request.
+Reference only. This is a reusable draft for the user to submit. This audit has not sent the request or corrected placement files to JLCPCB, and no purchase or fabrication is authorized by this document.
 
 Please review the attached PS-FLYBACK-5W A1 package for five fully assembled engineering prototypes. It is an 18–36 V DC input, isolated 5 V / 1 A flyback converter with the transformer windings built into a six-layer PCB.
 
@@ -11,6 +11,8 @@ F1 is now Bourns SF-1206F100-2 / C3164649. Please confirm a compatible component
 Please also confirm JLC061611-1080A (1.6 mm order class, published copper/dielectric sum 1.618 mm) or return exact dimensions for an alternative, ±0.10 mm core-slot routing, filled/capped vias, through-hole connector assembly, and any component sourcing exceptions. The KiCad project, Gerbers/drills, electronic BOM/CPL, separate core BOM, via schedule and proposed test plan are included.
 
 Please return feasibility, sourcing exceptions, proposed assembly method, lead time, tooling/NRE and quotation. This is a design-for-manufacture review only; do not start fabrication or purchase materials. The A1 design still requires first-article electrical, thermal and magnetic validation.
+
+Use the corrected CPL and PLACEMENT-REVIEW.md. Confirm U1 pin 1 at upper-left, outward-facing connector openings, centered diode bodies and the documented diode/capacitor polarities in your returned assembly preview. The connector catalog numbering and D2 physical pin numbering differ from the PCB logical pad numbers; the guide gives the explicit mapping and required net connections.
 
 Please prepare the assembly panel yourselves from the supplied 50 × 104 mm single-board Gerbers, BOM, CPL and selective fill/cap schedule. The earlier customer-designed panel is withdrawn. Add suitable rails, tooling and fiducials, and propose tab locations and separation that preserve the core openings, mounting features and component clearances. Transform the placement and via-fill coordinates consistently. Return the proposed panel drawing and assembly orientation preview for review; do not alter the board outline, copper, stack or internal slots without approval. See PANEL.md for the handoff requirements.
 

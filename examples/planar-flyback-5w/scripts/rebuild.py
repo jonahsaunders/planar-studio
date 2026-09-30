@@ -45,6 +45,8 @@ run(args.kicad_cli, 'pcb', 'export', 'drill', '--format', 'excellon', '--drill-o
 run(args.kicad_cli, 'pcb', 'export', 'pos', '--format', 'csv', '--units', 'mm', '--side', 'front',
     '--use-drill-file-origin', '-o', 'manufacturing/KiCad-positions.csv', pcb)
 py('manufacturing-data.py')
+py('verify-placement.py')
+py('render-placement.py')
 py('verify-feedback.py')
 py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(prefix='flyback-svg-') as temp:

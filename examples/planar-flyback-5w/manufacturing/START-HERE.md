@@ -1,6 +1,6 @@
 # JLCPCB handoff — single board, factory panelization
 
-Use the files in this directory for **JLCPCB-managed panelization** of the A1 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
+Use the files in this directory for **JLCPCB-managed panelization** of the A1 flyback converter. This package supersedes the earlier customer-panel proposal and corrects the placement errors seen in the user's assembly preview. The corrected files are prepared for the user to upload and review; this audit has not submitted them or authorized an order.
 
 ## Upload files
 
@@ -14,6 +14,7 @@ The outer review-package ZIP contains the complete project and supporting docume
 
 ## Include with the engineering review
 
+- [Placement corrections and polarity acceptance](PLACEMENT-REVIEW.md) — replace the old CPL; check the fresh preview against the [pin and polarity drawing](placement-review.svg)
 - [Prepared review request](JLCPCB-REVIEW-REQUEST.md)
 - [Fabrication and assembly requirements](FABRICATION.md)
 - [Panelization requirements](PANEL.md)
@@ -21,7 +22,7 @@ The outer review-package ZIP contains the complete project and supporting docume
 - [Exact stack dimensions](../stackup.json)
 - [Top assembly drawing](assembly-top.svg)
 
-Have JLCPCB return the panel drawing and assembly orientation preview for review. Confirm the specified stack, internal core-slot tolerances, selective via filling, connector assembly and component-compatible reflow profile. The online panel option does not by itself establish acceptance of these requirements.
+Have JLCPCB return the panel drawing and assembly orientation preview for review. Verify U1 pin 1 at upper-left, both connector openings toward the board edges, diode cathodes and capacitor polarity per the placement guide. Confirm the specified stack, internal core-slot tolerances, selective via filling, connector assembly and component-compatible reflow profile. The online panel option does not by itself establish acceptance of these requirements.
 
 The ferrite cores are separate from the electronic BOM: [core materials](CORE-BOM.csv) and [core preparation/installation](CORE-ASSEMBLY.md). Raw cores may come from DigiKey; the prepared gap and installation after soldering and panel separation remain required.
 
