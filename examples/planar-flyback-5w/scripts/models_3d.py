@@ -3,6 +3,7 @@ import argparse,hashlib,json,os,re,shutil
 from pathlib import Path
 R=Path(__file__).resolve().parents[1];CAD=R/'kicad';MODELS=CAD/'3dmodels'
 EXTRA={
+ 'R_Bourns_CRM2512':'stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step',
  'Fuse_Bourns_SF1206F':'vendor/Bourns/SF-1206F_KiCad.step',
  'D_PowerDI-5':'custom/PowerDI5.step',
  'SOIC8_EP_LT_S8E':'stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step',

@@ -13,10 +13,12 @@
   "manufacturing": "JLCPCB sources and assembles board-mounted electronics; planar ferrite cores may be sourced separately from DigiKey",
   "cad": "KiCad 10",
   "design_tool": "Planar Studio",
-  "requested_workflow": "I2CJack LLM KiCad workflow; exact source not yet identified",
+  "requested_workflow": "KiStack; direct JLCPCB and manufacturer sources authorized in lieu of unavailable sourcing connectors",
   "provisional_design_targets": {
     "output_tolerance_percent": 5,
     "ripple_mV_pp": 100,
+    "SW_minus_VIN_peak_V_including_overshoot_and_uncertainty": 17.5,
+    "feedback_resistor_temperature_excursion_assumption_C": 100,
     "ambient_temperature_C": [
       0,
       50
@@ -35,8 +37,9 @@
     "Flyback switching calculation/simulation across input and load conditions",
     "Traceable, orderable BOM and matching assembly positions",
     "Gerber, drill, stackup, core assembly drawing and manufacturing notes",
-    "Explicit validation report separating simulated results from unperformed bench tests"
+    "Explicit validation report separating simulated results from unperformed bench tests",
+    "Measured SW-VIN peak <=17.5 V including overshoot and uncertainty, RFB pin voltage/current compliance, regulation and clamp/snubber temperatures across input/temperature, startup, full load, light-load bursts, overload and short-circuit recovery"
   ],
   "publication_status": "Public GitHub engineering example; no supplier submission, purchase or fabrication authorization",
-  "manufacturing_status": "Board PCBA sourcing and process acceptance unconfirmed; separate DigiKey core procurement permitted"
+  "manufacturing_status": "All 20 electronic MPNs stocked in 2026-09-30 snapshot. Factory stack/panel/reflow acceptance and physical qualification remain pending."
 }

@@ -10,6 +10,7 @@ import cadquery as cq
 R=Path(__file__).resolve().parents[1]
 OUT=R/'kicad/3dmodels/custom';OUT.mkdir(parents=True,exist_ok=True)
 records={}
+board_thickness=json.loads((R/'stackup.json').read_text())['published_copper_plus_dielectric_mm']
 def box(x,y,z,dx,dy,dz):
     return cq.Workplane('XY').box(dx,dy,dz).translate((x,y,z))
 def save(name,assembly,description,dimensions):
@@ -68,19 +69,20 @@ mag.add(strap,name='provisional_glass_cloth_retention',color=cq.Color(.83,.75,.5
 for x in [-15.975,15.975]:
     for y in [-8.2,8.2]:
         mag.add(box(x,y,-.8,.2,2,.6),name=f'provisional_external_bond_{x}_{y}',color=cq.Color(.54,.38,.18))
+mag.loc=cq.Location(cq.Vector(0,0,-(board_thickness-1.6)/2))
 save('EELP32_prepared_pair',mag,'Original nominal E+E geometry with 0.21 mm center-only gap; strap/bond envelopes are provisional.',
      {'core_width_mm':31.75,'core_depth_mm':20.35,'core_height_mm':12.7,'total_center_gap_mm':.21,
-      'board_thickness_mm':1.6,'mating_plane_z_mm':-.8,'window_height_mm':6.4,'strap_thickness_mm':.18,'strap_width_mm':12.7})
+      'board_thickness_mm':board_thickness,'mating_plane_z_mm':-board_thickness/2,'window_height_mm':6.4,'strap_thickness_mm':.18,'strap_width_mm':12.7})
 
 # Illustrative hardware for the four mounting holes, not a procurement choice.
 mount=cq.Assembly(name='M3_nylon_mount_provisional')
-standoff=cq.Workplane('XY').circle(3).circle(1.55).extrude(8).translate((0,0,-9.6))
+standoff=cq.Workplane('XY').circle(3).circle(1.55).extrude(8).translate((0,0,-8-board_thickness))
 head=cq.Workplane('XY').circle(2.75).extrude(2.5)
 head=head.cut(cq.Workplane('XY').polygon(6,2.5).extrude(1.5).translate((0,0,1)))
 screw=head.union(cq.Workplane('XY').circle(1.45).extrude(6).translate((0,0,-6)))
 mount.add(standoff,name='8mm_nonconductive_standoff',color=cq.Color(.83,.85,.88))
 mount.add(screw,name='illustrative_M3_screw',color=cq.Color(.78,.8,.84))
 save('M3_8mm_mount_envelope',mount,'Provisional unthreaded nylon hardware envelope; not included in the BOM/CPL.',
-     {'standoff_height_mm':8,'standoff_diameter_mm':6,'head_diameter_mm':5.5,'shank_diameter_mm':2.9,'board_thickness_mm':1.6})
+     {'standoff_height_mm':8,'standoff_diameter_mm':6,'head_diameter_mm':5.5,'shank_diameter_mm':2.9,'board_thickness_mm':board_thickness})
 (OUT/'geometry.json').write_text(json.dumps({'generator':'CadQuery 2.6.1','models':records},indent=2)+'\n',encoding='utf8',newline='\n')
 print(json.dumps(records,indent=2))

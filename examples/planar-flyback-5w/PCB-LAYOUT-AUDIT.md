@@ -105,7 +105,7 @@ Before fabrication release, obtain stack/via-fill/core-process acceptance and
 review actual hardware, wiring and enclosure constraints. On prototypes, verify
 switch overshoot, rectifier stress, ripple, output trim/regulation, startup,
 load transients, overload, biased inductance, temperature and EMI. The revised rating-based clamp estimate is 56.9 V and bulk-only ripple estimate
-is 50.58 mV. RFB current margin is still tight; measure SW−VIN below 20.5 V.
+is 50.58 mV. The feedback revision requires SW−VIN peak ≤17.5 V including overshoot and uncertainty; verify RFB pin voltage/current on hardware. See [feedback revision](FEEDBACK-REVISION.md).
 The input damping branch does not qualify hot-plug. Shorter routing is not a measured pass.
 
 ## Evidence and reproduction

@@ -163,7 +163,7 @@
     },
     {
       "reference": "R8",
-      "footprint": "R_2512_6332Metric",
+      "footprint": "R_Bourns_CRM2512",
       "model": "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
       "provisional_hardware": false
     },
@@ -182,19 +182,19 @@
   ],
   "assets": {
     "custom/EELP32_prepared_pair.step": {
-      "sha256": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
+      "sha256": "58cbe9b09fece4e14f0bc42ca886088165128661f4da1356de59b9cd1c6d32b2",
       "type": "Original nominal geometry"
     },
     "custom/KF301_5mm_2P.step": {
-      "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
+      "sha256": "fcceb0ecbef9afe8b8cc604e51cd39325607f91fa74e93cf5e6f9d678fb35ae3",
       "type": "Original nominal geometry"
     },
     "custom/M3_8mm_mount_envelope.step": {
-      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "type": "Original nominal geometry"
     },
     "custom/PowerDI5.step": {
-      "sha256": "d86ad87c76c085b52d90c869fd750b830df55d443c970e34d16cbfa5bbecbf52",
+      "sha256": "fa0f799ac1c5957c781dffbbe7891d30b2966cea6a9f7cbfe35e1c78652e309d",
       "type": "Original nominal geometry"
     },
     "stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": {

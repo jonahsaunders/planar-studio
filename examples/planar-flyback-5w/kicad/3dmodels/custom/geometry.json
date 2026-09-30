@@ -60,8 +60,8 @@
         "core_depth_mm": 20.35,
         "core_height_mm": 12.7,
         "total_center_gap_mm": 0.21,
-        "board_thickness_mm": 1.6,
-        "mating_plane_z_mm": -0.8,
+        "board_thickness_mm": 1.618,
+        "mating_plane_z_mm": -0.809,
         "window_height_mm": 6.4,
         "strap_thickness_mm": 0.18,
         "strap_width_mm": 12.7
@@ -70,16 +70,16 @@
         "min": [
           -16.075,
           -10.175,
-          -7.33
+          -7.339
         ],
         "max": [
           16.075,
           10.175,
-          5.73
+          5.721
         ]
       },
       "valid_solid": true,
-      "volume_mm3": 5903.251345000003
+      "volume_mm3": 5903.251345000004
     },
     "M3_8mm_mount_envelope": {
       "file": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
@@ -89,13 +89,13 @@
         "standoff_diameter_mm": 6,
         "head_diameter_mm": 5.5,
         "shank_diameter_mm": 2.9,
-        "board_thickness_mm": 1.6
+        "board_thickness_mm": 1.618
       },
       "bounds_mm": {
         "min": [
           -3.0,
           -3.0,
-          -9.6
+          -9.618
         ],
         "max": [
           3.0,
@@ -104,7 +104,7 @@
         ]
       },
       "valid_solid": true,
-      "volume_mm3": 258.7509465680835
+      "volume_mm3": 258.7509465680836
     }
   }
 }

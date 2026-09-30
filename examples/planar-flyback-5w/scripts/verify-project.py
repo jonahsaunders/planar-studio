@@ -123,7 +123,9 @@ for t in art['tracks']:
             samples+=1
 setup=child(tree,'setup');stack=child(setup,'stackup')
 layers=children(stack,'layer');thickness=sum(float(child(l,'thickness')[1]) for l in layers if children(l,'thickness'))
-assert abs(thickness-1.6)<1e-8
+stack_spec=json.loads((ROOT/'stackup.json').read_text())
+assert abs(thickness-stack_spec['published_copper_plus_dielectric_mm'])<1e-8
+assert [float(child(l,'thickness')[1]) for l in layers if child(l,'type')[1]=='copper']==stack_spec['copper_mm']
 assert board.GetCopperLayerCount()==6
 assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==75
 assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==137

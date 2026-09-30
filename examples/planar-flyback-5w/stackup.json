@@ -1,0 +1,40 @@
+{
+  "manufacturer": "JLCPCB",
+  "code": "JLC061611-1080A",
+  "nominal_order_thickness_mm": 1.6,
+  "published_copper_plus_dielectric_mm": 1.618,
+  "source": "https://jlcpcb.com/impedance",
+  "observed_date": "2026-09-30",
+  "selection": "6 layers, 1.6 mm, 1 oz outer, 1 oz inner",
+  "copper_mm": [
+    0.035,
+    0.03,
+    0.03,
+    0.03,
+    0.03,
+    0.035
+  ],
+  "dielectric_mm": [
+    0.069,
+    0.4,
+    0.49,
+    0.4,
+    0.069
+  ],
+  "materials": [
+    "1080 x1",
+    "0.4 mm 1/1 oz core",
+    "7628 x1 + 1080 x1 + 7628 x1",
+    "0.4 mm 1/1 oz core",
+    "1080 x1"
+  ],
+  "winding_centers_relative_top_center_mm": [
+    0,
+    0.1015,
+    1.4815,
+    1.583
+  ],
+  "winding_model_copper_mm": 0.03,
+  "model_scope": "Uniform 30 um winding model conservatively screens DC resistance for 35 um external / 30 um internal copper. This is not a manufactured minimum or AC-loss qualification. Published stack totals 1.618 mm excluding mask; use 1.6 mm nominal order class and confirm factory tolerances.",
+  "factory_accepted": false
+}

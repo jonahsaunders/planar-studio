@@ -1,15 +1,15 @@
 {
   "method": "Rasterization of the native KiCad SVG; no circuit illustration substitutes.",
   "source_SHA256": {
-    "evidence/schematic.svg": "9793443cf36baf1ef57c78c1cf5a9319e8572a72d16d3bd69edf2ace0202a5f6",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "1374ecea19deb86b7b80204c0cdde284b9994e27a9c60c9ab4245852cfa9509b"
+    "evidence/schematic.svg": "11b47c1b797ac60a661e1a327a84f8295568b4be3622a519ef88e48809b972fb",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "47e0098ace567cd53f10b1efb71a81572e6411ac221012c72b191ebd36efbdf4"
   },
   "output_SHA256": {
-    "evidence/audit/schematic-overview.png": "1a824646373f9c5eb4e873e2e1769c148b82ffd57899439710a68ef769546955",
-    "evidence/audit/schematic-input.png": "67a1b7e186c1b696aba0a607bdd6a6844da9aaab50122e7e5f674c6ce34525d1",
+    "evidence/audit/schematic-overview.png": "e2df7d4c83e66d0db6499fd29d42e7d8ebb1729ead76486b0a7399e17d8a940e",
+    "evidence/audit/schematic-input.png": "6522b03576e3a8036c8a09c0834776b0b0070dad3efab4dc107e8955570d9b52",
     "evidence/audit/schematic-output.png": "d2ba69fff7f46b3a6b96f0880befe021e51f455e3233bc0bd3b041d5d887cc19",
-    "evidence/audit/schematic-controller.png": "2f23c43cbe9f5ec03d7d470ab7541d3adbe13c6b4f58dde999a2f0810dede6ec",
-    "evidence/audit/schematic-feedback.png": "ceb5ca73f9723e5a25529911bbfb275341298d5e965d5de8916b3b6090aa5148",
-    "evidence/audit/schematic-clamp.png": "b063760ea7787148bee3208228b94b07620950e00621fb7af34a7e7a14c6ceb6"
+    "evidence/audit/schematic-controller.png": "86a83b4920ff9699e1462358bcf6d9628d3b62f0d930c4dd8f07501361da1669",
+    "evidence/audit/schematic-feedback.png": "3bc6da4db19be569cb78f2220dd5d9a739d6715f31b49a183d87ad71c9151959",
+    "evidence/audit/schematic-clamp.png": "a8731568a433516669653827e640fe014c391485740d581ec2a948df400a99e4"
   }
 }

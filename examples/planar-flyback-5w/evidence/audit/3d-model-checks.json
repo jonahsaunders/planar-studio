@@ -2,7 +2,7 @@
   "footprints": 29,
   "unique_STEP_assets": 16,
   "missing_or_hidden_models": [],
-  "board_thickness_mm": 1.6,
+  "board_thickness_mm": 1.618,
   "coordinate_convention": "KiCad board X right / Y down; model world uses X right / Y up, top PCB surface Z=0; footprint angles are degrees CCW.",
   "models": [
     {
@@ -107,7 +107,7 @@
     {
       "reference": "D2",
       "model": "kicad/3dmodels/custom/PowerDI5.step",
-      "sha256": "d86ad87c76c085b52d90c869fd750b830df55d443c970e34d16cbfa5bbecbf52",
+      "sha256": "fa0f799ac1c5957c781dffbbe7891d30b2966cea6a9f7cbfe35e1c78652e309d",
       "position_mm": [
         101.0,
         110.0
@@ -151,7 +151,7 @@
     {
       "reference": "H1",
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
-      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
         79.5,
         37.5
@@ -162,7 +162,7 @@
     {
       "reference": "H2",
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
-      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
         120.5,
         37.5
@@ -173,7 +173,7 @@
     {
       "reference": "H3",
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
-      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
         79.5,
         132.5
@@ -184,7 +184,7 @@
     {
       "reference": "H4",
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
-      "sha256": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
+      "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
         120.5,
         132.5
@@ -195,7 +195,7 @@
     {
       "reference": "J1",
       "model": "kicad/3dmodels/custom/KF301_5mm_2P.step",
-      "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
+      "sha256": "fcceb0ecbef9afe8b8cc604e51cd39325607f91fa74e93cf5e6f9d678fb35ae3",
       "position_mm": [
         97.5,
         40.0
@@ -206,7 +206,7 @@
     {
       "reference": "J2",
       "model": "kicad/3dmodels/custom/KF301_5mm_2P.step",
-      "sha256": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
+      "sha256": "fcceb0ecbef9afe8b8cc604e51cd39325607f91fa74e93cf5e6f9d678fb35ae3",
       "position_mm": [
         102.5,
         129.0
@@ -305,7 +305,7 @@
     {
       "reference": "T1",
       "model": "kicad/3dmodels/custom/EELP32_prepared_pair.step",
-      "sha256": "d8468e3d71a4ae34453e033c0cea0ccfe8e73564a610a720c831a982632e218e",
+      "sha256": "58cbe9b09fece4e14f0bc42ca886088165128661f4da1356de59b9cd1c6d32b2",
       "position_mm": [
         100.0,
         85.0

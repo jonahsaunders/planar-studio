@@ -65,15 +65,21 @@ for net,locations in added.items():
 calc=json.loads((R/'evidence/electrical-sizing.json').read_text())
 ops=list(csv.DictReader((R/'evidence/operating-points.csv').open()))
 irms=max(float(v['input_cap_total_rms_A']) for v in ops if float(v['Iout'])==1)
+ratings=json.loads((R/'parts.json').read_text())['R8']
+r8max=ratings['resistance_ohm']*(1+ratings['tolerance_fraction'])*(1+ratings['tcr_ppm_per_C']*1e-6*100)
+r8min=ratings['resistance_ohm']*(1-ratings['tolerance_fraction'])*(1-ratings['tcr_ppm_per_C']*1e-6*100)
+r8pads=sorted(fps['R8'].Pads(),key=lambda p:p.GetNumber())
+assert all(xy(p.GetSize())==[2.45,3.7] for p in r8pads)
+assert abs(math.dist(xy(r8pads[0].GetPosition()),xy(r8pads[1].GetPosition()))-5.15)<1e-6
 filter_checks={'input_cap_rms_screening_bound_A':irms,'C7_ripple_rating_A_at_100kHz':1.1,
- 'R8_loss_if_all_input_ripple_in_branch_W':irms**2*2.2*1.01,'R8_rating_W_at_70C':1.5,
+ 'R8_loss_if_all_input_ripple_in_branch_W':irms**2*r8max,'R8_rating_W_at_70C':ratings['power_rating_W_at_70C'],'R8_rating_requires_total_pad_and_trace_area_mm2':300,'R8_board_thermal_rating_verified':False,
  'C7_charge_current_A_at_36V_10ms_Cplus20pct':47e-6*1.2*36/.01,
- 'R8_ramp_loss_W':(47e-6*1.2*36/.01)**2*2.2*1.01,
+ 'R8_ramp_loss_W':(47e-6*1.2*36/.01)**2*r8max,
  'C7_max_empty_charge_energy_J':.5*47e-6*1.2*36**2,
- 'ideal_hard_step_initial_R8_power_W':36**2/(2.2*.99),
+ 'ideal_hard_step_initial_R8_power_W':36**2/r8min,
  'output_bulk_minimum_F':calc['output_bulk_minimum_F'],'output_ripple_estimate_V':calc['full_load_ripple_sizing_max_V'],
  'limits':'Sinusoidal/distributed branch current, source/cable impedance, MLCC bias, frequency-dependent ESR and transients are not simulated. A hard step is not qualified.'}
-assert irms<1.1 and filter_checks['R8_loss_if_all_input_ripple_in_branch_W']<1.5
+assert irms<1.1 and filter_checks['R8_loss_if_all_input_ripple_in_branch_W']<ratings['power_rating_W_at_70C']
 record={'review_date':spec['review_date'],'board_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
         'source_SHA256':{name:hashlib.sha256((R/name).read_bytes()).hexdigest() for name in ['sources/component-review.json','circuit.json','kicad/PS-FLYBACK-5W.kicad_sch','evidence/electrical-sizing.json']},
         'reviewed_footprints':len(rows),'electronic_references':sum(not p['exclude_from_bom'] and p['ref']!='T1' for p in parts.values()),

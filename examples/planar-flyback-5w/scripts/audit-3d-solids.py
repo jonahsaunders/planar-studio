@@ -44,7 +44,7 @@ for (ref1,s1),(ref2,s2) in itertools.combinations(placed.items(),2):
         boolean_pairs+=1
         volume=s1.intersect(s2).Volume()
         if volume>1e-6:collisions.append({'references':[ref1,ref2],'volume_mm3':volume})
-record={'method':'OpenCascade STEP import validity, exact solid pair intersections, and nominal 1.6 mm substrate extruded from KiCad-exported routed outline and drilled holes; model top datum Z=0.',
+record={'method':'OpenCascade STEP import validity, exact solid pair intersections, and published-stack-thickness substrate extruded from KiCad-exported routed outline and drilled holes; model top datum Z=0.',
         'scope':'Nominal geometry only. No enclosure, tolerance stack, solder, tool/wire access or process qualification. Provisional M3 hardware and retention envelopes are illustrative.',
         'valid_STEP_assets':len(assets),'placed_footprints':len(placed),'component_pairs_checked':len(placed)*(len(placed)-1)//2,
         'component_intersections':collisions,'substrate_intersections':substrate_collisions,

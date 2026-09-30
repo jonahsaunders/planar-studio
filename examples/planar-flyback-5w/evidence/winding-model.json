@@ -131,46 +131,46 @@
     "cutoutStatus": "Not checked against destination board"
   },
   "analysis": {
-    "L1": 0.000011953082477142482,
-    "L2": 0.0000030038156414233304,
-    "M": 0.000005977876437510481,
-    "k": 0.9976319254443075,
+    "L1": 0.000011952319220605773,
+    "L2": 0.0000029997674208697953,
+    "M": 0.00000597730399510795,
+    "k": 0.9982411300588353,
     "ratio": 2,
-    "R1": 0.25357225583709364,
-    "R2": 0.06292732552621233,
-    "leakage": 5.654455073022524e-8,
-    "induced": 7.5120210800601805,
-    "loss": 0.31649958136330597,
+    "R1": 0.2956800914670808,
+    "R2": 0.0734152131139144,
+    "leakage": 4.2008174033395906e-8,
+    "induced": 7.511301727721622,
+    "loss": 0.3690953045809952,
     "matrix": [
       [
-        0.000011953082477142482,
-        0.000005977876437510481
+        0.000011952319220605773,
+        0.00000597730399510795
       ],
       [
-        0.000005977876437510481,
-        0.0000030038156414233304
+        0.00000597730399510795,
+        0.0000029997674208697953
       ]
     ],
     "coupling": [
       [
         1,
-        0.9976319254443075
+        0.9982411300588353
       ],
       [
-        0.9976319254443075,
+        0.9982411300588353,
         1
       ]
     ],
     "resistances": [
-      0.25357225583709364,
-      0.06292732552621233
+      0.2956800914670808,
+      0.0734152131139144
     ],
     "outputs": [
       {
         "name": "S",
         "turns": 2,
         "ratio": 2,
-        "induced": 7.5120210800601805
+        "induced": 7.511301727721622
       }
     ],
     "turns": [
@@ -181,30 +181,30 @@
       "pairs": [
         {
           "pair": "P ↔ S",
-          "value": 1.3579440474750636e-10
+          "value": 1.898469114807674e-10
         }
       ],
-      "value": 1.3579440474750636e-10,
+      "value": 1.898469114807674e-10,
       "source": "estimate"
     },
     "branchCurrents": [
       [
         1,
-        -1.734723475976807e-18
+        3.469446951953614e-18
       ],
       [
-        -0.49999999999999994,
-        -1.1102230246251565e-16
+        -0.4999999999999965,
+        1.5048071569277694e-15
       ],
       [
-        -0.5000000000000001,
-        1.1102230246251565e-16
+        -0.5000000000000036,
+        -1.5048071569277694e-15
       ]
     ],
     "losses": {
-      "dc": 0.31649958136330597,
-      "acExcess": 0.000011161375570778453,
-      "copper": 0.31651074273887675,
+      "dc": 0.3690953045809952,
+      "acExcess": 0.000007028897588801097,
+      "copper": 0.369102333478584,
       "core": null,
       "total": null,
       "temperature": null
@@ -223,6 +223,46 @@
       "connection": "parallel"
     }
   ],
+  "manufacturingStack": {
+    "manufacturer": "JLCPCB",
+    "code": "JLC061611-1080A",
+    "nominal_order_thickness_mm": 1.6,
+    "published_copper_plus_dielectric_mm": 1.618,
+    "source": "https://jlcpcb.com/impedance",
+    "observed_date": "2026-09-30",
+    "selection": "6 layers, 1.6 mm, 1 oz outer, 1 oz inner",
+    "copper_mm": [
+      0.035,
+      0.03,
+      0.03,
+      0.03,
+      0.03,
+      0.035
+    ],
+    "dielectric_mm": [
+      0.069,
+      0.4,
+      0.49,
+      0.4,
+      0.069
+    ],
+    "materials": [
+      "1080 x1",
+      "0.4 mm 1/1 oz core",
+      "7628 x1 + 1080 x1 + 7628 x1",
+      "0.4 mm 1/1 oz core",
+      "1080 x1"
+    ],
+    "winding_centers_relative_top_center_mm": [
+      0,
+      0.1015,
+      1.4815,
+      1.583
+    ],
+    "winding_model_copper_mm": 0.03,
+    "model_scope": "Uniform 30 um winding model conservatively screens DC resistance for 35 um external / 30 um internal copper. This is not a manufactured minimum or AC-loss qualification. Published stack totals 1.618 mm excluding mask; use 1.6 mm nominal order class and confirm factory tolerances.",
+    "factory_accepted": false
+  },
   "layerStack": [
     {
       "layer": "F.Cu",
@@ -232,17 +272,17 @@
     {
       "layer": "In1.Cu",
       "winding": "S",
-      "z": 0.135
+      "z": 0.1015
     },
     {
       "layer": "In4.Cu",
       "winding": "S",
-      "z": 1.43
+      "z": 1.4815
     },
     {
       "layer": "B.Cu",
       "winding": "P",
-      "z": 1.565
+      "z": 1.583
     }
   ],
   "ports": [
