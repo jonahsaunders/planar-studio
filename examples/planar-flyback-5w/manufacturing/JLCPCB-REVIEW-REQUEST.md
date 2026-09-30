@@ -4,7 +4,9 @@ Reference only. This example was published to GitHub instead of being submitted 
 
 Please review the attached PS-FLYBACK-5W A1 package for five fully assembled engineering prototypes. It is an 18–36 V DC input, isolated 5 V / 1 A flyback converter with the transformer windings built into a six-layer PCB.
 
-We require full turnkey delivery, including procurement and installation of a prepared TDK EELP32 N87 core pair around the PCB windings. The cores need a nominal 0.21 mm center-leg gap; ordinary ungapped halves cannot be substituted. Please confirm whether JLCPCB can source this prepared assembly directly or through a subcontractor and perform the mechanical operation and first-article checks described in CORE-ASSEMBLY.md. Customer consignment or customer installation is not the requested scope.
+Please source and assemble every board-mounted electronic component, including both through-hole connectors. The planar ferrite cores may be procured separately from DigiKey and are outside this electronic PCBA sourcing request. Core preparation, retention and installation need a separate qualified process: the design still requires a nominal 0.21 mm center-leg gap and magnetic acceptance per CORE-ASSEMBLY.md. Do not substitute ordinary ungapped halves for the prepared pair.
+
+F1 is now Bourns SF-1206F100-2 / C3164649. Please confirm a compatible component-temperature profile: Bourns recommends a 245–250 C peak for 5 seconds and at least 230 C for 30 +/-10 seconds. Include the Panasonic SVPF capacitor limits in the same review.
 
 Please also confirm the proposed stack or return a standard stack with exact dielectric/copper dimensions, ±0.10 mm core-slot routing, filled/capped vias, through-hole connector assembly, and any component sourcing exceptions. The KiCad project, Gerbers/drills, electronic BOM/CPL, separate core BOM, via schedule and proposed test plan are included.
 

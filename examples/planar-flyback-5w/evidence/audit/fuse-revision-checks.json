@@ -1,0 +1,144 @@
+{
+  "baseline_id": "bcfc83d2d7f4b80a07fb75b9e842c539c7a3d87b",
+  "baseline_sha256": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
+  "board_sha256": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea",
+  "changed_component": "F1",
+  "before": {
+    "footprint": "Flyback:Fuse_1206_3216Metric",
+    "position": [
+      90.5,
+      40.0
+    ],
+    "angle": 180.0,
+    "pads": [
+      [
+        "1",
+        "/VIN_RAW",
+        [
+          91.9,
+          40.0
+        ],
+        [
+          1.25,
+          1.75
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        "2",
+        "/VIN_FUSED",
+        [
+          89.1,
+          40.0
+        ],
+        [
+          1.25,
+          1.75
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "models": [
+      [
+        "${KIPRJMOD}/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step",
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ]
+    ]
+  },
+  "after": {
+    "footprint": "Flyback:Fuse_Bourns_SF1206F",
+    "position": [
+      90.5,
+      40.0
+    ],
+    "angle": 180.0,
+    "pads": [
+      [
+        "1",
+        "/VIN_RAW",
+        [
+          92.225,
+          40.0
+        ],
+        [
+          1.25,
+          1.65
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        "2",
+        "/VIN_FUSED",
+        [
+          88.775,
+          40.0
+        ],
+        [
+          1.25,
+          1.65
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "models": [
+      [
+        "${KIPRJMOD}/3dmodels/vendor/Bourns/SF-1206F_KiCad.step",
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ]
+    ]
+  },
+  "all_28_other_footprint_geometries_and_models_preserved": true,
+  "all_routes_outside_VIN_RAW_and_VIN_FUSED_preserved": true,
+  "winding_copper_preserved": true,
+  "outline_core_slots_stack_and_corner_mounts_preserved": true,
+  "Bourns_recommended_lands_mm": {
+    "pad_size": [
+      1.25,
+      1.65
+    ],
+    "pitch": 3.4499999999999886,
+    "inner_gap": 2.1999999999999886,
+    "outer_span": 4.699999999999989
+  },
+  "scope": "Geometry/change containment and recommended land pattern. Native ERC/DRC, renewed solid checks and prototype qualification remain separate."
+}

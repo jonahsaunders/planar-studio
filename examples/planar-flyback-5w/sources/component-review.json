@@ -32,17 +32,17 @@
     },
     {
       "reference": "F1",
-      "expected_mpn": "0466001.NR",
-      "expected_footprint": "Fuse_1206_3216Metric",
-      "rating": "1 A, 63 V AC/DC, fast; 50 A interrupt; nominal cold resistance 0.075 ohm, nominal melting I2t 0.0423 A2s.",
-      "package_review": "1206 body 3.175 x 1.524 mm nominal matches the selected metric fuse footprint. Generic KiCad land geometry is not represented as an exact manufacturer stencil recommendation.",
-      "use_case": "Input average approximately 0.40 A; 0.75 application factor and approximately 0.8 temperature factor at 70 C give 0.60 A continuous screening capacity.",
-      "remaining_validation": "Verify inrush and time-current coordination. Source fault current must not exceed 50 A for the stated interrupt rating; this fuse does not guarantee semiconductor protection.",
+      "expected_mpn": "SF-1206F100-2",
+      "expected_footprint": "Fuse_Bourns_SF1206F",
+      "rating": "1 A, 63 V DC fast; 50 A interrupt at 63 V DC; typical cold resistance 0.132 ohm +/-25%; typical melting I2t 0.034 A2s at 10 times rated current; -20 to 105 C.",
+      "package_review": "Bourns Rev J p2: 3.10 x 1.55 x 0.60 mm nominal package. Two 1.25 x 1.65 mm rectangular lands, centers +/-1.725 mm: 4.70 mm outside span and 2.20 mm gap. Official series STEP normalized to seating plane; model height includes 0.005 mm surface detail.",
+      "use_case": "36 V maximum input below 63 V DC rating. Approximately 0.40 A average load versus roughly 0.93 A at 70 C from manufacturer derating curve (graph estimate, before additional application margin). At 0.40 A, typical cold loss is 21 mW. Switching RMS and self-heating require measurement.",
+      "remaining_validation": "New I2t is lower than old 0.0423 A2s value: repeat startup/inrush and time-current coordination; no hot-plug qualification. Fault current must not exceed 50 A. Reflow recommendation 245-250 C peak, 5 s; >=230 C for 30 +/-10 s. Obtain accepted profile; default Economic 255 +/-5 C is unsuitable and Standard 240 +/-5 C is not automatic approval. No guaranteed semiconductor protection.",
       "expected_nets": {
         "1": "VIN_RAW",
         "2": "VIN_FUSED"
       },
-      "source": "https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f"
+      "source": "https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf"
     },
     {
       "reference": "D1",

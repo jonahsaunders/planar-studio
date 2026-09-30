@@ -1,0 +1,21 @@
+{
+  "source_url": "https://www.bourns.com/engineering/sf1206f/sf-1206f_series.stp",
+  "source_sha256": "a933232a352f3483e15ebc2eb9f241b5e17e40df2c0f47dabf552e983647f042",
+  "normalized_sha256": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495",
+  "transform": "Rotate +90 degrees about X, then translate Z +0.3 mm; scale 1.",
+  "bounds_mm": {
+    "min": [
+      -1.55,
+      -0.7750000000000001,
+      -1.110223024625e-16
+    ],
+    "max": [
+      1.55,
+      0.7750000000000001,
+      0.6050000000000002
+    ]
+  },
+  "valid_solid": true,
+  "volume_mm3": 2.817367787445232,
+  "notes": "Official SF-1206F series geometry, normalized and cosmetically colored from the drawing. Header names SF-0603F, but measured 3.10 x 1.55 mm envelope matches the SF-1206F drawing. 0.600 mm body plus 0.005 mm modeled surface detail. Series marking is not a verified 1 A production marking."
+}

@@ -16,12 +16,13 @@
     "purpose": "5.00 mm pitch; manual/wave soldering before core installation"
   },
   "F1": {
-    "value": "1 A / 63 V fast",
-    "mpn": "0466001.NR",
-    "mfr": "Littelfuse",
-    "lcsc": "C151134",
-    "source": "https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f",
-    "purpose": "Input fuse; verify inrush and coordination in prototype"
+    "value": "1 A / 63 V DC fast",
+    "mpn": "SF-1206F100-2",
+    "mfr": "Bourns",
+    "lcsc": "C3164649",
+    "source": "https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf",
+    "purpose": "Input fuse; JLCPCB stocked snapshot 2026-09-29; qualify inrush, 50 A interrupt limit and assembly thermal profile",
+    "footprint": "Flyback:Fuse_Bourns_SF1206F"
   },
   "D1": {
     "mpn": "DFLS1100-7",
@@ -62,7 +63,7 @@
   "C4": {
     "mpn": "CL32B226KOJNNNE",
     "mfr": "Samsung Electro-Mechanics",
-    "lcsc": "",
+    "lcsc": "C55530",
     "source": "https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do",
     "value": "22u 16V X7R",
     "purpose": "Current-production 1210 output bypass. Not credited in conservative bulk-ripple sizing; verify effective C and ripple temperature."
@@ -71,14 +72,14 @@
     "value": "4.7u / 16 V X5R",
     "mpn": "CL10A475KO8NQNC",
     "mfr": "Samsung Electro-Mechanics",
-    "lcsc": "",
+    "lcsc": "C377756",
     "source": "https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do",
     "purpose": "Manufacturer-recommended replacement for NRND CL10A475KO8NNNC. Nominal 4.7 uF; acceptance >=1 uF effective at approximately 3.1 V bias."
   },
   "C6": {
     "mpn": "CGA4C4C0G2W471J060AA",
     "mfr": "TDK",
-    "lcsc": "",
+    "lcsc": "C2172062",
     "source": "https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA",
     "value": "470p / 450 V C0G",
     "purpose": "Current-production 0805 replacement for NRND 100 V part; same 470 pF C0G damping function."
@@ -88,7 +89,7 @@
     "mfr": "Yageo",
     "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL",
     "value": "649k 1%",
-    "lcsc": "",
+    "lcsc": "C245991",
     "purpose": "Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start."
   },
   "R2": {
@@ -120,7 +121,8 @@
     "mpn": "ERJ-P08F39R0V",
     "mfr": "Panasonic",
     "source": "https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf",
-    "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning"
+    "purpose": "Pulse-withstanding damping resistor; verify dissipation and tuning",
+    "lcsc": "C4059605"
   },
   "R7": {
     "value": "220R 0.25 W",
@@ -146,7 +148,7 @@
     "value": "SMAJ12A-13-F",
     "mpn": "SMAJ12A-13-F",
     "mfr": "Diodes Incorporated",
-    "lcsc": "",
+    "lcsc": "C134947",
     "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
     "purpose": "12 V unidirectional TVS, 19.9 V specified clamp. Check SW-VIN <20.5 V including overshoot, RFB injected current <200 uA and TVS temperature on hardware."
   },
@@ -160,13 +162,13 @@
     "mpn": "PS-MAG-001 A0",
     "mfr": "Prepared core assembly to drawing",
     "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
-    "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Supplier procurement and assembly acceptance required."
+    "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Raw cores may be sourced separately from DigiKey; core preparation, retention and installation require separate qualification."
   },
   "C7": {
     "value": "47u / 63 V",
     "mpn": "EEHZC1J470P",
     "mfr": "Panasonic",
-    "lcsc": "",
+    "lcsc": "C454353",
     "footprint": "Capacitor_SMD:CP_Elec_8x10.5",
     "source": "https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P",
     "purpose": "Input damping reservoir through R8; 1.1 A ripple at 100 kHz, 40 mOhm maximum ESR, 8 x 10.2 mm. Not a surge clamp."
@@ -184,7 +186,7 @@
     "value": "2.2R 1.5 W",
     "mpn": "CRCW25122R20FKEGHP",
     "mfr": "Vishay",
-    "lcsc": "",
+    "lcsc": "C4168885",
     "footprint": "Resistor_SMD:R_2512_6332Metric",
     "source": "https://www.vishay.com/docs/20043/crcwhpe3.pdf",
     "purpose": "Pulse-proof series damping in C7 shunt branch, not in converter DC feed. 1.5 W at 70 C; hot-plug is not qualified."

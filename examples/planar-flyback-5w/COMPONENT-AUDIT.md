@@ -194,17 +194,17 @@ All 72 routed segments are orthogonal or 45°. Eight sampled return corridors re
 
 **Remaining validation:** Small RFB injected-current margin remains: SW-VIN <20.5 V, SW <60 V on prototypes. TVS voltage varies with pulse current/temperature; 400 W is not a continuous dissipation rating.
 
-### F1 — 0466001.NR
+### F1 — SF-1206F100-2
 
-[Manufacturer/source](https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f) · `Fuse_1206_3216Metric`
+[Manufacturer/source](https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf) · `Fuse_Bourns_SF1206F`
 
-**Rating:** 1 A, 63 V AC/DC, fast; 50 A interrupt; nominal cold resistance 0.075 ohm, nominal melting I2t 0.0423 A2s.
+**Rating:** 1 A, 63 V DC fast; 50 A interrupt at 63 V DC; typical cold resistance 0.132 ohm +/-25%; typical melting I2t 0.034 A2s at 10 times rated current; -20 to 105 C.
 
-**Footprint and pin mapping:** 1206 body 3.175 x 1.524 mm nominal matches the selected metric fuse footprint. Generic KiCad land geometry is not represented as an exact manufacturer stencil recommendation.
+**Footprint and pin mapping:** Bourns Rev J p2: 3.10 x 1.55 x 0.60 mm nominal package. Two 1.25 x 1.65 mm rectangular lands, centers +/-1.725 mm: 4.70 mm outside span and 2.20 mm gap. Official series STEP normalized to seating plane; model height includes 0.005 mm surface detail.
 
-**Use and calculated stress:** Input average approximately 0.40 A; 0.75 application factor and approximately 0.8 temperature factor at 70 C give 0.60 A continuous screening capacity.
+**Use and calculated stress:** 36 V maximum input below 63 V DC rating. Approximately 0.40 A average load versus roughly 0.93 A at 70 C from manufacturer derating curve (graph estimate, before additional application margin). At 0.40 A, typical cold loss is 21 mW. Switching RMS and self-heating require measurement.
 
-**Remaining validation:** Verify inrush and time-current coordination. Source fault current must not exceed 50 A for the stated interrupt rating; this fuse does not guarantee semiconductor protection.
+**Remaining validation:** New I2t is lower than old 0.0423 A2s value: repeat startup/inrush and time-current coordination; no hot-plug qualification. Fault current must not exceed 50 A. Reflow recommendation 245-250 C peak, 5 s; >=230 C for 30 +/-10 s. Obtain accepted profile; default Economic 255 +/-5 C is unsuitable and Standard 240 +/-5 C is not automatic approval. No guaranteed semiconductor protection.
 
 ### H1 — M3 Edge mounting interface
 

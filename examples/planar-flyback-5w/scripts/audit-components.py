@@ -31,6 +31,9 @@ for reviewed in spec['components']:
                                  'size_mm':xy(q.GetSize()),'drill_mm':xy(q.GetDrillSize())} for q in f.Pads()],
                  'status':'Reviewed for engineering prototype; qualification gates remain'})
 # Independently assert dimensions where pin mapping or polarity is package-specific.
+fuse_pads=sorted(fps['F1'].Pads(),key=lambda p:p.GetNumber())
+assert all(xy(p.GetSize())==[1.25,1.65] for p in fuse_pads)
+assert abs(math.dist(xy(fuse_pads[0].GetPosition()),xy(fuse_pads[1].GetPosition()))-3.45)<1e-6
 for ref in ['J1','J2']:
     pads=sorted(fps[ref].Pads(),key=lambda p:p.GetNumber())
     assert abs(math.dist(xy(pads[0].GetPosition()),xy(pads[1].GetPosition()))-5)<1e-6

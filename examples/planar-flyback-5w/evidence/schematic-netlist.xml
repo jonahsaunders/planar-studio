@@ -2,7 +2,7 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-09-29T19:43:36</date>
+    <date>2026-09-29T21:00:17</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -118,7 +118,7 @@
       <fields>
         <field name="MPN">CL32B226KOJNNNE</field>
         <field name="Manufacturer">Samsung Electro-Mechanics</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C55530</field>
         <field name="Footprint">Flyback:C_1210_3225Metric</field>
         <field name="Datasheet">https://product.samsungsem.com/mlcc/CL32B226KOJNNN.do</field>
         <field name="Description"/>
@@ -126,7 +126,7 @@
       <libsource lib="Flyback" part="C" description=""/>
       <property name="MPN" value="CL32B226KOJNNNE"/>
       <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C55530"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -147,7 +147,7 @@
       <fields>
         <field name="MPN">CL10A475KO8NQNC</field>
         <field name="Manufacturer">Samsung Electro-Mechanics</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C377756</field>
         <field name="Footprint">Flyback:C_0603_1608Metric</field>
         <field name="Datasheet">https://product.samsungsem.com/mlcc/CL10A475KO8NQN.do</field>
         <field name="Description"/>
@@ -155,7 +155,7 @@
       <libsource lib="Flyback" part="C" description=""/>
       <property name="MPN" value="CL10A475KO8NQNC"/>
       <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C377756"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -176,7 +176,7 @@
       <fields>
         <field name="MPN">CGA4C4C0G2W471J060AA</field>
         <field name="Manufacturer">TDK</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C2172062</field>
         <field name="Footprint">Flyback:C_0805_2012Metric</field>
         <field name="Datasheet">https://product.tdk.com/en/search/capacitor/ceramic/mlcc/info?part_no=CGA4C4C0G2W471J060AA</field>
         <field name="Description"/>
@@ -184,7 +184,7 @@
       <libsource lib="Flyback" part="C" description=""/>
       <property name="MPN" value="CGA4C4C0G2W471J060AA"/>
       <property name="Manufacturer" value="TDK"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C2172062"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -205,7 +205,7 @@
       <fields>
         <field name="MPN">EEHZC1J470P</field>
         <field name="Manufacturer">Panasonic</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C454353</field>
         <field name="Footprint">Flyback:CP_Elec_8x10.5</field>
         <field name="Datasheet">https://industrial.panasonic.com/ww/products/pt/hybrid-aluminum/models/EEHZC1J470P</field>
         <field name="Description"/>
@@ -213,7 +213,7 @@
       <libsource lib="Flyback" part="CP" description=""/>
       <property name="MPN" value="EEHZC1J470P"/>
       <property name="Manufacturer" value="Panasonic"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C454353"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -350,7 +350,7 @@
       <fields>
         <field name="MPN">SMAJ12A-13-F</field>
         <field name="Manufacturer">Diodes Incorporated</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C134947</field>
         <field name="Footprint">Flyback:D_SMA</field>
         <field name="Datasheet">https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf</field>
         <field name="Description"/>
@@ -358,7 +358,7 @@
       <libsource lib="Flyback" part="TVS" description=""/>
       <property name="MPN" value="SMAJ12A-13-F"/>
       <property name="Manufacturer" value="Diodes Incorporated"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C134947"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -373,21 +373,21 @@
       </units>
     </comp>
     <comp ref="F1">
-      <value>1 A / 63 V fast</value>
-      <footprint>Flyback:Fuse_1206_3216Metric</footprint>
-      <datasheet>https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f</datasheet>
+      <value>1 A / 63 V DC fast</value>
+      <footprint>Flyback:Fuse_Bourns_SF1206F</footprint>
+      <datasheet>https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf</datasheet>
       <fields>
-        <field name="MPN">0466001.NR</field>
-        <field name="Manufacturer">Littelfuse</field>
-        <field name="LCSC">C151134</field>
-        <field name="Footprint">Flyback:Fuse_1206_3216Metric</field>
-        <field name="Datasheet">https://www.littelfuse.com/assetdocs/littelfuse_fuse_466_datasheet?assetguid=dbe9bcd7-6072-4adf-bf5b-d33e52a6b90f</field>
+        <field name="MPN">SF-1206F100-2</field>
+        <field name="Manufacturer">Bourns</field>
+        <field name="LCSC">C3164649</field>
+        <field name="Footprint">Flyback:Fuse_Bourns_SF1206F</field>
+        <field name="Datasheet">https://www.bourns.com/docs/product-datasheets/sf-1206f.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="FUSE" description=""/>
-      <property name="MPN" value="0466001.NR"/>
-      <property name="Manufacturer" value="Littelfuse"/>
-      <property name="LCSC" value="C151134"/>
+      <property name="MPN" value="SF-1206F100-2"/>
+      <property name="Manufacturer" value="Bourns"/>
+      <property name="LCSC" value="C3164649"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -570,7 +570,7 @@
       <fields>
         <field name="MPN">RC0603FR-07649KL</field>
         <field name="Manufacturer">Yageo</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C245991</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
         <field name="Datasheet">https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL</field>
         <field name="Description"/>
@@ -578,7 +578,7 @@
       <libsource lib="Flyback" part="R" description=""/>
       <property name="MPN" value="RC0603FR-07649KL"/>
       <property name="Manufacturer" value="Yageo"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C245991"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -715,7 +715,7 @@
       <fields>
         <field name="MPN">ERJ-P08F39R0V</field>
         <field name="Manufacturer">Panasonic</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C4059605</field>
         <field name="Footprint">Flyback:R_1206_3216Metric</field>
         <field name="Datasheet">https://industrial.panasonic.com/cdbs/www-data/pdf/RDO0000/AOA0000C331.pdf</field>
         <field name="Description"/>
@@ -723,7 +723,7 @@
       <libsource lib="Flyback" part="R" description=""/>
       <property name="MPN" value="ERJ-P08F39R0V"/>
       <property name="Manufacturer" value="Panasonic"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C4059605"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>
@@ -773,7 +773,7 @@
       <fields>
         <field name="MPN">CRCW25122R20FKEGHP</field>
         <field name="Manufacturer">Vishay</field>
-        <field name="LCSC"/>
+        <field name="LCSC">C4168885</field>
         <field name="Footprint">Flyback:R_2512_6332Metric</field>
         <field name="Datasheet">https://www.vishay.com/docs/20043/crcwhpe3.pdf</field>
         <field name="Description"/>
@@ -781,7 +781,7 @@
       <libsource lib="Flyback" part="R" description=""/>
       <property name="MPN" value="CRCW25122R20FKEGHP"/>
       <property name="Manufacturer" value="Vishay"/>
-      <property name="LCSC" value=""/>
+      <property name="LCSC" value="C4168885"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>

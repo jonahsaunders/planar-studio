@@ -1,5 +1,5 @@
 ﻿Item,Quantity_per_board,MPN,Process,Sourcing_status
-T1 core set,1 set / 2 halves,PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187,Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing,JLCPCB/subcontractor procurement and installation acceptance required
+T1 core set,1 set / 2 halves,PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187,Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing,Separate raw-core procurement from DigiKey permitted; preparation and installation require qualification
 External core adhesive,Supplier-qualified dispense,Henkel LOCTITE AA 330,External outer-leg joints only; qualify geometry and cure; no adhesive in mating faces or center gap,Proposed; supplier process qualification and quote required
 Adhesive activator,Per adhesive TDS,Henkel LOCTITE SF 7387,Per current AA330/SF7387 technical data,Supplier procurement and process qualification required
 Nonconductive retention strap,Supplier-defined cut length,3M 69 12.7 mm; 3M ID 7000031352,Around yokes parallel to 31.75 mm core span; no metal loop; confirm fit and retention,Supplier procurement and process qualification required

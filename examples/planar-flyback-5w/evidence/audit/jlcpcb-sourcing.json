@@ -1,0 +1,430 @@
+{
+  "observed_local_date": "2026-09-29",
+  "observed_utc_date": "2026-09-30",
+  "method": "Read-only public live JLCPCB product pages and exact-MPN catalog searches. LCSC/search-engine results used only to locate identities, never as JLCPCB stock evidence.",
+  "scope": "20 unique board-assembly MPNs / 24 placements; ferrite core and retention are separate procurement, allowed from DigiKey. Stock is not reserved.",
+  "rows": [
+    {
+      "references": [
+        "J1",
+        "J2"
+      ],
+      "quantity_per_board": 2,
+      "mpn": "KF301-5.0-2P",
+      "manufacturer": "Cixi Kefa",
+      "original_bom_code": "C474881",
+      "verified_jlcpcb_code": "C474881",
+      "headline_stock": 77969,
+      "available_order_quantity": 75211,
+      "displayed_minimum": 1,
+      "package": "Plugin, P=5 mm",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "Wave Soldering",
+      "source_url": "https://jlcpcb.com/partdetail/C474881",
+      "note": "Exact 5.00 mm-pitch part. Catalog explicitly supports wave soldering; solder both connectors before fitting the core.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "F1"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "SF-1206F100-2",
+      "manufacturer": "Bourns",
+      "original_bom_code": "C3164649",
+      "verified_jlcpcb_code": "C3164649",
+      "headline_stock": 2931,
+      "available_order_quantity": 2928,
+      "displayed_minimum": 1,
+      "package": "1206",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/BOURNS-SF_1206F1002/C3164649",
+      "note": "Replacement for unavailable Littelfuse 0466001.NR / C151134. Exact 1 A, 63 V DC fast part; Bourns land pattern and series STEP model applied. Validate inrush and a compatible reflow profile.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "D1",
+        "D3"
+      ],
+      "quantity_per_board": 2,
+      "mpn": "DFLS1100-7",
+      "manufacturer": "Diodes Incorporated",
+      "original_bom_code": "C107674",
+      "verified_jlcpcb_code": "C107674",
+      "headline_stock": 31118,
+      "available_order_quantity": 30800,
+      "displayed_minimum": 1,
+      "package": "PowerDI-123",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C107674",
+      "note": "Exact MPN for D1 and D3. Retain the PowerDI-123 footprint and polarity.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C1",
+        "C2"
+      ],
+      "quantity_per_board": 2,
+      "mpn": "CL32B106KBJNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "original_bom_code": "C138687",
+      "verified_jlcpcb_code": "C138687",
+      "headline_stock": 33868,
+      "available_order_quantity": 2369,
+      "displayed_minimum": 1,
+      "package": "1210",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C138687",
+      "note": "Use Available Order Qty, not headline stock: 2,369 versus 33,868. Two per board.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "D2"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "PDS835L-13",
+      "manufacturer": "Diodes Incorporated",
+      "original_bom_code": "C444972",
+      "verified_jlcpcb_code": "C444972",
+      "headline_stock": 836,
+      "available_order_quantity": 834,
+      "displayed_minimum": 1,
+      "package": "PowerDI-5",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C444972",
+      "note": "Exact output rectifier and PowerDI-5 package.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C3",
+        "C8"
+      ],
+      "quantity_per_board": 2,
+      "mpn": "16SVPF180M",
+      "manufacturer": "Panasonic",
+      "original_bom_code": "C136277",
+      "verified_jlcpcb_code": "C136277",
+      "headline_stock": 991,
+      "available_order_quantity": 938,
+      "displayed_minimum": 1,
+      "package": "SMD, 6.3 × 5.9 mm",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C136277",
+      "note": "Two per board. Stocked, but Panasonic SVPF reflow peak is 250 °C; do not use the default Economic profile without an accepted process change.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C4"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "CL32B226KOJNNNE",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C55530",
+      "headline_stock": 65745,
+      "available_order_quantity": 63041,
+      "displayed_minimum": 1,
+      "package": "1210",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C55530",
+      "note": "New exact-match code for C4. The letter O in KOJNNNE matters; do not use the similarly named generic K0JNNNE listing.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "U1"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "LT8302ES8E#PBF",
+      "manufacturer": "Analog Devices",
+      "original_bom_code": "C117331",
+      "verified_jlcpcb_code": "C117331",
+      "headline_stock": 5,
+      "available_order_quantity": 5,
+      "displayed_minimum": 1,
+      "package": "SOIC-8 (S8E exposed pad)",
+      "status": "Low stock",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C117331",
+      "note": "Only five available. A five-board run has no nominal spare before attrition. Obtain more exact parts or qualify another grade; do not substitute LT8302-3.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C5"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "CL10A475KO8NQNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C377756",
+      "headline_stock": 0,
+      "available_order_quantity": null,
+      "displayed_minimum": 473,
+      "package": "0603",
+      "status": "Pre-order",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C377756",
+      "note": "Exact current MPN exists but needs pre-ordering. Confirm lead time and minimum; catalog search also suggests a different manufacturer, which is not an approved substitute.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R1"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RC0603FR-07649KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C245991",
+      "headline_stock": 134,
+      "available_order_quantity": 94,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C245991",
+      "note": "New exact-match code for the approved 649 kΩ UVLO resistor.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R2"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RC0603FR-0761K9L",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C137696",
+      "verified_jlcpcb_code": "C137696",
+      "headline_stock": 2572,
+      "available_order_quantity": 2560,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C137696",
+      "note": "Exact 61.9 kΩ, 1% resistor.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R3"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RT0603BRD07106KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": null,
+      "headline_stock": null,
+      "available_order_quantity": null,
+      "displayed_minimum": null,
+      "package": "0603 (design)",
+      "status": "No exact match",
+      "catalog_type": null,
+      "assembly_type": null,
+      "source_url": "https://jlcpcb.com/parts/componentSearch?searchTxt=RT0603BRD07106KL",
+      "note": "Exact JLCPCB search returned zero results. Global Sourcing review is required; no C-code or availability inferred. Preserve 106 kΩ and 0.1% unless the feedback design is requalified.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R4"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RT0603BRD0710KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C95204",
+      "verified_jlcpcb_code": "C95204",
+      "headline_stock": 1670628,
+      "available_order_quantity": 942116,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C95204",
+      "note": "Exact 10 kΩ, 0.1% thin-film resistor.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R5"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RC0603FR-07118KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C137804",
+      "verified_jlcpcb_code": "C137804",
+      "headline_stock": 6,
+      "available_order_quantity": 6,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Low stock",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C137804",
+      "note": "Only six available. Five boards leave one nominal spare, which may not satisfy assembly attrition/minimum quantities.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R6"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "ERJ-P08F39R0V",
+      "manufacturer": "Panasonic",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C4059605",
+      "headline_stock": 0,
+      "available_order_quantity": null,
+      "displayed_minimum": 594,
+      "package": "1206",
+      "status": "Pre-order",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C4059605",
+      "note": "Exact 39 Ω, 0.66 W pulse resistor exists but needs pre-ordering. Do not replace with a generic 0.25 W part.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C6"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "CGA4C4C0G2W471J060AA",
+      "manufacturer": "TDK",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C2172062",
+      "headline_stock": 0,
+      "available_order_quantity": null,
+      "displayed_minimum": 590,
+      "package": "0805",
+      "status": "Pre-order",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C2172062",
+      "note": "Exact 470 pF, 450 V capacitor exists but needs pre-ordering. Preserve C0G behavior and package when considering alternatives.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "D4"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "SMAJ12A-13-F",
+      "manufacturer": "Diodes Incorporated",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C134947",
+      "headline_stock": 9711,
+      "available_order_quantity": 9677,
+      "displayed_minimum": 1,
+      "package": "SMA",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C134947",
+      "note": "New exact-match code for the 12 V unidirectional TVS. Keep the selected clamp type and polarity.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R7"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RC1206FR-07220RL",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C137353",
+      "verified_jlcpcb_code": "C137353",
+      "headline_stock": 311149,
+      "available_order_quantity": 303316,
+      "displayed_minimum": 1,
+      "package": "1206",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C137353",
+      "note": "Exact 220 Ω, 0.25 W preload resistor.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R8"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "CRCW25122R20FKEGHP",
+      "manufacturer": "Vishay",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C4168885",
+      "headline_stock": 0,
+      "available_order_quantity": null,
+      "displayed_minimum": 8,
+      "package": "2512",
+      "status": "Pre-order",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C4168885",
+      "note": "Exact 2.2 Ω, 1.5 W pulse-proof damping resistor exists but needs pre-ordering. Pulse capability remains a required characteristic.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "C7"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "EEHZC1J470P",
+      "manufacturer": "Panasonic",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C454353",
+      "headline_stock": 436,
+      "available_order_quantity": 427,
+      "displayed_minimum": 1,
+      "package": "SMD, 8 × 10.2 mm",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C454353",
+      "note": "New exact-match code for the 47 µF, 63 V hybrid reservoir. Exact 8 mm body, 10.2 mm height.",
+      "observed_local_date": "2026-09-29"
+    }
+  ],
+  "policies": {
+    "capabilities": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
+    "global": "https://jlcpcb.com/help/article/how-to-use-jlcpcb-global-sourcing-parts-service",
+    "preorder": "https://jlcpcb.com/help/article/pre-ordering-parts-terms-conditions",
+    "mechanical": "https://jlcpcb.com/help/article/introduction-smt-mechanical-assembly-components",
+    "selected": "https://jlcpcb.com/help/article/smt-after-sales-customer-self-inspection-guide",
+    "panasonic": "https://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000COL10.pdf",
+    "tdk": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf"
+  },
+  "counts": {
+    "Stocked": 13,
+    "Low stock": 2,
+    "Pre-order": 4,
+    "No exact match": 1
+  },
+  "source_bom_sha256": "66dd0eed9760acfdd11d12b5f801006af60b26d8acc9216c23918f9e3b0abfaa",
+  "conclusion": "15 electronic MPNs stocked (two low); four pre-order; one without exact catalog match. Core sourcing is separate and is not counted as a JLCPCB availability failure.",
+  "changes": "F1 replaced by Bourns SF-1206F100-2, footprint and 3D model updated, and eight previously missing exact-MPN catalog codes added. No purchases, supplier messages or supplier uploads."
+}

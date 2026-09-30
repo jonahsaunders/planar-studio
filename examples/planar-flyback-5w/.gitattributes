@@ -11,3 +11,6 @@ manufacturing/gerbers/** linguist-generated=true
 *.html linguist-generated=true
 kicad/** linguist-generated=true
 planar-studio/** linguist-generated=true
+
+# Preserve the downloaded manufacturer STEP source byte-for-byte.
+*.stp -text

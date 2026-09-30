@@ -10,7 +10,7 @@
   "output_current_A": 1,
   "topology": "isolated flyback",
   "transformer": "PCB planar windings on the final converter board",
-  "manufacturing": "JLCPCB full-turnkey: source and install every part, including prepared ferrite core assembly",
+  "manufacturing": "JLCPCB sources and assembles board-mounted electronics; planar ferrite cores may be sourced separately from DigiKey",
   "cad": "KiCad 10",
   "design_tool": "Planar Studio",
   "requested_workflow": "I2CJack LLM KiCad workflow; exact source not yet identified",
@@ -28,7 +28,7 @@
     "quantity_for_sourcing_review": 5
   },
   "release_gates": [
-    "Manufacturer-confirmed gapped-core procurement and installation at JLCPCB",
+    "Qualified prepared-core gap, retention, installation and magnetic acceptance; separate procurement allowed",
     "Complete KiCad schematic with verified pin mapping and clean ERC",
     "PCB planar winding continuity, isolation separation, core clearance and clean DRC",
     "Complete routing and schematic-to-board net agreement",
@@ -38,5 +38,5 @@
     "Explicit validation report separating simulated results from unperformed bench tests"
   ],
   "publication_status": "Public GitHub engineering example; no supplier submission, purchase or fabrication authorization",
-  "manufacturing_status": "Proposed JLCPCB full-turnkey process; feasibility and sourcing unconfirmed"
+  "manufacturing_status": "Board PCBA sourcing and process acceptance unconfirmed; separate DigiKey core procurement permitted"
 }

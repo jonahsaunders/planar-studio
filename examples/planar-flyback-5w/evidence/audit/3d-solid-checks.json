@@ -12,7 +12,7 @@
   "core_below_board_mm": 5.73,
   "provisional_mount_plane_to_core_clearance_mm": 2.2699999999999996,
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "3e008cc5bcc3f87a3b94315a83f14da0f9faecad99d3574670ad46dfa2c102b9",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "c0133c4fc35765023b68d788d6de1fa9824f2ba3737213950aea4b65b7c1fcea",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
@@ -21,7 +21,7 @@
     "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_PowerDI-123.step": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
     "kicad/3dmodels/custom/PowerDI5.step": "d86ad87c76c085b52d90c869fd750b830df55d443c970e34d16cbfa5bbecbf52",
     "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
-    "kicad/3dmodels/stock/Fuse.3dshapes/Fuse_1206_3216Metric.step": "5e6dcbe286696143d35a8ea37d91eef4b54ff3d1bd7c2c2b4dedda83d3f8e203",
+    "kicad/3dmodels/vendor/Bourns/SF-1206F_KiCad.step": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495",
     "kicad/3dmodels/custom/M3_8mm_mount_envelope.step": "17173d61621e3c1e714618198af349f0c79551c0c240c1229207a38b7136f748",
     "kicad/3dmodels/custom/KF301_5mm_2P.step": "e411c71b7a421427b5c0640ab44f41810bb376b18c6bf6dd948b07feb83c7359",
     "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",

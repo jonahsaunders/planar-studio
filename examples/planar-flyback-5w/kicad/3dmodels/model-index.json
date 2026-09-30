@@ -79,8 +79,8 @@
     },
     {
       "reference": "F1",
-      "footprint": "Fuse_1206_3216Metric",
-      "model": "stock/Fuse.3dshapes/Fuse_1206_3216Metric.step",
+      "footprint": "Fuse_Bourns_SF1206F",
+      "model": "vendor/Bourns/SF-1206F_KiCad.step",
       "provisional_hardware": false
     },
     {
@@ -244,6 +244,10 @@
     "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step": {
       "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
       "type": "KiCad generic package"
+    },
+    "vendor/Bourns/SF-1206F_KiCad.step": {
+      "sha256": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495",
+      "type": "Manufacturer geometry, normalized datum"
     }
   }
 }
