@@ -1,559 +1,98 @@
 # Planar Studio
 
-## Transformer design workflow — 1.6 development
+[![installer](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml/badge.svg)](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml)
+[![KiCad 9.0.1+](https://img.shields.io/badge/KiCad-9.0.1%2B-314CB0)](https://www.kicad.org/)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Dedicated work areas now link nominal requirements to operating values, retain
-verification by design revision, and check multiple outputs across named load
-conditions. Explore up to 24 checked candidates on a size/loss chart, review
-calculated repairs, adjust constrained terminal handles, map destination nets,
-rotate and snap board placement, and compare physical prototypes with retained
-calibration alternatives. The interface audit applies Apple's Human Interface
-Guidelines to this cross-platform webview; see the [audit](docs/transformer-gui-audit.md).
+Design planar inductors, transformers, PCB motors, filters and antennas inside
+KiCad. Planar Studio reads your board's stack, calculates electrical estimates,
+and places the generated copper into the PCB as one undoable operation.
 
-The workspace now follows Requirements → Candidates → Windings → Verify → Export,
-with undo/redo, automatic checkpoints and preset previews. Search respects locks
-and explains rejected and nearly feasible designs. Compare up to three designs
-at a shared operating point, check operating ranges and fabrication tolerances,
-overlay open/short/loaded measurements, and fit small-signal AL and leakage.
-A destination placement review and coordinated ZIP build dossier complete the
-handoff. Unknown thermal/core-loss results remain explicitly unknown.
+**[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
+· [Install](#install) · [Guides](#guides) · [Flyback example](#5-w-planar-flyback-example)
 
-Independent core and winding choices, parallel sections with solved current
-sharing, physical board heights, geometry-based leakage, AC copper and
-capacitance estimates, response plots, saved comparisons, and a constrained
-sinusoidal design search are now available. Two TDK N87 ELP core assemblies add
-mechanical previews, complete leg cutouts and destination-board checks.
+![Planar Studio's inductor workspace](docs/screenshot-inductor.png)
 
-See the [transformer design guide](docs/transformer-design.md) for controls,
-manufacturer sources, validation and model limits. Build the development package
-with `python scripts/build_package.py`, or use the 1.6.0 installer below.
+## What you can build
 
-## Planar flyback example
-
-The [5 W planar flyback example](examples/planar-flyback-5w/README.md) includes an
-18–36 V DC to isolated 5 V / 1 A converter with integral PCB windings, an editable
-KiCad 10 project, winding configuration, calculations, manufacturing schedules,
-source references and validation evidence. A1 includes four American Embedded
-M3 mounting holes and a [KiStack audit](examples/planar-flyback-5w/KISTACK-AUDIT.md).
-**Untested A1 engineering prototype;
-full-turnkey supplier feasibility is unconfirmed.** No JLCPCB submission or
-purchase was made. See its validation record before reusing manufacturing data.
-
-## Download and install
-
-### [Download planar-studio-1.6.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)
-
-Development package for **KiCad 9.0.1 or newer** on Windows, macOS and Linux.
-[Release details](https://github.com/jonahsaunders/planar-studio/releases/tag/v1.6.0).
-
-1. Download **planar-studio-1.6.0.zip** using the link above. **Keep it zipped.**
-2. In KiCad's main Project Manager window, open **Plugin and Content Manager**.
-3. Click **Install from File**, select the ZIP, and apply any pending changes.
-4. Restart KiCad and open the PCB Editor. Allow a moment for the plugin's Python
-   environment to finish setting up, then click the **Planar Studio** toolbar button.
-
-**Replacing an existing installation?** Close Planar Studio and the PCB Editor,
-then use **Plugin and Content Manager → Installed → Planar Studio → Uninstall →
-Apply Pending Changes** before installing this ZIP. Your saved designs are stored
-separately from the plugin; keep the settings folder.
-
-**Getting a metadata error?** Use the download link above. GitHub's **Code →
-Download ZIP** and the release's **Source code** links contain the source tree,
-which cannot be imported directly into KiCad's Plugin and Content Manager.
-
-## Motor winding designer and obstacle-aware coils
-
-- **Motor winding designer:** assign each rotary/dual-rotor coil to a phase,
-  polarity and series branch; parallel branches connect at phase and neutral.
-  Automatic assignments, compatible pole-count suggestions and phasor previews
-  help expose cancellation. Torque and back-EMF now include signed distribution.
-- **Design around obstacles:** in Inductor, mark mounting-hole circles, connector
-  rectangles and forbidden polygons inside a board area. Generate continuous
-  contour windings in a remaining connected pocket, with trace/pad/via clearance
-  checks and saved editable constraints. Supports one layer, two series layers,
-  or up to sixteen parallel layers.
-
-See the [winding and obstacle guide](docs/winding-obstacles.md) for controls,
-models, export behavior, validation and scope.
-
-The PCB motor workspace now includes two-phase steppers, linear motors,
-dual-rotor axial-flux configurations and two-axis planar grids alongside the
-original rotary motor. See the [motor families guide](docs/motor-families.md)
-for controls, wiring and model limits. [Coil shapes and adjustable terminal
-breakouts](docs/motor-coils.md) remain available.
-
-## New motor families
-
-| Family | Layout and drive | Design readouts |
+| Workspace | Design capabilities | Guide |
 | --- | --- | --- |
-| Two-phase PCB stepper | Mirrored coil ring with isolated A/B phases; full-step and microstep commands | Step increment, holding-torque estimate and animated equilibrium preview |
-| Linear PCB motor | Straight three-phase array with optional star terminals | Thrust, phase currents and force versus mover position |
-| Dual-rotor axial flux | Rotary stator between two magnet discs; adjustable gaps and alignment | Combined field, stack dimensions and torque/back-EMF estimates |
-| Two-axis planar motor | Independently driven coil grid with X/Y commands | Axis forces, per-coil currents and peak driver current |
+| **Inductor** | Spiral and contour windings, series or parallel layers, and routing around board obstacles | [Windings and obstacles](docs/winding-obstacles.md) |
+| **Transformer** | Air-core and ferrite windings, multiple outputs, interleaving, candidate comparisons and verification studies | [Transformer design](docs/transformer-design.md) |
+| **PCB motor** | Rotary, stepper, linear, dual-rotor and two-axis planar layouts, with phase assignments and terminal routing | [Motor families](docs/motor-families.md) |
+| **Filter** | Lumped LC, stepped-impedance, coupled-line, hairpin, interdigital and EMI networks | [Filter models](docs/engineering-models.md#filter-families) |
+| **Antenna** | Patches, dipoles, inverted-F radiators, NFC loops, arrays and directional layouts | [Antenna families](docs/creator-families.md) |
 
-The new stepper, linear and planar layouts require two series copper layers.
-Performance readouts use approximate static magnetic-field models. They do not
-replace magnetic FEA, live KiCad DRC or measurements of a physical motor.
+Save editable designs, compare calculated responses, and export KiCad boards or
+footprints, SVG, DXF, JSON and specification sheets. The **Design tools** panel
+adds constrained searches, measurement overlays, tolerance studies and board
+checks; see the [tools guide](docs/design-tools.md).
+
+<details>
+<summary>Motor geometry previews</summary>
 
 <!-- motor-gallery:start -->
-**Current geometry previews** — generated from this version's PCB exporter;
-these are layout images, not application screenshots.
+Generated from the PCB exporter; these are geometry previews, not application
+screenshots.
 
 ![Stepper, dual-rotor stator, linear array and two-axis planar grid](docs/motor-families.png)
 <!-- motor-gallery:end -->
 
-<details>
-<summary>Coil shapes and optional bottom terminals</summary>
-
-![Annular-sector, circular, oval and polygon motor windings](docs/motor-shapes.png)
-
-Rotary and linear star windings can expose A/B/C/N, expose A/B/C with an
-internal neutral, or omit grouped pads. Disable automatic interconnection for
-manual wiring. A stepper instead has two isolated phases with four endpoints;
-each planar-grid coil has its own pair of terminals.
+See [coil shapes and terminal options](docs/motor-coils.md) for wiring details.
 
 </details>
 
-To capture fresh application screenshots locally and replace the gallery above,
-run `npm ci`, `npx playwright install chromium`, then `npm run shots:motor`.
-The capture script updates this README only after all five screens succeed.
-See [publishing the update](docs/publishing-motor-update.md) for patch and push
-instructions.
-
-## Layer setup, loaded transformers and antennas — 1.3.0 development
-
-- **Layer setup assistant:** required versus available copper layers, exact KiCad
-  setup steps, and a **Refresh board settings** button. Board settings remain under
-  your control in KiCad.
-- **Interactive winding stack:** assign windings and copper layers row by row,
-  swap assignments, add/remove sections, and edit copper center heights.
-- **Loaded transformers:** sinusoidal voltage source, source impedance and separate
-  open/short/impedance loads for S/S2/S3. Reports RMS outputs, real power,
-  regulation and DC winding loss. Circuit efficiency excludes AC and core losses.
-- **Circular patch and microstrip-fed slot:** two additional antenna families with
-  tuning controls, model-specific readouts and the existing exports.
-
-See [the 1.3 guide](docs/stack-load-antennas.md) for controls, formulas,
-validation and model limits. Existing designs retain imposed-current behavior
-until you select the voltage-source drive model.
-
-## Antenna and transformer families — 1.2.0 development
-
-The Antenna workspace now includes edge/inset-fed patches, printed and folded
-dipoles, inverted-F and meandered inverted-F radiators, NFC loops with target-L
-sizing and tuning capacitance, and patch arrays up to 32 × 32 elements with
-ideal array-factor plots. Four additional starting-layout generators cover
-Vivaldi tapered slots, printed Yagis, printed log-periodic arrays and bow-tie
-dipoles. See [the directional antenna guide](docs/directional-antennas.md)
-for their feed arrangements, tuning controls and model limits.
-
-The Transformer workspace adds routed multilayer, center-tapped, multi-secondary
-and interleaved air-core windings, plus a ferrite magnetic-circuit model with
-core-post openings, material inputs and flux estimates. Each family identifies
-its supported outputs and model limits. Existing 1.1 designs retain their behavior.
-
-See the [Antenna and transformer families guide](docs/creator-families.md) for
-layer assignments, terminals, feed nets, matching assumptions and validation.
-
-## Original antenna and transformer creators
-
-Two new workspace tabs join Inductor, PCB motor and Filter:
-
-- **Antenna:** rectangular edge-fed microstrip patch with front feed and back ground, frequency/substrate inputs, dimensional tuning, and estimated resonance.
-- **Transformer:** two isolated circular or square air-core PCB windings, with independent turns, numerical inductance and coupling, DC resistance/loss, leakage and induced-voltage estimates.
-
-Both support saved designs, JSON import/export, KiCad board/footprint, SVG, DXF and specification exports. Surface copper stays on its selected layer. Keyboard shortcuts **4** and **5** open the new workspaces.
-
-See [Creator guide](docs/creators.md) for terminals, net setup, equations and model limits. These are design starting points: antenna impedance matching needs simulation/measurement, and transformer inner terminals need insulated breakouts.
-
-
-[![installer](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml/badge.svg)](https://github.com/jonahsaunders/planar-studio/actions/workflows/release.yml)
-[![KiCad 9.0.1+](https://img.shields.io/badge/KiCad-9.0.1%2B-314CB0)](https://www.kicad.org/)
-[![licence MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
-
-A KiCad extension for the copper you cannot buy as a part: planar inductors,
-axial-flux PCB motor stators, and planar filters. It reads the open board's
-stack-up, solves the electromagnetics numerically, and writes real tracks,
-arcs and vias into that board in one undoable commit.
-
-Built on the engine from [planar-coil-studio][pcs], moved inside KiCad and
-extended with a filter synthesis and layout stack.
-
-![The inductor workspace](docs/screenshot-inductor.png)
-
-[pcs]: https://github.com/jonahsaunders/planar-coil-studio
-
----
-
-## What it does
-
-Five workspaces sharing one artwork/export pipeline.
-
-**Inductor.** Seven winding families, 1 to 16 copper layers in series or
-parallel, with correct mirrored stacking and automatic transition vias. Full
-electrical model: inductance, DC and AC resistance, parasitic capacitance,
-self-resonance, Q, IPC-2221 current rating and temperature rise.
-
-**PCB motor.** Rotary, two-phase stepper, linear, dual-rotor and two-axis planar
-families. Ring layouts offer annular-sector, circular, racetrack and polygon
-coils; linear and planar arrays offer circular, racetrack and polygon cells.
-Optional star (wye) wiring on rotary and linear designs offers phase-plus-neutral
-pads, phase-only pads, or no grouped terminals. Ring terminals have an adjustable
-angular position; linear links occupy lanes below the array. Turn automatic
-interconnection off for manual wiring. Steppers use two isolated phase circuits,
-and planar grids retain independent coil connections. New non-rotary layouts
-require two series copper layers. Inductance and resistance follow the selected
-coil geometry; force/torque estimates use the stated family-specific magnetic
-approximations. See [Motor coils and star wiring](docs/motor-coils.md)
-for terminal names and [Motor families](docs/motor-families.md) for each family's
-controls, geometry and model limits.
-
-**Filter.** Six families, synthesised from a prototype and laid out as copper:
-
-| Family | What it is | Where it belongs |
-|---|---|---|
-| Lumped LC | Spiral inductors and planar capacitors in a ladder | DC to a few hundred MHz |
-| Stepped impedance | Alternating wide and narrow line sections | Microstrip low-pass, any RF band |
-| Edge-coupled | Parallel half-wave resonators | The default microstrip band-pass |
-| Hairpin | The same synthesis, resonators folded into a U | About a third the length |
-| Interdigital | Quarter-wave resonators grounded at alternating ends | Compact, no spur at 2·f₀ |
-| EMI / power | Pi, T and common-mode networks | Mains and DC-bus filtering |
-
-Butterworth, Chebyshev and Bessel prototypes; low-pass, high-pass, band-pass
-and band-stop transforms; S-parameters, VSWR and group delay from an ABCD
-cascade.
-
-![A hairpin band-pass filter with its response](docs/screenshot-filter.png)
-
-## Layout correction — 1.0.1 development build
-
-This build fixes lumped-filter component overlap, coil-terminal return routing,
-capacitor end clearance, and plate-capacitor layer transitions. Layout slots use
-the complete copper bounds, including leads and vias. Existing saved settings
-are recalculated using the corrected layout when opened.
-
-Run `node tests/lumped-layout.mjs` from the patched source checkout for the
-physical-routing regression suite. See `docs/layout-fix.md` for validation and
-remaining limitations.
-
-## Design tools
-
-The **Design tools** button opens eight local engineering workflows:
-
-- **Optimize:** constrained coil search with candidate previews and Q/area/resistance tradeoffs.
-- **Measurements:** Touchstone/CSV overlays and bounded parameter fitting, preserving the original curve.
-- **Coupled coils:** independently positioned receiver, signed mutual inductance and coupling, and offset sweeps.
-- **Tolerances:** seeded manufacturing studies with response envelopes, conditional yield, and sensitivity rankings.
-- **Filter tuning:** drag physical length/gap handles or search against a response mask.
-- **Magnetic field:** free-space field slices, probe readouts, and motor phase-current animation.
-- **Board checks:** live or imported PCB snapshots, geometric conflict previews, ground checks, and placement origins.
-- **Rotor:** magnet-ring preview, isolated-pole field estimates, and externally supplied Bgap for the motor model.
-
-Long calculations run in cancelable background workers. Settings and measurements
-save with the design; study reports export as JSON. See the [Design Tools guide](docs/design-tools.md)
-for supported workflows, input formats, models, and validation limits. Fixed-copper
-fitting, tolerances, and tuning currently cover distributed filters; measurement
-overlays also support lumped/EMI filters. Board checks complement KiCad DRC.
-
-## How it integrates
-
-This is an IPC API plugin, which means it runs as its own process with its own
-managed virtual environment and talks to KiCad over a socket. Two consequences,
-both good.
-
-**The interface is not limited to KiCad's bundled wxPython.** The plugin serves
-its own page on loopback and opens it in a native window (or your browser if no
-webview runtime is present). That is where the live canvas, the direct
-manipulation handles and the response plots come from.
-
-**The board is a live input, not an assumption.** When a PCB is open, Planar
-Studio reads its stack-up and adopts it: layer count, board thickness,
-dielectric constant and copper weight become the board's real numbers, and it
-says so rather than changing them silently. Copper is placed onto the layers
-that board actually has, so a four-layer coil on a ten-layer board lands where
-you meant it to.
-
-Placement is one commit. A 4,000-segment winding is a single Ctrl+Z. Re-placing
-a design you have placed before offers to replace the previous copper rather
-than stacking a second winding on top of it — the plugin remembers which board
-items belonged to which design.
-
-### What it cannot do, and why
-
-The IPC API has no way to create a net. A net exists because the schematic says
-so. Copper placed by a plugin therefore joins a net that already exists, by
-name, or carries none — which is exactly what KiCad does for track you draw by
-hand on an unassigned net. Create the net in the schematic first if you want
-one.
-
-A plugin also cannot create a pad outside a footprint, so terminals are placed
-as through-hole vias. If you want real pads, use **Library**: it writes a
-`.kicad_mod` into a project-local `planar-studio.pretty` folder and registers it
-in the project's footprint library table, and you place it like any other
-footprint.
-
-## The solver
-
-Inductance is a partial-inductance sum over the discretised 3-D filament path —
-the Neumann double integral with a geometric-mean-distance kernel, self terms
-from Grover's straight-bar expression, plus a discretisation correction that is
-recalibrated for the segment length and cross-section on every solve.
-
-Because the whole multi-layer path (including via barrels) is one filament
-chain, inter-layer mutual inductance falls out of the same sum rather than
-being bolted on as a coupling coefficient.
-
-`tests/verify.mjs` checks it against cases with known answers:
-
-| Case | Reference | Result |
-|---|---|---|
-| Single circular loop | `µ₀R(ln(8R/GMD) − 2)` | **0.04 %** |
-| Two coaxial loops, 1 mm apart | Maxwell's elliptic-integral mutual | **0.29 %** |
-| Square planar spirals | Mohan current-sheet expression | **3.1 – 7.3 %** |
-| Circular planar spirals | Mohan current-sheet expression | **1.4 – 2.3 %** |
-| 50 Ω on 1.6 mm FR-4 | Published width | **1.3 %** |
-| Coupled Z0e/Z0o, w 1.5 s 0.3 | Published tables | **0.4 / 3.0 %** |
-| Chebyshev g-values | Matthaei tables | **< 0.01 %** |
-| Interdigital insertion loss | `4.343·Σg/(FBW·Q_u)` | **1.1 – 4.5 %** |
-
-The Mohan expression carries roughly ±3–8 % of its own error, so those two rows
-are agreement, not deviation. The tool shows the numerical and closed-form
-values side by side wherever a closed form exists.
-
-## Models
-
-| Quantity | Model |
-|---|---|
-| Inductance | Partial inductance, Neumann + GMD kernel; Grover self terms |
-| Closed-form cross-check | Mohan current-sheet and modified Wheeler, where the shape has coefficients |
-| AC resistance | Dowell, with porosity correction `η = w/(w+s)` |
-| Interlayer capacitance | Plate capacitance with the 1/3 energy factor for a series stack |
-| Turn-to-turn capacitance | Coplanar strips on substrate, scaled by `(n−1)/n²` |
-| Current rating | IPC-2221, `I = k·ΔT^0.44·A^0.725`, `k` = 0.048 external / 0.024 internal |
-| Motor | Sinusoidal PMSM: `Kt = 1.5·p·λ`, `λ = N·kw·Φ`, `Φ = (2/π)·B·A_pole` |
-| Microstrip | Hammerstad–Jensen with thickness correction; Getsinger dispersion |
-| Coupled microstrip | Modal capacitance decomposition (Garg & Bahl) |
-| Filter prototypes | Matthaei/Pozar g-values; standard LP/HP/BP/BS transforms |
-| Filter response | ABCD cascade → S-parameters, with realised parasitics |
-| Interdigital capacitor | Coplanar-strip conformal mapping, `(N−1)` gaps in parallel |
-
-Airgap flux density is an input, not a magnetostatic solve — feed it from your
-magnet grade and gap. IPC-2221 assumes still air and an isolated conductor; a
-coil packed against its neighbours runs hotter than the single-trace figure, and
-a stator has no still air around it at all.
-
-## Four things the engineering gets right
-
-Worth knowing if you extend it, because all four are easy to get wrong.
-
-**Series layers must be mirrored, not just reversed.** Traversing the same
-spiral backwards on the next layer reverses the circulation and the layers
-cancel instead of adding. Alternate layers are therefore mirrored about the X
-axis — and every generator starts and ends on the +X ray so the mirror maps the
-connection point onto itself. Transition vias land on a shared point with zero
-jumper trace.
-
-**Inductance is not a smooth function of fractional turns.** A spiral that stops
-three-quarters of the way round ends at an arbitrary angle: the lead breakout
-swings to a different side, the terminal may or may not end up enclosed by its
-own turns, and the transition via lands elsewhere on the layer below. L can jump
-30 % between 1.70 and 1.75 turns and then fall again. So the inverse solver — the
-one that sizes a coil for a target inductance — searches over *whole* turns and
-then trims the diameter, both of which are monotonic. A bisection on the turn
-count converges confidently to the wrong answer.
-
-**A resonator's unloaded Q is a parallel conductance, not a series resistance in
-each arm.** Modelling it as series loss in both the L and the C roughly doubles
-it and then compounds the error through the parallel combination, which is how a
-filter that should show 3 dB of insertion loss comes out showing 14. On FR-4 the
-dielectric alone caps Q<sub>u</sub> at 1/tan δ ≈ 50, and the tool computes it
-from the line's own loss rather than from a slider.
-
-**Bandwidth has to be measured from the crossings that bracket the peak.** An
-edge-coupled filter has a second passband near 2·f₀ and a stepped-impedance
-low-pass re-enters above its first section resonance. Measuring from the first
-crossing in the sweep to the last spans both and reports a bandwidth tens of
-times too wide. Equal-ripple filters have the mirror-image problem for centre
-frequency: several maxima of identical height, so "the peak frequency" is
-whichever one wins on floating-point noise. The centre comes from the band-edge
-pair instead.
-
-## The filter pipeline
-
-A prototype becomes a network, the network becomes copper, and the copper is
-simulated back. The last step is the one that matters: the plotted response is
-computed from the geometry that would be placed — a spiral's realised
-inductance and its measured Q, a capacitor's series inductance — not from the
-ideal components the synthesis asked for. Both curves are drawn. The prototype
-is what you asked for; the built response is what the board does, and the gap
-between them is usually the most useful thing on the screen.
-
-![A lumped LC low-pass in the light theme](docs/screenshot-filter-light.png)
-
-Initial layouts use textbook synthesis. The Design Tools panel can tune their geometry against a response mask. A parallel-coupled filter
-built from first-order synthesis lands a percent or two low in centre frequency
-and, before its own loss narrows it again, 10–25 % wide in bandwidth. That is a
-property of the synthesis, and the response plot shows it rather than quietly
-retuning the geometry to hide it.
-
 ## Install
 
-**Recommended:** follow [Download and install](#download-and-install) at the top
-of this page. The release ZIP is ready for **Install from File**.
+The **1.6.0 development release** supports KiCad **9.0.1 or newer** on Windows,
+macOS and Linux. [Release notes](https://github.com/jonahsaunders/planar-studio/releases/tag/v1.6.0).
 
-**Build from source:** run `./build.sh` with Python 3 and `zip` available, then
-install `dist/planar-studio-1.3.0.zip`. The build validates the archive layout and
-referenced plugin files.
+1. Download [planar-studio-1.6.0.zip](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip) and leave it zipped.
+2. In KiCad's main Project Manager, open **Plugin and Content Manager**.
+3. Choose **Install from File**, select the ZIP and apply pending changes.
+4. Restart KiCad, open the PCB Editor, and launch **Planar Studio** after its
+   Python environment finishes setting up.
 
-**By hand.** Copy this folder into KiCad's plugin directory as
-`planar-studio`:
+<details>
+<summary>Upgrading or getting a metadata error?</summary>
 
-| Platform | Path |
-|---|---|
-| Linux | `~/.local/share/kicad/9.0/plugins/planar-studio` |
-| macOS | `~/Documents/KiCad/9.0/plugins/planar-studio` |
-| Windows | `%USERPROFILE%\Documents\KiCad\9.0\plugins\planar-studio` |
+To upgrade, close Planar Studio and the PCB Editor. In **Plugin and Content
+Manager → Installed**, uninstall the old version and apply pending changes
+before installing the new ZIP. Saved designs are stored separately; preserve
+the settings folder.
 
-or run `./build.sh --install <that directory's parent>`.
+Use the installer linked above. GitHub's **Code → Download ZIP** and **Source
+code** archives contain the repository, not a PCM installer.
 
-Restart KiCad. The toolbar button appears in the PCB editor once KiCad has
-built the plugin's virtual environment and installed `kicad-python` into it,
-which takes a moment the first time.
+</details>
 
-Requires **KiCad 9.0.1 or newer** for PCM installation. KiCad 9.0.1 added PCM
-support for the plugin's IPC runtime.
+## 5 W planar flyback example
 
-## Run it outside KiCad
+[![KiCad render of the assembled planar flyback converter](examples/planar-flyback-5w/evidence/audit/board-3d-assembled.png)](examples/planar-flyback-5w/README.md)
 
-The whole design tool works with no KiCad at all. Everything computes and every
-export works; only the board actions report that there is nothing to talk to.
+An **18–36 V DC to isolated 5 V / 1 A** converter with an LT8302 controller and
+transformer windings built into a six-layer PCB. The example includes a KiCad 10
+project, schematic, BOM, assembly panel, calculations and manufacturing files.
 
-```sh
-python3 ipc_entry.py --browser --verbose
-```
+**Unbuilt engineering prototype.** Factory acceptance and electrical, thermal
+and magnetic qualification remain open.
 
-Useful for development, and for showing someone a design on a machine that has
-no KiCad on it.
+[Explore the board and schematic](examples/planar-flyback-5w/README.md)
+· [Review package](examples/PS-FLYBACK-5W-A1-review-package.zip)
+· [Validation record](examples/planar-flyback-5w/VALIDATION.md)
 
-## Layout
+## Guides
 
-```
-plugin.json           IPC API manifest — identifier, runtime, toolbar action
-ipc_entry.py          entry point KiCad launches
-requirements.txt      kicad-python, plus an optional native-window backend
-metadata.json         Plugin and Content Manager package description
-build.sh              assembles the PCM archive
+- [Design tools](docs/design-tools.md) — optimization, measurements, tolerances and board checks.
+- [Layer setup and loaded transformers](docs/stack-load-antennas.md) — board layers, winding stacks and source/load models.
+- [Directional antennas](docs/directional-antennas.md) — Vivaldi, Yagi, log-periodic and bow-tie layouts.
+- [Engineering models](docs/engineering-models.md) — equations, reference comparisons, assumptions and limits.
+- [Development](docs/development.md) — run without KiCad, build an installer, run checks and capture screenshots.
 
-planar_studio/
-  app.py              the RPC surface and the process lifecycle
-  kicad_link.py       everything that touches kipy — the only file that does
-  server.py           loopback HTTP server, token auth, static assets
-  window.py           native window, with the browser as a first-class fallback
-  library.py          .kicad_mod writer and fp-lib-table registration
-  store.py            preferences, saved designs, placement registry
+Calculated performance depends on the selected model. Review its assumptions
+and validate the resulting hardware with appropriate simulation, KiCad DRC and
+measurements. Transformer loss or thermal results that cannot be calculated are
+reported as unknown.
 
-web/
-  index.html          the shell
-  css/app.css         the design language, light and dark
-  js/
-    app.js            state, recompute scheduling, actions
-    bridge.js         the page's half of the plugin conversation
-    engine/
-      coil.js         geometry generators, stack-up, EM solver
-      coilgeom.js     windings and stator rings into artwork
-      filter.js       prototypes, transforms, topologies, S-parameters
-      filtergeom.js   synthesised networks into copper
-      microstrip.js   Hammerstad–Jensen, coupled lines, planar passives
-      complex.js      complex arithmetic and ABCD matrices
-      artwork.js      the one geometry format everything downstream reads
-      exporters.js    .kicad_mod, .kicad_pcb, SVG, DXF, JSON, spec sheet
-    ui/
-      canvas.js       viewport, rendering, direct manipulation
-      charts.js       response plots
-      controls.js     declarative parameter panels
-    ws/
-      inductor.js     workspace parameters, readouts and charts
-      motor.js
-      filter.js
-      antenna.js
-      transformer.js
-
-tests/
-  verify.mjs          numerical validation against known answers
-  smoke.mjs           headless pass through every workspace and family
-```
-
-## Verify
-
-```sh
-node tests/verify.mjs      # 104 numerical checks, no dependencies
-node tests/rpc.mjs         # 26 checks on the plugin's RPC surface
-node tests/smoke.mjs       # headless UI pass (needs playwright)
-node tests/shots.mjs       # regenerate the screenshots in docs/
-```
-
-`verify.mjs` runs against the engine directly and needs nothing installed.
-`rpc.mjs` drives the Python side with no KiCad on the other end, which is the
-state most likely to be wrong in the field: it checks the token on every route,
-that persistence round-trips, that a file save cannot escape its directory, and
-that every board method fails with a sentence rather than a traceback when the
-PCB window is closed. `smoke.mjs` starts the real plugin server, drives the real
-page in headless Chromium, and fails on any console error or workspace that does
-not produce geometry.
-
-## Export
-
-Placing into the open board is the normal path. The other formats exist for
-what it does not cover:
-
-- **`.kicad_mod`** — copper as footprint graphics with through-hole terminals.
-  **Library** writes it into the project and registers it; **Export** saves it
-  wherever you like.
-- **`.kicad_pcb`** — real tracks, vias and nets with a full layer table. *File →
-  Open*, or *File → Append Board*. Take this one if you want the design as a
-  standalone board.
-- **SVG** and **DXF R12** — documentation, mechanical CAD, and FEA meshing
-  (FEMM, Ansys).
-- **JSON** — every parameter and the computed results. Reload it, or diff two
-  revisions.
-- **Specification sheet** — a Markdown table of every quantity, with the models
-  and their limits named.
-
-The export tolerance is a real distance: no copper edge moves further than it
-when a path is simplified. The status bar shows the segment count before you
-commit, because a board editor gets unpleasant above about 20,000 track
-segments and it is better to know first.
-
-## Security
-
-The plugin serves its page on loopback only, and every request carries a
-per-session token — as a header for the page's own calls, as a cookie for
-stylesheets and modules. Without it, any page open in another tab could POST
-geometry into your board. The page's Content-Security-Policy forbids inline
-script and every external origin, so nothing it loads comes from the network.
-
-## References
-
-- Mohan, Hershenson, Boyd & Lee. *Simple accurate expressions for planar spiral
-  inductances.* IEEE J. Solid-State Circuits 34(10), 1999.
-- Greenhouse. *Design of planar rectangular microelectronic inductors.* IEEE
-  Trans. Parts, Hybrids and Packaging 10(2), 1974.
-- Grover. *Inductance Calculations: Working Formulas and Tables.* Dover, 1946.
-- Dowell. *Effects of eddy currents in transformer windings.* Proc. IEE 113(8),
-  1966.
-- IPC-2221B, *Generic Standard on Printed Board Design*, §6.2.
-- Hammerstad & Jensen. *Accurate models for microstrip computer-aided design.*
-  IEEE MTT-S, 1980.
-- Getsinger. *Microstrip dispersion model.* IEEE Trans. MTT-21, 1973.
-- Gupta, Garg, Bahl & Bhartia. *Microstrip Lines and Slotlines*, 2nd ed.
-- Bahl. *Lumped Elements for RF and Microwave Circuits*, 2003.
-- Matthaei, Young & Jones. *Microwave Filters, Impedance-Matching Networks and
-  Coupling Structures*, 1980.
-- Pozar. *Microwave Engineering*, 4th ed., ch. 8.
-- Hong. *Microstrip Filters for RF/Microwave Applications*, 2nd ed., 2011.
-- Gielis. *A generic geometric transformation that unifies a wide range of
-  natural and abstract shapes.* American Journal of Botany 90(3), 2003.
-
-## Licence
-
-MIT — see [LICENSE](LICENSE).
+Built on [planar-coil-studio](https://github.com/jonahsaunders/planar-coil-studio).
+Released under the [MIT license](LICENSE).
