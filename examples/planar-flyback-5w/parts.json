@@ -99,23 +99,37 @@
     "lcsc": "C137696"
   },
   "R3": {
-    "mpn": "TNPW0603106KBEEN",
+    "mpn": "TNPW0603115KBEEA",
     "mfr": "Vishay",
     "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
-    "purpose": "106 kOhm 0.1%, 25 ppm/C; primary reflected-voltage sense; stocked JLCPCB replacement preserving feedback ratio; output must be trimmed on prototype",
-    "lcsc": "C4185599"
+    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required.",
+    "lcsc": "",
+    "value": "115k 0.1%",
+    "resistance_ohm": 115000,
+    "tolerance_fraction": 0.001,
+    "tcr_ppm_per_C": 25
   },
   "R4": {
-    "mpn": "RT0603BRD0710KL",
-    "mfr": "Yageo",
-    "lcsc": "C95204",
-    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL"
+    "mpn": "TNPW060310K8BEEA",
+    "mfr": "Vishay",
+    "lcsc": "",
+    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+    "value": "10.8k 0.1%",
+    "resistance_ohm": 10800,
+    "tolerance_fraction": 0.001,
+    "tcr_ppm_per_C": 25,
+    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required."
   },
   "R5": {
-    "mpn": "RC0603FR-07118KL",
-    "mfr": "Yageo",
-    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL",
-    "lcsc": "C137804"
+    "mpn": "TNPW0603128KBEEA",
+    "mfr": "Vishay",
+    "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+    "lcsc": "",
+    "value": "128k 0.1%",
+    "resistance_ohm": 128000,
+    "tolerance_fraction": 0.001,
+    "tcr_ppm_per_C": 25,
+    "purpose": "Coordinated 115k/10.8k/128k feedback revision; 0.1%, 25 ppm/C. Manufacturer series/order-code selection; exact JLCPCB identity and availability unverified. Output and temperature trim required."
   },
   "R6": {
     "value": "39R 0.66 W",
@@ -151,7 +165,7 @@
     "mfr": "Diodes Incorporated",
     "lcsc": "C134947",
     "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
-    "purpose": "12 V unidirectional TVS, 19.9 V specified clamp. Check SW-VIN <20.5 V including overshoot, RFB injected current <200 uA and TVS temperature on hardware."
+    "purpose": "Retain SMAJ12A for initial prototype tuning. Its 19.9 V clamp rating at 20.1 A does not establish converter pulse voltage. Require measured SW-VIN peak <=17.5 V including overshoot/uncertainty, verify RFB pin voltage/current and temperature; SMAJ11A is only a bench candidate."
   },
   "U1": {
     "mpn": "LT8302ES8E#PBF",

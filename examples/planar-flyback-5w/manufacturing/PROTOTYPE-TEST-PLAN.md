@@ -20,9 +20,9 @@ Begin with a controlled 0-to-18 V ramp of at least 10 ms, no external load and a
 
 | Test | Conditions | Provisional acceptance / record |
 |---|---|---|
-| DC regulation | 18, 24, 36 V; external load 0, 0.1, 0.5, 1 A | 4.75–5.25 V after settling; trim R3 only after recording initial values |
+| DC regulation | 18, 24, 36 V; external load 0, 0.1, 0.5, 1 A | 4.75–5.25 V after settling; record the 115k/10.8k/128k starting values (5.024 V nominal); coordinate any trim with the reference range, R3/R5 compensation and RFB current budget |
 | Ripple | Same grid; short probe loop and 20 MHz bandwidth, then inspect full-bandwidth spikes | ≤100 mV peak-to-peak target; current bulk-only stress estimate is 50.58 mV and is not a pass result |
-| Switching stress | All inputs, startup, load steps, no-load and overload | SW peak below 60 V target, never reaching 65 V rating; differential SW−VIN below 20.5 V to protect RFB (200 µA absolute current); measure diode reverse peak below 30 V target |
+| Switching stress | All input and temperature corners; startup, full load, light-load bursts, load steps, overload and short-circuit recovery | SW peak below 60 V target, never reaching 65 V rating; differential SW−VIN peak ≤17.5 V including initial overshoot and measurement uncertainty; independently verify RFB voltage remains within VIN−0.5 V to VIN and current below 200 µA absolute limits, including fast capacitive effects; measure diode reverse peak below 30 V target |
 | Startup/shutdown | Controlled ramp first at each input voltage; no/full load; qualify abrupt connection separately | Monotonic settling without sustained hiccup; record output overshoot, input inrush and fuse behavior |
 | UVLO | Slowly ramp input up and down | Compare measured thresholds to nominal 15.73 / 13.94 V at U1 VIN; input terminal threshold includes D1 drop |
 | Load steps | 0.1↔1 A and 0↔1 A | Record recovery time, overshoot and undershoot; review against application's tolerance before release |
@@ -31,5 +31,15 @@ Begin with a controlled 0-to-18 V ramp of at least 10 ms, no external load and a
 | Overload | Controlled load ramp; brief current-limited output short; verify restart | No sustained overheating or damage; repeat waveform and regulation checks afterward |
 | Isolation integrity | Before/after electrical and thermal tests | No primary-to-secondary DC continuity; any dielectric qualification requires a separate insulation specification |
 | Assembly reliability | Supplier-defined handling, vibration and thermal cycling appropriate to intended use | No core movement/cracking or significant Lm change; test severity must be agreed before production |
+
+## Clamp, snubber and feedback tuning
+
+Start with SMAJ12A, 39 Ω and 470 pF. Record simultaneous differential SW−VIN and RFB−VIN waveforms using suitably low-capacitance probes and short connections; include bandwidth, deskew, probe loading and uncertainty. Infer resistive current from measured SW−RFB and actual R3, and separately assess parasitic capacitive injection and pin excursions. Passing the 17.5 V envelope alone does not qualify the RFB pin.
+
+Tune from measured ringing and leakage. If SMAJ12A cannot meet the envelope, evaluate SMAJ11A as a candidate only; confirm that its lower threshold does not absorb normal transfer energy (upper reflected estimate 11.7 V before winding drops, versus 12.2 V minimum breakdown plus D3 drop). Check repetitive pulse power and temperature. Keep the SW–D3–D4–VIN loop compact and RFB away from switching-current paths.
+
+The existing snubber estimate is 0.485 W at 470 pF. Scaling gives 0.702 W at 680 pF and 1.032 W at 1 nF; both exceed R6's 0.66 W nominal rating. A capacitance increase requires renewed pulse/thermal sizing, ambient derating and potentially a higher-power resistor and layout. Record ringing, regulation and clamp/snubber temperatures at every tested corner, including no-load bursts and short-circuit recovery.
+
+R4 must remain inside 9.09–11.0 kΩ including applicable tolerance/temperature. Recompute the feedback current budget and compensation ratio after any trim; repeat all relevant waveform, regulation and temperature checks. The 100°C resistor-temperature excursion is a calculation assumption to verify against actual resistor temperature, not a declaration of the product's ambient rating. No fabrication release until the measured envelope, pin limits, regulation and thermal gates pass. See [revision and sources](../FEEDBACK-REVISION.md).
 
 The transient, thermal and assembly reliability criteria need application-level review. EMI/EMC and safety certification have not been specified or performed. Final BOM values, core preparation and stack must be frozen only after first-article results and vendor DFM acceptance.

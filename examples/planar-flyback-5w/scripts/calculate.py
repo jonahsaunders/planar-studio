@@ -8,6 +8,25 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 m=json.loads((ROOT/'evidence/winding-model.json').read_text())
 lp=m['magnetizingInductance_H']; n=2; ae=128e-6
+parts=json.loads((ROOT/'parts.json').read_text())
+targets=json.loads((ROOT/'requirements.json').read_text())['provisional_design_targets']
+rfb,rref,rtc=(parts[ref]['resistance_ohm'] for ref in ['R3','R4','R5'])
+rfb_tol=parts['R3']['tolerance_fraction']; rref_tol=parts['R4']['tolerance_fraction']
+rfb_tcr=parts['R3']['tcr_ppm_per_C']; rref_tcr=parts['R4']['tcr_ppm_per_C']
+temperature_delta_C=targets['feedback_resistor_temperature_excursion_assumption_C']
+rfb_min=rfb*(1-rfb_tol)*(1-rfb_tcr*1e-6*temperature_delta_C)
+sw_vin_target=targets['SW_minus_VIN_peak_V_including_overshoot_and_uncertainty']; pin_allowance=.5; rfb_abs_max=200e-6
+rfb_resistive_bound=(sw_vin_target+pin_allowance)/rfb_min
+assert rfb_min>0 and rfb_tcr<=25 and rref_tcr<=25
+assert rfb_tol<=.001 and rref_tol<=.001
+assert 9090 <= rref*(1-rref_tol)*(1-rref_tcr*1e-6*temperature_delta_C)
+assert rref*(1+rref_tol)*(1+rref_tcr*1e-6*temperature_delta_C) <= 11000
+assert 4.75 <= rfb/rref/n-.3 <= 5.25
+assert abs((rfb/rtc)/(106000/118000)-1)<.001
+# Absolute ratings are not a design target. Require >=20% analytical separation
+# under the stated resistive model; this is not hardware qualification.
+assert rfb_resistive_bound <= .8*rfb_abs_max
+
 rows=[]
 for vin in [18,24,36]:
   for output in [.1,.5,1.0]:
@@ -51,13 +70,28 @@ limits={
   'output_parallel_ESR_bound_ohm_at_100kHz':.011,
   'input_damping_reservoir_F':47e-6,'input_damping_resistor_ohm':2.2,
   'uvlo_rising_corner_V_at_connector':1.264*(1+649000*1.01/(61900*.99))+2.7e-6*649000*1.01+1.0,
-  'RFB_current_at_rating_based_clamp_A':(19.9+1+.05)/(106000*.999),
+  'RFB_current_at_rating_based_clamp_A':(19.9+1+.05)/(rfb*(1-rfb_tol)),
+  'RFB_rating_based_screen_scope':'Historical comparison only: 19.9 V catalog TVS clamp + 1 V diode + 50 mV sense offset, initial tolerance only. The 50 mV spec applies at 75-125 uA and is not a transient guarantee.',
+  'RFB_rating_based_screen_separation_fraction':1-(19.9+1+.05)/(rfb*(1-rfb_tol))/rfb_abs_max,
+  'RFB_prototype_SW_minus_VIN_peak_target_V':sw_vin_target,
+  'RFB_preliminary_pin_below_VIN_allowance_V':pin_allowance,
+  'RFB_resistance_tolerance_fraction':rfb_tol,
+  'RFB_resistance_TCR_ppm_per_C':rfb_tcr,
+  'RFB_resistor_temperature_delta_C':temperature_delta_C,
+  'RFB_minimum_resistance_at_temperature_ohm':rfb_min,
+  'RFB_resistive_current_at_prototype_target_A':rfb_resistive_bound,
+  'RFB_resistive_separation_from_absolute_max_fraction':1-rfb_resistive_bound/rfb_abs_max,
+  'RFB_preliminary_budget_scope':'17.5 V measured differential envelope includes initial overshoot and uncertainty. 0.5 V allowance comes from the absolute lower pin boundary, not guaranteed transient behavior. Excludes parasitic capacitive current, aging and excursions; verify RFB pin voltage/current and temperature on hardware.',
+  'RFB_hardware_qualified':False,
+  'SMAJ11A_candidate_rating_based_current_A':(18.2+1+.05)/(rfb*(1-rfb_tol)),
+  'SMAJ11A_candidate_scope':'Bench candidate only; not fitted. Verify no excessive conduction during normal transfer (11.7 V reflected before winding drops), repetitive power and all transient criteria.',
   'RFB_absolute_max_injected_current_A':200e-6,
   'maximum_rectifier_reverse_V_with_5pct_output':5.25+36/n,
   'maximum_switch_plateau_V_with_5pct_output_and_0p6V_diode':36+n*(5.25+.6),
   'preload_ohm':220,
-  'feedback_ohm':106000,'reference_ohm':10000,
-  'nominal_output_at_sample_diode_drop_0p3V':106000/10000/n-.3,
+  'feedback_ohm':rfb,'reference_ohm':rref,'temperature_compensation_ohm':rtc,
+  'feedback_to_temperature_compensation_ratio':rfb/rtc,
+  'nominal_output_at_sample_diode_drop_0p3V':rfb/rref/n-.3,
   'uvlo_rising_nominal_V_after_input_diode':1.228*(1+649000/61900)+2.5e-6*649000,
   'uvlo_falling_nominal_V_after_input_diode':1.214*(1+649000/61900),
   'Lm_low_acceptance_H':lp*.85,'Lm_high_acceptance_H':lp*1.15,
@@ -84,8 +118,9 @@ assert limits['Lm_low_acceptance_H']>max(limits['Lm_min_on_time_requirement_H'],
 full=[r for r in rows if r['Iout']==1]
 limits['full_load_ripple_sizing_max_V']=max(r['output_ripple_sizing_V'] for r in full)
 limits['full_load_snubber_CV2f_upper_W']=max(r['snubber_CV2f_upper_W'] for r in full)
+limits['snubber_capacitance_loss_sweep']=[{'capacitance_pF':cap,'estimated_W':limits['full_load_snubber_CV2f_upper_W']*cap/470,'exceeds_0p66W_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>.66} for cap in [470,680,1000]]
 limits['full_load_output_cap_rms_upper_A']=max(r['output_cap_rms_upper_A'] for r in full)
-limits['open_issues']=['TVS rating-based clamp is 56.9 V before dynamic overshoot; verify peak below 60 V and tune on hardware.', 'Core loss and AC/fringing winding loss are unknown; 75% efficiency is not a pass result.', 'Burst ripple, control stability, startup, load steps, temperature and EMC require hardware tests.', 'RFB current margin at the rating-based clamp is small: scope SW-VIN below 20.5 V; dynamic/temperature behavior is not qualified.', 'R8/C7 add damping but do not qualify hot-plug: use a controlled input ramp; input surge voltage must remain below 42 V.', 'UVLO corner uses specified threshold/current limits but typical 14 mV hysteresis; verify 18 V startup at temperature.', 'Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples.']
+limits['open_issues']=['TVS rating-based clamp is 56.9 V before dynamic overshoot; verify peak below 60 V and tune on hardware.', 'Core loss and AC/fringing winding loss are unknown; 75% efficiency is not a pass result.', 'Burst ripple, control stability, startup, load steps, temperature and EMC require hardware tests.', 'Demonstrate SW-VIN peak <=17.5 V including overshoot/uncertainty at all operating corners; verify RFB voltage/current and final regulation. Resistor changes and analytical separation do not qualify dynamic behavior.', 'R8/C7 add damping but do not qualify hot-plug: use a controlled input ramp; input surge voltage must remain below 42 V.', 'UVLO corner uses specified threshold/current limits but typical 14 mV hysteresis; verify 18 V startup at temperature.', 'Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples.']
 assert limits['minimum_preload_A_at_low_output']>limits['minimum_load_required_A_at_low_output']
 assert limits['full_load_output_cap_rms_upper_A']<3.3
 assert limits['full_load_snubber_CV2f_upper_W']<.66

@@ -9,7 +9,7 @@ A1 was reviewed using [KiStack](KISTACK-AUDIT.md). Four M3 mounting holes,
 corrected fabrication-rule persistence, native schematic parity and metadata
 checks supplement the original validation.
 
-See the [complete component audit](COMPONENT-AUDIT.md) for all 29 footprints and the latest electrical/filtering corrections. The RFB rating-based estimate is 197.84 µA against a 200 µA absolute limit; measure SW−VIN below 20.5 V and qualify dynamic/temperature behavior. Input damping is not hot-plug protection.
+See the [complete component audit](COMPONENT-AUDIT.md) for all 29 footprints and the latest electrical/filtering corrections. The coordinated R3/R4/R5 revision gives a preliminary resistive bound of 157.1 µA at SW−VIN ≤17.5 V, including stated tolerance/temperature assumptions. Verify this full transient envelope and RFB pin voltage/current on hardware; see [feedback revision](FEEDBACK-REVISION.md). Input damping is not hot-plug protection.
 
 ## Checks and evidence
 
@@ -20,6 +20,7 @@ See the [complete component audit](COMPONENT-AUDIT.md) for all 29 footprints and
 | PCB layout review | Revised primary/secondary placement, shorter power routes, continuous separate ground regions and deliberate probe access; hardware/process qualification remains open | [PCB audit](PCB-LAYOUT-AUDIT.md) |
 | Board design rules | 0 violations, 0 unconnected items, 0 schematic-parity issues | [DRC](evidence/board-drc.json) |
 | Schematic/board agreement | 60 logical pins, 61 numbered physical pads | [Independent checks](evidence/independent-checks.json) |
+| Feedback revision, September 30 | R3/R4/R5 = 115k/10.8k/128k agree in schematic, board, circuit and BOM; current budget checked; obsolete sourcing codes cleared. Parsed comparison against 155e913 verifies unchanged PCB geometry, connectivity and unrelated properties. | [Feedback checks](evidence/audit/feedback-checks.json), [assumptions and bench gates](FEEDBACK-REVISION.md) |
 | Drawn power-path continuity | VIN, SW, PGND, +5V_ISO and GND_ISO each connect through actual wires; no label-only clamp block | [Wire groups](evidence/independent-checks.json) |
 | Earlier schematic-only redraw (historical) | A4 sheet; all 54 pin names/nets and 26 part records unchanged at that revision; see the current layout comparison for subsequent copper/placement changes | [Redraw comparison](evidence/audit/schematic-layout-checks.json), [render](evidence/audit/schematic-overview.png) |
 | Planar winding geometry | Four polygons; correct terminal contacts; 19,229 centerline samples inside final board copper | [Independent checks](evidence/independent-checks.json) |
@@ -39,6 +40,14 @@ switching loss, gap fringing, controller feedback, burst mode and transients.
 The stress worksheet uses a 75% efficiency assumption; it is not an efficiency
 prediction or a physically charge-balanced waveform.
 
+The September 30 revision reran native ERC/DRC, schematic/board and winding
+checks, manufacturing checks, component and layout audits, feedback checks,
+schematic/Gerber renders and 3D exports. Negative calculation checks reject an
+R3-only edit, the old network's inadequate 20% separation, an out-of-range R4,
+and an unchanged R5. Earlier solid-intersection checks are retained as dated
+evidence; the new parsed PCB comparison proves identical geometry and models.
+They were not rerun as physical tolerances or hardware qualification.
+
 ## Open design and manufacturing gates
 
 - Confirm the six-layer stack and core-slot tolerances. Recalculate winding
@@ -53,8 +62,11 @@ prediction or a physically charge-balanced waveform.
   operation and its responsible supplier remain to be agreed.
 - Confirm component availability and substitute suitability. Catalog part
   identifiers do not establish stock, price or assembler acceptance.
-- Measure switch overshoot and tune the clamp/snubber. The 56.9 V rating-based
-  clamp estimate excludes dynamic overshoot; the prototype target is below 60 V.
+- Measure switch overshoot and tune the clamp/snubber. Require SW−VIN peak
+  ≤17.5 V including initial overshoot and uncertainty, SW below 60 V and
+  independent RFB voltage/current checks. The catalog clamp estimate is not
+  a measured transient envelope. Verify temperatures and regulation across
+  startup, full load, light-load bursts, overload and short-circuit recovery.
 - Establish ripple and regulation. The bulk-only full-load ripple estimate is
   50.58 mV with C3/C8; C4 is not credited in that calculation. Burst and transient
   behavior remain unmeasured.

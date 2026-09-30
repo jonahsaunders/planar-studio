@@ -91,9 +91,9 @@ add('U1','LT8302ES8E#PBF','LT8302',88.9,116.84,{'1':'UVLO','2':'INTVCC','3':'VIN
 add('C5','1u / 10 V','C',68.58,134.62,{'1':'INTVCC','2':'PGND'},'Capacitor_SMD:C_0603_1608Metric')
 add('R1','649k 1%','R',40.64,106.68,{'1':'VIN','2':'UVLO'},R)
 add('R2','61.9k 1%','R',40.64,129.54,{'1':'UVLO','2':'PGND'},R)
-add('R3','106k 0.1%','R',119.38,106.68,{'1':'SW','2':'RFB'},R)
-add('R4','10k 0.1%','R',144.78,137.16,{'1':'RREF','2':'PGND'},R)
-add('R5','118k 1%','R',119.38,132.08,{'1':'TC','2':'RREF'},R,rot=180,purpose='Initial temperature compensation; bench trim required')
+add('R3','115k 0.1%','R',119.38,106.68,{'1':'SW','2':'RFB'},R)
+add('R4','10.8k 0.1%','R',144.78,137.16,{'1':'RREF','2':'PGND'},R)
+add('R5','128k 0.1%','R',119.38,132.08,{'1':'TC','2':'RREF'},R,rot=180,purpose='Initial temperature compensation; bench trim required')
 add('R6','39R 0.5 W','R',106.68,57.15,{'1':'VIN','2':'SNUB'},'Resistor_SMD:R_1206_3216Metric')
 add('C6','470p / 100 V C0G','C',106.68,77.47,{'1':'SNUB','2':'SW'},'Capacitor_SMD:C_0805_2012Metric')
 add('D3','DFLS1100-7','D',139.7,77.47,{'1':'CLAMP','2':'SW'},'Diode_SMD:D_PowerDI-123',rot=270,mpn='DFLS1100-7')
@@ -214,7 +214,7 @@ text('18-36 V input  |  isolated 5 V / 1 A  |  A1 engineering prototype',12.7,19
 box(12.7,22.86,284.48,163.83,'18-36 V INPUT / FLYBACK POWER STAGE')
 text('PROTOTYPE REVIEW  /  NOT RELEASED FOR MANUFACTURE',12.7,170.18,1.27,True)
 for i,note in enumerate([
-  'Tune the clamp and snubber against measured switch overshoot.',
+  'Tune clamp/snubber: SW-VIN peak <=17.5 V, including overshoot.',
   'Verify startup, ripple, temperature and the prepared core assembly.',
   'See the README and prototype test plan before hardware release.',
 ]):text(note,12.7,176.53+i*4.445,1.0)

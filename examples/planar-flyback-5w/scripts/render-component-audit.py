@@ -5,7 +5,7 @@ R=Path(__file__).resolve().parents[1]
 a=json.loads((R/'evidence/audit/component-checks.json').read_text())
 intro='''# Component and filtering audit — PS-FLYBACK-5W A1
 
-Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic components, the custom transformer and four mounting holes.** Manufacturer part identity, package drawing, pin/polarity mapping, voltage/current/power ratings and intended circuit function were checked. Changes are incorporated in the native schematic and routed board.
+Reviewed 2026-09-29; feedback network revised 2026-09-30. **Every placed footprint was reviewed: 24 electronic components, the custom transformer and four mounting holes.** Manufacturer part identity, package drawing, pin/polarity mapping, voltage/current/power ratings and intended circuit function were checked. Changes are incorporated in the native schematic and routed board.
 
 **This remains an unbuilt engineering prototype.** The package/analytical review is complete; electrical suitability is conditional on the hardware and process tests identified below. The tightest outstanding electrical margin is RFB pin current during clamp spikes. Input hot-plug, magnetic losses, thermal performance and control behavior are not qualified. No supplier contact, purchase or fabrication release occurred.
 
@@ -16,7 +16,7 @@ Reviewed 2026-09-29. **Every placed footprint was reviewed: 24 electronic compon
 | Reference | Change and reason |
 | --- | --- |
 | R1 | 681 kΩ → 649 kΩ. Improves the 18 V startup screening corner to 17.55 V including the input diode. Typical-only hysteresis prevents a guaranteed production-corner claim. |
-| R3 | Yageo RT0603BRD07106KL → Vishay TNPW0603106KBEEN / JLCPCB C4185599. Preserves 106 kΩ, 0.1%, 25 ppm/°C, the feedback ratio and existing 0603 footprint/model; resolves the exact catalog gap. |
+| R3 / R4 / R5 | Coordinated 115 kΩ / 10.8 kΩ / 128 kΩ, all 0.1%, 25 ppm/°C. Nominal output 5.024 V; R3/R5 compensation ratio preserved within 0.02%. Existing 0603 lands/models retained; new exact supplier matches remain unverified. |
 | D1 | SS110/SMA → DFLS1100-7/PowerDI123, with a verified exact manufacturer drawing and polarity. |
 | D4 | SMAJ13A → SMAJ12A-13-F. Rating-based SW clamp estimate falls from 58.5 to 56.9 V. Dynamic/temperature behavior still needs measurement. |
 | C4 | Current manufacturer-confirmed Samsung CL32B226KOJNNNE output ceramic, same 1210 package. |
@@ -75,7 +75,7 @@ The electronic BOM intentionally excludes the integral T1 winding, its separatel
 
 ## Most important unresolved gates
 
-1. **RFB/clamp margin:** the specified TVS clamp plus diode-drop estimate gives 197.84 µA versus the 200 µA absolute pin limit. This is too close to treat as qualification. Measure differential SW−VIN <20.5 V, SW <60 V, and verify clamp temperature at line/load/temperature extremes; retune before release if limits are exceeded.
+1. **RFB/clamp margin:** require measured SW−VIN peak ≤17.5 V including initial overshoot and uncertainty, SW <60 V, RFB within its voltage/current limits, and acceptable clamp/snubber temperatures across operating conditions. The preliminary resistive bound is 157.1 µA (21.46% separation); it excludes fast capacitive effects and is not qualification. Retain SMAJ12A and 39 Ω/470 pF for initial testing. See [feedback revision](FEEDBACK-REVISION.md) for assumptions, snubber power and the conditional SMAJ11A candidate.
 2. **Input transients and startup:** controlled ramp first; VIN <42 V; confirm cold 18 V full-load start. Qualify abrupt connection separately, including fuse, diode and R8 pulse stress.
 3. **Thermal and magnetic behavior:** measure core/fringing/AC losses, inductance under bias, semiconductor temperatures, R6/R8 dissipation and capacitor ripple temperatures. Nominal catalog ratings do not establish board thermal capacity.
 4. **Output behavior:** confirm ripple, burst, load steps, overload recovery, final voltage trim and temperature compensation with 360 µF output bulk.

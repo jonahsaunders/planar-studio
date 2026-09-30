@@ -27,6 +27,8 @@ There are **26 additional ground stitches** and two new capacitor return vias. T
 
 [Full component audit and primary references](COMPONENT-AUDIT.md) · [Per-component CSV](evidence/audit/component-audit.csv) · [Measured pads and stitching checks](evidence/audit/component-checks.json)
 
+R3/R4/R5 now use **115 kΩ / 10.8 kΩ / 128 kΩ** (0.1%, 25 ppm/°C), giving about **5.024 V** nominal. Require measured **SW−VIN peak ≤17.5 V** including overshoot and uncertainty. The preliminary resistive current bound is **157.1 µA**, not hardware qualification. New resistor sourcing is unverified. [Feedback revision, calculations and clamp/snubber tuning](FEEDBACK-REVISION.md).
+
 The remaining critical gates are clamp/RFB transient margin, input hot-plug, core and thermal behavior, and startup/control validation. This example is not released for manufacture.
 
 ## 3D assembly

@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-09-29",
+  "review_date": "2026-09-30",
   "status": "All components reviewed; analytical/package checks complete with explicit hardware/process qualification gates. Not a production release.",
   "components": [
     {
@@ -200,12 +200,12 @@
     },
     {
       "reference": "R3",
-      "expected_mpn": "TNPW0603106KBEEN",
+      "expected_mpn": "TNPW0603115KBEEA",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "106 kohm +/-0.1%, 25 ppm/C; retain conservative 0.1 W at 70 C and 75 V design limits. JLCPCB-linked Vishay datasheet 28758 Rev. 26-Sep-2023 specifies 0.110 W general operation / 0.210 W advanced operation and 75 V for TNPW0603.",
-      "package_review": "Vishay TNPW0603 e3 thin-film part: 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm. Compatible with existing 0603 lands (0.80 x 0.95 mm, 1.65 mm pitch); footprint, placement and existing generic 0603 3D model retained. Pad 1 SW, pad 2 RFB. JLCPCB C4185599 is the exact TNPW0603106KBEEN, +/-0.1%, +/-25 ppm/C part.",
-      "use_case": "Reflected-voltage sensing; R3/R4/2 - diode-drop relation gives nominal 5 V. Even assigning 60 V continuously gives <34 mW; RFB pin current, not resistor heating, sets the tighter constraint.",
-      "remaining_validation": "At the rating-based 19.9 V TVS clamp plus 1 V diode and 50 mV sense offset, approximately 197.84 uA versus 200 uA absolute pin limit. Scope SW-VIN <20.5 V; qualify temperature/dynamic peaks and final output trim.",
+      "rating": "115 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
+      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
+      "use_case": "Primary reflected-voltage sense; nominal R3/R4/2 - 0.3 = 5.024 V. Preliminary current bound 157.1 uA at measured SW-VIN <=17.5 V, 0.5 V pin allowance, -0.1% tolerance and -25 ppm/C over 100 C. Fast capacitive current and pin excursions are not bounded by this estimate.",
+      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
       "expected_nets": {
         "1": "SW",
         "2": "RFB"
@@ -214,31 +214,31 @@
     },
     {
       "reference": "R4",
-      "expected_mpn": "RT0603BRD0710KL",
+      "expected_mpn": "TNPW060310K8BEEA",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "10 kohm +/-0.1%, 25 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage.",
-      "package_review": "Exact Yageo 0603 thin-film spec sheet, correct 10 kohm reference part.",
-      "use_case": "RREF to PGND establishes the controller reference. At an intentionally conservative 2 V, 0.4 mW; the actual reference is approximately 1 V.",
-      "remaining_validation": "Retain tolerance and temperature coefficient; confirm output ratio and thermal regulation with R3/R5.",
+      "rating": "10.8 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
+      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
+      "use_case": "10.8 kohm is within the LT8302 9.09-11.0 kohm reference range. Change with R3; R3 alone would give approximately 5.45 V.",
+      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
       "expected_nets": {
         "1": "RREF",
         "2": "PGND"
       },
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RT0603BRD0710KL"
+      "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
     },
     {
       "reference": "R5",
-      "expected_mpn": "RC0603FR-07118KL",
+      "expected_mpn": "TNPW0603128KBEEA",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "118 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.",
-      "package_review": "0603 resistor lands; no polarity.",
-      "use_case": "TC-to-RREF temperature compensation, not a supply bias resistor. Even 2 V differential is <35 uW.",
-      "remaining_validation": "Value is an initial compensation setting. Tune against rectifier forward-drop versus temperature and actual regulation data.",
+      "rating": "128 kohm +/-0.1%, +/-25 ppm/C; conservative 0.1 W / 75 V design limits retained.",
+      "package_review": "Vishay TNPW0603 e3, 1.55 +/-0.05 x 0.85 +/-0.10 x 0.45 +/-0.10 mm; existing 0603 lands and model retained. B tolerance / E TCR / EA packaging per manufacturer ordering table. Exact JLCPCB code and stock not verified.",
+      "use_case": "128 kohm preserves R3/R5 temperature compensation ratio within 0.02% of 106k/118k. Selected 0.1% part; temperature trim remains required.",
+      "remaining_validation": "Qualify coordinated R3/R4/R5 values, final output and temperature trim; sourcing remains open. See FEEDBACK-REVISION.md.",
       "expected_nets": {
         "1": "TC",
         "2": "RREF"
       },
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07118KL"
+      "source": "https://www.vishay.com/docs/28758/tnpw_e3.pdf"
     },
     {
       "reference": "R6",
@@ -247,7 +247,7 @@
       "rating": "39 ohm +/-1%, 0.66 W; pulse-withstanding Panasonic ERJ-P08; full-rating terminal temperature <=125 C.",
       "package_review": "1206 / 3.2 x 1.6 mm lands match ERJ-P08. Documentation corrected from approximate 0.667 W to specified 0.66 W.",
       "use_case": "Series RC damping of SW ringing. Full-load C*V^2*f estimate approximately 0.485 W, below 0.66 W. This consumes substantial thermal margin.",
-      "remaining_validation": "Measure repetitive pulse amplitude and dissipation, apply terminal-temperature derating. The 500 V limiting-element specification does not allow 500 V DC across 39 ohm.",
+      "remaining_validation": "Start at 39 ohm/470 pF; estimate 0.485 W. Scaling to 680 pF/1 nF gives 0.702/1.032 W, above 0.66 W rating. Reassess pulse rating, ambient derating and layout before increasing C6; verify temperature on hardware.",
       "expected_nets": {
         "1": "VIN",
         "2": "SNUB"
@@ -317,7 +317,7 @@
       "rating": "12 V standoff, 13.3-14.7 V breakdown, 19.9 V clamp at 20.1 A / 10-1000 us; 400 W pulse rating.",
       "package_review": "Unidirectional SMA / DO-214AC. Cathode pad 1 CLAMP, anode pad 2 VIN. The A suffix matters; bidirectional CA is not the reviewed substitution.",
       "use_case": "Replaces 13 V TVS to reduce rating-based SW clamp from 58.5 to 56.9 V at VIN=36 V including 1 V D3. Ideal reflected plateau <=11.7 V remains below 12 V standoff.",
-      "remaining_validation": "Small RFB injected-current margin remains: SW-VIN <20.5 V, SW <60 V on prototypes. TVS voltage varies with pulse current/temperature; 400 W is not a continuous dissipation rating.",
+      "remaining_validation": "Retain SMAJ12A for initial prototype tuning. Its 19.9 V clamp rating at 20.1 A does not establish converter pulse voltage. Require measured SW-VIN peak <=17.5 V including overshoot/uncertainty, verify RFB pin voltage/current and temperature; SMAJ11A is only a bench candidate.",
       "expected_nets": {
         "1": "CLAMP",
         "2": "VIN"

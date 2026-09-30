@@ -2,7 +2,7 @@
   "observed_local_date": "2026-09-29",
   "observed_utc_date": "2026-09-30",
   "method": "Read-only public live JLCPCB product pages and exact-MPN catalog searches. LCSC/search-engine results used only to locate identities, never as JLCPCB stock evidence.",
-  "scope": "20 unique board-assembly MPNs / 24 placements; ferrite core and retention are separate procurement, allowed from DigiKey. Stock is not reserved.",
+  "scope": "20 unique board-assembly MPNs / 24 placements. R3/R4/R5 manufacturer selections are unverified for JLCPCB; other observations retain their original date. Core procurement is separate.",
   "rows": [
     {
       "references": [
@@ -233,63 +233,60 @@
         "R3"
       ],
       "quantity_per_board": 1,
-      "mpn": "TNPW0603106KBEEN",
+      "mpn": "TNPW0603115KBEEA",
       "manufacturer": "Vishay",
-      "original_bom_code": null,
-      "verified_jlcpcb_code": "C4185599",
-      "headline_stock": 226,
-      "available_order_quantity": 225,
-      "displayed_minimum": 1,
+      "original_bom_code": "",
+      "verified_jlcpcb_code": null,
+      "headline_stock": null,
+      "available_order_quantity": null,
+      "displayed_minimum": null,
       "package": "0603",
-      "status": "Stocked",
-      "catalog_type": "Extended",
-      "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599",
-      "note": "Replacement for uncatalogued Yageo RT0603BRD07106KL. Exact 106 kohm, +/-0.1%, +/-25 ppm/C thin-film 0603 part; existing footprint and feedback ratio retained. Page showed USD 1.1508 at 1+, USD 0.9427 at 10+; MSL 1, Economic and Standard assembly. Stock is unreserved.",
-      "observed_local_date": "2026-09-29",
-      "observed_utc_date": "2026-09-30",
-      "unit_price_usd_1": 1.1508,
-      "unit_price_usd_10": 0.9427
+      "status": "Unverified",
+      "catalog_type": null,
+      "assembly_type": null,
+      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
+      "observed_local_date": null
     },
     {
       "references": [
         "R4"
       ],
       "quantity_per_board": 1,
-      "mpn": "RT0603BRD0710KL",
-      "manufacturer": "Yageo",
-      "original_bom_code": "C95204",
-      "verified_jlcpcb_code": "C95204",
-      "headline_stock": 1670628,
-      "available_order_quantity": 942116,
-      "displayed_minimum": 1,
+      "mpn": "TNPW060310K8BEEA",
+      "manufacturer": "Vishay",
+      "original_bom_code": "",
+      "verified_jlcpcb_code": null,
+      "headline_stock": null,
+      "available_order_quantity": null,
+      "displayed_minimum": null,
       "package": "0603",
-      "status": "Stocked",
-      "catalog_type": "Extended",
-      "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C95204",
-      "note": "Exact 10 kΩ, 0.1% thin-film resistor.",
-      "observed_local_date": "2026-09-29"
+      "status": "Unverified",
+      "catalog_type": null,
+      "assembly_type": null,
+      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
+      "observed_local_date": null
     },
     {
       "references": [
         "R5"
       ],
       "quantity_per_board": 1,
-      "mpn": "RC0603FR-07118KL",
-      "manufacturer": "Yageo",
-      "original_bom_code": "C137804",
-      "verified_jlcpcb_code": "C137804",
-      "headline_stock": 6,
-      "available_order_quantity": 6,
-      "displayed_minimum": 1,
+      "mpn": "TNPW0603128KBEEA",
+      "manufacturer": "Vishay",
+      "original_bom_code": "",
+      "verified_jlcpcb_code": null,
+      "headline_stock": null,
+      "available_order_quantity": null,
+      "displayed_minimum": null,
       "package": "0603",
-      "status": "Low stock",
-      "catalog_type": "Extended",
-      "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C137804",
-      "note": "Only six available. Five boards leave one nominal spare, which may not satisfy assembly attrition/minimum quantities.",
-      "observed_local_date": "2026-09-29"
+      "status": "Unverified",
+      "catalog_type": null,
+      "assembly_type": null,
+      "source_url": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "note": "Manufacturer series and ordering table reviewed; JLCPCB identity, availability, price and assembly eligibility not checked for this new value.",
+      "observed_local_date": null
     },
     {
       "references": [
@@ -420,5 +417,71 @@
     "selected": "https://jlcpcb.com/help/article/smt-after-sales-customer-self-inspection-guide",
     "panasonic": "https://industrial.panasonic.com/cdbs/www-data/pdf/AAB8000/AAB8000COL10.pdf",
     "tdk": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf"
-  }
+  },
+  "revision_date": "2026-09-30",
+  "superseded_feedback_rows": [
+    {
+      "references": [
+        "R3"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "TNPW0603106KBEEN",
+      "manufacturer": "Vishay",
+      "original_bom_code": null,
+      "verified_jlcpcb_code": "C4185599",
+      "headline_stock": 226,
+      "available_order_quantity": 225,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/VishayIntertech-TNPW0603106KBEEN/C4185599",
+      "note": "Replacement for uncatalogued Yageo RT0603BRD07106KL. Exact 106 kohm, +/-0.1%, +/-25 ppm/C thin-film 0603 part; existing footprint and feedback ratio retained. Page showed USD 1.1508 at 1+, USD 0.9427 at 10+; MSL 1, Economic and Standard assembly. Stock is unreserved.",
+      "observed_local_date": "2026-09-29",
+      "observed_utc_date": "2026-09-30",
+      "unit_price_usd_1": 1.1508,
+      "unit_price_usd_10": 0.9427
+    },
+    {
+      "references": [
+        "R4"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RT0603BRD0710KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C95204",
+      "verified_jlcpcb_code": "C95204",
+      "headline_stock": 1670628,
+      "available_order_quantity": 942116,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Stocked",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C95204",
+      "note": "Exact 10 kΩ, 0.1% thin-film resistor.",
+      "observed_local_date": "2026-09-29"
+    },
+    {
+      "references": [
+        "R5"
+      ],
+      "quantity_per_board": 1,
+      "mpn": "RC0603FR-07118KL",
+      "manufacturer": "Yageo",
+      "original_bom_code": "C137804",
+      "verified_jlcpcb_code": "C137804",
+      "headline_stock": 6,
+      "available_order_quantity": 6,
+      "displayed_minimum": 1,
+      "package": "0603",
+      "status": "Low stock",
+      "catalog_type": "Extended",
+      "assembly_type": "SMT Assembly",
+      "source_url": "https://jlcpcb.com/partdetail/C137804",
+      "note": "Only six available. Five boards leave one nominal spare, which may not satisfy assembly attrition/minimum quantities.",
+      "observed_local_date": "2026-09-29"
+    }
+  ]
 }
