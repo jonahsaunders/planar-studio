@@ -2,7 +2,7 @@
 
 **Engineering prototype / quotation package. Not a production release.**
 
-Build quantity for quotation: five complete converters. JLCPCB must procure all components and the prepared ferrite assembly, assemble both ferrite halves, and deliver complete units. Customer installation or customer-supplied cores does not satisfy the requested turnkey scope.
+Budgeting quantity: five boards with all electronic components sourced and assembled by JLCPCB. Raw ferrite cores may be procured separately from DigiKey. Core preparation, retention, installation and magnetic acceptance require a separate qualified process; they are outside the electronic PCBA sourcing requirement.
 
 ## Board fabrication
 
@@ -22,6 +22,8 @@ Build quantity for quotation: five complete converters. JLCPCB must procure all 
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after bonding the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
+
+JLCPCB publishes ±0.20 mm for ordinary non-plated slot sizing, while its order form offers ±0.10 mm precision outline routing. Obtain explicit confirmation that the selected precision process covers all three internal core slots and their alignment. Precision routing requires at least three distributed alignment holes of at least 1.5 mm; the four M3 holes or panel tooling must be accepted for that purpose. Do not treat a clean KiCad DRC as this manufacturing acceptance. See the [published capabilities](https://jlcpcb.com/capabilities/pcb-capabilities) and [budget/open actions](../JLCPCB-SOURCING.md).
 
 ## Proposed stack, top to bottom
 

@@ -63,6 +63,26 @@ ending='''
 
 The raw TDK B66457G0000X187 halves may be purchased from DigiKey; this audit makes no new DigiKey inventory claim. Two raw halves still need the PS-MAG-001 prepared-pair process and magnetic checks. No JLCPCB code is applied to T1 as though a raw half were a complete transformer. Core adhesive, activator and retention remain in the separate core BOM, with their process and installation responsibility to be agreed. H1–H4 are fabricated holes; illustrative 3D screws/standoffs are not purchased BOM lines.
 
+## Five-board planning budget
+
+**Estimated USD 320–500 for five assembled electronic boards, approximately USD 65–100 each.** This is a planning allowance, not a design-accepted quotation. It assumes the stack can be accepted without custom-lamination engineering charges and allows for ordinary parts procurement. Excludes ferrite cores, grinding/installation, hardware, functional-test development, taxes/duties and redesign/re-spin costs.
+
+| Item | Five-board allowance, USD |
+| --- | ---: |
+| Six-layer ENIG fabrication, 1 oz inner copper, filled/capped vias and panel/routing allowance | 80–120 |
+| Electronic components, minimum purchases and attrition allowance | 110–150 |
+| Standard assembly, setup, feeders, stencil, handling and inspection | 100–150 |
+| Shipping allowance; destination/service not quoted | 25–60 |
+| Arithmetic total before rounding/contingency | 315–480 |
+
+The public JLCPCB calculator showed **$81.17** for five representative 70 × 114 mm blanks, six layers, 1.6 mm FR-4, ENIG, 1 oz inner/outer copper, epoxy filled/capped vias and precision outline routing. The larger rectangle is a budgeting allowance for rails, not a completed panel design. No Gerber, BOM or placement file was uploaded; no cart/order was submitted. The exact winding stack, internal slots and panel process were not priced or accepted by engineering. [Public calculator](https://cart.jlcpcb.com/quote).
+
+The assembly allowance uses JLCPCB's published Standard fees: $25.56 single-side setup, $8.21 stencil, $1.53 per SMT part type (19 types), handling from $14.93, plus fixtures, joints, inspection and connector labor. The single-side component placement does not require two-sided SMT just because the ferrite occupies both sides. [Assembly fee schedule](https://jlcpcb.com/help/article/pcb-assembly-price).
+
+Live catalog price checks on September 29, 2026: U1 $9.8505 each at quantities below ten; C3/C8 $0.9211 each at ten; C7 $0.6319 each; D2 $1.1290 each. The four listed pre-order minima total about **$36.95** (C5 $9.03, C6 $9.03, R6 $9.03, R8 $9.86), before sourcing adjustments and attrition. These minimum purchases are included in the parts allowance above, not an extra charge to add again. R3 still requires a source, and U1/R5 replenishment remains open. All prices are unreserved snapshots and pre-order prices are estimates.
+
+**Fabrication action:** obtain a named stack with 1 oz inner copper (JLCPCB defaults to 0.5 oz), confirm precision processing of the internal slots at ±0.10 mm, and supply a compliant panel with rails, fiducials and alignment holes. Standard slot sizing is published as ±0.20 mm, so the precision-outline option alone is not acceptance of the core fit. Recalculate winding behavior for the final stack and validate first-article fit and electrical performance. [Fabrication capabilities](https://jlcpcb.com/capabilities/pcb-capabilities).
+
 This unbuilt engineering prototype is not released for fabrication. No purchase, reservation, supplier message or supplier upload was made. [Structured observations](evidence/audit/jlcpcb-sourcing.json) · [Electronic BOM](manufacturing/BOM-JLCPCB.csv) · [Core process](manufacturing/CORE-ASSEMBLY.md).
 '''
 (R/'JLCPCB-SOURCING.md').write_text(intro+'\n'.join(lines)+ending,encoding='utf8')
