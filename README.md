@@ -94,7 +94,8 @@ code** archives contain the repository, not a PCM installer.
 
 An **18–36 V DC to isolated 5 V / 1 A** converter with an LT8302 controller and
 transformer windings built into a six-layer PCB. The example includes a KiCad 10
-project, schematic, BOM, assembly panel, calculations and manufacturing files.
+project, schematic, BOM, calculations and single-board manufacturing files for
+JLCPCB-managed panelization.
 
 **Unbuilt engineering prototype.** Factory acceptance and electrical, thermal
 and magnetic qualification remain open.

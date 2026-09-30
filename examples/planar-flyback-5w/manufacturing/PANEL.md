@@ -1,21 +1,29 @@
-# Standard-assembly panel — A1 review
+# JLCPCB-managed panelization — A1 handoff
 
-One 50 × 104 mm converter sits in a **70 × 124 mm** panel. Eight-millimetre rails and a 2 mm routing gap provide the width needed for JLCPCB Standard assembly. Six 3 mm side tabs carry 0.5 mm mouse-bite drills at 0.8 mm spacing. No tabs enter the core slots or connector ends. The frame stays continuous.
+JLCPCB is to prepare the assembly panel from the **50 × 104 mm single-board design**. The package supplies one converter's geometry and placement data. No customer-designed panel is supplied or required by this handoff.
 
-![Panel rendered from the generated KiCad file](../build/panel-A1/panel-top.png)
+## Files to provide
 
-Three 1.5 mm tooling holes and three 1 mm fiducials on each face occupy the rails. Tooling has stencil apertures; fiducials have no paste. Copper and mask diameters are both 1 mm at fiducials. The core and mounting hardware in the render are illustrative: install the prepared core after soldering and depanelization.
+- [Single-board Gerbers and drills](GERBERS-REVIEW-ONLY.zip)
+- [Electronic BOM](BOM-JLCPCB.csv)
+- [Single-board placement file](CPL-JLCPCB.csv)
+- [Single-board selective fill/cap schedule](via-fill.csv)
+- [Fabrication requirements](FABRICATION.md), [stack dimensions](../stackup.json) and [assembly drawing](assembly-top.svg)
 
-Use this **complete matching set** when submitting the panel for factory review:
+All coordinates use the single board's lower-left datum: X is right and Y is up. The board envelope is X=0…50 and Y=0…104 mm. The BOM/CPL describe 24 electronic placements per converter, including the two through-hole connectors. JLCPCB must transform placements and the fill/cap schedule consistently when constructing its panel; do not apply the old panel's +10 mm offsets.
 
-- [Panel Gerbers and drills](../build/panel-A1/PANEL-GERBERS-REVIEW-ONLY.zip)
-- [Panel electronic BOM](../build/panel-A1/BOM-JLCPCB.csv)
-- [Panel placement file](../build/panel-A1/CPL-JLCPCB.csv)
-- [Panel selective fill/cap schedule](../build/panel-A1/via-fill.csv)
-- [Editable panel](../build/panel-A1/PS-FLYBACK-5W-panel.kicad_pcb), [checks](../build/panel-A1/panel-checks.json) and [resolved KiKit settings](../build/panel-A1/resolved.json)
+## Request from JLCPCB
 
-The datum is the panel's lower-left corner; X is right and Y is up. Board placements are translated by +10 mm in X and Y from the single-board export. Connector centroids retain their explicit correction. The BOM contains only the 24 electronic placements; rails, holes, fiducials, winding and core are excluded. **Do not mix panel Gerbers with the single-board placement/via files.**
+1. Prepare rails, tooling holes, fiducials and panel dimensions suitable for Standard assembly. Supply the proposed panel drawing, boards per panel and finished-board quantity with the quotation. The requested quantity is five finished converters, not five panels.
+2. Preserve the finished outline, all three internal core openings, four mounting holes, connector access, copper and stack dimensions. Propose tab locations and separation away from core openings and vulnerable components; assess MLCC stress during separation. Obtain approval for any design change.
+3. Apply the selective fill/cap schedule to the 66 electrical interlayer holes per board. Keep connector, mounting, panel tooling and separation holes open.
+4. Return the assembly orientation preview, including U1, diodes, polarized capacitors and connectors, for review before manufacture. Agree tooling, stencil, connector soldering and the component-temperature profile in FABRICATION.md.
+5. Complete soldering, inspection and panel separation before the separately prepared ferrite cores are installed.
 
-All original footprint pad nets, sizes, drills and orientations are checked against the source. Panel DRC reports zero violations and unconnected items. There are 66 filled/capped electrical interlayer holes; all connector, tooling, mouse-bite and mounting holes remain open. Three internal routed core openings are preserved.
+JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the unchanged single-board design.
 
-Generate using `scripts/build-panel.py` with KiCad 10 Python and KiKit 1.8.1. The preset is `manufacturing/panelize.json`; source CAD is not modified. Approve handling, breakaway method, tooling, fiducial recognition, stencil and through-hole soldering with JLCPCB. Support the board during tab removal; assess depanelization stress on MLCCs before accepting the process.
+## Withdrawn customer panel
+
+The earlier 70 × 124 mm customer panel is withdrawn. Its 3 mm mouse-bite tabs did not meet JLCPCB's published 5 mm minimum for that tab type; passing KiCad DRC did not establish factory acceptance. See [JLCPCB's panel specifications](https://jlcpcb.com/capabilities/pcb-capabilities/).
+
+The obsolete panel exports, preset and generator have been removed from the active repository and review package; Git history retains the earlier proposal. Do not submit panel files from older downloads. This package remains an engineering feasibility/quotation handoff, with factory acceptance and physical qualification outstanding.

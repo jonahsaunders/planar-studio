@@ -11,9 +11,9 @@
 | Feedback | 113k/10.7k/127k agree across schematic, board and BOM; 159.85 µA preliminary resistive bound at the 17.5 V envelope | [Checks](evidence/audit/feedback-checks.json), [assumptions](FEEDBACK-REVISION.md) |
 | Stack | JLC061611-1080A, 35 µm outer / 30 µm inner; published sum 1.618 mm in the 1.6 mm order class | [Stack data](stackup.json), [winding calculation](evidence/winding-model.json) |
 | Manufacturing exports | 24 electronic placements; six copper layers; 66 fill/cap holes; connector and mounting holes remain open | [Export checks](evidence/manufacturing-checks.json) |
-| Assembly panel | Separate 70 × 124 mm one-board panel; zero DRC violations; original component nets/lands preserved | [Panel documentation](manufacturing/PANEL.md), [checks](build/panel-A1/panel-checks.json) |
+| Assembly panel | JLCPCB to prepare and return a panel drawing from the single-board files; factory review outstanding. Earlier customer panel withdrawn | [Panelization requirements](manufacturing/PANEL.md), [upload guide](manufacturing/START-HERE.md) |
 | 3D | 29 footprints / 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Solid checks](evidence/audit/3d-solid-checks.json) |
-| Visual inspection | Actual schematic, copper/technical Gerber sheets, assembly and panel renders inspected | [Schematic](evidence/audit/schematic-overview.png), [copper](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png) |
+| Visual inspection | Actual schematic, single-board copper/technical Gerber sheets and assembly renders inspected | [Schematic](evidence/audit/schematic-overview.png), [copper](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png) |
 
 The named-stack model uses 30 µm for all windings as a conservative DC-resistance screen. It uses actual published winding heights, a fixed 5 V output and an assumed switching-resistance/frequency model. It excludes core and AC/fringing losses, closed-loop controller behavior, burst dynamics and transients. The separate stress worksheet assumes 75% efficiency; it is not measured or predicted efficiency.
 
@@ -28,6 +28,6 @@ Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Function
 
 ## Reproduction
 
-Run scripts/rebuild.py using KiCad 10 Python and Node. Then refresh audit-renders.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py, render-schematic.mjs and audit-3d-solids.py. The render and solid tools require the documented Pillow/PyGerber, Sharp and CadQuery environments. Build the separate panel with build-panel.py and KiKit 1.8.1; all package/model references remain local.
+Run scripts/rebuild.py using KiCad 10 Python and Node. Then refresh audit-renders.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py, render-schematic.mjs and audit-3d-solids.py. The render and solid tools require the documented Pillow/PyGerber, Sharp and CadQuery environments. Run scripts/package-project.py with a fresh output directory to package the single-board handoff; panelization is supplied by JLCPCB and has no local generation step. All package/model references remain local.
 
 Earlier fuse, mounting and feedback-only revision comparisons are **historical**. The current revision also changes stocking selections, R8 lands and electrical stack dimensions; it does not claim unchanged geometry against those earlier commits. Current source hashes accompany the new checks. No supplier upload, contact, purchase or fabrication was performed.
