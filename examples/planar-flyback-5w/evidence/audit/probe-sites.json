@@ -4,7 +4,7 @@
     "net": "PGND",
     "position_mm": [
       92.4,
-      62.65
+      67.65
     ],
     "land_diameter_mm": 1.2,
     "type": "Top-exposed filled/capped via land; no installed part"
@@ -14,7 +14,7 @@
     "net": "GND_ISO",
     "position_mm": [
       108.2,
-      114
+      109
     ],
     "land_diameter_mm": 1.2,
     "type": "Top-exposed filled/capped via land; no installed part"
@@ -42,7 +42,7 @@
     "net": "INTVCC",
     "position_mm": [
       87.275,
-      58.2
+      63.2
     ],
     "type": "Existing exposed C5 pad 1; soldered component present"
   },
@@ -51,7 +51,7 @@
     "net": "+5V_ISO",
     "position_mm": [
       105.025,
-      111.12
+      106.12
     ],
     "type": "Existing exposed C4 pad 1; soldered component present"
   }

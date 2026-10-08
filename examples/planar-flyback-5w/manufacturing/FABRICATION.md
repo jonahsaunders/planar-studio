@@ -1,4 +1,4 @@
-# PS-FLYBACK-5W A2 — fabrication and assembly review
+# PS-FLYBACK-5W A3 — fabrication and assembly review
 
 **Engineering prototype / quotation package. Not a production release.**
 
@@ -8,7 +8,7 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 
 | Item | Proposed specification |
 |---|---|
-| Board | 50 × 104 mm; corners R2 mm; outline in Edge.Cuts |
+| Board | 44 × 94 mm; corners R2 mm; outline in Edge.Cuts |
 | Material | FR-4, nominal 1.6 mm, six copper layers |
 | Copper | 35 µm external / 30 µm internal in published 1 oz stack; confirm tolerances |
 | Finish | ENIG; green solder mask; white legend |
@@ -16,14 +16,14 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Through vias | 0.30, 0.40 and 0.45 mm drills; identify in via schedule |
 | Via-in-pad | Nonconductive epoxy filled and copper capped, including U1 thermal vias |
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
-| Mounting holes | Four 3.2 mm NPTH holes; 41 × 95 mm center spacing; do not fill/cap; see MOUNTING.md |
-| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A2 fit model |
+| Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; do not fill/cap; see MOUNTING.md |
+| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A3 fit model |
 | Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after clipping the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
 
-A2 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
+A3 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
 
 ## Named JLCPCB stack
 
@@ -42,14 +42,14 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 
 ## Files and coordinate convention
 
-- Gerbers and drills share the bottom-left board datum: original KiCad coordinate (75, 137) mm. Export X is right, Y is up; the board envelope is X=0…50 and Y=0…104 mm.
+- Gerbers and drills share the bottom-left board datum: original KiCad coordinate (78, 132) mm. Export X is right, Y is up; the board envelope is X=0…44 and Y=0…94 mm.
 - `BOM-JLCPCB.csv` and `CPL-JLCPCB.csv` contain the same 24 electronic references, including two through-hole connectors for the quoted manual process. T1 is integral board copper and a separately quoted mechanical operation, not an SMT placement.
 - `CORE-BOM.csv` describes separate factory-gapped halves and clips. Factory-gapped cores may be procured from DigiKey; these items are outside the board-electronics sourcing requirement and need a separately agreed process.
 - `via-fill.csv` lists 66 filled/capped interlayer holes (61 vias and five T1 holes); four connector holes remain open. Total plated drill count is 70, plus four NPTH mounting holes. It distinguishes vias and planar interlayer holes from connector holes. Fill/cap all listed vias and T1 interlayer holes. **Do not fill J1/J2 connector holes or H1–H4 mounting holes.** T1 pads 1–5 are electrical test/interlayer locations, not component leads.
 - PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
 - CPL angles are KiCad angles. JLCPCB must reconcile its library zero rotations against the assembly drawing, especially U1, D1–D4 and C3; verify pin 1 and polarity in the assembly preview before approval.
 - J1 pin 1 is positive at the left when viewed from the top. J2 pin 1 is positive at the right. Wire-entry sides face their nearest board end.
-- All exported manufacturing data is A2 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
+- All exported manufacturing data is A3 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
 
 ## Required vendor response
 
@@ -62,6 +62,6 @@ No quotation has been requested and no supplier has accepted this build.
 
 ## JLCPCB-managed panelization
 
-Supply `GERBERS-REVIEW-ONLY.zip`, `BOM-JLCPCB.csv`, `CPL-JLCPCB.csv` and `via-fill.csv` from this directory. All four describe one 50 × 104 mm board in the same coordinate system. Request panelization by JLCPCB, including assembly rails, tooling, fiducials and a suitable separation process. JLCPCB must transform the placement and selective fill/cap coordinates consistently into its panel.
+Supply `GERBERS-REVIEW-ONLY.zip`, `BOM-JLCPCB.csv`, `CPL-JLCPCB.csv` and `via-fill.csv` from this directory. All four describe one 44 × 94 mm board in the same coordinate system. Request panelization by JLCPCB, including assembly rails, tooling, fiducials and a suitable separation process. JLCPCB must transform the placement and selective fill/cap coordinates consistently into its panel.
 
 The earlier customer-designed panel is withdrawn and excluded from the current review package. Do not use its Gerbers or placement files from older downloads. Review JLCPCB's proposed panel, component orientation preview and finished-board quantity before authorizing fabrication. See [panelization requirements](PANEL.md).

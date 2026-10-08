@@ -16,7 +16,7 @@ def text(x,y,value,size=18,bold=False):
     attrs={'x':str(x),'y':str(y),'font-size':str(size)}
     if bold:attrs['font-weight']='700'
     element('text',attrs,labels).text=value
-text(40,49,'PCB layout · 50 × 104 mm · six layers',30,True)
+text(40,49,'PCB layout · 44 × 94 mm · six layers',30,True)
 text(40,82,'Actual KiCad copper, silkscreen and outline; display colors adjusted for contrast. Both views from above.',17)
 text(75,129,'Front / components',24,True)
 text(635,129,'Back / primary return',24,True)

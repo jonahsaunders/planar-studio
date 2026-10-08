@@ -11,7 +11,7 @@
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
         85.5,
-        60.635
+        65.635
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -22,7 +22,7 @@
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
         104.0,
-        59.0
+        64.0
       ],
       "rotation_deg": 90.0,
       "side": "top"
@@ -33,7 +33,7 @@
       "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
       "position_mm": [
         101.0,
-        118.5
+        113.5
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -44,7 +44,7 @@
       "sha256": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
       "position_mm": [
         106.5,
-        111.12
+        106.12
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -55,7 +55,7 @@
       "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
       "position_mm": [
         86.5,
-        58.2
+        63.2
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -66,7 +66,7 @@
       "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
       "position_mm": [
         100.0,
-        63.4
+        68.4
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -77,7 +77,7 @@
       "sha256": "ae35c4f1043bc64d44be9822563a47867ce2b6bed1663a1144d81c9b58368562",
       "position_mm": [
         110.5,
-        49.0
+        54.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -88,7 +88,7 @@
       "sha256": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
       "position_mm": [
         91.0,
-        118.5
+        113.5
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -99,7 +99,7 @@
       "sha256": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
       "position_mm": [
         88.0,
-        46.0
+        51.0
       ],
       "rotation_deg": 90.0,
       "side": "top"
@@ -110,7 +110,7 @@
       "sha256": "fa0f799ac1c5957c781dffbbe7891d30b2966cea6a9f7cbfe35e1c78652e309d",
       "position_mm": [
         101.0,
-        110.0
+        105.0
       ],
       "rotation_deg": 90.0,
       "side": "top"
@@ -121,7 +121,7 @@
       "sha256": "410f089a7313f1a95a73673ec50c20dcb9a78ee899671318e4a5d75c7059c7bd",
       "position_mm": [
         100.0,
-        59.7
+        64.7
       ],
       "rotation_deg": -90.0,
       "side": "top"
@@ -132,7 +132,7 @@
       "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
       "position_mm": [
         109.0,
-        60.9
+        65.9
       ],
       "rotation_deg": -90.0,
       "side": "top"
@@ -143,7 +143,7 @@
       "sha256": "e75e58159acdf40eeb3de85db3c897e11f45dbc8af9e004e89798c281c09a495",
       "position_mm": [
         90.5,
-        40.0
+        45.0
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -153,8 +153,8 @@
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
       "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
-        79.5,
-        37.5
+        82.5,
+        42.5
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -164,8 +164,8 @@
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
       "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
-        120.5,
-        37.5
+        117.5,
+        42.5
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -175,8 +175,8 @@
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
       "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
-        79.5,
-        132.5
+        82.5,
+        127.5
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -186,8 +186,8 @@
       "model": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
       "sha256": "e5c17880418ef844d377fa7c9bb5619fab7546941b5bdd83795a8534448e5d44",
       "position_mm": [
-        120.5,
-        132.5
+        117.5,
+        127.5
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -198,7 +198,7 @@
       "sha256": "fcceb0ecbef9afe8b8cc604e51cd39325607f91fa74e93cf5e6f9d678fb35ae3",
       "position_mm": [
         97.5,
-        40.0
+        45.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -209,7 +209,7 @@
       "sha256": "fcceb0ecbef9afe8b8cc604e51cd39325607f91fa74e93cf5e6f9d678fb35ae3",
       "position_mm": [
         102.5,
-        129.0
+        124.0
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -220,7 +220,7 @@
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
         90.5,
-        51.0
+        56.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -231,7 +231,7 @@
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
         93.5,
-        51.0
+        56.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -242,7 +242,7 @@
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
         96.65,
-        59.635
+        64.635
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -253,7 +253,7 @@
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
         96.65,
-        57.8
+        62.8
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -264,7 +264,7 @@
       "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
       "position_mm": [
         94.1015,
-        54.5
+        59.5
       ],
       "rotation_deg": 90.0,
       "side": "top"
@@ -275,7 +275,7 @@
       "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
       "position_mm": [
         104.0,
-        63.4
+        68.4
       ],
       "rotation_deg": 180.0,
       "side": "top"
@@ -286,7 +286,7 @@
       "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
       "position_mm": [
         109.0,
-        118.5
+        113.5
       ],
       "rotation_deg": -90.0,
       "side": "top"
@@ -297,7 +297,7 @@
       "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
       "position_mm": [
         98.0,
-        47.0
+        52.0
       ],
       "rotation_deg": 0.0,
       "side": "top"
@@ -305,7 +305,7 @@
     {
       "reference": "T1",
       "model": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
-      "sha256": "d8d0d53fcb2b144fde1cb507b52e2d9553e6aec7a8913cf7ca7ff92c2404fc72",
+      "sha256": "6ab3777a2761c1cf8de23d14b9c334eff00ef5882926f3e5992fdbeef35341b6",
       "position_mm": [
         100.0,
         85.0
@@ -319,7 +319,7 @@
       "sha256": "2d6f7e774e8143e3320cbd59eb5be9f3b7864614644e3b072006e1eb05fb7fa6",
       "position_mm": [
         91.5,
-        59.0
+        64.0
       ],
       "rotation_deg": 0.0,
       "side": "top"

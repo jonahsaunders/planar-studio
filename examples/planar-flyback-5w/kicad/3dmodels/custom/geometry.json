@@ -79,21 +79,21 @@
     },
     "EELP22_factory_gapped_pair": {
       "file": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
-      "description": "TDK EELP22 factory-gapped pair and matching clips. Requires CadQuery 2.6.1.\n\nFerrite dimensions and gaps: TDK drawing pp2-3. Nominal datum is PCB top Z=0.\nClip bow, material thickness and recess detail are illustrative: the public\ndrawing does not fully dimension them. A separate conservative envelope is\nverified by verify-core-fit.py; neither model is supplier-certified CAD.\n",
-      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+      "description": "TDK-derived EELP22 pair and clips. Requires CadQuery 2.6.1.\n\nOriginal ungapped-core and free-spring STEP files are preserved byte-for-byte.\nTrim only the model's center post by the ordered factory gap. The displayed\nclip pose opens its 8.8 mm CAD jaw to the core's 9.4 mm recess-floor spacing.\nUniform Z opening is a visualization surrogate, not an elastic/force simulation.\nThe independent PCB fit check uses a larger envelope, not this estimated pose.\n",
+      "source": "TDK vendor STEP outlines; sources/tdk-mechanical-cad.json",
       "valid_solid": true,
       "solids": 4,
-      "volume_mm3": 2732.316399999997,
+      "volume_mm3": 2690.025201722586,
       "bounds_mm": {
         "min": [
-          -11.9,
-          -7.9,
-          -6.509
+          -11.800000099999474,
+          -7.900000100127296,
+          -6.509000100000003
         ],
         "max": [
-          11.9,
-          7.9,
-          4.891
+          11.800000099999975,
+          7.900000100127296,
+          4.891000100000003
         ]
       },
       "dimensions": {
@@ -103,6 +103,19 @@
         "total_center_gap_mm": 0.1,
         "gap_per_half_mm": 0.05,
         "board_thickness_mm": 1.618
+      },
+      "nominal_displayed_clip_outer_x_mm": 11.8,
+      "raw_clip_span_mm": [
+        3.2789087512880837,
+        2.300000200000001,
+        10.600000000000001
+      ],
+      "clip_free_inner_jaw_CAD_mm": 8.8,
+      "core_recess_floor_spacing_CAD_mm": 9.4,
+      "displayed_clip_z_opening_scale": 1.0681818181818181,
+      "source_SHA256": {
+        "kicad/3dmodels/vendor/TDK/B66285G_ungapped.stp": "9986d4416b6fef21448617a3cfb7810599d4316417a77d14b03dc5f20bb397b3",
+        "kicad/3dmodels/vendor/TDK/B66286A2000X000.stp": "131c9b840bb98872f2d6ab17b6e9b8c86b1c6dcf6f3453b7aa39741ee8cf09d6"
       }
     }
   }

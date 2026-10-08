@@ -1,4 +1,4 @@
-"""Independent A2 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.
+"""Independent A3 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.
 
 TDK pp2-3 dimensions are transcribed here independently of the winding generator.
 Checks nominal solids, maximum ferrite corners, inward routing error, rounded
@@ -80,7 +80,7 @@ for item in checks['models']:
         if v>1e-6:collisions.append([item['reference'],dx,dy,v])
 assert not collisions,collisions
 result={
-    'revision':'A2-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
+    'revision':'A3-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
     'method':__doc__,'actual_saved_board_slots_local_mm':slots,'rounded_slot_radius_mm':.5,
     'routing_inward_error_per_wall_mm':.2,'centered_insertion_pose_allowance_mm':.05,
     'maximum_ferrite_corner_checks':len(corners),'minimum_corner_clearance_mm':min(corners),
@@ -88,7 +88,7 @@ result={
     'nominal_core_clip_solid_count':len(nominal.Solids()),'nominal_substrate_intersection_mm3':nominal.intersect(substrate).Volume(),
     'minimum_clip_envelope_slot_clearance_mm':min(clip_margins),
     'maximum_body_component_intersections':collisions,'component_pose_wander_checked_mm':1,
-    'conditional_clip_limit':'Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK does not specify installed bow/recess depth; verify the first physical pair. Clip STEP bends/recesses are illustrative.',
+    'conditional_clip_limit':'Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.',
     'mechanical_scope':'Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.',
     'source_SHA256':{str(f.relative_to(R)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest() for f in [board,model,R/'magnetics.json']}}
 (R/'evidence/audit/core-fit-checks.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')

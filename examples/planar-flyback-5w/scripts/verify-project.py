@@ -127,8 +127,9 @@ stack_spec=json.loads((ROOT/'stackup.json').read_text())
 assert abs(thickness-stack_spec['published_copper_plus_dielectric_mm'])<1e-8
 assert [float(child(l,'thickness')[1]) for l in layers if child(l,'type')[1]=='copper']==stack_spec['copper_mm']
 assert board.GetCopperLayerCount()==6
-assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==75
-assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==137
+bounds=json.loads((ROOT/'layout.json').read_text())['board_bounds_mm']
+assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==bounds[0]
+assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==bounds[3]
 drc=json.loads((ROOT/'evidence/board-drc.json').read_text())
 assert not drc['violations'] and not drc['unconnected_items'] and not drc.get('schematic_parity',[])
 rules=json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['board']['design_settings']['rules']

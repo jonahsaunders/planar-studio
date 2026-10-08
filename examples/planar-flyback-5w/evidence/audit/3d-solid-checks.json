@@ -8,11 +8,11 @@
   "substrate_intersections": [],
   "pair_screening": "Disjoint axis-aligned boxes rejected conservatively; every overlapping box pair checked by exact common solid volume, without distance-based pruning.",
   "overlapping_box_pairs_boolean_checked": 0,
-  "core_to_nominal_substrate_clearance_mm": 0.5499999999999972,
-  "core_below_board_mm": 4.891,
-  "provisional_mount_plane_to_core_clearance_mm": 3.109,
+  "core_to_nominal_substrate_clearance_mm": 0.550000000001944,
+  "core_below_board_mm": 4.891000100000003,
+  "provisional_mount_plane_to_core_clearance_mm": 3.108999899999997,
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "07febd670168ed113559c5bf6df1bdc4c7e790843b5f217787e3a5ce9713a0e1",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "db7a6b44a064af7cd8886a6cf0bf8146ce9e1a79c484c80bd04d8cc9f027db77",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_1210_3225Metric.step": "f8510481c5044113cf49b0fa6dd54ddab9224508bd6808e1afab8ef0cefdefc9",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step": "db9f56772f8759b93f4ba0b274e293a14bbd3c7d5f2de835feeabb78b0c02d76",
     "kicad/3dmodels/stock/Capacitor_SMD.3dshapes/C_0603_1608Metric.step": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
@@ -27,7 +27,7 @@
     "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_0603_1608Metric.step": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
     "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
     "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
-    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "d8d0d53fcb2b144fde1cb507b52e2d9553e6aec7a8913cf7ca7ff92c2404fc72",
+    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "6ab3777a2761c1cf8de23d14b9c334eff00ef5882926f3e5992fdbeef35341b6",
     "kicad/3dmodels/stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step": "2d6f7e774e8143e3320cbd59eb5be9f3b7864614644e3b072006e1eb05fb7fa6"
   }
 }

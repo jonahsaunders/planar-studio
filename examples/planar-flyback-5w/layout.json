@@ -1,0 +1,25 @@
+{
+  "revision": "A3-development",
+  "baseline_commit": "d802dfb665ab7df4fcd8f37760fdfa498653a258",
+  "board_bounds_mm": [
+    78,
+    38,
+    122,
+    132
+  ],
+  "primary_translation_mm": [
+    0,
+    5
+  ],
+  "secondary_translation_mm": [
+    0,
+    -5
+  ],
+  "transformer_center_mm": [
+    100,
+    85
+  ],
+  "source_primary_max_y_mm": 69,
+  "source_secondary_min_y_mm": 102,
+  "method": "Rigidly translate each electronics block, its local tracks/vias and ground zones. Keep the T1 winding fixed and shorten only its four connection leads."
+}

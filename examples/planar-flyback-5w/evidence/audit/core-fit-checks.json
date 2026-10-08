@@ -1,7 +1,7 @@
 {
-  "revision": "A2-development",
+  "revision": "A3-development",
   "source": "TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing \u00b10.2 mm",
-  "method": "Independent A2 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.\n\nTDK pp2-3 dimensions are transcribed here independently of the winding generator.\nChecks nominal solids, maximum ferrite corners, inward routing error, rounded\ncorners, PCB thickness, and the explicitly conditional installed-clip envelope.\n",
+  "method": "Independent A3 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.\n\nTDK pp2-3 dimensions are transcribed here independently of the winding generator.\nChecks nominal solids, maximum ferrite corners, inward routing error, rounded\ncorners, PCB thickness, and the explicitly conditional installed-clip envelope.\n",
   "actual_saved_board_slots_local_mm": [
     [
       -13.100000000004002,
@@ -34,11 +34,11 @@
   "minimum_clip_envelope_slot_clearance_mm": 0.24999999999999423,
   "maximum_body_component_intersections": [],
   "component_pose_wander_checked_mm": 1,
-  "conditional_clip_limit": "Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK does not specify installed bow/recess depth; verify the first physical pair. Clip STEP bends/recesses are illustrative.",
+  "conditional_clip_limit": "Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.",
   "mechanical_scope": "Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "07febd670168ed113559c5bf6df1bdc4c7e790843b5f217787e3a5ce9713a0e1",
-    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "d8d0d53fcb2b144fde1cb507b52e2d9553e6aec7a8913cf7ca7ff92c2404fc72",
-    "magnetics.json": "a0d208feb685f73ff2d59dd684ae592dcead1f25fcbedca0a45a41eeef870351"
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "db7a6b44a064af7cd8886a6cf0bf8146ce9e1a79c484c80bd04d8cc9f027db77",
+    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "6ab3777a2761c1cf8de23d14b9c334eff00ef5882926f3e5992fdbeef35341b6",
+    "magnetics.json": "38b5d259b5a2dae8631a9315672bb234bd5bdb3edc312ae4eeee6d6aca5df548"
   }
 }

@@ -44,4 +44,4 @@ R4 must remain inside 9.09–11.0 kΩ including applicable tolerance/temperature
 
 The transient, thermal and assembly reliability criteria need application-level review. EMI/EMC and safety certification have not been specified or performed. Final BOM values, core installation and stack must be frozen only after first-article results and vendor DFM acceptance.
 
-A2 additional gates: verify the installed clip bow and engagement against CORE-ASSEMBLY.md; measure L versus bias/temperature and short-circuit restart because the smaller core has less fault margin. No adhesive cure is part of A2.
+A3 additional gates: verify the installed clip bow and engagement against CORE-ASSEMBLY.md; measure L versus bias/temperature and short-circuit restart because the smaller core has less fault margin. No adhesive cure is part of A3.
