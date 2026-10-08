@@ -25,3 +25,5 @@ The first physical pair must confirm spring engagement, retention and installed 
 Use Node.js, KiCad 10's Python/CLI, and a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository. Run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, manufacturing files, checks and renders. `check-manifest.py` verifies file hashes. A packaged example needs `PLANAR_STUDIO_ROOT` pointing to this repository, including the pinned A2 and first-A3 baseline commits.
 
 Only the evidence listed in VALIDATION.md qualifies the current A3 files. Earlier audit reports and comparisons are historical. No purchase, supplier submission or physical testing has occurred.
+
+The A3 JLCPCB placement export also includes the previously separate catalog rotation/origin corrections. See [placement and polarity review](manufacturing/PLACEMENT-REVIEW.md). All 24 placements and 56 catalog pad centers pass the saved geometry/net check; a fresh factory preview is still required.

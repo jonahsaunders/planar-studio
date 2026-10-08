@@ -10,6 +10,8 @@ F1 is now Bourns SF-1206F100-2 / C3164649. Please confirm a compatible component
 
 Please also confirm JLC061611-1080A (1.6 mm order class, published copper/dielectric sum 1.618 mm) or return exact dimensions for an alternative, Â±0.20 mm internal-slot routing allowance, filled/capped vias, through-hole connector assembly, and any component sourcing exceptions. The KiCad project, Gerbers/drills, electronic BOM/CPL, separate core BOM, via schedule and proposed test plan are included.
 
+Please use the current corrected CPL-JLCPCB.csv and return a fresh orientation preview against PLACEMENT-REVIEW.md and placement-review.svg. Check U1 pin 1, diode/capacitor polarity, and outward-facing J1/J2 openings. The raw KiCad export does not contain the catalog-frame corrections.
+
 Please return feasibility, sourcing exceptions, proposed assembly method, lead time, tooling/NRE and quotation. This is a design-for-manufacture review only; do not start fabrication or purchase materials. The A3 design still requires first-article electrical, thermal and magnetic validation.
 
 Please prepare the assembly panel yourselves from the supplied 44 × 94 mm single-board Gerbers, BOM, CPL and selective fill/cap schedule. The earlier customer-designed panel is withdrawn. Add suitable rails, tooling and fiducials, and propose tab locations and separation that preserve the core openings, mounting features and component clearances. Transform the placement and via-fill coordinates consistently. Return the proposed panel drawing and assembly orientation preview for review; do not alter the board outline, copper, stack or internal slots without approval. See PANEL.md for the handoff requirements.

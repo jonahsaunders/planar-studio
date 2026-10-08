@@ -57,6 +57,8 @@ py('manufacturing-data.py')
 # Calculations and CSV exports are inputs to the feedback provenance record.
 # Normalize them before recording hashes so Windows publication stays exact.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
+py('verify-placement.py')
+py('render-placement.py')
 py('verify-feedback.py')
 py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(dir=R/'.kicad-config', prefix='flyback-svg-') as temp:

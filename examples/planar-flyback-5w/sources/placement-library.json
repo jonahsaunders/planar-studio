@@ -1,0 +1,804 @@
+{
+  "observed_date": "2026-09-30",
+  "source": "Factual pad coordinates extracted from JLCEDA / EasyEDA public component library for the exact LCSC codes. Raw responses are not redistributed.",
+  "coordinates": "Local XY in mm, X right / Y down, viewed from top. Output CPL is X right / Y up, CCW degrees.",
+  "limitation": "Catalog geometry check, not a JLCPCB order-preview approval. Review the fresh assembly preview and factory placement before fabrication.",
+  "parts": {
+    "C474881": {
+      "mpn": "KF301-5.0-2P",
+      "footprint": "Flyback:Terminal_KF301_2P_5.00",
+      "references": [
+        "J1",
+        "J2"
+      ],
+      "source_url": "https://easyeda.com/api/products/C474881/components?version=6.4.19.5",
+      "source_sha256": "3e042ef14c6c7b92016c14240296398054cadb421ad0dbc822bb203de2447d9c",
+      "catalog_package": "CONN-TH_P5.00_KF301-5.0-2P",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -2.499995,
+            0.0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            2.499995,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "2",
+        "2": "1"
+      },
+      "origin_in_footprint_mm": [
+        2.5,
+        0
+      ],
+      "rotation_offset_deg": 180,
+      "reason": "Unpolarized terminal block: openings face the board edge; catalog contact numbers are reversed relative to PCB pad numbers. PCB labels define + and -."
+    },
+    "C3164649": {
+      "mpn": "SF-1206F100-2",
+      "footprint": "Flyback:Fuse_Bourns_SF1206F",
+      "references": [
+        "F1"
+      ],
+      "source_url": "https://easyeda.com/api/products/C3164649/components?version=6.4.19.5",
+      "source_sha256": "4d830bd389d75abb463d12f9180e7a9af55295bc5c39924185085e6299633e5b",
+      "catalog_package": "F1206",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.445006,
+            0.0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            1.445006,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "1",
+        "2": "2"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C107674": {
+      "mpn": "DFLS1100-7",
+      "footprint": "Flyback:D_PowerDI-123",
+      "references": [
+        "D1",
+        "D3"
+      ],
+      "source_url": "https://easyeda.com/api/products/C107674/components?version=6.4.19.5",
+      "source_sha256": "f9ef4dc339c4ca9424b285b1f19a912f92b8fc16eea5b75fd04d96cc1488666c",
+      "catalog_package": "POWERDI-123_L2.8-W1.8-LS3.7-RD",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.18745,
+            0.0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            1.18745,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "1",
+        "2": "2"
+      },
+      "origin_in_footprint_mm": [
+        0.3375,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Exact translation between both catalog land centers and the asymmetric KiCad PowerDI-123 footprint."
+    },
+    "C138687": {
+      "mpn": "CL32B106KBJNNNE",
+      "footprint": "Flyback:C_1210_3225Metric",
+      "references": [
+        "C1",
+        "C2"
+      ],
+      "source_url": "https://easyeda.com/api/products/C138687/components?version=6.4.19.5",
+      "source_sha256": "70eb02b253362d70fb4e801a5c19ff283b5565da148fbf8cf6d0381ac94945c4",
+      "catalog_package": "C1210",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            1.517396,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.517396,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C444972": {
+      "mpn": "PDS835L-13",
+      "footprint": "Flyback:D_PowerDI-5",
+      "references": [
+        "D2"
+      ],
+      "source_url": "https://easyeda.com/api/products/C444972/components?version=6.4.19.5",
+      "source_sha256": "008ea939dc3eadf76944834706620842e8c8639e522d1d487de5a7ffea045e87",
+      "catalog_package": "POWERDI-5_L5.4-W4.0-LS6.5-RD",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            2.032,
+            0.919988
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            2.032,
+            -0.919988
+          ]
+        },
+        {
+          "number": "3",
+          "xy_mm": [
+            -2.032,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "2",
+        "2": "2",
+        "3": "1"
+      },
+      "origin_in_footprint_mm": [
+        0.9,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Catalog 3D/physical lead-span center is -0.9000 mm from its origin on X. PCB origin is the package center; catalog pins 1/2 are anodes, 3 is cathode.",
+      "catalog_model_anchor_mm": [
+        -0.9000236,
+        5.08e-05
+      ],
+      "catalog_lead_span_center_mm": [
+        -0.9000109,
+        5.08e-05
+      ]
+    },
+    "C136277": {
+      "mpn": "16SVPF180M",
+      "footprint": "Flyback:CP_Panasonic_C6",
+      "references": [
+        "C3",
+        "C8"
+      ],
+      "source_url": "https://easyeda.com/api/products/C136277/components?version=6.4.19.5",
+      "source_sha256": "4aec6b277ed800853d6586c20f11f78cac5d186c4915018a89a0e9dac8d0a357",
+      "catalog_package": "CAP-SMD_BD6.3-L6.6-W6.6-FD",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -2.670048,
+            0.0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            2.670048,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "1",
+        "2": "2"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C55530": {
+      "mpn": "CL32B226KOJNNNE",
+      "footprint": "Flyback:C_1210_3225Metric",
+      "references": [
+        "C4"
+      ],
+      "source_url": "https://easyeda.com/api/products/C55530/components?version=6.4.19.5",
+      "source_sha256": "06b95aa5231bf9710986e54fa939d6b8bcd5b70473bd7d5dea53468322a131eb",
+      "catalog_package": "C1210",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            1.517396,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.517396,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C673679": {
+      "mpn": "LT8302IS8E#PBF",
+      "footprint": "Flyback:SOIC8_EP_LT_S8E",
+      "references": [
+        "U1"
+      ],
+      "source_url": "https://easyeda.com/api/products/C673679/components?version=6.4.19.5",
+      "source_sha256": "bb8a8757d9c5eee71a43aa15cce8d482c832385dfa92d73da362b9957434ac5f",
+      "catalog_package": "SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL-EP3.3",
+      "catalog_pads": [
+        {
+          "number": "9",
+          "xy_mm": [
+            0.0,
+            -0.0508
+          ]
+        },
+        {
+          "number": "5",
+          "xy_mm": [
+            1.905,
+            -3.0226
+          ]
+        },
+        {
+          "number": "6",
+          "xy_mm": [
+            0.635,
+            -3.0226
+          ]
+        },
+        {
+          "number": "7",
+          "xy_mm": [
+            -0.635,
+            -3.0226
+          ]
+        },
+        {
+          "number": "8",
+          "xy_mm": [
+            -1.905,
+            -3.0226
+          ]
+        },
+        {
+          "number": "4",
+          "xy_mm": [
+            1.905,
+            3.0226
+          ]
+        },
+        {
+          "number": "3",
+          "xy_mm": [
+            0.635,
+            3.0226
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            -0.635,
+            3.0226
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.905,
+            3.0226
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "9": "9",
+        "5": "5",
+        "6": "6",
+        "7": "7",
+        "8": "8",
+        "4": "4",
+        "3": "3",
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 270,
+      "reason": "Catalog pin 1 is bottom-left at zero rotation; rotate 270 degrees CCW to match PCB pin 1 at top-left."
+    },
+    "C77045": {
+      "mpn": "GRM188R61C475KE11D",
+      "footprint": "Flyback:C_0603_1608Metric",
+      "references": [
+        "C5"
+      ],
+      "source_url": "https://easyeda.com/api/products/C77045/components?version=6.4.19.5",
+      "source_sha256": "0f2d3731df4dc845ca958a38a6cc52db0cab37c06ed3a28baa46092f786495a9",
+      "catalog_package": "C0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.700024,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.700024,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C245991": {
+      "mpn": "RC0603FR-07649KL",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R1"
+      ],
+      "source_url": "https://easyeda.com/api/products/C245991/components?version=6.4.19.5",
+      "source_sha256": "024ffa152dc8724cf7a15bb04310b517a27f08ac00299af399d9541a1ee29a78",
+      "catalog_package": "R0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.753364,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.753364,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C137696": {
+      "mpn": "RC0603FR-0761K9L",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R2"
+      ],
+      "source_url": "https://easyeda.com/api/products/C137696/components?version=6.4.19.5",
+      "source_sha256": "7fbc24ae0a5a3e29edcf39fa3bd16b5c091eb45468fa1e6abc4e4dfdb146fad6",
+      "catalog_package": "R0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.753364,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.753364,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C705718": {
+      "mpn": "RT0603BRD07113KL",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R3"
+      ],
+      "source_url": "https://easyeda.com/api/products/C705718/components?version=6.4.19.5",
+      "source_sha256": "08a912f105c25366050eb6d0cf39749b79dfd42628b296c8ff561c6fce7e935b",
+      "catalog_package": "R0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.753364,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.753364,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C861078": {
+      "mpn": "RT0603BRD0710K7L",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R4"
+      ],
+      "source_url": "https://easyeda.com/api/products/C861078/components?version=6.4.19.5",
+      "source_sha256": "2888007991ba54775b0bd459f7d1f3de42fb3d8bd68c285d7f9a00c2557fbc75",
+      "catalog_package": "R0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.753364,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.753364,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C705722": {
+      "mpn": "RT0603BRD07127KL",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R5"
+      ],
+      "source_url": "https://easyeda.com/api/products/C705722/components?version=6.4.19.5",
+      "source_sha256": "15c1609e8e7daccaed30562d6fa18a9c947e8b8bab8bfed8a3913102db88a460",
+      "catalog_package": "R0603",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.753364,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.753364,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C6683830": {
+      "mpn": "SR1206FR-7T39RL",
+      "footprint": "Flyback:R_1206_3216Metric",
+      "references": [
+        "R6"
+      ],
+      "source_url": "https://easyeda.com/api/products/C6683830/components?version=6.4.19.5",
+      "source_sha256": "89293be4ba7d40cbb84d7905ccc058ef2f462065941071f588a6c2703cf3e103",
+      "catalog_package": "R1206",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            1.478788,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.478788,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C513677": {
+      "mpn": "CC0805JRNPO0BN471",
+      "footprint": "Flyback:C_0805_2012Metric",
+      "references": [
+        "C6"
+      ],
+      "source_url": "https://easyeda.com/api/products/C513677/components?version=6.4.19.5",
+      "source_sha256": "a65455573ed6387cbab42d5dc8a371546aab0659f78c62f21a4c49e12bc01f2a",
+      "catalog_package": "C0805",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            0.999998,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.999998,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C134947": {
+      "mpn": "SMAJ12A-13-F",
+      "footprint": "Flyback:D_SMA",
+      "references": [
+        "D4"
+      ],
+      "source_url": "https://easyeda.com/api/products/C134947/components?version=6.4.19.5",
+      "source_sha256": "112526dd650ee5b90db10b7319affa24dd27ed240f6824fd1dd6926f77acc260",
+      "catalog_package": "SMA_L4.4-W2.6-LS5.0-RD",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            2.192528,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -2.192528,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C137353": {
+      "mpn": "RC1206FR-07220RL",
+      "footprint": "Flyback:R_1206_3216Metric",
+      "references": [
+        "R7"
+      ],
+      "source_url": "https://easyeda.com/api/products/C137353/components?version=6.4.19.5",
+      "source_sha256": "3cd4bb1cb8883b2fecd0c4f1acb98eca1ccabb0fd5486e4954aac1fec03d2cd1",
+      "catalog_package": "R1206",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            1.478788,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.478788,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C840598": {
+      "mpn": "CRM2512-JW-2R2ELF",
+      "footprint": "Flyback:R_Bourns_CRM2512",
+      "references": [
+        "R8"
+      ],
+      "source_url": "https://easyeda.com/api/products/C840598/components?version=6.4.19.5",
+      "source_sha256": "b85de973c03092e80990c5234b7cae1d5893d45ee1e702beb8fb6438ffd738db",
+      "catalog_package": "R2512",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            3.066288,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -3.066288,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C454353": {
+      "mpn": "EEHZC1J470P",
+      "footprint": "Flyback:CP_Elec_8x10.5",
+      "references": [
+        "C7"
+      ],
+      "source_url": "https://easyeda.com/api/products/C454353/components?version=6.4.19.5",
+      "source_sha256": "63eb3ec00f6dbf7478e7d5178ad568f2b2297aa6e11397acee90e139cca20940",
+      "catalog_package": "CAP-SMD_BD8.0-L8.3-W8.3-LS9.9-FD",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            3.596386,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -3.596386,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered origin and orientation agree with the KiCad footprint."
+    }
+  }
+}

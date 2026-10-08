@@ -13,6 +13,7 @@ This is an unbuilt engineering prototype. Automated checks establish geometry, c
 | Local model references and nominal solid intersections | `evidence/audit/3d-model-checks.json`, `evidence/audit/3d-solid-checks.json` |
 | Manufacturer CAD provenance | `sources/tdk-mechanical-cad.json` |
 | BOM/CPL, six copper layers, 66 filled/capped holes and mounting | `evidence/manufacturing-checks.json` |
+| Exact catalog placement: 24 components, 56 pad centers/nets, 15 rejected wrong rotations/origins | `evidence/audit/placement-checks.json`, `manufacturing/PLACEMENT-REVIEW.md` |
 | Electrical sizing and 54 analytical load cases | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
 | Actual fabrication-layer renders | `evidence/audit/render-provenance.json` and Gerber contact sheets |
 

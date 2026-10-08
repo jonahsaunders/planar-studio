@@ -47,7 +47,7 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 - `CORE-BOM.csv` describes separate factory-gapped halves and clips. Factory-gapped cores may be procured from DigiKey; these items are outside the board-electronics sourcing requirement and need a separately agreed process.
 - `via-fill.csv` lists 66 filled/capped interlayer holes (61 vias and five T1 holes); four connector holes remain open. Total plated drill count is 70, plus four NPTH mounting holes. It distinguishes vias and planar interlayer holes from connector holes. Fill/cap all listed vias and T1 interlayer holes. **Do not fill J1/J2 connector holes or H1–H4 mounting holes.** T1 pads 1–5 are electrical test/interlayer locations, not component leads.
 - PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
-- CPL angles are KiCad angles. JLCPCB must reconcile its library zero rotations against the assembly drawing, especially U1, D1–D4 and C3; verify pin 1 and polarity in the assembly preview before approval.
+- CPL positions and angles include reviewed exact-part catalog-frame corrections. Use CPL-JLCPCB.csv, not the raw KiCad export. Compare the fresh assembly preview with PLACEMENT-REVIEW.md and placement-review.svg; verify pin 1, polarity and outward connector openings before approval.
 - J1 pin 1 is positive at the left when viewed from the top. J2 pin 1 is positive at the right. Wire-entry sides face their nearest board end.
 - All exported manufacturing data is A3 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
 

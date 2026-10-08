@@ -10,6 +10,8 @@ Use the files in this directory for **JLCPCB-managed panelization** of the A3 fl
 | Electronic components | [BOM-JLCPCB.csv](BOM-JLCPCB.csv) |
 | Component placement | [CPL-JLCPCB.csv](CPL-JLCPCB.csv) |
 
+The CPL includes exact catalog rotation and origin corrections for the current A3 board. Upload it again if an earlier file was used, and compare the fresh preview with PLACEMENT-REVIEW.md. The raw KiCad positions are reference data only.
+
 The outer review-package ZIP contains the complete project and supporting documents. Extract it to reach these three upload files; it is not the Gerber upload itself. Each file describes one 44 × 94 mm board. Ask JLCPCB to prepare the assembly panel and convert coordinates as needed. The requested quantity is **five finished converter boards**, subject to the quoted panel arrangement.
 
 ## Include with the engineering review
@@ -20,6 +22,8 @@ The outer review-package ZIP contains the complete project and supporting docume
 - [Selective via fill/cap schedule](via-fill.csv)
 - [Exact stack dimensions](../stackup.json)
 - [Top assembly drawing](assembly-top.svg)
+- [Placement corrections and pin/polarity acceptance](PLACEMENT-REVIEW.md)
+- [Catalog pin centers over actual PCB pads](placement-review.svg)
 
 Have JLCPCB return the panel drawing and assembly orientation preview for review. Confirm the specified stack, internal core-slot tolerances, selective via filling, connector assembly and component-compatible reflow profile. The online panel option does not by itself establish acceptance of these requirements.
 
