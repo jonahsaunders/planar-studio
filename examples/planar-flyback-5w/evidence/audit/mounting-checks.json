@@ -6,17 +6,18 @@
       "x_mm": 82.5,
       "y_mm": 42.5,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 3.400499,
-        "In1.Cu": 3.605124,
-        "In2.Cu": 3.605124,
-        "In3.Cu": 3.605124,
-        "In4.Cu": 3.605124,
-        "B.Cu": 3.400499
+        "F.Cu": 5.000499,
+        "In1.Cu": 5.400877,
+        "In2.Cu": 5.400877,
+        "In3.Cu": 5.400877,
+        "In4.Cu": 5.400877,
+        "B.Cu": 5.000499
       },
       "excluded_from_BOM_CPL": true,
       "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rotation_deg": 180.0,
-      "all_layer_extension_clear": true
+      "all_layer_extension_clear": true,
+      "all_layer_mask_margin_checked_mm": 1.79
     },
     {
       "reference": "H2",
@@ -24,17 +25,18 @@
       "x_mm": 117.5,
       "y_mm": 42.5,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 3.400499,
+        "F.Cu": 5.000499,
         "In1.Cu": 5.108326,
         "In2.Cu": 5.108326,
         "In3.Cu": 5.108326,
         "In4.Cu": 5.108326,
-        "B.Cu": 3.400499
+        "B.Cu": 5.000499
       },
       "excluded_from_BOM_CPL": true,
       "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rotation_deg": 0.0,
-      "all_layer_extension_clear": true
+      "all_layer_extension_clear": true,
+      "all_layer_mask_margin_checked_mm": 1.79
     },
     {
       "reference": "H3",
@@ -42,17 +44,18 @@
       "x_mm": 82.5,
       "y_mm": 127.5,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 3.550637,
+        "F.Cu": 5.000499,
         "In1.Cu": 8.560022,
         "In2.Cu": 8.560022,
         "In3.Cu": 8.560022,
         "In4.Cu": 8.560022,
-        "B.Cu": 3.550637
+        "B.Cu": 5.000499
       },
       "excluded_from_BOM_CPL": true,
       "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rotation_deg": 180.0,
-      "all_layer_extension_clear": true
+      "all_layer_extension_clear": true,
+      "all_layer_mask_margin_checked_mm": 1.79
     },
     {
       "reference": "H4",
@@ -60,20 +63,23 @@
       "x_mm": 117.5,
       "y_mm": 127.5,
       "nearest_copper_from_center_mm": {
-        "F.Cu": 3.550887,
+        "F.Cu": 5.0005,
         "In1.Cu": 6.806335,
         "In2.Cu": 6.806335,
         "In3.Cu": 6.806335,
         "In4.Cu": 6.806335,
-        "B.Cu": 3.550887
+        "B.Cu": 5.0005
       },
       "excluded_from_BOM_CPL": true,
       "footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
       "rotation_deg": 0.0,
-      "all_layer_extension_clear": true
+      "all_layer_extension_clear": true,
+      "all_layer_mask_margin_checked_mm": 1.79
     }
   ],
-  "required_copper_radius_mm": 3.4,
+  "required_copper_radius_mm": 5.0,
+  "nominal_copper_to_mask_margin_mm": 1.8,
+  "maximum_hardware_contact_diameter_mm": 6.4,
   "geometry_tolerance_mm": 0.01,
   "rules": {
     "max_error": 0.005,
@@ -95,5 +101,9 @@
     "min_via_diameter": 0.6,
     "solder_mask_to_copper_clearance": 0.0,
     "use_height_for_length_calcs": true
+  },
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
+    "mechanical.json": "bd0f681ba0c54c05163fa1379c87dd73f5bce1647136eb71eda46a743e68b6f6"
   }
 }

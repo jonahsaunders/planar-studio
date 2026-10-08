@@ -13,7 +13,7 @@
       -5
     ]
   },
-  "one_ground_stitching_via_exception": "A2 (84.5,40) -> A3 (85.5,45), to clear H1; unchanged drill and copper diameter.",
+  "one_ground_stitching_via_exception": "A2 (84.5,40) -> A3 (86,47), to clear the enlarged H1 reservation; unchanged drill and copper diameter.",
   "shortened_transformer_connection_segments": [
     {
       "net": "/GND_ISO",
@@ -56,29 +56,29 @@
       "net": "/GND_ISO",
       "layer": "F.Cu",
       "A2_mm2": 602.7795665047975,
-      "A3_mm2": 602.7795665047975,
-      "retained_fraction": 1.0
+      "A3_mm2": 596.8692380764605,
+      "retained_fraction": 0.9901948759434435
     },
     {
       "net": "/PGND",
       "layer": "F.Cu",
       "A2_mm2": 649.0735861152285,
-      "A3_mm2": 640.8652616870615,
-      "retained_fraction": 0.9873537845265055
+      "A3_mm2": 625.4162892579615,
+      "retained_fraction": 0.9635522113927661
     },
     {
       "net": "/PGND",
       "layer": "B.Cu",
       "A2_mm2": 842.553859667716,
-      "A3_mm2": 834.7990016400965,
-      "retained_fraction": 0.9907960091350388
+      "A3_mm2": 819.3500291930385,
+      "retained_fraction": 0.9724601220344198
     },
     {
       "net": "/GND_ISO",
       "layer": "B.Cu",
       "A2_mm2": 711.543517545314,
-      "A3_mm2": 711.543517545314,
-      "retained_fraction": 1.0
+      "A3_mm2": 705.6331891323725,
+      "retained_fraction": 0.9916936515234782
     }
   ],
   "A2_board_mm": [
@@ -102,9 +102,9 @@
   },
   "scope": "Geometric preservation and connectivity; no hardware EMI, thermal or control validation.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "db7a6b44a064af7cd8886a6cf0bf8146ce9e1a79c484c80bd04d8cc9f027db77",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
     "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
-    "layout.json": "9ec9dd557ba0eb68627f5d5feb39136486a3a62e4e99389368fc076ab6747689",
+    "layout.json": "f4d73d056e74ea1d380ab9499063662c740409c3a28cfed3f1a7db6fef63ea33",
     "planar-studio/T1-artwork.json": "4909193412beaa7520bf008db8133169045e56943a240369861e3a4aa5a1eb2b"
   }
 }

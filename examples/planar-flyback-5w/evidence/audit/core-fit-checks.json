@@ -37,8 +37,8 @@
   "conditional_clip_limit": "Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.",
   "mechanical_scope": "Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "db7a6b44a064af7cd8886a6cf0bf8146ce9e1a79c484c80bd04d8cc9f027db77",
-    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "6ab3777a2761c1cf8de23d14b9c334eff00ef5882926f3e5992fdbeef35341b6",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
+    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
     "magnetics.json": "38b5d259b5a2dae8631a9315672bb234bd5bdb3edc312ae4eeee6d6aca5df548"
   }
 }

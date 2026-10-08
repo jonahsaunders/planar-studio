@@ -22,7 +22,7 @@ def tracks(board,move=False):
         if isinstance(t,pcb.PCB_VIA):
             p=point(t.GetPosition());q=transform(p) if move else p
             if move and p==(pcb.FromMM(84.5),pcb.FromMM(40)):
-                assert t.GetNetname()=='/PGND';q=(q[0]+pcb.FromMM(1),q[1])
+                assert t.GetNetname()=='/PGND';q=(pcb.FromMM(86),pcb.FromMM(47))
             records.append(('via',t.GetNetname(),q,t.GetWidth(t.TopLayer()),t.GetDrillValue(),t.TopLayer(),t.BottomLayer()))
         else:
             p,q=point(t.GetStart()),point(t.GetEnd());a,b=(transform(p),transform(q)) if move else (p,q)
@@ -59,13 +59,15 @@ with tempfile.TemporaryDirectory(dir=R/'.kicad-config',prefix='a3-baseline-') as
         return {(z.GetNetname(),board.GetLayerName(z.GetLayer())):z.GetFilledPolysList(z.GetLayer()).Area()/1e12 for z in board.Zones()}
     a,b=areas(old),areas(new);plane=[]
     for key in a:
-        assert b[key]/a[key]>.98,('Ground plane area reduced >2%',key,a[key],b[key])
+        # Larger mounting clearance deliberately removes corner copper. The
+        # separate mounting comparison proves changes stay in those regions.
+        assert b[key]/a[key]>.96,('Ground plane area reduced >4% after enlarged mounting clearances',key,a[key],b[key])
         plane.append({'net':key[0],'layer':key[1],'A2_mm2':a[key],'A3_mm2':b[key],'retained_fraction':b[key]/a[key]})
     assert old.GetDesignSettings().GetBoardThickness()==new.GetDesignSettings().GetBoardThickness()
     assert old.GetCopperLayerCount()==new.GetCopperLayerCount()==6
 record={'baseline_commit':base,'unchanged_circuit':True,'unchanged_winding_polygons_and_artwork':True,
  'unchanged_local_route_widths_layers_geometry_and_via_count':True,'electronic_blocks_translated_mm':{'primary':[0,5],'secondary':[0,-5]},
- 'one_ground_stitching_via_exception':'A2 (84.5,40) -> A3 (85.5,45), to clear H1; unchanged drill and copper diameter.',
+ 'one_ground_stitching_via_exception':'A2 (84.5,40) -> A3 (86,47), to clear the enlarged H1 reservation; unchanged drill and copper diameter.',
  'shortened_transformer_connection_segments':leads,'ground_plane_areas':plane,
  'A2_board_mm':[50,104],'A3_board_mm':[44,94],'area_reduction_percent':100*(1-44*94/(50*104)),
  'mounting_pattern_changed_mm':{'A2':[41,95],'A3':[35,85]},'scope':'Geometric preservation and connectivity; no hardware EMI, thermal or control validation.',

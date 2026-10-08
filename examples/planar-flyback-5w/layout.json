@@ -21,5 +21,5 @@
   ],
   "source_primary_max_y_mm": 69,
   "source_secondary_min_y_mm": 102,
-  "method": "Rigidly translate each electronics block, its local tracks/vias and ground zones. Keep the T1 winding fixed and shorten only its four connection leads."
+  "method": "Rigidly translate each electronics block, its local tracks/vias and ground zones. Keep T1 winding fixed and shorten five connection segments. Move one ground stitching via and enlarge all mounting copper exclusions to 10 mm."
 }

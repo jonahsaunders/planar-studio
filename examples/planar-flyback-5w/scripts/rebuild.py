@@ -39,6 +39,7 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-a3-layout.py')
+py('verify-mounting-clearance.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
 run(args.cadquery_python, R / 'scripts/audit-3d-solids.py', '--kicad-cli', args.kicad_cli)
@@ -53,6 +54,9 @@ run(args.kicad_cli, 'pcb', 'export', 'drill', '--format', 'excellon', '--drill-o
 run(args.kicad_cli, 'pcb', 'export', 'pos', '--format', 'csv', '--units', 'mm', '--side', 'front',
     '--use-drill-file-origin', '-o', 'manufacturing/KiCad-positions.csv', pcb)
 py('manufacturing-data.py')
+# Calculations and CSV exports are inputs to the feedback provenance record.
+# Normalize them before recording hashes so Windows publication stays exact.
+run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-feedback.py')
 py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(dir=R/'.kicad-config', prefix='flyback-svg-') as temp:

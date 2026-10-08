@@ -16,7 +16,7 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Through vias | 0.30, 0.40 and 0.45 mm drills; identify in via schedule |
 | Via-in-pad | Nonconductive epoxy filled and copper capped, including U1 thermal vias |
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
-| Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; do not fill/cap; see MOUNTING.md |
+| Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; 10 mm copper exclusion and 1.8 mm copper-to-mask margin on all six layers; do not fill/cap; see MOUNTING.md |
 | Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A3 fit model |
 | Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |

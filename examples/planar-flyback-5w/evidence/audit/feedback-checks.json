@@ -13,10 +13,10 @@
     "parts.json": "61ab64e7a96a757ed02a1fe3a4a028bde57d10ec65a4487037958d7ea9c642b3",
     "requirements.json": "149b431ea414e9c5480a51e3546281eae52aee3068e1b6bf8b38059e2d766173",
     "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "db7a6b44a064af7cd8886a6cf0bf8146ce9e1a79c484c80bd04d8cc9f027db77",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
     "kicad/PS-FLYBACK-5W.kicad_sch": "156e57bb10cb848069f8e100eef078323d4ba4adca1cdddac1033df80fadaef6",
-    "evidence/electrical-sizing.json": "3fe2d7077d20080d2be724b570ff08157c90687f1e5cae928117674e4d7301cb",
-    "manufacturing/BOM-MASTER.csv": "ea3e2c6c2e98ca537609b09936e810d66eac8e3927b114534074ccdbda9ee309",
+    "evidence/electrical-sizing.json": "ec49d0b062e88c9b2e95fa7ccd75a2769d962dcd3acf036106829b504d417abf",
+    "manufacturing/BOM-MASTER.csv": "3921f4757fdb620ec25f67326c142ba2927cd2789b6043ce6f530a929043e71a",
     "sources/jlcpcb-stock.json": "f3e3ea321ef2c2ba11d9b5eba60107447f56e821076c4d0c9f7ff2f14737e6a3"
   }
 }

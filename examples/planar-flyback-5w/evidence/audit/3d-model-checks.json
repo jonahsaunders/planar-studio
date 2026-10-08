@@ -305,7 +305,7 @@
     {
       "reference": "T1",
       "model": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
-      "sha256": "6ab3777a2761c1cf8de23d14b9c334eff00ef5882926f3e5992fdbeef35341b6",
+      "sha256": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
       "position_mm": [
         100.0,
         85.0
