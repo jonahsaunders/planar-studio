@@ -20,7 +20,7 @@ for item in checks['models']:
         assets[item['model']]=s
     x,y=item['position_mm']
     placed[item['reference']]=assets[item['model']].rotate((0,0,0),(0,0,1),item['rotation_deg']).translate((x,-y,0))
-with tempfile.TemporaryDirectory(prefix='flyback-solids-') as temp:
+with tempfile.TemporaryDirectory(dir=R/'.kicad-config',prefix='flyback-solids-') as temp:
     path=Path(temp)/'substrate.step'
     subprocess.run([a.kicad_cli,'pcb','export','step','--board-only','--user-origin','0x0mm',
                     '--output',str(path),str(R/'kicad/PS-FLYBACK-5W.kicad_pcb')],check=True,cwd=R)

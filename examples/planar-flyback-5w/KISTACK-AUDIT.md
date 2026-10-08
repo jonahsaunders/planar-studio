@@ -1,3 +1,5 @@
+> Historical A1 audit. Electronic part rationale remains useful; Current A3 core, layout, mounting clearance, calculations and release evidence are in README.md and VALIDATION.md. Do not use old core preparation or dimensions.
+
 # KiStack audit — PS-FLYBACK-5W A1
 
 **Result: file and mounting checks pass; hardware and manufacturing release remain on hold.**

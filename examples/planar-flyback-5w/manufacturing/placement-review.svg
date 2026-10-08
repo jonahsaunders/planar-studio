@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1190" viewBox="0 0 1200 1190">
 <rect width="1200" height="1190" fill="#f0f4f7"/><style>text{font-family:Arial,sans-serif;fill:#183247}.title{font-size:30px;font-weight:700}.head{font-size:21px;font-weight:700}.small{font-size:16px}.pin{font-size:13px;font-weight:700}</style>
-<text x="30" y="48" class="title">Flyback A1 | Placement and polarity check</text>
+<text x="30" y="48" class="title">Flyback A3 | Placement and polarity check</text>
 <text x="30" y="80" class="small">Top-side view. Gold = actual PCB pads; green dots = corrected catalog pin centers.</text>
 <text x="30" y="106" class="small">Numbers identify PCB pads. Pin positions use the saved catalog geometry, not a live JLCPCB preview.</text>
 <rect x="30" y="135" width="370" height="312" rx="14" fill="white" stroke="#d2dde6"/>
@@ -9,14 +9,14 @@
 <text x="173.57149999999996" y="237.80499999999998" class="pin">1</text>
 <rect x="154.71" y="263.72" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 165.57 270.94)"/>
 <text x="173.57149999999996" y="261.9350000000002" class="pin">2</text>
-<rect x="154.71" y="287.84" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 165.57 295.06)"/>
-<text x="173.57149999999996" y="286.0649999999998" class="pin">3</text>
+<rect x="154.71" y="287.85" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 165.57 295.07)"/>
+<text x="173.57149999999996" y="286.0650000000001" class="pin">3</text>
 <rect x="154.71" y="311.98" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 165.57 319.20)"/>
 <text x="173.57149999999996" y="310.19500000000005" class="pin">4</text>
 <rect x="253.57" y="311.98" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 264.43 319.20)"/>
 <text x="272.42850000000004" y="310.19500000000005" class="pin">5</text>
-<rect x="253.57" y="287.84" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 264.43 295.06)"/>
-<text x="272.42850000000004" y="286.0649999999998" class="pin">6</text>
+<rect x="253.57" y="287.85" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 264.43 295.07)"/>
+<text x="272.42850000000004" y="286.0650000000001" class="pin">6</text>
 <rect x="253.57" y="263.72" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 264.43 270.94)"/>
 <text x="272.42850000000004" y="261.9350000000002" class="pin">7</text>
 <rect x="253.57" y="239.58" width="21.72" height="14.44" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate(-0.00 264.43 246.80)"/>

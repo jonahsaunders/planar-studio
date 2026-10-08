@@ -27,7 +27,7 @@ text='''# JLCPCB electronics sourcing
 
 **All 20 electronic MPNs / 24 placements had orderable stock on September 30, 2026.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
 
-The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLCPCB supplies and assembles the electronics, including J1/J2. DigiKey may supply two raw TDK core halves separately; grinding, installation and magnetic acceptance are separate operations. There has been no supplier upload, message, reservation or purchase.
+The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLCPCB supplies and assembles the electronics, including J1/J2. DigiKey supplies two B66285G0050X187 factory-gapped halves and two B66286A2000X000 clips separately; install after PCBA and measure assembled inductance. A3 uses no grinding or adhesive. There has been no supplier upload, message, reservation or purchase.
 
 | References | Exact MPN | JLCPCB code | Available | Per board |
 | --- | --- | --- | ---: | ---: |
@@ -49,7 +49,7 @@ U1 uses the pin-compatible industrial-temperature LT8302I. C5 is a Murata 4.7 µ
 
 [Fabrication requirements](manufacturing/FABRICATION.md) · [Factory review request](manufacturing/JLCPCB-REVIEW-REQUEST.md) · [Prototype tests](manufacturing/PROTOTYPE-TEST-PLAN.md) · [Core preparation](manufacturing/CORE-ASSEMBLY.md).
 
-DigiKey showed **1,146 raw B66457G0000X187 halves** in stock on September 30, 2026 ([listing](https://www.digikey.com/en/products/detail/tdk/B66457G0000X187/3914980)). This is unreserved inventory; two halves per board need the separate preparation process.
+A3 core and clip procurement is recorded in sources/digikey-core-stock.json, retrieved October 8 from indexed DigiKey US listings. Both parts are listed in stock at MOQ 1; recheck checkout. The application accepts measured Lm 11.0–14.6 µH. Clip bow is a first-article mechanical acceptance item.
 
 The superseded inventory remains in sources/jlcpcb-stock-before-turnkey.json as historical evidence. Previous pricing is not a quote for this revision.
 '''

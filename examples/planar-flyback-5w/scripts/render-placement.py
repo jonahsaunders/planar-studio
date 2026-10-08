@@ -7,6 +7,10 @@ import pcbnew as pcb
 R = Path(__file__).resolve().parents[1]
 checks = {c['reference']: c for c in json.loads((R / 'evidence/audit/placement-checks.json').read_text())['checks']}
 board = pcb.LoadBoard(str(R / 'kicad/PS-FLYBACK-5W.kicad_pcb'))
+origin = board.GetDesignSettings().GetAuxOrigin()
+ox, oy = pcb.ToMM(origin.x), pcb.ToMM(origin.y)
+bounds = json.loads((R / 'layout.json').read_text())['board_bounds_mm']
+assert [ox, oy] == [bounds[0], bounds[3]], 'Placement origin differs from lower-left board datum'
 fps = {f.GetReference(): f for f in board.GetFootprints()}
 svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1190" viewBox="0 0 1200 1190">',
        '<rect width="1200" height="1190" fill="#f0f4f7"/><style>text{font-family:Arial,sans-serif;fill:#183247}.title{font-size:30px;font-weight:700}.head{font-size:21px;font-weight:700}.small{font-size:16px}.pin{font-size:13px;font-weight:700}</style>']
@@ -16,7 +20,7 @@ def text(x, y, label, cls='small'):
     svg.append(f'<text x="{x}" y="{y}" class="{cls}">{html.escape(label)}</text>')
 
 
-text(30, 48, 'Flyback A1 | Placement and polarity check', 'title')
+text(30, 48, 'Flyback A3 | Placement and polarity check', 'title')
 text(30, 80, 'Top-side view. Gold = actual PCB pads; green dots = corrected catalog pin centers.')
 text(30, 106, 'Numbers identify PCB pads. Pin positions use the saved catalog geometry, not a live JLCPCB preview.')
 cards = [
@@ -36,11 +40,11 @@ for i, (ref, title, line1, line2) in enumerate(cards):
     text(left+18, top+34, title, 'head')
     f = fps[ref]; pads = [p for p in f.Pads() if p.GetNumber()]
     check = checks[ref]
-    x0 = sum(pcb.ToMM(p.GetPosition().x)-75 for p in pads)/len(pads)
-    y0 = sum(137-pcb.ToMM(p.GetPosition().y) for p in pads)/len(pads)
+    x0 = sum(pcb.ToMM(p.GetPosition().x)-ox for p in pads)/len(pads)
+    y0 = sum(oy-pcb.ToMM(p.GetPosition().y) for p in pads)/len(pads)
     scale = 19; cx, cy = left+185, top+148
     for pad in pads:
-        x, y = pcb.ToMM(pad.GetPosition().x)-75, 137-pcb.ToMM(pad.GetPosition().y)
+        x, y = pcb.ToMM(pad.GetPosition().x)-ox, oy-pcb.ToMM(pad.GetPosition().y)
         px, py = cx+(x-x0)*scale, cy-(y-y0)*scale
         w, h = pcb.ToMM(pad.GetSize().x)*scale, pcb.ToMM(pad.GetSize().y)*scale
         svg.append(f'<rect x="{px-w/2:.2f}" y="{py-h/2:.2f}" width="{w:.2f}" height="{h:.2f}" rx="2" fill="#e9c96d" stroke="#927220" transform="rotate({-pad.GetOrientationDegrees():.2f} {px:.2f} {py:.2f})"/>')

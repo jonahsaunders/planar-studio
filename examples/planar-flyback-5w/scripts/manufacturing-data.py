@@ -9,7 +9,7 @@ parts=json.loads((R/'circuit.json').read_text())['parts'];byref={p['ref']:p for 
 snapshot=json.loads((R/'sources/jlcpcb-stock.json').read_text())
 stock={ref:row for row in snapshot['rows'] for ref in row['references']}
 def sourcing_status(p):
-    if p['ref']=='T1':return 'Separate core procurement allowed; preparation and installation require qualification'
+    if p['ref']=='T1':return 'DigiKey factory-gapped halves and clips; assembled Lm, clip fit and retention require verification'
     row=stock.get(p['ref'])
     if row and row['mpn']==p['mpn']:
         return row['status']+'; public catalog snapshot '+snapshot['observed_local_date']+'; not reserved; recheck stock, lead time and assembly acceptance'
@@ -28,21 +28,20 @@ for p in parts:
     bom.append({'Comment':p['mpn'],'Designator':ref,'Footprint':p['footprint'].split(':')[1],'LCSC Part #':p['lcsc']})
 library=json.loads((R/'sources/placement-library.json').read_text())
 corrected=correct_positions(positions,parts,library)
-# The generic converter only changes column names. Apply the reviewed exact-part
-# origin and orientation mapping first, including asymmetric diode footprints.
 with (M/'JLCPCB-positions-corrected.csv').open('w',newline='',encoding='utf8') as f:
     w=csv.DictWriter(f,corrected[0].keys());w.writeheader();w.writerows(corrected)
 convert_positions(M/'JLCPCB-positions-corrected.csv',M/'CPL-JLCPCB.csv')
 cpl=list(csv.DictReader((M/'CPL-JLCPCB.csv').open()))
 write('BOM-JLCPCB.csv',bom);write('BOM-MASTER.csv',master)
+mag=json.loads((R/'magnetics.json').read_text())
 cores=[
- {'Item':'T1 core set','Quantity_per_board':'1 set / 2 halves','MPN':'PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187','Process':'Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing','Sourcing_status':'Separate raw-core procurement from DigiKey permitted; preparation and installation require qualification'},
- {'Item':'External core adhesive','Quantity_per_board':'Supplier-qualified dispense','MPN':'Henkel LOCTITE AA 330','Process':'External outer-leg joints only; qualify geometry and cure; no adhesive in mating faces or center gap','Sourcing_status':'Proposed; supplier process qualification and quote required'},
- {'Item':'Adhesive activator','Quantity_per_board':'Per adhesive TDS','MPN':'Henkel LOCTITE SF 7387','Process':'Per current AA330/SF7387 technical data','Sourcing_status':'Supplier procurement and process qualification required'},
- {'Item':'Nonconductive retention strap','Quantity_per_board':'Supplier-defined cut length','MPN':'3M 69 12.7 mm; 3M ID 7000031352','Process':'Around yokes parallel to 31.75 mm core span; no metal loop; confirm fit and retention','Sourcing_status':'Supplier procurement and process qualification required'}]
+ {'Item':'T1 factory-gapped E half','Quantity_per_board':2,'MPN':mag['core_mpn'],'DigiKey':'495-B66285G0050X187-ND','Process':'Install two gapped halves; total gap 0.10 mm; assembled Lm 11.0-14.6 uH; no grinding or adhesive','Source':'https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590'},
+ {'Item':'T1 matching spring clip','Quantity_per_board':2,'MPN':mag['clip_mpn'],'DigiKey':'495-B66286A2000X000-ND','Process':'One on each outer leg; verify engagement and installed bow envelope per CORE-ASSEMBLY.md','Source':'https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552'}]
 write('CORE-BOM.csv',cores)
 b=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'));vias=[]
-def add(name,p,drill):vias.append({'ID':name,'X_mm':f'{pcb.ToMM(p.x)-75:.6f}','Y_mm':f'{137-pcb.ToMM(p.y):.6f}','Finished_drill_mm':f'{pcb.ToMM(drill):.3f}','Process':'Epoxy fill and copper cap; NOT a connector lead hole'})
+bounds=json.loads((R/'layout.json').read_text())['board_bounds_mm']
+ox,oy=bounds[0],bounds[3]
+def add(name,p,drill):vias.append({'ID':name,'X_mm':f'{pcb.ToMM(p.x)-ox:.6f}','Y_mm':f'{oy-pcb.ToMM(p.y):.6f}','Finished_drill_mm':f'{pcb.ToMM(drill):.3f}','Process':'Epoxy fill and copper cap; NOT a connector lead hole'})
 for i,t in enumerate(b.GetTracks()):
     if isinstance(t,pcb.PCB_VIA):add('via-'+str(i+1),t.GetPosition(),t.GetDrill())
 for f in b.GetFootprints():
@@ -61,10 +60,11 @@ npth=(M/'gerbers/PS-FLYBACK-5W-NPTH.drl').read_text()
 assert sum(1 for l in npth.splitlines() if l.startswith('X'))==4
 assert 'C3.200' in npth
 mechanical=json.loads((R/'mechanical.json').read_text())
-expected_holes={f"X{h['x_mm']-75:.1f}Y{137-h['y_mm']:.1f}" for h in mechanical['holes']}
+expected_holes={f"X{h['x_mm']-ox:.1f}Y{oy-h['y_mm']:.1f}" for h in mechanical['holes']}
 assert {line for line in npth.splitlines() if line.startswith('X')}==expected_holes
-write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-75,'Y_mm':137-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
+write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-ox,'Y_mm':oy-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
 out={'BOM_electronic_references':len(bom),'CPL_references':len(cpl),'BOM_CPL_match':True,'SMD_components':sum(bool(f.GetAttributes() & pcb.FP_SMD) for f in b.GetFootprints() if f.GetReference() in expected),'THT_connectors':2,'core_sets_per_board':1,'filled_capped_holes':len(vias),'open_connector_holes':4,'copper_Gerbers':6,'coordinate_origin':'Bottom-left board datum; X right/Y up','connector_CPL_origin':'Exact catalog pin-row midpoint; openings outward; see PLACEMENT-REVIEW.md','release_status':'Supplier review only; no manufacturing approval'}
-out.update({'nonplated_M3_mounting_holes':4,'mounting_holes_match_drill_coordinates':True,'mounting_holes_excluded_from_BOM_CPL':True,'CPL_converter':'KiStack convert_position.py, upstream commit 8494dbd; reviewed exact-part frame corrections applied first','placement_review':'sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required'})
+out.update({'nonplated_M3_mounting_holes':4,'mounting_holes_match_drill_coordinates':True,'mounting_holes_excluded_from_BOM_CPL':True,'CPL_converter':'KiStack convert_position.py, upstream commit 8494dbd; reviewed exact-part frame corrections applied first'})
+out['placement_review']='sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required'
 (R/'evidence/manufacturing-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

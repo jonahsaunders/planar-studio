@@ -169,8 +169,8 @@
     },
     {
       "reference": "T1",
-      "footprint": "Planar_EELP32_4T_2T",
-      "model": "custom/EELP32_prepared_pair.step",
+      "footprint": "Planar_EELP22_4T_2T",
+      "model": "custom/EELP22_factory_gapped_pair.step",
       "provisional_hardware": false
     },
     {
@@ -181,8 +181,8 @@
     }
   ],
   "assets": {
-    "custom/EELP32_prepared_pair.step": {
-      "sha256": "58cbe9b09fece4e14f0bc42ca886088165128661f4da1356de59b9cd1c6d32b2",
+    "custom/EELP22_factory_gapped_pair.step": {
+      "sha256": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
       "type": "Original nominal geometry"
     },
     "custom/KF301_5mm_2P.step": {

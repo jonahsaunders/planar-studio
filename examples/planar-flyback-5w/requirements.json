@@ -1,6 +1,6 @@
 {
   "project": "PS-FLYBACK-5W",
-  "revision": "A1-development",
+  "revision": "A3-development",
   "input_voltage_V": {
     "min": 18,
     "nominal": 24,
@@ -30,7 +30,7 @@
     "quantity_for_sourcing_review": 5
   },
   "release_gates": [
-    "Qualified prepared-core gap, retention, installation and magnetic acceptance; separate procurement allowed",
+    "Factory-gapped core fit, clip retention, measured inductance/bias acceptance and first-article thermal verification",
     "Complete KiCad schematic with verified pin mapping and clean ERC",
     "PCB planar winding continuity, isolation separation, core clearance and clean DRC",
     "Complete routing and schematic-to-board net agreement",

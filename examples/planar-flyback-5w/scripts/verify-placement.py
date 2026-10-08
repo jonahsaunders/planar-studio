@@ -1,6 +1,7 @@
 """Check exported catalog pads against actual PCB pads/nets. KiCad Python."""
 import copy
 import csv
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -11,6 +12,10 @@ parts = {p['ref']: p for p in json.loads((R / 'circuit.json').read_text())['part
          if p['ref'] != 'T1' and not p.get('exclude_from_bom')}
 library = json.loads((R / 'sources/placement-library.json').read_text())['parts']
 board = pcb.LoadBoard(str(R / 'kicad/PS-FLYBACK-5W.kicad_pcb'))
+origin = board.GetDesignSettings().GetAuxOrigin()
+ox, oy = pcb.ToMM(origin.x), pcb.ToMM(origin.y)
+bounds = json.loads((R / 'layout.json').read_text())['board_bounds_mm']
+assert [ox, oy] == [bounds[0], bounds[3]], 'Placement origin differs from lower-left board datum'
 footprints = {f.GetReference(): f for f in board.GetFootprints()}
 raw = list(csv.DictReader((R / 'manufacturing/KiCad-positions.csv').open(encoding='utf-8-sig')))
 cpl = list(csv.DictReader((R / 'manufacturing/CPL-JLCPCB.csv').open(encoding='utf-8-sig')))
@@ -38,11 +43,11 @@ def validate(rows):
         assert 0 <= angle < 360, ref
         origin = fp.GetPosition(); rotation = fp.GetOrientationDegrees() % 360
         dx, dy = transform(*entry['origin_in_footprint_mm'], rotation)
-        assert close(x, pcb.ToMM(origin.x)-75+dx) and close(y, 137-pcb.ToMM(origin.y)+dy), f'{ref}: origin'
+        assert close(x, pcb.ToMM(origin.x)-ox+dx) and close(y, oy-pcb.ToMM(origin.y)+dy), f'{ref}: origin'
         assert close(angle, (rotation+entry['rotation_offset_deg']) % 360), f'{ref}: orientation'
         raw_row = next(r for r in raw if r['Ref'] == ref)
-        assert close(float(raw_row['PosX']), pcb.ToMM(origin.x)-75), f'{ref}: stale raw X'
-        assert close(float(raw_row['PosY']), 137-pcb.ToMM(origin.y)), f'{ref}: stale raw Y'
+        assert close(float(raw_row['PosX']), pcb.ToMM(origin.x)-ox), f'{ref}: stale raw X'
+        assert close(float(raw_row['PosY']), oy-pcb.ToMM(origin.y)), f'{ref}: stale raw Y'
         assert close(float(raw_row['Rot']) % 360, rotation), f'{ref}: stale raw rotation'
         pads = [p for p in fp.Pads() if p.GetNumber()]
         pad_results = []
@@ -51,8 +56,8 @@ def validate(rows):
             u, v = transform(*land['xy_mm'], angle)
             catalog_x, catalog_y = x+u, y+v
             candidates = [p for p in pads if p.GetNumber() == number]
-            target = min(candidates, key=lambda p: math.hypot(catalog_x-(pcb.ToMM(p.GetPosition().x)-75), catalog_y-(137-pcb.ToMM(p.GetPosition().y))))
-            tx, ty = pcb.ToMM(target.GetPosition().x)-75, 137-pcb.ToMM(target.GetPosition().y)
+            target = min(candidates, key=lambda p: math.hypot(catalog_x-(pcb.ToMM(p.GetPosition().x)-ox), catalog_y-(oy-pcb.ToMM(p.GetPosition().y))))
+            tx, ty = pcb.ToMM(target.GetPosition().x)-ox, oy-pcb.ToMM(target.GetPosition().y)
             # Invert each actual PCB pad orientation. Different recommended
             # land lengths are allowed, but the catalog center must lie inside
             # its intended copper pad (0.05 mm coordinate/land-pattern allowance).
@@ -91,5 +96,10 @@ for ref, field, delta in [('U1', 'Rotation', 90), ('D1', 'Rotation', 180), ('D2'
 out = {'status': 'PASS: saved catalog geometry and PCB net/pad mapping; live factory preview remains unverified',
        'placements': len(checks), 'catalog_parts': len(library), 'catalog_pads_checked': sum(len(c['pads']) for c in checks),
        'regressions_rejected': mutations, 'checks': checks}
+out['coordinate_origin_board_mm'] = [ox, oy]
+out['source_SHA256'] = {name: hashlib.sha256((R/name).read_bytes()).hexdigest() for name in [
+    'kicad/PS-FLYBACK-5W.kicad_pcb', 'layout.json', 'circuit.json', 'sources/placement-library.json',
+    'manufacturing/KiCad-positions.csv', 'manufacturing/JLCPCB-positions-corrected.csv',
+    'manufacturing/CPL-JLCPCB.csv', 'scripts/placement.py', 'scripts/verify-placement.py']}
 (R / 'evidence/audit/placement-checks.json').write_text(json.dumps(out, indent=2)+'\n', encoding='utf8')
 print(json.dumps({k: v for k, v in out.items() if k != 'checks'}, indent=2))

@@ -1,0 +1,44 @@
+{
+  "revision": "A3-development",
+  "source": "TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing \u00b10.2 mm",
+  "method": "Independent A3 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.\n\nTDK pp2-3 dimensions are transcribed here independently of the winding generator.\nChecks nominal solids, maximum ferrite corners, inward routing error, rounded\ncorners, PCB thickness, and the explicitly conditional installed-clip envelope.\n",
+  "actual_saved_board_slots_local_mm": [
+    [
+      -13.100000000004002,
+      -8.549999999999997,
+      -7.6999999999997755,
+      8.550000000010002
+    ],
+    [
+      -3.0500000000040046,
+      -8.549999999999997,
+      3.049999999999997,
+      8.550000000010002
+    ],
+    [
+      7.699999999989998,
+      -8.549999999999997,
+      13.099999999999994,
+      8.550000000010002
+    ]
+  ],
+  "rounded_slot_radius_mm": 0.5,
+  "routing_inward_error_per_wall_mm": 0.2,
+  "centered_insertion_pose_allowance_mm": 0.05,
+  "maximum_ferrite_corner_checks": 48,
+  "minimum_corner_clearance_mm": 0.14644660940672183,
+  "maximum_board_thickness_mm": 1.78,
+  "minimum_vertical_clearance_per_face_mm": 2.21,
+  "nominal_core_clip_solid_count": 4,
+  "nominal_substrate_intersection_mm3": 0.0,
+  "minimum_clip_envelope_slot_clearance_mm": 0.24999999999999423,
+  "maximum_body_component_intersections": [],
+  "component_pose_wander_checked_mm": 1,
+  "conditional_clip_limit": "Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.",
+  "mechanical_scope": "Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.",
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
+    "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
+    "magnetics.json": "38b5d259b5a2dae8631a9315672bb234bd5bdb3edc312ae4eeee6d6aca5df548"
+  }
+}

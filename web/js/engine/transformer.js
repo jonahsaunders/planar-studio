@@ -169,7 +169,7 @@ export function buildTransformer(input, env = {}, opt = {}) {
       q.sections.forEach(s=>{s.length=s.path.slice(1).reduce((sum,p,k)=>sum+Math.hypot(p[0]-s.path[k][0],p[1]-s.path[k][1])*1e-3,0);});}
   }
   const b = bounds(A), margin = 2;
-  const halfWidth = catalog ? (catalog.width+.65)/2+c.coreClearance : 0;
+  const halfWidth = catalog ? (catalog.widthMax ?? catalog.width+.65)/2+c.coreClearance : 0;
   A.outline.push({ layer: 'Edge.Cuts', pts: rect(Math.min(b.x0,-halfWidth) - margin, b.y0 - margin, Math.max(b.x1,halfWidth) + margin, b.y1 + margin) });
   if (core) {
     const w = c.corePostW + 2 * c.coreClearance, h = c.corePostH + 2 * c.coreClearance;
@@ -280,7 +280,11 @@ function coreParameters(c, inner) {
   if (c.driveMode !== 'voltage') range(c, 'coreVoltage', 0.01, 1000); range(c, 'leakageFraction', 0.001, 0.5); range(c, 'coreLossDensity', 0, 100000);
   range(c, 'thermalResistance', 0, 10000); range(c, 'ambientTemperature', -40, 125); range(c, 'coreTemperature', -40, 200);
   const catalog = catalogFor(c);
-  const radius = c.coreShape === 'round' ? c.corePostW / 2 + c.coreClearance : Math.hypot(c.corePostW / 2 + c.coreClearance, (catalog ? c.corePostW : c.corePostH) / 2 + c.coreClearance);
+  // The narrow factory-gapped preset needs a flat-side preliminary screen:
+  // a circumscribed circle rejects its valid side-centered transition vias.
+  // assemblyStatus checks every finished segment, pad and via against the
+  // actual slots. Preserve the existing conservative screen for other cores.
+  const radius = c.coreShape === 'round' || catalog?.factoryGap ? c.corePostW / 2 + c.coreClearance : Math.hypot(c.corePostW / 2 + c.coreClearance, (catalog ? c.corePostW : c.corePostH) / 2 + c.coreClearance);
   if (radius + c.viaPad / 2 + c.traceS >= inner) throw new Error('Core opening intersects the transition-via area. Increase winding diameter or reduce core post/turns.');
   if (c.boardT + 2 * c.coreClearance > c.coreWindowHeight) throw new Error('PCB plus assembly clearance exceeds the core window height.');
   const muR = CORE_MATERIALS[c.coreMaterial].muR || c.coreMuR;
@@ -288,7 +292,7 @@ function coreParameters(c, inner) {
   range(c, 'coreALMeasured', 0, 1); range(c, 'coreALScale', .1, 10);
   if(c.coreALMeasured>0)AL=c.coreALMeasured;
   AL *= c.coreALScale;
-  const gapNote = catalog && c.coreGap > 0 ? [warn('Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss.')] : [];
+  const gapNote = catalog?.factoryGap ? [warn(catalog.alScope+' Factory machining is included in the listed parts. Verify clamps separately; flyback performance, bias and fringing loss require measurement.')] : catalog && c.coreGap > 0 ? [warn('Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss.')] : [];
   return { AL, muR, material: CORE_MATERIALS[c.coreMaterial].name, notes: [
     ...gapNote,
     info(c.coreALMeasured>0 ? 'Measured AL calibration overrides the magnetic-circuit/catalog value. Small-signal fit only; no nonlinear B-H curve, DC bias or temperature-dependent permeability.' : catalog ? 'Catalog AL uses the manufacturer’s nominal ungapped value or published prepared-gap curve. No nonlinear B-H curve, DC bias or temperature-dependent permeability.' : 'Linear magnetic-circuit estimate: AL = μ0·Ae/(le/μr + gap). No gap fringing, nonlinear B-H curve, DC bias or temperature-dependent permeability. Material presets supply nominal initial μ at 25 °C only.'),

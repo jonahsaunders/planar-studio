@@ -1,6 +1,6 @@
-# Placement correction — September 30, 2026
+# A3 placement correction — October 8, 2026
 
-The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
+The September 30 placement corrections have been transferred to the compact A3 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
 
 Open the [placement and polarity drawing](placement-review.svg) alongside the [top assembly drawing](assembly-top.svg). Both use a top-side view, with the input connector at the top. The placement drawing shows actual PCB pads and transformed catalog pin centers; it is **not a screenshot or approval of a live JLCPCB order preview**.
 
@@ -10,12 +10,12 @@ Coordinates are millimeters from the board's bottom-left datum, X right and Y up
 
 | Part | Corrected X | Corrected Y | Corrected angle | Reason |
 | --- | --- | --- | --- | --- |
-| U1 | 16.5000 | 78.0000 | 270° | Catalog pin 1 maps to the PCB's upper-left pin-1 mark; leads align left/right |
-| J1 | 25.0000 | 97.0000 | 180° | Openings face the top board edge; origin is the pin-row midpoint |
-| J2 | 25.0000 | 8.0000 | 0° | Openings face the bottom edge; origin is the pin-row midpoint |
-| D1 | 13.0000 | 91.3375 | 90° | Catalog origin differs from the asymmetric PowerDI-123 footprint by 0.3375 mm |
-| D2 | 26.0000 | 27.9000 | 90° | Catalog origin is 0.9000 mm from the nominal package/lead-span center |
-| D3 | 25.0000 | 76.9625 | 270° | Same PowerDI-123 origin correction, rotated with the footprint |
+| U1 | 13.5000 | 68.0000 | 270° | Catalog pin 1 maps to the PCB's upper-left pin-1 mark; leads align left/right |
+| J1 | 22.0000 | 87.0000 | 180° | Openings face the top board edge; origin is the pin-row midpoint |
+| J2 | 22.0000 | 8.0000 | 0° | Openings face the bottom edge; origin is the pin-row midpoint |
+| D1 | 10.0000 | 81.3375 | 90° | Catalog origin differs from the asymmetric PowerDI-123 footprint by 0.3375 mm |
+| D2 | 23.0000 | 27.9000 | 90° | Catalog origin is 0.9000 mm from the nominal package/lead-span center |
+| D3 | 22.0000 | 66.9625 | 270° | Same PowerDI-123 origin correction, rotated with the footprint |
 
 D2's catalog physical pins 1 and 2 are both anodes, and pin 3 is the cathode. The KiCad footprint uses logical pad 1 for the cathode and duplicated pad 2 for the two anode leads. These numbering systems are mapped explicitly; matching their numbers directly would reverse the electrical interpretation.
 

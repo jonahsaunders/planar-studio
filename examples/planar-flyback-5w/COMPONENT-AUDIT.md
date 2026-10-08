@@ -1,3 +1,5 @@
+> Historical A1 audit. Electronic part rationale remains useful; Current A3 core, layout, mounting clearance, calculations and release evidence are in README.md and VALIDATION.md. Do not use old core preparation or dimensions.
+
 # Component audit — PS-FLYBACK-5W A1
 
 Reviewed 2026-09-30. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.

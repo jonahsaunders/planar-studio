@@ -1,43 +1,33 @@
-# PS-MAG-001 A0 — prepared planar magnetic assembly
+# PS-MAG-002 A2 on PCB A3 — factory-gapped core installation
 
-**Supplier review drawing and proposed process. Process qualification required before release.** See `core-assembly.svg` for geometry and layer relationships.
+Use **two B66285G0050X187 N87 ELP22/6/16 halves and two B66286A2000X000 clips per board**. Both halves have a factory 0.05 ±0.01 mm center-leg recess, giving 0.10 ±0.02 mm combined. No grinding or bonding is required. [TDK drawing, pages 2–3](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf).
 
-## Procurement specification
+TDK's 1520 nH listing describes one 0.05 mm gapped half paired with an ungapped half. A2 and A3 use TWO gapped halves. Its estimated AL is 820 nH from the 0.10 mm total-gap entry; four turns give 13.12 µH. TDK's general E-core notes distinguish individual gap g and total gap s. This estimate is not a guaranteed assembled AL tolerance. [Gap convention](https://www.tdk-electronics.tdk.com/download/540150/449506bb84194c3510018ae82f66b4cc/pdf-ecoresgeneralinformation.pdf).
 
-- One assembly per PCB: two TDK ELP32/6/20 N87 E halves based on B66457G0000X187. The resulting E+E set is EELP32. Both stock halves are ungapped; a pair of unmodified stock halves is unacceptable.
-- A qualified ferrite supplier shall grind the center leg of one half to obtain a **0.21 mm nominal total center-leg gap**, with both outer-leg pairs seated. Proposed gap tolerance ±0.02 mm, subject to supplier capability and measured inductance acceptance. Do not place a shim across all three legs: it changes the magnetic circuit and the model.
-- Nominal gap formula gives AL≈747 nH/turn²; 4-turn primary predicts Lm≈11.95 µH. Final assembled PCB acceptance is provisionally **10.16–13.74 µH**, measured at 10 kHz and 20 mV RMS across T1 pads 1–2 with the secondary unloaded. Fixture/calibration and semiconductor loading must be accounted for. Prefer an unpopulated-board magnetic coupon/first article for magnetic characterization.
-- Obtain a material certificate, final prepared part number, gap/AL report and traceable lot. Grinding must precede PCB assembly; no ferrite machining near finished electronics.
-- Supplier must validate the core's loss and inductance under pulsed DC bias. Small-signal AL alone does not establish flyback performance.
+## Cutouts and fit
 
-## Mechanical relationships
+Native KiCad coordinates are X right/Y down. Core center is (100,85) mm; mating plane lies midway through the PCB. All three slots are unplated with R0.50 mm corners.
 
-All dimensions in mm. Core center is KiCad (100,85), or manufacturing datum (25,52). Nominal completed core set is 31.75 × 20.35 × 12.70 mm; check supplier maximum dimensions. PCB thickness is nominal 1.60 mm. Minimum window height 6.10 mm leaves room for the board without clamping the winding copper between the yokes.
+| Slot | X limits, mm | Y limits, mm |
+| --- | --- | --- |
+| Left outer leg and clip | 86.90–92.30 | 76.45–93.55 |
+| Center post | 96.95–103.05 | 76.45–93.55 |
+| Right outer leg and clip | 107.70–113.10 | 76.45–93.55 |
 
-| Opening | Board coordinates X | Board coordinates Y | Corner radius |
-|---|---|---|---|
-| Center post | 96.50…103.50 | 74.375…95.625 | 0.50 |
-| Left outer leg | 83.55…87.80 | 74.375…95.625 | 0.50 |
-| Right outer leg | 112.20…116.45 | 74.375…95.625 | 0.50 |
+The independent check reads these holes from the saved board's STEP outline. Maximum ferrite dimensions, sharp corners, 0.20 mm inward error on every slot wall and 0.05 mm insertion misalignment leave 0.146 mm minimum corner clearance. Minimum core window is 6.2 mm; with a 1.78 mm board there is 2.21 mm vertical room per face when centered.
 
-These are unplated routed slots, not copper keepout rectangles. Use a first article with maximum-dimension cores to verify corner fit at the requested ±0.10 mm routing tolerance. Do not force a ferrite corner into a slot. The clearances are mechanical and do not confer reinforced or mains isolation.
+The correct TDK clip is specified for this EELP22 core pair. A3 includes the official free-clip and clamp-recess core STEP sources. The clip must open from its nominal 8.8 mm CAD jaw to approximately 9.4 mm between recess floors. The rendered installed position is a geometric surrogate; it does not determine spring force or allowable deflection.
 
-## Proposed installation sequence
+The PCB preserves a 1.5 mm outward envelope beyond maximum ferrite width and a 2.4 mm maximum strip width. This leaves 0.25 mm slot clearance with the stated routing and centered-insertion tolerances. A separate full-metal projection check includes 0.5 mm lateral pair movement and retains at least 0.798 mm to copper on all six layers, without relying on soldermask. **Confirm spring engagement, the installed envelope and retention on the first physical pair.** The clips hold the halves together; the core can float in the PCB slots and is not qualified for vibration/shock.
 
-1. Finish soldering and cleaning. Inspect the slots, winding laminate, and filled/capped T1 holes. Verify isolation between the two winding networks before installing cores. Reject cracked or chipped cores at mating surfaces.
-2. Place the lower E half in a nonmagnetic, compliant fixture. Insert the PCB over its three legs, then fit the upper prepared half. Keep winding solder mask intact; the ferrite must not scrape exposed copper. Center the board within the window without bending it.
-3. Seat the outer-leg mating faces without contaminating them or the center gap. Check primary inductance and polarity. T1 pin 1 and pin 3 are corresponding dots: a positive pulse at pin 1 relative to pin 2 induces positive voltage at pin 3 relative to pin 4.
-4. Proposed bonding material is **LOCTITE AA 330 with SF 7387 activator**, or a supplier-qualified ferrite adhesive approved during review. Henkel lists ferrite compatibility; this specific assembly is not qualified. Apply small external bonds at the two outer-leg joints; keep adhesive out of the center gap, winding area and outer mating faces. Supplier to define dispense volume and validate the external bond geometry.
-5. Use a nonconductive retention strap around the yokes, parallel to the core's 31.75 mm span, to support the external bonds. Proposed material: 12.7 mm wide glass-cloth electrical tape, 3M 69 (7000031352) or approved equivalent. It must not lift the outer mating faces or abrade the board. Supplier to confirm tape sourcing and fit. No conductive closed-loop strap is permitted around the core.
-6. Hold alignment in the compliant fixture through the adhesive's qualified fixture time, then allow full cure under its current datasheet conditions (typically 24–72 hours). Do not interpret initial handling strength as full cure. Do not apply pressure to the center leg or use the PCB as a spring clamp.
-7. Recheck inductance after cure, inspect seating, and perform the prototype tests. Record adhesive and core lots, final gap/inductance, and any process deviations. Attach photos of top, bottom and both outer-leg joints to first-article documentation.
 
-The adhesive/strap combination, bond geometry, retention force and environmental durability are **approval items for the assembly supplier**, not a validated production process. Raw core procurement from DigiKey is permitted separately from JLCPCB board assembly. Core preparation, retention, installation and magnetic acceptance remain a separate qualified operation; responsibility and process must be agreed before fabrication. An ordinary ungapped pair cannot be installed as a substitute for the prepared assembly.
+## Assembly and acceptance
 
-## References
+1. Finish electronic assembly, connector soldering, cleaning, inspection and depanelization. Check PCB A3 identity and all three cutouts; remove debris without enlarging the drawing dimensions.
+2. Confirm both part markings and factory gaps. Inspect for chips/cracks. Insert one half from each side with outer legs seated; do not put glue or a full-face shim in the joints.
+3. Fit one matching clip to each outer-leg recess using the manufacturer's intended engagement. Verify both hooks engage, the center legs remain separated, and metal stays clear of PCB copper. Avoid levering on brittle ferrite. Inspect centered fit and the installed clip envelope.
+4. On a coupon or suitably isolated unpowered winding, measure primary Lm at 10 kHz and low signal, secondary open. Accept 11.0–14.6 µH. Record test voltage, frequency, temperature and series/parallel measurement convention. Reject or re-pair outside the window; do not machine or shim to force a pass. The number of spare halves needed for selection is unknown until measured.
+5. Verify 2:1 ratio, dot polarity, primary continuity through internal pin 5, and no primary-secondary continuity. Measure leakage with the secondary shorted. Model estimate 0.0415 µH is not a test limit.
+6. Measure inductance versus bias/temperature, clip retention and full converter performance under the prototype plan. The normal 5.4 A calculation stays below the declared 0.27 T screening limit; 7.2 A restart excursions need separate verification and may require redesign if measured saturation or heating is excessive.
 
-- [TDK ELP32 drawing and gap data](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf)
-- [TDK processing notes](https://www.tdk-electronics.tdk.com/download/531610/67fa2f237fae90fab6f31f4a10f42772/pdf-processing.pdf): mounting stress, bonding and fixture considerations.
-- [Henkel AA 330 technical data](https://datasheets.tdx.henkel.com/LOCTITE-AA-330-en_GL.pdf): ferrite compatibility, activator and cure conditions. Follow current TDS/SDS.
-
-- [3M 69 12.7 mm glass-cloth tape](https://www.3m.com/3M/en_US/p/d/v000076478/)
+Keep at least 6 mm unobstructed below the PCB for the core; the illustrative 8 mm standoffs provide nominal room but are not procurement-qualified. No mains/safety isolation rating is established. [Fit evidence](../evidence/audit/core-fit-checks.json) · [Prototype tests](PROTOTYPE-TEST-PLAN.md).

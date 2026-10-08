@@ -1,5 +1,5 @@
 Drill report for PS-FLYBACK-5W.kicad_pcb
-Created on 2026-09-30T11:25:12
+Created on 2026-10-08T12:10:18
 
 Copper Layer Stackup:
     =============================================================
@@ -15,8 +15,8 @@ Drill file 'PS-FLYBACK-5W-PTH.drl' contains
     plated through holes:
     =============================================================
     T1  0.300mm  0.0118"  (50 holes))
-    T2  0.400mm  0.0157"  (3 holes))
-    T3  0.400mm  0.0157"  (5 holes))
+    T2  0.300mm  0.0118"  (5 holes))
+    T3  0.400mm  0.0157"  (3 holes))
     T4  0.450mm  0.0177"  (8 holes))
     T5  1.300mm  0.0512"  (4 holes))
 

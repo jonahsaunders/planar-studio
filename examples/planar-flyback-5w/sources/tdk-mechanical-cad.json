@@ -1,0 +1,31 @@
+{
+  "retrieved": "2026-10-08",
+  "manufacturer": "TDK",
+  "files": {
+    "B66285G_ungapped.stp": {
+      "url": "https://product.tdk.com/system/files/dam/doc/product/ferrite/ferrite/ferrite-core/3doutline_step/c61036-a0263-c001_elp22wc.step",
+      "sha256": "9986d4416b6fef21448617a3cfb7810599d4316417a77d14b03dc5f20bb397b3"
+    },
+    "B66286A2000X000.stp": {
+      "url": "https://product.tdk.com/system/files/dam/doc/product/ferrite/ferrite/ferrite-acc/3doutline_step/c61036-a0263-c200_clamp_elp22.step",
+      "sha256": "131c9b840bb98872f2d6ab17b6e9b8c86b1c6dcf6f3453b7aa39741ee8cf09d6"
+    }
+  },
+  "processing": "Original files are preserved. Derived assembly rotates core datum, models the purchased 0.05 mm center gap on each half, mirrors a pair, and opens the free clip 9.4/8.8 in Z to display recess engagement. The Z opening is a geometric surrogate and is NOT a mechanical stress/force model. Independent fit checks use a larger clip envelope.",
+  "vendor_clip_nominal_CAD_bounds_mm": {
+    "x": [
+      -0.3,
+      2.97890855128808
+    ],
+    "y": [
+      -1.15,
+      1.15
+    ],
+    "z": [
+      -5.3,
+      5.3
+    ]
+  },
+  "ordered_clip": "B66286A2000X000",
+  "ordered_core": "B66285G0050X187"
+}

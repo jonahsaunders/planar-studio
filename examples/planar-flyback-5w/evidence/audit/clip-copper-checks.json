@@ -1,0 +1,49 @@
+{
+  "method": "Check a conservative clip metal shadow against every saved copper layer.",
+  "clip_shadow_local_rectangles_mm": [
+    [
+      -13.1,
+      -1.7,
+      -7.7,
+      1.7
+    ],
+    [
+      7.7,
+      -1.7,
+      13.1,
+      1.7
+    ]
+  ],
+  "includes_pair_xy_float_mm": 0.5,
+  "scope": "Conservative projection including hooks above/below the board; no soldermask insulation credit. Spring opening/retention force remains a first-article check.",
+  "minimum_copper_clearance_mm": 0.7981414794921875,
+  "layers": [
+    {
+      "layer": "F.Cu",
+      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+    },
+    {
+      "layer": "In1.Cu",
+      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+    },
+    {
+      "layer": "In2.Cu",
+      "minimum_projected_copper_clearance_mm": 9.953271865844727
+    },
+    {
+      "layer": "In3.Cu",
+      "minimum_projected_copper_clearance_mm": 10.303260803222656
+    },
+    {
+      "layer": "In4.Cu",
+      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+    },
+    {
+      "layer": "B.Cu",
+      "minimum_projected_copper_clearance_mm": 0.7981414794921875
+    }
+  ],
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a"
+  }
+}

@@ -1,6 +1,6 @@
-# JLCPCB-managed panelization — A1 handoff
+# JLCPCB-managed panelization — A3 handoff
 
-JLCPCB is to prepare the assembly panel from the **50 × 104 mm single-board design**. The package supplies one converter's geometry and placement data. No customer-designed panel is supplied or required by this handoff.
+JLCPCB is to prepare the assembly panel from the **44 × 94 mm single-board design**. The package supplies one converter's geometry and placement data. No customer-designed panel is supplied or required by this handoff.
 
 ## Files to provide
 
@@ -10,7 +10,7 @@ JLCPCB is to prepare the assembly panel from the **50 × 104 mm single-board des
 - [Single-board selective fill/cap schedule](via-fill.csv)
 - [Fabrication requirements](FABRICATION.md), [stack dimensions](../stackup.json) and [assembly drawing](assembly-top.svg)
 
-All coordinates use the single board's lower-left datum: X is right and Y is up. The board envelope is X=0…50 and Y=0…104 mm. The BOM/CPL describe 24 electronic placements per converter, including the two through-hole connectors. JLCPCB must transform placements and the fill/cap schedule consistently when constructing its panel; do not apply the old panel's +10 mm offsets.
+All coordinates use the single board's lower-left datum: X is right and Y is up. The board envelope is X=0…44 and Y=0…94 mm. The BOM/CPL describe 24 electronic placements per converter, including the two through-hole connectors. JLCPCB must transform placements and the fill/cap schedule consistently when constructing its panel; do not apply the old panel's +10 mm offsets.
 
 ## Request from JLCPCB
 
@@ -18,9 +18,9 @@ All coordinates use the single board's lower-left datum: X is right and Y is up.
 2. Preserve the finished outline, all three internal core openings, four mounting holes, connector access, copper and stack dimensions. Propose tab locations and separation away from core openings and vulnerable components; assess MLCC stress during separation. Obtain approval for any design change.
 3. Apply the selective fill/cap schedule to the 66 electrical interlayer holes per board. Keep connector, mounting, panel tooling and separation holes open.
 4. Return the assembly orientation preview, including U1, diodes, polarized capacitors and connectors, for review before manufacture. Agree tooling, stencil, connector soldering and the component-temperature profile in FABRICATION.md.
-5. Complete soldering, inspection and panel separation before the separately prepared ferrite cores are installed.
+5. Complete soldering, inspection and panel separation before the separately procured factory-gapped ferrite cores are installed.
 
-JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the unchanged single-board design.
+JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the A3 single-board design.
 
 ## Withdrawn customer panel
 

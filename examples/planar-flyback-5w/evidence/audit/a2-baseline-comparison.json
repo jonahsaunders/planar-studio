@@ -1,0 +1,23 @@
+{
+  "baseline_commit": "0ef077898a9e2ab8689aa1481984faa3b62f406d",
+  "baseline_board_SHA256": "861d3217f71628ad30748050abc53af71862a964d0468fd5311ebc4912f6bd55",
+  "unchanged_footprint_placements": 29,
+  "unchanged_non_transformer_parts_and_pad_geometry": 28,
+  "unchanged_all_pad_net_assignments": true,
+  "unchanged_exterior_outline_segments_and_arcs": 8,
+  "unchanged_board_size_mm": [
+    50,
+    104
+  ],
+  "unchanged_copper_layers": 6,
+  "unchanged_board_thickness_mm": 1.618,
+  "intentional_changes": [
+    "T1 core, winding geometry, terminal positions, adjoining routes and core cutouts",
+    "T1 BOM identity, model, inductance, assembly instructions and qualification limits"
+  ],
+  "scope": "Digital baseline comparison; does not validate equivalent magnetic fault/thermal behavior.",
+  "source_SHA256": {
+    "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "07febd670168ed113559c5bf6df1bdc4c7e790843b5f217787e3a5ce9713a0e1"
+  }
+}

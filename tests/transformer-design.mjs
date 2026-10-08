@@ -85,7 +85,7 @@ check('Loss fits reject temperature/frequency/flux extrapolation and unknown los
 });
 for(const id of Object.keys(CORE_CATALOG))check(`${id}: mechanical fit, complete core openings and destination verification`,()=>{
   const c={...defaults(),...corePresetPatch(id)},r=compute(c);assert.ok(r.assembly.fits);assert.equal(r.art.outline.length,4);
-  reconcile(c,'magneticModel','ferrite');assert.equal(c.dOuter,22);
+  const diameter=c.dOuter;reconcile(c,'magneticModel','ferrite');assert.equal(c.dOuter,diameter);
   near(r.core.AL,CORE_CATALOG[id].al);
   const board=parseBoard(exportKicadPcb(r.art));assert.equal(board.loops.length,4);
   // The UI replaces display bounds with copper-only bounds. Comparison sizes

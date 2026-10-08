@@ -1,40 +1,29 @@
-# 5 W planar flyback converter
+# PS-FLYBACK-5W A3 — compact factory-gapped flyback
 
-**18–36 V DC → isolated 5 V / 1 A.** An LT8302 regulates the output through a 4:2 planar transformer built into the six-layer PCB. The 50 × 104 mm board uses a prepared N87 core pair with a 0.21 mm center-leg gap.
+18–36 V DC to isolated 5 V / 1 A engineering prototype, designed using Planar Studio. A3 reduces A2 from 50 × 104 mm to **44 × 94 mm**, a **20.46% area reduction**, while preserving the exact winding copper and local electronic routing. Hardware qualification and JLCPCB order acceptance remain outstanding.
 
-![Assembled converter rendered from KiCad](evidence/audit/board-3d-assembled.png)
+## Order and assemble
 
-**A1 engineering prototype — unbuilt and untested.** The electronic BOM is fully stocked in the September 30, 2026 JLCPCB snapshot. Factory process acceptance and physical qualification remain open; this is not a production release.
+Per board: two [TDK B66285G0050X187 factory-gapped halves](https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590) and two [B66286A2000X000 clips](https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552), plus one six-layer PCB and 24 electronic placements. See [JLCPCB handoff](manufacturing/START-HERE.md). Five boards need ten halves and ten clips before spares. Inventory is unreserved; recheck checkout. No grinding or bonding is specified.
 
-[Complete review package](../PS-FLYBACK-5W-A1-review-package.zip) · [KiCad project](kicad/PS-FLYBACK-5W.kicad_pro) · [Planar Studio winding](planar-studio/T1.planar.json) · [Interactive report](report.html)
+Open the [KiCad project](kicad/PS-FLYBACK-5W.kicad_pro), [Planar Studio design](planar-studio/T1.planar.json), [illustrated report](report.html) or [assembly STEP](3d/PS-FLYBACK-5W.step). The board includes all 29 models and a four-solid T1 assembly derived from TDK core/clip CAD.
 
-| Design | Specification |
-| --- | --- |
-| Input / output | 18–36 V DC / 5 V, 1 A target |
-| Controller | LT8302IS8E#PBF, primary-side regulation |
-| Transformer | Four primary turns; two parallel two-turn secondary windings; 11.95 µH nominal |
-| PCB | Six layers, ENIG; JLC061611-1080A, 1.6 mm order class |
-| Assembly | 22 SMT parts + two through-hole connectors, all on top |
-| Magnetics | Two TDK B66457G0000X187 halves, separately sourced and prepared |
+## What changed
 
-## Schematic
+Input and output electronics each move 5 mm toward the fixed transformer. Trace widths, layers, local bends, component rotations and via count are preserved. Five transformer-connection segments shorten. One ground-stitching via moves to clear H1. Each mounting hole now has a 10 mm copper exclusion with 1.8 mm clearance beyond its 6.4 mm contact area and complete outward mask extension on all six layers. The enlarged mounting clearance removes copper only at the board corners; at least 96.3% of every A2 ground-plane area is retained. The electronic schematic/BOM, 4:2 winding, six-layer stack and magnetic operating point are unchanged from A2.
 
-[![Converter schematic](evidence/audit/schematic-overview.png)](evidence/schematic.svg)
+The mounting pattern changes from 41 × 95 to **35 × 85 mm**. Existing A2 enclosures/mounting plates will need new holes. All M3 centers remain 4.5 mm from adjacent edges.
 
-The stocked feedback network is **113 kΩ / 10.7 kΩ / 127 kΩ** (0.1%, 25 ppm/°C), giving 4.980 V nominal. Require measured **SW−VIN ≤17.5 V**, including overshoot and uncertainty; the preliminary resistive RFB bound is 159.85 µA. [Feedback calculations](FEEDBACK-REVISION.md).
+## Clip fit and remaining concerns
 
-## Manufacturing and verification
+TDK specifies B66286A2000X000 for this core pair. A3 includes its official free-spring CAD and the core's actual recess geometry. The displayed installed clip opening is an estimate, not a spring-force simulation. Independent checks retain the larger 1.5 mm outward clip envelope: 0.25 mm minimum slot clearance with routing tolerances, and at least 0.798 mm to copper including 0.5 mm pair movement. The ferrite corner check retains 0.146 mm and minimum vertical clearance is 2.21 mm per face.
 
-All **20 electronic MPNs / 24 placements** have exact JLCPCB codes and orderable inventory in the dated [sourcing audit](JLCPCB-SOURCING.md). DigiKey may supply the ferrite separately. Install the prepared cores after soldering and inspection.
+The first physical pair must confirm spring engagement, retention and installed dimensions. The core can float; vibration mounting is not qualified. The smaller ELP22 core retains A2's reduced fault-current margin relative to A1. Accept measured primary inductance only at 11.0–14.6 µH and perform bias, short-circuit recovery, switching-stress and thermal tests. Compacting the board does not establish those results. [Validation](VALIDATION.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md).
 
-**[Start here: JLCPCB upload files](manufacturing/START-HERE.md).** Supply the single-board Gerber ZIP, BOM and CPL; JLCPCB is to prepare the assembly panel. The earlier customer-panel files are withdrawn and excluded from the current package.
+## Reproduce
 
-The September 30 [placement correction](manufacturing/PLACEMENT-REVIEW.md) fixes U1 rotation, connector orientation and diode origins in the CPL. Replace earlier placement uploads and review the [pin and polarity drawing](manufacturing/placement-review.svg) against the fresh JLCPCB preview before fabrication.
+Use Node.js, KiCad 10's Python/CLI, and a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository. Run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, manufacturing files, checks and renders. `check-manifest.py` verifies file hashes. A packaged example needs `PLANAR_STUDIO_ROOT` pointing to this repository, including the pinned A2 and first-A3 baseline commits.
 
-[Electronic BOM](manufacturing/BOM-JLCPCB.csv) · [Placement file](manufacturing/CPL-JLCPCB.csv) · [JLCPCB panelization requirements](manufacturing/PANEL.md) · [Fabrication requirements](manufacturing/FABRICATION.md) · [Component/pinout audit](COMPONENT-AUDIT.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md)
+Only the evidence listed in VALIDATION.md qualifies the current A3 files. Earlier audit reports and comparisons are historical. No purchase, supplier submission or physical testing has occurred.
 
-The project includes native ERC/DRC, schematic-to-board pin checks, winding continuity checks, component land-pattern/rating reviews and nominal 3D interference checks. Reproduce with [rebuild.py](scripts/rebuild.py) using KiCad 10 and Node; the bundled models keep the project portable.
-
-Before release, obtain factory acceptance of the stack, core-slot tolerance, assembly panel and reflow profile. Then verify regulation, startup/fault recovery, RFB/clamp waveforms, resistor and semiconductor temperatures, and magnetic behavior using the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Functional low-voltage isolation only; no safety-isolation rating is claimed.
-
-[Top](evidence/audit/board-3d-top.png) · [Underside](evidence/audit/board-3d-underside.png) · [STEP assembly](3d/PS-FLYBACK-5W.step) · [Model provenance](3D-MODELS.md)
+The A3 JLCPCB placement export also includes the previously separate catalog rotation/origin corrections. See [placement and polarity review](manufacturing/PLACEMENT-REVIEW.md). All 24 placements and 56 catalog pad centers pass the saved geometry/net check; a fresh factory preview is still required.

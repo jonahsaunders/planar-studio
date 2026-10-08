@@ -9,7 +9,7 @@ EXTRA={
  'SOIC8_EP_LT_S8E':'stock/Package_SO.3dshapes/SOIC-8-1EP_3.9x4.9mm_P1.27mm_EP2.29x3mm.step',
  'CP_Panasonic_C6':'stock/Capacitor_SMD.3dshapes/CP_Elec_6.3x5.9.step',
  'Terminal_KF301_2P_5.00':'custom/KF301_5mm_2P.step',
- 'Planar_EELP32_4T_2T':'custom/EELP32_prepared_pair.step',
+ 'Planar_EELP22_4T_2T':'custom/EELP22_factory_gapped_pair.step',
  'MountingHole_3.2mm_M3_ExposedSubstrate':'custom/M3_8mm_mount_envelope.step',
  'MountingHole_3.2mm_M3_ExposedSubstrate_Edge':'custom/M3_8mm_mount_envelope.step',
 }
