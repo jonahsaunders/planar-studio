@@ -210,7 +210,7 @@ for i,note in enumerate([
   'T1 pin 5 is the internal primary series via.',
 ]):text(note,184.15,110.49+i*4.445,1.0)
 text('PLANAR FLYBACK  /  5 W',12.7,13.97,2.54,True)
-text('18-36 V input  |  isolated 5 V / 1 A  |  A3 engineering prototype',12.7,19.05,1.27)
+text('18-36 V input  |  isolated 5 V / 1 A  |  A4 engineering prototype',12.7,19.05,1.27)
 box(12.7,22.86,284.48,163.83,'18-36 V INPUT / FLYBACK POWER STAGE')
 text('PROTOTYPE REVIEW  /  NOT RELEASED FOR MANUFACTURE',12.7,170.18,1.27,True)
 for i,note in enumerate([
@@ -222,7 +222,7 @@ text('MOUNTING',120.65,171.45,1.27,True)
 text('4 x M3 / 3.2 mm NPTH',120.65,190.5,1.0)
 text(f"{mechanical['pattern_mm'][0]:g} x {mechanical['pattern_mm'][1]:g} mm pattern",120.65,194.945,1.0)
 root=f'''(kicad_sch (version 20250114) (generator "eeschema") (uuid {uid(NAME)}) (paper "A4")
-(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-10-08") (rev "A3-development") (company "Planar Studio example"))
+(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-10-08") (rev "A4-development") (company "Planar Studio example"))
 (lib_symbols {''.join(definitions.values())}) {''.join(elements)} (embedded_fonts no))'''
 (CAD/f'{NAME}.kicad_sch').write_text(root,encoding='utf8')
 lib='(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(v.replace(f'"Flyback:{k}"',q(k),1) for k,v in definitions.items())+')'

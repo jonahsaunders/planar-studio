@@ -8,7 +8,11 @@ repo=Path(os.environ.get('PLANAR_STUDIO_ROOT',R.parents[1]))
 cfg=json.loads((R/'layout.json').read_text());base=cfg['baseline_commit']
 def original(name):return subprocess.check_output(['git','show',f'{base}:examples/planar-flyback-5w/{name}'],cwd=repo)
 assert json.loads(original('circuit.json'))==json.loads((R/'circuit.json').read_text()),'Electronic circuit changed'
-assert json.loads(original('planar-studio/T1-artwork.json'))==json.loads((R/'planar-studio/T1-artwork.json').read_text()),'Winding/cutout artwork changed'
+old_art=json.loads(original('planar-studio/T1-artwork.json'))
+new_art=json.loads((R/'planar-studio/T1-artwork.json').read_text())
+# A4 changes only layer heights in artwork metadata; every 2D feature stays identical.
+old_art['meta'].pop('stack');new_art['meta'].pop('stack')
+assert old_art==new_art,'Winding/cutout geometry or unrelated metadata changed'
 def point(p):return p.x,p.y
 def transform(p):
     x,y=p
@@ -63,9 +67,10 @@ with tempfile.TemporaryDirectory(dir=R/'.kicad-config',prefix='a3-baseline-') as
         # separate mounting comparison proves changes stay in those regions.
         assert b[key]/a[key]>.96,('Ground plane area reduced >4% after enlarged mounting clearances',key,a[key],b[key])
         plane.append({'net':key[0],'layer':key[1],'A2_mm2':a[key],'A3_mm2':b[key],'retained_fraction':b[key]/a[key]})
-    assert old.GetDesignSettings().GetBoardThickness()==new.GetDesignSettings().GetBoardThickness()
+    stack=json.loads((R/'stackup.json').read_text())
+    assert abs(pcb.ToMM(new.GetDesignSettings().GetBoardThickness())-stack['published_copper_plus_dielectric_mm'])<1e-6
     assert old.GetCopperLayerCount()==new.GetCopperLayerCount()==6
-record={'baseline_commit':base,'unchanged_circuit':True,'unchanged_winding_polygons_and_artwork':True,
+record={'baseline_commit':base,'unchanged_circuit':True,'unchanged_winding_polygons_and_2D_artwork':True,'layer_height_metadata_intentionally_updated_for_A4':True,
  'unchanged_local_route_widths_layers_geometry_and_via_count':True,'electronic_blocks_translated_mm':{'primary':[0,5],'secondary':[0,-5]},
  'one_ground_stitching_via_exception':'A2 (84.5,40) -> A3 (86,47), to clear the enlarged H1 reservation; unchanged drill and copper diameter.',
  'shortened_transformer_connection_segments':leads,'ground_plane_areas':plane,

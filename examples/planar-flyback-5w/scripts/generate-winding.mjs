@@ -18,6 +18,7 @@ const cfg={...defaults(),...corePresetPatch(mag.core_preset),
   windingOptions:{P:{width:.6,connection:'series'},S:{width:.6,connection:'parallel'}},
   driveMode:'current',operatingLinked:false,coreVoltage:1,current:1,secondaryCurrent:1,
   coreLossModel:'density',coreLossDensity:0,freq:200000,tempC:60,
+  dielectricEr:stack.winding_model_dielectric_er,boardT:stack.nominal_order_thickness_mm,
   requirements:{voltage:24,outputVoltage:5,outputCurrent:1,frequency:200000,diameter:80,layers:6,voltageTolerance:5},
 };
 const result=compute(cfg,{name:'T1'});

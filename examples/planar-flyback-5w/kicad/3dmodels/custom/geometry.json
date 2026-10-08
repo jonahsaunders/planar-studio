@@ -83,17 +83,17 @@
       "source": "TDK vendor STEP outlines; sources/tdk-mechanical-cad.json",
       "valid_solid": true,
       "solids": 4,
-      "volume_mm3": 2690.025201722586,
+      "volume_mm3": 2690.0252017225866,
       "bounds_mm": {
         "min": [
           -11.800000099999474,
           -7.900000100127296,
-          -6.509000100000003
+          -6.504500100000003
         ],
         "max": [
           11.800000099999975,
           7.900000100127296,
-          4.891000100000003
+          4.895500100000003
         ]
       },
       "dimensions": {
@@ -102,7 +102,7 @@
         "core_height_mm": 11.4,
         "total_center_gap_mm": 0.1,
         "gap_per_half_mm": 0.05,
-        "board_thickness_mm": 1.618
+        "board_thickness_mm": 1.609
       },
       "nominal_displayed_clip_outer_x_mm": 11.8,
       "raw_clip_span_mm": [

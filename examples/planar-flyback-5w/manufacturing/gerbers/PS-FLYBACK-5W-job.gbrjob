@@ -5,20 +5,20 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-10-08T12:10:17-04:00"
+    "CreationDate": "2026-10-08T14:07:06-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "PS-FLYBACK-5W",
       "GUID": "50532d46-4c59-4424-9143-4b2d35572e6b",
-      "Revision": "A3-development"
+      "Revision": "A4-development"
     },
     "Size": {
       "X": 44.05,
       "Y": 94.05
     },
     "LayerNumber": 6,
-    "BoardThickness": 1.618,
+    "BoardThickness": 1.609,
     "Finish": "ENIG"
   },
   "DesignRules": [

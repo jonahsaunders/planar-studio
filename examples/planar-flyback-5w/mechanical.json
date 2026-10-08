@@ -1,5 +1,5 @@
 {
-  "board_revision": "A3-development",
+  "board_revision": "A4-development",
   "mounting_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
   "upstream_repository": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository",
   "upstream_commit": "7be291853536e19f0d0d548c2ed3ca6811bdc540",

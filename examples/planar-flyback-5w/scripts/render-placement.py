@@ -20,7 +20,7 @@ def text(x, y, label, cls='small'):
     svg.append(f'<text x="{x}" y="{y}" class="{cls}">{html.escape(label)}</text>')
 
 
-text(30, 48, 'Flyback A3 | Placement and polarity check', 'title')
+text(30, 48, 'Flyback A4 | Placement and polarity check', 'title')
 text(30, 80, 'Top-side view. Gold = actual PCB pads; green dots = corrected catalog pin centers.')
 text(30, 106, 'Numbers identify PCB pads. Pin positions use the saved catalog geometry, not a live JLCPCB preview.')
 cards = [

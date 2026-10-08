@@ -39,6 +39,7 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-a3-layout.py')
+py('verify-default-stack.py')
 py('verify-mounting-clearance.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
@@ -76,7 +77,7 @@ run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A3'
+    package = Path(temp) / 'PS-FLYBACK-5W-A4'
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

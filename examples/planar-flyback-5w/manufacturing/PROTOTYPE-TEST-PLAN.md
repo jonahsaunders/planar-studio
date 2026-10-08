@@ -6,7 +6,7 @@ No hardware tests below have been performed. Results must be recorded per unit. 
 
 1. Confirm all 24 electronic references, U1 variant, diode polarity, C3/C7/C8 polarity and connector labels against the assembly drawing. Confirm the factory-gapped core report and physical seating.
 2. Verify primary and secondary winding continuity and absence of primary-to-secondary continuity with a meter. T1 internal pin 5 connects the two primary sections; it is intentionally not an external circuit connection.
-3. On the first-article magnetic coupon or appropriately isolated unpowered board, measure primary Lm with secondary open: provisional 11.0–14.6 µH. Record frequency, excitation voltage, bias and temperature. Measure leakage with the secondary shorted; the geometry model's 0.0415 µH is an estimate, not an acceptance threshold. Use the measurement to retune the clamp/snubber.
+3. On the first-article magnetic coupon or appropriately isolated unpowered board, measure primary Lm with secondary open: provisional 11.0–14.6 µH. Record frequency, excitation voltage, bias and temperature. Measure leakage with the secondary shorted; the A4 default-stack model's 0.1018 µH is an estimate, not an acceptance threshold. Record the delivered stack dimensions and use the measurement to retune the clamp/snubber.
 4. Check winding ratio and dot polarity with a low-amplitude isolated AC source. Primary:secondary is 2:1; primary pin 1 and secondary pin 3 are corresponding dots. Record parallel-secondary current sharing if accessible.
 5. Inspect for damaged solder mask, laminate/copper in slots, cracks and exposed copper touching the core. Verify connector wire entry faces outward. Record post-installation inductance and retention inspection.
 
@@ -44,4 +44,4 @@ R4 must remain inside 9.09–11.0 kΩ including applicable tolerance/temperature
 
 The transient, thermal and assembly reliability criteria need application-level review. EMI/EMC and safety certification have not been specified or performed. Final BOM values, core installation and stack must be frozen only after first-article results and vendor DFM acceptance.
 
-A3 additional gates: verify the installed clip bow and engagement against CORE-ASSEMBLY.md; measure L versus bias/temperature and short-circuit restart because the smaller core has less fault margin. No adhesive cure is part of A3.
+A3/A4 additional gates: verify the installed clip bow and engagement against CORE-ASSEMBLY.md; measure L versus bias/temperature and short-circuit restart because the smaller core has less fault margin. No adhesive cure is part of these revisions.

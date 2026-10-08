@@ -1,4 +1,4 @@
-# A3 mounting specification
+# A4 mounting specification — geometry retained from A3
 
 The board is **44 × 94 mm**, with four 3.2 mm NPTH M3 holes on a **35 × 85 mm** pattern. This changes A2's 41 × 95 mm mounting pattern. Existing mounting plates/enclosures require an update.
 

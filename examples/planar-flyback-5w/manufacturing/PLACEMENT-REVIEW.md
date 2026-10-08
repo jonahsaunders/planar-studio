@@ -1,6 +1,6 @@
-# A3 placement correction — October 8, 2026
+# A4 placement correction — October 8, 2026
 
-The September 30 placement corrections have been transferred to the compact A3 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
+The September 30 placement corrections have been transferred to the compact A4 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
 
 Open the [placement and polarity drawing](placement-review.svg) alongside the [top assembly drawing](assembly-top.svg). Both use a top-side view, with the input connector at the top. The placement drawing shows actual PCB pads and transformed catalog pin centers; it is **not a screenshot or approval of a live JLCPCB order preview**.
 

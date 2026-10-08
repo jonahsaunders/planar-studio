@@ -21,17 +21,17 @@
       {
         "layer": "In1.Cu",
         "winding": "S",
-        "z": 0.1015
+        "z": 0.2355
       },
       {
         "layer": "In4.Cu",
         "winding": "S",
-        "z": 1.4815
+        "z": 1.3385
       },
       {
         "layer": "B.Cu",
         "winding": "P",
-        "z": 1.583
+        "z": 1.574
       }
     ]
   },

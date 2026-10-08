@@ -1,7 +1,8 @@
 {
   "baseline_commit": "d802dfb665ab7df4fcd8f37760fdfa498653a258",
   "unchanged_circuit": true,
-  "unchanged_winding_polygons_and_artwork": true,
+  "unchanged_winding_polygons_and_2D_artwork": true,
+  "layer_height_metadata_intentionally_updated_for_A4": true,
   "unchanged_local_route_widths_layers_geometry_and_via_count": true,
   "electronic_blocks_translated_mm": {
     "primary": [
@@ -102,9 +103,9 @@
   },
   "scope": "Geometric preservation and connectivity; no hardware EMI, thermal or control validation.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
     "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
     "layout.json": "f4d73d056e74ea1d380ab9499063662c740409c3a28cfed3f1a7db6fef63ea33",
-    "planar-studio/T1-artwork.json": "4909193412beaa7520bf008db8133169045e56943a240369861e3a4aa5a1eb2b"
+    "planar-studio/T1-artwork.json": "6a61277c70d829a54512c0f90c6464fe8e5f1b0c577a588786d6b72c0e077b0f"
   }
 }

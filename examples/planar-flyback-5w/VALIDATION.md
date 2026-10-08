@@ -1,4 +1,4 @@
-# A3 validation and remaining qualification
+# A4 validation and remaining qualification
 
 This is an unbuilt engineering prototype. Automated checks establish geometry, connectivity and analytical screens. They do not prove physical retention, EMI, efficiency or temperature.
 
@@ -17,7 +17,7 @@ This is an unbuilt engineering prototype. Automated checks establish geometry, c
 | Electrical sizing and 54 analytical load cases | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
 | Actual fabrication-layer renders | `evidence/audit/render-provenance.json` and Gerber contact sheets |
 
-A3 moves primary electronics +5 mm Y and secondary electronics -5 mm Y without rotating or rerouting local circuitry. Five T1 connection segments shorten. The exact T1 copper polygons, trace widths/layers and via count are preserved. A single ground-stitching via moves from A2 (84.5,40) to (86,47) mm to clear H1. Each hole has a 10 mm copper exclusion and 1.8 mm nominal copper clearance beyond the complete 6.4 mm hardware-contact/mask opening, including its edge extension. All six layers are checked with 0.01 mm geometry tolerance. Ground-plane copper retains at least 96.3% of A2 area. Comparison against the first A3 proves that only corner pour areas and that one stitching via change in this clearance update. The board shrinks from 50 × 104 to 44 × 94 mm. M3 mounting changes from 41 × 95 to 35 × 85 mm.
+The retained A3 layout moves primary electronics +5 mm Y and secondary electronics -5 mm Y without rotating or rerouting local circuitry. Five T1 connection segments shorten. The exact T1 copper polygons, trace widths/layers and via count are preserved. A single ground-stitching via moves from A2 (84.5,40) to (86,47) mm to clear H1. Each hole has a 10 mm copper exclusion and 1.8 mm nominal copper clearance beyond the complete 6.4 mm hardware-contact/mask opening, including its edge extension. All six layers are checked with 0.01 mm geometry tolerance. Ground-plane copper retains at least 96.3% of A2 area. Comparison against the first A3 proves that only corner pour areas and that one stitching via change in this clearance update. The board shrinks from 50 × 104 to 44 × 94 mm. M3 mounting changes from 41 × 95 to 35 × 85 mm.
 
 Three independent fit methods cover native PCB/copper rules, maximum dimensions against saved-board cutouts and nominal solid intersections. The ferrite-corner minimum is 0.146 mm after 0.20 mm inward routing error per wall and 0.05 mm centered insertion error. Minimum vertical room is 2.21 mm per face at 1.78 mm PCB thickness. The accepted clip envelope leaves 0.25 mm routing clearance. An expanded metal-shadow check includes 0.5 mm pair movement and retains at least 0.798 mm to copper without soldermask credit.
 
@@ -25,6 +25,8 @@ TDK core and free-clip STEP files improve the nominal model, but do not specify 
 
 The magnetic design is unchanged from A2: estimated 13.12 µH, accepted measured 11.0–14.6 µH. Maximum accepted L gives 0.253 T at 5.4 A versus the declared 0.27 T screen. Typical 7.2 A restart gives 0.337 T; fault-current margin is less than A1 and must be checked by bias/fault tests. Core/fringing/AC losses, nonlinear saturation, switching overshoot, controller dynamics and thermal behavior are not validated by the linear models. Minimum timing and 380 kHz are typical datasheet values; 350/420 kHz sensitivity cases are chosen assumptions. The 75% efficiency remains an assumption.
 
-JLCPCB's published capabilities support this six-layer geometry. The named stack, selective filled/capped vias, panel, Standard-PCBA reflow and connector process still need factory acceptance. See the prototype test plan before production. No quote, supplier submission or order has been made.
+JLCPCB's published capabilities support this six-layer geometry. The delivered standard construction, selective filled/capped vias, panel, Standard-PCBA reflow and connector process still need factory acceptance. See the prototype test plan before production. No supplier-accepted quotation, submission or order has been made.
 
-The Planar Studio engine is unchanged from tested A2. A3's final checks and their hashes are recorded with the release evidence. Older A1/A2 audit reports, before-images and baseline comparisons are historical, not current board proofs.
+A4 replaces the paid named-stack request with 1 oz inner / 1 oz outer, Specify Stackup: No. The 1.609 mm reference construction updates layer heights and derived models; it is not a fixed factory cross-section. See STACK-REVISION.md and evidence/audit/default-stack-checks.json. The existing undersized silkscreen still needs a separate artwork correction before manufacturing release.
+
+The Planar Studio engine is unchanged from tested A2. A4's final checks and their hashes are recorded with the release evidence. Older A1/A2 audit reports, before-images and baseline comparisons are historical, not current board proofs.

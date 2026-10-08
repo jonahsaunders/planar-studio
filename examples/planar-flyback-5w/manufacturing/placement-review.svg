@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1190" viewBox="0 0 1200 1190">
 <rect width="1200" height="1190" fill="#f0f4f7"/><style>text{font-family:Arial,sans-serif;fill:#183247}.title{font-size:30px;font-weight:700}.head{font-size:21px;font-weight:700}.small{font-size:16px}.pin{font-size:13px;font-weight:700}</style>
-<text x="30" y="48" class="title">Flyback A3 | Placement and polarity check</text>
+<text x="30" y="48" class="title">Flyback A4 | Placement and polarity check</text>
 <text x="30" y="80" class="small">Top-side view. Gold = actual PCB pads; green dots = corrected catalog pin centers.</text>
 <text x="30" y="106" class="small">Numbers identify PCB pads. Pin positions use the saved catalog geometry, not a live JLCPCB preview.</text>
 <rect x="30" y="135" width="370" height="312" rx="14" fill="white" stroke="#d2dde6"/>

@@ -2,13 +2,13 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-10-08T12:09:39</date>
+    <date>2026-10-08T14:06:28</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>18-36 V to isolated 5 V / 1 A planar flyback</title>
         <company>Planar Studio example</company>
-        <rev>A3-development</rev>
+        <rev>A4-development</rev>
         <date>2026-10-08</date>
         <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
         <comment number="1" value=""/>

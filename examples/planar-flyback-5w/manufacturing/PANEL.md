@@ -1,4 +1,4 @@
-# JLCPCB-managed panelization — A3 handoff
+# JLCPCB-managed panelization — A4 handoff
 
 JLCPCB is to prepare the assembly panel from the **44 × 94 mm single-board design**. The package supplies one converter's geometry and placement data. No customer-designed panel is supplied or required by this handoff.
 
@@ -15,12 +15,12 @@ All coordinates use the single board's lower-left datum: X is right and Y is up.
 ## Request from JLCPCB
 
 1. Prepare rails, tooling holes, fiducials and panel dimensions suitable for Standard assembly. Supply the proposed panel drawing, boards per panel and finished-board quantity with the quotation. The requested quantity is five finished converters, not five panels.
-2. Preserve the finished outline, all three internal core openings, four mounting holes, connector access, copper and stack dimensions. Propose tab locations and separation away from core openings and vulnerable components; assess MLCC stress during separation. Obtain approval for any design change.
+2. Preserve the finished outline, all three internal core openings, four mounting holes, connector access and copper. Use the ordinary 1.6 mm / 1 oz outer / 1 oz inner construction with no specified stack; record delivered layer dimensions for the winding review. Propose tab locations and separation away from core openings and vulnerable components; assess MLCC stress during separation. Obtain approval for any design change.
 3. Apply the selective fill/cap schedule to the 66 electrical interlayer holes per board. Keep connector, mounting, panel tooling and separation holes open.
 4. Return the assembly orientation preview, including U1, diodes, polarized capacitors and connectors, for review before manufacture. Agree tooling, stencil, connector soldering and the component-temperature profile in FABRICATION.md.
 5. Complete soldering, inspection and panel separation before the separately procured factory-gapped ferrite cores are installed.
 
-JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the A3 single-board design.
+JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the A4 single-board design.
 
 ## Withdrawn customer panel
 

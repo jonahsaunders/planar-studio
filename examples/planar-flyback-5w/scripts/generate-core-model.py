@@ -28,7 +28,7 @@ solids=[upper,lower,right,left]
 for i,a in enumerate(solids):
     assert a.isValid()
     for b in solids[i+1:]:assert a.intersect(b).Volume()<1e-5
-assembly=cq.Assembly(name='PS_MAG_002_A3_TDK_derived')
+assembly=cq.Assembly(name='PS_MAG_002_A4_TDK_derived')
 for s,name,color in zip(solids,['core_upper_factory_0p05_gap','core_lower_factory_0p05_gap','clip_right_estimated_opened_pose','clip_left_estimated_opened_pose'],[(.22,.24,.27),(.18,.20,.23),(.72,.74,.77),(.72,.74,.77)]):
     assembly.add(s.translate((0,0,-thickness/2)),name=name,color=cq.Color(*color))
 out=R/'kicad/3dmodels/custom/EELP22_factory_gapped_pair.step'

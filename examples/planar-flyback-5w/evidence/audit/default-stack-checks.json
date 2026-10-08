@@ -1,0 +1,64 @@
+{
+  "revision": "A4-development",
+  "baseline_commit": "81d4d69b00f03c73f7c4649d1f1d6e00366bb0ff",
+  "ordering": {
+    "layers": 6,
+    "nominal_thickness_mm": 1.6,
+    "outer_copper_oz": 1,
+    "inner_copper_oz": 1,
+    "specify_stackup": false,
+    "impedance_control": false
+  },
+  "unchanged_circuit_BOM_and_2D_winding_artwork": true,
+  "changed_winding_parameters": [
+    "dielectricEr",
+    "layerPositions"
+  ],
+  "reference_stack_total_mm": 1.609,
+  "reference_winding_centers_mm": [
+    0,
+    0.23550000000000004,
+    1.3384999999999998,
+    1.5739999999999998
+  ],
+  "old": {
+    "R1": 0.3249394311224102,
+    "R2": 0.08051597992901575,
+    "leakage": 4.150763468769392e-08,
+    "capacitance": {
+      "pairs": [
+        {
+          "pair": "P \u2194 S",
+          "value": 6.745972485800184e-11
+        }
+      ],
+      "value": 6.745972485800184e-11,
+      "source": "estimate"
+    }
+  },
+  "new": {
+    "R1": 0.3249318107348425,
+    "R2": 0.08051597992901575,
+    "leakage": 1.0178193946652876e-07,
+    "capacitance": {
+      "pairs": [
+        {
+          "pair": "P \u2194 S",
+          "value": 2.462748413683106e-11
+        }
+      ],
+      "value": 2.462748413683106e-11,
+      "source": "estimate"
+    }
+  },
+  "scope": "Published default reference, not an exact supplier stack commitment. 30 um conservative copper / 25 um assumed barrel plating; shared terminal buses and external routes excluded. No nonlinear, AC/fringing/core-loss or hardware thermal/fault qualification.",
+  "source_SHA256": {
+    "stackup.json": "2f331ca127e63a80d2d7f918967b87f2ed635c81f6946c7d26b8289cc08d8cd5",
+    "sources/jlcpcb-default-1oz-stack.json": "c815227d6995aed76a7464aeef91de628f49bd5d26b9d872a81b8ece59487c55",
+    "planar-studio/T1-config.json": "2c3bf9d3660202a53d9d920cdc5253124f72e7a8d78415aa07b73df319e548a3",
+    "planar-studio/T1-artwork.json": "6a61277c70d829a54512c0f90c6464fe8e5f1b0c577a588786d6b72c0e077b0f",
+    "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
+    "scripts/verify-default-stack.py": "0bc7018248b43825b807a908a79dbb26bf3c19c77d763cfda0365114510c95f6"
+  }
+}

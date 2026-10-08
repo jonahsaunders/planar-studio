@@ -56,7 +56,7 @@
   "previous_mask_margin_mm": 0.2,
   "current_mask_margin_mm": 1.8,
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
-    "mechanical.json": "bd0f681ba0c54c05163fa1379c87dd73f5bce1647136eb71eda46a743e68b6f6"
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
+    "mechanical.json": "4944cc636119970bc210a6aece98ebe3bf75cfffa8730c56610723c68703332c"
   }
 }

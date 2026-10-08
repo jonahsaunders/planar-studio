@@ -111,7 +111,7 @@ for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(3,10.3,'4
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A3-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A4-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -190,7 +190,7 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A3 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A4 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -292,7 +292,7 @@ for name,pin in [('VIN',1),('SW',2)]:
 for name,net,ref,pin in [('BIAS','INTVCC','C5',1),('OUT','+5V_ISO','C4',1)]:
     probe_sites.append({'name':name,'net':net,'position_mm':pos(ref,pin),
                         'type':f'Existing exposed {ref} pad {pin}; soldered component present'})
-# A3 compacts the validated A2 blocks without changing any local routing.
+# A4 compacts the validated A2 blocks without changing any local routing.
 def compact_point(p):
     x,y=p
     if y < layout['source_primary_max_y_mm']: return (x,y+layout['primary_translation_mm'][1])

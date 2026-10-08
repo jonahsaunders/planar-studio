@@ -1,4 +1,4 @@
-"""Independent A3 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.
+"""Independent A4 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.
 
 TDK pp2-3 dimensions are transcribed here independently of the winding generator.
 Checks nominal solids, maximum ferrite corners, inward routing error, rounded
@@ -80,7 +80,7 @@ for item in checks['models']:
         if v>1e-6:collisions.append([item['reference'],dx,dy,v])
 assert not collisions,collisions
 result={
-    'revision':'A3-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
+    'revision':'A4-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
     'method':__doc__,'actual_saved_board_slots_local_mm':slots,'rounded_slot_radius_mm':.5,
     'routing_inward_error_per_wall_mm':.2,'centered_insertion_pose_allowance_mm':.05,
     'maximum_ferrite_corner_checks':len(corners),'minimum_corner_clearance_mm':min(corners),

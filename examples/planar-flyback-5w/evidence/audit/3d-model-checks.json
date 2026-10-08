@@ -2,7 +2,7 @@
   "footprints": 29,
   "unique_STEP_assets": 16,
   "missing_or_hidden_models": [],
-  "board_thickness_mm": 1.618,
+  "board_thickness_mm": 1.609,
   "coordinate_convention": "KiCad board X right / Y down; model world uses X right / Y up, top PCB surface Z=0; footprint angles are degrees CCW.",
   "models": [
     {
@@ -305,7 +305,7 @@
     {
       "reference": "T1",
       "model": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
-      "sha256": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
+      "sha256": "df136a616c2d82c2801150b4267a2a3fa8836a993a5dfd5d19791f404ea6305b",
       "position_mm": [
         100.0,
         85.0
