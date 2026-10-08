@@ -102,7 +102,7 @@ for name,members in continuous.items():
 assert len(set(wire_groups.values()))==len(wire_groups),'Different supply/return rails are joined by wires'
 
 tree=parse((ROOT/'kicad/PS-FLYBACK-5W.kicad_pcb').read_text())
-f=next(f for f in children(tree,'footprint') if f[1].endswith('Planar_EELP32_4T_2T'))
+f=next(f for f in children(tree,'footprint') if f[1].endswith('Planar_EELP22_4T_2T'))
 polys={child(p,'layer')[1]:[(float(x[1]),float(x[2])) for x in child(p,'pts')[1:]] for p in children(f,'fp_poly')}
 coords={p[1]:(float(child(p,'at')[1]),float(child(p,'at')[2])) for p in children(f,'pad')}
 expect={'F.Cu':{'1','5'},'B.Cu':{'2','5'},'In1.Cu':{'3','4'},'In4.Cu':{'3','4'}}

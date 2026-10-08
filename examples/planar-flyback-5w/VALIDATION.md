@@ -1,33 +1,26 @@
-# A1 validation record — September 30, 2026
+# A2 validation and remaining qualification
 
-**CAD and analytical checks pass. Manufacturing release remains open.** No hardware has been built or tested; JLCPCB has not accepted the process or received these files.
+This is an unbuilt engineering prototype. The files pass the automated checks listed below; those results do not prove efficiency, loop behavior, physical clip dimensions or factory acceptance.
 
-| Check | Current result | Evidence |
-| --- | --- | --- |
-| Native ERC / DRC | Zero violations, unconnected items or schematic-parity issues | [ERC](evidence/erc.rpt), [DRC](evidence/board-drc.json) |
-| Pin mapping and winding copper | 60 logical pins / 61 pads; four winding polygons / 19,229 contained centerline samples | [Independent checks](evidence/independent-checks.json) |
-| Component applicability | All 29 footprints match reviewed MPN, package and pin/net records; includes R8 recommended lands | [Component checks](evidence/audit/component-checks.json) |
-| Electronic sourcing | All 20 MPNs / 24 placements stocked; inventory covers twice the five-board requirement as a provisional allowance | [Dated catalog audit](JLCPCB-SOURCING.md) |
-| Feedback | 113k/10.7k/127k agree across schematic, board and BOM; 159.85 µA preliminary resistive bound at the 17.5 V envelope | [Checks](evidence/audit/feedback-checks.json), [assumptions](FEEDBACK-REVISION.md) |
-| Stack | JLC061611-1080A, 35 µm outer / 30 µm inner; published sum 1.618 mm in the 1.6 mm order class | [Stack data](stackup.json), [winding calculation](evidence/winding-model.json) |
-| Manufacturing exports | 24 electronic placements; six copper layers; 66 fill/cap holes; connector and mounting holes remain open | [Export checks](evidence/manufacturing-checks.json) |
-| Assembly panel | JLCPCB to prepare and return a panel drawing from the single-board files; factory review outstanding. Earlier customer panel withdrawn | [Panelization requirements](manufacturing/PANEL.md), [upload guide](manufacturing/START-HERE.md) |
-| 3D | 29 footprints / 16 valid STEP assets; no nominal intersections in 406 component pairs or 29 substrate checks | [Solid checks](evidence/audit/3d-solid-checks.json) |
-| Visual inspection | Actual schematic, single-board copper/technical Gerber sheets and assembly renders inspected | [Schematic](evidence/audit/schematic-overview.png), [copper](evidence/audit/gerber-copper-overview.png), [technical layers](evidence/audit/gerber-technical-overview.png) |
+| Check | Current evidence |
+| --- | --- |
+| Planar Studio regression and factory-gapped-core rejection cases | `npm test`, including `tests/transformer-stock-core.mjs` |
+| KiCad ERC, DRC, unconnected pads and schematic parity | `evidence/erc.rpt`, `evidence/board-drc.json` |
+| Native pin agreement and winding continuity/geometry | `evidence/independent-checks.json` |
+| Pinned A1 comparison: electronic BOM, pad nets, placements, mounting and exterior outline | `evidence/audit/a2-baseline-comparison.json` |
+| Electronic BOM/CPL, six copper layers, 66 filled/capped holes and mounting | `evidence/manufacturing-checks.json` |
+| Every footprint has a local visible model | `evidence/audit/3d-model-checks.json` |
+| Exact nominal model/substrate and 406 component-pair checks | `evidence/audit/3d-solid-checks.json` |
+| Maximum ferrite dimensions and actual routed cutouts | `evidence/audit/core-fit-checks.json` |
+| Stress sizing, minimum timing/preload and power-stage cycles | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
+| Actual fabrication layer renders | `evidence/audit/gerber-copper-overview.png`, `gerber-technical-overview.png` |
 
-The named-stack model uses 30 µm for all windings as a conservative DC-resistance screen. It uses actual published winding heights, a fixed 5 V output and an assumed switching-resistance/frequency model. It excludes core and AC/fringing losses, closed-loop controller behavior, burst dynamics and transients. The separate stress worksheet assumes 75% efficiency; it is not measured or predicted efficiency.
+Fit is checked three ways: board/copper rules, independent tolerance arithmetic using the saved outline, and exact solid interference. The maximum ferrite-corner screen leaves 0.146 mm with inward 0.20 mm routing per wall and ±0.05 mm centered insertion offset. The minimum vertical clearance is 2.21 mm per face at 1.78 mm board thickness. No nominal body/substrate collisions are permitted. Clip bow remains conditional on the documented 1.5 mm outward envelope because the manufacturer does not dimension it. Verify this with actual parts.
 
-## Open release gates
+A2 retains the original electronic BOM, nets, placements, 50 × 104 mm outline and mounting pattern. The 4:2 winding is regenerated for ELP22; copper is 0.6 mm wide and T1 vias are 0.6/0.3 mm. The estimated 13.12 µH inductance is accepted only when measured at 11.0–14.6 µH. Maximum accepted L produces 0.253 T at the controller's 5.4 A maximum normal current limit. The declared 0.27 T screen is based on 90% of TDK's 0.300 T core-table value at 100°C; it replaces A1's more conservative 0.15 T screen because the smaller core has less fault margin. This change is explicit, not a claim of equal saturation margin. The 7.2 A typical restart screen is 0.337 T and has no guaranteed fault-current margin; bench bias/fault qualification is required before release.
 
-1. **Factory process:** accept JLC061611-1080A tolerances, ±0.10 mm internal core-slot routing, filled/capped vias, panel/depanelization, connector assembly and a component-temperature profile compatible with F1, R8 and C3/C8. Standard's nominal setpoint alone is insufficient; Economic's fixed profile is unsuitable. Recheck stock and attrition allocation before ordering.
-2. **Feedback and suppression:** demonstrate SW−VIN ≤17.5 V including overshoot and measurement uncertainty, SW <60 V, and independent RFB voltage/current compliance. The 159.85 µA resistive screen excludes capacitive current. Tune clamp/snubber from measured waveforms.
-3. **Power and temperature:** R6's plateau estimate is 0.509 W including capacitor tolerance; the full target-voltage swing screen reaches 0.695 W against a 0.75 W rating at 70 °C. R8's ripple screen is 0.922 W, but its 2 W catalog rating requires 300 mm² copper and does not establish this board's thermal capacity. Measure both; change parts/layout if necessary. Validate all semiconductor, capacitor and magnetic temperatures.
-4. **Core process and operation:** raw DigiKey halves require qualified center-leg grinding, retention and installation. Measure inductance under bias and temperature, startup, regulation, ripple, load steps, burst operation and fault recovery. Hot-plug is unqualified; begin with a controlled input ramp.
+The 75% efficiency is assumed. Core loss, gap fringing, AC winding loss, nonlinear saturation, controller/burst dynamics and thermal behavior are not validated by the linear models. Minimum on/off times and the 380 kHz ceiling are datasheet typical values. Measure ripple, switching and feedback-pin excursions, startup, load steps, short-circuit recovery and temperatures under `manufacturing/PROTOTYPE-TEST-PLAN.md`. Revise the circuit/core if these fail.
 
-Follow the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Functional low-voltage isolation only; no mains, reinforced insulation or safety certification is claimed.
+JLCPCB capability review supports the six-layer ENIG geometry, ordinary routed slots, and filled/capped vias. JLCPCB still must accept the named stack, panel, selective fill, connector process and compatible Standard-PCBA reflow profile. No quote, DFM approval, supplier submission or order has occurred.
 
-## Reproduction
-
-Run scripts/rebuild.py using KiCad 10 Python and Node. Then refresh audit-renders.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py, render-schematic.mjs and audit-3d-solids.py. The render and solid tools require the documented Pillow/PyGerber, Sharp and CadQuery environments. Run scripts/package-project.py with a fresh output directory to package the single-board handoff; panelization is supplied by JLCPCB and has no local generation step. All package/model references remain local.
-
-Earlier fuse, mounting and feedback-only revision comparisons are **historical**. The current revision also changes stocking selections, R8 lands and electrical stack dimensions; it does not claim unchanged geometry against those earlier commits. Current source hashes accompany the new checks. No supplier upload, contact, purchase or fabrication was performed.
+Legacy A1 audit reports in the root and older audit JSON/images are historical. Only current evidence above, with matching source hashes, supports A2. No generic historical “all checks passed” report overrides these limits.

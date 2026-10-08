@@ -94,7 +94,7 @@
     },
     {
       "ref": "T1",
-      "value": "PLANAR 4:2 / Lm 12uH",
+      "value": "PLANAR 4:2 / Lm 13.12uH",
       "kind": "T",
       "nets": {
         "1": "VIN",
@@ -103,13 +103,13 @@
         "4": "SEC_A",
         "5": "unconnected-(T1-P_MID-Pad5)"
       },
-      "footprint": "Flyback:Planar_EELP32_4T_2T",
-      "source_footprint": "Flyback:Planar_EELP32_4T_2T",
-      "mpn": "PS-MAG-001 A0",
+      "footprint": "Flyback:Planar_EELP22_4T_2T",
+      "source_footprint": "Flyback:Planar_EELP22_4T_2T",
+      "mpn": "PS-MAG-002 A2",
       "lcsc": "",
-      "mfr": "Prepared core assembly to drawing",
-      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
-      "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Raw cores may be sourced separately from DigiKey; core preparation, retention and installation require separate qualification.",
+      "mfr": "PCB winding + TDK factory-gapped core pair",
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+      "purpose": "2 x B66285G0050X187 factory-gapped halves + 2 x B66286A2000X000 clips; total gap 0.10 mm; measured assembled Lm acceptance 11.0-14.6 uH. No machining or bonding.",
       "uuid": "b7eb1bbf-a860-5fb5-b6bb-9b4653298a1e",
       "exclude_from_bom": false
     },

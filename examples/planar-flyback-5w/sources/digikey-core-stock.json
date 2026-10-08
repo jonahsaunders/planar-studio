@@ -1,11 +1,27 @@
 {
-  "observed_date": "2026-09-30",
-  "method": "Read-only live DigiKey product page",
-  "mpn": "B66457G0000X187",
-  "manufacturer": "TDK",
-  "part_status": "Active",
-  "in_stock": 1146,
-  "quantity_per_board": 2,
-  "source": "https://www.digikey.com/en/products/detail/tdk/B66457G0000X187/3914980",
-  "scope": "Unreserved raw ungapped halves only. They are not a completed transformer; center-leg grinding, retention, installation and magnetic qualification remain separate."
+  "observed_date": "2026-10-08",
+  "method": "Read-only web retrieval of indexed DigiKey US listings; crawl age three weeks for core, one month for clips. Not live cart inventory.",
+  "scope": "Factory-gapped halves and matching clips. Recheck inventory at checkout; no purchase or reservation.",
+  "rows": [
+    {
+      "mpn": "B66285G0050X187",
+      "digikey": "495-B66285G0050X187-ND",
+      "quantity_per_board": 2,
+      "in_stock_displayed": 530,
+      "minimum_order": 1,
+      "unit_USD_at_1": 3.05,
+      "unit_USD_at_10": 2.1,
+      "source": "https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590"
+    },
+    {
+      "mpn": "B66286A2000X000",
+      "digikey": "495-B66286A2000X000-ND",
+      "quantity_per_board": 2,
+      "in_stock_displayed": 9596,
+      "minimum_order": 1,
+      "unit_USD_at_1": 0.39,
+      "unit_USD_at_10": 0.355,
+      "source": "https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552"
+    }
+  ]
 }

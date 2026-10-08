@@ -101,15 +101,15 @@ for layer,poly in bylayer.items():
         body+=f'(fp_poly (pts {pts}) (stroke (width 0) (type default)) (fill solid) (layer "{layer}"))'
 for i,p in enumerate(art['pads'],1):body+=pad(i,p['x'],-p['y'],p['w'],p['h'],p['drill'],'circle')
 for v in art['vias']:body+=pad(5,v['x'],-v['y'],v['diameter'],v['diameter'],v['drill'],'circle',layers='"*.Cu"')
-body+=rect(-18.2,-19.95,18.2,21.0)+rect(-15.875,-10.175,15.875,10.175,'F.Fab',.1)
-for x,y,txt in [(7,-18,'1 VIN'),(-6,-18,'2 SW'),(-3,21,'3 GND'),(4,12.8,'4 SEC')]:
+body+=rect(-13.6,-14.5,13.6,15.2)+rect(-10.9,-7.9,10.9,7.9,'F.Fab',.1)
+for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(3,10.3,'4 SEC')]:
     body+=f'(fp_text user "{txt}" (at {x} {y}) (layer "F.SilkS") (effects (font (size .8 .8) (thickness .12))))'
-(LIB/'Planar_EELP32_4T_2T.kicad_mod').write_text(footprint('Planar_EELP32_4T_2T',body,'exclude_from_pos_files',0),encoding='utf8')
+(LIB/'Planar_EELP22_4T_2T.kicad_mod').write_text(footprint('Planar_EELP22_4T_2T',body,'exclude_from_pos_files',0),encoding='utf8')
 # A single polygon per winding layer gives KiCad a continuous net-tie
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A1-development');title.SetDate('2026-09-29');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A2-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -186,9 +186,9 @@ def txt(s,x,y,size=1,layer=pcb.F_SilkS):
 txt('IN +    -',100,35,.85)
 txt('18-36V DC',113,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
-txt('PCB PLANAR 4:2',100,72,1.1);txt('0.21 mm GAPPED N87 CORE',100,73.5,.8)
+txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8)
-txt('A1 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A2 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.

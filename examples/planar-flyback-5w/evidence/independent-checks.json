@@ -20,7 +20,7 @@
       "4"
     ]
   },
-  "centerline_samples_inside_final_copper": 19229,
+  "centerline_samples_inside_final_copper": 13214,
   "stack_thickness_mm": 1.6179999999999999,
   "copper_layers": 6,
   "drc_violations": 0,

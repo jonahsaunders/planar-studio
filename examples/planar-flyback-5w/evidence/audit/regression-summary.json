@@ -1,0 +1,32 @@
+{
+  "command": "npm test",
+  "result": "passed",
+  "date": "2026-10-08",
+  "node_version": "24.20.0",
+  "suite_summaries": [
+    "104 passed, 0 failed",
+    "61 motor layout scenarios passed: connectivity, containment, exports, persistence, and validation.",
+    "54 family layouts passed; isolated routing, exports, persistence, force/torque invariants, dual-rotor superposition and invalid inputs verified.",
+    "36 winding routing scenarios passed; cancellation, reversal, mixed branches, unsafe parallel rejection and exports verified.",
+    "15 obstacle layouts passed; hole/rectangle/polygon clearance, split pockets, continuity, additive stacking, exports and persistence verified.",
+    "22 design-tool checks passed",
+    "20 lumped-layout checks passed",
+    "Creator numerics, validation, isolation, surface pads and export round-trips passed.",
+    "43 creator family checks passed.",
+    "12 directional antenna checks passed.",
+    "13 loaded circuit, layer setup and antenna checks passed.",
+    "Prepared-gap model, limits, explicit opt-in and unmodified catalog regression passed.",
+    "Factory-gapped catalog identity, AL, 4:2 connections and real slot-crossing rejection passed.",
+    "17 transformer design checks passed.",
+    "11 transformer workflow checks passed.",
+    "9 transformer project checks passed.",
+    "29 passed, 0 failed",
+    "Ran 10 tests in 0.047s",
+    "OK (skipped=2)"
+  ],
+  "python_followup": {
+    "command": "python -m unittest discover -s tests -p test_*.py",
+    "result": "10 passed, 0 skipped; kicad-python installed for actual IPC serialization tests"
+  },
+  "scope": "Repository regressions and RPC integration. Initial npm run skipped two IPC serialization tests for the missing dependency; the subsequent Python run passed all 10 after installing requirements.txt. Does not verify converter hardware."
+}

@@ -52,35 +52,6 @@
       "valid_solid": true,
       "volume_mm3": 23.95092295
     },
-    "EELP32_prepared_pair": {
-      "file": "kicad/3dmodels/custom/EELP32_prepared_pair.step",
-      "description": "Original nominal E+E geometry with 0.21 mm center-only gap; strap/bond envelopes are provisional.",
-      "dimensions": {
-        "core_width_mm": 31.75,
-        "core_depth_mm": 20.35,
-        "core_height_mm": 12.7,
-        "total_center_gap_mm": 0.21,
-        "board_thickness_mm": 1.618,
-        "mating_plane_z_mm": -0.809,
-        "window_height_mm": 6.4,
-        "strap_thickness_mm": 0.18,
-        "strap_width_mm": 12.7
-      },
-      "bounds_mm": {
-        "min": [
-          -16.075,
-          -10.175,
-          -7.339
-        ],
-        "max": [
-          16.075,
-          10.175,
-          5.721
-        ]
-      },
-      "valid_solid": true,
-      "volume_mm3": 5903.251345000004
-    },
     "M3_8mm_mount_envelope": {
       "file": "kicad/3dmodels/custom/M3_8mm_mount_envelope.step",
       "description": "Provisional unthreaded nylon hardware envelope; not included in the BOM/CPL.",
@@ -105,6 +76,34 @@
       },
       "valid_solid": true,
       "volume_mm3": 258.7509465680836
+    },
+    "EELP22_factory_gapped_pair": {
+      "file": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
+      "description": "TDK EELP22 factory-gapped pair and matching clips. Requires CadQuery 2.6.1.\n\nFerrite dimensions and gaps: TDK drawing pp2-3. Nominal datum is PCB top Z=0.\nClip bow, material thickness and recess detail are illustrative: the public\ndrawing does not fully dimension them. A separate conservative envelope is\nverified by verify-core-fit.py; neither model is supplier-certified CAD.\n",
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+      "valid_solid": true,
+      "solids": 4,
+      "volume_mm3": 2732.316399999997,
+      "bounds_mm": {
+        "min": [
+          -11.9,
+          -7.9,
+          -6.509
+        ],
+        "max": [
+          11.9,
+          7.9,
+          4.891
+        ]
+      },
+      "dimensions": {
+        "core_width_mm": 21.8,
+        "core_depth_mm": 15.8,
+        "core_height_mm": 11.4,
+        "total_center_gap_mm": 0.1,
+        "gap_per_half_mm": 0.05,
+        "board_thickness_mm": 1.618
+      }
     }
   }
 }

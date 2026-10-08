@@ -1,3 +1,5 @@
+> Historical A1 audit. Electronic part rationale remains useful; A2 core, layout, calculations and release evidence are in README.md and VALIDATION.md. Do not use old core preparation or dimensions.
+
 # PCB layout audit — PS-FLYBACK-5W A1
 
 **The power-stage placement and routing have been revised.** The previous long

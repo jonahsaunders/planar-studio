@@ -23,8 +23,8 @@
     "name": "VIN",
     "net": "VIN",
     "position_mm": [
-      103.621977,
-      65.806807
+      102.871953,
+      71.926237
     ],
     "type": "Existing exposed T1 pad 1; no added SW stub"
   },
@@ -32,8 +32,8 @@
     "name": "SW",
     "net": "SW",
     "position_mm": [
-      96.378023,
-      65.806807
+      97.128047,
+      71.926237
     ],
     "type": "Existing exposed T1 pad 2; no added SW stub"
   },

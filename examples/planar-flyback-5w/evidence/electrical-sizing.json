@@ -2,7 +2,7 @@
   "worst_full_load_primary_peak_A": 2.0647653000594173,
   "minimum_controller_peak_limit_A": 3.6,
   "maximum_controller_peak_limit_A": 5.4,
-  "core_peak_flux_at_5p4A_and_Lplus15pct_T": 0.14491300236602359,
+  "core_peak_flux_at_5p4A_and_Lmax_T": 0.2530166880616175,
   "input_diode_drop_sizing_assumption_V": 1.0,
   "output_bulk_nominal_F": 0.00036,
   "output_bulk_minimum_F": 0.000288,
@@ -36,39 +36,40 @@
   "nominal_output_at_sample_diode_drop_0p3V": 4.980373831775701,
   "uvlo_rising_nominal_V_after_input_diode": 15.725653473344103,
   "uvlo_falling_nominal_V_after_input_diode": 13.942368336025847,
-  "Lm_low_acceptance_H": 1.0155577879177692e-05,
-  "Lm_high_acceptance_H": 1.3739899483593347e-05,
+  "Lm_low_acceptance_H": 1.1e-05,
+  "Lm_high_acceptance_H": 1.4599999999999999e-05,
   "Lm_min_on_time_requirement_H": 8.22857142857143e-06,
   "Lm_min_off_time_requirement_H": 5.85e-06,
-  "minimum_energy_packet_cap_rise_V_at_Ipk_1p04A": 0.005431679561935148,
+  "minimum_energy_packet_cap_rise_V_at_Ipk_1p04A": 0.005771695906432749,
   "TVS_rating_based_switch_clamp_V_excluding_dynamic_overshoot": 56.9,
   "switch_absolute_max_V": 65,
   "switch_prototype_acceptance_peak_V": 60,
   "preload_power_at_5p25V_W": 0.12654958677685949,
   "secondary_fault_average_rating_check_A": 6.48,
   "rectifier_average_current_rating_A": 8,
-  "minimum_load_required_A_at_low_output": 0.019866911165733997,
+  "minimum_load_required_A_at_low_output": 0.02111055494736842,
   "minimum_preload_A_at_low_output": 0.02137713771377138,
-  "overcurrent_restart_typical_7p2A_flux_T": 0.19321733648803147,
+  "overcurrent_restart_typical_7p2A_flux_T": 0.3373555840821566,
+  "core_flux_screen_basis": "Below 90% of TDK core table 0.300 T at 100 C, H=250 A/m. This is a screening bound, not a nonlinear saturation or overload guarantee. Typical 7.2 A restart excursions need bench verification.",
   "scope": "Boundary-mode stress sizing only. 75% efficiency is assumed, not measured. Does not prove loop stability, burst ripple, EMC, isolation rating or final output trim.",
-  "full_load_ripple_sizing_max_V": 0.050578010950300845,
-  "full_load_snubber_CV2f_upper_W": 0.48492909596974737,
+  "full_load_ripple_sizing_max_V": 0.05108361850655024,
+  "full_load_snubber_CV2f_upper_W": 0.4477032000000002,
   "snubber_capacitance_loss_sweep": [
     {
       "capacitance_pF": 470,
-      "estimated_W": 0.48492909596974737,
+      "estimated_W": 0.4477032000000002,
       "exceeds_fitted_rating": false,
       "exceeds_80pct_fitted_rating": false
     },
     {
       "capacitance_pF": 680,
-      "estimated_W": 0.7015995431051665,
+      "estimated_W": 0.6477408000000002,
       "exceeds_fitted_rating": false,
       "exceeds_80pct_fitted_rating": true
     },
     {
       "capacitance_pF": 1000,
-      "estimated_W": 1.031764033978186,
+      "estimated_W": 0.9525600000000004,
       "exceeds_fitted_rating": true,
       "exceeds_80pct_fitted_rating": true
     }
@@ -84,7 +85,7 @@
     "Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples."
   ],
   "snubber_resistor_rating_W_at_70C": 0.75,
-  "snubber_loss_with_capacitance_tolerance_W": 0.5091755507682347,
-  "snubber_loss_full_target_swing_CV2f_W": 0.6947749471722413,
+  "snubber_loss_with_capacitance_tolerance_W": 0.4700883600000002,
+  "snubber_loss_full_target_swing_CV2f_W": 0.6414400985917512,
   "snubber_full_swing_scope": "Screening bound using full VIN+17.5 V excursion each cycle and worksheet Lmin frequency; not a measured repetitive-power result. Little thermal headroom remains; accept only after waveform and temperature checks, with redesign if necessary."
 }

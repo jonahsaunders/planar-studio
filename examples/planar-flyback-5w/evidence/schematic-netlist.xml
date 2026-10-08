@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-09-30T11:25:08</date>
+    <date>2026-10-08T10:25:39</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>18-36 V to isolated 5 V / 1 A planar flyback</title>
         <company>Planar Studio example</company>
-        <rev>A1-development</rev>
-        <date>2026-09-29</date>
+        <rev>A2-development</rev>
+        <date>2026-10-08</date>
         <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
         <comment number="1" value=""/>
         <comment number="2" value=""/>
@@ -796,20 +796,20 @@
       </units>
     </comp>
     <comp ref="T1">
-      <value>PLANAR 4:2 / Lm 12uH</value>
-      <footprint>Flyback:Planar_EELP32_4T_2T</footprint>
-      <datasheet>https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf</datasheet>
+      <value>PLANAR 4:2 / Lm 13.12uH</value>
+      <footprint>Flyback:Planar_EELP22_4T_2T</footprint>
+      <datasheet>https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf</datasheet>
       <fields>
-        <field name="MPN">PS-MAG-001 A0</field>
-        <field name="Manufacturer">Prepared core assembly to drawing</field>
+        <field name="MPN">PS-MAG-002 A2</field>
+        <field name="Manufacturer">PCB winding + TDK factory-gapped core pair</field>
         <field name="LCSC"/>
-        <field name="Footprint">Flyback:Planar_EELP32_4T_2T</field>
-        <field name="Datasheet">https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf</field>
+        <field name="Footprint">Flyback:Planar_EELP22_4T_2T</field>
+        <field name="Datasheet">https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="T" description=""/>
-      <property name="MPN" value="PS-MAG-001 A0"/>
-      <property name="Manufacturer" value="Prepared core assembly to drawing"/>
+      <property name="MPN" value="PS-MAG-002 A2"/>
+      <property name="Manufacturer" value="PCB winding + TDK factory-gapped core pair"/>
       <property name="LCSC" value=""/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
