@@ -1,3 +1,5 @@
+> Historical A1 audit. Electronic part rationale remains useful; A2 core, layout, calculations and release evidence are in README.md and VALIDATION.md. Do not use old core preparation or dimensions.
+
 # Feedback-current margin revision — September 30, 2026
 
 The original 106 kΩ / 10 kΩ / 118 kΩ network produced a 197.84 µA rating-based RFB screen, only 1.08% below the LT8302's 200 µA absolute maximum. It did not establish transient compliance. The initial 115k/10.8k/128k proposal improved that screen; the **stocked revision below** keeps at least 20% preliminary resistive separation while centering nominal output near 5 V. The user approved nearby stocked values. Hardware qualification remains open.

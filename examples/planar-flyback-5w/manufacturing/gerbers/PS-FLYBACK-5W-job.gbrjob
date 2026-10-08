@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-09-30T11:25:12-04:00"
+    "CreationDate": "2026-10-08T10:25:58-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "PS-FLYBACK-5W",
       "GUID": "50532d46-4c59-4424-9143-4b2d35572e6b",
-      "Revision": "A1-development"
+      "Revision": "A2-development"
     },
     "Size": {
       "X": 50.05,

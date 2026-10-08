@@ -1,13 +1,13 @@
-# A1 mounting specification
+# A2 mounting specification
 
 Four M3 mounting holes use American Embedded's unmodified
 `MountingHole_3.2mm_M3_ExposedSubstrate_Edge` footprint, pinned to library commit
 `7be291853536e19f0d0d548c2ed3ca6811bdc540`. See the [upstream source and license](../kicad/amemb-MountingHole.pretty/LICENSE.md).
 
-The 50 × 104 mm outline is unchanged. Hole centers form a **41 × 95 mm**
+The 50 Ã— 104 mm outline is unchanged. Hole centers form a **41 Ã— 95 mm**
 rectangle. The exposed-substrate openings extend to the left edge at H1/H3
-and the right edge at H2/H4. Left footprints rotate 180°; right footprints use
-0°. All centers are 4.5 mm from their two adjacent board edges; the holes remain closed
+and the right edge at H2/H4. Left footprints rotate 180Â°; right footprints use
+0Â°. All centers are 4.5 mm from their two adjacent board edges; the holes remain closed
 circular drills, not slots or edge notches.
 
 The upper row now sits toward the top corners, 12.5 mm above its previous
@@ -35,12 +35,12 @@ rightward, Y upward. The [hole schedule](mounting-holes.csv) and
 routed contours in Edge.Cuts, not drill hits.
 
 - Each face has a 6.4 mm circular exposed-substrate opening, extended 5 mm
-  beyond its outward radius. In local coordinates it spans x=-3.2…8.2 mm
-  and y=-3.2…3.2 mm; the outward portion is clipped by the board edge.
+  beyond its outward radius. In local coordinates it spans x=-3.2â€¦8.2 mm
+  and y=-3.2â€¦3.2 mm; the outward portion is clipped by the board edge.
 - Copper is excluded within a 3.4 mm radius on every copper layer: 1.8 mm
   clearance from the 3.2 mm hole's edge. The outward extension also has an
   all-layer keepout, 0.2 mm beyond the mask boundary (local x to 8.4 mm).
-- The footprint courtyard spans 12.3 × 7.3 mm, including its off-board extension. H1–H4 have no electrical net
+- The footprint courtyard spans 12.3 Ã— 7.3 mm, including its off-board extension. H1â€“H4 have no electrical net
   and are excluded from the electronic BOM and placement file.
 - Do not plate, fill or copper-cap these four holes. They are separate from the
   66 interlayer holes requiring filling/capping and the four open connector holes.

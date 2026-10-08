@@ -30,3 +30,10 @@ Every electronic part's source and exact MPN are also listed in `parts.json` and
 - [ADI AN88](https://www.analog.com/media/en/technical-documentation/application-notes/an88f.pdf): ceramic input capacitor hot-plug transients and damping rationale.
 - [Panasonic hybrid capacitor specifications](https://mediap.industry.panasonic.eu/assets/imported/industrial.panasonic.com/cdbs/www-data/pdf/RDD0000/ABA0000COS47.pdf), page 31: EEHZC1J470P 47 µF, 63 V, 40 mΩ, 1.1 A, 8 × 10.2 mm.
 - [Vishay CRCW-HP e3](https://www.vishay.com/docs/20043/crcwhpe3.pdf): CRCW25122R20FKEGHP continuous and pulse conditions. Hot-plug remains unqualified.
+
+## A2 sources
+
+- [TDK ELP22/6/16 core and clips, pp2–3](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf)
+- [TDK E-core gap convention, pp4,6](https://www.tdk-electronics.tdk.com/download/540150/449506bb84194c3510018ae82f66b4cc/pdf-ecoresgeneralinformation.pdf)
+- [JLCPCB routed-slot and board capability](https://jlcpcb.com/capabilities/pcb-capabilities/)
+- DigiKey source URLs and indexed stock: digikey-core-stock.json. Retrieved 2026-10-08; no stock reservation.

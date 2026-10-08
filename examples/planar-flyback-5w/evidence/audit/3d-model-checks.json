@@ -304,8 +304,8 @@
     },
     {
       "reference": "T1",
-      "model": "kicad/3dmodels/custom/EELP32_prepared_pair.step",
-      "sha256": "58cbe9b09fece4e14f0bc42ca886088165128661f4da1356de59b9cd1c6d32b2",
+      "model": "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step",
+      "sha256": "d8d0d53fcb2b144fde1cb507b52e2d9553e6aec7a8913cf7ca7ff92c2404fc72",
       "position_mm": [
         100.0,
         85.0

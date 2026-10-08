@@ -8,7 +8,7 @@ parts=json.loads((R/'circuit.json').read_text())['parts'];byref={p['ref']:p for 
 snapshot=json.loads((R/'sources/jlcpcb-stock.json').read_text())
 stock={ref:row for row in snapshot['rows'] for ref in row['references']}
 def sourcing_status(p):
-    if p['ref']=='T1':return 'Separate core procurement allowed; preparation and installation require qualification'
+    if p['ref']=='T1':return 'DigiKey factory-gapped halves and clips; assembled Lm, clip fit and retention require verification'
     row=stock.get(p['ref'])
     if row and row['mpn']==p['mpn']:
         return row['status']+'; public catalog snapshot '+snapshot['observed_local_date']+'; not reserved; recheck stock, lead time and assembly acceptance'
@@ -39,11 +39,10 @@ with (M/'KiCad-positions-centroid.csv').open('w',newline='',encoding='utf8') as 
 convert_positions(M/'KiCad-positions-centroid.csv',M/'CPL-JLCPCB.csv')
 cpl=list(csv.DictReader((M/'CPL-JLCPCB.csv').open()))
 write('BOM-JLCPCB.csv',bom);write('BOM-MASTER.csv',master)
+mag=json.loads((R/'magnetics.json').read_text())
 cores=[
- {'Item':'T1 core set','Quantity_per_board':'1 set / 2 halves','MPN':'PS-MAG-001 A0 prepared from 2 x TDK B66457G0000X187','Process':'Qualified supplier grinds one center leg; nominal total center gap 0.21 mm; final Lm acceptance per drawing','Sourcing_status':'Separate raw-core procurement from DigiKey permitted; preparation and installation require qualification'},
- {'Item':'External core adhesive','Quantity_per_board':'Supplier-qualified dispense','MPN':'Henkel LOCTITE AA 330','Process':'External outer-leg joints only; qualify geometry and cure; no adhesive in mating faces or center gap','Sourcing_status':'Proposed; supplier process qualification and quote required'},
- {'Item':'Adhesive activator','Quantity_per_board':'Per adhesive TDS','MPN':'Henkel LOCTITE SF 7387','Process':'Per current AA330/SF7387 technical data','Sourcing_status':'Supplier procurement and process qualification required'},
- {'Item':'Nonconductive retention strap','Quantity_per_board':'Supplier-defined cut length','MPN':'3M 69 12.7 mm; 3M ID 7000031352','Process':'Around yokes parallel to 31.75 mm core span; no metal loop; confirm fit and retention','Sourcing_status':'Supplier procurement and process qualification required'}]
+ {'Item':'T1 factory-gapped E half','Quantity_per_board':2,'MPN':mag['core_mpn'],'DigiKey':'495-B66285G0050X187-ND','Process':'Install two gapped halves; total gap 0.10 mm; assembled Lm 11.0-14.6 uH; no grinding or adhesive','Source':'https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590'},
+ {'Item':'T1 matching spring clip','Quantity_per_board':2,'MPN':mag['clip_mpn'],'DigiKey':'495-B66286A2000X000-ND','Process':'One on each outer leg; verify engagement and installed bow envelope per CORE-ASSEMBLY.md','Source':'https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552'}]
 write('CORE-BOM.csv',cores)
 b=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'));vias=[]
 def add(name,p,drill):vias.append({'ID':name,'X_mm':f'{pcb.ToMM(p.x)-75:.6f}','Y_mm':f'{137-pcb.ToMM(p.y):.6f}','Finished_drill_mm':f'{pcb.ToMM(drill):.3f}','Process':'Epoxy fill and copper cap; NOT a connector lead hole'})

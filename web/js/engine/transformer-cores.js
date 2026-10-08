@@ -7,6 +7,14 @@ const base = { manufacturer: 'TDK', material: 'N87', width: 31.75, depth: 20.35,
   postMaxW: 6.5, postMaxH: 20.75, innerLegSpan: 25.4, innerLegSpanMin: 24.9, outerLegW: 3.175,
   ae: 130, source: CORE_SOURCE, mounting: 'Adhesive or an external fixture; no integral screw holes. No clamp recess on B66457.' };
 export const CORE_CATALOG = {
+  'eelp22-stock-gap': { manufacturer:'TDK', material:'N87', name:'TDK EELP 22/6/16 · 2 × factory 0.05 mm gap · N87',
+    parts:['2 × B66285G0050X187', '2 × B66286A2000X000 clamps'],
+    width:21.8, widthMax:22.2, depth:15.8, postW:5, postH:15.8, postMaxW:5.1, postMaxH:16.1,
+    innerLegSpan:16.8, innerLegSpanMin:16.4, outerLegW:2.5, ae:78.3, le:32.5, volume:2540,
+    al:820e-9, factoryGap:.10, height:11.4, windowHeight:6.4, windowMin:6.2,
+    source:'https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf',
+    alScope:'Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly.',
+    mounting:'Two B66286A2000X000 spring clamps. Reserve separate clamp clearance; ferrite openings alone do not verify clamp fit.' },
   'eelp32': { ...base, name: 'TDK EELP 32/6/20 · E + E · N87', parts: ['2 × B66457G0000X187'], le: 41.4, volume: 5390, al: 5700e-9, height: 12.7, windowHeight: 6.4, windowMin: 6.1 },
   'eilp32': { ...base, name: 'TDK EILP 32/6/20 · E + I · N87', parts: ['B66457G0000X187', 'B66457K0000X187'], le: 35.1, volume: 4560, al: 6300e-9, height: 9.5, windowHeight: 3.2, windowMin: 3.05 },
 };
@@ -15,16 +23,20 @@ export function corePresetPatch(id) {
   if (!p) { if (id === 'custom') return { corePreset: id }; throw new Error('Unknown catalog core.'); }
   return { corePreset: id, magneticModel: 'ferrite', routedWindings: true, coreMaterial: 'N87', coreShape: 'rectangular',
     corePostW: p.postMaxW, corePostH: p.postMaxH, coreWindowHeight: p.windowMin, coreClearance: .25,
-    coreAe: p.ae, coreLe: p.le, coreGap: 0, coreGapTreatment: 'unmodified', shape: 'polygon', dOuter: 22,
-    primaryTurns: 3, secondaryTurns: 2, traceW: .35, traceS: .2, windingOptions: {},
+    coreAe: p.ae, coreLe: p.le, coreGap: p.factoryGap ?? 0, coreGapTreatment: p.factoryGap ? 'factory-gapped' : 'unmodified', shape: 'polygon', dOuter: p.factoryGap ? 14 : 22,
+    primaryTurns: p.factoryGap ? 2 : 3, secondaryTurns: 2, traceW: .35, traceS: .2, windingOptions: {},
     leakageModel: 'geometry', coreLossModel: 'n87-fit', coreTemperature: 100, lossModel: 'ac' };
 }
 export function catalogFor(c) {
   if (!c.corePreset || c.corePreset === 'custom') return null;
   const p = CORE_CATALOG[c.corePreset];
   if (!p) throw new Error('Unknown catalog core.');
-  if (c.coreGap !== 0 && c.coreGapTreatment !== 'ground-center-leg') throw new Error('Catalog parts are ungapped. Select Custom core or explicitly specify a ground center-leg assembly.');
-  if (c.coreGap !== 0 && (c.corePreset !== 'eelp32' || c.coreGap <= .1 || c.coreGap >= 1.5)) throw new Error('Published EELP32 N87 gap data requires 0.10 < gap < 1.50 mm.');
+  if (p.factoryGap) {
+    if (c.coreGap !== p.factoryGap || c.coreGapTreatment !== 'factory-gapped') throw new Error('Factory-gapped catalog assembly has a fixed total gap. Select Custom core to change the ordered parts.');
+  } else {
+    if (c.coreGap !== 0 && c.coreGapTreatment !== 'ground-center-leg') throw new Error('Catalog parts are ungapped. Select Custom core or explicitly specify a ground center-leg assembly.');
+    if (c.coreGap !== 0 && (c.corePreset !== 'eelp32' || c.coreGap <= .1 || c.coreGap >= 1.5)) throw new Error('Published EELP32 N87 gap data requires 0.10 < gap < 1.50 mm.');
+  }
   if (c.corePostW !== p.postMaxW || c.corePostH !== p.postMaxH || c.coreAe !== p.ae || c.coreLe !== p.le || c.coreWindowHeight !== p.windowMin || c.coreMaterial !== p.material || c.coreShape !== 'rectangular') throw new Error('Catalog dimensions were edited. Select Custom core before changing the assembly or magnetic data.');
   if (c.shape !== 'polygon') throw new Error('Catalog E cores require the rectangular winding shape. Select Square or use a custom core.');
   return p;
@@ -32,13 +44,13 @@ export function catalogFor(c) {
 export function catalogAL(c, p) {
   // TDK EELP32 N87: AL[nH] = K1 * s[mm]^K2, page 6.
   // This is an ordered/prepared center-leg gap, not an ungapped stock part.
-  return c.coreGap > 0 ? 208e-9 * c.coreGap ** -.819 : p.al;
+  return p.factoryGap ? p.al : c.coreGap > 0 ? 208e-9 * c.coreGap ** -.819 : p.al;
 }
 export function coreOpenings(c) {
   const p = catalogFor(c), clearance = c.coreClearance;
   const center = rect(-c.corePostW/2-clearance, -c.corePostH/2-clearance, c.corePostW/2+clearance, c.corePostH/2+clearance);
   if (!p) return [center];
-  const inner = p.innerLegSpanMin/2-clearance, outer = (p.width+.65)/2+clearance, y = p.postMaxH/2+clearance;
+  const inner = p.innerLegSpanMin/2-clearance, outer = (p.widthMax ?? p.width+.65)/2+clearance, y = p.postMaxH/2+clearance;
   return [center, rect(-outer,-y,-inner,y), rect(inner,-y,outer,y)];
 }
 export function assemblyStatus(c, art) {
@@ -59,7 +71,7 @@ export function assemblyStatus(c, art) {
       if(v.x>=Math.min(...xs)-m&&v.x<=Math.max(...xs)+m&&v.y>=Math.min(...ys)-m&&v.y<=Math.max(...ys)+m)issues.push(`Terminal or via intersects core opening ${slot+1}.`);}
   });
   if(c.boardT+2*c.coreClearance>p.windowMin)issues.push('PCB and clearance exceed the minimum core window.');
-  return { ...p, parts: c.coreGap > 0 ? [`Prepared EELP32 N87 set: ${c.coreGap} mm total center-leg gap; supplier drawing required`, 'Base geometry: 2 × B66457G0000X187; do not substitute an ungapped pair'] : p.parts, modified: c.coreGap > 0, issues: [...new Set(issues)], fits: !issues.length, openings: slots, cutoutStatus: 'Not checked against destination board' };
+  return { ...p, parts: c.coreGap > 0 && !p.factoryGap ? [`Prepared EELP32 N87 set: ${c.coreGap} mm total center-leg gap; supplier drawing required`, 'Base geometry: 2 × B66457G0000X187; do not substitute an ungapped pair'] : p.parts, modified: c.coreGap > 0 && !p.factoryGap, issues: [...new Set(issues)], fits: !issues.length, openings: slots, cutoutStatus: 'Not checked against destination board' };
 }
 
 export function checkCoreCutouts(required, board, origin = [0,0], tolerance = .08) {

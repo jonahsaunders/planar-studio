@@ -487,7 +487,7 @@
   "counts": {
     "Stocked": 20
   },
-  "source_bom_sha256": "2cf5d2568ae04cb18ffdc46e179ae1bf33e4d126b92065a6cb57fdb77f6123ec",
+  "source_bom_sha256": "ea3e2c6c2e98ca537609b09936e810d66eac8e3927b114534074ccdbda9ee309",
   "review_quantity_boards": 5,
   "inventory_covers_twice_board_quantities": true,
   "supplier_attrition_allocation_confirmed": false,

@@ -1,38 +1,29 @@
-# 5 W planar flyback converter
+# PS-FLYBACK-5W A2 — factory-gapped DigiKey core
 
-**18–36 V DC → isolated 5 V / 1 A.** An LT8302 regulates the output through a 4:2 planar transformer built into the six-layer PCB. The 50 × 104 mm board uses a prepared N87 core pair with a 0.21 mm center-leg gap.
+18–36 V DC to isolated 5 V / 1 A engineering prototype, designed using Planar Studio. A2 replaces the custom-ground ELP32 pair with two factory-gapped ELP22 halves and spring clips. **CAD and analytical checks are complete; hardware performance, the physical clip envelope and JLCPCB order acceptance are not yet qualified.**
 
-![Assembled converter rendered from KiCad](evidence/audit/board-3d-assembled.png)
+## Buy and build
 
-**A1 engineering prototype — unbuilt and untested.** The electronic BOM is fully stocked in the September 30, 2026 JLCPCB snapshot. Factory process acceptance and physical qualification remain open; this is not a production release.
+| Part | Quantity per board | Source |
+| --- | ---: | --- |
+| TDK B66285G0050X187, N87, factory 0.05 mm center-leg gap | 2 | [DigiKey 495-B66285G0050X187-ND](https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590) |
+| TDK B66286A2000X000 spring clip | 2 | [DigiKey 495-B66286A2000X000-ND](https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552) |
+| Six-layer PCB and 24 electronic placements | 1 | [JLCPCB handoff](manufacturing/START-HERE.md) |
 
-[Complete review package](../PS-FLYBACK-5W-A1-review-package.zip) · [KiCad project](kicad/PS-FLYBACK-5W.kicad_pro) · [Planar Studio winding](planar-studio/T1.planar.json) · [Interactive report](report.html)
+Five boards need 10 halves and 10 clips before spares. The indexed US listings retrieved October 8 showed 530 halves and 9,596 clips, MOQ 1. Inventory and prices are unreserved; recheck checkout. Neither an ungapped half nor an I plate is a substitute. No grinding, adhesive, activator, tape or shim is specified in A2.
 
-| Design | Specification |
-| --- | --- |
-| Input / output | 18–36 V DC / 5 V, 1 A target |
-| Controller | LT8302IS8E#PBF, primary-side regulation |
-| Transformer | Four primary turns; two parallel two-turn secondary windings; 11.95 µH nominal |
-| PCB | Six layers, ENIG; JLC061611-1080A, 1.6 mm order class |
-| Assembly | 22 SMT parts + two through-hole connectors, all on top |
-| Magnetics | Two TDK B66457G0000X187 halves, separately sourced and prepared |
+Open [the KiCad project](kicad/PS-FLYBACK-5W.kicad_pro) or [the editable Planar Studio design](planar-studio/T1.planar.json). The board includes a local four-solid core/clip STEP model, and [the complete assembly](3d/PS-FLYBACK-5W.step) is exported. [3D model scope](3D-MODELS.md).
 
-## Schematic
+## Revision and checks
 
-[![Converter schematic](evidence/audit/schematic-overview.png)](evidence/schematic.svg)
+The 50 × 104 mm outline, six-layer JLC061611-1080A stack, 4:2 winding ratio, controller, electronic BOM and component placements are preserved. Winding traces are now 0.6 mm wide; T1 vias are 0.6/0.3 mm pad/drill. The ferrite slots are resized and widened outward for the clips. Primary winding resistance at the model's 60°C is 0.325 ohm; secondary is 0.0805 ohm. The total center gap is 0.10 mm and estimated primary inductance 13.12 µH.
 
-The stocked feedback network is **113 kΩ / 10.7 kΩ / 127 kΩ** (0.1%, 25 ppm/°C), giving 4.980 V nominal. Require measured **SW−VIN ≤17.5 V**, including overshoot and uncertainty; the preliminary resistive RFB bound is 159.85 µA. [Feedback calculations](FEEDBACK-REVISION.md).
+Measure assembled Lm and accept **11.0–14.6 µH**, secondary open. This is an application acceptance window, not a purchased AL tolerance. The smaller core has less fault-current margin than A1: the linear 5.4 A screen is 0.253 T at maximum accepted L; the typical 7.2 A restart excursion is 0.337 T and requires bias/fault testing. First-article thermal and switching tests remain essential.
 
-## Manufacturing and verification
+Three complementary fit checks are provided: native board/copper rules; independent maximum-size ferrite corner checks against cutouts recovered from the saved PCB; and exact STEP intersections against the substrate and other components. The worst checked corner clearance is 0.146 mm, including ±0.2 mm per-wall routing and ±0.05 mm centered insertion offset. Minimum vertical clearance is 2.21 mm per face with a 1.78 mm PCB. Clip bow/recess details are not fully specified by TDK: the 1.5 mm outward envelope remains a physical first-article gate. [Validation](VALIDATION.md) · [Core installation](manufacturing/CORE-ASSEMBLY.md).
 
-All **20 electronic MPNs / 24 placements** have exact JLCPCB codes and orderable inventory in the dated [sourcing audit](JLCPCB-SOURCING.md). DigiKey may supply the ferrite separately. Install the prepared cores after soldering and inspection.
+## Reproduce
 
-**[Start here: JLCPCB upload files](manufacturing/START-HERE.md).** Supply the single-board Gerber ZIP, BOM and CPL; JLCPCB is to prepare the assembly panel. The earlier customer-panel files are withdrawn and excluded from the current package.
+Use Node.js, KiCad 10's Python and CLI, plus a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository, then run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, fabrication files, fit evidence, models and previews. `scripts/check-manifest.py` verifies the delivered file hashes. Generating from a packaged example requires `PLANAR_STUDIO_ROOT` pointing to this repository revision.
 
-[Electronic BOM](manufacturing/BOM-JLCPCB.csv) · [Placement file](manufacturing/CPL-JLCPCB.csv) · [JLCPCB panelization requirements](manufacturing/PANEL.md) · [Fabrication requirements](manufacturing/FABRICATION.md) · [Component/pinout audit](COMPONENT-AUDIT.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md)
-
-The project includes native ERC/DRC, schematic-to-board pin checks, winding continuity checks, component land-pattern/rating reviews and nominal 3D interference checks. Reproduce with [rebuild.py](scripts/rebuild.py) using KiCad 10 and Node; the bundled models keep the project portable.
-
-Before release, obtain factory acceptance of the stack, core-slot tolerance, assembly panel and reflow profile. Then verify regulation, startup/fault recovery, RFB/clamp waveforms, resistor and semiconductor temperatures, and magnetic behavior using the [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md). Functional low-voltage isolation only; no safety-isolation rating is claimed.
-
-[Top](evidence/audit/board-3d-top.png) · [Underside](evidence/audit/board-3d-underside.png) · [STEP assembly](3d/PS-FLYBACK-5W.step) · [Model provenance](3D-MODELS.md)
+A1 historical audit reports are labeled as such and are not A2 release evidence. Current proof is listed in VALIDATION.md. No supplier upload, purchase or physical testing has been performed.

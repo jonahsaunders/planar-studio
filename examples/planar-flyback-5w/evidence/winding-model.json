@@ -1,13 +1,13 @@
 {
   "scope": "Geometry, small-signal inductance and resistance only. Sinusoidal loaded voltage is not flyback output validation.",
   "core": {
-    "AL": 7.46733667586595e-7,
+    "AL": 8.2e-7,
     "muR": 2200,
     "material": "TDK N87 (nominal μi)",
     "notes": [
       {
         "level": "warn",
-        "text": "Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss."
+        "text": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly. Factory machining is included in the listed parts. Verify clamps separately; flyback performance, bias and fringing loss require measurement."
       },
       {
         "level": "info",
@@ -26,151 +26,155 @@
         "text": "All three core-leg openings are included in the board export. Use the destination cutout check before direct placement, which does not modify board edges. Mechanical clearance does not establish an isolation rating."
       }
     ],
-    "Bpeak": 0.002164221913839198,
-    "fluxUtilization": 0.01082110956919599,
+    "Bpeak": 0.0035932164597585656,
+    "fluxUtilization": 0.01796608229879283,
     "loss": null,
     "lossSource": "Entered operating-point density"
   },
   "assembly": {
     "manufacturer": "TDK",
     "material": "N87",
-    "width": 31.75,
-    "depth": 20.35,
-    "postW": 6.35,
-    "postH": 20.35,
-    "postMaxW": 6.5,
-    "postMaxH": 20.75,
-    "innerLegSpan": 25.4,
-    "innerLegSpanMin": 24.9,
-    "outerLegW": 3.175,
-    "ae": 130,
-    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
-    "mounting": "Adhesive or an external fixture; no integral screw holes. No clamp recess on B66457.",
-    "name": "TDK EELP 32/6/20 · E + E · N87",
+    "name": "TDK EELP 22/6/16 · 2 × factory 0.05 mm gap · N87",
     "parts": [
-      "Prepared EELP32 N87 set: 0.21 mm total center-leg gap; supplier drawing required",
-      "Base geometry: 2 × B66457G0000X187; do not substitute an ungapped pair"
+      "2 × B66285G0050X187",
+      "2 × B66286A2000X000 clamps"
     ],
-    "le": 41.4,
-    "volume": 5390,
-    "al": 0.0000057,
-    "height": 12.7,
+    "width": 21.8,
+    "widthMax": 22.2,
+    "depth": 15.8,
+    "postW": 5,
+    "postH": 15.8,
+    "postMaxW": 5.1,
+    "postMaxH": 16.1,
+    "innerLegSpan": 16.8,
+    "innerLegSpanMin": 16.4,
+    "outerLegW": 2.5,
+    "ae": 78.3,
+    "le": 32.5,
+    "volume": 2540,
+    "al": 8.2e-7,
+    "factoryGap": 0.1,
+    "height": 11.4,
     "windowHeight": 6.4,
-    "windowMin": 6.1,
-    "modified": true,
+    "windowMin": 6.2,
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+    "alScope": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly.",
+    "mounting": "Two B66286A2000X000 spring clamps. Reserve separate clamp clearance; ferrite openings alone do not verify clamp fit.",
+    "modified": false,
     "issues": [],
     "fits": true,
     "openings": [
       [
         [
-          -3.5,
-          -10.625
+          -3.05,
+          -8.55
         ],
         [
-          3.5,
-          -10.625
+          3.05,
+          -8.55
         ],
         [
-          3.5,
-          10.625
+          3.05,
+          8.55
         ],
         [
-          -3.5,
-          10.625
+          -3.05,
+          8.55
         ],
         [
-          -3.5,
-          -10.625
+          -3.05,
+          -8.55
         ]
       ],
       [
         [
-          -16.45,
-          -10.625
+          -13.1,
+          -8.55
         ],
         [
-          -12.2,
-          -10.625
+          -7.699999999999999,
+          -8.55
         ],
         [
-          -12.2,
-          10.625
+          -7.699999999999999,
+          8.55
         ],
         [
-          -16.45,
-          10.625
+          -13.1,
+          8.55
         ],
         [
-          -16.45,
-          -10.625
+          -13.1,
+          -8.55
         ]
       ],
       [
         [
-          12.2,
-          -10.625
+          7.699999999999999,
+          -8.55
         ],
         [
-          16.45,
-          -10.625
+          13.1,
+          -8.55
         ],
         [
-          16.45,
-          10.625
+          13.1,
+          8.55
         ],
         [
-          12.2,
-          10.625
+          7.699999999999999,
+          8.55
         ],
         [
-          12.2,
-          -10.625
+          7.699999999999999,
+          -8.55
         ]
       ]
     ],
-    "cutoutStatus": "Not checked against destination board"
+    "cutoutStatus": "Not checked against destination board",
+    "clipClearanceScope": "Conservative design envelope beyond maximum ferrite outer edge. TDK does not dimension the installed spring bow or recess depth. Verify a physical clip stays inside this envelope before release; STEP clamp bends/recesses are illustrative."
   },
   "analysis": {
-    "L1": 0.000011952319220605773,
-    "L2": 0.0000029997674208697953,
-    "M": 0.00000597730399510795,
-    "k": 0.9982411300588353,
+    "L1": 0.000013124524191813942,
+    "L2": 0.0000032926748603953176,
+    "M": 0.000006563392393860456,
+    "k": 0.9984174472117481,
     "ratio": 2,
-    "R1": 0.2956800914670808,
-    "R2": 0.0734152131139144,
-    "leakage": 4.2008174033395906e-8,
-    "induced": 7.511301727721622,
-    "loss": 0.3690953045809952,
+    "R1": 0.3249394311224102,
+    "R2": 0.08051597992901575,
+    "leakage": 4.150763468769392e-8,
+    "induced": 8.247802130871653,
+    "loss": 0.40545541105142596,
     "matrix": [
       [
-        0.000011952319220605773,
-        0.00000597730399510795
+        0.000013124524191813942,
+        0.000006563392393860456
       ],
       [
-        0.00000597730399510795,
-        0.0000029997674208697953
+        0.000006563392393860456,
+        0.0000032926748603953176
       ]
     ],
     "coupling": [
       [
         1,
-        0.9982411300588353
+        0.9984174472117481
       ],
       [
-        0.9982411300588353,
+        0.9984174472117481,
         1
       ]
     ],
     "resistances": [
-      0.2956800914670808,
-      0.0734152131139144
+      0.3249394311224102,
+      0.08051597992901575
     ],
     "outputs": [
       {
         "name": "S",
         "turns": 2,
         "ratio": 2,
-        "induced": 7.511301727721622
+        "induced": 8.247802130871653
       }
     ],
     "turns": [
@@ -181,30 +185,30 @@
       "pairs": [
         {
           "pair": "P ↔ S",
-          "value": 1.898469114807674e-10
+          "value": 6.745972485800184e-11
         }
       ],
-      "value": 1.898469114807674e-10,
+      "value": 6.745972485800184e-11,
       "source": "estimate"
     },
     "branchCurrents": [
       [
         1,
-        3.469446951953614e-18
+        0
       ],
       [
-        -0.4999999999999965,
-        1.5048071569277694e-15
+        -0.49999999999999994,
+        1.7142309216746918e-15
       ],
       [
-        -0.5000000000000036,
-        -1.5048071569277694e-15
+        -0.5000000000000001,
+        -1.7142309216746918e-15
       ]
     ],
     "losses": {
-      "dc": 0.3690953045809952,
-      "acExcess": 0.000007028897588801097,
-      "copper": 0.369102333478584,
+      "dc": 0.40545541105142596,
+      "acExcess": 0.000006245748200406354,
+      "copper": 0.40546165679962637,
       "core": null,
       "total": null,
       "temperature": null
@@ -287,32 +291,32 @@
   ],
   "ports": [
     {
-      "x": 3.621976964716772,
-      "y": 19.193193024105184,
+      "x": 2.8719534068322514,
+      "y": 13.073762844780962,
       "name": "P+ (dot)",
       "net": "T1_PRI",
       "nodeId": "P:0",
       "winding": "P"
     },
     {
-      "x": -3.6219769647167706,
-      "y": 19.193193024105184,
+      "x": -2.8719534068322505,
+      "y": 13.073762844780964,
       "name": "P−",
       "net": "T1_PRI",
       "nodeId": "P:2",
       "winding": "P"
     },
     {
-      "x": -1.8304054054054115,
-      "y": -19.591339320420516,
+      "x": -1.4598837209302362,
+      "y": -13.467354612502376,
       "name": "S+ (dot)",
       "net": "T1_SEC",
       "nodeId": "S:0",
       "winding": "S"
     },
     {
-      "x": 1.0750000000000008,
-      "y": -14.44650087072316,
+      "x": 0.7750000000000004,
+      "y": -9.729583312809904,
       "name": "S−",
       "net": "T1_SEC",
       "nodeId": "S:1",
@@ -338,7 +342,7 @@
     },
     {
       "level": "warn",
-      "text": "Prepared EELP32 center-leg gap: AL uses the TDK nominal gap curve. Requires a supplier drawing, gap/AL acceptance testing and core installation. Ungapped catalog halves are not a substitute. This model does not validate a switching flyback or gap-fringing copper loss."
+      "text": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly. Factory machining is included in the listed parts. Verify clamps separately; flyback performance, bias and fringing loss require measurement."
     },
     {
       "level": "info",
@@ -362,9 +366,10 @@
     }
   ],
   "gapFormula": {
-    "source": "TDK ELP32/6/20 October 2022, page 6",
-    "AL_nH": 746.733667586595,
-    "totalCenterGap_mm": 0.21
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+    "AL_nH": 820,
+    "totalCenterGap_mm": 0.1,
+    "basis": "Estimate from TDK EELP22 0.10 mm total-gap table; two 0.05 mm gapped halves. This is NOT the 1520 nH one-gapped/one-ungapped combination. Pair AL has no purchased tolerance guarantee."
   },
-  "magnetizingInductance_H": 0.00001194773868138552
+  "magnetizingInductance_H": 0.00001312
 }

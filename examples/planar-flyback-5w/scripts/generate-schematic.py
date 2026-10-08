@@ -80,8 +80,8 @@ R='Resistor_SMD:R_0603_1608Metric'; C='Capacitor_SMD:C_1210_3225Metric'; D='Diod
 add('J1','18-36 V DC','JIN',20.32,43.18,{'1':'VIN_RAW','2':'PGND'},'Flyback:Terminal_2P_5.08',mpn='KF301-5.08-2P',purpose='Input connector; exact vendor footprint pending')
 add('F1','1 A / >=63 V','FUSE',43.18,41.91,{'1':'VIN_RAW','2':'VIN_FUSED'},'Fuse:Fuse_1206_3216Metric',rot=90,purpose='Input fault protection; sourcing pending')
 add('D1','DFLS1100-7','D',66.04,41.91,{'1':'VIN','2':'VIN_FUSED'},D,rot=180,mpn='DFLS1100-7',purpose='Input reverse-polarity protection')
-add('C1','10u / 100 V','C',40.64,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB',purpose='Input reservoir; DC-bias curve must be checked')
-add('C2','10u / 100 V','C',60.96,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A106M230KB')
+add('C1','10u / 100 V','C',40.64,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A206M230KB',purpose='Input reservoir; DC-bias curve must be checked')
+add('C2','10u / 100 V','C',60.96,64.77,{'1':'VIN','2':'PGND'},'Capacitor_SMD:C_1812_4532Metric',mpn='C4532X7R2A206M230KB')
 add('T1','PLANAR 4:2 / Lm 12uH','T',177.8,46.99,{'1':'VIN','2':'SW','3':'GND_ISO','4':'SEC_A','5':'PRI_MID'},'Flyback:Planar_EELP32_4T_2T',mpn='PS-MAG-001 prepared assembly',purpose='Four winding layers on a six-layer PCB; pad 5 is the internal primary series via; prepared N87 core pair')
 add('D2','PDS835L-13','D',200.66,41.91,{'1':'+5V_ISO','2':'SEC_A'},'Diode_SMD:D_PowerDI-5',rot=180,mpn='PDS835L-13',code='C444972')
 add('C3','180u / 16 V polymer','CP',208.28,46.99,{'1':'+5V_ISO','2':'GND_ISO'},'Flyback:CP_Panasonic_C6',mpn='16SVPF180M')
@@ -197,11 +197,11 @@ text('CLAMP / DAMPING',100.33,33.02,1.27)
 text('ISOLATED 5 V / 1 A',204.47,83.82,1.27,True)
 text('TRANSFORMER AND BUILD NOTES',184.15,102.87,1.27,True)
 for i,note in enumerate([
-  'T1: 4:2 turns; nominal Lm 12 uH.',
+  'T1: 4:2 turns; estimated Lm 13.12 uH.',
   'Primary: F.Cu + B.Cu in series.',
   'Secondary: In1.Cu + In4.Cu in parallel.',
-  'Prepared N87 core: 0.21 mm center gap.',
-  'Stock ungapped cores are not substitutes.',
+  '2 x B66285G0050X187 (0.05 mm each).',
+  '2 x B66286A2000X000 spring clips.',
   'R8/C7 damp the input; qualify hot-plug.',
   'C3/C8: 360 uF polymer output reservoir.',
   'INTVCC is U1 internal bias, not VIN.',
@@ -210,19 +210,19 @@ for i,note in enumerate([
   'T1 pin 5 is the internal primary series via.',
 ]):text(note,184.15,110.49+i*4.445,1.0)
 text('PLANAR FLYBACK  /  5 W',12.7,13.97,2.54,True)
-text('18-36 V input  |  isolated 5 V / 1 A  |  A1 engineering prototype',12.7,19.05,1.27)
+text('18-36 V input  |  isolated 5 V / 1 A  |  A2 engineering prototype',12.7,19.05,1.27)
 box(12.7,22.86,284.48,163.83,'18-36 V INPUT / FLYBACK POWER STAGE')
 text('PROTOTYPE REVIEW  /  NOT RELEASED FOR MANUFACTURE',12.7,170.18,1.27,True)
 for i,note in enumerate([
   'Tune clamp/snubber: SW-VIN peak <=17.5 V, including overshoot.',
-  'Verify startup, ripple, temperature and the prepared core assembly.',
+  'Verify startup, ripple, temperature and the clipped core assembly.',
   'See the README and prototype test plan before hardware release.',
 ]):text(note,12.7,176.53+i*4.445,1.0)
 text('MOUNTING',120.65,171.45,1.27,True)
 text('4 x M3 / 3.2 mm NPTH',120.65,190.5,1.0)
 text(f"{mechanical['pattern_mm'][0]:g} x {mechanical['pattern_mm'][1]:g} mm pattern",120.65,194.945,1.0)
 root=f'''(kicad_sch (version 20250114) (generator "eeschema") (uuid {uid(NAME)}) (paper "A4")
-(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-09-29") (rev "A1-development") (company "Planar Studio example"))
+(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-10-08") (rev "A2-development") (company "Planar Studio example"))
 (lib_symbols {''.join(definitions.values())}) {''.join(elements)} (embedded_fonts no))'''
 (CAD/f'{NAME}.kicad_sch').write_text(root,encoding='utf8')
 lib='(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(v.replace(f'"Flyback:{k}"',q(k),1) for k,v in definitions.items())+')'

@@ -189,10 +189,12 @@
     "purpose": "Industrial grade, same S8E package and pinout as LT8302E; guaranteed -40 to 125 C junction specification. Exact stocked normal LT8302, not LT8302-3."
   },
   "T1": {
-    "mpn": "PS-MAG-001 A0",
-    "mfr": "Prepared core assembly to drawing",
-    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
-    "purpose": "PCB windings plus prepared 0.21 mm total center gap EELP32 N87 pair. Raw cores may be sourced separately from DigiKey; core preparation, retention and installation require separate qualification."
+    "mpn": "PS-MAG-002 A2",
+    "mfr": "PCB winding + TDK factory-gapped core pair",
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+    "purpose": "2 x B66285G0050X187 factory-gapped halves + 2 x B66286A2000X000 clips; total gap 0.10 mm; measured assembled Lm acceptance 11.0-14.6 uH. No machining or bonding.",
+    "value": "PLANAR 4:2 / Lm 13.12uH",
+    "footprint": "Flyback:Planar_EELP22_4T_2T"
   },
   "C7": {
     "value": "47u / 63 V",
