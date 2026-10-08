@@ -132,7 +132,7 @@
       ]
     ],
     "cutoutStatus": "Not checked against destination board",
-    "clipClearanceScope": "Conservative design envelope beyond maximum ferrite outer edge. TDK does not dimension the installed spring bow or recess depth. Verify a physical clip stays inside this envelope before release; STEP clamp bends/recesses are illustrative."
+    "clipClearanceScope": "Conservative acceptance envelope beyond maximum ferrite edge. TDK source core/free-clip STEP models are included. Installed opening is a geometric surrogate, not a spring-force simulation; verify physical engagement and retention."
   },
   "analysis": {
     "L1": 0.000013124524191813942,

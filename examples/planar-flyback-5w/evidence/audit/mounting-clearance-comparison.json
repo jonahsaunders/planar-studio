@@ -1,0 +1,62 @@
+{
+  "baseline_commit": "37d2d9902e33ca4f4d6eff5d8464f795305074fd",
+  "unchanged_track_geometry_widths_layers": true,
+  "unchanged_via_count_drills_diameters": true,
+  "single_PGND_via_move_mm": {
+    "from": [
+      85.5,
+      45
+    ],
+    "to": [
+      86,
+      47
+    ]
+  },
+  "ground_pour_changes_confined_to_mounting_regions": true,
+  "ground_planes": [
+    {
+      "net": "/PGND",
+      "layer": "F.Cu",
+      "previous_A3_mm2": 640.8652616870615,
+      "current_A3_mm2": 625.4162892579615,
+      "removed_mm2": 15.4489724291,
+      "added_mm2": 0.0,
+      "changed_outside_mounting_regions_mm2": 0.0
+    },
+    {
+      "net": "/GND_ISO",
+      "layer": "F.Cu",
+      "previous_A3_mm2": 602.7795665047975,
+      "current_A3_mm2": 596.8692380764605,
+      "removed_mm2": 5.9103284129415,
+      "added_mm2": 0.0,
+      "changed_outside_mounting_regions_mm2": 0.0
+    },
+    {
+      "net": "/PGND",
+      "layer": "B.Cu",
+      "previous_A3_mm2": 834.7990016400965,
+      "current_A3_mm2": 819.3500291930385,
+      "removed_mm2": 15.448972447058,
+      "added_mm2": 0.0,
+      "changed_outside_mounting_regions_mm2": 0.0
+    },
+    {
+      "net": "/GND_ISO",
+      "layer": "B.Cu",
+      "previous_A3_mm2": 711.543517545314,
+      "current_A3_mm2": 705.6331891323725,
+      "removed_mm2": 5.9103284129415,
+      "added_mm2": 0.0,
+      "changed_outside_mounting_regions_mm2": 0.0
+    }
+  ],
+  "previous_copper_exclusion_diameter_mm": 6.8,
+  "current_copper_exclusion_diameter_mm": 10,
+  "previous_mask_margin_mm": 0.2,
+  "current_mask_margin_mm": 1.8,
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "cb33cfeb632158713cd89dc876454c824254c49d0f40049fbb2c9464c3ad3f5a",
+    "mechanical.json": "bd0f681ba0c54c05163fa1379c87dd73f5bce1647136eb71eda46a743e68b6f6"
+  }
+}

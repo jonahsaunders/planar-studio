@@ -1,29 +1,27 @@
-# PS-FLYBACK-5W A2 — factory-gapped DigiKey core
+# PS-FLYBACK-5W A3 — compact factory-gapped flyback
 
-18–36 V DC to isolated 5 V / 1 A engineering prototype, designed using Planar Studio. A2 replaces the custom-ground ELP32 pair with two factory-gapped ELP22 halves and spring clips. **CAD and analytical checks are complete; hardware performance, the physical clip envelope and JLCPCB order acceptance are not yet qualified.**
+18–36 V DC to isolated 5 V / 1 A engineering prototype, designed using Planar Studio. A3 reduces A2 from 50 × 104 mm to **44 × 94 mm**, a **20.46% area reduction**, while preserving the exact winding copper and local electronic routing. Hardware qualification and JLCPCB order acceptance remain outstanding.
 
-## Buy and build
+## Order and assemble
 
-| Part | Quantity per board | Source |
-| --- | ---: | --- |
-| TDK B66285G0050X187, N87, factory 0.05 mm center-leg gap | 2 | [DigiKey 495-B66285G0050X187-ND](https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590) |
-| TDK B66286A2000X000 spring clip | 2 | [DigiKey 495-B66286A2000X000-ND](https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552) |
-| Six-layer PCB and 24 electronic placements | 1 | [JLCPCB handoff](manufacturing/START-HERE.md) |
+Per board: two [TDK B66285G0050X187 factory-gapped halves](https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590) and two [B66286A2000X000 clips](https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552), plus one six-layer PCB and 24 electronic placements. See [JLCPCB handoff](manufacturing/START-HERE.md). Five boards need ten halves and ten clips before spares. Inventory is unreserved; recheck checkout. No grinding or bonding is specified.
 
-Five boards need 10 halves and 10 clips before spares. The indexed US listings retrieved October 8 showed 530 halves and 9,596 clips, MOQ 1. Inventory and prices are unreserved; recheck checkout. Neither an ungapped half nor an I plate is a substitute. No grinding, adhesive, activator, tape or shim is specified in A2.
+Open the [KiCad project](kicad/PS-FLYBACK-5W.kicad_pro), [Planar Studio design](planar-studio/T1.planar.json), [illustrated report](report.html) or [assembly STEP](3d/PS-FLYBACK-5W.step). The board includes all 29 models and a four-solid T1 assembly derived from TDK core/clip CAD.
 
-Open [the KiCad project](kicad/PS-FLYBACK-5W.kicad_pro) or [the editable Planar Studio design](planar-studio/T1.planar.json). The board includes a local four-solid core/clip STEP model, and [the complete assembly](3d/PS-FLYBACK-5W.step) is exported. [3D model scope](3D-MODELS.md).
+## What changed
 
-## Revision and checks
+Input and output electronics each move 5 mm toward the fixed transformer. Trace widths, layers, local bends, component rotations and via count are preserved. Five transformer-connection segments shorten. One ground-stitching via moves to clear H1. Each mounting hole now has a 10 mm copper exclusion with 1.8 mm clearance beyond its 6.4 mm contact area and complete outward mask extension on all six layers. The enlarged mounting clearance removes copper only at the board corners; at least 96.3% of every A2 ground-plane area is retained. The electronic schematic/BOM, 4:2 winding, six-layer stack and magnetic operating point are unchanged from A2.
 
-The 50 × 104 mm outline, six-layer JLC061611-1080A stack, 4:2 winding ratio, controller, electronic BOM and component placements are preserved. Winding traces are now 0.6 mm wide; T1 vias are 0.6/0.3 mm pad/drill. The ferrite slots are resized and widened outward for the clips. Primary winding resistance at the model's 60°C is 0.325 ohm; secondary is 0.0805 ohm. The total center gap is 0.10 mm and estimated primary inductance 13.12 µH.
+The mounting pattern changes from 41 × 95 to **35 × 85 mm**. Existing A2 enclosures/mounting plates will need new holes. All M3 centers remain 4.5 mm from adjacent edges.
 
-Measure assembled Lm and accept **11.0–14.6 µH**, secondary open. This is an application acceptance window, not a purchased AL tolerance. The smaller core has less fault-current margin than A1: the linear 5.4 A screen is 0.253 T at maximum accepted L; the typical 7.2 A restart excursion is 0.337 T and requires bias/fault testing. First-article thermal and switching tests remain essential.
+## Clip fit and remaining concerns
 
-Three complementary fit checks are provided: native board/copper rules; independent maximum-size ferrite corner checks against cutouts recovered from the saved PCB; and exact STEP intersections against the substrate and other components. The worst checked corner clearance is 0.146 mm, including ±0.2 mm per-wall routing and ±0.05 mm centered insertion offset. Minimum vertical clearance is 2.21 mm per face with a 1.78 mm PCB. Clip bow/recess details are not fully specified by TDK: the 1.5 mm outward envelope remains a physical first-article gate. [Validation](VALIDATION.md) · [Core installation](manufacturing/CORE-ASSEMBLY.md).
+TDK specifies B66286A2000X000 for this core pair. A3 includes its official free-spring CAD and the core's actual recess geometry. The displayed installed clip opening is an estimate, not a spring-force simulation. Independent checks retain the larger 1.5 mm outward clip envelope: 0.25 mm minimum slot clearance with routing tolerances, and at least 0.798 mm to copper including 0.5 mm pair movement. The ferrite corner check retains 0.146 mm and minimum vertical clearance is 2.21 mm per face.
+
+The first physical pair must confirm spring engagement, retention and installed dimensions. The core can float; vibration mounting is not qualified. The smaller ELP22 core retains A2's reduced fault-current margin relative to A1. Accept measured primary inductance only at 11.0–14.6 µH and perform bias, short-circuit recovery, switching-stress and thermal tests. Compacting the board does not establish those results. [Validation](VALIDATION.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md).
 
 ## Reproduce
 
-Use Node.js, KiCad 10's Python and CLI, plus a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository, then run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, fabrication files, fit evidence, models and previews. `scripts/check-manifest.py` verifies the delivered file hashes. Generating from a packaged example requires `PLANAR_STUDIO_ROOT` pointing to this repository revision.
+Use Node.js, KiCad 10's Python/CLI, and a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository. Run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, manufacturing files, checks and renders. `check-manifest.py` verifies file hashes. A packaged example needs `PLANAR_STUDIO_ROOT` pointing to this repository, including the pinned A2 and first-A3 baseline commits.
 
-A1 historical audit reports are labeled as such and are not A2 release evidence. Current proof is listed in VALIDATION.md. No supplier upload, purchase or physical testing has been performed.
+Only the evidence listed in VALIDATION.md qualifies the current A3 files. Earlier audit reports and comparisons are historical. No purchase, supplier submission or physical testing has occurred.

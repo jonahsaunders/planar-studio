@@ -182,7 +182,7 @@
   ],
   "assets": {
     "custom/EELP22_factory_gapped_pair.step": {
-      "sha256": "d8d0d53fcb2b144fde1cb507b52e2d9553e6aec7a8913cf7ca7ff92c2404fc72",
+      "sha256": "e12daf9f427f10df428dc9881386b76e8126dc8e8522f80c8ef244ed20936b19",
       "type": "Original nominal geometry"
     },
     "custom/KF301_5mm_2P.step": {

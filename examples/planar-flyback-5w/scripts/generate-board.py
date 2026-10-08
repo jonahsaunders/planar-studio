@@ -13,6 +13,8 @@ stock_path=os.environ.get('KICAD10_FOOTPRINT_DIR') or os.environ.get('KICAD_FOOT
 STOCK=Path(stock_path) if stock_path else None
 data=json.loads((ROOT/'circuit.json').read_text())
 mechanical=json.loads((ROOT/'mechanical.json').read_text())
+layout=json.loads((ROOT/'layout.json').read_text())
+x0,y0,x1,y1=layout['board_bounds_mm']
 art=json.loads((ROOT/'planar-studio/T1-artwork.json').read_text())
 model=json.loads((ROOT/'evidence/winding-model.json').read_text())
 NAME=data['project']
@@ -109,7 +111,7 @@ for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(3,10.3,'4
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A2-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A3-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -175,7 +177,7 @@ def rounded_rect(x0,y0,x1,y1,r):
         points=[]
         for ang in [start,start+45,start+90]:points.append(pt(cx+r*math.cos(math.radians(ang)),cy+r*math.sin(math.radians(ang))))
         s=pcb.PCB_SHAPE();s.SetShape(pcb.SHAPE_T_ARC);s.SetArcGeometry(*points);s.SetWidth(mm(.05));s.SetLayer(pcb.Edge_Cuts);board.Add(s)
-rounded_rect(75,33,125,137,2)
+rounded_rect(x0,y0,x1,y1,2)
 for loop in model['assembly']['openings']:
     xs=[100+x for x,y in loop];ys=[85-y for x,y in loop]
     rounded_rect(min(xs),min(ys),max(xs),max(ys),.5)
@@ -184,11 +186,11 @@ def txt(s,x,y,size=1,layer=pcb.F_SilkS):
     t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);board.Add(t)
     if layer==pcb.B_SilkS:t.SetMirrored(True)
 txt('IN +    -',100,35,.85)
-txt('18-36V DC',113,42,.8)
+txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
-txt('FUNCTIONAL ISOLATION',100,101.5,.8)
-txt('A2 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
+txt('A3 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -261,7 +263,7 @@ for ref in ['J1','C1','C2','C5','C7','R2','R4','U1']:
                 path('PGND',[(x,y),v],width=.6);via('PGND',v,.6,.3)
 for v in [(85,52),(100,50),(113,54),(112,63),(84.5,64)]:via('PGND',v,.6,.3)
 # Additional local stitching: never cross the isolation corridor or winding area.
-for v in [(84.5,40),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
+for v in [(86,42),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
           (99,52.5),(103,54),(114.5,42),(115,54),(114,58),(114,63)]:via('PGND',v,.6,.3)
 for v in [(87,108),(90,108),(94,108),(111,108),(112.5,115),(87,115),
           (87,123),(95.5,122.8),(107,123),(112,128),(91,130),(107,130),(100,131.5),(99,115)]:via('GND_ISO',v,.6,.3)
@@ -290,9 +292,31 @@ for name,pin in [('VIN',1),('SW',2)]:
 for name,net,ref,pin in [('BIAS','INTVCC','C5',1),('OUT','+5V_ISO','C4',1)]:
     probe_sites.append({'name':name,'net':net,'position_mm':pos(ref,pin),
                         'type':f'Existing exposed {ref} pad {pin}; soldered component present'})
+# A3 compacts the validated A2 blocks without changing any local routing.
+def compact_point(p):
+    x,y=p
+    if y < layout['source_primary_max_y_mm']: return (x,y+layout['primary_translation_mm'][1])
+    if y > layout['source_secondary_min_y_mm']: return (x,y+layout['secondary_translation_mm'][1])
+    return (x,y)
+def compact_vector(p):
+    dy=layout['primary_translation_mm'][1] if p.y<mm(layout['source_primary_max_y_mm']) else layout['secondary_translation_mm'][1] if p.y>mm(layout['source_secondary_min_y_mm']) else 0
+    return pcb.VECTOR2I(p.x,p.y+mm(dy))
+for ref,f in fps.items():
+    if ref=='T1' or ref.startswith('H'): continue
+    old=f.GetPosition();new=compact_vector(old);f.Move(pcb.VECTOR2I(new.x-old.x,new.y-old.y))
+for t in board.GetTracks():
+    if isinstance(t,pcb.PCB_VIA): t.SetPosition(compact_vector(t.GetPosition()))
+    else:
+        t.SetStart(compact_vector(t.GetStart()));t.SetEnd(compact_vector(t.GetEnd()))
+for z in board.Zones():
+    z.Move(pt(0,layout['primary_translation_mm'][1] if z.GetNetname()=='/PGND' else layout['secondary_translation_mm'][1]))
+for d in board.GetDrawings():
+    if isinstance(d,pcb.PCB_TEXT):d.SetPosition(compact_vector(d.GetPosition()))
+for site in probe_sites:site['position_mm']=compact_point(site['position_mm'])
+
 (ROOT/'evidence/audit/probe-sites.json').write_text(json.dumps(probe_sites,indent=2)+'\n',encoding='utf8')
 
-board.GetDesignSettings().SetAuxOrigin(pt(75,137))
+board.GetDesignSettings().SetAuxOrigin(pt(x0,y1))
 pcb.ZONE_FILLER(board).Fill(board.Zones())
 out=CAD/(NAME+'.kicad_pcb');pcb.SaveBoard(str(out),board)
 # Proposed build. Fabricator acceptance is required before release.

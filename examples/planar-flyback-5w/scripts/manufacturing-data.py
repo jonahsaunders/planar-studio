@@ -45,7 +45,9 @@ cores=[
  {'Item':'T1 matching spring clip','Quantity_per_board':2,'MPN':mag['clip_mpn'],'DigiKey':'495-B66286A2000X000-ND','Process':'One on each outer leg; verify engagement and installed bow envelope per CORE-ASSEMBLY.md','Source':'https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552'}]
 write('CORE-BOM.csv',cores)
 b=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'));vias=[]
-def add(name,p,drill):vias.append({'ID':name,'X_mm':f'{pcb.ToMM(p.x)-75:.6f}','Y_mm':f'{137-pcb.ToMM(p.y):.6f}','Finished_drill_mm':f'{pcb.ToMM(drill):.3f}','Process':'Epoxy fill and copper cap; NOT a connector lead hole'})
+bounds=json.loads((R/'layout.json').read_text())['board_bounds_mm']
+ox,oy=bounds[0],bounds[3]
+def add(name,p,drill):vias.append({'ID':name,'X_mm':f'{pcb.ToMM(p.x)-ox:.6f}','Y_mm':f'{oy-pcb.ToMM(p.y):.6f}','Finished_drill_mm':f'{pcb.ToMM(drill):.3f}','Process':'Epoxy fill and copper cap; NOT a connector lead hole'})
 for i,t in enumerate(b.GetTracks()):
     if isinstance(t,pcb.PCB_VIA):add('via-'+str(i+1),t.GetPosition(),t.GetDrill())
 for f in b.GetFootprints():
@@ -64,9 +66,9 @@ npth=(M/'gerbers/PS-FLYBACK-5W-NPTH.drl').read_text()
 assert sum(1 for l in npth.splitlines() if l.startswith('X'))==4
 assert 'C3.200' in npth
 mechanical=json.loads((R/'mechanical.json').read_text())
-expected_holes={f"X{h['x_mm']-75:.1f}Y{137-h['y_mm']:.1f}" for h in mechanical['holes']}
+expected_holes={f"X{h['x_mm']-ox:.1f}Y{oy-h['y_mm']:.1f}" for h in mechanical['holes']}
 assert {line for line in npth.splitlines() if line.startswith('X')}==expected_holes
-write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-75,'Y_mm':137-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
+write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-ox,'Y_mm':oy-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
 out={'BOM_electronic_references':len(bom),'CPL_references':len(cpl),'BOM_CPL_match':True,'SMD_components':sum(bool(f.GetAttributes() & pcb.FP_SMD) for f in b.GetFootprints() if f.GetReference() in expected),'THT_connectors':2,'core_sets_per_board':1,'filled_capped_holes':len(vias),'open_connector_holes':4,'copper_Gerbers':6,'coordinate_origin':'Bottom-left board datum; X right/Y up','connector_CPL_origin':'Body centroid corrected from pin-1 footprint origin','release_status':'Supplier review only; no manufacturing approval'}
 out.update({'nonplated_M3_mounting_holes':4,'mounting_holes_match_drill_coordinates':True,'mounting_holes_excluded_from_BOM_CPL':True,'CPL_converter':'KiStack convert_position.py, upstream commit 8494dbd; connector centroids corrected first'})
 (R/'evidence/manufacturing-checks.json').write_text(json.dumps(out,indent=2))

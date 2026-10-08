@@ -1,42 +1,42 @@
 {
-  "board_revision": "A2-development",
+  "board_revision": "A3-development",
   "mounting_footprint": "amemb-MountingHole:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
   "upstream_repository": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository",
   "upstream_commit": "7be291853536e19f0d0d548c2ed3ca6811bdc540",
   "drill_mm": 3.2,
   "mask_opening_diameter_mm": 6.4,
-  "copper_exclusion_diameter_mm": 6.8,
+  "copper_exclusion_diameter_mm": 10.0,
   "maximum_hardware_contact_diameter_mm": 6.4,
   "holes": [
     {
       "ref": "H1",
-      "x_mm": 79.5,
-      "y_mm": 37.5,
+      "x_mm": 82.5,
+      "y_mm": 42.5,
       "rotation_deg": 180
     },
     {
       "ref": "H2",
-      "x_mm": 120.5,
-      "y_mm": 37.5,
+      "x_mm": 117.5,
+      "y_mm": 42.5,
       "rotation_deg": 0
     },
     {
       "ref": "H3",
-      "x_mm": 79.5,
-      "y_mm": 132.5,
+      "x_mm": 82.5,
+      "y_mm": 127.5,
       "rotation_deg": 180
     },
     {
       "ref": "H4",
-      "x_mm": 120.5,
-      "y_mm": 132.5,
+      "x_mm": 117.5,
+      "y_mm": 127.5,
       "rotation_deg": 0
     }
   ],
-  "coordinate_system": "KiCad absolute millimetres; X right, Y down. Board bounds X75..125, Y33..137.",
+  "coordinate_system": "KiCad absolute millimetres; X right, Y down. Board bounds X78..122, Y38..132.",
   "pattern_mm": [
-    41,
-    95
+    35,
+    85
   ],
   "assembly_note": "NPTH holes only; no fasteners included in electronic BOM/CPL. Use nonconductive standoffs and hardware contact diameter no greater than 6.4 mm. Keep chassis clearance below the ferrite core.",
   "variant": "Edge",
@@ -50,15 +50,17 @@
     3.2
   ],
   "copper_exclusion_extent_local_x_mm": [
-    -3.4,
-    8.4
+    -5,
+    10
   ],
   "copper_exclusion_extent_local_y_mm": [
-    -3.4,
-    3.4
+    -5,
+    5
   ],
-  "courtyard_width_mm": 12.3,
-  "courtyard_height_mm": 7.3,
-  "orientation_note": "Edge openings point outwards: H1/H3 left (180 degrees), H2/H4 right (0 degrees). All hole centers are 4.5 mm from their two adjacent board edges; the routed board outline is unchanged.",
-  "edge_inset_mm": 4.5
+  "courtyard_width_mm": 15.5,
+  "courtyard_height_mm": 10.5,
+  "orientation_note": "Edge openings point outwards: H1/H3 left (180 degrees), H2/H4 right (0 degrees). Hole centers remain 4.5 mm from adjacent edges. A3 changes the mounting pattern to 35 x 85 mm.",
+  "edge_inset_mm": 4.5,
+  "copper_to_mask_margin_mm": 1.8,
+  "footprint_modification": "A3 expands the circular copper exclusion to 10 mm and the full outward extension to 1.8 mm beyond the unchanged mask opening; courtyard expanded accordingly."
 }

@@ -38,7 +38,9 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 # Normalize published text before checks capture input hashes on Windows.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
-py('verify-a2-revision.py')
+py('verify-a3-layout.py')
+py('verify-mounting-clearance.py')
+py('verify-clip-copper.py')
 py('verify-3d-models.py')
 run(args.cadquery_python, R / 'scripts/audit-3d-solids.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/verify-core-fit.py', '--kicad-cli', args.kicad_cli)
@@ -52,6 +54,9 @@ run(args.kicad_cli, 'pcb', 'export', 'drill', '--format', 'excellon', '--drill-o
 run(args.kicad_cli, 'pcb', 'export', 'pos', '--format', 'csv', '--units', 'mm', '--side', 'front',
     '--use-drill-file-origin', '-o', 'manufacturing/KiCad-positions.csv', pcb)
 py('manufacturing-data.py')
+# Calculations and CSV exports are inputs to the feedback provenance record.
+# Normalize them before recording hashes so Windows publication stays exact.
+run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-feedback.py')
 py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(dir=R/'.kicad-config', prefix='flyback-svg-') as temp:
@@ -69,7 +74,7 @@ run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A2'
+    package = Path(temp) / 'PS-FLYBACK-5W-A3'
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

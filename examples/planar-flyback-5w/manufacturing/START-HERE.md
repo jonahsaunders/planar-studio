@@ -1,6 +1,6 @@
 # JLCPCB handoff — single board, factory panelization
 
-Use the files in this directory for **JLCPCB-managed panelization** of the A2 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
+Use the files in this directory for **JLCPCB-managed panelization** of the A3 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
 
 ## Upload files
 
@@ -10,7 +10,7 @@ Use the files in this directory for **JLCPCB-managed panelization** of the A2 fl
 | Electronic components | [BOM-JLCPCB.csv](BOM-JLCPCB.csv) |
 | Component placement | [CPL-JLCPCB.csv](CPL-JLCPCB.csv) |
 
-The outer review-package ZIP contains the complete project and supporting documents. Extract it to reach these three upload files; it is not the Gerber upload itself. Each file describes one 50 × 104 mm board. Ask JLCPCB to prepare the assembly panel and convert coordinates as needed. The requested quantity is **five finished converter boards**, subject to the quoted panel arrangement.
+The outer review-package ZIP contains the complete project and supporting documents. Extract it to reach these three upload files; it is not the Gerber upload itself. Each file describes one 44 × 94 mm board. Ask JLCPCB to prepare the assembly panel and convert coordinates as needed. The requested quantity is **five finished converter boards**, subject to the quoted panel arrangement.
 
 ## Include with the engineering review
 

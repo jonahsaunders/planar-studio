@@ -1,5 +1,5 @@
 """Independent checks of KiCad exports and actual winding polygons. KiCad Python."""
-import json, re, math, xml.etree.ElementTree as ET
+import hashlib, json, re, math, xml.etree.ElementTree as ET
 from pathlib import Path
 import pcbnew as pcb
 ROOT=Path(__file__).resolve().parents[1]
@@ -127,8 +127,9 @@ stack_spec=json.loads((ROOT/'stackup.json').read_text())
 assert abs(thickness-stack_spec['published_copper_plus_dielectric_mm'])<1e-8
 assert [float(child(l,'thickness')[1]) for l in layers if child(l,'type')[1]=='copper']==stack_spec['copper_mm']
 assert board.GetCopperLayerCount()==6
-assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==75
-assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==137
+bounds=json.loads((ROOT/'layout.json').read_text())['board_bounds_mm']
+assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().x)==bounds[0]
+assert pcb.ToMM(board.GetDesignSettings().GetAuxOrigin().y)==bounds[3]
 drc=json.loads((ROOT/'evidence/board-drc.json').read_text())
 assert not drc['violations'] and not drc['unconnected_items'] and not drc.get('schematic_parity',[])
 rules=json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['board']['design_settings']['rules']
@@ -136,6 +137,9 @@ assert json.loads((ROOT/'kicad/PS-FLYBACK-5W.kicad_pro').read_text())['erc']['ru
 for key,value in {'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,'min_through_hole_diameter':.3}.items():
     assert rules[key]==value,('inactive fabrication rule',key,rules[key])
 mechanical=json.loads((ROOT/'mechanical.json').read_text())
+required_radius=mechanical['copper_exclusion_diameter_mm']/2
+mask_margin=mechanical['copper_to_mask_margin_mm']
+assert required_radius>=5 and mask_margin>=1.8
 mounting=[]
 copper_layers=[pcb.F_Cu,pcb.In1_Cu,pcb.In2_Cu,pcb.In3_Cu,pcb.In4_Cu,pcb.B_Cu]
 for h in mechanical['holes']:
@@ -144,7 +148,7 @@ for h in mechanical['holes']:
     pads=list(f.Pads());assert len(pads)==1
     pad=pads[0];assert pad.GetAttribute()==pcb.PAD_ATTRIB_NPTH and not pad.GetNetCode()
     assert abs(pcb.ToMM(pad.GetDrillSize().x)-3.2)<1e-6
-    assert abs(pcb.ToMM(pad.GetLocalClearance())-1.8)<1e-6
+    assert abs(pcb.ToMM(pad.GetLocalClearance())-(required_radius-1.6))<1e-6
     assert abs(pcb.ToMM(f.GetPosition().x)-h['x_mm'])<1e-6 and abs(pcb.ToMM(f.GetPosition().y)-h['y_mm'])<1e-6
     assert abs((f.GetOrientationDegrees()-h.get('rotation_deg',0))%360)<1e-6
     assert f.IsExcludedFromBOM() and f.IsExcludedFromPosFiles()
@@ -168,7 +172,11 @@ for h in mechanical['holes']:
             if zone.IsOnLayer(layer) and not zone.GetIsRuleArea():shapes.append(zone.GetFilledPolysList(layer))
         distances=[pcb.ToMM(s.Distance(f.GetPosition())) for s in shapes]
         nearest=min(distances) if distances else None
-        assert nearest is None or nearest>=3.39,(h['ref'],board.GetLayerName(layer),nearest)
+        assert nearest is None or nearest>=required_radius-.01,(h['ref'],board.GetLayerName(layer),nearest)
+        # Also test the complete exposed-substrate outline, including its edge
+        # extension. No soldermask insulation credit is taken on any copper layer.
+        mask=next(g.GetEffectiveShape() for g in f.GraphicalItems() if g.GetLayer()==pcb.F_Mask and g.GetShape()==pcb.SHAPE_T_POLY)
+        assert not any(mask.Collide(s,pcb.FromMM(mask_margin-.01)) for s in shapes),(h['ref'],board.GetLayerName(layer),'mask-extension margin')
         # The Edge variant also clears copper outside the circular exclusion.
         # Check its complete transformed extension against actual layer copper.
         for keepout in keepouts:
@@ -177,8 +185,9 @@ for h in mechanical['holes']:
     mounting.append({'reference':h['ref'],'drill_mm':3.2,'x_mm':h['x_mm'],'y_mm':h['y_mm'],
                      'nearest_copper_from_center_mm':per_layer,'excluded_from_BOM_CPL':True,
                      'footprint':str(f.GetFPID().GetLibItemName()),'rotation_deg':f.GetOrientationDegrees(),
-                     'all_layer_extension_clear':True if keepouts else None})
-(ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':3.4,'geometry_tolerance_mm':.01,'rules':rules},indent=2))
+                     'all_layer_extension_clear':True if keepouts else None,
+                     'all_layer_mask_margin_checked_mm':mask_margin-.01})
+(ROOT/'evidence/audit/mounting-checks.json').write_text(json.dumps({'holes':mounting,'required_copper_radius_mm':required_radius,'nominal_copper_to_mask_margin_mm':mask_margin,'maximum_hardware_contact_diameter_mm':mechanical['maximum_hardware_contact_diameter_mm'],'geometry_tolerance_mm':.01,'rules':rules,'source_SHA256':{f:hashlib.sha256((ROOT/f).read_bytes()).hexdigest() for f in ['kicad/PS-FLYBACK-5W.kicad_pcb','mechanical.json']}},indent=2))
 out={'schematic_board_logical_pins_matched':len(bp),'physical_numbered_pads_checked':physical,'winding_polygon_count':len(polys),'polygon_terminal_contacts':{k:sorted(v) for k,v in expect.items()},'centerline_samples_inside_final_copper':samples,'stack_thickness_mm':thickness,'copper_layers':6,'drc_violations':0,'unconnected_items':0,'scope':'Final-board copper polygon containment and pin net agreement. Does not prove inductance, dielectric withstand, gap fringing or manufactured quality.'}
 out['schematic_continuous_wire_groups']=continuous
 out['schematic_junctions']={'four_way_connections':len(four_way),'maximum_connection_arms':max(junction_arms.values()),
