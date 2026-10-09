@@ -19,6 +19,7 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; 10 mm copper exclusion and 1.8 mm copper-to-mask margin on all six layers; do not fill/cap; see MOUNTING.md |
 | Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A4 fit model |
 | Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
+| Silkscreen | Standard process: text height ≥1.0 mm, text and graphic stroke ≥0.15 mm, silk clearance ≥0.15 mm; enlarged labels pass native DRC |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after clipping the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.

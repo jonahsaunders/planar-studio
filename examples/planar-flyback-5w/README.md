@@ -29,3 +29,9 @@ Use Node.js, KiCad 10's Python/CLI, and a separate Python environment with `cadq
 Only the evidence listed in VALIDATION.md applies to the current A4 files. Earlier audit reports and comparisons are historical. No purchase, supplier submission or physical testing has occurred.
 
 The A4 JLCPCB placement export also includes the previously separate catalog rotation/origin corrections. See [placement and polarity review](manufacturing/PLACEMENT-REVIEW.md). All 24 placements and 56 catalog pad centers pass the saved geometry/net check; a fresh factory preview is still required.
+
+## October 9 artwork and snubber review
+
+Standard-process silkscreen now uses at least 1.0 mm text height and 0.15 mm text/graphic strokes, with a 0.15 mm clearance rule. Labels were repositioned to pass native KiCad DRC; all non-silkscreen board content is unchanged. Updated Gerbers, board views and the review ZIP include the correction. [Silkscreen evidence](evidence/audit/silkscreen-checks.json).
+
+The [independent snubber review](SNUBBER-REVIEW.md) retains 39 Ω / 470 pF / SMAJ12A for first-article tuning. It confirms the conservative 0.641 W estimate and documents the unresolved ambient-derating and repetitive-pulse limits; this does not approve production.

@@ -4,6 +4,8 @@ This is an unbuilt engineering prototype. Automated checks establish geometry, c
 
 | Check | Current evidence |
 | --- | --- |
+| Standard silkscreen dimensions/clearance and exact non-silkscreen parity to pre-fix A4 | `evidence/audit/silkscreen-checks.json` |
+| Independent snubber energy, frequency, ambient derating and pulse screen | `evidence/audit/snubber-checks.json`, `SNUBBER-REVIEW.md` |
 | KiCad ERC, DRC, connectivity and schematic parity | `evidence/erc.rpt`, `evidence/board-drc.json` |
 | Native pin agreement, winding polygons and mounting copper keepouts | `evidence/independent-checks.json`, `evidence/audit/mounting-checks.json` |
 | A2 comparison: identical circuit, winding and local routing; shortened leads and plane-area retention | `evidence/audit/a3-layout-comparison.json` |
@@ -27,6 +29,8 @@ The magnetic design is unchanged from A2: estimated 13.12 µH, accepted measured
 
 JLCPCB's published capabilities support this six-layer geometry. The delivered standard construction, selective filled/capped vias, panel, Standard-PCBA reflow and connector process still need factory acceptance. See the prototype test plan before production. No supplier-accepted quotation, submission or order has been made.
 
-A4 replaces the paid named-stack request with 1 oz inner / 1 oz outer, Specify Stackup: No. The 1.609 mm reference construction updates layer heights and derived models; it is not a fixed factory cross-section. See STACK-REVISION.md and evidence/audit/default-stack-checks.json. The existing undersized silkscreen still needs a separate artwork correction before manufacturing release.
+A4 replaces the paid named-stack request with 1 oz inner / 1 oz outer, Specify Stackup: No. The 1.609 mm reference construction updates layer heights and derived models; it is not a fixed factory cross-section. See STACK-REVISION.md and evidence/audit/default-stack-checks.json. The October 9 silkscreen correction raises all visible legend text to at least 1.0 mm height / 0.15 mm stroke, graphics to at least 0.15 mm, and the silk clearance rule to 0.15 mm. Repositioned labels clear the native DRC. The non-silkscreen board content is exactly identical to commit b40d63d; copper, mask, paste, drills, outline, components, stack and core geometry are unchanged. Older geometry reports retain their original source hashes; the new silkscreen parity record links this board to that validated geometry rather than presenting those old hashes as fresh executions.
 
 The Planar Studio engine is unchanged from tested A2. A4's final checks and their hashes are recorded with the release evidence. Older A1/A2 audit reports, before-images and baseline comparisons are historical, not current board proofs.
+
+The independent snubber review reproduces the 0.641 W conservative screen. It exceeds an 80% allowance below 70 °C and R6's 0.618 W derated rating at 85 °C local ambient. The fitted parts remain prototype starting values; repetitive-pulse and measured thermal/clamp gates remain open. See SNUBBER-REVIEW.md.

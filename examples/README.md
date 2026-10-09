@@ -7,5 +7,5 @@
 
 These are editable engineering examples, separate from the KiCad plugin installer.
 
-[Download the complete A1 review package](https://github.com/jonahsaunders/planar-studio/blob/codex/transformer-design-workflow/examples/PS-FLYBACK-5W-A1-review-package.zip?raw=true)
+[Download the complete A4 review package](PS-FLYBACK-5W-A4-review-package.zip?raw=true)
 for the flyback example, including its illustrated local report and checksums.

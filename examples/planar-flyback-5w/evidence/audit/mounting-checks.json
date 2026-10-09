@@ -92,9 +92,9 @@
     "min_microvia_diameter": 0.2,
     "min_microvia_drill": 0.1,
     "min_resolved_spokes": 2,
-    "min_silk_clearance": 0.0,
-    "min_text_height": 0.8,
-    "min_text_thickness": 0.08,
+    "min_silk_clearance": 0.15,
+    "min_text_height": 1.0,
+    "min_text_thickness": 0.15,
     "min_through_hole_diameter": 0.3,
     "min_track_width": 0.2,
     "min_via_annular_width": 0.1,
@@ -103,7 +103,7 @@
     "use_height_for_length_calcs": true
   },
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "954780a21879f9679a7f0748dbf2d5228fafc445d5e73f44690f995cc2fd1dee",
     "mechanical.json": "4944cc636119970bc210a6aece98ebe3bf75cfffa8730c56610723c68703332c"
   }
 }

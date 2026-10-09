@@ -38,6 +38,7 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 # Normalize published text before checks capture input hashes on Windows.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
+py('verify-silkscreen.py')
 py('verify-a3-layout.py')
 py('verify-default-stack.py')
 py('verify-mounting-clearance.py')
@@ -46,6 +47,7 @@ py('verify-3d-models.py')
 run(args.cadquery_python, R / 'scripts/audit-3d-solids.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/verify-core-fit.py', '--kicad-cli', args.kicad_cli)
 py('calculate.py')
+py('audit-snubber.py')
 py('cycle-model.py')
 run(args.kicad_cli, 'pcb', 'export', 'gerbers', '--layers',
     'F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.Silkscreen,B.Silkscreen,Edge.Cuts',
