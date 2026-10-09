@@ -8,7 +8,7 @@ R = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--write', action='store_true')
 args = parser.parse_args()
-ignored = {'.kicad-config', '__pycache__', 'schematic-svg'}
+ignored = {'.kicad-config', '__pycache__', 'schematic-svg', 'org.kicad.kicad'}
 manifest = R / 'SHA256SUMS.json'
 files = sorted(f for f in R.rglob('*') if f.is_file() and f != manifest
                and not ignored.intersection(f.relative_to(R).parts)

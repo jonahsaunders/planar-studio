@@ -120,7 +120,7 @@
       "headline_stock": 978,
       "available_order_quantity": 925,
       "displayed_minimum": 1,
-      "package": "SMD, 6.3 × 5.9 mm",
+      "package": "SMD, 6.3 \u00d7 5.9 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
@@ -293,20 +293,20 @@
         "R6"
       ],
       "quantity_per_board": 1,
-      "mpn": "SR1206FR-7T39RL",
-      "manufacturer": "Yageo",
+      "mpn": "CRH2512F39R0E04Z",
+      "manufacturer": "Ever Ohms Tech",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C6683830",
-      "headline_stock": 5000,
-      "available_order_quantity": 5000,
+      "verified_jlcpcb_code": "C175263",
+      "headline_stock": 6123,
+      "available_order_quantity": 4986,
       "displayed_minimum": 1,
-      "package": "1206",
+      "package": "2512",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C6683830",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
+      "note": "Exact MPN, resistance, power and orderable quantity checked from public JLCPCB data. 39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.",
+      "observed_local_date": "2026-10-09"
     },
     {
       "references": [
@@ -400,7 +400,7 @@
       "headline_stock": 436,
       "available_order_quantity": 427,
       "displayed_minimum": 1,
-      "package": "SMD, 8 × 10.2 mm",
+      "package": "SMD, 8 \u00d7 10.2 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
@@ -460,7 +460,7 @@
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C95204",
-      "note": "Exact 10 kΩ, 0.1% thin-film resistor.",
+      "note": "Exact 10 k\u03a9, 0.1% thin-film resistor.",
       "observed_local_date": "2026-09-29"
     },
     {

@@ -10,13 +10,13 @@
   "exact_stocked_resistor_codes_match": true,
   "scope": "File consistency and preliminary calculations only; no hardware qualification.",
   "source_SHA256": {
-    "parts.json": "61ab64e7a96a757ed02a1fe3a4a028bde57d10ec65a4487037958d7ea9c642b3",
+    "parts.json": "26ad548e669906ab55d31730a75462e401bb066bf8b3963d3d518ec844d2a101",
     "requirements.json": "b9abbf57e5d6a637325bdfb07dc09fc360f4da48c03f1a22c99cc7422e34bfb1",
-    "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "954780a21879f9679a7f0748dbf2d5228fafc445d5e73f44690f995cc2fd1dee",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "4ce8efaf63e80236d372eb4285c837e11a8417c20b6b43ebe9124152c56c4aa5",
-    "evidence/electrical-sizing.json": "ec49d0b062e88c9b2e95fa7ccd75a2769d962dcd3acf036106829b504d417abf",
-    "manufacturing/BOM-MASTER.csv": "3921f4757fdb620ec25f67326c142ba2927cd2789b6043ce6f530a929043e71a",
-    "sources/jlcpcb-stock.json": "f3e3ea321ef2c2ba11d9b5eba60107447f56e821076c4d0c9f7ff2f14737e6a3"
+    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "d5dc7a45530c7cb16b1c3bdad9c84b1acbd994b6e13361e24ce926ee163d41f3",
+    "evidence/electrical-sizing.json": "bb904a512ace6b91c12f8c2f4f781c4d41d6554f8f710d2525e637aaef16e56b",
+    "manufacturing/BOM-MASTER.csv": "0383a43f25caabe405f13aedc629907b45f00f7e47a02df68234030a3223b473",
+    "sources/jlcpcb-stock.json": "cc325ecb9d2143b4055bf98f8465ba7b0a98b58b6fe5c9736e1256417f8e5d4f"
   }
 }

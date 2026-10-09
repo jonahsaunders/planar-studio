@@ -1,6 +1,6 @@
-# A4 placement correction — October 8, 2026
+# A5 placement correction — October 9, 2026
 
-The September 30 placement corrections have been transferred to the compact A4 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
+The September 30 placement corrections have been transferred to the compact A5 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The corrected CPL uses the placement frame of each exact catalog part. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
 
 Open the [placement and polarity drawing](placement-review.svg) alongside the [top assembly drawing](assembly-top.svg). Both use a top-side view, with the input connector at the top. The placement drawing shows actual PCB pads and transformed catalog pin centers; it is **not a screenshot or approval of a live JLCPCB order preview**.
 
@@ -39,7 +39,7 @@ Ceramic capacitors, resistors and F1 are nonpolarized. The existing D4 and polar
 
 ## Evidence and regeneration
 
-All 24 placements / 20 exact catalog parts were compared with the public JLCEDA/EasyEDA component-library geometry. [Saved reference geometry](../sources/placement-library.json) records source URLs, response hashes, pad mapping, offsets and rotation corrections. [Placement checks](../evidence/audit/placement-checks.json) verify 56 catalog pad centers against their intended PCB copper pads and circuit nets. Recommended land sizes differ between libraries; the check verifies correspondence, not solder-joint qualification. Fifteen deliberately wrong rotations and origins are rejected.
+The A5 check covers 24 placements / 20 exact parts. Nineteen part identities retain saved public JLCEDA/EasyEDA geometry; new R6 uses the manufacturer land reference because its catalog geometry was unavailable. [Saved reference geometry](../sources/placement-library.json) records this distinction. [Placement checks](../evidence/audit/placement-checks.json) verify 54 catalog pad centers plus two R6 land centers against PCB pads/nets. Fifteen deliberately wrong rotations and origins are rejected. R6 is a centered nonpolar 2512 resistor; confirm its origin, rotation and actual body over both lands in the fresh JLCPCB preview. R6 and D4 positions have changed, so replace the previous CPL.
 
 For D1/D3 the offset is the exact common translation between the two sets of land centers. For D2 the catalog 3D origin and physical lead-span center are approximately −0.9000 mm from the catalog placement origin; the native footprint origin is the package center. After correction, the catalog anode and cathode land-center differences from native lands are 0.070 and 0.012 mm respectively. For J1/J2, the prior ±0.2 mm body-center shift is removed so the actual pin row aligns with the drilled holes.
 

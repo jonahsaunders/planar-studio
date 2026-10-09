@@ -21,25 +21,25 @@ record={**snapshot,'counts':dict(Counter(row['status'] for row in rows)),
         'source_bom_sha256':hashlib.sha256((R/'manufacturing/BOM-MASTER.csv').read_bytes()).hexdigest(),
         'review_quantity_boards':quantity,'inventory_covers_twice_board_quantities':True,
         'supplier_attrition_allocation_confirmed':False,
-        'conclusion':'All 20 exact electronic MPNs had orderable stock on 2026-09-30. Inventory is not reserved. Factory acceptance and hardware qualification remain open.'}
+        'conclusion':'All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09. Inventory is not reserved. Factory acceptance and hardware qualification remain open.'}
 (R/'evidence/audit/jlcpcb-sourcing.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
 text='''# JLCPCB electronics sourcing
 
-**All 20 electronic MPNs / 24 placements had orderable stock on September 30, 2026.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
+**All 20 electronic MPNs / 24 placements had orderable stock in the dated snapshots: September 30, 2026, except the new R6 checked October 9.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
 
 The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLCPCB supplies and assembles the electronics, including J1/J2. DigiKey supplies two B66285G0050X187 factory-gapped halves and two B66286A2000X000 clips separately; install after PCBA and measure assembled inductance. A3 uses no grinding or adhesive. There has been no supplier upload, message, reservation or purchase.
 
-| References | Exact MPN | JLCPCB code | Available | Per board |
-| --- | --- | --- | ---: | ---: |
+| References | Exact MPN | JLCPCB code | Available | Per board | Checked |
+| --- | --- | --- | ---: | ---: | --- |
 '''
 for row in rows:
-    text+=f"| {', '.join(row['references'])} | {row['mpn']} | [{row['verified_jlcpcb_code']}]({row['source_url']}) | {row['available_order_quantity']:,} | {row['quantity_per_board']} |\n"
+    text+=f"| {', '.join(row['references'])} | {row['mpn']} | [{row['verified_jlcpcb_code']}]({row['source_url']}) | {row['available_order_quantity']:,} | {row['quantity_per_board']} | {row.get('observed_local_date',snapshot['observed_local_date'])} |\n"
 text+='''
 ## Engineering substitutions
 
 R3/R4/R5 use **113 kΩ / 10.7 kΩ / 127 kΩ**, Yageo RT0603 thin-film parts with 0.1% tolerance and 25 ppm/°C TCR. Nominal output is 4.980 V; the 17.5 V SW−VIN target gives 20.07% preliminary resistive-current separation. The temperature-compensation ratio changes by −0.95% from the original 106k/118k network; temperature trim remains required. [Feedback analysis](FEEDBACK-REVISION.md).
 
-U1 uses the pin-compatible industrial-temperature LT8302I. C5 is a Murata 4.7 µF / 16 V X5R; C6 retains 470 pF C0G with a 100 V rating. R6 is a 0.75 W surge-rated 39 Ω part. R8 is a 2 W pulse-rated 2.2 Ω Bourns part with its recommended lands; full power requires the datasheet's 300 mm² copper condition. [Every component's rating, package and pin review](COMPONENT-AUDIT.md).
+U1 uses the pin-compatible industrial-temperature LT8302I. C5 is a Murata 4.7 µF / 16 V X5R; C6 retains 470 pF C0G with a 100 V rating. R6 is Ever Ohms CRH2512F39R0E04Z (C175263), 39 Ω ±1%, 2 W at 70 °C in 2512. Its datasheet gives no repetitive nanosecond pulse curve; average-power margin is not pulse qualification. R8 is a 2 W pulse-rated 2.2 Ω Bourns part with its recommended lands; full power requires the datasheet's 300 mm² copper condition. [Every component's rating, package and pin review](COMPONENT-AUDIT.md).
 
 ## Before manufacturing release
 

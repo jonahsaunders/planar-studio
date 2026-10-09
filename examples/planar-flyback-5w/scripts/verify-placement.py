@@ -71,7 +71,7 @@ def validate(rows):
             pad_results.append({'catalog_pin': land['number'], 'pcb_pad': number, 'net': target.GetNetname(),
                                 'catalog_center_mm': [round(catalog_x, 6), round(catalog_y, 6)],
                                 'pcb_center_mm': [round(tx, 6), round(ty, 6)]})
-        checks.append({'reference': ref, 'lcsc': part['lcsc'], 'x_mm': x, 'y_mm': y, 'rotation_deg': angle, 'pads': pad_results})
+        checks.append({'reference': ref, 'lcsc': part['lcsc'], 'x_mm': x, 'y_mm': y, 'rotation_deg': angle, 'geometry_source': entry.get('geometry_source','catalog'), 'pads': pad_results})
     return checks
 
 
@@ -93,8 +93,8 @@ for ref, field, delta in [('U1', 'Rotation', 90), ('D1', 'Rotation', 180), ('D2'
         mutations.append(f'{ref}: wrong {field} rejected')
     else:
         raise AssertionError(f'{ref}: invalid {field} accepted')
-out = {'status': 'PASS: saved catalog geometry and PCB net/pad mapping; live factory preview remains unverified',
-       'placements': len(checks), 'catalog_parts': len(library), 'catalog_pads_checked': sum(len(c['pads']) for c in checks),
+out = {'status': 'PASS: 54 catalog pad centers plus 2 manufacturer land centers and PCB net mapping; live factory preview remains unverified',
+       'placements': len(checks), 'catalog_parts': len(library), 'catalog_pads_checked': sum(len(c['pads']) for c in checks if c['geometry_source']=='catalog'), 'manufacturer_land_centers_checked': sum(len(c['pads']) for c in checks if c['geometry_source']!='catalog'),
        'regressions_rejected': mutations, 'checks': checks}
 out['coordinate_origin_board_mm'] = [ox, oy]
 out['source_SHA256'] = {name: hashlib.sha256((R/name).read_bytes()).hexdigest() for name in [

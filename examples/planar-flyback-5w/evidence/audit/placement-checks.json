@@ -1,8 +1,9 @@
 {
-  "status": "PASS: saved catalog geometry and PCB net/pad mapping; live factory preview remains unverified",
+  "status": "PASS: 54 catalog pad centers plus 2 manufacturer land centers and PCB net mapping; live factory preview remains unverified",
   "placements": 24,
   "catalog_parts": 20,
-  "catalog_pads_checked": 56,
+  "catalog_pads_checked": 54,
+  "manufacturer_land_centers_checked": 2,
   "regressions_rejected": [
     "U1: wrong Rotation rejected",
     "D1: wrong Rotation rejected",
@@ -27,6 +28,7 @@
       "x_mm": 7.5,
       "y_mm": 66.365,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -62,6 +64,7 @@
       "x_mm": 26.0,
       "y_mm": 68.0,
       "rotation_deg": 90.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -97,6 +100,7 @@
       "x_mm": 23.0,
       "y_mm": 18.5,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -132,6 +136,7 @@
       "x_mm": 28.5,
       "y_mm": 25.88,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -167,6 +172,7 @@
       "x_mm": 8.5,
       "y_mm": 68.8,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -202,6 +208,7 @@
       "x_mm": 22.0,
       "y_mm": 63.6,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -237,6 +244,7 @@
       "x_mm": 32.5,
       "y_mm": 78.0,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -272,6 +280,7 @@
       "x_mm": 13.0,
       "y_mm": 18.5,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -307,6 +316,7 @@
       "x_mm": 10.0,
       "y_mm": 81.3375,
       "rotation_deg": 90.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -342,6 +352,7 @@
       "x_mm": 23.0,
       "y_mm": 27.9,
       "rotation_deg": 90.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -390,6 +401,7 @@
       "x_mm": 22.0,
       "y_mm": 66.9625,
       "rotation_deg": 270.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -422,20 +434,21 @@
     {
       "reference": "D4",
       "lcsc": "C134947",
-      "x_mm": 31.0,
+      "x_mm": 35.5,
       "y_mm": 66.1,
       "rotation_deg": 270.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
           "pcb_pad": "2",
           "net": "/VIN",
           "catalog_center_mm": [
-            31.0,
+            35.5,
             63.907472
           ],
           "pcb_center_mm": [
-            31.0,
+            35.5,
             64.1
           ]
         },
@@ -444,11 +457,11 @@
           "pcb_pad": "1",
           "net": "/CLAMP",
           "catalog_center_mm": [
-            31.0,
+            35.5,
             68.292528
           ],
           "pcb_center_mm": [
-            31.0,
+            35.5,
             68.1
           ]
         }
@@ -460,6 +473,7 @@
       "x_mm": 12.5,
       "y_mm": 87.0,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -495,6 +509,7 @@
       "x_mm": 22.0,
       "y_mm": 87.0,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -530,6 +545,7 @@
       "x_mm": 22.0,
       "y_mm": 8.0,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "1",
@@ -565,6 +581,7 @@
       "x_mm": 12.5,
       "y_mm": 76.0,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -600,6 +617,7 @@
       "x_mm": 15.5,
       "y_mm": 76.0,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -635,6 +653,7 @@
       "x_mm": 18.65,
       "y_mm": 67.365,
       "rotation_deg": 180.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -670,6 +689,7 @@
       "x_mm": 18.65,
       "y_mm": 69.2,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -705,6 +725,7 @@
       "x_mm": 16.1015,
       "y_mm": 72.5,
       "rotation_deg": 90.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -736,34 +757,35 @@
     },
     {
       "reference": "R6",
-      "lcsc": "C6683830",
-      "x_mm": 26.0,
+      "lcsc": "C175263",
+      "x_mm": 29.2,
       "y_mm": 63.6,
       "rotation_deg": 180.0,
+      "geometry_source": "manufacturer_recommended_lands",
       "pads": [
-        {
-          "catalog_pin": "2",
-          "pcb_pad": "2",
-          "net": "/SNUB",
-          "catalog_center_mm": [
-            24.521212,
-            63.6
-          ],
-          "pcb_center_mm": [
-            24.5375,
-            63.6
-          ]
-        },
         {
           "catalog_pin": "1",
           "pcb_pad": "1",
           "net": "/VIN",
           "catalog_center_mm": [
-            27.478788,
+            32.45,
             63.6
           ],
           "pcb_center_mm": [
-            27.4625,
+            32.45,
+            63.6
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/SNUB",
+          "catalog_center_mm": [
+            25.95,
+            63.6
+          ],
+          "pcb_center_mm": [
+            25.95,
             63.6
           ]
         }
@@ -775,6 +797,7 @@
       "x_mm": 31.0,
       "y_mm": 18.5,
       "rotation_deg": 270.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -810,6 +833,7 @@
       "x_mm": 20.0,
       "y_mm": 80.0,
       "rotation_deg": 0.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "2",
@@ -845,6 +869,7 @@
       "x_mm": 13.5,
       "y_mm": 68.0,
       "rotation_deg": 270.0,
+      "geometry_source": "catalog",
       "pads": [
         {
           "catalog_pin": "9",
@@ -971,14 +996,14 @@
     132.0
   ],
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "954780a21879f9679a7f0748dbf2d5228fafc445d5e73f44690f995cc2fd1dee",
-    "layout.json": "f4d73d056e74ea1d380ab9499063662c740409c3a28cfed3f1a7db6fef63ea33",
-    "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
-    "sources/placement-library.json": "a08b8cb8c1abafc202f6d61457cef27ff64955374c85a65b8c54382ec3e2c5cd",
-    "manufacturing/KiCad-positions.csv": "3d5526fa894ff9e463c42703cc64db1bf6ebb960ba735ed4242f099ef0c183ae",
-    "manufacturing/JLCPCB-positions-corrected.csv": "ce0ab23c7928400d327cfb3f071595a31cc8f92c721ef8590fdf4f6b6a0ddb3c",
-    "manufacturing/CPL-JLCPCB.csv": "227cc684326b43bc24dcbf62015c3a68fe03cfef3784992ec855a4b7a0a4c30c",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
+    "layout.json": "2babe0c5e7ad4da95e325668eb6e07261a95daac7956dbef4fa2d6de3602a7c8",
+    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
+    "sources/placement-library.json": "bcef46bec31c71f5b3585e350e409f6345d8c04e688250814c317b16e78067be",
+    "manufacturing/KiCad-positions.csv": "1c7b600eb5266ea1a46a927fbc563c5838ca32fb1661d9e0dc809c06bc3c70f7",
+    "manufacturing/JLCPCB-positions-corrected.csv": "6fc9a96b8ff81000df5339c658c8ad5ab550a1f52c9c335d58023e63713cc299",
+    "manufacturing/CPL-JLCPCB.csv": "99d09f3b597a20e9d01c38e06b9905262be41f1b5cd99089d91b28a587db8d84",
     "scripts/placement.py": "f58156c431a9b786108d6a023b41d48e96c6d865de11b39d77c0a4c3abfada59",
-    "scripts/verify-placement.py": "30753ee598aa1bc7c7724776926e7817493979ef8856d1c5e1d911c574ba84ea"
+    "scripts/verify-placement.py": "fd616e7b39bdbacc5e7fb998d4a646b33a14af2b3ee20ec68795fc111db30659"
   }
 }

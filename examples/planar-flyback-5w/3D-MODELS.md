@@ -1,4 +1,4 @@
-# A3 local 3D models
+# A5 local 3D models
 
 All 29 footprints have visible project-relative STEP models. T1 contains two factory-gapped ELP22 halves and two clips. The complete assembly is exported as STEP and GLB.
 
@@ -8,4 +8,6 @@ The displayed clip projects 0.9 mm beyond the 10.9 mm nominal ferrite edge. Inde
 
 The other models retain A1/A2 provenance: manufacturer Bourns fuse CAD, generic KiCad packages, simplified connector/diode geometry and illustrative M3 screws/standoffs. These mounting parts are not procurement-qualified.
 
-Current evidence: `3d-model-checks.json`, `3d-solid-checks.json`, `core-fit-checks.json`, `clip-copper-checks.json` and `a3-layout-comparison.json` under `evidence/audit/`. Older before-images and audit comparisons are historical.
+Current evidence: `3d-model-checks.json`, `3d-solid-checks.json`, `core-fit-checks.json`, `clip-copper-checks.json` and `snubber-revision-checks.json` under `evidence/audit/`. Older before-images and audit comparisons are historical.
+
+A5 assigns R6 the existing generic KiCad `R_2512_6332Metric.step` model at its new position. The CRH body is nominally 6.30 × 3.20 × 0.65 mm; the illustrative model does not replace the Ever Ohms datasheet or the manufacturer-derived footprint lands. R6 and D4 placements are refreshed in the native assembly, STEP, GLB and rendered views.

@@ -59,6 +59,13 @@ body+=line((-1.1,-1.75),(1.1,-1.75),.12)+line((-1.1,1.75),(1.1,1.75),.12)
 body+=pad(1,-2.575,0,2.45,3.7)+pad(2,2.575,0,2.45,3.7)
 (LIB/'R_Bourns_CRM2512.kicad_mod').write_text(footprint('R_Bourns_CRM2512',body,refy=-2.6),encoding='utf8')
 
+# Ever Ohms CRH S-10-12-16-13 p6: inner gap A=4.90, outer B=8.10,
+# width C=3.40 mm. Two 1.60 x 3.40 mm lands at +/-3.25 mm.
+body=rect(-3.15,-1.6,3.15,1.6,'F.Fab',.1)+rect(-4.3,-1.95,4.3,1.95)
+body+=line((-2.1,-1.85),(2.1,-1.85),.15)+line((-2.1,1.85),(2.1,1.85),.15)
+body+=pad(1,-3.25,0,1.6,3.4)+pad(2,3.25,0,1.6,3.4)
+(LIB/'R_EverOhms_CRH2512.kicad_mod').write_text(footprint('R_EverOhms_CRH2512',body,refy=-2.6),encoding='utf8')
+
 # S8E land pattern, ADI drawing 05-08-1857 Rev C, LT8302 Rev G page 24.
 body=rect(-1.95,-2.50,1.95,2.50,'F.Fab',.1)+rect(-3.5,-2.8,3.5,2.8)
 body+=line((-1.8,-2.65),(1.8,-2.65))+line((-1.8,2.65),(1.8,2.65))
@@ -104,14 +111,14 @@ for layer,poly in bylayer.items():
 for i,p in enumerate(art['pads'],1):body+=pad(i,p['x'],-p['y'],p['w'],p['h'],p['drill'],'circle')
 for v in art['vias']:body+=pad(5,v['x'],-v['y'],v['diameter'],v['diameter'],v['drill'],'circle',layers='"*.Cu"')
 body+=rect(-13.6,-14.5,13.6,15.2)+rect(-10.9,-7.9,10.9,7.9,'F.Fab',.1)
-for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.4,'4 SEC')]:
+for x,y,txt in [(6.1,-13.1,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.4,'4 SEC')]:
     body+=f'(fp_text user "{txt}" (at {x} {y}) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15))))'
 (LIB/'Planar_EELP22_4T_2T.kicad_mod').write_text(footprint('Planar_EELP22_4T_2T',body,'exclude_from_pos_files',0),encoding='utf8')
 # A single polygon per winding layer gives KiCad a continuous net-tie
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A4-development');title.SetDate('2026-10-08');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A5-development');title.SetDate('2026-10-09');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -122,8 +129,8 @@ placement={
     'C1':(85.5,60.635,180),'C2':(104,59,90),
     'C5':(86.5,58.2,180),'R1':(90.5,51,0),'R2':(93.5,51,0),
     'R3':(96.65,59.635,180),'R4':(96.65,57.8,0),'R5':(94.1015,54.5,90),
-    'R6':(104,63.4,180),'C6':(100,63.4,180),
-    'D3':(100,59.7,270),'D4':(109,60.9,270),
+    'R6':(107.2,63.4,180),'C6':(100,63.4,180),
+    'D3':(100,59.7,270),'D4':(113.5,60.9,270),
     'D2':(101,110,90),'C3':(101,118.5,180),'C4':(106.5,111.12,0),
     'C7':(110.5,49,0),'R8':(98,47,0),'C8':(91,118.5,180),
     'R7':(109,118.5,270),'J2':(102.5,129,180),
@@ -155,7 +162,7 @@ for p in data['parts']:
           'C1':(84.0,62.8),'C2':(104,55.8),'C5':(84.6,57.3),
           'R1':(90.5,49.5),'R2':(93.5,49.5),'R3':(96.65,61.1),
           'R4':(98.0,56.45),'R5':(96.2,54.5),'D3':(100,55.7),
-          'D4':(112.3,60.9),'R6':(107,65.3),'C6':(100,65.2),
+          'D4':(117,60.9),'R6':(110,66.3),'C6':(100,65.2),
           'D2':(97.55,110),'C3':(97,123.0),'C4':(106.5,109),
           'C7':(111,54.5),'R8':(99,49.8),'C8':(90,122.8),
           'R7':(111.7,118.5),'J2':(93.7,129)}
@@ -195,7 +202,7 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A4 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A5 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -210,13 +217,15 @@ via('VIN',pos('C2',1),.8,.4)
 path('VIN',[pos('D1',1),(89.8,pos('D1',1)[1]+1.8),(89.8,52.7),(88.8,53.7),(88.8,58.81),pos('C1',1)],pcb.In3_Cu,1.3)
 path('VIN',[pos('C1',1),(86.975,62),(89.275,64.3),(100.175,64.3),pos('C2',1)],pcb.In3_Cu,1.5)
 path('VIN',[pos('C1',1),(86.975,59.635),pos('U1',3)],width=.9)
-path('VIN',[pos('C2',1),(104,61.9375),pos('R6',1),(105.4625,63.966284),pos('T1',1)],width=1.2)
-path('VIN',[pos('D4',2),(108.5,63.4),pos('R6',1)],width=1)
+# Keep the primary feed around the larger R6 SNUB land, then return to T1.
+path('VIN',[pos('C2',1),(109.8,60.475),pos('R6',1)],width=1.2)
+path('VIN',[pos('R6',1),(110.45,66.3),(104.6,66.3),pos('T1',1)],width=1.2)
+path('VIN',[pos('D4',2),(112.5,63.4),pos('R6',1)],width=1)
 path('SNUB',[pos('R6',2),pos('C6',1)],width=.6)
 path('SW',[pos('U1',5),(94.1015,63.530284),pos('T1',2)],width=1.2)
 path('SW',[pos('T1',2),(96.378023,65.15),(98.128023,63.4),pos('C6',2)],width=.8)
 path('SW',[pos('D3',2),(99.05,62.175),pos('C6',2)],width=.8)
-path('CLAMP',[pos('D3',1),(100.15,59),(108.9,59),pos('D4',1)],width=.6)
+path('CLAMP',[pos('D3',1),(100.15,59),(113.4,59),pos('D4',1)],width=.6)
 path('SW',[pos('R3',1),(97.475,62.875),(98,63.4),(98.128023,63.4)],width=.35)
 path('RFB',[pos('R3',2),pos('U1',6)],width=.25)
 path('RREF',[pos('U1',7),(95.26,58.365),pos('R4',1)],width=.25)
@@ -266,10 +275,10 @@ for ref in ['J1','C1','C2','C5','C7','R2','R4','U1']:
             else:
                 v=(x,y)
                 path('PGND',[(x,y),v],width=.6);via('PGND',v,.6,.3)
-for v in [(85,52),(100,50),(113,54),(112,63),(84.5,64)]:via('PGND',v,.6,.3)
+for v in [(85,52),(100,50),(113,54),(115.5,64),(84.5,64)]:via('PGND',v,.6,.3)
 # Additional local stitching: never cross the isolation corridor or winding area.
 for v in [(86,42),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
-          (99,52.5),(103,54),(114.5,42),(115,54),(114,58),(114,63)]:via('PGND',v,.6,.3)
+          (99,52.5),(103,54),(114.5,42),(115,54),(115.5,58),(115.5,63)]:via('PGND',v,.6,.3)
 for v in [(87,108),(90,108),(94,108),(111,108),(112.5,115),(87,115),
           (87,123),(95.5,122.8),(107,123),(112,128),(91,130),(107,130),(100,131.5),(99,115)]:via('GND_ISO',v,.6,.3)
 for v in [(92,112),(111,112),(92,123),(111,123),(100,126)]:via('GND_ISO',v,.6,.3)

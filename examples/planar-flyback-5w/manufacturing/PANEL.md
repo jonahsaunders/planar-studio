@@ -1,4 +1,4 @@
-# JLCPCB-managed panelization — A4 handoff
+# JLCPCB-managed panelization — A5 handoff
 
 JLCPCB is to prepare the assembly panel from the **44 × 94 mm single-board design**. The package supplies one converter's geometry and placement data. No customer-designed panel is supplied or required by this handoff.
 
@@ -20,7 +20,7 @@ All coordinates use the single board's lower-left datum: X is right and Y is up.
 4. Return the assembly orientation preview, including U1, diodes, polarized capacitors and connectors, for review before manufacture. Agree tooling, stencil, connector soldering and the component-temperature profile in FABRICATION.md.
 5. Complete soldering, inspection and panel separation before the separately procured factory-gapped ferrite cores are installed.
 
-JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the A4 single-board design.
+JLCPCB offers [Panel by JLCPCB](https://jlcpcb.com/help/article/how-do-i-order-a-panel); its [panelization guidance](https://jlcpcb.com/help/article/pcb-panelization) describes automatic tooling holes and fiducials on requested edge rails. The online service restricts complex outlines, so obtain factory confirmation of a suitable panel and separation method for this board. Its [Standard assembly limits](https://jlcpcb.com/capabilities/pcb-assembly-capabilities) list a 70 × 70 mm minimum and require rails and fiducials. The factory must resolve those handling requirements around the A5 single-board design.
 
 ## Withdrawn customer panel
 

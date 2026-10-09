@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-09-30",
+  "review_date": "2026-10-09",
   "status": "All components reviewed; analytical/package checks complete with explicit hardware/process qualification gates. Not a production release.",
   "components": [
     {
@@ -242,17 +242,17 @@
     },
     {
       "reference": "R6",
-      "expected_mpn": "SR1206FR-7T39RL",
-      "expected_footprint": "R_1206_3216Metric",
-      "rating": "39 ohm +/-1%, 100 ppm/C; SR1206 7T = 0.75 W at 70 C, linear derating to zero at 155 C. Continuous-pulse curve applies in addition to average power.",
-      "package_review": "3.1 x 1.6 x 0.55 mm body; retained 1206 land pattern and generic 3D envelope; interchangeable terminals.",
-      "use_case": "SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
-      "remaining_validation": "Verify measured repetitive pulse/average power and body temperature; 680 pF or 1 nF are not approved substitutions. Tune from 39 ohm/470 pF.",
+      "expected_mpn": "CRH2512F39R0E04Z",
+      "expected_footprint": "R_EverOhms_CRH2512",
+      "rating": "39 ohm +/-1%, 100 ppm/C; 2 W at 70 C, linear ambient derating to zero at 155 C. No repetitive-pulse rating is supplied.",
+      "package_review": "Ever Ohms CRH S-10-12-16-13 pp5-6: body 6.30 +/-0.20 x 3.20 +/-0.15 x 0.65 +/-0.10 mm. Recommended land gap 4.90, outer span 8.10 and width 3.40 mm; implemented 1.60 x 3.40 mm lands at +/-3.25. Generic 2512 STEP is an illustrative envelope; terminals interchangeable.",
+      "use_case": "39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.",
+      "remaining_validation": "Measure repetitive pulse stress, mean(v^2/R), local ambient and body temperature; 680 pF/1 nF remain unapproved tuning changes despite improved average-power margin.",
       "expected_nets": {
         "1": "VIN",
         "2": "SNUB"
       },
-      "source": "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf"
+      "source": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263"
     },
     {
       "reference": "R7",
@@ -347,11 +347,11 @@
     },
     {
       "reference": "T1",
-      "expected_mpn": "PS-MAG-001 A0",
-      "expected_footprint": "Planar_EELP32_4T_2T",
-      "rating": "Prepared TDK N87 EELP32 pair, nominal 0.21 mm center-only gap; 4:2 turns; nominal primary 11.95 uH, acceptance 10.16-13.74 uH.",
-      "package_review": "Custom integral winding footprint, five 0.40 mm plated interlayer holes. Two primary layers series, two secondary layers parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.",
-      "use_case": "Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.",
+      "expected_mpn": "PS-MAG-002 A2",
+      "expected_footprint": "Planar_EELP22_4T_2T",
+      "rating": "Two TDK N87 ELP22 B66285G0050X187 halves, each factory-gapped 0.05 mm; two B66286A2000X000 clips; 4:2 turns; estimated primary 13.12 uH, measured acceptance 11.0\u201314.6 uH.",
+      "package_review": "Custom integral winding footprint; native net, copper, interlayer-hole and slot checks in independent-checks.json. Two primary layers in series, two secondary layers in parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.",
+      "use_case": "Flyback energy-storage transformer. At maximum accepted 14.6 uH, estimated flux is 0.253 T at 5.4 A; typical 7.2 A restart gives 0.337 T and requires bias/fault qualification. No grinding or bonding is specified.",
       "remaining_validation": "Custom magnetic assembly remains unqualified: measure L versus DC bias/temperature, leakage, core/fringing/AC losses, gap tolerance and retention. Functional low-voltage isolation only; no safety rating.",
       "expected_nets": {
         "1": "VIN",
@@ -360,14 +360,14 @@
         "4": "SEC_A",
         "5": "unconnected-(T1-P_MID-Pad5)"
       },
-      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf"
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf"
     },
     {
       "reference": "H1",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -377,8 +377,8 @@
       "reference": "H2",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -388,8 +388,8 @@
       "reference": "H3",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
@@ -399,8 +399,8 @@
       "reference": "H4",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},

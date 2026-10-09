@@ -12,7 +12,9 @@ R = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--kicad-cli', default=os.environ.get('KICAD_CLI', 'kicad-cli'))
 parser.add_argument('--node', default='node')
-parser.add_argument('--cadquery-python', required=True, help='Python with cadquery==2.6.1, pygerber==2.4.3 and Pillow')
+parser.add_argument('--kicad-python', default=sys.executable, help='KiCad Python executable or wrapper')
+parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding; default retains the validated A4 magnetic geometry')
+parser.add_argument('--cadquery-python', required=True, help='Python with cadquery 2.6.1 or 2.7.0, pygerber==2.4.3 and Pillow')
 args = parser.parse_args()
 os.environ.setdefault('KICAD_CONFIG_HOME', str(R / '.kicad-config'))
 (R / '.kicad-config').mkdir(exist_ok=True)
@@ -21,10 +23,11 @@ def run(*command):
     subprocess.run([str(c) for c in command], cwd=R, check=True)
 
 def py(name):
-    run(sys.executable, R / 'scripts' / name)
+    run(args.kicad_python, R / 'scripts' / name)
 
-run(args.cadquery_python, R / 'scripts/generate-core-model.py')
-run(args.node, R / 'scripts/generate-winding.mjs')
+if args.regenerate_magnetics:
+    run(args.cadquery_python, R / 'scripts/generate-core-model.py')
+    run(args.node, R / 'scripts/generate-winding.mjs')
 py('generate-schematic.py')
 py('generate-board.py')
 sch = 'kicad/PS-FLYBACK-5W.kicad_sch'
@@ -39,16 +42,16 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-silkscreen.py')
-py('verify-a3-layout.py')
+py('verify-snubber-revision.py')
 py('verify-default-stack.py')
-py('verify-mounting-clearance.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
 run(args.cadquery_python, R / 'scripts/audit-3d-solids.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/verify-core-fit.py', '--kicad-cli', args.kicad_cli)
 py('calculate.py')
-py('audit-snubber.py')
 py('cycle-model.py')
+py('audit-components.py')
+py('render-component-audit.py')
 run(args.kicad_cli, 'pcb', 'export', 'gerbers', '--layers',
     'F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.Silkscreen,B.Silkscreen,Edge.Cuts',
     '--use-drill-file-origin', '--subtract-soldermask', '--check-zones', '-o', 'manufacturing/gerbers/', pcb)
@@ -60,6 +63,7 @@ py('manufacturing-data.py')
 # Calculations and CSV exports are inputs to the feedback provenance record.
 # Normalize them before recording hashes so Windows publication stays exact.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
+py('audit-snubber.py')
 py('verify-placement.py')
 py('render-placement.py')
 py('verify-feedback.py')
@@ -79,7 +83,8 @@ run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A4'
+    package = Path(temp) / 'PS-FLYBACK-5W-A5'
+    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A5-review-package.zip', R.parent / 'PS-FLYBACK-5W-A5-review-package.zip')
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

@@ -65,13 +65,13 @@
       "capacitance_pF": 680,
       "estimated_W": 0.6477408000000002,
       "exceeds_fitted_rating": false,
-      "exceeds_80pct_fitted_rating": true
+      "exceeds_80pct_fitted_rating": false
     },
     {
       "capacitance_pF": 1000,
       "estimated_W": 0.9525600000000004,
-      "exceeds_fitted_rating": true,
-      "exceeds_80pct_fitted_rating": true
+      "exceeds_fitted_rating": false,
+      "exceeds_80pct_fitted_rating": false
     }
   ],
   "full_load_output_cap_rms_upper_A": 1.864413006467689,
@@ -84,7 +84,7 @@
     "UVLO corner uses specified threshold/current limits but typical 14 mV hysteresis; verify 18 V startup at temperature.",
     "Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples."
   ],
-  "snubber_resistor_rating_W_at_70C": 0.75,
+  "snubber_resistor_rating_W_at_70C": 2.0,
   "snubber_loss_with_capacitance_tolerance_W": 0.4700883600000002,
   "snubber_loss_full_target_swing_CV2f_W": 0.6414400985917512,
   "snubber_full_swing_scope": "Screening bound using full VIN+17.5 V excursion each cycle and worksheet Lmin frequency; not a measured repetitive-power result. Little thermal headroom remains; accept only after waveform and temperature checks, with redesign if necessary."

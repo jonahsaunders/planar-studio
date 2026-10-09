@@ -293,20 +293,20 @@
         "R6"
       ],
       "quantity_per_board": 1,
-      "mpn": "SR1206FR-7T39RL",
-      "manufacturer": "Yageo",
+      "mpn": "CRH2512F39R0E04Z",
+      "manufacturer": "Ever Ohms Tech",
       "original_bom_code": null,
-      "verified_jlcpcb_code": "C6683830",
-      "headline_stock": 5000,
-      "available_order_quantity": 5000,
+      "verified_jlcpcb_code": "C175263",
+      "headline_stock": 6123,
+      "available_order_quantity": 4986,
       "displayed_minimum": 1,
-      "package": "1206",
+      "package": "2512",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C6683830",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
+      "note": "Exact MPN, resistance, power and orderable quantity checked from public JLCPCB data. 39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.",
+      "observed_local_date": "2026-10-09"
     },
     {
       "references": [
@@ -487,9 +487,9 @@
   "counts": {
     "Stocked": 20
   },
-  "source_bom_sha256": "3921f4757fdb620ec25f67326c142ba2927cd2789b6043ce6f530a929043e71a",
+  "source_bom_sha256": "0383a43f25caabe405f13aedc629907b45f00f7e47a02df68234030a3223b473",
   "review_quantity_boards": 5,
   "inventory_covers_twice_board_quantities": true,
   "supplier_attrition_allocation_confirmed": false,
-  "conclusion": "All 20 exact electronic MPNs had orderable stock on 2026-09-30. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
+  "conclusion": "All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
 }

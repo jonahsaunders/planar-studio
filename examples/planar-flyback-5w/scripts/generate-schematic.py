@@ -94,7 +94,7 @@ add('R2','61.9k 1%','R',40.64,129.54,{'1':'UVLO','2':'PGND'},R)
 add('R3','113k 0.1%','R',119.38,106.68,{'1':'SW','2':'RFB'},R)
 add('R4','10.7k 0.1%','R',144.78,137.16,{'1':'RREF','2':'PGND'},R)
 add('R5','127k 0.1%','R',119.38,132.08,{'1':'TC','2':'RREF'},R,rot=180,purpose='Initial temperature compensation; bench trim required')
-add('R6','39R 0.75 W','R',106.68,57.15,{'1':'VIN','2':'SNUB'},'Resistor_SMD:R_1206_3216Metric')
+add('R6','39R 2 W','R',106.68,57.15,{'1':'VIN','2':'SNUB'},'Resistor_SMD:R_1206_3216Metric')
 add('C6','470p / 100 V C0G','C',106.68,77.47,{'1':'SNUB','2':'SW'},'Capacitor_SMD:C_0805_2012Metric')
 add('D3','DFLS1100-7','D',139.7,77.47,{'1':'CLAMP','2':'SW'},'Diode_SMD:D_PowerDI-123',rot=270,mpn='DFLS1100-7')
 add('D4','SMAJ15A','TVS',139.7,57.15,{'1':'CLAMP','2':'VIN'},D,rot=90,mpn='SMAJ15A',purpose='Avalanche clamp; waveform validation required')
@@ -210,7 +210,7 @@ for i,note in enumerate([
   'T1 pin 5 is the internal primary series via.',
 ]):text(note,184.15,110.49+i*4.445,1.0)
 text('PLANAR FLYBACK  /  5 W',12.7,13.97,2.54,True)
-text('18-36 V input  |  isolated 5 V / 1 A  |  A4 engineering prototype',12.7,19.05,1.27)
+text('18-36 V input  |  isolated 5 V / 1 A  |  A5 engineering prototype',12.7,19.05,1.27)
 box(12.7,22.86,284.48,163.83,'18-36 V INPUT / FLYBACK POWER STAGE')
 text('PROTOTYPE REVIEW  /  NOT RELEASED FOR MANUFACTURE',12.7,170.18,1.27,True)
 for i,note in enumerate([
@@ -222,7 +222,7 @@ text('MOUNTING',120.65,171.45,1.27,True)
 text('4 x M3 / 3.2 mm NPTH',120.65,190.5,1.0)
 text(f"{mechanical['pattern_mm'][0]:g} x {mechanical['pattern_mm'][1]:g} mm pattern",120.65,194.945,1.0)
 root=f'''(kicad_sch (version 20250114) (generator "eeschema") (uuid {uid(NAME)}) (paper "A4")
-(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-10-08") (rev "A4-development") (company "Planar Studio example"))
+(title_block (title "18-36 V to isolated 5 V / 1 A planar flyback") (date "2026-10-09") (rev "A5-development") (company "Planar Studio example"))
 (lib_symbols {''.join(definitions.values())}) {''.join(elements)} (embedded_fonts no))'''
 (CAD/f'{NAME}.kicad_sch').write_text(root,encoding='utf8')
 lib='(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(v.replace(f'"Flyback:{k}"',q(k),1) for k,v in definitions.items())+')'

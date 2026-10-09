@@ -1,8 +1,6 @@
-> Historical A1 audit. Electronic part rationale remains useful; Current A3 core, layout, mounting clearance, calculations and release evidence are in README.md and VALIDATION.md. Do not use old core preparation or dimensions.
+# Component audit — PS-FLYBACK-5W A5
 
-# Component audit — PS-FLYBACK-5W A1
-
-Reviewed 2026-09-30. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
+Reviewed 2026-10-09. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 
 The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOURCING.md). This is an engineering prototype: ratings and calculations do not establish measured performance or factory process acceptance.
 
@@ -10,9 +8,9 @@ The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOUR
 | --- | ---: | --- |
 | Nominal output at 0.3 V sampled diode drop | 4.980 V | Requires output and temperature trim |
 | RFB resistive current at 17.5 V SW−VIN | 159.85 µA | Excludes capacitive current and pin excursions |
-| Snubber loss including +5% capacitance | 0.509 W | 0.75 W R6 rating at 70 °C; measure pulses and temperature |
+| Snubber loss including +5% capacitance | 0.470 W | 2 W R6 rating at 70 °C; measure pulses and temperature |
 | R8 loss if all input ripple enters its branch | 0.922 W | 2 W rating needs 300 mm² copper; actual thermal capacity unverified |
-| Bulk-only output ripple sizing | 50.58 mV | Boundary estimate; burst/control behavior not represented |
+| Bulk-only output ripple sizing | 51.08 mV | Boundary estimate; burst/control behavior not represented |
 
 R8 uses Bourns' recommended 2.45 × 3.7 mm lands, centered 5.15 mm apart. The stocked feedback network preserves the original compensation ratio within 1%. All three feedback resistors must change together. [Feedback assumptions](FEEDBACK-REVISION.md).
 
@@ -180,9 +178,9 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 [Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
-**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
+**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
+**Footprint and pin mapping:** Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 × 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.
 
 **Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -192,9 +190,9 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 [Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
-**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
+**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
+**Footprint and pin mapping:** Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 × 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.
 
 **Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -204,9 +202,9 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 [Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
-**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
+**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
+**Footprint and pin mapping:** Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 × 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.
 
 **Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -216,9 +214,9 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 [Manufacturer/source](https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod) · MountingHole_3.2mm_M3_ExposedSubstrate_Edge
 
-**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.
+**Rating:** M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.
 
-**Footprint and pin mapping:** Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.
+**Footprint and pin mapping:** Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 × 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.
 
 **Use:** Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.
 
@@ -308,17 +306,17 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 **Remaining validation:** Confirm 17.5 V SW-VIN peak including overshoot and measurement uncertainty, RFB pin voltage/current, output trim and temperature compensation.
 
-### R6 — SR1206FR-7T39RL
+### R6 — CRH2512F39R0E04Z
 
-[Manufacturer/source](https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf) · R_1206_3216Metric
+[Manufacturer/source](https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263) · R_EverOhms_CRH2512
 
-**Rating:** 39 ohm +/-1%, 100 ppm/C; SR1206 7T = 0.75 W at 70 C, linear derating to zero at 155 C. Continuous-pulse curve applies in addition to average power.
+**Rating:** 39 ohm +/-1%, 100 ppm/C; 2 W at 70 C, linear ambient derating to zero at 155 C. No repetitive-pulse rating is supplied.
 
-**Footprint and pin mapping:** 3.1 x 1.6 x 0.55 mm body; retained 1206 land pattern and generic 3D envelope; interchangeable terminals.
+**Footprint and pin mapping:** Ever Ohms CRH S-10-12-16-13 pp5-6: body 6.30 +/-0.20 x 3.20 +/-0.15 x 0.65 +/-0.10 mm. Recommended land gap 4.90, outer span 8.10 and width 3.40 mm; implemented 1.60 x 3.40 mm lands at +/-3.25. Generic 2512 STEP is an illustrative envelope; terminals interchangeable.
 
-**Use:** SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.
+**Use:** 39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.
 
-**Remaining validation:** Verify measured repetitive pulse/average power and body temperature; 680 pF or 1 nF are not approved substitutions. Tune from 39 ohm/470 pF.
+**Remaining validation:** Measure repetitive pulse stress, mean(v^2/R), local ambient and body temperature; 680 pF/1 nF remain unapproved tuning changes despite improved average-power margin.
 
 ### R7 — RC1206FR-07220RL
 
@@ -344,15 +342,15 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 **Remaining validation:** Measure R8 temperature at maximum ripple and ambient; 2 W rating is conditional on test copper. Qualify pulse stress for abrupt input separately. Obtain a compatible assembly profile including the CRM recommendation and F1/C3/C8 limits.
 
-### T1 — PS-MAG-001 A0
+### T1 — PS-MAG-002 A2
 
-[Manufacturer/source](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf) · Planar_EELP32_4T_2T
+[Manufacturer/source](https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf) · Planar_EELP22_4T_2T
 
-**Rating:** Prepared TDK N87 EELP32 pair, nominal 0.21 mm center-only gap; 4:2 turns; nominal primary 11.95 uH, acceptance 10.16-13.74 uH.
+**Rating:** Two TDK N87 ELP22 B66285G0050X187 halves, each factory-gapped 0.05 mm; two B66286A2000X000 clips; 4:2 turns; estimated primary 13.12 uH, measured acceptance 11.0–14.6 uH.
 
-**Footprint and pin mapping:** Custom integral winding footprint, five 0.40 mm plated interlayer holes. Two primary layers series, two secondary layers parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.
+**Footprint and pin mapping:** Custom integral winding footprint; native net, copper, interlayer-hole and slot checks in independent-checks.json. Two primary layers in series, two secondary layers in parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.
 
-**Use:** Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.
+**Use:** Flyback energy-storage transformer. At maximum accepted 14.6 uH, estimated flux is 0.253 T at 5.4 A; typical 7.2 A restart gives 0.337 T and requires bias/fault qualification. No grinding or bonding is specified.
 
 **Remaining validation:** Custom magnetic assembly remains unqualified: measure L versus DC bias/temperature, leakage, core/fringing/AC losses, gap tolerance and retention. Functional low-voltage isolation only; no safety rating.
 
@@ -372,6 +370,6 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 The [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md) covers clamp/RFB waveforms, startup, full/light load, faults, temperature, magnetics and regulation. Require SW−VIN ≤17.5 V including uncertainty, SW <60 V and VIN <42 V. Controlled input ramp is the initial condition; abrupt hot-plug remains unqualified.
 
-Raw DigiKey cores need center-leg preparation, retention and installation after soldering. Adhesive, strap and illustrative mounting hardware need process/mechanical qualification; none establishes a safety-isolation rating. The six-layer stack, slots, panel and reflow profile need factory acceptance.
+Factory-gapped DigiKey cores and spring clips are installed after soldering. Core fit, clip retention and illustrative mounting hardware need mechanical qualification; none establishes a safety-isolation rating. The six-layer stack, slots, panel and reflow profile need factory acceptance.
 
 Run rebuild.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py and audit-3d-solids.py, then refresh previews and manifest. Historical revision comparisons do not validate a changed board.

@@ -1,5 +1,5 @@
 {
-  "revision": "A3-development",
+  "revision": "A5-development",
   "baseline_commit": "d802dfb665ab7df4fcd8f37760fdfa498653a258",
   "board_bounds_mm": [
     78,
@@ -21,5 +21,46 @@
   ],
   "source_primary_max_y_mm": 69,
   "source_secondary_min_y_mm": 102,
-  "method": "Rigidly translate each electronics block, its local tracks/vias and ground zones. Keep T1 winding fixed and shorten five connection segments. Move one ground stitching via and enlarge all mounting copper exclusions to 10 mm."
+  "method": "Rigidly translate each electronics block, its local tracks/vias and ground zones. Keep T1 winding fixed and shorten five connection segments. Move one ground stitching via and enlarge all mounting copper exclusions to 10 mm.",
+  "snubber_revision": {
+    "baseline_commit": "d50da5e73e18db090fe29968531e7b02828afc73",
+    "R6": "39 ohm 2 W CRH2512F39R0E04Z on manufacturer recommended lands",
+    "moved_references": [
+      "R6",
+      "D4"
+    ],
+    "ground_stitch_moves_mm": [
+      [
+        [
+          114,
+          63
+        ],
+        [
+          115.5,
+          63
+        ]
+      ],
+      [
+        [
+          114,
+          68
+        ],
+        [
+          115.5,
+          68
+        ]
+      ],
+      [
+        [
+          112,
+          68
+        ],
+        [
+          115.5,
+          69
+        ]
+      ]
+    ],
+    "scope": "Local VIN/SNUB/CLAMP routing and three nearby ground stitches only; retain all other component placements, board outline, stack and winding."
+  }
 }

@@ -1,6 +1,6 @@
-# A4 snubber review — 2026-10-09
+# A5 snubber review — 2026-10-09
 
-**Retain 39 Ω / 470 pF / SMAJ12A for controlled first-article tuning. This is not a thermal, pulse or clamp qualification.** No electronic parts or copper were changed in this review.
+**Retain 39 Ω / 470 pF / SMAJ12A for controlled first-article tuning. This is not a thermal, pulse or clamp qualification.** R6 is upgraded from 0.75 W / 1206 to 2 W / 2512, with a new manufacturer land pattern and local routing. C6 and the clamp parts are retained.
 
 The native schematic netlist confirms VIN–R6–C6–SW across the primary, with a separate D3/D4 diode/TVS clamp. ADI's LT8302 Rev. G, page 16, gives 39 Ω / 470 pF as a starting point and requires tuning from measured ringing; it is not a guaranteed optimum for this planar transformer.
 
@@ -22,9 +22,9 @@ The 53.5 V transition is 36 V plus the 17.5 V differential peak target. Treating
 
 ## Power derating and repetitive pulses
 
-Yageo SR V14 confirms **SR1206FR-7T39RL is 0.75 W at 70 °C**, with linear ambient derating to zero at 155 °C. At 85 °C local ambient its rating is only **0.618 W**, below the conservative 0.641 W screen. At or below 70 °C, an 80%-of-rating allowance is **0.600 W**: the conservative screen does **not** meet that allowance. Its mathematical full-rating crossing is about **82.3 °C local ambient**; that is not an allowable measured body temperature or a qualified product rating.
+Ever Ohms CRH S-10-12-16-13 (2023-08-16), pages 2 and 6, specifies **CRH2512F39R0E04Z as 2 W at 70 °C**, with linear ambient derating to zero at 155 °C. The conservative 0.641 W screen is **32.1%** of its nominal rating. At 85 °C local ambient the rating is **1.647 W**, leaving **1.318 W** with an 80%-of-rating allowance; at 100 °C the rating is **1.294 W**. These are datasheet ambient-derating calculations, not allowable measured body temperatures or verified PCB thermal performance.
 
-At 493.5 pF and R6's initial minimum resistance of 38.61 Ω, an ideal 53.5 V edge gives roughly **1.39 A initial current, 74.1 W initial power, 0.706 µJ per edge, and a 19.1 ns RC time constant**. Its equal-energy rectangular duration is about 9.53 ns. Yageo's applicable **D/F-tolerance continuous-pulse graph, Fig. 7-3**, starts at 1 µs. Do not extrapolate that graph into a nanosecond pulse approval, confuse it with the J/K/M curve, or treat the average wattage rating as a repetitive-pulse guarantee. Actual edge rate, parasitics, ringing, resistor temperature and pulse behavior must be assessed.
+At 493.5 pF and R6's initial minimum resistance of 38.61 Ω, an ideal 53.5 V edge gives roughly **1.39 A initial current, 74.1 W initial power, 0.706 µJ per edge, and a 19.1 ns RC time constant**. Its equal-energy rectangular duration is about 9.53 ns. The CRH datasheet specifies a short-time overload test but **no repetitive-pulse curve**. Its 2.5× rated continuous working voltage / 2 s overload test does not establish repetitive nanosecond endurance. Do not treat the average wattage rating as a repetitive-pulse guarantee. Actual edge rate, parasitics, ringing, resistor temperature and pulse behavior must be assessed.
 
 The TVS's 19.9 V specification at 20.1 A does not establish the actual converter clamp voltage. Demonstrate SW–VIN ≤17.5 V including uncertainty, SW <60 V target, and the independent RFB voltage/current limits. Measure clamp repetitive energy and temperatures as well.
 
@@ -36,4 +36,8 @@ Measure across input/load/temperature, startup, no-load bursts, overload and sho
 
 [Machine-readable calculation and source hashes](evidence/audit/snubber-checks.json) · [Prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md)
 
-Sources checked October 9, 2026: [ADI LT8302 Rev. G, pp. 2, 16–17](https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf), [Yageo SR V14, pp. 3, 6, 8](https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf), [Diodes SMAJ](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf).
+Sources checked October 9, 2026: [ADI LT8302 Rev. G, pp. 2, 16–17](https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf), [Ever Ohms CRH datasheet linked by JLCPCB, pp. 2, 5–7](https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263), [Diodes SMAJ](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf).
+
+## A5 package and layout
+
+R6 uses `Flyback:R_EverOhms_CRH2512`: body 6.30 × 3.20 mm nominal, two 1.60 × 3.40 mm lands with 4.90 mm inner gap and 8.10 mm outer span (6.50 mm pitch). Datasheet page 6 supplies these dimensions. The existing generic 2512 STEP model is illustrative. The electrical value remains 39 Ω; D4 moves 4.5 mm right and three local ground stitches move. The independently checked local-change region is X=98.5–117 mm, Y=62–72.5 mm. All other component pads, the winding, board outline and stack are retained.
