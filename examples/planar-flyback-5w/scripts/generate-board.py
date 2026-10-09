@@ -104,8 +104,8 @@ for layer,poly in bylayer.items():
 for i,p in enumerate(art['pads'],1):body+=pad(i,p['x'],-p['y'],p['w'],p['h'],p['drill'],'circle')
 for v in art['vias']:body+=pad(5,v['x'],-v['y'],v['diameter'],v['diameter'],v['drill'],'circle',layers='"*.Cu"')
 body+=rect(-13.6,-14.5,13.6,15.2)+rect(-10.9,-7.9,10.9,7.9,'F.Fab',.1)
-for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(3,10.3,'4 SEC')]:
-    body+=f'(fp_text user "{txt}" (at {x} {y}) (layer "F.SilkS") (effects (font (size .8 .8) (thickness .12))))'
+for x,y,txt in [(3,-14.3,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.4,'4 SEC')]:
+    body+=f'(fp_text user "{txt}" (at {x} {y}) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15))))'
 (LIB/'Planar_EELP22_4T_2T.kicad_mod').write_text(footprint('Planar_EELP22_4T_2T',body,'exclude_from_pos_files',0),encoding='utf8')
 # A single polygon per winding layer gives KiCad a continuous net-tie
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
@@ -145,16 +145,20 @@ for p in data['parts']:
             pd.SetThermalGap(mm(.3));pd.SetLocalThermalSpokeWidthOverride(mm(.5))
     board.Add(f);x,y,angle=placement[p['ref']];f.SetPosition(pt(x,y));f.SetOrientationDegrees(angle)
     f.Value().SetVisible(False)
-    f.Reference().SetTextSize(pt(.9,.9));f.Reference().SetTextThickness(mm(.14));f.Reference().SetTextAngle(pcb.EDA_ANGLE(0,pcb.DEGREES_T))
+    # Standard JLCPCB legend strokes, including bundled footprint outlines.
+    for item in f.GraphicalItems():
+        if item.GetLayer() in (pcb.F_SilkS,pcb.B_SilkS) and isinstance(item,pcb.PCB_SHAPE) and item.GetWidth()>0:
+            item.SetWidth(max(item.GetWidth(),mm(.15)))
+    f.Reference().SetTextSize(pt(1,1));f.Reference().SetTextThickness(mm(.15));f.Reference().SetTextAngle(pcb.EDA_ANGLE(0,pcb.DEGREES_T))
     if p['ref']=='T1':f.Reference().SetVisible(False)
     refs={'J1':(108.5,38.5),'F1':(90.5,37.8),'D1':(84.5,46),'U1':(91.5,54.8),
-          'C1':(84.2,62.8),'C2':(104,55.8),'C5':(84.6,57.3),
+          'C1':(84.0,62.8),'C2':(104,55.8),'C5':(84.6,57.3),
           'R1':(90.5,49.5),'R2':(93.5,49.5),'R3':(96.65,61.1),
-          'R4':(98.3,56.7),'R5':(96.2,54.5),'D3':(100,55.7),
+          'R4':(98.0,56.45),'R5':(96.2,54.5),'D3':(100,55.7),
           'D4':(112.3,60.9),'R6':(107,65.3),'C6':(100,65.2),
-          'D2':(97.8,110),'C3':(97,122.6),'C4':(106.5,109),
+          'D2':(97.55,110),'C3':(97,123.0),'C4':(106.5,109),
           'C7':(111,54.5),'R8':(99,49.8),'C8':(90,122.8),
-          'R7':(111.7,118.5),'J2':(94,129)}
+          'R7':(111.7,118.5),'J2':(93.7,129)}
     if p['ref'].startswith('H'):f.Reference().SetPosition(pt(x,y+(4.4 if y<85 else -4.4)))
     if p['ref'] in refs:f.Reference().SetPosition(pt(*refs[p['ref']]))
     fps[p['ref']]=f
@@ -183,6 +187,7 @@ for loop in model['assembly']['openings']:
     rounded_rect(min(xs),min(ys),max(xs),max(ys),.5)
 
 def txt(s,x,y,size=1,layer=pcb.F_SilkS):
+    size=max(size,1.0)  # JLCPCB standard legend minimum; no precision-print upgrade.
     t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);board.Add(t)
     if layer==pcb.B_SilkS:t.SetMirrored(True)
 txt('IN +    -',100,35,.85)
@@ -285,7 +290,7 @@ for name,net,point in [('PGND','PGND',(92.4,62.65)),('ISO_GND','GND_ISO',(108.2,
     v.SetBackTentingMode(pcb.TENTING_MODE_TENTED)
     probe_sites.append({'name':name,'net':net,'position_mm':point,'land_diameter_mm':1.2,
                         'type':'Top-exposed filled/capped via land; no installed part'})
-txt('PGND',90,63.2,.8);txt('ISO GND',111.5,115.3,.8)
+txt('PGND',89.5,63.2,1);txt('ISO GND',111.5,115.3,1)
 for name,pin in [('VIN',1),('SW',2)]:
     probe_sites.append({'name':name,'net':name,'position_mm':pos('T1',pin),
                         'type':f'Existing exposed T1 pad {pin}; no added SW stub'})
@@ -337,7 +342,10 @@ project.setdefault('erc',{}).setdefault('rule_severities',{})['four_way_junction
 project['board']['design_settings']['rules'].update({
     'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,
     'min_through_hole_diameter':.3,'min_copper_edge_clearance':.5,
-    'min_hole_clearance':.25,'min_hole_to_hole':.25})
+    'min_hole_clearance':.25,'min_hole_to_hole':.25,
+    'min_text_height':1.0,'min_text_thickness':.15,'min_silk_clearance':.15})
+project['board']['design_settings']['defaults'].update({
+    'silk_line_width':.15,'silk_text_size_h':1.0,'silk_text_size_v':1.0,'silk_text_thickness':.15})
 project_file.write_text(json.dumps(project,indent=2))
 (ROOT/'evidence/pad-positions.json').write_text(json.dumps({f'{r}.{n}':[xy(p.GetPosition()) for p in ps] for (r,n),ps in pads.items()},indent=2))
 print(f'{out}: {len(fps)} footprints, {len(list(board.GetTracks()))} routes/vias')

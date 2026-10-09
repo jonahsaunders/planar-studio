@@ -1,0 +1,276 @@
+{
+  "text_count": 42,
+  "graphic_stroke_count": 73,
+  "minimum_text_height_mm": 1.0,
+  "minimum_text_stroke_mm": 0.15,
+  "minimum_graphic_stroke_mm": 0.15,
+  "silkscreen_clearance_rule_mm": 0.15,
+  "native_DRC_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "texts": [
+    {
+      "text": "PGND",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "2 x 0.05 mm GAPPED ELP22",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "18-36V DC",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "ISO GND",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "5V 1A",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "IN +    -",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "OUT -    +",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "PCB PLANAR 4:2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.1,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "FUNCTIONAL ISOLATION",
+      "layer": "B.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "A4 ENGINEERING PROTOTYPE",
+      "layer": "B.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "F1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "U1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R7",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C8",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C7",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "J2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "2 SW",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "3 GND",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "1 VIN",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "4 SEC",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R8",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "J1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    }
+  ],
+  "source": "https://jlcpcb.com/capabilities/pcb-capabilities/",
+  "scope": "CAD legend/clearance verification, not factory process or hardware qualification.",
+  "baseline_id": "b40d63d3d45d7db478451056a35de7b77f0cc7dd",
+  "baseline_board_SHA256": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
+  "all_non_silkscreen_board_content_identical": true,
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "954780a21879f9679a7f0748dbf2d5228fafc445d5e73f44690f995cc2fd1dee",
+    "kicad/PS-FLYBACK-5W.kicad_pro": "e5ba13ed0b785999d6d9329614baa3840a5b28a346ceb9355a2fe5f804a667ff",
+    "evidence/board-drc.json": "6b899f33bf3c3e760dc5f72269252a6755a2536699994a37cab26257eb01b0a0",
+    "scripts/verify-silkscreen.py": "ccc16cf7260baa8dc80af9fd0681fc2eb13d682b2c79f2d0a72ccf4e77573cfb"
+  }
+}

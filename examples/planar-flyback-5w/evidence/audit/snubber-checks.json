@@ -1,0 +1,113 @@
+{
+  "scope": "Analytical screens only. No hardware results, guaranteed controller frequency bound, nonlinear clamp model or repetitive-pulse approval.",
+  "native_netlist_and_circuit_topology_match": true,
+  "topology": "VIN--R6--C6--SW, in parallel with the primary; D3/D4 are a separate diode/TVS clamp.",
+  "voltage_basis": "At steady VIN, the RC source moves from about -VIN to +reflected voltage; delta V includes VIN. Using only 17.5 V would undercount turn-on loss. A 53.5 V transition is not 53.5 V DC across C6.",
+  "R6_MPN": "SR1206FR-7T39RL",
+  "C6_MPN": "CC0805JRNPO0BN471",
+  "capacitance_max_F": 4.935000000000001e-10,
+  "resistance_min_initial_tolerance_ohm": 38.61,
+  "worksheet_full_load_cases": [
+    {
+      "input_V": 18.0,
+      "worksheet_frequency_Hz": 290779.98033228103,
+      "plateau_swing_V": 27.8,
+      "nominal_C_plateau_W": 0.10562140800000006,
+      "maximum_C_plateau_W": 0.11090247840000007,
+      "target_peak_swing_V": 35.5,
+      "maximum_C_target_swing_W": 0.18084577455048922
+    },
+    {
+      "input_V": 24.0,
+      "worksheet_frequency_Hz": 360063.02300339635,
+      "plateau_swing_V": 33.8,
+      "nominal_C_plateau_W": 0.19333468800000003,
+      "maximum_C_plateau_W": 0.20300142240000008,
+      "target_peak_swing_V": 41.5,
+      "maximum_C_target_swing_W": 0.30602850016491034
+    },
+    {
+      "input_V": 36.0,
+      "worksheet_frequency_Hz": 454110.33351766766,
+      "plateau_swing_V": 45.8,
+      "nominal_C_plateau_W": 0.4477032000000002,
+      "maximum_C_plateau_W": 0.4700883600000002,
+      "target_peak_swing_V": 53.5,
+      "maximum_C_target_swing_W": 0.6414400985917511
+    }
+  ],
+  "frequency_sensitivity_cases": [
+    {
+      "frequency_Hz": 350000,
+      "maximum_C_target_swing_W": 0.49438213125000013
+    },
+    {
+      "frequency_Hz": 380000,
+      "maximum_C_target_swing_W": 0.5367577425000001
+    },
+    {
+      "frequency_Hz": 420000,
+      "maximum_C_target_swing_W": 0.5932585575000001
+    }
+  ],
+  "frequency_scope": "380 kHz typical; 350/420 kHz chosen sensitivity assumptions. The uncapped worksheet reaches approximately 454 kHz and is intentionally conservative for this screen, not a predicted operating frequency.",
+  "local_ambient_derating": [
+    {
+      "local_ambient_C": 50,
+      "rated_W": 0.75,
+      "eighty_percent_allowance_W": 0.6000000000000001,
+      "worksheet_target_swing_exceeds_rating": false,
+      "worksheet_target_swing_exceeds_eighty_percent": true
+    },
+    {
+      "local_ambient_C": 70,
+      "rated_W": 0.75,
+      "eighty_percent_allowance_W": 0.6000000000000001,
+      "worksheet_target_swing_exceeds_rating": false,
+      "worksheet_target_swing_exceeds_eighty_percent": true
+    },
+    {
+      "local_ambient_C": 85,
+      "rated_W": 0.6176470588235294,
+      "eighty_percent_allowance_W": 0.49411764705882355,
+      "worksheet_target_swing_exceeds_rating": true,
+      "worksheet_target_swing_exceeds_eighty_percent": true
+    },
+    {
+      "local_ambient_C": 100,
+      "rated_W": 0.4852941176470589,
+      "eighty_percent_allowance_W": 0.3882352941176471,
+      "worksheet_target_swing_exceeds_rating": true,
+      "worksheet_target_swing_exceeds_eighty_percent": true
+    }
+  ],
+  "worksheet_target_swing_W": 0.6414400985917511,
+  "maximum_local_ambient_at_rating_C": 82.30345549293487,
+  "eighty_percent_margin_at_or_below_70C": false,
+  "ideal_edge": {
+    "transition_V": 53.5,
+    "energy_J": 7.062601875000001e-07,
+    "initial_current_A": 1.3856513856513857,
+    "initial_power_W": 74.13234913234913,
+    "RC_time_constant_s": 1.9054035000000004e-08,
+    "equal_energy_rectangular_duration_s": 9.5270175e-09
+  },
+  "pulse_scope": "Initial R tolerance only; no trace inductance, finite edge rate, ringing or resistor TCR. D/F-tolerance continuous-pulse Fig. 7-3 starts at 1 us; do not extrapolate to the roughly 10 ns equal-energy duration or infer a pulse pass from average power.",
+  "clamp_scope": "SMAJ12A 19.9 V at 20.1 A is not the converter clamp voltage. Verify SW-VIN <=17.5 V, RFB limits, repetitive clamp energy and temperature on hardware; the RC screen does not close those gates.",
+  "hardware_qualified": false,
+  "recommended_action": "Retain 39 ohm / 470 pF / SMAJ12A for controlled first-article tuning. Do not approve production or a capacitance increase from these calculations; redesign power handling if measured loss and local ambient cannot meet the derated allowance.",
+  "sources": [
+    "https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf",
+    "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf",
+    "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf"
+  ],
+  "source_SHA256": {
+    "parts.json": "61ab64e7a96a757ed02a1fe3a4a028bde57d10ec65a4487037958d7ea9c642b3",
+    "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
+    "evidence/schematic-netlist.xml": "bceb7b7085ed516d3bc4a8f1f96e73b0d5db2eb5db2bd7578914c78f0a1d2017",
+    "evidence/electrical-sizing.json": "ec49d0b062e88c9b2e95fa7ccd75a2769d962dcd3acf036106829b504d417abf",
+    "evidence/operating-points.csv": "9cc59886dbf541589ea87906bff0df10c3156888979edade48e656bc2bd35d25",
+    "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",
+    "scripts/audit-snubber.py": "696ad007505c44250cc361534a7d67a82c03e3db85a97709a2ad0a0676049495"
+  }
+}
