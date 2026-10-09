@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- Correct hairpin semicircular-bend length and tapped-feed reference points.
+  Use alternating U resonators, independent input/output taps, and absolute
+  geometry-based narrowband coupling estimates. Report unreachable geometry
+  and document the model's EM-validation limits. Add tap tuning handles and
+  regression checks against exported paths and response sensitivity.
+- Make the lossless filter comparison remove per-element and distributed loss.
+
 ## 1.6.0 — Transformer project workflow and GUI audit (development)
 
 - Supply the missing 1.6.0 release notes and check release inputs in both local
@@ -233,3 +242,4 @@ because each is easy to get wrong the same way again:
   wide, and equal-ripple maxima make "the peak frequency" meaningless.
 - **A rejected POST must have its body drained** before the response. On a
   keep-alive connection an unread body corrupts every subsequent request.
+

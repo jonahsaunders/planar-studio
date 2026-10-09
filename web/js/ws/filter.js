@@ -46,7 +46,7 @@ export const FAMILIES = {
   },
   hairpin: {
     name: 'Hairpin',
-    note: 'The same synthesis with each resonator folded into a U. Roughly a third of the length of edge-coupled.',
+    note: 'Alternating half-wave U resonators with tapped feeds. Compact band-pass layout with a first-order response estimate; validate with EM.',
     bands: ['bandpass'],
   },
   interdigital: {
@@ -217,7 +217,7 @@ export function rail(panel, app) {
     fields: [
       { key: 'zHigh', type: 'range', label: 'High impedance', unit: 'Ω', min: 60, max: 160, step: 1, when: (c) => c.family === 'stepped' },
       { key: 'zLow', type: 'range', label: 'Low impedance', unit: 'Ω', min: 8, max: 60, step: 1, when: (c) => c.family === 'stepped' },
-      { key: 'zRes', type: 'range', label: 'Resonator impedance', unit: 'Ω', min: 25, max: 110, step: 1, when: (c) => c.family === 'interdigital' },
+      { key: 'zRes', type: 'range', label: 'Resonator impedance', unit: 'Ω', min: 25, max: 110, step: 1, when: (c) => ['hairpin', 'interdigital'].includes(c.family) },
       {
         key: 'capStyle', type: 'seg', label: 'Capacitors',
         options: [
@@ -280,7 +280,7 @@ export function synth(cfg) {
   switch (cfg.family) {
     case 'stepped': return steppedImpedance({ ...base, zHigh: cfg.zHigh, zLow: cfg.zLow }, sub);
     case 'edgeCoupled': return edgeCoupled(base, sub);
-    case 'hairpin': return hairpin(base, sub);
+    case 'hairpin': return hairpin({ ...base, zRes: cfg.zRes }, sub);
     case 'interdigital': return interdigitalFilter({ ...base, zRes: cfg.zRes }, sub);
     case 'emi': return emiFilter({
       topology: cfg.emiTopology, zSource: cfg.zSource, zLoad: cfg.zLoad,
@@ -375,7 +375,7 @@ export function compute(cfg, env, opt = {}) {
 
   const built = realisedNetwork(design, art) || design;
   res.response = respond(built, { ...common, z0: design.Z0, zLoad: design.zLoad });
-  res.ideal = respond(design, { ...common, z0: design.Z0, zLoad: design.zLoad, qL: 0, qC: 0 });
+  res.ideal = respond(design, { ...common, z0: design.Z0, zLoad: design.zLoad, lossless: true });
 
   // For a distributed filter, the useful comparison is the lumped prototype
   // the synthesis came from -- it is what the geometry is trying to be.
@@ -511,7 +511,7 @@ export function spec(cfg, res) {
     });
   }
 
-  if (cfg.family === 'edgeCoupled' || cfg.family === 'hairpin') {
+  if (cfg.family === 'edgeCoupled') {
     sections.push({
       title: 'Coupled sections',
       note: 'J is the admittance inverter value the section has to realise.',
@@ -523,6 +523,19 @@ export function spec(cfg, res) {
     sections.push({
       title: 'Modal impedances',
       rows: d.sections.map((s, i) => [`Section ${i + 1}`, `Z0e ${num(s.Z0e, 1)} / Z0o ${num(s.Z0o, 1)} Ω`]),
+    });
+  }
+
+  if (cfg.family === 'hairpin') {
+    sections.push({
+      title: 'Hairpin resonators',
+      note: 'Physical dimensions and first-order estimates. Tap distances are measured along the centerline from the midpoint.',
+      rows: [
+        ...d.resonators.map((r, i) => [`R${i + 1}`, `w ${num(r.w, 3)} · arm ${num(r.armLen, 2)} · inner gap ${num(r.armGap, 3)} mm`]),
+        ['External Q (in / out)', `${num(d.Qe1, 2)} / ${num(d.Qen, 2)}`],
+        ['Tap distance (in / out)', d.tapPositions.map((p) => `${num(p.distance, 2)} mm`).join(' / ')],
+        ...d.kCouple.map((k, i) => [`Gap ${i + 1}–${i + 2}`, `${num(d.resonators[i + 1].gapLeft, 3)} mm (estimated k = ${num(k, 4)})`]),
+      ],
     });
   }
 
@@ -723,13 +736,13 @@ export function charts(cfg, res) {
   if (reference) {
     out.push({
       id: 'compare',
-      title: res.prototype ? 'As built against the lumped prototype' : 'As built against the lossless network',
-      note: 'The gap is the price of realising the network in copper.',
+      title: cfg.family === 'hairpin' ? 'Hairpin estimate against the lumped prototype' : res.prototype ? 'As built against the lumped prototype' : 'As built against the lossless network',
+      note: cfg.family === 'hairpin' ? 'First-order narrowband estimate; EM validation is required for the physical filter.' : 'The gap is the price of realising the network in copper.',
       spec: {
         x: { values: f, label: 'f', log: true, format: fmtHz },
         y: { label: 'S21 dB', min: -80, max: 5, format: (v) => v.toFixed(0) },
         series: [
-          { name: 'Built', values: r.s21db, unit: 'dB', format: (v) => `${v.toFixed(2)} dB` },
+          { name: cfg.family === 'hairpin' ? 'Estimated' : 'Built', values: r.s21db, unit: 'dB', format: (v) => `${v.toFixed(2)} dB` },
           { name: res.prototype ? 'Prototype' : 'Lossless', values: reference.s21db, unit: 'dB', dash: [4, 3], format: (v) => `${v.toFixed(2)} dB` },
         ],
         markers: markersFor(cfg, res),
@@ -788,3 +801,4 @@ export function layerList(cfg, res) {
   const used = new Set(res.art.tracks.map((t) => t.layer));
   return res.layers.filter((n) => used.has(n)).map((n, i) => [n, colourFor(n, i)]);
 }
+

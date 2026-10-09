@@ -111,6 +111,57 @@ frequency and bandwidth can differ from the requested values. The Design Tools
 panel can tune geometry against a response mask. Validate a final RF design with
 an appropriate electromagnetic model and measurements.
 
+### Hairpin model
+
+Hairpins use alternating half-wave U resonators and independently tapped input
+and output feeds. The centerline includes the semicircular bend:
+`length = 2 × armLen + π × (armGap + traceWidth) / 2`.
+The same dimensions drive synthesis, the response model and exported copper.
+The resonator impedance control sets the width; gaps are solved within the
+minimum-gap constraint. Unreachable gaps and taps produce warnings rather than
+an assumed match to the requested bandwidth.
+
+Tap distance `t` is measured along the centerline from the resonator midpoint.
+With `L = length / 2`, the uniform-line approximation is
+`Qe = π Z0 / (2 Zr sin²(π t / (2 L)))`. Feed placement converts this to a
+distance from the open end, mirrors alternate resonators, and restricts the
+feed to the straight arm. The response uses the Q of that actual placement,
+including any restriction. Input and output tap handles can be dragged
+independently, including for even-order and asymmetric prototypes.
+
+The narrowband equivalent uses shunt tanks and admittance inverters. Tank
+resonance comes from centerline length and effective permittivity. Adjacent
+coupling is an **unvalidated first-order estimate**, not a full-wave extraction:
+
+- Even/odd modal line parameters give normalized mutual capacitance `kc` and
+  inductance `kl`.
+- Integrate `kc cos(θa) cos(θb) ± kl sin(θa) sin(θb)` over the facing straight
+  arms and normalize by `sqrt(lengthA × lengthB) / 2`. Here each phase is the
+  distance from its open end times `π / length`. The magnetic term adds for
+  opposite U orientations and subtracts for identical orientations.
+- In the homogeneous, negligible-bend limit this gives `2 k_line / π` for
+  alternating U's and cancellation for equal orientations. Absolute geometry
+  is evaluated on every solve; the original gap is not a calibration reference.
+- At very wide spacing the underlying modal fit can predict negative mutual
+  parameters. These are clipped to zero and reported as outside the model's
+  range, rather than predicting increasing coupling at large separation.
+
+Open-end fringing, coupling between the two arms of one U, electrical bend
+loading, feed/pad discontinuities and nonadjacent coupling are omitted. The
+curve cannot establish passband accuracy or predict harmonics. For fabrication,
+extract single-resonator frequency and external Q and paired-resonator coupling
+from a full-wave model, then validate the assembled filter with measurements.
+Older saved fixed geometry keeps its resonator orientation and dimensions when
+loaded, but the corrected tap convention changes feed placement and the
+response is recalculated; resynthesize to obtain the corrected alternating layout.
+
+References: [NTU microwave filter notes, hairpin example and external-Q
+derivation, pp. 9–12](https://www.ntuemc.tw/upload/file/2011062010032057680.pdf);
+[Hong and Lancaster, “Cross-Coupled Microstrip Hairpin-Resonator Filters,”
+IEEE T-MTT 46(1), 1998](https://home.eps.hw.ac.uk/~ceejh3/Journals/Cross-coupled%20microstrip%20hairpin-resonator%20filters.pdf).
+The latter distinguishes same/opposite-orientation coupling and describes EM
+extraction; it does not validate the approximate overlap model implemented here.
+
 ## References
 
 - Mohan, Hershenson, Boyd & Lee. *Simple accurate expressions for planar spiral
@@ -132,3 +183,4 @@ an appropriate electromagnetic model and measurements.
 - Hong. *Microstrip Filters for RF/Microwave Applications*, 2nd ed., 2011.
 - Gielis. *A generic geometric transformation that unifies a wide range of
   natural and abstract shapes.* American Journal of Botany 90(3), 2003.
+

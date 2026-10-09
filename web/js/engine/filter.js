@@ -23,6 +23,7 @@
 
 import { C, ABCD, dB, groupDelay } from './complex.js';
 import { microstrip, microstripWidth, coupledMicrostrip, synthCoupled, guidedWavelength } from './microstrip.js';
+import { hairpinBendLength, hairpinGapFor, evaluateHairpin } from './hairpin-model.js';
 
 const TAU = Math.PI * 2;
 export const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -261,7 +262,7 @@ function elementImpedance(el, w, qL, qC) {
 /**
  * Frequency response of a network.
  * @param {object} net    from ladder(), or {elements:[...]} you built yourself
- * @param {object} opt    {f0, f1, points, z0, zLoad, qL, qC, parasitics}
+ * @param {object} opt    {f0, f1, points, z0, zLoad, qL, qC, lossless}
  */
 export function respond(net, opt = {}) {
   const points = opt.points || 501;
@@ -269,8 +270,8 @@ export function respond(net, opt = {}) {
   const fHi = Math.max(opt.f1 || 1e9, fLo * 1.0001);
   const Zs = opt.z0 || net.Z0 || 50;
   const Zl = opt.zLoad != null ? opt.zLoad : (net.zLoad || Zs);
-  const qL = opt.qL || 0;
-  const qC = opt.qC || 0;
+  const qL = opt.lossless ? 0 : opt.qL || 0;
+  const qC = opt.lossless ? 0 : opt.qC || 0;
 
   const freqs = new Array(points);
   const s21db = new Array(points);
@@ -289,7 +290,7 @@ export function respond(net, opt = {}) {
       if (el.kind === 'line') {
         const ms = el.model;
         const theta = TAU * el.length / guidedWavelength(f, ms.epsEff);
-        const alphaL = (ms.alpha || 0) * (el.length * 1e-3);
+        const alphaL = opt.lossless ? 0 : (ms.alpha || 0) * (el.length * 1e-3);
         stages.push(ABCD.line(ms.Z0, theta, alphaL));
         continue;
       }
@@ -303,10 +304,10 @@ export function respond(net, opt = {}) {
         // dielectric loss enter as a matched attenuator of the section's own
         // alpha*l -- which is what the copper actually dissipates, and without
         // it a filter on FR-4 reports 0.00 dB of insertion loss.
-        if (el.alpha > 0) stages.push(ABCD.line(el.coupled.Z0, 0, el.alpha * el.length * 1e-3));
+        if (!opt.lossless && el.alpha > 0) stages.push(ABCD.line(el.coupled.Z0, 0, el.alpha * el.length * 1e-3));
         continue;
       }
-      const Z = elementImpedance(el, w, qL, qC);
+      const Z = elementImpedance(opt.lossless ? { ...el, qu: 0, qL: 0, qC: 0, rs: 0, esr: 0 } : el, w, qL, qC);
       if (el.kind === 'series') stages.push(ABCD.series(Z));
       else stages.push(ABCD.shunt(C.inv(Z)));
     }
@@ -628,50 +629,51 @@ export function edgeCoupled(spec, sub) {
 /**
  * Hairpin band-pass.
  *
- * Electrically the same synthesis as edge-coupled: a hairpin is a
- * half-wavelength resonator folded into a U so the array is compact and the
- * coupling happens between adjacent arms. The folding is the layout's problem;
- * what changes here is that the coupled length becomes the arm overlap, and
- * the fold shortens the resonator slightly, which the tap position corrects.
+ * Half-wave U resonators with alternating orientation. Solve the gaps using
+ * the same first-order overlap model used for the response, and synthesize
+ * each feed from its own external Q. No edge-coupled sections are inherited.
  */
 export function hairpin(spec, sub) {
-  const base = edgeCoupled(spec, sub);
-  const f0 = base.f0;
-  const armGap = spec.hairpinGap || Math.max(sub.minGap || 0.2, 0.3);
-
-  const resonators = [];
-  for (let k = 0; k < clamp(Math.round(spec.order), 1, 12); k++) {
-    // Adjacent sections set the coupling on each side of resonator k.
-    const left = base.sections[k], right = base.sections[k + 1];
-    const w = (left.w + right.w) / 2;
-    const ms = microstrip(w, sub.h, sub.er, { t: sub.t, f: f0, tanD: sub.tanD });
-    const half = ms.lambda / 2;
-    // The fold removes a little electrical length at the bend; the standard
-    // correction is about one arm-separation of line per hairpin.
-    const armLen = (half - (armGap + w)) / 2;
-    resonators.push({
-      index: k, w, armLen, armGap, model: ms,
-      gapLeft: left.s, gapRight: right.s,
-      overlapLeft: left.length, overlapRight: right.length,
-      span: 2 * w + armGap,
-    });
+  const n = clamp(Math.round(spec.order), 1, 12);
+  const g = prototype(spec.response, n, spec.ripple), Z0 = spec.z0 || 50;
+  if (g.some((v) => !(v > 0) || !Number.isFinite(v))) throw new Error('Hairpin prototype is unavailable at this order.');
+  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
+  if (!(f1 > 0 && f2 > f1 && Number.isFinite(f2))) throw new Error('Hairpin band edges must be positive and distinct.');
+  const f0 = Math.sqrt(f1 * f2), fbw = (f2 - f1) / f0;
+  const opt = { t: sub.t, f: f0, tanD: sub.tanD };
+  const w = microstripWidth(spec.zRes || 60, sub.h, sub.er, opt);
+  const ms = microstrip(w, sub.h, sub.er, opt);
+  const armGap = spec.hairpinGap ?? Math.max(sub.minGap || 0.15, 0.3);
+  if (!(armGap > 0 && Number.isFinite(armGap))) throw new Error('Hairpin arm gap must be positive.');
+  const armLen = (ms.lambda / 2 - hairpinBendLength({ armGap, w })) / 2;
+  const wFeed = microstripWidth(Z0, sub.h, sub.er, opt);
+  if (!(armLen > wFeed)) throw new Error('Hairpin resonator is too short to fold and attach the feed on this substrate.');
+  const warnings = [];
+  if (fbw > 0.2) warnings.push('Hairpin fractional bandwidth exceeds 20%; the narrowband model is outside its intended range.');
+  const resonators = Array.from({ length: n }, (_, index) => ({
+    index, w, armLen, armGap, model: ms, flipped: index % 2 === 1,
+    span: 2 * w + armGap, gapLeft: sub.minGap || 0.15, gapRight: sub.minGap || 0.15,
+  }));
+  const targetCouplings = [];
+  for (let i = 0; i < n - 1; i++) {
+    const k = fbw / Math.sqrt(g[i + 1] * g[i + 2]);
+    targetCouplings.push(k);
+    const gap = hairpinGapFor(k, resonators[i], resonators[i + 1], sub, f0);
+    resonators[i].gapRight = resonators[i + 1].gapLeft = gap.s;
+    if (!gap.achievable) warnings.push(`Hairpin gap ${i + 1}–${i + 2} cannot reach the requested coupling within the process limits.`);
   }
-
-  // Tapped input: the tap position sets the external Q.
-  const Qe = base.g[0] * base.g[1] / base.fbw;
-  const ms0 = resonators[0] ? resonators[0].model : base.feed.model;
-  const tapRatio = clamp(Math.asin(Math.sqrt(Math.PI * base.Z0 / (2 * Qe * ms0.Z0))) / (Math.PI / 2), 0.02, 0.9);
-
-  return {
-    ...base,
-    kind: 'hairpin',
-    resonators,
-    Qe,
-    tap: { ratio: tapRatio, length: tapRatio * (ms0.lambda / 4) },
-    warnings: base.warnings.concat(
-      resonators.some((r) => r.armLen <= 0) ? ['Hairpin arms come out negative — the resonator is too short to fold at this frequency.'] : [],
-    ),
+  const targetQe = [g[0] * g[1] / fbw, g[n] * g[n + 1] / fbw];
+  const tapFor = (q) => {
+    const argument = Math.PI * Z0 / (2 * q * ms.Z0);
+    if (argument > 1) warnings.push('Requested external Q is below the tapped-line model limit.');
+    const ratio = Math.asin(Math.sqrt(Math.min(1, argument))) / (Math.PI / 2);
+    return { ratio, length: ratio * ms.lambda / 4 };
   };
+  return evaluateHairpin({
+    kind: 'hairpin', spec, g, f0, fbw, Z0, zLoad: Z0, resonators,
+    targetQe, targetCouplings, tap: tapFor(targetQe[0]), tapOut: tapFor(targetQe[1]),
+    feed: { w: wFeed, model: microstrip(wFeed, sub.h, sub.er, opt) }, warnings,
+  }, sub);
 }
 
 /**
@@ -904,6 +906,15 @@ export function reviewDesign(design, sub, opt = {}) {
   const push = (level, text) => notes.push({ level, text });
 
   (design.warnings || []).forEach((w) => push('warn', w));
+  (design.modelWarnings || []).forEach((w) => push('warn', w));
+
+  if (design.kind === 'hairpin') {
+    design.resonators.forEach((r, i) => {
+      if (r.w < minW) push('error', `Resonator ${i + 1} trace is below the ${minW} mm minimum.`);
+      if (r.armGap < minG) push('error', `Resonator ${i + 1} arm gap is below the ${minG} mm minimum.`);
+      if (i && r.gapLeft < minG) push('error', `Resonator ${i}–${i + 1} gap is below the ${minG} mm minimum.`);
+    });
+  }
 
   if (design.sections) {
     for (const s of design.sections) {
@@ -919,3 +930,4 @@ export function reviewDesign(design, sub, opt = {}) {
 }
 
 export { microstrip, microstripWidth, coupledMicrostrip, synthCoupled };
+

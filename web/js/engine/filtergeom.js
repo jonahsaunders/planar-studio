@@ -27,6 +27,7 @@ import {
 } from './artwork.js';
 import { buildCoil, analyse, solveCoilForL } from './coil.js';
 import { interdigitalCap, interdigitalFingersFor, plateAreaFor, microstrip } from './microstrip.js';
+import { hairpinTap } from './hairpin-model.js';
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
@@ -175,8 +176,8 @@ export function layoutEdgeCoupled(design, ctx) {
 /* --------------------------------------------------------------------------
    3.  HAIRPIN BAND-PASS
 
-   Same electrical synthesis as edge-coupled; each half-wave resonator is
-   folded into a U so the array runs across the board instead of along it.
+   Alternating half-wave U resonators. Tap positions and bend lengths use the
+   same conventions as the geometry-based narrowband response model.
    ----------------------------------------------------------------------- */
 
 export function layoutHairpin(design, ctx) {
@@ -193,36 +194,38 @@ export function layoutHairpin(design, ctx) {
     centres.push(xc);
 
     const xa = xc - half, xb = xc + half;
-    // Two arms, open at y = 0, joined by a bend at y = armLen.
+    // Reflect alternating U's so adjacent-arm electric/magnetic coupling adds.
     A.tracks.push(track(L, r.w, run(xa, 0, xa, r.armLen), { role: 'hairpin-arm', index: i }));
     A.tracks.push(track(L, r.w, run(xb, 0, xb, r.armLen), { role: 'hairpin-arm', index: i }));
-    A.tracks.push(track(L, r.w, uBend(xa, xb, r.armLen), { role: 'hairpin-bend', index: i }));
-    A.labels.push(label(xc, -1.2, `R${i + 1}`, { size: 0.7 }));
+    const bend = r.flipped ? uBend(xa, xb, 0).map(([x, y]) => [x, -y]) : uBend(xa, xb, r.armLen);
+    A.tracks.push(track(L, r.w, bend, { role: 'hairpin-bend', index: i }));
+    A.labels.push(label(xc, r.flipped ? r.armLen + 1.2 : -1.2, `R${i + 1}`, { size: 0.7 }));
 
-    // Gap to the next hairpin comes from the coupled-section solution.
+    // Physical edge-to-edge gap to the next resonator.
     const gap = i < R.length - 1 ? R[i + 1].gapLeft : 0;
     x += r.span + gap;
   });
 
   // Tapped feeds on the outer arms of the first and last resonators.
   const first = R[0], last = R[R.length - 1];
-  const tapY = clamp(design.tap ? design.tap.length : first.armLen * 0.3, first.w, first.armLen - first.w);
+  const inTap = hairpinTap(first, design.tap, design.feed.w, design.Z0);
+  const outTap = hairpinTap(last, design.tapOut || design.tap, design.feed.w, design.Z0);
   const xIn = centres[0] - (first.armGap + first.w) / 2;
   const xOut = centres[centres.length - 1] + (last.armGap + last.w) / 2;
 
-  A.tracks.push(track(L, design.feed.w, run(xIn - ctx.feedLength, tapY, xIn, tapY), { role: 'feed' }));
-  A.ports.push({ x: xIn - ctx.feedLength, y: tapY, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(xIn - ctx.feedLength, tapY, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
+  A.tracks.push(track(L, design.feed.w, run(xIn - ctx.feedLength, inTap.y, xIn, inTap.y), { role: 'feed' }));
+  A.ports.push({ x: xIn - ctx.feedLength, y: inTap.y, name: 'P1', angle: Math.PI });
+  A.pads.push(pad(xIn - ctx.feedLength, inTap.y, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
 
-  A.tracks.push(track(L, design.feed.w, run(xOut, tapY, xOut + ctx.feedLength, tapY), { role: 'feed' }));
-  A.ports.push({ x: xOut + ctx.feedLength, y: tapY, name: 'P2', angle: 0 });
-  A.pads.push(pad(xOut + ctx.feedLength, tapY, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
+  A.tracks.push(track(L, design.feed.w, run(xOut, outTap.y, xOut + ctx.feedLength, outTap.y), { role: 'feed' }));
+  A.ports.push({ x: xOut + ctx.feedLength, y: outTap.y, name: 'P2', angle: 0 });
+  A.pads.push(pad(xOut + ctx.feedLength, outTap.y, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
 
   defaultNet(A, ctx.net);
   A.notes.push({
     level: 'info',
-    text: `Tap height ${tapY.toFixed(2)} mm sets the external Q (${design.Qe ? design.Qe.toFixed(1) : '—'}). `
-      + 'It is the first thing to trim if the passband edges are not symmetric.',
+    text: `Tap distances from the resonator midpoint: ${inTap.distance.toFixed(2)} / ${outTap.distance.toFixed(2)} mm; `
+      + `estimated external Q (in / out): ${inTap.Qe.toFixed(1)} / ${outTap.Qe.toFixed(1)}.`,
   });
   return A;
 }
@@ -862,3 +865,4 @@ export function layoutFilter(design, ctx) {
     default: return layoutLumped(design, ctx);
   }
 }
+

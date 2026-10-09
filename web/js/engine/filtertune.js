@@ -2,6 +2,7 @@
    a new layout for each sample: doing so would tune away manufacturing error.
    Hairpin/interdigital use a narrowband resonator equivalent; no full-wave EM. */
 import { microstrip, coupledMicrostrip } from './microstrip.js';
+import { evaluateHairpin, hairpinLength, hairpinTap } from './hairpin-model.js';
 
 export const DISTRIBUTED = ['stepped', 'edgeCoupled', 'hairpin', 'interdigital'];
 export const plain = (v) => JSON.parse(JSON.stringify(v));
@@ -42,14 +43,18 @@ export function tuneDistributed(base, cfg, tuning = {}, variation = {}) {
     } else r.length = positive(length(i, r.length));
     return r;
   });
-  if (!hairpin) {
-    d.gaps = d.gaps.map((g, i) => ({ ...g, s: positive(gap(i, g.s)) }));
-    d.quarter = Math.max(...d.resonators.map((r) => r.length));
+  if (hairpin) {
+    d.tap.length = positive(d.tap.length * (tuning.taps?.[0] || 1));
+    d.tapOut = d.tapOut || { ...nominal.tap };
+    d.tapOut.length = positive(d.tapOut.length * (tuning.taps?.[1] || 1));
+    return evaluateHairpin(d, sub);
   }
+  d.gaps = d.gaps.map((g, i) => ({ ...g, s: positive(gap(i, g.s)) }));
+  d.quarter = Math.max(...d.resonators.map((r) => r.length));
   const n = d.resonators.length;
-  const frequencies = d.resonators.map((r) => 299792458 / (Math.sqrt(r.model.epsEff) * 1e-3 * (hairpin ? 2 * (2 * r.armLen + r.armGap + r.w) : 4 * r.length)));
+  const frequencies = d.resonators.map((r) => 299792458 / (Math.sqrt(r.model.epsEff) * 1e-3 * 4 * r.length));
   const tanks = d.resonators.map((r, i) => {
-    const b = (hairpin ? Math.PI / 2 : Math.PI / 4) / r.model.Z0;
+    const b = Math.PI / (4 * r.model.Z0);
     const w0 = 2 * Math.PI * frequencies[i], C = b / w0, L = 1 / (w0 * w0 * C);
     const qu = r.model.alpha > 0 ? 2 * Math.PI / (r.model.lambda * 1e-3) / (2 * r.model.alpha) : 0;
     return { kind: 'shunt', type: 'LC-parallel', L, C, qu, b, resonator: i };
@@ -60,8 +65,8 @@ export function tuneDistributed(base, cfg, tuning = {}, variation = {}) {
     d.elements.push(tanks[i]);
     if (i < n - 1) {
       const a = d.resonators[i], b = d.resonators[i + 1];
-      const oldGap = hairpin ? nominal.resonators[i + 1].gapLeft : nominal.gaps[i].s;
-      const newGap = hairpin ? b.gapLeft : d.gaps[i].s;
+      const oldGap = nominal.gaps[i].s;
+      const newGap = d.gaps[i].s;
       const oldW = (nominal.resonators[i].w + nominal.resonators[i + 1].w) / 2;
       const oldK = coupledMicrostrip(oldW, oldGap, cfg.subH, cfg.subEr, { t: cfg.subT, f }).coupling;
       const newK = cp((a.w + b.w) / 2, newGap).coupling;
@@ -102,6 +107,20 @@ export function tuningHandles(cfg, res, app) {
         x += span + gap;
       }
     });
+    if (d.kind === 'hairpin') {
+      const width = d.resonators.reduce((sum, r, i) => sum + r.span + (i ? r.gapLeft : 0), 0);
+      [d.resonators[0], d.resonators.at(-1)].forEach((r, i) => {
+        const tap = i ? d.tapOut || d.tap : d.tap;
+        const p = hairpinTap(r, tap, d.feed.w, d.Z0);
+        out.push({ id: `tap-${i}`, x: i ? width - r.w / 2 : r.w / 2, y: p.y,
+          cursor: 'ns-resize', hint: `${i ? 'Output' : 'Input'} tap: ${p.distance.toFixed(2)} mm from midpoint`,
+          drag: (_wx, wy) => {
+            const fromOpen = r.flipped ? r.armLen - wy : wy;
+            setFactor('taps', i, Math.max(0.01, hairpinLength(r) / 2 - fromOpen) / tap.length);
+          } });
+      });
+    }
   }
   return out;
 }
+
