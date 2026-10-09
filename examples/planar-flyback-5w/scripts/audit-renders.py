@@ -21,8 +21,6 @@ p.add_argument('--dpmm',type=int,default=25)
 p.add_argument('--skip-3d',action='store_true',help='Reuse already refreshed 3D renders after validating their input hashes.')
 args=p.parse_args()
 os.environ.setdefault('KICAD_CONFIG_HOME',str(R/'.kicad-config'))
-gerber_cli=Path(sys.executable).parent/('pygerber.exe' if os.name=='nt' else 'pygerber')
-if not gerber_cli.exists():raise SystemExit('Install pygerber==2.4.3 and Pillow in this Python environment first.')
 if args.skip_3d:
     previous=json.loads((out/'3d-render-provenance.json').read_text())
     for name,digest in previous['source_SHA256'].items():

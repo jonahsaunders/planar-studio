@@ -1,37 +1,29 @@
-# PS-FLYBACK-5W A4 — default-stack 1 oz flyback
+# PS-FLYBACK-5W A5 — 2 W snubber revision
 
-18–36 V DC to isolated 5 V / 1 A engineering prototype, designed using Planar Studio. A3 reduces A2 from 50 × 104 mm to **44 × 94 mm**, a **20.46% area reduction**, while preserving the exact winding copper and local electronic routing. Hardware qualification and JLCPCB order acceptance remain outstanding.
+An engineering prototype for 18–36 V input and isolated 5 V / 1 A output. [Review report](report.html) · [Validation](VALIDATION.md) · [Manufacturing handoff](manufacturing/START-HERE.md).
 
-A4 uses **1 oz outer / 1 oz inner copper, Specify Stackup: No**, nominal 1.6 mm and Standard PCBA. It retains the compact A3 routing, winding geometry, core and clips. The Planar Studio model, native stack and 3D models now use the published default 1 oz reference construction. See [stack revision and remaining work](STACK-REVISION.md). No named stack or controlled-impedance upgrade is requested.
+A5 replaces R6 with **Ever Ohms CRH2512F39R0E04Z, 39 Ω ±1%, 2 W at 70 °C, 2512, JLCPCB C175263**. The October 9 catalog snapshot shows 4,986 available to order. The new footprint uses the manufacturer's 1.60 × 3.40 mm lands at 6.50 mm pitch. R6 moves 3.2 mm right, D4 moves 4.5 mm right, and three ground stitches move to clear the revised VIN/SNUB/CLAMP routes. The schematic, BOM, placement data, local model assignment, fabrication layers and previews are regenerated together.
 
-## Order and assemble
+The conservative snubber loss screen remains **0.641 W**, about **32% of the new 2 W rating**. At 85 °C local ambient the datasheet derates the resistor to 1.647 W. This improves average-power margin; the CRH datasheet does not provide a repetitive nanosecond pulse curve. C6 remains 470 pF C0G and D4 remains SMAJ12A. [Snubber analysis and bench acceptance](SNUBBER-REVIEW.md).
 
-Per board: two [TDK B66285G0050X187 factory-gapped halves](https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590) and two [B66286A2000X000 clips](https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552), plus one six-layer PCB and 24 electronic placements. See [JLCPCB handoff](manufacturing/START-HERE.md). Five boards need ten halves and ten clips before spares. Inventory is unreserved; recheck checkout. No grinding or bonding is specified.
+A comparison against merged A4 commit `d50da5e` verifies unchanged electrical topology, all other parts, winding copper, stack, board outline, mounting and core geometry. Only R6/D4 placement, the three ground stitches, local routing/pour and legends change. [Revision evidence](evidence/audit/snubber-revision-checks.json).
 
-Open the [KiCad project](kicad/PS-FLYBACK-5W.kicad_pro), [Planar Studio design](planar-studio/T1.planar.json), [illustrated report](report.html) or [assembly STEP](3d/PS-FLYBACK-5W.step). The board includes all 29 models and a four-solid T1 assembly derived from TDK core/clip CAD.
+## Retained construction
 
-## What changed
+The board is 44 × 94 mm with a 35 × 85 mm mounting pattern and 10 mm copper exclusions around the M3 holes on all six layers. Order nominal 1.6 mm, 1 oz outer / 1 oz inner copper, Specify Stackup: No, and Standard PCBA. The model retains the published default 1.609 mm reference construction; the delivered stack still needs confirmation. [Stack background](STACK-REVISION.md).
 
-Input and output electronics each move 5 mm toward the fixed transformer. Trace widths, layers, local bends, component rotations and via count are preserved. Five transformer-connection segments shorten. One ground-stitching via moves to clear H1. Each mounting hole now has a 10 mm copper exclusion with 1.8 mm clearance beyond its 6.4 mm contact area and complete outward mask extension on all six layers. The enlarged mounting clearance removes copper only at the board corners; at least 96.3% of every A2 ground-plane area is retained. The electronic schematic/BOM and 4:2 winding copper are unchanged from A2. A4 changes the reference layer spacing, while retaining 1 oz inner copper and the same nominal magnetic operating point.
+The 4:2 planar transformer uses two factory-gapped TDK B66285G0050X187 N87 ELP22 halves and two B66286A2000X000 spring clips. No grinding or adhesive is specified. Install the core pair after PCBA and measure assembled inductance. All 29 footprints have local visible models. [Core installation](manufacturing/CORE-ASSEMBLY.md) · [3D sources](3D-MODELS.md).
 
-The mounting pattern changes from 41 × 95 to **35 × 85 mm**. Existing A2 enclosures/mounting plates will need new holes. All M3 centers remain 4.5 mm from adjacent edges.
+## Checks and remaining work
 
-## Clip fit and remaining concerns
+Native ERC/DRC, schematic parity, package/net mapping, local-change containment, mounting/clip clearance, solid fit and manufacturing export checks are recorded in VALIDATION.md. Standard silkscreen text is at least 1.0 mm high with 0.15 mm strokes and a 0.15 mm clearance rule.
 
-TDK specifies B66286A2000X000 for this core pair. A3 includes its official free-spring CAD and the core's actual recess geometry. The displayed installed clip opening is an estimate, not a spring-force simulation. Independent checks retain the larger 1.5 mm outward clip envelope: 0.25 mm minimum slot clearance with routing tolerances, and at least 0.798 mm to copper including 0.5 mm pair movement. The ferrite corner check retains 0.146 mm and minimum vertical clearance is 2.21 mm per face.
+The placement check covers 24 components, 54 saved catalog pad centers and two R6 manufacturer land centers, with 15 rejected incorrect rotations/origins. The new R6 catalog geometry was unavailable; confirm its centered nonpolar placement in the fresh factory preview. [Placement review](manufacturing/PLACEMENT-REVIEW.md).
 
-The first physical pair must confirm spring engagement, retention and installed dimensions. The core can float; vibration mounting is not qualified. The smaller ELP22 core retains A2's reduced fault-current margin relative to A1. Accept measured primary inductance only at 11.0–14.6 µH and perform bias, short-circuit recovery, switching-stress and thermal tests. Compacting the board does not establish those results. [Validation](VALIDATION.md) · [Core assembly](manufacturing/CORE-ASSEMBLY.md).
+This remains an unbuilt prototype. Supplier acceptance of the stack, filled/capped vias, panel, Standard-PCBA reflow and connector process is open. Bench qualification must establish clamp and RFB waveforms, snubber pulse/thermal behavior, regulation, magnetics, startup/fault behavior and clip retention. No purchase or supplier submission has occurred.
 
-## Reproduce
+## Rebuild
 
-Use Node.js, KiCad 10's Python/CLI, and a separate Python environment with `cadquery==2.6.1`, `pygerber==2.4.3` and Pillow. Run `npm test` from the repository. Run `scripts/rebuild.py --kicad-cli <kicad-cli> --cadquery-python <environment-python>` with KiCad Python. The rebuild refreshes CAD, manufacturing files, checks and renders. `check-manifest.py` verifies file hashes. A packaged example needs `PLANAR_STUDIO_ROOT` pointing to this repository, including the pinned A2 and A3 baseline commits.
+Run `scripts/rebuild.py --kicad-cli <KiCad-10-cli> --kicad-python <KiCad-Python-or-wrapper> --cadquery-python <Python-with-CadQuery-PyGerber-Pillow>`. The default retains the validated winding/core source; `--regenerate-magnetics` explicitly rebuilds those inputs and the revision comparison will reject unintended changes. The build refreshes native files, checks, manufacturing data, views and the A5 review ZIP.
 
-Only the evidence listed in VALIDATION.md applies to the current A4 files. Earlier audit reports and comparisons are historical. No purchase, supplier submission or physical testing has occurred.
-
-The A4 JLCPCB placement export also includes the previously separate catalog rotation/origin corrections. See [placement and polarity review](manufacturing/PLACEMENT-REVIEW.md). All 24 placements and 56 catalog pad centers pass the saved geometry/net check; a fresh factory preview is still required.
-
-## October 9 artwork and snubber review
-
-Standard-process silkscreen now uses at least 1.0 mm text height and 0.15 mm text/graphic strokes, with a 0.15 mm clearance rule. Labels were repositioned to pass native KiCad DRC; all non-silkscreen board content is unchanged. Updated Gerbers, board views and the review ZIP include the correction. [Silkscreen evidence](evidence/audit/silkscreen-checks.json).
-
-The [independent snubber review](SNUBBER-REVIEW.md) retains 39 Ω / 470 pF / SMAJ12A for first-article tuning. It confirms the conservative 0.641 W estimate and documents the unresolved ambient-derating and repetitive-pulse limits; this does not approve production.
+The current A5 evidence is enumerated in VALIDATION.md. Earlier A1–A4 reports and images are historical context, not fresh proof for this board.

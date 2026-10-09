@@ -58,7 +58,7 @@ for ref, (ohm, value, mpn, nets) in expected.items():
     pads = {next(iter(children(p, 'net')))[-1].strip('"').lstrip('/'): p[1].strip('"') for p in children(fps[ref], 'pad')}
     assert pads == {net: number for number, net in nets.items()}
 assert parts['D4']['mpn'] == 'SMAJ12A-13-F'
-assert circuit['R6']['value'] == '39R 0.75 W' and circuit['C6']['value'] == '470p / 100 V C0G'
+assert circuit['R6']['value'] == '39R 2 W' and circuit['C6']['value'] == '470p / 100 V C0G'
 assert math.isclose(calc['nominal_output_at_sample_diode_drop_0p3V'], 4.980373831775701)
 assert math.isclose(calc['RFB_minimum_resistance_at_temperature_ohm'], 112604.7825)
 assert math.isclose(calc['RFB_resistive_current_at_prototype_target_A'], 18/112604.7825)
@@ -66,7 +66,7 @@ assert calc['RFB_resistive_separation_from_absolute_max_fraction'] >= .20
 assert calc['RFB_prototype_SW_minus_VIN_peak_target_V'] == 17.5
 assert calc['RFB_preliminary_pin_below_VIN_allowance_V'] == .5
 assert calc['RFB_hardware_qualified'] is False
-assert [p['exceeds_80pct_fitted_rating'] for p in calc['snubber_capacitance_loss_sweep']] == [False, True, True]
+assert [p['exceeds_80pct_fitted_rating'] for p in calc['snubber_capacitance_loss_sweep']] == [False, False, False]
 stock = json.loads((R/'sources/jlcpcb-stock.json').read_text())
 for row in stock['rows']:
     if row['references'][0] in expected:

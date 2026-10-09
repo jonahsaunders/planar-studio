@@ -3,7 +3,7 @@
   "native_netlist_and_circuit_topology_match": true,
   "topology": "VIN--R6--C6--SW, in parallel with the primary; D3/D4 are a separate diode/TVS clamp.",
   "voltage_basis": "At steady VIN, the RC source moves from about -VIN to +reflected voltage; delta V includes VIN. Using only 17.5 V would undercount turn-on loss. A 53.5 V transition is not 53.5 V DC across C6.",
-  "R6_MPN": "SR1206FR-7T39RL",
+  "R6_MPN": "CRH2512F39R0E04Z",
   "C6_MPN": "CC0805JRNPO0BN471",
   "capacitance_max_F": 4.935000000000001e-10,
   "resistance_min_initial_tolerance_ohm": 38.61,
@@ -54,36 +54,36 @@
   "local_ambient_derating": [
     {
       "local_ambient_C": 50,
-      "rated_W": 0.75,
-      "eighty_percent_allowance_W": 0.6000000000000001,
+      "rated_W": 2.0,
+      "eighty_percent_allowance_W": 1.6,
       "worksheet_target_swing_exceeds_rating": false,
-      "worksheet_target_swing_exceeds_eighty_percent": true
+      "worksheet_target_swing_exceeds_eighty_percent": false
     },
     {
       "local_ambient_C": 70,
-      "rated_W": 0.75,
-      "eighty_percent_allowance_W": 0.6000000000000001,
+      "rated_W": 2.0,
+      "eighty_percent_allowance_W": 1.6,
       "worksheet_target_swing_exceeds_rating": false,
-      "worksheet_target_swing_exceeds_eighty_percent": true
+      "worksheet_target_swing_exceeds_eighty_percent": false
     },
     {
       "local_ambient_C": 85,
-      "rated_W": 0.6176470588235294,
-      "eighty_percent_allowance_W": 0.49411764705882355,
-      "worksheet_target_swing_exceeds_rating": true,
-      "worksheet_target_swing_exceeds_eighty_percent": true
+      "rated_W": 1.6470588235294117,
+      "eighty_percent_allowance_W": 1.3176470588235294,
+      "worksheet_target_swing_exceeds_rating": false,
+      "worksheet_target_swing_exceeds_eighty_percent": false
     },
     {
       "local_ambient_C": 100,
-      "rated_W": 0.4852941176470589,
-      "eighty_percent_allowance_W": 0.3882352941176471,
-      "worksheet_target_swing_exceeds_rating": true,
-      "worksheet_target_swing_exceeds_eighty_percent": true
+      "rated_W": 1.2941176470588236,
+      "eighty_percent_allowance_W": 1.035294117647059,
+      "worksheet_target_swing_exceeds_rating": false,
+      "worksheet_target_swing_exceeds_eighty_percent": false
     }
   ],
   "worksheet_target_swing_W": 0.6414400985917511,
-  "maximum_local_ambient_at_rating_C": 82.30345549293487,
-  "eighty_percent_margin_at_or_below_70C": false,
+  "maximum_local_ambient_at_rating_C": 127.73879580985059,
+  "eighty_percent_margin_at_or_below_70C": true,
   "ideal_edge": {
     "transition_V": 53.5,
     "energy_J": 7.062601875000001e-07,
@@ -92,22 +92,22 @@
     "RC_time_constant_s": 1.9054035000000004e-08,
     "equal_energy_rectangular_duration_s": 9.5270175e-09
   },
-  "pulse_scope": "Initial R tolerance only; no trace inductance, finite edge rate, ringing or resistor TCR. D/F-tolerance continuous-pulse Fig. 7-3 starts at 1 us; do not extrapolate to the roughly 10 ns equal-energy duration or infer a pulse pass from average power.",
+  "pulse_scope": "Initial R tolerance only; no trace inductance, finite edge rate, ringing or resistor TCR. The CRH datasheet provides short-time overload testing but no repetitive-pulse curve; no pulse pass is established for the roughly 10 ns equal-energy duration. Average power alone does not qualify this load.",
   "clamp_scope": "SMAJ12A 19.9 V at 20.1 A is not the converter clamp voltage. Verify SW-VIN <=17.5 V, RFB limits, repetitive clamp energy and temperature on hardware; the RC screen does not close those gates.",
   "hardware_qualified": false,
   "recommended_action": "Retain 39 ohm / 470 pF / SMAJ12A for controlled first-article tuning. Do not approve production or a capacitance increase from these calculations; redesign power handling if measured loss and local ambient cannot meet the derated allowance.",
   "sources": [
     "https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf",
-    "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf",
+    "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
     "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf"
   ],
   "source_SHA256": {
-    "parts.json": "61ab64e7a96a757ed02a1fe3a4a028bde57d10ec65a4487037958d7ea9c642b3",
-    "circuit.json": "6360f9b694147fe12439057542f5f76240ca9104450ed630dfba5dae265519fe",
-    "evidence/schematic-netlist.xml": "bceb7b7085ed516d3bc4a8f1f96e73b0d5db2eb5db2bd7578914c78f0a1d2017",
-    "evidence/electrical-sizing.json": "ec49d0b062e88c9b2e95fa7ccd75a2769d962dcd3acf036106829b504d417abf",
+    "parts.json": "26ad548e669906ab55d31730a75462e401bb066bf8b3963d3d518ec844d2a101",
+    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
+    "evidence/schematic-netlist.xml": "8a575156a8b7692f19e3fd0c4711b0f0c5196e6b476b1bb78a6e74ce28281900",
+    "evidence/electrical-sizing.json": "bb904a512ace6b91c12f8c2f4f781c4d41d6554f8f710d2525e637aaef16e56b",
     "evidence/operating-points.csv": "9cc59886dbf541589ea87906bff0df10c3156888979edade48e656bc2bd35d25",
     "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",
-    "scripts/audit-snubber.py": "696ad007505c44250cc361534a7d67a82c03e3db85a97709a2ad0a0676049495"
+    "scripts/audit-snubber.py": "c80f49de27da14dbdb6fef87a12f022c244ebfd799f0224bcca70cc22d82f20e"
   }
 }

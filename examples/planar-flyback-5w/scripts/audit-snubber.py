@@ -75,7 +75,7 @@ frequency_cases = [{'frequency_Hz': f, 'maximum_C_target_swing_W': cmax*(36+peak
 
 
 def derated_power(ambient):
-    # Yageo SR V14, Fig. 6: full P70 through 70 C, linear to zero at 155 C.
+    # Ever Ohms CRH S-10-12-16-13 p6: P70 through 70 C, zero at 155 C.
     return rating*max(0., min(1., (155-ambient)/85))
 
 
@@ -105,13 +105,13 @@ record = {
                    'initial_current_A': swing/rmin, 'initial_power_W': peak_power,
                    'RC_time_constant_s': rmin*cmax,
                    'equal_energy_rectangular_duration_s': edge_energy/peak_power},
-    'pulse_scope': 'Initial R tolerance only; no trace inductance, finite edge rate, ringing or resistor TCR. D/F-tolerance continuous-pulse Fig. 7-3 starts at 1 us; do not extrapolate to the roughly 10 ns equal-energy duration or infer a pulse pass from average power.',
+    'pulse_scope': 'Initial R tolerance only; no trace inductance, finite edge rate, ringing or resistor TCR. The CRH datasheet provides short-time overload testing but no repetitive-pulse curve; no pulse pass is established for the roughly 10 ns equal-energy duration. Average power alone does not qualify this load.',
     'clamp_scope': 'SMAJ12A 19.9 V at 20.1 A is not the converter clamp voltage. Verify SW-VIN <=17.5 V, RFB limits, repetitive clamp energy and temperature on hardware; the RC screen does not close those gates.',
     'hardware_qualified': False,
     'recommended_action': 'Retain 39 ohm / 470 pF / SMAJ12A for controlled first-article tuning. Do not approve production or a capacitance increase from these calculations; redesign power handling if measured loss and local ambient cannot meet the derated allowance.',
     'sources': [
         'https://www.analog.com/media/en/technical-documentation/data-sheets/lt8302-8302-3.pdf',
-        'https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf',
+        'https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263',
         'https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf'],
 }
 inputs = ['parts.json', 'circuit.json', 'evidence/schematic-netlist.xml',

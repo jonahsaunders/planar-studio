@@ -1,4 +1,4 @@
-# PS-FLYBACK-5W A4 — fabrication and assembly review
+# PS-FLYBACK-5W A5 — fabrication and assembly review
 
 **Engineering prototype / quotation package. Not a production release.**
 
@@ -17,14 +17,14 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Via-in-pad | Nonconductive epoxy filled and copper capped, including U1 thermal vias |
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
 | Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; 10 mm copper exclusion and 1.8 mm copper-to-mask margin on all six layers; do not fill/cap; see MOUNTING.md |
-| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A4 fit model |
+| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A5 fit model |
 | Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
 | Silkscreen | Standard process: text height ≥1.0 mm, text and graphic stroke ≥0.15 mm, silk clearance ≥0.15 mm; enlarged labels pass native DRC |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after clipping the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
 
-A4 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
+A5 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
 
 ## Default 1 oz construction — no specified stack
 
@@ -50,7 +50,7 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 - PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
 - CPL positions and angles include reviewed exact-part catalog-frame corrections. Use CPL-JLCPCB.csv, not the raw KiCad export. Compare the fresh assembly preview with PLACEMENT-REVIEW.md and placement-review.svg; verify pin 1, polarity and outward connector openings before approval.
 - J1 pin 1 is positive at the left when viewed from the top. J2 pin 1 is positive at the right. Wire-entry sides face their nearest board end.
-- All exported manufacturing data is A4 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
+- All exported manufacturing data is A5 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
 
 ## Required vendor response
 

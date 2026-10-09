@@ -3,3 +3,4 @@
 *.lck
 *-backups/
 evidence/schematic-svg/
+org.kicad.kicad/

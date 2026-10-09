@@ -101,7 +101,7 @@ JLCPCB-managed panelization.
 and magnetic qualification remain open.
 
 [Explore the board and schematic](examples/planar-flyback-5w/README.md)
-· [Review package](examples/PS-FLYBACK-5W-A4-review-package.zip)
+· [Review package](examples/PS-FLYBACK-5W-A5-review-package.zip)
 · [Validation record](examples/planar-flyback-5w/VALIDATION.md)
 
 ## Guides

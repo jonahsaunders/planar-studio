@@ -1,25 +1,27 @@
-# A4 validation and remaining qualification
+# A5 validation and remaining qualification
 
-This is an unbuilt engineering prototype. Automated checks establish geometry, connectivity and analytical screens. They do not prove physical retention, EMI, efficiency or temperature.
+This is an unbuilt engineering prototype. Automated checks establish geometry, connectivity and analytical screens, not measured temperature, retention, EMI or efficiency.
 
 | Check | Current evidence |
 | --- | --- |
-| Standard silkscreen dimensions/clearance and exact non-silkscreen parity to pre-fix A4 | `evidence/audit/silkscreen-checks.json` |
-| Independent snubber energy, frequency, ambient derating and pulse screen | `evidence/audit/snubber-checks.json`, `SNUBBER-REVIEW.md` |
-| KiCad ERC, DRC, connectivity and schematic parity | `evidence/erc.rpt`, `evidence/board-drc.json` |
-| Native pin agreement, winding polygons and mounting copper keepouts | `evidence/independent-checks.json`, `evidence/audit/mounting-checks.json` |
-| A2 comparison: identical circuit, winding and local routing; shortened leads and plane-area retention | `evidence/audit/a3-layout-comparison.json` |
-| Enlarged mounting clearance: unchanged tracks, one ground via move and pour changes confined to mounting regions | `evidence/audit/mounting-clearance-comparison.json` |
-| Clip envelope against every copper layer, including 0.5 mm pair movement | `evidence/audit/clip-copper-checks.json` |
-| Maximum ferrite dimensions, rounded slots and routing tolerance | `evidence/audit/core-fit-checks.json` |
-| Local model references and nominal solid intersections | `evidence/audit/3d-model-checks.json`, `evidence/audit/3d-solid-checks.json` |
-| Manufacturer CAD provenance | `sources/tdk-mechanical-cad.json` |
+| ERC, DRC, connectivity and schematic parity | `evidence/erc.rpt`, `evidence/board-drc.json` |
+| R6 identity/lands, retained topology/winding/stack/mechanics, changes confined to local snubber region | `evidence/audit/snubber-revision-checks.json` |
+| Standard silkscreen dimensions and clearance | `evidence/audit/silkscreen-checks.json` |
+| Snubber energy, frequency, ambient derating and pulse screen | `evidence/audit/snubber-checks.json`, `SNUBBER-REVIEW.md` |
+| Native pad/net agreement, winding polygons and mounting copper exclusions | `evidence/independent-checks.json`, `evidence/audit/mounting-checks.json` |
+| Retained default 1 oz stack and winding reference | `evidence/audit/default-stack-checks.json` |
+| All-layer clip copper clearance including 0.5 mm float | `evidence/audit/clip-copper-checks.json` |
+| Maximum ferrite dimensions against routed openings | `evidence/audit/core-fit-checks.json` |
+| Local models and nominal solid intersections | `evidence/audit/3d-model-checks.json`, `evidence/audit/3d-solid-checks.json` |
+| Manufacturer package/pin review and ground-stitch attachment | `evidence/audit/component-checks.json` |
 | BOM/CPL, six copper layers, 66 filled/capped holes and mounting | `evidence/manufacturing-checks.json` |
-| Exact catalog placement: 24 components, 56 pad centers/nets, 15 rejected wrong rotations/origins | `evidence/audit/placement-checks.json`, `manufacturing/PLACEMENT-REVIEW.md` |
-| Electrical sizing and 54 analytical load cases | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
-| Actual fabrication-layer renders | `evidence/audit/render-provenance.json` and Gerber contact sheets |
+| 24 placements: 54 catalog pad centers + 2 R6 manufacturer lands; 15 rejected wrong rotations/origins | `evidence/audit/placement-checks.json` |
+| Electrical sizing and 54 analytical cases | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
+| Board STEP/GLB and actual exported Gerber renders | `evidence/audit/3d-render-provenance.json`, `evidence/audit/render-provenance.json` |
 
-The retained A3 layout moves primary electronics +5 mm Y and secondary electronics -5 mm Y without rotating or rerouting local circuitry. Five T1 connection segments shorten. The exact T1 copper polygons, trace widths/layers and via count are preserved. A single ground-stitching via moves from A2 (84.5,40) to (86,47) mm to clear H1. Each hole has a 10 mm copper exclusion and 1.8 mm nominal copper clearance beyond the complete 6.4 mm hardware-contact/mask opening, including its edge extension. All six layers are checked with 0.01 mm geometry tolerance. Ground-plane copper retains at least 96.3% of A2 area. Comparison against the first A3 proves that only corner pour areas and that one stitching via change in this clearance update. The board shrinks from 50 × 104 to 44 × 94 mm. M3 mounting changes from 41 × 95 to 35 × 85 mm.
+A5 compares directly with merged A4 commit `d50da5e`. R6 changes to 39 Ω / 2 W / 2512 with manufacturer-recommended lands, R6 and D4 move, and three local ground stitches move. Nine old route segments are replaced by ten segments. Routing and filled-pour differences are confined to X=98.5–117 mm, Y=62–72.5 mm. All other component pads/poses, the complete winding, stack, outline and mounting geometry remain unchanged. This replaces the earlier silkscreen-only parity claim for the current revision.
+
+The conservative 0.641 W screen is 32.1% of the 2 W nominal R6 rating. At 85 °C local ambient the derated rating is 1.647 W; an 80% allowance is 1.318 W. Repetitive-pulse capability is unspecified in the CRH datasheet and must be qualified along with measured loss, temperature and clamp behavior. See SNUBBER-REVIEW.md.
 
 Three independent fit methods cover native PCB/copper rules, maximum dimensions against saved-board cutouts and nominal solid intersections. The ferrite-corner minimum is 0.146 mm after 0.20 mm inward routing error per wall and 0.05 mm centered insertion error. Minimum vertical room is 2.21 mm per face at 1.78 mm PCB thickness. The accepted clip envelope leaves 0.25 mm routing clearance. An expanded metal-shadow check includes 0.5 mm pair movement and retains at least 0.798 mm to copper without soldermask credit.
 
@@ -29,8 +31,4 @@ The magnetic design is unchanged from A2: estimated 13.12 µH, accepted measured
 
 JLCPCB's published capabilities support this six-layer geometry. The delivered standard construction, selective filled/capped vias, panel, Standard-PCBA reflow and connector process still need factory acceptance. See the prototype test plan before production. No supplier-accepted quotation, submission or order has been made.
 
-A4 replaces the paid named-stack request with 1 oz inner / 1 oz outer, Specify Stackup: No. The 1.609 mm reference construction updates layer heights and derived models; it is not a fixed factory cross-section. See STACK-REVISION.md and evidence/audit/default-stack-checks.json. The October 9 silkscreen correction raises all visible legend text to at least 1.0 mm height / 0.15 mm stroke, graphics to at least 0.15 mm, and the silk clearance rule to 0.15 mm. Repositioned labels clear the native DRC. The non-silkscreen board content is exactly identical to commit b40d63d; copper, mask, paste, drills, outline, components, stack and core geometry are unchanged. Older geometry reports retain their original source hashes; the new silkscreen parity record links this board to that validated geometry rather than presenting those old hashes as fresh executions.
-
-The Planar Studio engine is unchanged from tested A2. A4's final checks and their hashes are recorded with the release evidence. Older A1/A2 audit reports, before-images and baseline comparisons are historical, not current board proofs.
-
-The independent snubber review reproduces the 0.641 W conservative screen. It exceeds an 80% allowance below 70 °C and R6's 0.618 W derated rating at 85 °C local ambient. The fitted parts remain prototype starting values; repetitive-pulse and measured thermal/clamp gates remain open. See SNUBBER-REVIEW.md.
+The A4 stack selection is retained in A5. Native ERC/DRC and every current check above are rerun for A5. Historical A1–A4 comparisons and before-images retain their original hashes and are background only. In particular, `a3-layout-comparison.json` and `mounting-clearance-comparison.json` are historical; current mounting checks and the A5 containment comparison establish the retained geometry. No safety-isolation or hardware manufacturing approval is implied.

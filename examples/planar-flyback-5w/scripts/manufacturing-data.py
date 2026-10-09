@@ -12,7 +12,7 @@ def sourcing_status(p):
     if p['ref']=='T1':return 'DigiKey factory-gapped halves and clips; assembled Lm, clip fit and retention require verification'
     row=stock.get(p['ref'])
     if row and row['mpn']==p['mpn']:
-        return row['status']+'; public catalog snapshot '+snapshot['observed_local_date']+'; not reserved; recheck stock, lead time and assembly acceptance'
+        return row['status']+'; public catalog snapshot '+row.get('observed_local_date',snapshot['observed_local_date'])+'; not reserved; recheck stock, lead time and assembly acceptance'
     return 'Catalog identity only; repeat sourcing review'
 positions=list(csv.DictReader((M/'KiCad-positions.csv').open()))
 expected={p['ref'] for p in parts if p['ref']!='T1' and not p.get('exclude_from_bom')}

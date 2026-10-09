@@ -131,7 +131,7 @@
       "model": "kicad/3dmodels/stock/Diode_SMD.3dshapes/D_SMA.step",
       "sha256": "1cfddd4e3b1bf22b8fc6ee3258c2aade882ed7b85b528e23b9db42437775a1db",
       "position_mm": [
-        109.0,
+        113.5,
         65.9
       ],
       "rotation_deg": -90.0,
@@ -271,10 +271,10 @@
     },
     {
       "reference": "R6",
-      "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
-      "sha256": "f5d1ea5c47935091292bd1c6c698e0df88d3d4bbf92bf66b4c97e49df5be9ebc",
+      "model": "kicad/3dmodels/stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
+      "sha256": "76b2052a3c120193de7cdc0af99157b6f375e9a4af7721e3e3d012968c877f27",
       "position_mm": [
-        104.0,
+        107.2,
         68.4
       ],
       "rotation_deg": 180.0,

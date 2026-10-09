@@ -1,6 +1,6 @@
 # JLCPCB handoff — single board, factory panelization
 
-Use the files in this directory for **JLCPCB-managed panelization** of the A4 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
+Use the files in this directory for **JLCPCB-managed panelization** of the A5 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
 
 Order six layers, nominal 1.6 mm, **1 oz outer / 1 oz inner**, **Specify Stackup: No**, no impedance control, ENIG and Standard PCBA. The reference cross-section in stackup.json is used for modeling; it is not a request for a paid named stack.
 
@@ -12,7 +12,7 @@ Order six layers, nominal 1.6 mm, **1 oz outer / 1 oz inner**, **Specify Stackup
 | Electronic components | [BOM-JLCPCB.csv](BOM-JLCPCB.csv) |
 | Component placement | [CPL-JLCPCB.csv](CPL-JLCPCB.csv) |
 
-The CPL includes exact catalog rotation and origin corrections for the current A4 board. Upload it again if an earlier file was used, and compare the fresh preview with PLACEMENT-REVIEW.md. The raw KiCad positions are reference data only.
+The CPL includes the saved catalog rotation/origin corrections plus the new R6 manufacturer land reference for the current A5 board. Upload it again if an earlier file was used, and compare the fresh preview with PLACEMENT-REVIEW.md. The raw KiCad positions are reference data only.
 
 The outer review-package ZIP contains the complete project and supporting documents. Extract it to reach these three upload files; it is not the Gerber upload itself. Each file describes one 44 × 94 mm board. Ask JLCPCB to prepare the assembly panel and convert coordinates as needed. The requested quantity is **five finished converter boards**, subject to the quoted panel arrangement.
 

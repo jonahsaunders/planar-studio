@@ -1,11 +1,11 @@
 {
-  "review_date": "2026-09-30",
-  "board_sha256": "861d3217f71628ad30748050abc53af71862a964d0468fd5311ebc4912f6bd55",
+  "review_date": "2026-10-09",
+  "board_sha256": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
   "source_SHA256": {
-    "sources/component-review.json": "26aeae8f13822c481df89d0e8faaee71c9bf16c8cd2dddc1229ed2c978dee48d",
-    "circuit.json": "cf4f2f9b1b77cf8c126c00ba5dff8c511d7f81b8014f7480b21fb98fe4b5b082",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "47e0098ace567cd53f10b1efb71a81572e6411ac221012c72b191ebd36efbdf4",
-    "evidence/electrical-sizing.json": "7aa4421f62d71be0087591d5d8fa4ec477cd7870f9a1b3bb7e91deec540e407d"
+    "sources/component-review.json": "67202cbaea4c3955ac45e3ef15e17eb3939e3e7745e46154f242f6c149e790c5",
+    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "d5dc7a45530c7cb16b1c3bdad9c84b1acbd994b6e13361e24ce926ee163d41f3",
+    "evidence/electrical-sizing.json": "bb904a512ace6b91c12f8c2f4f781c4d41d6554f8f710d2525e637aaef16e56b"
   },
   "reviewed_footprints": 29,
   "electronic_references": 24,
@@ -14,8 +14,8 @@
     {
       "net": "PGND",
       "position_mm": [
-        84.5,
-        40
+        86,
+        47
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -25,7 +25,7 @@
       "net": "PGND",
       "position_mm": [
         84.5,
-        43
+        48
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -35,7 +35,7 @@
       "net": "PGND",
       "position_mm": [
         84.5,
-        55
+        60
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -45,7 +45,7 @@
       "net": "PGND",
       "position_mm": [
         86.5,
-        53.5
+        58.5
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -55,7 +55,7 @@
       "net": "PGND",
       "position_mm": [
         85.5,
-        63.4
+        68.4
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -65,7 +65,7 @@
       "net": "PGND",
       "position_mm": [
         91,
-        62.5
+        67.5
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -75,7 +75,7 @@
       "net": "PGND",
       "position_mm": [
         99,
-        52.5
+        57.5
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -85,7 +85,7 @@
       "net": "PGND",
       "position_mm": [
         103,
-        54
+        59
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -95,7 +95,7 @@
       "net": "PGND",
       "position_mm": [
         114.5,
-        42
+        47
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -105,7 +105,7 @@
       "net": "PGND",
       "position_mm": [
         115,
-        54
+        59
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -114,18 +114,28 @@
     {
       "net": "PGND",
       "position_mm": [
-        114,
-        58
-      ],
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3,
-      "F_and_B_filled_plane_attachment_checked": true
-    },
-    {
-      "net": "PGND",
-      "position_mm": [
-        114,
+        115.5,
         63
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "F_and_B_filled_plane_attachment_checked": true
+    },
+    {
+      "net": "PGND",
+      "position_mm": [
+        115.5,
+        68
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3,
+      "F_and_B_filled_plane_attachment_checked": true
+    },
+    {
+      "net": "PGND",
+      "position_mm": [
+        115.5,
+        69
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -135,7 +145,7 @@
       "net": "GND_ISO",
       "position_mm": [
         87,
-        108
+        103
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -145,7 +155,7 @@
       "net": "GND_ISO",
       "position_mm": [
         90,
-        108
+        103
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -155,7 +165,7 @@
       "net": "GND_ISO",
       "position_mm": [
         94,
-        108
+        103
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -165,7 +175,7 @@
       "net": "GND_ISO",
       "position_mm": [
         111,
-        108
+        103
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -175,7 +185,7 @@
       "net": "GND_ISO",
       "position_mm": [
         112.5,
-        115
+        110
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -185,7 +195,7 @@
       "net": "GND_ISO",
       "position_mm": [
         87,
-        115
+        110
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -195,7 +205,7 @@
       "net": "GND_ISO",
       "position_mm": [
         87,
-        123
+        118
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -205,7 +215,7 @@
       "net": "GND_ISO",
       "position_mm": [
         95.5,
-        122.8
+        117.8
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -215,7 +225,7 @@
       "net": "GND_ISO",
       "position_mm": [
         107,
-        123
+        118
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -225,7 +235,7 @@
       "net": "GND_ISO",
       "position_mm": [
         112,
-        128
+        123
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -235,7 +245,7 @@
       "net": "GND_ISO",
       "position_mm": [
         91,
-        130
+        125
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -245,7 +255,7 @@
       "net": "GND_ISO",
       "position_mm": [
         107,
-        130
+        125
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -255,7 +265,7 @@
       "net": "GND_ISO",
       "position_mm": [
         100,
-        131.5
+        126.5
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -265,7 +275,7 @@
       "net": "GND_ISO",
       "position_mm": [
         99,
-        115
+        110
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3,
@@ -284,7 +294,7 @@
     "C7_max_empty_charge_energy_J": 0.036547199999999995,
     "ideal_hard_step_initial_R8_power_W": 632.7507079386778,
     "output_bulk_minimum_F": 0.000288,
-    "output_ripple_estimate_V": 0.050578010950300845,
+    "output_ripple_estimate_V": 0.05108361850655024,
     "limits": "Sinusoidal/distributed branch current, source/cable impedance, MLCC bias, frequency-dependent ESR and transients are not simulated. A hard step is not qualified."
   },
   "components": [
@@ -304,7 +314,7 @@
       "selected_value": "18-36 V DC",
       "position_mm": [
         97.5,
-        40.0
+        45.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -317,7 +327,7 @@
           "net": "/VIN_RAW",
           "center_mm": [
             97.5,
-            40.0
+            45.0
           ],
           "size_mm": [
             2.4,
@@ -333,7 +343,7 @@
           "net": "/PGND",
           "center_mm": [
             102.5,
-            40.0
+            45.0
           ],
           "size_mm": [
             2.4,
@@ -363,7 +373,7 @@
       "selected_value": "5 V / 1 A isolated",
       "position_mm": [
         102.5,
-        129.0
+        124.0
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -376,7 +386,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             102.5,
-            129.0
+            124.0
           ],
           "size_mm": [
             2.4,
@@ -392,7 +402,7 @@
           "net": "/GND_ISO",
           "center_mm": [
             97.5,
-            129.0
+            124.0
           ],
           "size_mm": [
             2.4,
@@ -422,7 +432,7 @@
       "selected_value": "1 A / 63 V DC fast",
       "position_mm": [
         90.5,
-        40.0
+        45.0
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -435,7 +445,7 @@
           "net": "/VIN_RAW",
           "center_mm": [
             92.225,
-            40.0
+            45.0
           ],
           "size_mm": [
             1.25,
@@ -451,7 +461,7 @@
           "net": "/VIN_FUSED",
           "center_mm": [
             88.775,
-            40.0
+            45.0
           ],
           "size_mm": [
             1.25,
@@ -481,7 +491,7 @@
       "selected_value": "DFLS1100-7",
       "position_mm": [
         88.0,
-        46.0
+        51.0
       ],
       "rotation_degrees": 90.0,
       "actual_numbered_pad_nets": {
@@ -494,7 +504,7 @@
           "net": "/VIN",
           "center_mm": [
             88.0,
-            46.85
+            51.85
           ],
           "size_mm": [
             2.4,
@@ -510,7 +520,7 @@
           "net": "/VIN_FUSED",
           "center_mm": [
             88.0,
-            44.475
+            49.475
           ],
           "size_mm": [
             1.05,
@@ -540,7 +550,7 @@
       "selected_value": "10u 50V X7R",
       "position_mm": [
         85.5,
-        60.635
+        65.635
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -553,7 +563,7 @@
           "net": "/VIN",
           "center_mm": [
             86.975,
-            60.635
+            65.635
           ],
           "size_mm": [
             1.15,
@@ -569,7 +579,7 @@
           "net": "/PGND",
           "center_mm": [
             84.025,
-            60.635
+            65.635
           ],
           "size_mm": [
             1.15,
@@ -599,7 +609,7 @@
       "selected_value": "10u 50V X7R",
       "position_mm": [
         104.0,
-        59.0
+        64.0
       ],
       "rotation_degrees": 90.0,
       "actual_numbered_pad_nets": {
@@ -612,7 +622,7 @@
           "net": "/VIN",
           "center_mm": [
             104.0,
-            60.475
+            65.475
           ],
           "size_mm": [
             1.15,
@@ -628,7 +638,7 @@
           "net": "/PGND",
           "center_mm": [
             104.0,
-            57.525
+            62.525
           ],
           "size_mm": [
             1.15,
@@ -658,7 +668,7 @@
       "selected_value": "180u 16V",
       "position_mm": [
         101.0,
-        118.5
+        113.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -671,7 +681,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             103.8,
-            118.5
+            113.5
           ],
           "size_mm": [
             3.5,
@@ -687,7 +697,7 @@
           "net": "/GND_ISO",
           "center_mm": [
             98.2,
-            118.5
+            113.5
           ],
           "size_mm": [
             3.5,
@@ -717,7 +727,7 @@
       "selected_value": "180u 16V",
       "position_mm": [
         91.0,
-        118.5
+        113.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -730,7 +740,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             93.8,
-            118.5
+            113.5
           ],
           "size_mm": [
             3.5,
@@ -746,7 +756,7 @@
           "net": "/GND_ISO",
           "center_mm": [
             88.2,
-            118.5
+            113.5
           ],
           "size_mm": [
             3.5,
@@ -776,7 +786,7 @@
       "selected_value": "22u 16V X7R",
       "position_mm": [
         106.5,
-        111.12
+        106.12
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -789,7 +799,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             105.025,
-            111.12
+            106.12
           ],
           "size_mm": [
             1.15,
@@ -805,7 +815,7 @@
           "net": "/GND_ISO",
           "center_mm": [
             107.975,
-            111.12
+            106.12
           ],
           "size_mm": [
             1.15,
@@ -835,7 +845,7 @@
       "selected_value": "4.7u / 16 V X5R",
       "position_mm": [
         86.5,
-        58.2
+        63.2
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -848,7 +858,7 @@
           "net": "/INTVCC",
           "center_mm": [
             87.275,
-            58.2
+            63.2
           ],
           "size_mm": [
             0.9,
@@ -864,7 +874,7 @@
           "net": "/PGND",
           "center_mm": [
             85.725,
-            58.2
+            63.2
           ],
           "size_mm": [
             0.9,
@@ -894,7 +904,7 @@
       "selected_value": "470p / 100 V C0G",
       "position_mm": [
         100.0,
-        63.4
+        68.4
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -907,7 +917,7 @@
           "net": "/SNUB",
           "center_mm": [
             100.95,
-            63.4
+            68.4
           ],
           "size_mm": [
             1.0,
@@ -923,7 +933,7 @@
           "net": "/SW",
           "center_mm": [
             99.05,
-            63.4
+            68.4
           ],
           "size_mm": [
             1.0,
@@ -953,7 +963,7 @@
       "selected_value": "47u / 63 V",
       "position_mm": [
         110.5,
-        49.0
+        54.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -966,7 +976,7 @@
           "net": "/VIN_DAMP",
           "center_mm": [
             106.8,
-            49.0
+            54.0
           ],
           "size_mm": [
             4.4,
@@ -982,7 +992,7 @@
           "net": "/PGND",
           "center_mm": [
             114.2,
-            49.0
+            54.0
           ],
           "size_mm": [
             4.4,
@@ -1012,7 +1022,7 @@
       "selected_value": "649k 1%",
       "position_mm": [
         90.5,
-        51.0
+        56.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -1025,7 +1035,7 @@
           "net": "/VIN",
           "center_mm": [
             89.675,
-            51.0
+            56.0
           ],
           "size_mm": [
             0.8,
@@ -1041,7 +1051,7 @@
           "net": "/UVLO",
           "center_mm": [
             91.325,
-            51.0
+            56.0
           ],
           "size_mm": [
             0.8,
@@ -1071,7 +1081,7 @@
       "selected_value": "61.9k 1%",
       "position_mm": [
         93.5,
-        51.0
+        56.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -1084,7 +1094,7 @@
           "net": "/UVLO",
           "center_mm": [
             92.675,
-            51.0
+            56.0
           ],
           "size_mm": [
             0.8,
@@ -1100,7 +1110,7 @@
           "net": "/PGND",
           "center_mm": [
             94.325,
-            51.0
+            56.0
           ],
           "size_mm": [
             0.8,
@@ -1130,7 +1140,7 @@
       "selected_value": "113k 0.1%",
       "position_mm": [
         96.65,
-        59.635
+        64.635
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -1143,7 +1153,7 @@
           "net": "/SW",
           "center_mm": [
             97.475,
-            59.635
+            64.635
           ],
           "size_mm": [
             0.8,
@@ -1159,7 +1169,7 @@
           "net": "/RFB",
           "center_mm": [
             95.825,
-            59.635
+            64.635
           ],
           "size_mm": [
             0.8,
@@ -1189,7 +1199,7 @@
       "selected_value": "10.7k 0.1%",
       "position_mm": [
         96.65,
-        57.8
+        62.8
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -1202,7 +1212,7 @@
           "net": "/RREF",
           "center_mm": [
             95.825,
-            57.8
+            62.8
           ],
           "size_mm": [
             0.8,
@@ -1218,7 +1228,7 @@
           "net": "/PGND",
           "center_mm": [
             97.475,
-            57.8
+            62.8
           ],
           "size_mm": [
             0.8,
@@ -1248,7 +1258,7 @@
       "selected_value": "127k 0.1%",
       "position_mm": [
         94.1015,
-        54.5
+        59.5
       ],
       "rotation_degrees": 90.0,
       "actual_numbered_pad_nets": {
@@ -1261,7 +1271,7 @@
           "net": "/TC",
           "center_mm": [
             94.1015,
-            55.325
+            60.325
           ],
           "size_mm": [
             0.8,
@@ -1277,7 +1287,7 @@
           "net": "/RREF",
           "center_mm": [
             94.1015,
-            53.675
+            58.675
           ],
           "size_mm": [
             0.8,
@@ -1293,21 +1303,21 @@
     },
     {
       "reference": "R6",
-      "expected_mpn": "SR1206FR-7T39RL",
-      "expected_footprint": "R_1206_3216Metric",
-      "rating": "39 ohm +/-1%, 100 ppm/C; SR1206 7T = 0.75 W at 70 C, linear derating to zero at 155 C. Continuous-pulse curve applies in addition to average power.",
-      "package_review": "3.1 x 1.6 x 0.55 mm body; retained 1206 land pattern and generic 3D envelope; interchangeable terminals.",
-      "use_case": "SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
-      "remaining_validation": "Verify measured repetitive pulse/average power and body temperature; 680 pF or 1 nF are not approved substitutions. Tune from 39 ohm/470 pF.",
+      "expected_mpn": "CRH2512F39R0E04Z",
+      "expected_footprint": "R_EverOhms_CRH2512",
+      "rating": "39 ohm +/-1%, 100 ppm/C; 2 W at 70 C, linear ambient derating to zero at 155 C. No repetitive-pulse rating is supplied.",
+      "package_review": "Ever Ohms CRH S-10-12-16-13 pp5-6: body 6.30 +/-0.20 x 3.20 +/-0.15 x 0.65 +/-0.10 mm. Recommended land gap 4.90, outer span 8.10 and width 3.40 mm; implemented 1.60 x 3.40 mm lands at +/-3.25. Generic 2512 STEP is an illustrative envelope; terminals interchangeable.",
+      "use_case": "39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.",
+      "remaining_validation": "Measure repetitive pulse stress, mean(v^2/R), local ambient and body temperature; 680 pF/1 nF remain unapproved tuning changes despite improved average-power margin.",
       "expected_nets": {
         "1": "VIN",
         "2": "SNUB"
       },
-      "source": "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf",
-      "selected_value": "39R 0.75 W",
+      "source": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
+      "selected_value": "39R 2 W",
       "position_mm": [
-        104.0,
-        63.4
+        107.2,
+        68.4
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {
@@ -1319,12 +1329,12 @@
           "number": "1",
           "net": "/VIN",
           "center_mm": [
-            105.4625,
-            63.4
+            110.45,
+            68.4
           ],
           "size_mm": [
-            1.125,
-            1.75
+            1.6,
+            3.4
           ],
           "drill_mm": [
             0.0,
@@ -1335,12 +1345,12 @@
           "number": "2",
           "net": "/SNUB",
           "center_mm": [
-            102.5375,
-            63.4
+            103.95,
+            68.4
           ],
           "size_mm": [
-            1.125,
-            1.75
+            1.6,
+            3.4
           ],
           "drill_mm": [
             0.0,
@@ -1366,7 +1376,7 @@
       "selected_value": "220R 0.25 W",
       "position_mm": [
         109.0,
-        118.5
+        113.5
       ],
       "rotation_degrees": -90.0,
       "actual_numbered_pad_nets": {
@@ -1379,7 +1389,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             109.0,
-            117.0375
+            112.0375
           ],
           "size_mm": [
             1.125,
@@ -1395,7 +1405,7 @@
           "net": "/GND_ISO",
           "center_mm": [
             109.0,
-            119.9625
+            114.9625
           ],
           "size_mm": [
             1.125,
@@ -1425,7 +1435,7 @@
       "selected_value": "2.2R 2 W",
       "position_mm": [
         98.0,
-        47.0
+        52.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -1438,7 +1448,7 @@
           "net": "/VIN",
           "center_mm": [
             95.425,
-            47.0
+            52.0
           ],
           "size_mm": [
             2.45,
@@ -1454,7 +1464,7 @@
           "net": "/VIN_DAMP",
           "center_mm": [
             100.575,
-            47.0
+            52.0
           ],
           "size_mm": [
             2.45,
@@ -1484,7 +1494,7 @@
       "selected_value": "PDS835L-13",
       "position_mm": [
         101.0,
-        110.0
+        105.0
       ],
       "rotation_degrees": 90.0,
       "actual_numbered_pad_nets": {
@@ -1497,7 +1507,7 @@
           "net": "/+5V_ISO",
           "center_mm": [
             101.0,
-            111.12
+            106.12
           ],
           "size_mm": [
             4.86,
@@ -1513,7 +1523,7 @@
           "net": "/SEC_A",
           "center_mm": [
             100.08,
-            107.138
+            102.138
           ],
           "size_mm": [
             1.4,
@@ -1529,7 +1539,7 @@
           "net": "/SEC_A",
           "center_mm": [
             101.92,
-            107.138
+            102.138
           ],
           "size_mm": [
             1.4,
@@ -1559,7 +1569,7 @@
       "selected_value": "DFLS1100-7",
       "position_mm": [
         100.0,
-        59.7
+        64.7
       ],
       "rotation_degrees": -90.0,
       "actual_numbered_pad_nets": {
@@ -1572,7 +1582,7 @@
           "net": "/CLAMP",
           "center_mm": [
             100.0,
-            58.85
+            63.85
           ],
           "size_mm": [
             2.4,
@@ -1588,7 +1598,7 @@
           "net": "/SW",
           "center_mm": [
             100.0,
-            61.225
+            66.225
           ],
           "size_mm": [
             1.05,
@@ -1617,8 +1627,8 @@
       "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
       "selected_value": "SMAJ12A-13-F",
       "position_mm": [
-        109.0,
-        60.9
+        113.5,
+        65.9
       ],
       "rotation_degrees": -90.0,
       "actual_numbered_pad_nets": {
@@ -1630,8 +1640,8 @@
           "number": "1",
           "net": "/CLAMP",
           "center_mm": [
-            109.0,
-            58.9
+            113.5,
+            63.9
           ],
           "size_mm": [
             2.5,
@@ -1646,8 +1656,8 @@
           "number": "2",
           "net": "/VIN",
           "center_mm": [
-            109.0,
-            62.9
+            113.5,
+            67.9
           ],
           "size_mm": [
             2.5,
@@ -1684,7 +1694,7 @@
       "selected_value": "LT8302IS8E#PBF",
       "position_mm": [
         91.5,
-        59.0
+        64.0
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {
@@ -1704,7 +1714,7 @@
           "net": "",
           "center_mm": [
             90.95,
-            58.25
+            63.25
           ],
           "size_mm": [
             0.8,
@@ -1720,7 +1730,7 @@
           "net": "",
           "center_mm": [
             90.95,
-            59.75
+            64.75
           ],
           "size_mm": [
             0.8,
@@ -1736,7 +1746,7 @@
           "net": "",
           "center_mm": [
             92.05,
-            58.25
+            63.25
           ],
           "size_mm": [
             0.8,
@@ -1752,7 +1762,7 @@
           "net": "",
           "center_mm": [
             92.05,
-            59.75
+            64.75
           ],
           "size_mm": [
             0.8,
@@ -1768,7 +1778,7 @@
           "net": "/UVLO",
           "center_mm": [
             88.8985,
-            57.095
+            62.095
           ],
           "size_mm": [
             1.143,
@@ -1784,7 +1794,7 @@
           "net": "/INTVCC",
           "center_mm": [
             88.8985,
-            58.365
+            63.365
           ],
           "size_mm": [
             1.143,
@@ -1800,7 +1810,7 @@
           "net": "/VIN",
           "center_mm": [
             88.8985,
-            59.635
+            64.635
           ],
           "size_mm": [
             1.143,
@@ -1816,7 +1826,7 @@
           "net": "/PGND",
           "center_mm": [
             88.8985,
-            60.905
+            65.905
           ],
           "size_mm": [
             1.143,
@@ -1832,7 +1842,7 @@
           "net": "/SW",
           "center_mm": [
             94.1015,
-            60.905
+            65.905
           ],
           "size_mm": [
             1.143,
@@ -1848,7 +1858,7 @@
           "net": "/RFB",
           "center_mm": [
             94.1015,
-            59.635
+            64.635
           ],
           "size_mm": [
             1.143,
@@ -1864,7 +1874,7 @@
           "net": "/RREF",
           "center_mm": [
             94.1015,
-            58.365
+            63.365
           ],
           "size_mm": [
             1.143,
@@ -1880,7 +1890,7 @@
           "net": "/TC",
           "center_mm": [
             94.1015,
-            57.095
+            62.095
           ],
           "size_mm": [
             1.143,
@@ -1896,7 +1906,7 @@
           "net": "/PGND",
           "center_mm": [
             91.5,
-            59.0
+            64.0
           ],
           "size_mm": [
             2.26,
@@ -1912,11 +1922,11 @@
     },
     {
       "reference": "T1",
-      "expected_mpn": "PS-MAG-001 A0",
-      "expected_footprint": "Planar_EELP32_4T_2T",
-      "rating": "Prepared TDK N87 EELP32 pair, nominal 0.21 mm center-only gap; 4:2 turns; nominal primary 11.95 uH, acceptance 10.16-13.74 uH.",
-      "package_review": "Custom integral winding footprint, five 0.40 mm plated interlayer holes. Two primary layers series, two secondary layers parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.",
-      "use_case": "Flyback energy-storage transformer, not an ungapped signal transformer. Estimated flux 0.145 T at 5.4 A and L+15%; typical 7.2 A overcurrent-restart value gives 0.193 T.",
+      "expected_mpn": "PS-MAG-002 A2",
+      "expected_footprint": "Planar_EELP22_4T_2T",
+      "rating": "Two TDK N87 ELP22 B66285G0050X187 halves, each factory-gapped 0.05 mm; two B66286A2000X000 clips; 4:2 turns; estimated primary 13.12 uH, measured acceptance 11.0\u201314.6 uH.",
+      "package_review": "Custom integral winding footprint; native net, copper, interlayer-hole and slot checks in independent-checks.json. Two primary layers in series, two secondary layers in parallel. Primary dot pad 1, secondary dot pad 3 (GND_ISO), pad 5 internal series connection.",
+      "use_case": "Flyback energy-storage transformer. At maximum accepted 14.6 uH, estimated flux is 0.253 T at 5.4 A; typical 7.2 A restart gives 0.337 T and requires bias/fault qualification. No grinding or bonding is specified.",
       "remaining_validation": "Custom magnetic assembly remains unqualified: measure L versus DC bias/temperature, leakage, core/fringing/AC losses, gap tolerance and retention. Functional low-voltage isolation only; no safety rating.",
       "expected_nets": {
         "1": "VIN",
@@ -1925,8 +1935,8 @@
         "4": "SEC_A",
         "5": "unconnected-(T1-P_MID-Pad5)"
       },
-      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_32_6_20.pdf",
-      "selected_value": "PLANAR 4:2 / Lm 12uH",
+      "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+      "selected_value": "PLANAR 4:2 / Lm 13.12uH",
       "position_mm": [
         100.0,
         85.0
@@ -1944,64 +1954,64 @@
           "number": "1",
           "net": "/VIN",
           "center_mm": [
-            103.621977,
-            65.806807
+            102.871953,
+            71.926237
           ],
           "size_mm": [
-            0.8,
-            0.8
+            0.6,
+            0.6
           ],
           "drill_mm": [
-            0.4,
-            0.4
+            0.3,
+            0.3
           ]
         },
         {
           "number": "2",
           "net": "/SW",
           "center_mm": [
-            96.378023,
-            65.806807
+            97.128047,
+            71.926237
           ],
           "size_mm": [
-            0.8,
-            0.8
+            0.6,
+            0.6
           ],
           "drill_mm": [
-            0.4,
-            0.4
+            0.3,
+            0.3
           ]
         },
         {
           "number": "3",
           "net": "/GND_ISO",
           "center_mm": [
-            98.169595,
-            104.591339
+            98.540116,
+            98.467355
           ],
           "size_mm": [
-            0.8,
-            0.8
+            0.6,
+            0.6
           ],
           "drill_mm": [
-            0.4,
-            0.4
+            0.3,
+            0.3
           ]
         },
         {
           "number": "4",
           "net": "/SEC_A",
           "center_mm": [
-            101.075,
-            99.446501
+            100.775,
+            94.729583
           ],
           "size_mm": [
-            0.8,
-            0.8
+            0.6,
+            0.6
           ],
           "drill_mm": [
-            0.4,
-            0.4
+            0.3,
+            0.3
           ]
         },
         {
@@ -2009,15 +2019,15 @@
           "net": "unconnected-(T1-P_MID-Pad5)",
           "center_mm": [
             100.0,
-            70.475
+            75.2
           ],
           "size_mm": [
-            0.8,
-            0.8
+            0.6,
+            0.6
           ],
           "drill_mm": [
-            0.4,
-            0.4
+            0.3,
+            0.3
           ]
         }
       ],
@@ -2027,16 +2037,16 @@
       "reference": "H1",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
       "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod",
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
-        79.5,
-        37.5
+        82.5,
+        42.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {},
@@ -2045,8 +2055,8 @@
           "number": "",
           "net": "",
           "center_mm": [
-            79.5,
-            37.5
+            82.5,
+            42.5
           ],
           "size_mm": [
             3.2,
@@ -2064,16 +2074,16 @@
       "reference": "H2",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
       "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod",
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
-        120.5,
-        37.5
+        117.5,
+        42.5
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {},
@@ -2082,8 +2092,8 @@
           "number": "",
           "net": "",
           "center_mm": [
-            120.5,
-            37.5
+            117.5,
+            42.5
           ],
           "size_mm": [
             3.2,
@@ -2101,16 +2111,16 @@
       "reference": "H3",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
       "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod",
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
-        79.5,
-        132.5
+        82.5,
+        127.5
       ],
       "rotation_degrees": 180.0,
       "actual_numbered_pad_nets": {},
@@ -2119,8 +2129,8 @@
           "number": "",
           "net": "",
           "center_mm": [
-            79.5,
-            132.5
+            82.5,
+            127.5
           ],
           "size_mm": [
             3.2,
@@ -2138,16 +2148,16 @@
       "reference": "H4",
       "expected_mpn": "",
       "expected_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
-      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate diameter plus outward extension; 6.8 mm circular copper keepout.",
-      "package_review": "Exact American Embedded Edge footprint at commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 41 x 95 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net.",
+      "rating": "M3 clearance: 3.2 mm NPTH, 6.4 mm exposed-substrate contact diameter plus outward extension; 10 mm circular copper exclusion and 1.8 mm clearance along the complete mask extension on all six layers.",
+      "package_review": "Locally modified American Embedded Edge footprint from commit 7be2918; H1/H3 rotated 180 degrees, H2/H4 0 degrees; 35 \u00d7 85 mm hole pattern; centers 4.5 mm from adjacent board edges. No electrical pad/net. Current mounting-checks.json verifies the enlarged copper exclusion.",
       "use_case": "Mechanical support, excluded from electronic BOM/CPL. Provisional nonconductive M3 hardware uses 8 mm standoffs for underside core clearance.",
       "remaining_validation": "Select actual screws/standoffs and qualify contact diameter, enclosure clearances and torque; 3D fasteners are illustrative envelopes.",
       "expected_nets": {},
       "source": "https://github.com/American-Embedded/American_Embedded_KiCad_Repository/blob/7be291853536e19f0d0d548c2ed3ca6811bdc540/packages/library/american-embedded-library/footprints/amemb-MountingHole.pretty/MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod",
       "selected_value": "M3 / 3.2 mm NPTH",
       "position_mm": [
-        120.5,
-        132.5
+        117.5,
+        127.5
       ],
       "rotation_degrees": 0.0,
       "actual_numbered_pad_nets": {},
@@ -2156,8 +2166,8 @@
           "number": "",
           "net": "",
           "center_mm": [
-            120.5,
-            132.5
+            117.5,
+            127.5
           ],
           "size_mm": [
             3.2,

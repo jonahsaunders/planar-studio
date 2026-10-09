@@ -1,0 +1,83 @@
+{
+  "revision": "A5-development",
+  "baseline_commit": "d50da5e73e18db090fe29968531e7b02828afc73",
+  "status": "PASS",
+  "changed_R6_fields": [
+    "footprint",
+    "lcsc",
+    "mfr",
+    "mpn",
+    "purpose",
+    "source",
+    "source_footprint",
+    "value"
+  ],
+  "unchanged_electrical_topology": true,
+  "unchanged_other_parts": true,
+  "unchanged_winding_stack_and_mechanics": [
+    "planar-studio/T1-artwork.json",
+    "planar-studio/T1-config.json",
+    "planar-studio/T1.planar.json",
+    "evidence/winding-model.json",
+    "stackup.json",
+    "mechanical.json"
+  ],
+  "unchanged_component_poses_and_pads_except": [
+    "R6",
+    "D4"
+  ],
+  "R6_land_size_mm": [
+    1.6,
+    3.4
+  ],
+  "R6_land_pitch_mm": 6.5,
+  "ground_stitch_moves_mm": [
+    [
+      [
+        114,
+        63
+      ],
+      [
+        115.5,
+        63
+      ]
+    ],
+    [
+      [
+        114,
+        68
+      ],
+      [
+        115.5,
+        68
+      ]
+    ],
+    [
+      [
+        112,
+        68
+      ],
+      [
+        115.5,
+        69
+      ]
+    ]
+  ],
+  "route_segments_removed": 9,
+  "route_segments_added": 10,
+  "routing_and_pour_change_bounds_mm": [
+    98.5,
+    62,
+    117,
+    72.5
+  ],
+  "unchanged_outline_and_mounting_geometry": true,
+  "scope": "Geometric change containment and connectivity; no thermal, repetitive-pulse or hardware qualification.",
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
+    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
+    "parts.json": "26ad548e669906ab55d31730a75462e401bb066bf8b3963d3d518ec844d2a101",
+    "layout.json": "2babe0c5e7ad4da95e325668eb6e07261a95daac7956dbef4fa2d6de3602a7c8",
+    "scripts/verify-snubber-revision.py": "546c84c9cac4cf17bba34d2b4762dffe1a95ee42f583f1c533a621f916bc2179"
+  }
+}

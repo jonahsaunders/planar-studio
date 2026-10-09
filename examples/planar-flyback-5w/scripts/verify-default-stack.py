@@ -29,7 +29,13 @@ old_cfg=old('planar-studio/T1-config.json')
 changed={k for k in cfg.keys()|old_cfg.keys() if cfg.get(k)!=old_cfg.get(k)}
 assert changed=={'layerPositions','dielectricEr'},('Unexpected winding change',changed)
 assert cfg['dielectricEr']==stack['winding_model_dielectric_er']==4.4
-assert old('circuit.json')==read('circuit.json'),'Circuit/BOM changed'
+before_circuit=old('circuit.json');after_circuit=read('circuit.json')
+for data in [before_circuit,after_circuit]:
+    for part in data['parts']:
+        if part['ref']=='R6':
+            for key in ['value','mpn','mfr','lcsc','source','purpose','footprint','source_footprint','power_rating_W_at_70C']:part.pop(key,None)
+assert before_circuit==after_circuit,'Unexpected circuit change beyond R6 procurement/rating/footprint'
+# Exact R6 identity and geometry are independently asserted by verify-snubber-revision.py.
 before_art=old('planar-studio/T1-artwork.json');after_art=read('planar-studio/T1-artwork.json')
 before_art['meta'].pop('stack');after_art['meta'].pop('stack')
 assert before_art==after_art,'Two-dimensional winding/core-slot artwork changed'
@@ -38,11 +44,11 @@ assert model['magnetizingInductance_H']==before['magnetizingInductance_H']
 assert abs(model['analysis']['R1']/before['analysis']['R1']-1)<.001
 assert model['analysis']['R2']==before['analysis']['R2']
 board=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'))
-assert board.GetTitleBlock().GetRevision()=='A4-development'
+assert board.GetTitleBlock().GetRevision()=='A5-development'
 assert abs(pcb.ToMM(board.GetDesignSettings().GetBoardThickness())-total)<1e-6
-report={'revision':'A4-development','baseline_commit':baseline,
+report={'revision':'A5-development','baseline_commit':baseline,
  'ordering':{'layers':6,'nominal_thickness_mm':1.6,'outer_copper_oz':1,'inner_copper_oz':1,'specify_stackup':False,'impedance_control':False},
- 'unchanged_circuit_BOM_and_2D_winding_artwork':True,
+ 'unchanged_electrical_topology_and_2D_winding_artwork':True, 'R6_procurement_rating_and_footprint_updated':True,
  'changed_winding_parameters':sorted(changed),'reference_stack_total_mm':total,'reference_winding_centers_mm':winding_z,
  'old':{k:before['analysis'][k] for k in ['R1','R2','leakage','capacitance']},
  'new':{k:model['analysis'][k] for k in ['R1','R2','leakage','capacitance']},

@@ -1,4 +1,4 @@
-# A4 — 1 oz inner copper, no specified stack
+# A4 historical stack revision — 1 oz inner copper, no specified stack
 
 Order six layers, **nominal 1.6 mm, 1 oz outer copper, 1 oz inner copper, Specify Stackup: No**, no impedance control, ENIG and Standard PCBA. This replaces A3's paid JLC061611-1080A selection. The reference below is not a requirement to purchase a named stack or exact prepreg construction.
 
@@ -36,3 +36,5 @@ The circuit, electronic BOM, winding turns and two-dimensional copper, component
 `scripts/rebuild.py` runs native ERC/DRC with zone refill and schematic parity, winding/net checks, A2/A3 geometry comparisons, the new A4 order/stack consistency check, placement/polarity checks, nominal solids and tolerance-aware core/clip checks, sizing and the 54 analytical operating cases. `evidence/audit/default-stack-checks.json` records the stack comparison against A3 commit 81d4d69. `SHA256SUMS.json` covers the generated package.
 
 The October 9 update corrects silkscreen dimensions and clearance; native DRC and the non-silkscreen parity check pass. The remaining audit items are: obtain the Standard-PCBA panel and component-compatible reflow agreement; verify actual clip retention and measured inductance; qualify saturation during high-current faults, clamp/input transients and temperatures. Selecting the default construction does not close those items. The factory-gapped halves still require no user grinding or bonding.
+
+A5 retains this stack and magnetic geometry while upgrading R6 to 2 W / 2512. Current layout changes and validation are described in README.md and VALIDATION.md; the earlier silkscreen-only parity statement above applies only to A4.

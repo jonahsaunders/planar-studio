@@ -141,16 +141,17 @@
     "limiting_voltage_V": 75
   },
   "R6": {
-    "value": "39R 0.75 W",
-    "mpn": "SR1206FR-7T39RL",
-    "mfr": "Yageo",
-    "source": "https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf",
-    "purpose": "SR1206 7T three-times-power surge resistor: 0.75 W at 70 C, not ordinary 0.25 W RC1206. Continuous pulse curve and average heating both apply; verify body temperature and measured ringing.",
-    "lcsc": "C6683830",
+    "value": "39R 2 W",
+    "mpn": "CRH2512F39R0E04Z",
+    "mfr": "Ever Ohms Tech",
+    "source": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
+    "purpose": "39 ohm high-power thick-film snubber resistor, 2 W at 70 C with linear derating to zero at 155 C. Repetitive nanosecond pulse capability is not specified in the CRH datasheet; verify waveforms, mean loss and temperature on the first article.",
+    "lcsc": "C175263",
     "resistance_ohm": 39,
     "tolerance_fraction": 0.01,
     "tcr_ppm_per_C": 100,
-    "power_rating_W_at_70C": 0.75
+    "power_rating_W_at_70C": 2.0,
+    "footprint": "Flyback:R_EverOhms_CRH2512"
   },
   "R7": {
     "value": "220R 0.25 W",

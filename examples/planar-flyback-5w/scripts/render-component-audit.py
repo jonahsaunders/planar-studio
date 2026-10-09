@@ -5,7 +5,7 @@ R=Path(__file__).resolve().parents[1]
 a=json.loads((R/'evidence/audit/component-checks.json').read_text())
 c=json.loads((R/'evidence/electrical-sizing.json').read_text())
 f=a['filter_checks']
-text=f'''# Component audit — PS-FLYBACK-5W A1
+text=f'''# Component audit — PS-FLYBACK-5W A5
 
 Reviewed {a['review_date']}. All {a['reviewed_footprints']} footprints have an explicit package/pin mapping review; {a['electronic_references']} are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 
@@ -15,7 +15,7 @@ The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOUR
 | --- | ---: | --- |
 | Nominal output at 0.3 V sampled diode drop | {c['nominal_output_at_sample_diode_drop_0p3V']:.3f} V | Requires output and temperature trim |
 | RFB resistive current at 17.5 V SW−VIN | {c['RFB_resistive_current_at_prototype_target_A']*1e6:.2f} µA | Excludes capacitive current and pin excursions |
-| Snubber loss including +5% capacitance | {c['snubber_loss_with_capacitance_tolerance_W']:.3f} W | 0.75 W R6 rating at 70 °C; measure pulses and temperature |
+| Snubber loss including +5% capacitance | {c['snubber_loss_with_capacitance_tolerance_W']:.3f} W | 2 W R6 rating at 70 °C; measure pulses and temperature |
 | R8 loss if all input ripple enters its branch | {f['R8_loss_if_all_input_ripple_in_branch_W']:.3f} W | 2 W rating needs 300 mm² copper; actual thermal capacity unverified |
 | Bulk-only output ripple sizing | {c['full_load_ripple_sizing_max_V']*1000:.2f} mV | Boundary estimate; burst/control behavior not represented |
 
@@ -34,7 +34,7 @@ text+='''## Release conditions
 
 The [prototype test plan](manufacturing/PROTOTYPE-TEST-PLAN.md) covers clamp/RFB waveforms, startup, full/light load, faults, temperature, magnetics and regulation. Require SW−VIN ≤17.5 V including uncertainty, SW <60 V and VIN <42 V. Controlled input ramp is the initial condition; abrupt hot-plug remains unqualified.
 
-Raw DigiKey cores need center-leg preparation, retention and installation after soldering. Adhesive, strap and illustrative mounting hardware need process/mechanical qualification; none establishes a safety-isolation rating. The six-layer stack, slots, panel and reflow profile need factory acceptance.
+Factory-gapped DigiKey cores and spring clips are installed after soldering. Core fit, clip retention and illustrative mounting hardware need mechanical qualification; none establishes a safety-isolation rating. The six-layer stack, slots, panel and reflow profile need factory acceptance.
 
 Run rebuild.py, audit-layout.py, audit-layout-complete.py, audit-components.py, render-component-audit.py and audit-3d-solids.py, then refresh previews and manifest. Historical revision comparisons do not validate a changed board.
 '''

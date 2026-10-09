@@ -43,10 +43,15 @@ for ref in ['C3','C8']:
 assert sorted(sorted(xy(p.GetSize())) for p in fps['D2'].Pads())==[[1.39,1.4],[1.39,1.4],[3.36,4.86]]
 ep=next(p for p in fps['U1'].Pads() if p.GetNumber()=='9')
 assert sorted(xy(ep.GetSize()))==[2.26,2.99]
-added={'PGND':[(84.5,40),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
-                (99,52.5),(103,54),(114.5,42),(115,54),(114,58),(114,63)],
+added={'PGND':[(86,42),(84.5,43),(84.5,55),(86.5,53.5),(85.5,63.4),(91,62.5),
+                (99,52.5),(103,54),(114.5,42),(115,54),(115.5,58),(115.5,63)],
        'GND_ISO':[(87,108),(90,108),(94,108),(111,108),(112.5,115),(87,115),
                   (87,123),(95.5,122.8),(107,123),(112,128),(91,130),(107,130),(100,131.5),(99,115)]}
+added={net:[(x,y+(5 if net=='PGND' else -5)) for x,y in locations] for net,locations in added.items()}
+added['PGND'].append((115.5,69))
+r6pads=sorted(fps['R6'].Pads(),key=lambda p:p.GetNumber())
+assert all(xy(p.GetSize())==[1.6,3.4] for p in r6pads)
+assert abs(math.dist(xy(r6pads[0].GetPosition()),xy(r6pads[1].GetPosition()))-6.5)<1e-6
 vias=[v for v in b.GetTracks() if isinstance(v,pcb.PCB_VIA)]
 planes={(z.GetNetname(),z.GetLayer()):z.GetFilledPolysList(z.GetLayer()) for z in b.Zones() if not z.GetIsRuleArea()}
 stitches=[]
@@ -60,7 +65,7 @@ for net,locations in added.items():
         for layer in [pcb.F_Cu,pcb.B_Cu]:
             poly=planes[('/'+net,layer)]
             assert all(poly.Contains(vec((pos[0]+.24*math.cos(a*math.pi/4),pos[1]+.24*math.sin(a*math.pi/4)))) for a in range(8)),(net,pos,b.GetLayerName(layer),'Not a solid two-plane stitch')
-        assert pos[1]<=64.5 if net=='PGND' else pos[1]>=106
+        assert pos[1]<=69.5 if net=='PGND' else pos[1]>=101
         stitches.append({'net':net,'position_mm':pos,'diameter_mm':.6,'drill_mm':.3,'F_and_B_filled_plane_attachment_checked':True})
 calc=json.loads((R/'evidence/electrical-sizing.json').read_text())
 ops=list(csv.DictReader((R/'evidence/operating-points.csv').open()))

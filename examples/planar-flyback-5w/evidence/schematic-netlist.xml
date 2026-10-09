@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-10-08T14:06:28</date>
+    <date>2026-10-09T22:42:53</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>18-36 V to isolated 5 V / 1 A planar flyback</title>
         <company>Planar Studio example</company>
-        <rev>A4-development</rev>
-        <date>2026-10-08</date>
+        <rev>A5-development</rev>
+        <date>2026-10-09</date>
         <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
         <comment number="1" value=""/>
         <comment number="2" value=""/>
@@ -709,21 +709,21 @@
       </units>
     </comp>
     <comp ref="R6">
-      <value>39R 0.75 W</value>
-      <footprint>Flyback:R_1206_3216Metric</footprint>
-      <datasheet>https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf</datasheet>
+      <value>39R 2 W</value>
+      <footprint>Flyback:R_EverOhms_CRH2512</footprint>
+      <datasheet>https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263</datasheet>
       <fields>
-        <field name="MPN">SR1206FR-7T39RL</field>
-        <field name="Manufacturer">Yageo</field>
-        <field name="LCSC">C6683830</field>
-        <field name="Footprint">Flyback:R_1206_3216Metric</field>
-        <field name="Datasheet">https://www.yageogroup.com/content/Resource%20Library/Datasheet/PYU-SR_20105_ROHS_L.pdf</field>
+        <field name="MPN">CRH2512F39R0E04Z</field>
+        <field name="Manufacturer">Ever Ohms Tech</field>
+        <field name="LCSC">C175263</field>
+        <field name="Footprint">Flyback:R_EverOhms_CRH2512</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="SR1206FR-7T39RL"/>
-      <property name="Manufacturer" value="Yageo"/>
-      <property name="LCSC" value="C6683830"/>
+      <property name="MPN" value="CRH2512F39R0E04Z"/>
+      <property name="Manufacturer" value="Ever Ohms Tech"/>
+      <property name="LCSC" value="C175263"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>

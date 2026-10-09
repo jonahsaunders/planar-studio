@@ -1,6 +1,6 @@
 {
   "observed_date": "2026-09-30",
-  "source": "Factual pad coordinates extracted from JLCEDA / EasyEDA public component library for the exact LCSC codes. Raw responses are not redistributed.",
+  "source": "Factual pad coordinates extracted from JLCEDA / EasyEDA public component library for the exact LCSC codes. Raw responses are not redistributed. R6 C175263 was updated 2026-10-09 from the manufacturer recommended land pattern, not catalog geometry.",
   "coordinates": "Local XY in mm, X right / Y down, viewed from top. Output CPL is X right / Y up, CCW degrees.",
   "limitation": "Catalog geometry check, not a JLCPCB order-preview approval. Review the fresh assembly preview and factory placement before fabrication.",
   "parts": {
@@ -584,42 +584,6 @@
       "rotation_offset_deg": 0,
       "reason": "Centered origin and orientation agree with the KiCad footprint."
     },
-    "C6683830": {
-      "mpn": "SR1206FR-7T39RL",
-      "footprint": "Flyback:R_1206_3216Metric",
-      "references": [
-        "R6"
-      ],
-      "source_url": "https://easyeda.com/api/products/C6683830/components?version=6.4.19.5",
-      "source_sha256": "89293be4ba7d40cbb84d7905ccc058ef2f462065941071f588a6c2703cf3e103",
-      "catalog_package": "R1206",
-      "catalog_pads": [
-        {
-          "number": "2",
-          "xy_mm": [
-            1.478788,
-            0.0
-          ]
-        },
-        {
-          "number": "1",
-          "xy_mm": [
-            -1.478788,
-            0.0
-          ]
-        }
-      ],
-      "catalog_to_pcb_pad": {
-        "2": "2",
-        "1": "1"
-      },
-      "origin_in_footprint_mm": [
-        0,
-        0
-      ],
-      "rotation_offset_deg": 0,
-      "reason": "Centered origin and orientation agree with the KiCad footprint."
-    },
     "C513677": {
       "mpn": "CC0805JRNPO0BN471",
       "footprint": "Flyback:C_0805_2012Metric",
@@ -799,6 +763,44 @@
       ],
       "rotation_offset_deg": 0,
       "reason": "Centered origin and orientation agree with the KiCad footprint."
+    },
+    "C175263": {
+      "mpn": "CRH2512F39R0E04Z",
+      "footprint": "Flyback:R_EverOhms_CRH2512",
+      "references": [
+        "R6"
+      ],
+      "source_url": "https://jlcpcb.com/partdetail/Ever_OhmsTech-CRH2512F39R0E04Z/C175263",
+      "geometry_source": "manufacturer_recommended_lands",
+      "observed_date": "2026-10-09",
+      "source_document": "Ever Ohms CRH S-10-12-16-13, 2023-08-16, page 6: A=4.90 mm inner gap, B=8.10 mm outer span, C=3.40 mm land width.",
+      "catalog_package": "2512; manufacturer land reference, catalog geometry unavailable",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -3.25,
+            0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            3.25,
+            0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "1",
+        "2": "2"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Nonpolar resistor with centered body and symmetric lands. R6 placement is checked against manufacturer lands; exact factory catalog origin remains to be confirmed in the assembly preview."
     }
   }
 }

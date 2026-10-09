@@ -151,8 +151,8 @@
     },
     {
       "reference": "R6",
-      "footprint": "R_1206_3216Metric",
-      "model": "stock/Resistor_SMD.3dshapes/R_1206_3216Metric.step",
+      "footprint": "R_EverOhms_CRH2512",
+      "model": "stock/Resistor_SMD.3dshapes/R_2512_6332Metric.step",
       "provisional_hardware": false
     },
     {

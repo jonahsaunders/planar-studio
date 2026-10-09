@@ -1,7 +1,7 @@
 {
-  "revision": "A4-development",
+  "revision": "A5-development",
   "source": "TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing \u00b10.2 mm",
-  "method": "Independent A4 fit proof from the SAVED board's STEP cutouts. CadQuery 2.6.1.\n\nTDK pp2-3 dimensions are transcribed here independently of the winding generator.\nChecks nominal solids, maximum ferrite corners, inward routing error, rounded\ncorners, PCB thickness, and the explicitly conditional installed-clip envelope.\n",
+  "method": "Independent A5 fit proof from the SAVED board's STEP cutouts. CadQuery.\n\nTDK pp2-3 dimensions are transcribed here independently of the winding generator.\nChecks nominal solids, maximum ferrite corners, inward routing error, rounded\ncorners, PCB thickness, and the explicitly conditional installed-clip envelope.\n",
   "actual_saved_board_slots_local_mm": [
     [
       -13.100000000004002,
@@ -37,7 +37,7 @@
   "conditional_clip_limit": "Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.",
   "mechanical_scope": "Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "373b070166f6bed4f7de34b387c71e853fc93ff7894b58d022f249c72eef8763",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
     "kicad/3dmodels/custom/EELP22_factory_gapped_pair.step": "df136a616c2d82c2801150b4267a2a3fa8836a993a5dfd5d19791f404ea6305b",
     "magnetics.json": "38b5d259b5a2dae8631a9315672bb234bd5bdb3edc312ae4eeee6d6aca5df548"
   }
