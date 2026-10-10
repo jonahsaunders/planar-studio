@@ -1,4 +1,4 @@
-"""Rebuild A4 from bundled footprints and explicit manual routes.
+"""Rebuild A6 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
@@ -20,7 +20,7 @@ def pad(n,x,y,w,h,drill=0,layers=None):
 def footprint(name,body,attr='smd'):
  return f'(footprint "{name}" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr {attr}) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "{name}" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) {body})'
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(1.6))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A4 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A6 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
 aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
@@ -28,16 +28,16 @@ for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
  native_name=aliases[name].replace('/', '{slash}') if aliases[name].startswith('Net-(') else aliases[name]
  n=pcb.NETINFO_ITEM(board,native_name);board.Add(n);nets[name]=n
 # Placement in millimetres relative to the circuit datum (60,60).
-place={'C1': (38, 6.9, 90),
- 'C10': (31.2, 36.4, 90),
- 'C11': (3.5, 19, 0),
- 'C12': (1.3, 11.5, 90),
- 'C13': (3.0, 26.5, 90),
- 'C14': (7.5, 26.5, 90),
- 'C15': (5.5, 4, 0),
- 'C16': (7.5, 31.5, 90),
+place={'C1': (39.6, 4.7, 90),
+ 'C10': (31.5, 37, 270),
+ 'C11': (1, 11.2, 180),
+ 'C12': (4.5, 20.2, 0),
+ 'C13': (3, 27.7, 90),
+ 'C14': (7.5, 27.7, 90),
+ 'C15': (5.5, 5.4, 0),
+ 'C16': (3, 32.7, 90),
  'C17': (31.8, 26.6, 90),
- 'C18': (22.8, 31, 0),
+ 'C18': (22.1, 38.4, 180),
  'C19': (48.1, 33.1, 270),
  'C2': (45.2, 21.6, 270),
  'C20': (37, 34.4, 270),
@@ -45,55 +45,55 @@ place={'C1': (38, 6.9, 90),
  'C22': (33.1, 47, 90),
  'C23': (46.2, 40.2, 0),
  'C24': (35.3, 37.8, 90),
- 'C25': (36, 23.8, 90),
- 'C26': (35, 26.8, 0),
- 'C27': (11, 40.4, 0),
- 'C28': (14.5, 32, 90),
- 'C29': (10.5, 48, 0),
- 'C3': (45.2, 17.3, 180),
+ 'C25': (42.5, 24.5, 90),
+ 'C26': (36.5, 24.5, 180),
+ 'C27': (10.5, 41, 0),
+ 'C28': (9.7, 34.3, 180),
+ 'C29': (9.7, 47.5, 0),
+ 'C3': (45.2, 16.7, 180),
  'C4': (47.4, 10.55, 90),
  'C5': (43.7, 4.5, 180),
  'C6': (43.7, 7.7, 180),
- 'C7': (38.5, 11.1, 0),
- 'C8': (38.5, 13.9, 0),
- 'C9': (22.8, 34.2, 90),
+ 'C7': (38.7, 12.2, 0),
+ 'C8': (38.7, 15.0, 0),
+ 'C9': (22.1, 40.3, 180),
  'D1': (32.3, 3.5, 90),
- 'D2': (32.8, 32.9, 0),
- 'F1': (36, 3.0, 180),
+ 'D2': (28.5, 32.6, 180),
+ 'F1': (36, 3, 180),
  'J1': (50, 18.5, 90),
  'J2': (-2, 18.5, 270),
  'L1': (39.2, 19, 180),
  'L2': (40.5, 40.5, 270),
  'Q1': (4.3, 9.8, 0),
- 'Q2': (4.3, 22.2, 180),
- 'R1': (25.3, 40.4, 0),
- 'R10': (7.5, 11.3, 180),
- 'R11': (1, 19.6, 270),
+ 'Q2': (4.3, 23.2, 180),
+ 'R1': (22.1, 35.1, 180),
+ 'R10': (6.9,12.2,90),
+ 'R11': (1.5, 20.2, 180),
  'R12': (8.0, 9.0, 90),
- 'R13': (8.0, 22.2, 90),
- 'R14': (48, 26.5, 90),
- 'R15': (50, 26.5, 90),
+ 'R13': (8, 23.2, 90),
+ 'R14': (46.5, 27.2, 0),
+ 'R15': (49.5, 27.2, 0),
  'R16': (42.5, 28.5, 0),
  'R17': (35.3, 31.5, 270),
  'R18': (35.3, 34.6, 270),
  'R19': (46.2, 37.5, 0),
- 'R2': (22.8, 38.5, 90),
- 'R20': (10.8, 32, 0),
- 'R21': (10.8, 33.7, 0),
- 'R22': (3, 37, 90),
- 'R23': (5, 37, 90),
- 'R24': (7.4, 40.4, 0),
- 'R25': (6.3, 43, 90),
- 'R26': (8.0, 43, 90),
- 'R27': (3.6, 43.3, 90),
- 'R28': (5, 46.4, 90),
- 'R3': (24.4, 44.1, 90),
+ 'R2': (22.1, 36.9, 180),
+ 'R20': (13.9, 32.6, 0),
+ 'R21': (13.9, 34.3, 0),
+ 'R22': (6.7, 35.7, 90),
+ 'R23': (6.7, 38.7, 90),
+ 'R24': (7.2, 41, 0),
+ 'R25': (13.9, 40.2, 0),
+ 'R26': (13.9, 41.9, 0),
+ 'R27': (6.7, 43.3, 90),
+ 'R28': (6.7, 46.3, 90),
+ 'R3': (22.1, 42.2, 180),
  'R4': (50, 7, 0),
  'R5': (50, 8.9, 0),
- 'R6': (52.5, 10, 90),
- 'R7': (54.5, 10, 90),
- 'R8': (33.8, 29.8, 90),
- 'R9': (30, 31.5, 90),
+ 'R6': (39.9, 8, 0),
+ 'R7': (39.9, 9.8, 0),
+ 'R8': (31.5, 30.5, 270),
+ 'R9': (24.9, 32.6, 90),
  'T1': (22, 15.5, 270),
  'TP1': (51, 29, 0),
  'TP2': (54, 29, 0),
@@ -103,7 +103,7 @@ place={'C1': (38, 6.9, 90),
  'TP6': (42, -1, 0),
  'U1': (44, 12, 0),
  'U2': (27, 37, 270),
- 'U3': (3.9, 15.5, 270),
+ 'U3': (3.9, 15.8, 180),
  'U4': (42, 32.5, 90),
  'U5': (39, 23.8, 0),
  'U6': (16.8, 37.0, 270),
@@ -127,7 +127,16 @@ for p in data['parts']:
     pd.SetNet(nets[net])
  board.Add(f);x,y,a=place[p['ref']];f.SetPosition(pt(x+60,y+60));f.SetOrientationDegrees(a);f.Value().SetVisible(False)
  # Silkscreen component references remain available on F.Fab; compact board uses an assembly drawing.
- f.Reference().SetLayer(pcb.F_Fab);f.Reference().SetTextSize(pt(.7,.8));f.Reference().SetTextThickness(mm(.1))
+ f.Reference().SetLayer(pcb.F_Fab)
+ # One centered assembly reference per component; remove duplicate library placeholders.
+ for graphic in list(f.GraphicalItems()):
+  if hasattr(graphic,'GetText') and graphic.GetText() in ['${REFERENCE}','%R','REF**']:
+   f.Remove(graphic)
+ f.Reference().SetPosition(f.GetPosition())
+ small=p['ref'][0] in ['R','C']
+ size=.48 if small else .85
+ f.Reference().SetTextSize(pt(size,size));f.Reference().SetTextThickness(mm(.08 if small else .1))
+ f.Reference().SetTextAngle(pcb.EDA_ANGLE(90 if small and abs(a)%180==90 else 0,pcb.DEGREES_T))
  fps[p['ref']]=f
  for pd in f.Pads():
   if pd.GetNumber():pads.setdefault((p['ref'],pd.GetNumber()),[]).append(pd)
@@ -160,7 +169,7 @@ exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
 legend('PLANAR STUDIO',20,-1.6,1.2)
-legend('PS-GAN-60W  /  A4',24,50.6,.85)
+legend('PS-GAN-60W  /  A6',24,50.6,.85)
 legend('48V IN',51.8,12,.9);legend('12V OUT',-2,8.2,.9)
 legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
 legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)
@@ -170,13 +179,14 @@ legend('5V  AGND',40.5,-2.9,.8)
 legend('ISOLATED',-2.6,38,.8)
 legend('PRIMARY',52.5,38,.8)
 legend('U1 / GaN',44,1.3,.8)
-legend('U2 LLC',27,32,.8)
+legend('U2 / LLC',27,29.8,.8)
 legend('U4 / BIAS',42,47.8,.8)
 legend('U5',38.5,26.4,.8)
 legend('U6 / FB',18,32.8,.8)
 legend('U8 / OVP',16.8,48.8,.8)
 legend('J2: 2+ 1-',-2,25.9,.8)
 legend('ENGINEERING PROTOTYPE',24,50.6,.85,pcb.B_SilkS)
+exec((ROOT/'scripts/stitch_ground.py').read_text(encoding='utf8'))
 # Assembly reference IDs on the front fabrication layer remain uncluttered.
 board.GetDesignSettings().SetAuxOrigin(pt(53,112))
 out=CAD/'PS-GAN-60W.kicad_pcb';pcb.SaveBoard(str(out),board)

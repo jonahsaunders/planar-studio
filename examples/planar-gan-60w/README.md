@@ -10,20 +10,28 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-**A6 schematic / A4 hardware** shortens the GaN bootstrap, bypass and logic
-connections, separates rectifier VSS sensing from the gate-current return, and
-rearranges the bias buck around its local switching loop. Eighteen components
-move; every purchased part identity and value is retained.
+**A8 schematic / A6 hardware** tightens 24 placements into aligned functional
+groups and adds **54 ground stitching vias**. The GaN switch-node cutout now
+covers the complete custom lands, and the 5 V feed no longer runs beneath that
+node. The 64 x 56 mm outline, M3 pattern, connectors, winding artwork and
+all-top assembly are retained.
 
-- GaN bootstrap legs: **1.53 mm each**, entirely on the top copper layer.
-- GaN VCC bypass: **5.45 → 2.59 mm**, removing two via transitions.
-- LM5164 switch-to-inductor path: **11.94 → 3.66 mm**, removing two via transitions.
-- Dedicated rectifier source sensing, local return planes, copper spreading and
-  parallel return vias; readable section labels for bench work.
+- GaN input loop pad-center area: **8.60 -> 7.08 mm²**, about 18% smaller.
+- U2 dead-time path: **5.95 -> 1.48 mm**; frequency-setting path: **4.09 -> 1.70 mm**.
+- U2 OC bypass path: **9.99 -> 1.82 mm**; soft-start path: **4.59 -> 2.14 mm**.
+- Feedback local compensation path: **11.72 -> 1.72 mm**.
+- Those four U2 connections and the local compensation connection stay on top
+  copper. The aligned feedback and OVP divider sense paths also lose their vias.
+- **25 PGND, 10 AGND and 19 SGND** stitches each connect at least two filled
+  ground layers; no stitch crosses the isolation or magnetic assembly envelope.
 
-Lengths describe explicit copper geometry, not measured inductance or efficiency.
-See the [first-principles layout review](LAYOUT-REVIEW.md) and
-[native geometry comparison](evidence/A6-layout-audit.json).
+These are geometric improvements, not measured inductance, EMI or efficiency.
+The small bootstrap and driver-supply loops, dedicated rectifier sensing and
+TI-recommended C10 1 uF / 50 V / 0805 bypass are retained. There are 203 routed
+vias: 149 circuit vias plus 54 new ground stitches, and six winding transitions.
+See the [layout review](LAYOUT-REVIEW.md), [before/after measurements](evidence/A8-layout-audit.json),
+[GaN-specific checks](evidence/GaN-layout-audit.json) and
+[stitching audit](evidence/stitching-audit.json).
 
 HS and SW are connected internally in the LMG2100. The external bootstrap return
 now connects only C4 to HS, eliminating the external SW–HS loop. The drawing
@@ -33,7 +41,7 @@ RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
 
 The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json) are refreshed for A6.
+[readability check](evidence/readability-audit.json) are refreshed for A8.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -82,6 +90,7 @@ regulation, thermal performance or no-load operation.
   and models; [schematic PDF](Schematic.pdf).
 - [Interactive local review](Review.html): open after downloading the example.
   GitHub does not execute this HTML preview.
+- [Top assembly drawing](manufacturing-prototype/Assembly-top.pdf), with one clear reference per component.
 - [Gerber inspection](evidence/Gerber-review.png), [layout review](LAYOUT-REVIEW.md),
   [copper-layer PDF](PCB-layers.pdf), [validation record](VALIDATION.md) and
   [mechanical dimensions](mechanical.json).
@@ -106,6 +115,7 @@ python -X utf8 scripts/audit_readability.py
 python -X utf8 scripts/render_gerbers.py
 python -X utf8 scripts/audit_windings.py
 python -X utf8 scripts/audit_mechanical.py
+python -X utf8 scripts/audit_return_paths.py
 python -X utf8 scripts/final_audit.py
 ```
 
@@ -114,7 +124,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A6 presentation from circuit.json and the local symbol library;
+recreates the A8 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.

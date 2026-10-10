@@ -1,4 +1,4 @@
-# A6 schematic / A4 hardware validation record
+# A8 schematic / A6 hardware validation record
 
 CAD review date: 2026-10-10. KiCad 10.0.6. Hardware has not been built.
 
@@ -6,35 +6,50 @@ CAD review date: 2026-10-10. KiCad 10.0.6. Hardware has not been built.
 | --- | --- | --- |
 | Connected four-way wire nodes | 0, with 52 explicit T junctions | [Geometry audit](evidence/schematic-geometry.json) |
 | Rendered text-to-wire clearance | No glyph ink boxes cross wire segments, including a 0.15 mm reserve; text-to-text spacing also reviewed visually | [Readability audit](evidence/readability-audit.json) |
-| A3 hardware comparison | 18 components moved; HS/C4 return separated from external SW copper; same purchased parts/values, winding geometry, mounting/connector positions | [Comparison](evidence/A6-layout-audit.json) |
-| Datasheet pin-function check | 13 device maps and 6 critical branches checked against intended connections | [Pin review](evidence/datasheet-pin-review.json) |
+| A5 hardware comparison | 24 placements changed; unchanged part identities, pin nets, winding geometry and mounting/connector positions | [Comparison](evidence/A8-layout-audit.json) |
+| GaN layout geometry | Smaller input loop; no filled-plane or internal-trace overlap with the full SW projection; VIN path has adjacent PGND | [GaN audit](evidence/GaN-layout-audit.json) |
+| Ground stitching | 54 added, each on at least two actual filled same-net layers; separate domains | [Stitch audit](evidence/stitching-audit.json) |
+| Adjacent return-plane coverage | All sampled points outside signal-via antipads covered on four checked GD/VG routes | [Filled copper audit](evidence/return-path-audit.json) |
+| Datasheet pin-function check | 13 device maps and 7 critical branches checked against intended connections | [Pin review](evidence/datasheet-pin-review.json) |
 | Symbol pin attachment and supply stems | 43 visible boxed-IC pins reach their bodies; 9 positive supply symbols attach to a rail or feed wiring below | [Geometry audit](evidence/schematic-geometry.json) |
 | Schematic ERC (four-way check enabled) | 0 violations | [ERC.rpt](evidence/ERC.rpt) |
 | PCB DRC and schematic parity | 0 violations, 0 unconnected items, 0 parity issues | [DRC.rpt](evidence/DRC.rpt) |
 | Circuit manifest versus schematic pin nets | 0 mismatches | [Final audit](evidence/final-audit.json) |
-| BOM/CPL/designator agreement | 75 purchased components, 41 catalog codes, all top | [Final audit](evidence/final-audit.json) |
+| BOM/CPL/designator agreement | 75 purchased components, 42 catalog codes, all top | [Final audit](evidence/final-audit.json) |
 | Winding contact screen | No unintended contacts found by independent sampled geometry check | [Winding audit](evidence/winding-contact-audit.json) |
 | M3 mechanical features | Exact reused footprint; all eight copper layers excluded | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
 | Port mapping | Pin 2 positive / pin 1 return for both J1 and J2 | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
 | Exported Gerber inspection | 14 fabrication layers independently rendered and reviewed | [Gerber review](evidence/Gerber-review.png), [source hashes](evidence/gerber-render-audit.json) |
 | Layer inspection | All eight copper views reviewed | [Layer review](evidence/Layer-review.png) |
 | Assembly inspection | Top, perspective and underside renders reviewed; local model paths resolve | [Top](Board-preview.png), [underside](evidence/Board-bottom.png) |
-| Portable board rebuild | Matching track/via, footprint and pad geometry/nets; 0 DRC, unconnected or parity issues in a separate copied directory | [Rebuild audit](evidence/rebuild-audit.json), [DRC](evidence/rebuild-DRC.rpt) |
+| Portable board rebuild | Matching tracks, vias, footprints, pads and zone outlines; filled-copper difference below 0.01 mm2 per zone; 0 DRC, unconnected or parity issues in a separate copied directory | [Rebuild audit](evidence/rebuild-audit.json), [DRC](evidence/rebuild-DRC.rpt) |
 | LLC gain screening | 27 selected full-load parameter corners have an inductive solution at 46 V | [Calculations](evidence/engineering-calculations.json) |
 
-## A4 routing and return paths
+## A6 routing and return paths
 
-The [layout review](LAYOUT-REVIEW.md) records the loop-based placement decisions,
-datasheet requirements and measured route lengths. Local bootstrap and VCC
-bypass paths remain on F.Cu. The LM5164 switch-to-inductor route is 3.66 mm,
-down from 11.94 mm in A3. Both GaN bootstrap legs measure 1.53 mm. The comparison
-does not estimate parasitic inductance or measured converter performance.
+The [layout review](LAYOUT-REVIEW.md) connects the changes to published TI, EPC
+and Analog Devices guidance. The GaN input-loop pad-center polygon decreases
+17.6%, from 8.5967 to 7.0817 mm². This includes a straight closing segment inside
+the package; it is not an extracted physical loop or inductance. Sampling the
+VIN trace at <=0.025 mm finds In1.Cu PGND under every centerline point.
 
-U1 HS is internally tied to SW, so C4 uses a short local HS return without an
-external SW–HS loop. U3 VSS is excluded from every SGND zone outline and has a
-dedicated source-sense trace. Gate-current return uses U3 PGND separately.
-Additional source/return and thermal vias bring the routed-via count to 169.
-The global minimum clearance is now 0.16 mm; ordinary net clearance is 0.20 mm.
+The expanded SW keepout includes both custom U1 and L1 lands plus the route.
+Intersecting their native polygons with filled planes and internal traces finds
+zero overlap. The previous layout had overlap on four planes and the 5 V feed;
+the latter now runs around the outside of the switching cell.
+
+U2 DT, RT, OC-filter and SS connections are direct F.Cu routes. The two feedback
+cells use aligned divider columns and repeated LED resistor rows, with shorter
+sensitive reference and compensation connections. The original short GaN
+bootstrap, driver supply and rectifier paths remain intact. All four GD/VG
+routes retain sampled adjacent reference coverage outside signal-via antipads.
+
+There are 54 new ground stitches (25 PGND, 10 AGND, 19 SGND), 203 routed vias
+in total, and six winding transitions. Stitches use 0.6/0.3 mm geometry and
+each has at least two actual filled same-net plane connections. Placement avoids
+core/winding regions, the isolation corridor, fiducials, silkscreen text and
+foreign copper. U3 VSS retains its dedicated source trace, excluded from every
+SGND zone; AGND and PGND still join only inside U1.
 
 ## Retained electrical corrections and drawing review
 
@@ -81,8 +96,8 @@ Renders show the unmated PCB headers.
 The reported component placement improvement is geometric: Q1-to-C15 center
 distance changes from 21.74 mm to 5.9 mm. No measured inductance, efficiency or
 temperature improvement is claimed. A2 reduces the outline bounding area by 22.76%, from 80 × 58 to 64 × 56 mm.
-Header overhang and plug/wiring clearances are additional. A4 changes the routing
-and 18 placements described above; transformer artwork, control values and the
+Header overhang and plug/wiring clearances are additional. A6 changes the routing
+and 24 placements described above; transformer artwork, control values and the
 nominal stack are retained. Winding DC loss is still estimated at 2.85 W before
 AC/core losses. Magnetic and thermal qualification remains open.
 

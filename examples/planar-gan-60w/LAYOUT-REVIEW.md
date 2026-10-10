@@ -1,112 +1,103 @@
-# A4 layout review — first-principles changes
+# A6 layout review — GaN loops, placement and stitching
 
-This revision improves the physical implementation of the 48 V to isolated
-12 V / 5 A target. It remains an unbuilt engineering prototype. The schematic
-is A6; the hardware is A4. David Perreault and MIT have not reviewed this board.
+A8 schematic / A6 hardware, reviewed 2026-10-10. Unbuilt 48 V to isolated
+12 V / 5 A prototype. KiStack's placement and fabrication-output review
+workflow is used. No MIT affiliation or endorsement is implied.
 
-## Current loops before appearance
+## Published engineering guidance
 
-Fast current steps produce voltage error through interconnect inductance.
-Accordingly, the GaN bootstrap and VCC bypass loops now run entirely on the
-component layer, with the capacitors facing their pins. The two driver-input
-dividers move from the controller area to the GaN receiver area, reducing the
-length of the higher-impedance logic nodes. Longer routes carry the controller's
-low-impedance GD outputs before the dividers.
+[TI LMG2100R044 section 8.4](https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf)
+is the device-specific authority: input return immediately beneath the power
+loop, close top-side bootstrap/VCC bypassing, separate external AGND/PGND,
+and no plane overlap with SW. The [LMG2100EVM layout figures](https://www.ti.com/document-viewer/lit/html/SNVU863/GUID-80BAA52A-EAE9-4A03-B329-1DFBC3C10537)
+provide top and inner-layer references. Its performance does not transfer to
+this isolated LLC design.
 
-| Explicit route | A3 length | A4 length | A3 → A4 via transitions |
+[EPC WP010](https://epc-co.com/epc/Portals/0/epc/documents/papers/optimizing%20pcb%20layout%20with%20egan%20fets.pdf)
+explains outgoing/return geometry, layer spacing and common-source inductance.
+U1 integrates the FETs and driver: HI/LI are logic inputs, not exposed gates.
+The key external fast loops are input commutation, bootstrap and driver supply.
+[Analog Devices AN-139](https://www.analog.com/en/resources/app-notes/an-139.html)
+supports identifying the fully switched loop and protecting sensitive sensing.
+[TI's via guidance](https://www.ti.com/document-viewer/lit/html/SSZT978/GUID-8C25D4C0-B783-4E3A-9E0C-8DE1DFBC7851)
+supports parallel ground transitions. Its silicon-buck example is not a reason
+to enlarge the GaN SW node; the LMG2100 capacitance guidance takes precedence.
+
+[IPC's design-standard catalog](https://www.ipc.org/ipc-design-standards)
+identifies IPC-2221/2222 for generic/rigid-board design and IPC-2152 for conductor
+current capacity. These are production-review references, not evidence of
+compliance with a class or company-private rules. Full standards conformance
+is not claimed. The [MIT PER study](PER-DESIGN-STUDY.md) supplies architectural
+and visual references: central magnetics, repeated local cells and bench access.
+
+## GaN power stage
+
+C3 moves 0.6 mm closer to U1 within existing courtyard/clearance rules. Its
+VIN/return legs decrease from 3.369/3.511 to 2.780/2.913 mm, entirely on F.Cu.
+The pad-center loop polygon shrinks from 8.5967 to 7.0817 mm² (17.6%). This
+polygon closes directly between package pads; it does not model the internal
+die path or extract inductance.
+
+The old SW exclusion followed tracks but omitted portions of the custom GaN
+and inductor lands. A6 subtracts their complete polygons. The 5 V feed moves
+out from underneath SW. An independent polygon check finds no foreign plane
+or internal-track overlap with the complete SW projection. In1 PGND is present
+under every sampled point of the VIN-to-C3 trace. See [GaN evidence](evidence/GaN-layout-audit.json).
+
+The 1.53 mm bootstrap legs and short local VCC bypass remain. AGND/PGND have
+no external short. HS returns locally to C4 and connects internally to SW.
+U3 retains its dedicated source sensing and separate gate return, following
+[UCC24624 guidance](https://www.ti.com/lit/ds/symlink/ucc24624.pdf).
+
+## Purposeful placement
+
+Twenty-four placements change. U2 timing and filter parts follow the pin order
+beside the IC, consistent with [UCC25600 sections 9–10](https://www.ti.com/lit/ds/symlink/ucc25600.pdf).
+R9/D2/R8 form a sensing group above it. The two feedback cells share aligned
+divider columns and repeated LED-resistor rows; reference and compensation
+parts stay local. The output bank and bias-enable divider are also regrouped.
+
+| Explicit track connection | A5 | A6 | Via transitions |
 | --- | ---: | ---: | ---: |
-| U1 HB → C4 | 4.09 mm | 1.53 mm | 0 → 0 |
-| U1 HS → C4 | 4.24 mm | 1.53 mm | 2 → 0 |
-| U1 VCC → C6 | 5.45 mm | 2.59 mm | 2 → 0 |
-| U1 AGND → C6 | 2.67 mm | 2.49 mm | 0 → 0 |
-| LM5164 SW → L2 | 11.94 mm | 3.66 mm | 2 → 0 |
-| LM5164 BST → C20 | 5.55 mm | 2.12 mm | 2 → 0 |
-| High-side divider → HI | 41.48 mm | 5.75 mm | 2 → 0 |
-| Low-side divider → LI | 54.81 mm | 15.82 mm | 2 → 2 |
+| U2 DT to R1 | 5.95 mm | 1.48 mm | 2 → 0 |
+| U2 RT to R2 | 4.09 mm | 1.70 mm | 2 → 0 |
+| U2 SS to C9 | 4.59 mm | 2.14 mm | 2 → 0 |
+| U2 OC to C18 | 9.99 mm | 1.82 mm | 2 → 0 |
+| D2 to U2 OC | 13.65 mm | 7.25 mm | 2 → 2 |
+| U7 REF to C28 | 11.72 mm | 1.72 mm | 2 → 0 |
+| U7 REF to R22 | 7.97 mm | 4.18 mm | 2 → 0 |
+| U9 REF to R27 | 7.72 mm | 3.34 mm | 2 → 0 |
+| U4 EN to R14 | 9.21 mm | 5.62 mm | 2 → 2 |
 
-These are native track-centerline measurements, excluding vertical barrel
-distance and pours. They are **not** extracted inductance or measured switching
-performance. Full data and the exact method are in the
-[layout comparison](evidence/A6-layout-audit.json).
+Lengths exclude barrels, components and pours. [All measurements](evidence/A8-layout-audit.json)
+also check retained power paths. Circuit identities, winding artwork, 64 × 56 mm
+outline, 55 × 47 mm M3 pattern and removable headers stay fixed. All 75 purchased
+placements remain on top. The C10 1 uF / 50 V / 0805 bypass is retained.
 
-[TI's LMG2100R044 datasheet](https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf)
-identifies HS as internally connected to SW. The unnecessary external HS–SW
-connection is removed: C4 returns directly to HS through its own short route.
-The native schematic therefore names that external connection HS_LOCAL. HS is
-not floating electrically; its connection to SW is inside U1. AGND likewise
-retains the manufacturer's internal connection to the low-side source; it is
-not externally shorted to PGND.
+## Ground stitching and assembly
 
-Local PGND and VIN spreading copper supports the GaN supply loop. L2 copper
-under the input loop provides a nearby return; plane copper is removed beneath
-the high-slew-rate SW trace to limit unnecessary capacitive coupling. Extra
-parallel vias connect the resonant-capacitor returns and output storage to their
-return copper. Copper spreading and additional vias at U1 and U4 improve the
-physical heat-flow paths; their thermal performance is not yet measured.
+**54 new 0.6/0.3 mm stitches:** 25 PGND, 10 AGND and 19 SGND. Each selected
+position had a full annulus on two or more existing same-net filled layers and
+still connects to at least two after refilling. Candidate rows avoid foreign
+copper, the magnetic assembly, isolation corridor, mounting exclusions,
+fiducials and silkscreen labels. No stitch ring passes through a core opening.
+No ground domains are joined. See [per-via evidence](evidence/stitching-audit.json).
 
-## Sense voltage without sharing the gate return
+There are 149 circuit vias plus 54 stitches, totaling 203 routed vias, and six
+winding transitions. The filled/capped via-in-pad process remains required;
+four connector lead holes stay open. BOM, CPL and the [assembly drawing](manufacturing-prototype/Assembly-top.pdf)
+are regenerated. Four checked GD/VG routes retain adjacent filled reference
+coverage outside their signal-via antipads. [That screen](evidence/return-path-audit.json)
+does not establish current density, inductance or EMI.
 
-UCC24624 VSS now reaches Q2's source through a dedicated trace. Every SGND pour
-excludes the VSS escape via; the separate PGND pin carries gate-drive return
-current. This implements the distinction in
-[TI's UCC24624 layout guidance](https://www.ti.com/lit/ds/symlink/ucc24624.pdf).
-VD1 and VD2 retain dedicated drain-sense routes. The gate resistor for Q2 moves
-beside its source/gate group; source returns use parallel escaped vias.
+## Validation boundary
 
-This is a geometric Kelvin connection, not proof of millivolt sensing accuracy.
-Common-source inductance, drain ringing, gate timing and reverse current still
-need differential measurements on both rectifiers. The all-top placement also
-limits how closely U3's REG bypass can approach the package; it remains a
-specific item for the first switching review.
+ERC, DRC/parity, winding-contact, pin mapping, BOM/CPL, mechanical and clean-copy
+rebuild checks pass. Native layers, 3D assembly and independently rasterized
+Gerbers are inspected. [Validation](VALIDATION.md) records evidence and methods.
 
-## Compact bias supply and useful assembly markings
-
-The LM5164 input capacitor, bootstrap capacitor, inductor and ripple/feedback
-network form a tighter local group. The switch-to-inductor connection and
-bootstrap connection no longer change layers. RON remains connected through
-100 kΩ to PGND, preserving the A3 correction required by
-[the LM5164 datasheet](https://www.ti.com/lit/ds/symlink/lm5164.pdf).
-
-Functional silkscreen identifies the GaN, LLC control, bias, feedback and OVP
-areas. Power polarity, six rail/return probe pads and opposing removable
-terminals remain accessible. Dense component reference IDs are available in the
-front assembly drawing. All 75 purchased components remain on top. The 64 ×
-56 mm chamfered outline, 55 × 47 mm mounting pattern, winding geometry, connectors
-and exact purchased part identities are unchanged from A3.
-
-## Manufacturing details that matter
-
-- The proposed eight-layer stack requests 2 oz copper on every layer. Native
-  minimum track width and clearance constraints are 0.16 mm; ordinary net
-  clearance is 0.20 mm. This meets the published 0.16 mm 2 oz minimum in
-  [JLCPCB's copper-weight guidance](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
-  It does not establish acceptance of this exact stack or these files.
-- There are 169 routed 0.30 mm vias and six winding interlayer holes. Filled,
-  copper-capped, planarized interconnects are required because some occupy SMT
-  lands. The four 1.6 mm connector contact holes must remain open. See the
-  [fabrication notes](manufacturing-prototype/READ-BEFORE-ORDER.txt).
-- Gerbers are rendered independently with PyGerber and reviewed alongside native
-  copper exports, including winding transitions, plane voids, paste and masks.
-  See the [Gerber review](evidence/Gerber-review.png). Factory DFM, rotations,
-  through-hole soldering and DigiKey core fitting still need acceptance.
-
-## Remaining design limit: magnetic loss
-
-Planar construction gives repeatable turns and layer alignment, a low-profile
-assembly and PCB-defined winding connections. It does not guarantee low loss.
-The retained winding estimate is **2.85 W of DC copper loss alone** at the
-assumed RMS currents and 80 °C resistance, before AC/proximity and core losses.
-This is a significant part of a 60 W converter's loss budget.
-
-Wider-trace variants were screened with Planar Studio's assembly checks; the
-tested variants intersected a winding transition or core opening. No clearance
-guard was relaxed to force a visually thicker winding. Reducing this loss
-requires revisiting the termination geometry/core/stack together, then checking
-magnetizing and leakage inductance against the resonant design. A thermal and
-switching-qualified 60 W claim is deliberately not made.
-
-The next engineering measurements are assembled winding resistance, turns and
-polarity, magnetizing/leakage inductance, low-power startup and gate waveforms,
-then protection, regulation, efficiency and temperature across the stated input
-and load range. The [validation record](VALIDATION.md) separates completed CAD
-checks from these unfinished hardware qualifications.
+The eight-layer, all-layer 2 oz, nominal 1.6 mm stack still needs JLCPCB file-level
+acceptance, including filled/capped vias, rotations, mixed SMT/THT assembly and
+the separate DigiKey core/clip operation. The winding model estimates 2.85 W DC
+copper loss before AC/core losses. Switching waveforms, ZVS, regulation,
+startup/protection, efficiency and temperature require hardware measurements.

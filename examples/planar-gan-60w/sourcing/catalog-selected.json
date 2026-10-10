@@ -2958,5 +2958,65 @@
         "value": "2"
       }
     ]
+  },
+  "C28323": {
+    "lcsc": "C28323",
+    "name": "Samsung Electro-Mechanics CL21B105KBFNNNE",
+    "model": "CL21B105KBFNNNE",
+    "brand": "Samsung Electro-Mechanics",
+    "package": "0805",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 1825874,
+    "type": "Basic",
+    "price": 0.04,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.04
+      },
+      {
+        "qty": 100,
+        "price": 0.0307
+      },
+      {
+        "qty": 300,
+        "price": 0.0258
+      },
+      {
+        "qty": 2000,
+        "price": 0.0219
+      },
+      {
+        "qty": 4000,
+        "price": 0.0206
+      },
+      {
+        "qty": 10000,
+        "price": 0.0196
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2000,
+    "description": "1uF 50V X7R \u00b110% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_samsung-electro-mechanics-cl21b105kbfnnne_C28323.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "1uF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
   }
 }

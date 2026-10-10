@@ -1,4 +1,4 @@
-"""A6 schematic presentation: wired functional schematic, on a compact A3 sheet."""
+"""A8 schematic presentation: wired functional schematic, on a compact A3 sheet."""
 from pathlib import Path
 import json,uuid,copy,math
 import sexpdata as sx
@@ -114,7 +114,7 @@ def bank(refs,xs,y,top,bottom,plus,minus,ground_x=None):
  for ref,x in zip(refs,xs):sym(ref,x,y);wire(plus,(x,top),(ref,'1'));wire(minus,(ref,'2'),(x,bottom))
  wire(plus,*[(x,top) for x in xs]);wire(minus,*[(x,bottom) for x in xs]);power(minus,xs[0] if ground_x is None else ground_x,bottom,True)
 
-text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A6 schematic · A4 hardware',42,4,1.8)
+text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A8 schematic · A6 hardware',42,4,1.8)
 text('PGND: input return   /   SGND: isolated output return   /   AGND: controller return (joins PGND inside U1)',42,7,1.15)
 box(5,9,155,36,'01  PLANAR POWER PATH')
 sym('J1',9,25,txt=(9,19.5,9,21,False),value='48 V INPUT')
@@ -278,10 +278,10 @@ for i,(n,x,y) in enumerate(flag_nodes):flag(n,x,y,i)
 assert placed==set(parts),(set(parts)-placed,placed-set(parts))
 for k,s in defs.items():
  s[1]='PS:'+k
-root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A6-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
+root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A8-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
 (CAD/(NAME+'.kicad_sch')).write_text(root,encoding='utf8')
 for k,s in defs.items():s[1]=k
 (CAD/'PS.kicad_sym').write_text('(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(sx.dumps(s) for s in defs.values())+')',encoding='utf8')
-(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A6','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
+(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A8','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
 (R/'circuit.json').write_text(json.dumps(data,indent=2),encoding='utf8')
 print('Schematic saved:',len(placed),'parts;',len(segments),'wire segments; four-way:',four)

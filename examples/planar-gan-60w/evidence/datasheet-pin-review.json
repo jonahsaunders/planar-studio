@@ -1,8 +1,8 @@
 {
   "result": "pass",
   "date": "2026-10-10",
-  "hardware_revision": "A4",
-  "schematic_revision": "A6",
+  "hardware_revision": "A6",
+  "schematic_revision": "A8",
   "device_checks": [
     {
       "ref": "U1",
@@ -304,6 +304,10 @@
     }
   ],
   "critical_branches": {
+    "C10": {
+      "1": "BIAS12",
+      "2": "AGND"
+    },
     "R16": {
       "1": "PGND",
       "2": "RON"
