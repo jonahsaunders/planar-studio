@@ -1,0 +1,6 @@
+{
+  "result": "pass",
+  "method": "Rendered PDF glyph ink boxes checked against native orthogonal schematic wire segments. Text-to-text spacing is reviewed visually.",
+  "clearance_reserve_mm": 0.15,
+  "text_wire_hits": []
+}

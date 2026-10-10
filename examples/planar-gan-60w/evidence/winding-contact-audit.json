@@ -3,12 +3,12 @@
   "issues": [],
   "terminal_contacts": [
     [
-      "/PRI_A",
+      "Net-(T1-P_DOT)",
       "track",
       "F.Cu"
     ],
     [
-      "/PRI_A",
+      "Net-(T1-P_DOT)",
       "L1.2",
       "F.Cu"
     ]

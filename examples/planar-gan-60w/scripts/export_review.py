@@ -19,7 +19,7 @@ n=E/'netlist.xml'
 n.write_text(n.read_text(encoding='utf8').replace(str(SCH),'kicad/PS-GAN-60W.kicad_sch'),encoding='utf8')
 run('sch','export','pdf','--output',R/'Schematic.pdf','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
 run('sch','export','svg','--output',E/'schematic-svg','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
-run('sch','export','bom','--fields','Value,Reference,Footprint,LCSC,QUANTITY','--labels','Comment,Designator,Footprint,LCSC Part #,Quantity','--group-by','LCSC','--ref-range-delimiter','','--output',M/'BOM-JLCPCB.csv',SCH)
+run('sch','export','bom','--fields','Value,Voltage,Reference,Footprint,LCSC,QUANTITY','--labels','Comment,Voltage,Designator,Footprint,LCSC Part #,Quantity','--group-by','LCSC','--ref-range-delimiter','','--output',M/'BOM-JLCPCB.csv',SCH)
 run('pcb','export','gerbers','--output',G,'--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.SilkS,B.SilkS,Edge.Cuts','--use-drill-file-origin','--subtract-soldermask',PCB)
 run('pcb','export','drill','--output',G,'--drill-origin','plot','--excellon-separate-th','--excellon-units','mm','--generate-report','--report-path',E/'Drill-report.txt',PCB)
 run('pcb','export','pos','--output',E/'positions-raw.csv','--format','csv','--units','mm','--side','front','--exclude-dnp','--use-drill-file-origin',PCB)

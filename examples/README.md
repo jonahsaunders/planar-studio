@@ -9,12 +9,12 @@
   isolated 12 V / 5 A target, eight-layer PCB windings, native KiCad 10 project,
   top-side electronics, removable screw-terminal power connectors and exposed-substrate M3 mounting
   holes. Includes an MIT PER board study, sourcing, calculations and CAD checks.
-  **Unbuilt A2 engineering prototype; factory acceptance and hardware qualification are open.**
+  **A3 schematic / unbuilt A2 hardware; factory acceptance and hardware qualification are open.**
 
 These are editable engineering examples, separate from the KiCad plugin installer.
 
 [Download the complete A5 review package](PS-FLYBACK-5W-A5-review-package.zip?raw=true)
 for the flyback example, including its illustrated local report and checksums.
 
-[Download the complete GaN A2 KiCad package](PS-GAN-60W-A2-KiCad.zip?raw=true)
+[Download the complete GaN A3 KiCad package](PS-GAN-60W-A3-KiCad.zip?raw=true)
 for the GaN example, including its interactive local review and checksums.

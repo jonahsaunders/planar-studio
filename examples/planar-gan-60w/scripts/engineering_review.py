@@ -8,7 +8,7 @@ for p in parts:
  if p['lcsc']:groups[p['lcsc']].append(p)
 rows=[]
 for code,ps in groups.items():
- p=ps[0];rows.append({'Designator':','.join(x['ref'] for x in ps),'Quantity':len(ps),'Value':p['value'],'Manufacturer':p['mfr'],'MPN':p['mpn'],'LCSC':code,'Footprint':p['footprint'],'Stock snapshot':p['stock'],'USD each (first tier)':p['unit_price_usd'],'Extended USD':round(p['unit_price_usd']*len(ps),4),'Catalog URL':'https://jlcpcb.com/partdetail/'+code,'Datasheet':p['source']})
+ p=ps[0];rows.append({'Designator':','.join(x['ref'] for x in ps),'Quantity':len(ps),'Value':p['value'],'Voltage':p.get('Voltage',''),'Manufacturer':p['mfr'],'MPN':p['mpn'],'LCSC':code,'Footprint':p['footprint'],'Stock snapshot':p['stock'],'USD each (first tier)':p['unit_price_usd'],'Extended USD':round(p['unit_price_usd']*len(ps),4),'Catalog URL':'https://jlcpcb.com/partdetail/'+code,'Datasheet':p['source']})
 with (ROOT/'sourcing/Electronics-BOM-review.csv').open('w',newline='',encoding='utf-8-sig') as f:
  w=csv.DictWriter(f,fieldnames=rows[0]);w.writeheader();w.writerows(rows)
 core=[{'Description':'ELP22 N87 core half, 0.05 mm center gap','Quantity':2,'MPN':'B66285G0050X187','Supplier':'DigiKey','URL':'https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590'}, {'Description':'ELP22 spring clip','Quantity':2,'MPN':'B66286A2000X000','Supplier':'DigiKey','URL':'https://www.digikey.com/en/products/result?keywords=B66286A2000X000'}]

@@ -1,10 +1,12 @@
-# A2 validation record
+# A3 schematic / A2 hardware validation record
 
 CAD review date: 2026-10-10. KiCad 10.0.6. Hardware has not been built.
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Connected four-way wire nodes | 0, with 42 explicit T junctions | [Geometry audit](evidence/schematic-geometry.json) |
+| Connected four-way wire nodes | 0, with 43 explicit T junctions | [Geometry audit](evidence/schematic-geometry.json) |
+| Rendered text-to-wire clearance | No glyph ink boxes cross wire segments, including a 0.15 mm reserve; text-to-text spacing also reviewed visually | [Readability audit](evidence/readability-audit.json) |
+| A2 electrical and PCB comparison | Same 82 part identities/pin maps and complete normalized native PCB geometry | [Comparison](evidence/A3-equivalence.json) |
 | Schematic ERC (four-way check enabled) | 0 violations | [ERC.rpt](evidence/ERC.rpt) |
 | PCB DRC and schematic parity | 0 violations, 0 unconnected items, 0 parity issues | [DRC.rpt](evidence/DRC.rpt) |
 | Circuit manifest versus schematic pin nets | 0 mismatches | [Final audit](evidence/final-audit.json) |

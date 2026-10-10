@@ -21,9 +21,12 @@ def footprint(name,body,attr='smd'):
  return f'(footprint "{name}" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr {attr}) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "{name}" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) {body})'
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(1.6))
 title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A2 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
- n=pcb.NETINFO_ITEM(board,('' if name in ['VIN','PGND','AGND','VOUT','SGND','BIAS12','V5'] else '/')+name);board.Add(n);nets[name]=n
+ # KiCad escapes slashes within automatically generated pin-based net names.
+ native_name=aliases[name].replace('/', '{slash}') if aliases[name].startswith('Net-(') else aliases[name]
+ n=pcb.NETINFO_ITEM(board,native_name);board.Add(n);nets[name]=n
 # Placement in millimetres relative to the circuit datum (60,60).
 place={'C1': (38, 6.9, 90),
  'C10': (31.2, 36.4, 90),
@@ -112,6 +115,7 @@ for p in data['parts']:
  name=p['footprint'].split(':')[1];f=pcb.FootprintLoad(str(LIB),name);assert f,name
  f.SetReference(p['ref']);f.SetValue(p['value']);f.SetFPID(pcb.LIB_ID('PS',name));f.SetPath(pcb.KIID_PATH('/'+data['root_uuid']+'/'+p['uuid']))
  for k,v in {'MPN':p['mpn'],'LCSC':p['lcsc'],'Manufacturer':p['mfr'],'Datasheet':p['source'],'Design_note':p['note']}.items():f.SetField(k,v);f.GetField(k).SetVisible(False)
+ if p.get('Voltage'):f.SetField('Voltage',p['Voltage']);f.GetField('Voltage').SetVisible(False)
  for pd in f.Pads():
   num=pd.GetNumber()
   if num:

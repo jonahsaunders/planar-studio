@@ -7,7 +7,7 @@
   "track_via_items": 540,
   "copper_layers": 8,
   "zones": 6,
-  "geometry_sha256": "2210a64c00f731dc56508fa77b1c815e2f2fac21ed22ea4ad66ecf634917919a",
+  "geometry_sha256": "017e35c64ac08213382bcc1803d8894b1118435b4594281dff2372f652e866e6",
   "DRC_violations": 0,
   "unconnected_items": 0,
   "schematic_parity_issues": 0

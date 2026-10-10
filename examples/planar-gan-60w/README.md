@@ -10,11 +10,17 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-A2 redraws the circuit on one A3 sheet: power conversion across the top, then
-frequency control, bias, isolated feedback and independent OVP. Local parts
-connect with visible wires; matching signal names link the functional sections.
-Power arrows point up and returns point down. An independent check finds
-**zero four-way connections**.
+A3 refines the schematic on one A3 sheet: power conversion across the top,
+then frequency control, bias, isolated feedback and independent OVP. Aligned
+reference/value fields, separate capacitor ratings and fewer internal net labels
+make the wired paths easier to follow. Matching signal names link the sections.
+Power arrows point up and returns point down. The PDF text-to-wire clearance
+screen and visual detail review pass; there are **zero four-way connections**.
+
+This is **A3 schematic presentation with A2 hardware**. Exact part identifiers,
+pin connections and PCB geometry are preserved. See the
+[comparison record](evidence/A3-equivalence.json) and
+[readability check](evidence/readability-audit.json).
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -79,6 +85,7 @@ Run with Python in UTF-8 mode. KiCad's bundled Python supplies `pcbnew`.
 ```text
 python -X utf8 scripts/export_review.py /path/to/kicad-cli
 python -X utf8 scripts/audit_schematic.py
+python -X utf8 scripts/audit_readability.py
 python -X utf8 scripts/audit_windings.py
 python -X utf8 scripts/audit_mechanical.py
 python -X utf8 scripts/final_audit.py
@@ -89,9 +96,15 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A2 presentation from circuit.json and the local symbol library;
+recreates the A3 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
-audit_schematic.py require the sexpdata package.
+audit_schematic.py require the sexpdata package. audit_readability.py also needs
+pypdfium2. Capacitor ratings are retained in the visible Voltage field and both BOMs.
+
+After intentionally regenerating the schematic, run update_net_aliases.py with
+the kicad-cli path, then rebuild_board.py with KiCad Python before exporting.
+The alias step matches complete connected-pin sets and refuses topology changes;
+it keeps automatically named internal nets consistent with the PCB.
 
 `planar-studio/T1.planar.json` is the **four-section seed**, not the complete
 six-winding-layer implementation. `T1-artwork.json` and the native winding/board

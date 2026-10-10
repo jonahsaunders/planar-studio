@@ -66,7 +66,7 @@
       "ref": "C1",
       "kind": "C",
       "lcsc": "C86054",
-      "value": "2.2uF/100V",
+      "value": "2.2uF",
       "mpn": "GRM32ER72A225KA35L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf",
@@ -80,13 +80,14 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "b17adb0e-58bb-5976-9859-835047c4f4f4"
+      "uuid": "b17adb0e-58bb-5976-9859-835047c4f4f4",
+      "Voltage": "100V"
     },
     {
       "ref": "C2",
       "kind": "C",
       "lcsc": "C86054",
-      "value": "2.2uF/100V",
+      "value": "2.2uF",
       "mpn": "GRM32ER72A225KA35L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf",
@@ -100,13 +101,14 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "e5b6842f-4d46-5b73-98a5-cb17605b85a1"
+      "uuid": "e5b6842f-4d46-5b73-98a5-cb17605b85a1",
+      "Voltage": "100V"
     },
     {
       "ref": "C3",
       "kind": "C",
       "lcsc": "C405303",
-      "value": "100nF/100V C0G",
+      "value": "100nF",
       "mpn": "GRM31C5C2A104JA01L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf",
@@ -120,7 +122,8 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "68b1f730-cf2e-54c9-8014-2ab118b61330"
+      "uuid": "68b1f730-cf2e-54c9-8014-2ab118b61330",
+      "Voltage": "100V C0G"
     },
     {
       "ref": "U1",
@@ -161,7 +164,7 @@
       "ref": "C4",
       "kind": "C",
       "lcsc": "C77055",
-      "value": "100nF/50V",
+      "value": "100nF",
       "mpn": "GRM188R71H104KA93D",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf",
@@ -175,13 +178,14 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "b890a026-3f81-5629-9d5c-3fd302367137"
+      "uuid": "b890a026-3f81-5629-9d5c-3fd302367137",
+      "Voltage": "50V"
     },
     {
       "ref": "C5",
       "kind": "C",
       "lcsc": "C86020",
-      "value": "1uF/25V",
+      "value": "1uF",
       "mpn": "GRM188R71E105KA12D",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
@@ -195,13 +199,14 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "185c9e76-2d36-5619-bea5-b42a9d73f5e0"
+      "uuid": "185c9e76-2d36-5619-bea5-b42a9d73f5e0",
+      "Voltage": "25V"
     },
     {
       "ref": "C6",
       "kind": "C",
       "lcsc": "C77055",
-      "value": "100nF/50V",
+      "value": "100nF",
       "mpn": "GRM188R71H104KA93D",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf",
@@ -215,7 +220,8 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "6678e3ee-e149-54af-a7f5-d2d58dd0a3b6"
+      "uuid": "6678e3ee-e149-54af-a7f5-d2d58dd0a3b6",
+      "Voltage": "50V"
     },
     {
       "ref": "L1",
@@ -265,7 +271,7 @@
       "ref": "C7",
       "kind": "C",
       "lcsc": "C405303",
-      "value": "100nF/100V",
+      "value": "100nF",
       "mpn": "GRM31C5C2A104JA01L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf",
@@ -279,13 +285,14 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "97a4d5c2-1df2-575e-91bf-a77cd8e2514f"
+      "uuid": "97a4d5c2-1df2-575e-91bf-a77cd8e2514f",
+      "Voltage": "100V"
     },
     {
       "ref": "C8",
       "kind": "C",
       "lcsc": "C405303",
-      "value": "100nF/100V",
+      "value": "100nF",
       "mpn": "GRM31C5C2A104JA01L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf",
@@ -299,7 +306,8 @@
       },
       "block": "power",
       "note": "",
-      "uuid": "eee00847-5fd7-5e4c-994f-6c1e5d4dbc8e"
+      "uuid": "eee00847-5fd7-5e4c-994f-6c1e5d4dbc8e",
+      "Voltage": "100V"
     },
     {
       "ref": "Q1",
@@ -465,7 +473,7 @@
       "ref": "C11",
       "kind": "C",
       "lcsc": "C77081",
-      "value": "2.2uF/25V",
+      "value": "2.2uF",
       "mpn": "GRM21BR71E225KE11L",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf",
@@ -479,13 +487,14 @@
       },
       "block": "secondary",
       "note": "",
-      "uuid": "5d727815-036e-562d-a241-f60a3333adda"
+      "uuid": "5d727815-036e-562d-a241-f60a3333adda",
+      "Voltage": "25V"
     },
     {
       "ref": "C12",
       "kind": "C",
       "lcsc": "C86020",
-      "value": "1uF/25V",
+      "value": "1uF",
       "mpn": "GRM188R71E105KA12D",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
@@ -499,13 +508,14 @@
       },
       "block": "secondary",
       "note": "",
-      "uuid": "6ce8796a-1598-5f41-9cd9-550f81f12381"
+      "uuid": "6ce8796a-1598-5f41-9cd9-550f81f12381",
+      "Voltage": "25V"
     },
     {
       "ref": "C13",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -519,13 +529,14 @@
       },
       "block": "secondary",
       "note": "88uF nameplate; DC bias derating must be measured/verified",
-      "uuid": "a1a1ce5c-a472-5ae3-9113-e19e758a0310"
+      "uuid": "a1a1ce5c-a472-5ae3-9113-e19e758a0310",
+      "Voltage": "25V"
     },
     {
       "ref": "C14",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -539,13 +550,14 @@
       },
       "block": "secondary",
       "note": "88uF nameplate; DC bias derating must be measured/verified",
-      "uuid": "26c8256d-7552-5dd7-af4f-57171ca01a51"
+      "uuid": "26c8256d-7552-5dd7-af4f-57171ca01a51",
+      "Voltage": "25V"
     },
     {
       "ref": "C15",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -559,13 +571,14 @@
       },
       "block": "secondary",
       "note": "88uF nameplate; DC bias derating must be measured/verified",
-      "uuid": "7c552bc5-9c30-5b95-9269-fef48c1a746b"
+      "uuid": "7c552bc5-9c30-5b95-9269-fef48c1a746b",
+      "Voltage": "25V"
     },
     {
       "ref": "C16",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -579,7 +592,8 @@
       },
       "block": "secondary",
       "note": "88uF nameplate; DC bias derating must be measured/verified",
-      "uuid": "07ef90eb-0365-5ddc-aa5f-9aef21b73045"
+      "uuid": "07ef90eb-0365-5ddc-aa5f-9aef21b73045",
+      "Voltage": "25V"
     },
     {
       "ref": "J2",
@@ -691,7 +705,7 @@
       "ref": "C9",
       "kind": "C",
       "lcsc": "C77055",
-      "value": "100nF/50V",
+      "value": "100nF",
       "mpn": "GRM188R71H104KA93D",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf",
@@ -705,13 +719,14 @@
       },
       "block": "control",
       "note": "",
-      "uuid": "cc30f079-5ccb-56c6-adb3-90ff054f9bf3"
+      "uuid": "cc30f079-5ccb-56c6-adb3-90ff054f9bf3",
+      "Voltage": "50V"
     },
     {
       "ref": "C10",
       "kind": "C",
       "lcsc": "C86020",
-      "value": "1uF/25V",
+      "value": "1uF",
       "mpn": "GRM188R71E105KA12D",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
@@ -725,7 +740,8 @@
       },
       "block": "control",
       "note": "",
-      "uuid": "8e722f98-7c15-5329-a2c5-8ea071eb92a1"
+      "uuid": "8e722f98-7c15-5329-a2c5-8ea071eb92a1",
+      "Voltage": "25V"
     },
     {
       "ref": "R4",
@@ -811,7 +827,7 @@
       "ref": "C17",
       "kind": "C",
       "lcsc": "C100042",
-      "value": "10nF/50V",
+      "value": "10nF",
       "mpn": "CC0603KRX7R9BB103",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
@@ -825,7 +841,8 @@
       },
       "block": "control",
       "note": "",
-      "uuid": "ba007562-3658-5db2-bc67-576ab41e265b"
+      "uuid": "ba007562-3658-5db2-bc67-576ab41e265b",
+      "Voltage": "50V"
     },
     {
       "ref": "R8",
@@ -892,7 +909,7 @@
       "ref": "C18",
       "kind": "C",
       "lcsc": "C100042",
-      "value": "10nF/50V",
+      "value": "10nF",
       "mpn": "CC0603KRX7R9BB103",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
@@ -906,7 +923,8 @@
       },
       "block": "control",
       "note": "",
-      "uuid": "ba53e9ab-b0d7-5e26-828b-223f16c6d899"
+      "uuid": "ba53e9ab-b0d7-5e26-828b-223f16c6d899",
+      "Voltage": "50V"
     },
     {
       "ref": "U4",
@@ -939,7 +957,7 @@
       "ref": "C19",
       "kind": "C",
       "lcsc": "C86054",
-      "value": "2.2uF/100V",
+      "value": "2.2uF",
       "mpn": "GRM32ER72A225KA35L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf",
@@ -953,13 +971,14 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "d77ddb33-228d-5538-a9f6-38ae0256b937"
+      "uuid": "d77ddb33-228d-5538-a9f6-38ae0256b937",
+      "Voltage": "100V"
     },
     {
       "ref": "C20",
       "kind": "C",
       "lcsc": "C107043",
-      "value": "2.2nF/50V",
+      "value": "2.2nF",
       "mpn": "CC0603JRNPO9BN222",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRNPO9BN222_C107043.pdf",
@@ -973,7 +992,8 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "5d4fb874-194c-5c34-b93a-9b32bc6218d3"
+      "uuid": "5d4fb874-194c-5c34-b93a-9b32bc6218d3",
+      "Voltage": "50V"
     },
     {
       "ref": "L2",
@@ -999,7 +1019,7 @@
       "ref": "C21",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -1013,13 +1033,14 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "5b060099-3775-504d-9a3e-e8f189cca8b2"
+      "uuid": "5b060099-3775-504d-9a3e-e8f189cca8b2",
+      "Voltage": "25V"
     },
     {
       "ref": "C22",
       "kind": "C",
       "lcsc": "C21397",
-      "value": "22uF/25V",
+      "value": "22uF",
       "mpn": "GRM32ER71E226KE15L",
       "mfr": "Murata Electronics",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
@@ -1033,7 +1054,8 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "2db62e68-4697-5c20-b070-884dcfb7072e"
+      "uuid": "2db62e68-4697-5c20-b070-884dcfb7072e",
+      "Voltage": "25V"
     },
     {
       "ref": "R14",
@@ -1159,7 +1181,7 @@
       "ref": "C23",
       "kind": "C",
       "lcsc": "C77036",
-      "value": "3.3nF/50V",
+      "value": "3.3nF",
       "mpn": "GRM1885C1H332JA01D",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C1H332JA01D_C77036.pdf",
@@ -1173,13 +1195,14 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "2663ccf8-ca83-5919-9f9b-ed8f36e7bb5b"
+      "uuid": "2663ccf8-ca83-5919-9f9b-ed8f36e7bb5b",
+      "Voltage": "50V"
     },
     {
       "ref": "C24",
       "kind": "C",
       "lcsc": "C107053",
-      "value": "56pF/50V",
+      "value": "56pF",
       "mpn": "CC0603JRNPO9BN560",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2111251230_YAGEO-CC0603JRNPO9BN560_C107053.pdf",
@@ -1193,7 +1216,8 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "20d7918c-a4cc-5fe9-bb5d-50ba4ca4aaae"
+      "uuid": "20d7918c-a4cc-5fe9-bb5d-50ba4ca4aaae",
+      "Voltage": "50V"
     },
     {
       "ref": "U5",
@@ -1222,7 +1246,7 @@
       "ref": "C25",
       "kind": "C",
       "lcsc": "C86020",
-      "value": "1uF/25V",
+      "value": "1uF",
       "mpn": "GRM188R71E105KA12D",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
@@ -1236,13 +1260,14 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "03048213-da97-5657-9c2c-40c590b05bce"
+      "uuid": "03048213-da97-5657-9c2c-40c590b05bce",
+      "Voltage": "25V"
     },
     {
       "ref": "C26",
       "kind": "C",
       "lcsc": "C77081",
-      "value": "2.2uF/25V",
+      "value": "2.2uF",
       "mpn": "GRM21BR71E225KE11L",
       "mfr": "Murata Electronics",
       "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf",
@@ -1256,7 +1281,8 @@
       },
       "block": "bias",
       "note": "",
-      "uuid": "c7f552da-9930-591d-a04d-e2d49c71cd38"
+      "uuid": "c7f552da-9930-591d-a04d-e2d49c71cd38",
+      "Voltage": "25V"
     },
     {
       "ref": "U6",
@@ -1405,7 +1431,7 @@
       "ref": "C27",
       "kind": "C",
       "lcsc": "C100042",
-      "value": "10nF/50V",
+      "value": "10nF",
       "mpn": "CC0603KRX7R9BB103",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
@@ -1419,13 +1445,14 @@
       },
       "block": "feedback",
       "note": "",
-      "uuid": "cd56444b-811a-5756-9c6f-9562493518bf"
+      "uuid": "cd56444b-811a-5756-9c6f-9562493518bf",
+      "Voltage": "50V"
     },
     {
       "ref": "C28",
       "kind": "C",
       "lcsc": "C106246",
-      "value": "1nF/50V",
+      "value": "1nF",
       "mpn": "CC0603JRNPO9BN102",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811021411_YAGEO-CC0603JRNPO9BN102_C106246.pdf",
@@ -1439,7 +1466,8 @@
       },
       "block": "feedback",
       "note": "",
-      "uuid": "11922710-c60b-5702-bca5-e9202fe13060"
+      "uuid": "11922710-c60b-5702-bca5-e9202fe13060",
+      "Voltage": "50V"
     },
     {
       "ref": "U8",
@@ -1568,7 +1596,7 @@
       "ref": "C29",
       "kind": "C",
       "lcsc": "C100042",
-      "value": "10nF/50V",
+      "value": "10nF",
       "mpn": "CC0603KRX7R9BB103",
       "mfr": "YAGEO",
       "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
@@ -1582,7 +1610,8 @@
       },
       "block": "feedback",
       "note": "",
-      "uuid": "cfebc1ed-d5e3-58c8-8a6b-bdb445214a9b"
+      "uuid": "cfebc1ed-d5e3-58c8-8a6b-bdb445214a9b",
+      "Voltage": "50V"
     },
     {
       "ref": "TP1",

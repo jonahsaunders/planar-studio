@@ -2,9 +2,10 @@ from pathlib import Path
 import json,xml.etree.ElementTree as ET,csv,hashlib,re
 import pcbnew as p
 R=Path(__file__).resolve().parents[1];parts=json.loads((R/'circuit.json').read_text())['parts'];net=ET.parse(R/'evidence/netlist.xml')
+aliases=json.loads((R/'net-aliases.json').read_text());canonical={v:k for k,v in aliases.items()}
 pins={}
 for n in net.findall('.//nets/net'):
- for node in n.findall('node'):pins[(node.attrib['ref'],node.attrib['pin'])]=n.attrib['name'].removeprefix('/')
+ for node in n.findall('node'):pins[(node.attrib['ref'],node.attrib['pin'])]=canonical.get(n.attrib['name'],n.attrib['name'])
 errors=[]
 for item in parts:
  for pin,n in item['nets'].items():

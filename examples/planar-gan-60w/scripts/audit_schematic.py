@@ -31,6 +31,6 @@ for point in ends|junctions:
 assert not four, four
 assert all(abs(a[0]-b[0])<1e-6 or abs(a[1]-b[1])<1e-6 for a,b in wires)
 parts=json.loads((R/'circuit.json').read_text(encoding='utf8'))['parts']
-report={'revision':'A2','source':'kicad/PS-GAN-60W.kicad_sch','method':'Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.','four_way_connections':four,'wire_segments':len(wires),'three_way_wire_nodes':t_nodes,'junction_dots':len(junctions),'orthogonal_wires_only':True,'manifest_parts':len(parts)}
+report={'revision':'A3','source':'kicad/PS-GAN-60W.kicad_sch','method':'Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.','four_way_connections':four,'wire_segments':len(wires),'three_way_wire_nodes':t_nodes,'junction_dots':len(junctions),'orthogonal_wires_only':True,'manifest_parts':len(parts)}
 (R/'evidence/schematic-geometry.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 print(json.dumps(report,indent=2))
