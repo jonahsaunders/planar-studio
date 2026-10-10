@@ -1,4 +1,6 @@
-PS-GAN-60W — A4 schematic / A2 hardware — KiCad 10 engineering prototype
+PS-GAN-60W — A5 schematic / A3 hardware — KiCad 10 engineering prototype
+A3 hardware corrects R16: LM5164 RON now goes through 100k to PGND, not VIN. Earlier manufacturing files are superseded. The schematic also corrects D1 to a unidirectional TVS symbol, preserving physical polarity. See VALIDATION.md.
+
 Open Schematic.pdf for the clearer, visibly wired circuit with directly wired OC sensing and bias circuitry, attached supply arrows, aligned labels and no four-way connections. The 64 x 56 mm board uses 23% less outline area than A1; headers, mating plugs and wires add to the envelope. Open Review.html for the design review and interactive copper-layer viewer.
 Open kicad/PS-GAN-60W.kicad_pro in KiCad. Both schematic and PCB are editable, with local symbols, footprints and 3D models.
 

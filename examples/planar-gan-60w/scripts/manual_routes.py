@@ -11,7 +11,7 @@ def W(net,layer,refs,width=.25):
   for p in refs:
    if isinstance(p[0],str) and p[0]!='T1' and not p[0].startswith('J'):V(net,p)
 def Z(net,layer,points):
- z=pcb.ZONE(board);z.SetLayer(layer);z.SetNet(nets[net]);z.SetLocalClearance(mm(.25));z.SetThermalReliefGap(mm(.3));z.SetThermalReliefSpokeWidth(mm(.4));z.SetPadConnection(pcb.ZONE_CONNECTION_FULL);z.SetMinThickness(mm(.16));poly=z.Outline();poly.NewOutline()
+ z=pcb.ZONE(board);z.SetLayer(layer);z.SetNet(nets[net]);z.SetLocalClearance(mm(.25));z.SetThermalReliefGap(mm(.3));z.SetThermalReliefSpokeWidth(mm(.4));z.SetPadConnection(pcb.ZONE_CONNECTION_FULL);z.SetMinThickness(mm(.16));z.SetIslandRemovalMode(pcb.ISLAND_REMOVAL_MODE_ALWAYS);poly=z.Outline();poly.NewOutline()
  for x,y in points:poly.Append(mm(x+60),mm(y+60))
  board.Add(z)
 # Local GaN loop and resonant tank.
@@ -29,7 +29,6 @@ W('VIN',I3,[('F1',2),(34.55,6),('D1',1)],1)
 W('VIN',I3,[('F1',2),(36,3),(36.8,4.3),(36.8,8.375),('C1',1)],.8)
 W('VIN',I3,[('C1',1),(39,8.375),(39,5.4),(40.2,4.2),(40.2,1),(46.6,1),(47.4,3),(47.4,19.5),('C2',1)],.7)
 W('VIN',I3,[('C2',1),(47,22),(47,27.3),(43,27.3),('C19',1)],.8)
-W('VIN',F,[('C19',1),(41.675,27),('R16',1)],.4)
 W('VIN',I3,[('C19',1),(43,27.3),(47.4,27.3),(47.4,30.825),('R14',1),(45.8,30.825),(45.8,33.13),('U4',2)],.25)
 # Small GaN bootstrap and logic escapes.
 W('HB',F,[('U1',10),(46.75,10.8),(47.15,10.4),(47.15,8.475),('C4',1)],.2)
@@ -161,4 +160,5 @@ for z in board.Zones():
   if t.GetNetname()!='/SW' or isinstance(t,pcb.PCB_VIA):continue
   shape=pcb.SHAPE_POLY_SET();t.TransformShapeToPolygon(shape,t.GetLayer(),mm(.25),mm(.01),pcb.ERROR_OUTSIDE)
   z.Outline().BooleanSubtract(shape)
+board.BuildConnectivity()
 pcb.ZONE_FILLER(board).Fill(board.Zones())

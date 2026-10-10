@@ -1110,11 +1110,11 @@
       "footprint": "PS:R_0603_1608Metric",
       "source_footprint": "Resistor_SMD:R_0603_1608Metric",
       "nets": {
-        "1": "VIN",
+        "1": "PGND",
         "2": "RON"
       },
       "block": "bias",
-      "note": "",
+      "note": "100k RON timing resistor to PGND per TI LM5164 Rev D pin 4 and on-time control; approximately 302 kHz at 12.095 V. Corrected in A3 hardware.",
       "uuid": "8ae4b4e2-8ce2-5e30-8566-866965251875"
     },
     {

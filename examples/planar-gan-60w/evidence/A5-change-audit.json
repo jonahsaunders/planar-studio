@@ -1,0 +1,69 @@
+{
+  "result": "pass",
+  "baseline": "A4 schematic / A2 hardware, commit 74d9deed2f56652d3ace50e4c83b4265b5470347",
+  "current": "A5 schematic / A3 hardware",
+  "parts_compared": 82,
+  "part_identifiers_values_footprints_preserved": true,
+  "intentional_pin_net_changes": [
+    [
+      "R16",
+      "1",
+      "VIN",
+      "PGND"
+    ]
+  ],
+  "all_89_footprint_positions_and_pad_geometry_preserved": true,
+  "board_outline_and_transformer_copper_unchanged": true,
+  "removed_VIN_tracks": [
+    [
+      "PCB_TRACK",
+      "VIN",
+      0,
+      [
+        101825000,
+        86000000
+      ],
+      [
+        101675000,
+        87000000
+      ],
+      400000,
+      0
+    ],
+    [
+      "PCB_TRACK",
+      "VIN",
+      0,
+      [
+        101675000,
+        87000000
+      ],
+      [
+        101675000,
+        88500000
+      ],
+      400000,
+      0
+    ]
+  ],
+  "added_PGND_via": [
+    [
+      "PCB_VIA",
+      "PGND",
+      0,
+      [
+        101675000,
+        88500000
+      ],
+      [
+        101675000,
+        88500000
+      ],
+      600000,
+      300000
+    ]
+  ],
+  "all_other_tracks_and_vias_identical": true,
+  "symbol_change": "D1 unidirectional TVS artwork; pin 1 renamed A1 to K, pin 2 renamed A2 to A. Pin numbers and PCB polarity unchanged. IC pins rearranged for readability; optocoupler emitter arrows added.",
+  "zone_fills": "Regenerated after the ground-via correction; DRC and winding-contact checks run separately."
+}

@@ -4,10 +4,10 @@
   "KiCad_version": "10.0.6",
   "method": "Rebuild in a separate copied example directory using bundled libraries and scripts; compare every track/via, footprint and pad geometry/net assignment, layer count and zone count; run KiCad DRC with schematic parity. UUIDs intentionally not compared.",
   "footprints": 89,
-  "track_via_items": 540,
+  "track_via_items": 539,
   "copper_layers": 8,
   "zones": 6,
-  "geometry_sha256": "3e17230762bcac82496f47a9c70ea1093d7a19bfb16c1062aabcbe3100964147",
+  "geometry_sha256": "3f5a87708dda730a42b5f9c38ff3c9fa8ddfe877673f7bdc116341895b38f578",
   "DRC_violations": 0,
   "unconnected_items": 0,
   "schematic_parity_issues": 0

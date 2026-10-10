@@ -1,0 +1,335 @@
+{
+  "result": "pass",
+  "date": "2026-10-10",
+  "hardware_revision": "A3",
+  "schematic_revision": "A5",
+  "device_checks": [
+    {
+      "ref": "U1",
+      "source": "https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf",
+      "section": "Pin configuration and functions; recommended supply 4.75 to 5.25 V",
+      "functions": {
+        "1": "NC",
+        "2": "NC",
+        "3": "NC",
+        "4": "NC",
+        "8": "NC",
+        "9": "NC",
+        "16": "NC",
+        "5": "SW",
+        "6": "PGND",
+        "7": "VIN",
+        "10": "HB",
+        "11": "HS",
+        "12": "HI",
+        "13": "LI",
+        "14": "VCC",
+        "15": "AGND",
+        "17": "PGND"
+      },
+      "expected_nets": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": null,
+        "8": null,
+        "9": null,
+        "16": null,
+        "5": "SW",
+        "6": "PGND",
+        "7": "VIN",
+        "10": "HB",
+        "11": "SW",
+        "12": "HI",
+        "13": "LI",
+        "14": "V5",
+        "15": "AGND",
+        "17": "PGND"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U2",
+      "source": "https://www.ti.com/lit/ds/symlink/ucc25600.pdf",
+      "section": "Pin configuration and functions",
+      "functions": {
+        "1": "DT",
+        "2": "RT",
+        "3": "OC",
+        "4": "SS",
+        "5": "GD2",
+        "6": "GND",
+        "7": "VCC",
+        "8": "GD1"
+      },
+      "expected_nets": {
+        "1": "DT",
+        "2": "RT",
+        "3": "OC",
+        "4": "SS",
+        "5": "GD2",
+        "6": "AGND",
+        "7": "BIAS12",
+        "8": "GD1"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U3",
+      "source": "https://www.ti.com/lit/ds/symlink/ucc24624.pdf",
+      "section": "Pin functions; REG bypass 2.2 uF to PGND",
+      "functions": {
+        "1": "VG1",
+        "2": "PGND",
+        "3": "REG",
+        "4": "VD1",
+        "5": "VSS",
+        "6": "VD2",
+        "7": "VDD",
+        "8": "VG2"
+      },
+      "expected_nets": {
+        "1": "VG1",
+        "2": "SGND",
+        "3": "SR_REG",
+        "4": "VS1",
+        "5": "SGND",
+        "6": "VS2",
+        "7": "VOUT",
+        "8": "VG2"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U4",
+      "source": "https://www.ti.com/lit/ds/symlink/lm5164.pdf",
+      "section": "Rev D, pin functions; on-time control and typical 12 V application",
+      "functions": {
+        "1": "GND",
+        "2": "VIN",
+        "3": "EN/UVLO",
+        "4": "RON",
+        "5": "FB",
+        "6": "PGOOD",
+        "7": "BST",
+        "8": "SW",
+        "9": "EP"
+      },
+      "expected_nets": {
+        "1": "PGND",
+        "2": "VIN",
+        "3": "BIAS_EN",
+        "4": "RON",
+        "5": "BIAS_FB",
+        "6": null,
+        "7": "BIAS_BST",
+        "8": "BIAS_SW",
+        "9": "PGND"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U5",
+      "source": "https://www.ti.com/lit/ds/symlink/tps7a24.pdf",
+      "section": "Fixed-output DBV pin functions",
+      "functions": {
+        "1": "IN",
+        "2": "GND",
+        "3": "EN",
+        "4": "NC",
+        "5": "OUT"
+      },
+      "expected_nets": {
+        "1": "BIAS12",
+        "2": "AGND",
+        "3": "BIAS12",
+        "4": null,
+        "5": "V5"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "Q1",
+      "source": "https://www.ti.com/lit/ds/symlink/csd18543q3a.pdf",
+      "section": "Page 1 top view; footprint pad 9 represents exposed drain metal",
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D",
+        "6": "D",
+        "7": "D",
+        "8": "D",
+        "9": "D"
+      },
+      "expected_nets": {
+        "1": "SGND",
+        "2": "SGND",
+        "3": "SGND",
+        "4": "SR_G1",
+        "5": "SEC_A",
+        "6": "SEC_A",
+        "7": "SEC_A",
+        "8": "SEC_A",
+        "9": "SEC_A"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "Q2",
+      "source": "https://www.ti.com/lit/ds/symlink/csd18543q3a.pdf",
+      "section": "Page 1 top view; footprint pad 9 represents exposed drain metal",
+      "functions": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "5": "D",
+        "6": "D",
+        "7": "D",
+        "8": "D",
+        "9": "D"
+      },
+      "expected_nets": {
+        "1": "SGND",
+        "2": "SGND",
+        "3": "SGND",
+        "4": "SR_G2",
+        "5": "SEC_B",
+        "6": "SEC_B",
+        "7": "SEC_B",
+        "8": "SEC_B",
+        "9": "SEC_B"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U7",
+      "source": "https://www.ti.com/lit/ds/symlink/tl431.pdf",
+      "section": "TL431 DBZ pin mapping (not TL432 DBZ)",
+      "functions": {
+        "1": "CATHODE",
+        "2": "REF",
+        "3": "ANODE"
+      },
+      "expected_nets": {
+        "1": "FB_K",
+        "2": "VREF",
+        "3": "SGND"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U9",
+      "source": "https://www.ti.com/lit/ds/symlink/tl431.pdf",
+      "section": "TL431 DBZ pin mapping (not TL432 DBZ)",
+      "functions": {
+        "1": "CATHODE",
+        "2": "REF",
+        "3": "ANODE"
+      },
+      "expected_nets": {
+        "1": "OV_K",
+        "2": "OV_REF",
+        "3": "SGND"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U6",
+      "source": "https://www.alldatasheet.com/html-pdf/1104261/EVERLIGHT/EL357N/565/1/EL357N.html",
+      "section": "Everlight manufacturer datasheet Rev 6 page 1, hosted mirror; official product page https://en.everlight.com/photo_coupler_igbt_ssr/category-photo_transistor/4pin_sop_dc/",
+      "functions": {
+        "1": "AN",
+        "2": "CA",
+        "3": "EM",
+        "4": "COL"
+      },
+      "expected_nets": {
+        "1": "FB_LED",
+        "2": "FB_K",
+        "3": "AGND",
+        "4": "FB_COL"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "U8",
+      "source": "https://www.alldatasheet.com/html-pdf/1104261/EVERLIGHT/EL357N/565/1/EL357N.html",
+      "section": "Everlight manufacturer datasheet Rev 6 page 1, hosted mirror; official product page https://en.everlight.com/photo_coupler_igbt_ssr/category-photo_transistor/4pin_sop_dc/",
+      "functions": {
+        "1": "AN",
+        "2": "CA",
+        "3": "EM",
+        "4": "COL"
+      },
+      "expected_nets": {
+        "1": "OV_LED",
+        "2": "OV_K",
+        "3": "AGND",
+        "4": "SS"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "D2",
+      "source": "https://www.onsemi.com/pdf/datasheet/bat54slt1-d.pdf",
+      "section": "BAT54SLT1G Rev 18 page 1",
+      "functions": {
+        "1": "A",
+        "2": "C",
+        "3": "A/C"
+      },
+      "expected_nets": {
+        "1": "AGND",
+        "2": "OC",
+        "3": "CS_RECT"
+      },
+      "result": "pass"
+    },
+    {
+      "ref": "D1",
+      "source": "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf",
+      "section": "Unidirectional SMAJ54A; banded cathode matches footprint pad 1",
+      "functions": {
+        "1": "K",
+        "2": "A"
+      },
+      "expected_nets": {
+        "1": "VIN",
+        "2": "PGND"
+      },
+      "result": "pass"
+    }
+  ],
+  "critical_branches": {
+    "R16": {
+      "1": "PGND",
+      "2": "RON"
+    },
+    "C11": {
+      "1": "SR_REG",
+      "2": "SGND"
+    },
+    "C4": {
+      "1": "HB",
+      "2": "SW"
+    },
+    "C20": {
+      "1": "BIAS_BST",
+      "2": "BIAS_SW"
+    },
+    "J1": {
+      "1": "PGND",
+      "2": "VIN_RAW"
+    },
+    "J2": {
+      "1": "SGND",
+      "2": "VOUT"
+    }
+  },
+  "bias_output_nominal_V": 12.0937875751503,
+  "bias_frequency_nominal_kHz": 302.3446893787575,
+  "limitations": "Static pin functions, device polarity and selected application connections checked. Does not establish startup, stability, protection thresholds, switching margins, insulation, efficiency or thermal performance."
+}

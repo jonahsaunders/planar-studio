@@ -1,4 +1,4 @@
-"""Rebuild A2 from bundled footprints and explicit manual routes.
+"""Rebuild A3 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
@@ -20,7 +20,7 @@ def pad(n,x,y,w,h,drill=0,layers=None):
 def footprint(name,body,attr='smd'):
  return f'(footprint "{name}" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr {attr}) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "{name}" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) {body})'
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(1.6))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A2 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A3 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
 aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
@@ -160,7 +160,7 @@ exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
 legend('PLANAR STUDIO',20,-1.6,1.2)
-legend('PS-GAN-60W  /  A2',24,50.6,.85)
+legend('PS-GAN-60W  /  A3',24,50.6,.85)
 legend('48V IN',51,8.2,.9);legend('12V OUT',-2,8.2,.9)
 legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
 legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)

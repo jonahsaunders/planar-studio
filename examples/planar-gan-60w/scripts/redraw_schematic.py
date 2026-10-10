@@ -1,4 +1,4 @@
-"""A4 schematic presentation: wired functional schematic, on a compact A3 sheet."""
+"""A5 schematic presentation: wired functional schematic, on a compact A3 sheet."""
 from pathlib import Path
 import json,uuid,copy,math
 import sexpdata as sx
@@ -24,14 +24,20 @@ def custom(kind,rows,graphics,box=None):
   hide=bool(extra and extra[0]);pname=oldpins[kind][str(n)]
   ps.append(f'(pin {typ} line (at {g(x)} {g(y)} {a}) (length {g(1)})'+(' (hide yes)' if hide else '')+f' (name {q(pname)} {fx(1.0)}) (number {q(n)} {fx(1.0)}))')
  if box:
-  w,h=box;graphics=f'(rectangle (start {g(-w)} {g(h)}) (end {g(w)} {g(-h)}) (stroke (width .254) (type default)) (fill (type none)))'+graphics
+  w,top=box[:2];bottom=box[2] if len(box)==3 else top;graphics=f'(rectangle (start {g(-w)} {g(top)}) (end {g(w)} {g(-bottom)}) (stroke (width .254) (type default)) (fill (type none)))'+graphics
  s=f'(symbol {q(kind)} (pin_names (offset .508)) (in_bom yes) (on_board yes) (property "Reference" "U" (at 0 0 0) {fx()}) (property "Value" {q(kind)} (at 0 0 0) {fx()}) (symbol {q(kind+"_0_1")} {graphics}) (symbol {q(kind+"_1_1")} {"".join(ps)}))'
  defs[kind]=sx.loads(s)
  assert {one(p,'number')[1]:one(p,'name')[1] for p in walk(defs[kind],'pin')}==oldpins[kind]
-custom('LMG2100R044RARR',[(7,-7,5,0,'power_in'),(14,-7,6.5,0,'power_in'),(12,-7,0,0,'input'),(13,-7,-3,0,'input'),(10,7,5,180,'passive'),(11,7,1,180,'passive',True),(5,7,1,180,'output'),(15,-2,-8,90,'power_in'),(6,2,-8,90,'power_in'),(17,2,-8,90,'passive',True)]+[(n,-3+i,0,90,'no_connect',True) for i,n in enumerate([1,2,3,4,8,9,16])],'',box=(6,7))
+# SMAJ54A is unidirectional: replace the former bidirectional TVS artwork.
+# Pad numbers and nets stay fixed; pin 1 is the banded cathode, pin 2 the anode.
+oldpins['D']={'1':'K','2':'A'}
+tvs=poly([(-.5,0),(.5,.5),(.5,-.5),(-.5,0)])+poly([(-.75,.6),(-.5,.6),(-.5,-.6),(-.25,-.6)])
+custom('D',[(1,-1.5,0,0,'passive'),(2,1.5,0,180,'passive')],tvs)
+defs['D'].append([sx.Symbol('pin_numbers'),sx.Symbol('hide')])
+custom('LMG2100R044RARR',[(7,-7,3,0,'power_in'),(14,-7,6.5,0,'power_in'),(12,-7,0,0,'input'),(13,-7,-3,0,'input'),(10,7,5,180,'passive'),(11,7,1,180,'passive',True),(5,7,1,180,'output'),(15,-2,-8,90,'power_in'),(6,2,-8,90,'power_in'),(17,2,-8,90,'passive',True)]+[(n,-3+i,0,90,'no_connect',True) for i,n in enumerate([1,2,3,4,8,9,16])],'',box=(6,7))
 custom('UCC25600DR',[(1,-4,-8,90,'passive'),(2,-10,-5,0,'passive'),(3,-10,2,0,'input'),(4,5,-8,90,'passive'),(7,0,8,270,'power_in'),(6,-7,-8,90,'power_in'),(8,10,3,180,'output'),(5,10,-3,180,'output')],'',box=(9,7))
-custom('UCC24624DR',[(1,-7,7.5,0,'output'),(4,-7,2.5,0,'input'),(6,-7,-2.5,0,'input'),(8,-7,-7.5,0,'output'),(7,0,9.5,270,'power_in'),(3,7,-3,180,'power_out'),(2,0,-9.5,90,'power_in'),(5,0,-9.5,90,'passive',True)],'',box=(6,8.5))
-custom('LM5164DDAR',[(2,-7,6,0,'power_in'),(3,-7,2,0,'input'),(4,-7,-2,0,'passive'),(7,7,6,180,'passive'),(8,7,2,180,'output'),(5,7,-3,180,'input'),(6,7,-7,180,'open_collector'),(1,0,-9,90,'power_in'),(9,0,-9,90,'passive',True)],'',box=(6,8))
+custom('UCC24624DR',[(1,-7,7.5,0,'output'),(4,-7,12.5,0,'input'),(6,-7,-2.5,0,'input'),(8,-7,-7.5,0,'output'),(7,7,12,180,'power_in'),(3,7,-3,180,'power_out'),(2,0,-9.5,90,'power_in'),(5,0,-9.5,90,'passive',True)],'',box=(6,14,8.5))
+custom('LM5164DDAR',[(2,-7,6,0,'power_in'),(3,-7,-2,0,'input'),(4,-7,2,0,'passive'),(7,7,6,180,'passive'),(8,7,2,180,'output'),(5,7,-3,180,'input'),(6,7,-7,180,'open_collector'),(1,0,-9,90,'power_in'),(9,0,-9,90,'passive',True)],'',box=(6,8))
 custom('TPS7A2450DBVR',[(1,-5,0,0,'power_in'),(3,-5,0,0,'input',True),(2,0,-3.5,90,'power_in'),(5,5,0,180,'power_out'),(4,2,0,180,'no_connect',True)],'',box=(4,2.5))
 # Conventional MOSFET drawing. Multi-pad drain/source pins stack electrically.
 mos=poly([(0,3),(0,2),(1.5,2),(1.5,-2),(0,-2),(0,-3)])+poly([(4,0),(2.5,0),(2.5,2),(2.5,-2)])
@@ -51,19 +57,19 @@ custom('Planar_4_2_2',[(1,-7,6,0,'passive'),(2,-7,-6,0,'passive'),(3,7,6,180,'pa
 # TL431: cathode up, anode down, reference left.
 tl=poly([(0,2),(2,-1),(-2,-1),(0,2)])+poly([(-2,2),(2,2)])+poly([(-3,0),(-1,0)])+poly([(0,-1),(0,-2)])
 custom('TL431AIDBZR',[(1,0,3,270,'passive'),(2,-4,0,0,'input'),(3,0,-3,90,'passive')],tl)
-op=poly([(-4,2),(-2,2),(-3,0),(-4,2)])+poly([(-4,0),(-2,0)])+poly([(-3,0),(-3,-2)])+poly([(2,2),(2,-2)])+poly([(2,1),(4,2),(4,3)])+poly([(2,-1),(4,-2),(4,-3)])+poly([(0,1),(1,0),(.3,0)])+poly([(0,-1),(1,-2),(.3,-2)])
+op=poly([(-4,2),(-2,2),(-3,0),(-4,2)])+poly([(-4,0),(-2,0)])+poly([(-3,0),(-3,-2)])+poly([(2,2),(2,-2)])+poly([(2,1),(4,2),(4,3)])+poly([(2,-1),(4,-2),(4,-3)])+poly([(3.0,-1.4),(3.8,-1.9),(2.9,-1.9),(3.0,-1.4)])+poly([(0,1),(1,0),(.3,0)])+poly([(0,-1),(1,-2),(.3,-2)])
 custom('EL357N',[(1,-5,3,0,'passive'),(2,-5,-3,0,'passive'),(4,5,3,180,'passive'),(3,5,-3,180,'passive')],op+poly([(-4,3),(-3,3),(-3,2)])+poly([(-4,-3),(-3,-3),(-3,-2)]),box=(4,4))
 dd=poly([(-4,0),(-3,0),(-3,1),(-1,0),(-3,-1),(-3,0)])+poly([(-1,-1),(-1,1)])+poly([(-1,0),(1,0),(1,1),(3,0),(1,-1),(1,0)])+poly([(3,-1),(3,1)])+poly([(3,0),(4,0)])+poly([(0,0),(0,2)])
 custom('BAT54SLT1G',[(1,-5,0,0,'passive'),(2,5,0,180,'passive'),(3,0,3,270,'passive')],dd)
 custom('Power_Port',[(2,3,1,180,'passive'),(1,3,-1,180,'passive')],poly([(-1,-2),(2,-2),(2,2),(-1,2),(-1,-2)])+circle(0,1,.4)+circle(0,-1,.4)+poly([(0,1),(2,1)])+poly([(0,-1),(2,-1)]))
-for k in ['CSD18543Q3A','TL431AIDBZR','Planar_4_2_2','Power_Port','BAT54SLT1G','EL357N']:
+for k in ['D','CSD18543Q3A','TL431AIDBZR','Planar_4_2_2','Power_Port','BAT54SLT1G','EL357N']:
  one(defs[k],'pin_names').append([sx.Symbol('hide'),sx.Symbol('yes')])
 elements=[];ends={};wiresegs=[];labels=[];powers=set();placed=set();serial=0
 def prop(k,v,x,y,hide=False,left=False,angle=0):return f'(property {q(k)} {q(v)} (at {g(x)} {g(y)} {angle}) (effects (font (size 1.27 1.27))'+(' (justify left)' if left else '')+(' (hide yes)' if hide else '')+'))'
 def text(t,x,y,size=1.27,bold=False):elements.append(f'(text {q(t)} (at {g(x)} {g(y)} 0) (effects (font (size {size} {size})'+(' (bold yes)' if bold else '')+f') (justify left)) (uuid {uid("txt"+t+str(x)+str(y))}))')
 def box(x,y,w,h,title):
  elements.append('(polyline (pts '+''.join(f'(xy {g(a)} {g(b)})' for a,b in [(x,y),(x+w,y),(x+w,y+h),(x,y+h),(x,y)])+f') (stroke (width .254) (type default) (color 80 110 140 1)) (fill (type none)) (uuid {uid(title)}))');text(title,x+1.5,y+2,1.8,True)
-def sym(ref,x,y,rot=0,txt=None,value=None):
+def sym(ref,x,y,rot=0,txt=None,value=None,mirror=None):
  p=parts[ref];k=p['kind'];placed.add(ref);ps=walk(defs[k],'pin')
  if value:p['value']=value
  if k=='C' and '/' in p['value']:
@@ -73,12 +79,14 @@ def sym(ref,x,y,rot=0,txt=None,value=None):
   elif k in ['R','C','L','F','D']:txt=(x+1.5,y-.6,x+1.5,y+.7,True) if rot==0 else (x,y-3,x,y-1.6,False)
   else:txt=(x,y-11,x,y-9.6,False)
  rx,ry,vx,vy,left=txt
- properties=prop('Reference',ref,rx,ry,left=left,angle=rot%180)+prop('Value',value or p['value'],vx,vy,left=left,angle=rot%180)
+ properties=prop('Reference',ref,rx,ry,left=left,angle=rot%180)+prop('Value',value or p['value'],vx,vy,hide=ref.startswith('TP'),left=left,angle=rot%180)
  if k=='C':properties+=prop('Voltage',p.get('Voltage',''),vx,vy+1.3,left=left,angle=rot%180)
  for key,field in [('Footprint','footprint'),('Datasheet','source'),('MPN','mpn'),('Manufacturer','mfr'),('LCSC','lcsc'),('Design_note','note')]:properties+=prop(key,p[field],x,y,True)
- elements.append(f'(symbol (lib_id "PS:{k}") (at {g(x)} {g(y)} {rot}) (unit 1) (in_bom {"no" if ref=="T1" or ref.startswith("TP") else "yes"}) (on_board yes) (dnp no) (uuid {p["uuid"]}) {properties} '+''.join(f'(pin {q(one(t,"number")[1])} (uuid {uid(ref+str(one(t,"number")[1]))}))' for t in ps)+f'(instances (project "{NAME}" (path "/{data["root_uuid"]}" (reference "{ref}") (unit 1)))))')
+ elements.append(f'(symbol (lib_id "PS:{k}") (at {g(x)} {g(y)} {rot}) {("(mirror "+mirror+")") if mirror else ""} (unit 1) (in_bom {"no" if ref=="T1" or ref.startswith("TP") else "yes"}) (on_board yes) (dnp no) (uuid {p["uuid"]}) {properties} '+''.join(f'(pin {q(one(t,"number")[1])} (uuid {uid(ref+str(one(t,"number")[1]))}))' for t in ps)+f'(instances (project "{NAME}" (path "/{data["root_uuid"]}" (reference "{ref}") (unit 1)))))')
  for t in ps:
   n=one(t,'number')[1];xx,yy,a=one(t,'at')[1:4];theta=math.radians(rot)
+  if mirror=='y':xx=-xx
+  if mirror=='x':yy=-yy
   pt=(round(x+(xx*math.cos(theta)-yy*math.sin(theta))/2.54,6),round(y-(xx*math.sin(theta)+yy*math.cos(theta))/2.54,6));ends[(ref,n)]=pt
   if p['nets'][n] is None and str(t[1])!='no_connect':elements.append(f'(no_connect (at {g(pt[0])} {g(pt[1])}) (uuid {uid(ref+n+"nc")}))')
 def pin(ref,n):return ends[(ref,str(n))]
@@ -106,41 +114,49 @@ def bank(refs,xs,y,top,bottom,plus,minus,ground_x=None):
  for ref,x in zip(refs,xs):sym(ref,x,y);wire(plus,(x,top),(ref,'1'));wire(minus,(ref,'2'),(x,bottom))
  wire(plus,*[(x,top) for x in xs]);wire(minus,*[(x,bottom) for x in xs]);power(minus,xs[0] if ground_x is None else ground_x,bottom,True)
 
-text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A4 schematic · A2 hardware',42,4,1.8)
+text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A5 schematic · A3 hardware',42,4,1.8)
 text('PGND: input return   /   SGND: isolated output return   /   AGND: controller return (joins PGND inside U1)',42,7,1.15)
 box(5,9,155,36,'01  PLANAR POWER PATH')
-sym('J1',9,21,txt=(9,16,9,17.5,False),value='48 V INPUT');sym('F1',18,20,txt=(18,17,18,18.5,False))
-# Fuse_Small is horizontal in its native symbol.
-wire('VIN_RAW',('J1','2'),('F1','1'));wire('PGND',('J1','1'),(10,22),(10,23));power('PGND',10,23,True)
-wire('VIN',('F1','2'),(21,20),(21,22),(38,22),(38,24),(40,24));label('VIN_RAW',13,20)
-bank(['C1','C2','C3'],[12,19,26],30,24,35,'VIN','PGND');wire('VIN',(12,24),(38,24));power('VIN',22,24)
-sym('D1',34,30,rot=270,txt=(35.5,29,35.5,30.5,True));wire('VIN',(34,24),('D1','1'));wire('PGND',('D1','2'),(34,35),(26,35))
+sym('J1',9,25,txt=(9,19.5,9,21,False),value='48 V INPUT')
+sym('F1',18,24,txt=(18,20,18,21.5,False))
+wire('VIN_RAW',('J1','2'),('F1','1'));label('VIN_RAW',13,24)
+wire('PGND',('J1','1'),(9,26),(9,28));power('PGND',9,28,True)
+wire('VIN',('F1','2'),(24,24),(24,26));power('VIN',24,24)
+bank(['C1','C2','C3'],[14,21,28],31,26,36,'VIN','PGND')
+wire('VIN',(28,26),(40,26))
+sym('D1',35,31,rot=270,txt=(32.5,28,32.5,29.5,False))
+wire('VIN',(35,26),('D1','1'));wire('PGND',('D1','2'),(35,36),(28,36))
 sym('U1',47,29,txt=(47,19,47,20.5,False),value='LMG2100R044')
-bank(['C5','C6'],[29,35],17,14,20,'V5','AGND',ground_x=35);wire('V5',(35,14),(40,14),('U1','14'));power('V5',40,14)
+bank(['C5','C6'],[29,35],17,14,20,'V5','AGND',ground_x=35)
+wire('V5',(35,14),(40,14),('U1','14'));power('V5',40,14)
 ground('AGND','U1','15',40);ground('PGND','U1','6',40)
 for net,n,y in [('HI','12',29),('LI','13',32)]:wire(net,(38,y),('U1',n));label(net,38,y)
 sym('C4',58,25,txt=(58,18,58,19.5,False));wire('HB',('U1','10'),('C4','1'));wire('SW',('U1','5'),(58,28),(62,28));wire('SW',('C4','2'),(58,28))
 sym('L1',63,28,90);sym('T1',77,28,txt=(77,16.5,77,18,False),value='4 : 2 : 2  /  ELP22')
 wire('PRI_A',('L1','2'),(67,28),(67,22),('T1','1'))
 bank(['C7','C8'],[62,70],38,35,41,'TANK_C','PGND');wire('TANK_C',('T1','2'),(70,35),(62,35));label('TANK_C',62,35)
-for ref,x,y in [('Q1',94,21),('Q2',94,36)]:sym(ref,x,y,txt=(100,y-4.5,100,y-3,False),value='CSD18543Q3A');ground('SGND',ref,'1',y+5)
+for ref,x,y in [('Q1',94,21),('Q2',94,36)]:sym(ref,x,y,txt=(100,y-3.5,100,y-2,False),value='CSD18543Q3A');ground('SGND',ref,'1',y+5)
 wire('SEC_A',('T1','3'),(87,22),(87,16),(94,16),('Q1','5'))
 wire('SEC_B',('T1','5'),(87,34),(87,31),(94,31),('Q2','5'))
-wire('VOUT',('T1','4'),(85,28),(85,13.5),(153,13.5),(153,27),(132,27));power('VOUT',139,13.5)
-sym('U3',118,28.5,txt=(118,14.5,118,16,False),value='UCC24624')
+wire('VOUT',('T1','4'),(85,28),(85,13.5),(149,13.5),(149,27),(132,27));power('VOUT',139,13.5)
+sym('U3',118,28.5,txt=(118,10.5,118,12,False),value='UCC24624')
 for r,y,net1,net2,qref,pn in [('R10',21,'VG1','SR_G1','Q1','1'),('R11',36,'VG2','SR_G2','Q2','8')]:
  sym(r,108,y,270);wire(net2,(qref,'4'),(r,'2'));wire(net1,(r,'1'),('U3',pn))
-for r,y,net,vs,pn in [('R12',26,'SEC_A','VS1','4'),('R13',31,'SEC_B','VS2','6')]:
- sym(r,108,y,90);wire(vs,(r,'2'),('U3',pn))
-wire('SEC_A',(94,16),(105,16),(105,26),('R12','1'))
+for r,y,net,vs,pn in [('R12',16,'SEC_A','VS1','4'),('R13',31,'SEC_B','VS2','6')]:
+ sym(r,108,y,90,txt=(108,y-5.5,108,y-4,False) if r=='R12' else None);wire(vs,(r,'2'),('U3',pn))
+wire('SEC_A',(94,16),('R12','1'))
 wire('SEC_B',(94,31),('R13','1'))
-sym('C12',130,21);wire('VOUT',('U3','7'),(118,18),(130,18),('C12','1'));wire('VOUT',(130,18),(130,13.5));ground('SGND','C12','2',23)
-sym('C11',129,40,90);wire('SR_REG',('U3','3'),(127,31.5),(127,40),('C11','1'));wire('SGND',('C11','2'),(132,40),(132,41));power('SGND',132,41,True);ground('SGND','U3','2',40)
+sym('C12',130,21);wire('VOUT',('U3','7'),(130,16.5),('C12','1'));wire('VOUT',(130,16.5),(130,13.5));ground('SGND','C12','2',23)
+sym('C11',127,36);wire('SR_REG',('U3','3'),(127,31.5),('C11','1'));ground('SGND','C11','2',39);ground('SGND','U3','2',40)
 bank(['C13','C14','C15','C16'],[132,139,146,153],33,27,38,'VOUT','SGND',ground_x=143)
-sym('J2',153,20,180,txt=(145,15.5,145,17,False),value='12 V / 5 A');wire('VOUT',('J2','2'),(149,21),(149,13.5));wire('SGND',('J2','1'),(147,19),(147,22));power('SGND',147,22,True)
-sym('TP1',25,20,txt=(23,17,23,18.5,False));wire('VIN',('TP1','1'),(25,22))
-sym('TP2',14,35,txt=(17,35.5,17,37,False));sym('TP3',157,25,txt=(157,20.5,157,22,False));wire('VOUT',(153,25),('TP3','1'));sym('TP4',153,38,txt=(155,41,155,42.5,False))
-sym('TP5',44,18,txt=(46,16.5,46,18,False));wire('V5',(40,18),('TP5','1'));sym('TP6',29,20,txt=(27,19,27,20.5,False))
+sym('J2',155,20,txt=(155,15.5,155,17,False),value='12 V / 5 A',mirror='y')
+wire('VOUT',('J2','2'),(149,19));wire('SGND',('J2','1'),(152,22));power('SGND',152,22,True)
+sym('TP1',31,23,txt=(33,24,33,25.5,False));wire('VIN',('TP1','1'),(31,26))
+sym('TP2',17,36,txt=(17,38.5,17,40,False))
+sym('TP3',157,27,txt=(157,23,157,24.5,False));wire('VOUT',(153,27),('TP3','1'))
+sym('TP4',157,38,txt=(157,40.5,157,42,False));wire('SGND',(153,38),('TP4','1'))
+sym('TP5',44,18,txt=(46,16.5,46,18,False));wire('V5',(40,18),('TP5','1'))
+sym('TP6',26,20,txt=(26,16.5,26,18,False));wire('AGND',(22,20),('TP6','1'),(29,20))
 text('Primary midpoint is internal copper.',77,39,1.0);text('Functional isolation only.',77,41,1.0)
 
 box(5,47,75,35,'02  FREQUENCY CONTROL')
@@ -177,14 +193,14 @@ text('12 V drive → ~3.7 V logic',62,79,1.0)
 
 box(82,47,78,35,'03  LOCAL BIAS · 12 V + 5 V')
 sym('U4',106,63,txt=(106,51,106,52.5,False),value='LM5164')
-sym('C19',86,57);wire('VIN',(86,53),(97,53),(97,57),('U4','2'))
+sym('C19',86,57,txt=(84,56.4,84,57.7,False));wire('VIN',(86,53),(97,53),(97,57),('U4','2'))
 wire('VIN',(86,53),('C19','1'));power('VIN',95,53);ground('PGND','C19','2',61)
-sym('R14',91,61);sym('R15',91,71)
-wire('VIN',(91,53),('R14','1'));wire('BIAS_EN',('R14','2'),(91,66),('R15','1'))
-wire('BIAS_EN',(91,66),(95,66),(95,61),('U4','3'));ground('PGND','R15','2',74)
-sym('R16',97,70,txt=(100,72,100,73.5,True))
-wire('VIN',(97,53),(98,53),(98,67),(97,67),('R16','1'))
-wire('RON',('U4','4'),(99,71),('R16','2'));ground('PGND','U4','1',75)
+sym('R14',89,62);sym('R15',89,73)
+wire('VIN',(89,53),('R14','1'));wire('BIAS_EN',('R14','2'),(89,67),('R15','1'))
+wire('BIAS_EN',(89,67),(97,67),(97,65),('U4','3'));ground('PGND','R15','2',75)
+sym('R16',97,61,90)
+wire('PGND',('R16','1'),(95,61),(95,62.5));power('PGND',95,62.5,True)
+wire('RON',('R16','2'),('U4','4'));ground('PGND','U4','1',75)
 sym('C20',116,59,txt=(117.5,57,117.5,58.5,True))
 wire('BIAS_BST',('U4','7'),(116,57),('C20','1'))
 wire('BIAS_SW',('C20','2'),(116,61))
@@ -243,7 +259,7 @@ text('UNBUILT · Functional isolation only · Verify magnetics, switching, no-lo
 label('SW',55,28)
 # Split all wires at contacts. Reject four-way connected crossings explicitly.
 def on(p,a,b):return min(a[0],b[0])-1e-6<=p[0]<=max(a[0],b[0])+1e-6 and min(a[1],b[1])-1e-6<=p[1]<=max(a[1],b[1])+1e-6 and abs((p[0]-a[0])*(b[1]-a[1])-(p[1]-a[1])*(b[0]-a[0]))<1e-6
-flag_nodes=[('VIN',21,21),('PGND',15,35),('AGND',33,20),('VOUT',143,13.5),('SGND',150,38),('BIAS12',145,61)]
+flag_nodes=[('VIN',22,24),('PGND',19,36),('AGND',22,20),('VOUT',143,13.5),('SGND',150,38),('BIAS12',145,61)]
 contacts={(x,y) for n,x,y in flag_nodes}|{a for n,a,b in wiresegs}|{b for n,a,b in wiresegs}|set(ends.values())|{p for n,p in labels}|{(x,y) for n,x,y in powers}
 segments=set()
 for net,a,b in wiresegs:
@@ -258,14 +274,14 @@ four=[(n,p) for (n,p),v in degrees.items() if len(v)>3]
 assert not four, four
 for (n,p),v in degrees.items():
  if len(v)>=3:elements.append(f'(junction (at {g(p[0])} {g(p[1])}) (diameter .762) (color 0 0 0 0) (uuid {uid("junction"+str(p))}))')
-for i,(n,x,y) in enumerate([('VIN',21,21),('PGND',15,35),('AGND',33,20),('VOUT',143,13.5),('SGND',150,38),('BIAS12',145,61)]):flag(n,x,y,i)
+for i,(n,x,y) in enumerate(flag_nodes):flag(n,x,y,i)
 assert placed==set(parts),(set(parts)-placed,placed-set(parts))
 for k,s in defs.items():
  s[1]='PS:'+k
-root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A4-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
+root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A5-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
 (CAD/(NAME+'.kicad_sch')).write_text(root,encoding='utf8')
 for k,s in defs.items():s[1]=k
 (CAD/'PS.kicad_sym').write_text('(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(sx.dumps(s) for s in defs.values())+')',encoding='utf8')
-(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A4','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
+(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A5','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
 (R/'circuit.json').write_text(json.dumps(data,indent=2),encoding='utf8')
 print('Schematic saved:',len(placed),'parts;',len(segments),'wire segments; four-way:',four)

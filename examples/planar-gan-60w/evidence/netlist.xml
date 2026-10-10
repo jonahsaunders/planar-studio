@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-GAN-60W.kicad_sch</source>
-    <date>2026-10-10T13:55:57</date>
+    <date>2026-10-10T14:21:42</date>
     <tool>Eeschema 10.0.6</tool>
     <textvar name="DESIGN_STATUS">ENGINEERING REVIEW ONLY</textvar>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>PS-GAN-60W: planar LLC converter</title>
         <company>Planar Studio</company>
-        <rev>A4-schematic</rev>
+        <rev>A5-schematic</rev>
         <date>2026-10-10</date>
         <source>PS-GAN-60W.kicad_sch</source>
         <comment number="1" value=""/>
@@ -1053,15 +1053,13 @@
         <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-SMAJ54A-13-F_C134996.pdf</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="D" description="Bidirectional transient-voltage-suppression diode"/>
+      <libsource lib="PS" part="D" description=""/>
       <property name="MPN" value="SMAJ54A-13-F"/>
       <property name="Manufacturer" value="Diodes Incorporated"/>
       <property name="LCSC" value="C134996"/>
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="diode TVS thyrector"/>
-      <property name="ki_fp_filters" value="TO-???* *_Diode_* *SingleDiode* D_*"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>b8ea8bf0-b30b-5bc5-abae-425402ab21ae</tstamps>
       <units>
@@ -1845,7 +1843,7 @@
         <field name="MPN">RC0603FR-07100KL</field>
         <field name="Manufacturer">YAGEO</field>
         <field name="LCSC">C14675</field>
-        <field name="Design_note"/>
+        <field name="Design_note">100k RON timing resistor to PGND per TI LM5164 Rev D pin 4 and on-time control; approximately 302 kHz at 12.095 V. Corrected in A3 hardware.</field>
         <field name="Footprint">PS:R_0603_1608Metric</field>
         <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809281124_YAGEO-RC0603FR-07100KL_C14675.pdf</field>
         <field name="Description"/>
@@ -1854,7 +1852,7 @@
       <property name="MPN" value="RC0603FR-07100KL"/>
       <property name="Manufacturer" value="YAGEO"/>
       <property name="LCSC" value="C14675"/>
-      <property name="Design_note" value=""/>
+      <property name="Design_note" value="100k RON timing resistor to PGND per TI LM5164 Rev D pin 4 and on-time control; approximately 302 kHz at 12.095 V. Corrected in A3 hardware."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="r resistor"/>
@@ -2601,13 +2599,13 @@
       <units>
         <unit name="A">
           <pins>
-            <pin num="1"/>
             <pin num="4"/>
+            <pin num="1"/>
             <pin num="6"/>
             <pin num="8"/>
-            <pin num="7"/>
             <pin num="2"/>
             <pin num="5"/>
+            <pin num="7"/>
             <pin num="3"/>
           </pins>
         </unit>
@@ -2639,8 +2637,8 @@
         <unit name="A">
           <pins>
             <pin num="2"/>
-            <pin num="3"/>
             <pin num="4"/>
+            <pin num="3"/>
             <pin num="1"/>
             <pin num="9"/>
             <pin num="7"/>
@@ -2869,23 +2867,16 @@
       </pins>
     </libpart>
     <libpart lib="PS" part="D">
-      <description>Bidirectional transient-voltage-suppression diode</description>
-      <footprints>
-        <fp>TO-???*</fp>
-        <fp>*_Diode_*</fp>
-        <fp>*SingleDiode*</fp>
-        <fp>D_*</fp>
-      </footprints>
       <fields>
-        <field name="Reference">D</field>
-        <field name="Value">D_TVS</field>
+        <field name="Reference">U</field>
+        <field name="Value">D</field>
         <field name="Footprint"/>
         <field name="Datasheet"/>
-        <field name="Description">Bidirectional transient-voltage-suppression diode</field>
+        <field name="Description"/>
       </fields>
       <pins>
-        <pin num="1" name="A1" type="passive"/>
-        <pin num="2" name="A2" type="passive"/>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
       </pins>
     </libpart>
     <libpart lib="PS" part="EL357N">
@@ -3358,9 +3349,10 @@
       <node ref="C3" pin="2" pintype="passive"/>
       <node ref="C7" pin="2" pintype="passive"/>
       <node ref="C8" pin="2" pintype="passive"/>
-      <node ref="D1" pin="2" pinfunction="A2_2" pintype="passive"/>
+      <node ref="D1" pin="2" pinfunction="A_2" pintype="passive"/>
       <node ref="J1" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
       <node ref="R15" pin="2" pintype="passive"/>
+      <node ref="R16" pin="1" pintype="passive"/>
       <node ref="R18" pin="2" pintype="passive"/>
       <node ref="TP2" pin="1" pinfunction="1_1" pintype="passive"/>
       <node ref="U1" pin="17" pinfunction="PGND_17" pintype="passive"/>
@@ -3404,10 +3396,9 @@
       <node ref="C19" pin="1" pintype="passive"/>
       <node ref="C2" pin="1" pintype="passive"/>
       <node ref="C3" pin="1" pintype="passive"/>
-      <node ref="D1" pin="1" pinfunction="A1_1" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="K_1" pintype="passive"/>
       <node ref="F1" pin="2" pintype="passive"/>
       <node ref="R14" pin="1" pintype="passive"/>
-      <node ref="R16" pin="1" pintype="passive"/>
       <node ref="TP1" pin="1" pinfunction="1_1" pintype="passive"/>
       <node ref="U1" pin="7" pinfunction="VIN_7" pintype="power_in"/>
       <node ref="U4" pin="2" pinfunction="VIN_2" pintype="power_in"/>

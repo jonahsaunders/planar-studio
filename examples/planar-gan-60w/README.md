@@ -10,20 +10,22 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-A4 puts the current-sense rectifier and filter beside the controller's OC pin,
-with a direct wire between them. Timing, feedback injection and soft start use
-separate branches. The bias buck, ripple-injection network, output capacitors and
-5 V regulator share continuous local wiring. Secondary sense resistors and the
-rectifier controller's supply also connect directly to the nearby power circuit.
+A5 separates VIN and AGND labels from neighboring nets, gives VD1 and VG1
+their own clear routes, and places C11 vertically below REG. J2 faces the output
+rail so its positive and return wires do not cross. Probe pads, power flags,
+R16 and adjacent component fields have clear space around them. OC, bias and
+feedback paths retain direct local wiring and zero four-way connections.
 
-Supply arrows attach cleanly to their rails, visible IC pins reach their symbol
-bodies, and reference/value fields have clear space around them. Matching labels
-are retained for signals between functional sections. There are **zero four-way
-connections**. The PDF text-to-wire clearance screen and enlarged visual review pass.
+**A5 schematic / A3 hardware corrects an electrical error in earlier packages:**
+R16 now connects LM5164 RON to PGND, as required by TI, instead of VIN.
+The PCB removes the old VIN spur and adds a ground via at R16. Use this revision
+in place of previous prototype files. The 100 kΩ value remains unchanged.
+D1 now shows the correct unidirectional TVS symbol, with its cathode at VIN;
+its physical polarity was already correct. Optocouplers have emitter arrows.
 
-This is **A4 schematic presentation with A2 hardware**. Exact part identifiers,
-symbol pin names/numbers, electrical connections and PCB geometry are preserved.
-See the [comparison record](evidence/A4-equivalence.json),
+Part identifiers, values, placement, outline and transformer artwork are retained.
+See the [intentional-change comparison](evidence/A5-change-audit.json),
+[datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
 [readability check](evidence/readability-audit.json).
 
@@ -89,6 +91,7 @@ Run with Python in UTF-8 mode. KiCad's bundled Python supplies `pcbnew`.
 
 ```text
 python -X utf8 scripts/export_review.py /path/to/kicad-cli
+python -X utf8 scripts/audit_device_pins.py
 python -X utf8 scripts/audit_schematic.py
 python -X utf8 scripts/audit_readability.py
 python -X utf8 scripts/audit_windings.py
@@ -101,7 +104,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A4 presentation from circuit.json and the local symbol library;
+recreates the A5 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. Capacitor ratings are retained in the visible Voltage field and both BOMs.
