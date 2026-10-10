@@ -60,6 +60,6 @@ for symbol in children(root,'symbol'):
 assert not supply_issues,supply_issues
 
 parts=json.loads((R/'circuit.json').read_text(encoding='utf8'))['parts']
-report={'revision':'A5','source':'kicad/PS-GAN-60W.kicad_sch','method':'Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.','four_way_connections':four,'wire_segments':len(wires),'three_way_wire_nodes':t_nodes,'junction_dots':len(junctions),'orthogonal_wires_only':True,'manifest_parts':len(parts),'visible_boxed_IC_pins_checked':boxed_pins,'pin_to_body_gaps':pin_gaps,'positive_supply_symbols_checked':supply_count,'floating_or_reversed_supply_stubs':supply_issues}
+report={'revision':'A6','source':'kicad/PS-GAN-60W.kicad_sch','method':'Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.','four_way_connections':four,'wire_segments':len(wires),'three_way_wire_nodes':t_nodes,'junction_dots':len(junctions),'orthogonal_wires_only':True,'manifest_parts':len(parts),'visible_boxed_IC_pins_checked':boxed_pins,'pin_to_body_gaps':pin_gaps,'positive_supply_symbols_checked':supply_count,'floating_or_reversed_supply_stubs':supply_issues}
 (R/'evidence/schematic-geometry.json').write_text(json.dumps(report,indent=2),encoding='utf8')
 print(json.dumps(report,indent=2))

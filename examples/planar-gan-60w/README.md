@@ -10,24 +10,30 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-A5 separates VIN and AGND labels from neighboring nets, gives VD1 and VG1
-their own clear routes, and places C11 vertically below REG. J2 faces the output
-rail so its positive and return wires do not cross. Probe pads, power flags,
-R16 and adjacent component fields have clear space around them. OC, bias and
-feedback paths retain direct local wiring and zero four-way connections.
+**A6 schematic / A4 hardware** shortens the GaN bootstrap, bypass and logic
+connections, separates rectifier VSS sensing from the gate-current return, and
+rearranges the bias buck around its local switching loop. Eighteen components
+move; every purchased part identity and value is retained.
 
-**A5 schematic / A3 hardware corrects an electrical error in earlier packages:**
-R16 now connects LM5164 RON to PGND, as required by TI, instead of VIN.
-The PCB removes the old VIN spur and adds a ground via at R16. Use this revision
-in place of previous prototype files. The 100 kΩ value remains unchanged.
-D1 now shows the correct unidirectional TVS symbol, with its cathode at VIN;
-its physical polarity was already correct. Optocouplers have emitter arrows.
+- GaN bootstrap legs: **1.53 mm each**, entirely on the top copper layer.
+- GaN VCC bypass: **5.45 → 2.59 mm**, removing two via transitions.
+- LM5164 switch-to-inductor path: **11.94 → 3.66 mm**, removing two via transitions.
+- Dedicated rectifier source sensing, local return planes, copper spreading and
+  parallel return vias; readable section labels for bench work.
 
-Part identifiers, values, placement, outline and transformer artwork are retained.
-See the [intentional-change comparison](evidence/A5-change-audit.json),
-[datasheet pin review](evidence/datasheet-pin-review.json),
+Lengths describe explicit copper geometry, not measured inductance or efficiency.
+See the [first-principles layout review](LAYOUT-REVIEW.md) and
+[native geometry comparison](evidence/A6-layout-audit.json).
+
+HS and SW are connected internally in the LMG2100. The external bootstrap return
+now connects only C4 to HS, eliminating the external SW–HS loop. The drawing
+retains the readable local wiring, distinct VD1/VG1 routes, vertical C11,
+uncrossed J2 wires and zero four-way connections. R16 still correctly connects
+RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
+
+The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json).
+[readability check](evidence/readability-audit.json) are refreshed for A6.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -47,7 +53,7 @@ edges; mating plugs, wiring and service clearance add to the envelope.
   connectors. The ferrite halves straddle the board. Six bare test pads and
   three optical fiducials are PCB features, excluded from the assembly BOM.
 - C15 is placed near the upper rectifier. Local GaN decoupling and winding
-  connections stay compact; return pours extend into the connector margins.
+  connections stay compact; local bypass and return copper follow the current loops.
 
 The [MIT PER design study](PER-DESIGN-STUDY.md) records the photographs, papers
 and specific design decisions. This example has no MIT affiliation or endorsement.
@@ -61,7 +67,9 @@ LM5164 and TPS7A2450 generate local bias rails.
 
 The winding stack is P / S-A / S-A / routing / routing / S-B / S-B / P, with
 70 µm copper requested on every layer. Parallel secondary layers reduce DC
-resistance. Two TDK ELP22 N87 halves, each with a 0.05 mm gap, and two clips are
+resistance. The retained model estimates **2.85 W of DC winding loss** at its
+assumed RMS currents and 80 °C resistance, before AC and core losses. This remains
+a significant thermal constraint, not a high-efficiency claim. Two TDK ELP22 N87 halves, each with a 0.05 mm gap, and two clips are
 the separate DigiKey items. Measured inductance, leakage and loss are still needed.
 
 First-harmonic calculations find nominal full-load operating points around
@@ -74,7 +82,8 @@ regulation, thermal performance or no-load operation.
   and models; [schematic PDF](Schematic.pdf).
 - [Interactive local review](Review.html): open after downloading the example.
   GitHub does not execute this HTML preview.
-- [Copper-layer PDF](PCB-layers.pdf), [validation record](VALIDATION.md) and
+- [Gerber inspection](evidence/Gerber-review.png), [layout review](LAYOUT-REVIEW.md),
+  [copper-layer PDF](PCB-layers.pdf), [validation record](VALIDATION.md) and
   [mechanical dimensions](mechanical.json).
 - [JLCPCB sourcing and assembly notes](JLCPCB-SOURCING.md),
   [priced BOM](sourcing/Electronics-BOM-review.csv) and
@@ -94,6 +103,7 @@ python -X utf8 scripts/export_review.py /path/to/kicad-cli
 python -X utf8 scripts/audit_device_pins.py
 python -X utf8 scripts/audit_schematic.py
 python -X utf8 scripts/audit_readability.py
+python -X utf8 scripts/render_gerbers.py
 python -X utf8 scripts/audit_windings.py
 python -X utf8 scripts/audit_mechanical.py
 python -X utf8 scripts/final_audit.py
@@ -104,10 +114,12 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A5 presentation from circuit.json and the local symbol library;
+recreates the A6 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
-pypdfium2. Capacitor ratings are retained in the visible Voltage field and both BOMs.
+pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.
+audit_layout_changes.py accepts a previous example directory for comparison.
+Capacitor ratings are retained in the visible Voltage field and both BOMs.
 
 After intentionally regenerating the schematic, run update_net_aliases.py with
 the kicad-cli path, then rebuild_board.py with KiCad Python before exporting.
