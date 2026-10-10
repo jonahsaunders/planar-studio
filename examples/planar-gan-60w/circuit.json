@@ -25,13 +25,13 @@
     {
       "ref": "F1",
       "kind": "F",
-      "lcsc": "C719183",
-      "value": "2A / 63V",
-      "mpn": "SF-1206F200-2",
+      "lcsc": "C3177336",
+      "value": "3A / 65V",
+      "mpn": "SF-1206F300M-2",
       "mfr": "BOURNS",
-      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf",
-      "stock": 848,
-      "unit_price_usd": 0.9968,
+      "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401291221_BOURNS-SF-1206F300M-2_C3177336.pdf",
+      "stock": 28,
+      "unit_price_usd": 0.6434,
       "footprint": "PS:F1206",
       "source_footprint": "Supplier:F1206",
       "nets": {
@@ -39,7 +39,7 @@
         "2": "VIN"
       },
       "block": "power",
-      "note": "Fuse does not guarantee semiconductor protection",
+      "note": "3 A / 65 V fuse selected for operating-current temperature margin. 60 A interrupt at 65 V; upstream available fault current must be bounded. Not semiconductor protection. Stock snapshot only 28 pieces.",
       "uuid": "6c6a9b76-a57a-5b1b-bc7d-4087b1b9a0bf"
     },
     {
@@ -132,7 +132,7 @@
       "value": "LMG2100R044",
       "mpn": "LMG2100R044RARR",
       "mfr": "Texas Instruments",
-      "source": null,
+      "source": "https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf",
       "stock": 5193,
       "unit_price_usd": 8.5246,
       "footprint": "PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044",
@@ -826,13 +826,13 @@
     {
       "ref": "C17",
       "kind": "C",
-      "lcsc": "C100042",
+      "lcsc": "C107059",
       "value": "10nF",
-      "mpn": "CC0603KRX7R9BB103",
+      "mpn": "CC0603KRX7R0BB103",
       "mfr": "YAGEO",
-      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
-      "stock": 808333,
-      "unit_price_usd": 0.0065,
+      "source": "https://yageogroup.com/download/specsheet/CC0603KRX7R0BB103",
+      "stock": 1242847,
+      "unit_price_usd": 0.0089,
       "footprint": "PS:C_0603_1608Metric",
       "source_footprint": "Capacitor_SMD:C_0603_1608Metric",
       "nets": {
@@ -840,20 +840,20 @@
         "2": "CS_AC"
       },
       "block": "control",
-      "note": "",
+      "note": "100 V AC-coupling capacitor. Steady DC is about VIN/2; raised rating adds startup/transient headroom. OC threshold still requires switching-waveform validation.",
       "uuid": "ba007562-3658-5db2-bc67-576ab41e265b",
-      "Voltage": "50V"
+      "Voltage": "100V"
     },
     {
       "ref": "R8",
       "kind": "R",
-      "lcsc": "C114661",
-      "value": "15kR",
-      "mpn": "RC0603FR-0715KL",
+      "lcsc": "C137761",
+      "value": "24.9kR",
+      "mpn": "RC0603FR-0724K9L",
       "mfr": "YAGEO",
-      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf",
-      "stock": 245070,
-      "unit_price_usd": 0.0044,
+      "source": "https://yageogroup.com/download/specsheet/RC0603FR-0724K9L",
+      "stock": 659781,
+      "unit_price_usd": 0.003,
       "footprint": "PS:R_0603_1608Metric",
       "source_footprint": "Resistor_SMD:R_0603_1608Metric",
       "nets": {
@@ -861,7 +861,7 @@
         "2": "CS_RECT"
       },
       "block": "control",
-      "note": "",
+      "note": "Revised from 15k to avoid predicted full-load nuisance OC trips. Resonant-voltage sensing is frequency dependent; bench calibration mandatory.",
       "uuid": "4d9252c8-81d4-5ab7-84a8-b01e44afe2de"
     },
     {
@@ -1330,21 +1330,21 @@
     {
       "ref": "R20",
       "kind": "R",
-      "lcsc": "C114668",
+      "lcsc": "C543357",
       "value": "1.5kR",
-      "mpn": "RC0603FR-071K5L",
-      "mfr": "YAGEO",
-      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf",
-      "stock": 890522,
-      "unit_price_usd": 0.0035,
+      "mpn": "ERJPA3F1501V",
+      "mfr": "Panasonic",
+      "source": "https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088",
+      "stock": 2178,
+      "unit_price_usd": 0.0518,
       "footprint": "PS:R_0603_1608Metric",
-      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "source_footprint": "KiCad:Resistor_SMD:R_0603_1608Metric",
       "nets": {
         "1": "VOUT",
         "2": "FB_LED"
       },
       "block": "feedback",
-      "note": "",
+      "note": "High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop.",
       "uuid": "d7df510f-b6f2-537f-8840-7f82c6bd8e99"
     },
     {
@@ -1515,21 +1515,21 @@
     {
       "ref": "R25",
       "kind": "R",
-      "lcsc": "C114668",
+      "lcsc": "C543357",
       "value": "1.5kR",
-      "mpn": "RC0603FR-071K5L",
-      "mfr": "YAGEO",
-      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf",
-      "stock": 890522,
-      "unit_price_usd": 0.0035,
+      "mpn": "ERJPA3F1501V",
+      "mfr": "Panasonic",
+      "source": "https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088",
+      "stock": 2178,
+      "unit_price_usd": 0.0518,
       "footprint": "PS:R_0603_1608Metric",
-      "source_footprint": "Resistor_SMD:R_0603_1608Metric",
+      "source_footprint": "KiCad:Resistor_SMD:R_0603_1608Metric",
       "nets": {
         "1": "VOUT",
         "2": "OV_LED"
       },
       "block": "feedback",
-      "note": "",
+      "note": "High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop.",
       "uuid": "fd6c2b26-ea77-5711-a8d0-b324da17273a"
     },
     {

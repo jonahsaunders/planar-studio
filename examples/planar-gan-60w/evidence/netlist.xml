@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-GAN-60W.kicad_sch</source>
-    <date>2026-10-10T16:50:23</date>
+    <date>2026-10-10T18:37:45</date>
     <tool>Eeschema 10.0.6</tool>
     <textvar name="DESIGN_STATUS">ENGINEERING REVIEW ONLY</textvar>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>PS-GAN-60W: planar LLC converter</title>
         <company>Planar Studio</company>
-        <rev>A8-schematic</rev>
+        <rev>A9-schematic</rev>
         <date>2026-10-10</date>
         <source>PS-GAN-60W.kicad_sch</source>
         <comment number="1" value=""/>
@@ -588,23 +588,23 @@
     <comp ref="C17">
       <value>10nF</value>
       <footprint>PS:C_0603_1608Metric</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</datasheet>
+      <datasheet>https://yageogroup.com/download/specsheet/CC0603KRX7R0BB103</datasheet>
       <fields>
-        <field name="Voltage">50V</field>
-        <field name="MPN">CC0603KRX7R9BB103</field>
+        <field name="Voltage">100V</field>
+        <field name="MPN">CC0603KRX7R0BB103</field>
         <field name="Manufacturer">YAGEO</field>
-        <field name="LCSC">C100042</field>
-        <field name="Design_note"/>
+        <field name="LCSC">C107059</field>
+        <field name="Design_note">100 V AC-coupling capacitor. Steady DC is about VIN/2; raised rating adds startup/transient headroom. OC threshold still requires switching-waveform validation.</field>
         <field name="Footprint">PS:C_0603_1608Metric</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</field>
+        <field name="Datasheet">https://yageogroup.com/download/specsheet/CC0603KRX7R0BB103</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
-      <property name="Voltage" value="50V"/>
-      <property name="MPN" value="CC0603KRX7R9BB103"/>
+      <property name="Voltage" value="100V"/>
+      <property name="MPN" value="CC0603KRX7R0BB103"/>
       <property name="Manufacturer" value="YAGEO"/>
-      <property name="LCSC" value="C100042"/>
-      <property name="Design_note" value=""/>
+      <property name="LCSC" value="C107059"/>
+      <property name="Design_note" value="100 V AC-coupling capacitor. Steady DC is about VIN/2; raised rating adds startup/transient headroom. OC threshold still requires switching-waveform validation."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="capacitor cap"/>
@@ -1104,23 +1104,23 @@
       </units>
     </comp>
     <comp ref="F1">
-      <value>2A / 63V</value>
+      <value>3A / 65V</value>
       <footprint>PS:F1206</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf</datasheet>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401291221_BOURNS-SF-1206F300M-2_C3177336.pdf</datasheet>
       <fields>
-        <field name="MPN">SF-1206F200-2</field>
+        <field name="MPN">SF-1206F300M-2</field>
         <field name="Manufacturer">BOURNS</field>
-        <field name="LCSC">C719183</field>
-        <field name="Design_note">Fuse does not guarantee semiconductor protection</field>
+        <field name="LCSC">C3177336</field>
+        <field name="Design_note">3 A / 65 V fuse selected for operating-current temperature margin. 60 A interrupt at 65 V; upstream available fault current must be bounded. Not semiconductor protection. Stock snapshot only 28 pieces.</field>
         <field name="Footprint">PS:F1206</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401291221_BOURNS-SF-1206F300M-2_C3177336.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="F" description="Fuse, small symbol"/>
-      <property name="MPN" value="SF-1206F200-2"/>
+      <property name="MPN" value="SF-1206F300M-2"/>
       <property name="Manufacturer" value="BOURNS"/>
-      <property name="LCSC" value="C719183"/>
-      <property name="Design_note" value="Fuse does not guarantee semiconductor protection"/>
+      <property name="LCSC" value="C3177336"/>
+      <property name="Design_note" value="3 A / 65 V fuse selected for operating-current temperature margin. 60 A interrupt at 65 V; upstream available fault current must be bounded. Not semiconductor protection. Stock snapshot only 28 pieces."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="fuse"/>
@@ -1572,23 +1572,23 @@
       </units>
     </comp>
     <comp ref="R8">
-      <value>15kR</value>
+      <value>24.9kR</value>
       <footprint>PS:R_0603_1608Metric</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf</datasheet>
+      <datasheet>https://yageogroup.com/download/specsheet/RC0603FR-0724K9L</datasheet>
       <fields>
-        <field name="MPN">RC0603FR-0715KL</field>
+        <field name="MPN">RC0603FR-0724K9L</field>
         <field name="Manufacturer">YAGEO</field>
-        <field name="LCSC">C114661</field>
-        <field name="Design_note"/>
+        <field name="LCSC">C137761</field>
+        <field name="Design_note">Revised from 15k to avoid predicted full-load nuisance OC trips. Resonant-voltage sensing is frequency dependent; bench calibration mandatory.</field>
         <field name="Footprint">PS:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf</field>
+        <field name="Datasheet">https://yageogroup.com/download/specsheet/RC0603FR-0724K9L</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
-      <property name="MPN" value="RC0603FR-0715KL"/>
+      <property name="MPN" value="RC0603FR-0724K9L"/>
       <property name="Manufacturer" value="YAGEO"/>
-      <property name="LCSC" value="C114661"/>
-      <property name="Design_note" value=""/>
+      <property name="LCSC" value="C137761"/>
+      <property name="Design_note" value="Revised from 15k to avoid predicted full-load nuisance OC trips. Resonant-voltage sensing is frequency dependent; bench calibration mandatory."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="r resistor"/>
@@ -1970,21 +1970,21 @@
     <comp ref="R20">
       <value>1.5kR</value>
       <footprint>PS:R_0603_1608Metric</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</datasheet>
+      <datasheet>https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088</datasheet>
       <fields>
-        <field name="MPN">RC0603FR-071K5L</field>
-        <field name="Manufacturer">YAGEO</field>
-        <field name="LCSC">C114668</field>
-        <field name="Design_note"/>
+        <field name="MPN">ERJPA3F1501V</field>
+        <field name="Manufacturer">Panasonic</field>
+        <field name="LCSC">C543357</field>
+        <field name="Design_note">High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop.</field>
         <field name="Footprint">PS:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</field>
+        <field name="Datasheet">https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
-      <property name="MPN" value="RC0603FR-071K5L"/>
-      <property name="Manufacturer" value="YAGEO"/>
-      <property name="LCSC" value="C114668"/>
-      <property name="Design_note" value=""/>
+      <property name="MPN" value="ERJPA3F1501V"/>
+      <property name="Manufacturer" value="Panasonic"/>
+      <property name="LCSC" value="C543357"/>
+      <property name="Design_note" value="High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="r resistor"/>
@@ -2135,21 +2135,21 @@
     <comp ref="R25">
       <value>1.5kR</value>
       <footprint>PS:R_0603_1608Metric</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</datasheet>
+      <datasheet>https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088</datasheet>
       <fields>
-        <field name="MPN">RC0603FR-071K5L</field>
-        <field name="Manufacturer">YAGEO</field>
-        <field name="LCSC">C114668</field>
-        <field name="Design_note"/>
+        <field name="MPN">ERJPA3F1501V</field>
+        <field name="Manufacturer">Panasonic</field>
+        <field name="LCSC">C543357</field>
+        <field name="Design_note">High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop.</field>
         <field name="Footprint">PS:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</field>
+        <field name="Datasheet">https://api.pim.na.industrial.panasonic.com/file_stream/main/fileversion/1088</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
-      <property name="MPN" value="RC0603FR-071K5L"/>
-      <property name="Manufacturer" value="YAGEO"/>
-      <property name="LCSC" value="C114668"/>
-      <property name="Design_note" value=""/>
+      <property name="MPN" value="ERJPA3F1501V"/>
+      <property name="Manufacturer" value="Panasonic"/>
+      <property name="LCSC" value="C543357"/>
+      <property name="Design_note" value="High-power 0603. Use conservative catalog rating 0.25 W at 70 C, derated above 70 C; screen full output voltage across resistor without assuming minimum LED/shunt drop."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="r resistor"/>
@@ -2494,14 +2494,14 @@
     <comp ref="U1">
       <value>LMG2100R044</value>
       <footprint>PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044</footprint>
-      <datasheet>None</datasheet>
+      <datasheet>https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf</datasheet>
       <fields>
         <field name="MPN">LMG2100R044RARR</field>
         <field name="Manufacturer">Texas Instruments</field>
         <field name="LCSC">C22453052</field>
         <field name="Design_note">HS is internally connected to SW. Dedicated local C4 return to HS; no external HS-to-power-SW loop. TI pin functions and layout guidance.</field>
         <field name="Footprint">PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044</field>
-        <field name="Datasheet">None</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="LMG2100R044RARR" description=""/>

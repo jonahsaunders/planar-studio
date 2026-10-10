@@ -38,15 +38,18 @@ pairs += [
  ('Feedback upper divider sense',('U7','2'),('R22','2')),('Feedback local compensation',('U7','2'),('C28','2')),
  ('OVP divider sense',('U9','2'),('R27','2')),('OVP filter to lower divider',('C29','1'),('R28','1')),
  ('Bias enable divider',('U4','3'),('R14','2'))]
+pairs += [('Bias ripple capacitor to FB injection',('C23','1'),('C24','1')),('Bias sampler resistor to capacitor',('R19','2'),('C23','1')),('Bias output Kelvin pickup',('C21','1'),('R17','1'))]
 metrics=[]
 for title,start,end in pairs:
- m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A5':route(a,start,end),'A6':route(b,start,end)};metrics.append(m)
+ m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A6':route(a,start,end),'A7':route(b,start,end)};metrics.append(m)
 pa=json.loads((old/'circuit.json').read_text())['parts'];pb=json.loads((R/'circuit.json').read_text())['parts']
 assert len(pa)==len(pb)==82
-netchanges=[]
+netchanges=[];identity_changes=[]
 for x,y in zip(pa,pb):
  for key in ['ref','value','footprint','mpn','lcsc']:
-  assert x[key]==y[key],(key,x['ref'])
+  if x[key]!=y[key]:
+   assert x['ref'] in ['F1','C17','R8','R20','R25'],(key,x['ref'])
+   identity_changes.append({'ref':x['ref'],'field':key,'before':x[key],'after':y[key]})
  for pin,net in x['nets'].items():
   if y['nets'][pin]!=net:netchanges.append([x['ref'],pin,net,y['nets'][pin]])
 assert not netchanges,netchanges
@@ -60,6 +63,6 @@ vs=pads(b)[('U3','5')];sense=vs.GetPosition()
 zones=[z for z in b.Zones() if z.GetNetname()==vs.GetNetname()]
 assert all(not z.Outline().Contains(sense) for z in zones),'VSS must enter its dedicated trace, not a ground pour'
 moved=[ref for ref in af if af[ref].GetPosition()!=bf[ref].GetPosition() or af[ref].GetOrientationDegrees()!=bf[ref].GetOrientationDegrees()]
-report={'revision':'A8 schematic / A6 hardware','comparison':'A7 schematic / A5 hardware','method':'Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':[],'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
-(R/'evidence/A8-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+report={'revision':'A9 schematic / A7 hardware','comparison':'A8 schematic / A6 hardware','method':'Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':identity_changes,'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
+(R/'evidence/A9-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

@@ -1,10 +1,10 @@
 # JLCPCB electronics and separate ferrite sourcing
 
 All **75 purchased PCB placements** have exact JLCPCB catalog identifiers,
-covering **42 unique parts**. The catalog snapshots show positive stock.
-Electronics total **$23.67** at the first listed price tiers. Two removable
+covering **43 unique parts**. The catalog snapshots show positive stock.
+Electronics total **$23.42** at the first listed price tiers. Two removable
 plugs add **$0.39**; two DigiKey core halves and two clips add about **$6.88**:
-approximately **$30.94 in parts**. PCB fabrication, assembly, setup, attrition,
+approximately **$30.69 in parts**. PCB fabrication, assembly, setup, attrition,
 minimum quantities, tax and shipping are excluded. Inventory is not reserved.
 
 | Function | Part | Catalog code | Stock snapshot |
@@ -68,14 +68,16 @@ been agreed. Catalog availability therefore does not yet establish a confirmed
 fully assembled converter. Arrange core fitting after soldering or fit the
 ferrite after receiving the electronics assembly. No order has been placed.
 
-## A6 fabrication review
+## Fabrication review
 
 The revised native rules require at least 0.16 mm track width and global copper
 clearance, with 0.20 mm ordinary net clearance. This follows the 2 oz minimum in
 [JLCPCB's copper-weight guide](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
 The requested all-layer 2 oz construction still requires file-level acceptance.
-The layout has 203 routed vias (including 54 ground stitches) plus six winding transitions; filled/capped vias
+The layout has 206 routed vias (including 59 ground stitches) plus six winding transitions; filled/capped vias
 remain required. Independent Gerber renders are supplied in
 [the fabrication-output review](evidence/Gerber-review.png).
 
-C10 changes from the former 25 V 0603 to the 50 V 0805 recommended in [TI UCC25600 sections 9-10](https://www.ti.com/lit/ds/symlink/ucc25600.pdf). The [C28323 snapshot](sourcing/C28323-snapshot.json) reports a basic catalog part at $0.04 for the first tier. Its PCB footprint, schematic rating, BOM and placement file are updated together. Other part identities are retained.
+C10 retains the earlier change from 25 V 0603 to the 50 V 0805 recommended in [TI UCC25600 sections 9-10](https://www.ti.com/lit/ds/symlink/ucc25600.pdf). The [C28323 snapshot](sourcing/C28323-snapshot.json) reports a basic catalog part at $0.04 for the first tier. The A9 audit additionally changes F1, C17, R8, R20 and R25; their native schematic, footprints, BOM and placement files agree.
+
+See the [A9 ratings findings](COMPONENT-RATINGS.md) and [reference-by-reference audit](sourcing/Component-ratings-audit.csv). Electrical release remains on hold for magnetics heating, capacitor effective capacitance/ripple, switching transients and frequency-dependent fault protection. F1 C3177336 snapshot: only 28 pieces, not reserved. Do not substitute the 32 V fuse variant.

@@ -13,7 +13,7 @@ const cfg={...defaults(),...corePresetPatch('eelp22-stock-gap'),coreClearance:.5
  windingOptions:{P:{width:.6,connection:'series'},S:{width:.6,connection:'series'}},
  dOuter:14.4,traceW:.6,traceS:.2,copperOz:2,boardT:1.6,
  viaPad:.6,viaDrill:.3,driveMode:'current',operatingLinked:false,
- current:3.25,secondaryCurrent:3.93,coreVoltage:24,freq:193000,tempC:80,
+ current:4,secondaryCurrent:3.93,coreVoltage:24,freq:193000,tempC:80,
  coreLossModel:'n87-fit',coreTemperature:100,lossModel:'ac',leakageModel:'geometry'};
 const base=compute(cfg,{name:'T1'}),art=structuredClone(base.art);
 // Each half of the center-tapped winding gets a second copper layer.
@@ -42,8 +42,8 @@ const summary={
  turns:{primary:4,secondary_half_A:2,secondary_half_B:2},
  copper_um:70,stackup_status:'8 layers, six winding layers plus two routing layers; 2 oz all layers; dielectric positions are preliminary. JLCPCB must accept exact build.',
  P_Rdc_80C_ohm:base.analysis.R1,S_half_Rdc_80C_ohm:base.analysis.R2/4,
- expected_P_Irms_A:3.25,expected_S_half_Irms_A:Math.PI*5/4,
- winding_DC_loss_W:base.analysis.R1*3.25**2+2*(base.analysis.R2/4)*(Math.PI*5/4)**2,
+ expected_P_Irms_A:4,expected_S_half_Irms_A:Math.PI*5/4,
+ winding_DC_loss_W:base.analysis.R1*4**2+2*(base.analysis.R2/4)*(Math.PI*5/4)**2,
  leakage_seed_H:base.analysis.leakage,
  leakage_note:'Seed estimate only; duplicated secondary layers and delivered stack change this. Measure Lshort; tune discrete resonant inductor.',
  flux_square_wave_screen_T:24/(4*193000*4*77.9e-6),

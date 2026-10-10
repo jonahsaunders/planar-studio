@@ -1,7 +1,7 @@
 {
-  "revision": "A6",
+  "revision": "A7",
   "method": "Native custom pads and track polygons define SW projection; intersect with actual filled planes and internal traces. Input loop area is a pad-center polygon including a straight package-closing segment, not actual internal die geometry. VIN centerline sampled at <=0.025 mm for adjacent In1 PGND coverage. No inductance or emissions claim.",
-  "A6": {
+  "A7": {
     "projected_input_loop_pad_center_area_mm2": 7.0817,
     "VIN_trace_over_adjacent_PGND_percent": 100.0,
     "SW_projection_area_mm2": 7.8084,
@@ -13,38 +13,11 @@
     "https://www.ti.com/tool/LMG2100EVM-078",
     "https://epc-co.com/epc/Portals/0/epc/documents/papers/optimizing%20pcb%20layout%20with%20egan%20fets.pdf"
   ],
-  "A5": {
-    "projected_input_loop_pad_center_area_mm2": 8.5967,
+  "A6": {
+    "projected_input_loop_pad_center_area_mm2": 7.0817,
     "VIN_trace_over_adjacent_PGND_percent": 100.0,
     "SW_projection_area_mm2": 7.8084,
-    "SW_projection_foreign_plane_overlap": [
-      {
-        "net": "PGND",
-        "layer": "B.Cu",
-        "area_mm2": 2.035273
-      },
-      {
-        "net": "PGND",
-        "layer": "In1.Cu",
-        "area_mm2": 2.035273
-      },
-      {
-        "net": "AGND",
-        "layer": "In3.Cu",
-        "area_mm2": 0.975642
-      },
-      {
-        "net": "PGND",
-        "layer": "In6.Cu",
-        "area_mm2": 1.003368
-      }
-    ],
-    "SW_projection_foreign_internal_track_overlap": [
-      {
-        "net": "V5",
-        "layer": "In5.Cu",
-        "area_mm2": 1.809925
-      }
-    ]
+    "SW_projection_foreign_plane_overlap": [],
+    "SW_projection_foreign_internal_track_overlap": []
   }
 }

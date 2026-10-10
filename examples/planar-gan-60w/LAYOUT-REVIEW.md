@@ -1,3 +1,5 @@
+Current revision: **A9 schematic / A7 hardware**. See the [new video-based changes](VIDEO-LAYOUT-REVIEW.md) and [component audit](COMPONENT-RATINGS.md). The A6 study below records the previous revision. Its 2.85 W winding-loss estimate is superseded by the 3.69 W A9 thermal screen.
+
 # A6 layout review — GaN loops, placement and stitching
 
 A8 schematic / A6 hardware, reviewed 2026-10-10. Unbuilt 48 V to isolated

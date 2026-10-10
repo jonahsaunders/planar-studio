@@ -10,28 +10,28 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-**A8 schematic / A6 hardware** tightens 24 placements into aligned functional
-groups and adds **54 ground stitching vias**. The GaN switch-node cutout now
-covers the complete custom lands, and the 5 V feed no longer runs beneath that
-node. The 64 x 56 mm outline, M3 pattern, connectors, winding artwork and
-all-top assembly are retained.
+**A9 schematic / A7 hardware** applies the [video layout review](VIDEO-LAYOUT-REVIEW.md)
+and adds a [reference-by-reference component audit](COMPONENT-RATINGS.md).
 
-- GaN input loop pad-center area: **8.60 -> 7.08 mm²**, about 18% smaller.
-- U2 dead-time path: **5.95 -> 1.48 mm**; frequency-setting path: **4.09 -> 1.70 mm**.
-- U2 OC bypass path: **9.99 -> 1.82 mm**; soft-start path: **4.59 -> 2.14 mm**.
-- Feedback local compensation path: **11.72 -> 1.72 mm**.
-- Those four U2 connections and the local compensation connection stay on top
-  copper. The aligned feedback and OVP divider sense paths also lose their vias.
-- **25 PGND, 10 AGND and 19 SGND** stitches each connect at least two filled
-  ground layers; no stitch crosses the isolation or magnetic assembly envelope.
+- Moves sensitive bias routing out from beneath the inductor and takes the
+  divider reference directly from the output capacitor; that path drops from
+  51.52 to 19.51 mm.
+- Adds closer return vias at three drive transitions. There are now 59 ground
+  stitches and 206 routed vias, with the ground domains kept separate.
+- Uses a 3 A / 65 V fuse, 100 V C17 and high-power 0603 R20/R25. Changes R8 to
+  24.9 kΩ after the model exposed possible full-load overcurrent shutdown.
+- Retains the 64 × 56 mm outline, 55 × 47 mm M3 pattern, removable headers,
+  all-top components and the existing short GaN loops.
 
-These are geometric improvements, not measured inductance, EMI or efficiency.
-The small bootstrap and driver-supply loops, dedicated rectifier sensing and
-TI-recommended C10 1 uF / 50 V / 0805 bypass are retained. There are 203 routed
-vias: 149 circuit vias plus 54 new ground stitches, and six winding transitions.
-See the [layout review](LAYOUT-REVIEW.md), [before/after measurements](evidence/A8-layout-audit.json),
-[GaN-specific checks](evidence/GaN-layout-audit.json) and
-[stitching audit](evidence/stitching-audit.json).
+**Electrical release remains on hold.** Transformer heating, capacitor ripple
+and effective capacitance, switching transients, and startup/fault protection
+need validation. The ratings table distinguishes calculated screens from
+unresolved qualifications; 60 W is still an unbuilt target.
+
+See [A9 layout measurements](evidence/A9-layout-audit.json),
+[GaN checks](evidence/GaN-layout-audit.json),
+[stitching](evidence/stitching-audit.json) and the
+[validation record](VALIDATION.md).
 
 HS and SW are connected internally in the LMG2100. The external bootstrap return
 now connects only C4 to HS, eliminating the external SW–HS loop. The drawing
@@ -41,7 +41,7 @@ RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
 
 The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json) are refreshed for A8.
+[readability check](evidence/readability-audit.json) are refreshed for A9.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -75,8 +75,7 @@ LM5164 and TPS7A2450 generate local bias rails.
 
 The winding stack is P / S-A / S-A / routing / routing / S-B / S-B / P, with
 70 µm copper requested on every layer. Parallel secondary layers reduce DC
-resistance. The retained model estimates **2.85 W of DC winding loss** at its
-assumed RMS currents and 80 °C resistance, before AC and core losses. This remains
+resistance. The retained model estimates **3.69 W of DC winding loss** at the 4 Arms primary / 5 A output thermal screen and 80 °C resistance, before AC and core losses. This remains
 a significant thermal constraint, not a high-efficiency claim. Two TDK ELP22 N87 halves, each with a 0.05 mm gap, and two clips are
 the separate DigiKey items. Measured inductance, leakage and loss are still needed.
 
@@ -124,7 +123,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A8 presentation from circuit.json and the local symbol library;
+recreates the A9 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.

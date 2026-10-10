@@ -1,84 +1,4 @@
 {
-  "C719183": {
-    "lcsc": "C719183",
-    "name": "BOURNS SF-1206F200-2",
-    "model": "SF-1206F200-2",
-    "brand": "BOURNS",
-    "package": "1206",
-    "category": "Disposable fuses",
-    "stock": 848,
-    "type": "Extended",
-    "price": 0.9968,
-    "price_breaks": [
-      {
-        "qty": 1,
-        "price": 0.9968
-      },
-      {
-        "qty": 10,
-        "price": 0.7981
-      },
-      {
-        "qty": 30,
-        "price": 0.6988
-      },
-      {
-        "qty": 100,
-        "price": 0.5994
-      },
-      {
-        "qty": 500,
-        "price": 0.5408
-      },
-      {
-        "qty": 1000,
-        "price": 0.5098
-      }
-    ],
-    "min_qty": 1,
-    "reel_qty": 5000,
-    "description": "-20\u2103~+105\u2103 0.181 1.6mm 2A 3.2mm 50A 63V Surface Mount Fuse 1206 Disposable fuses ROHS",
-    "url": "https://www.lcsc.com/product-detail/disposable-fuses_bourns-sf-1206f200-2_C719183.html",
-    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf",
-    "attributes": [
-      {
-        "name": "Operating Temperature",
-        "value": "-20\u2103~+105\u2103"
-      },
-      {
-        "name": "Type",
-        "value": "Surface Mount Fuse"
-      },
-      {
-        "name": "Melting I2t",
-        "value": "0.181"
-      },
-      {
-        "name": "Length",
-        "value": "3.2mm"
-      },
-      {
-        "name": "Interrupt Rating",
-        "value": "50A"
-      },
-      {
-        "name": "Current Rating",
-        "value": "2A"
-      },
-      {
-        "name": "Height",
-        "value": "0.6mm"
-      },
-      {
-        "name": "Voltage Rating (DC)",
-        "value": "63V"
-      },
-      {
-        "name": "Width",
-        "value": "1.6mm"
-      }
-    ]
-  },
   "C134996": {
     "lcsc": "C134996",
     "name": "DIODES SMAJ54A-13-F",
@@ -1483,78 +1403,6 @@
       }
     ]
   },
-  "C114661": {
-    "lcsc": "C114661",
-    "name": "YAGEO RC0603FR-0715KL",
-    "model": "RC0603FR-0715KL",
-    "brand": "YAGEO",
-    "package": "0603",
-    "category": "Chip Resistor - Surface Mount",
-    "stock": 245070,
-    "type": "Extended",
-    "price": 0.0044,
-    "price_breaks": [
-      {
-        "qty": 1,
-        "price": 0.0044
-      },
-      {
-        "qty": 1000,
-        "price": 0.0035
-      },
-      {
-        "qty": 5000,
-        "price": 0.003
-      },
-      {
-        "qty": 10000,
-        "price": 0.0027
-      },
-      {
-        "qty": 50000,
-        "price": 0.0024
-      },
-      {
-        "qty": 100000,
-        "price": 0.0022
-      }
-    ],
-    "min_qty": 1,
-    "reel_qty": 5000,
-    "description": "-55\u2103~+155\u2103 100mW 15k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
-    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0715kl_C114661.html",
-    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf",
-    "attributes": [
-      {
-        "name": "Resistance",
-        "value": "15k\u03a9"
-      },
-      {
-        "name": "Operating Temperature",
-        "value": "-55\u2103~+155\u2103"
-      },
-      {
-        "name": "Power(Watts)",
-        "value": "100mW"
-      },
-      {
-        "name": "Type",
-        "value": "Thick Film Resistor"
-      },
-      {
-        "name": "Voltage-Supply(Max)",
-        "value": "75V"
-      },
-      {
-        "name": "Tolerance",
-        "value": "\u00b11%"
-      },
-      {
-        "name": "Temperature Coefficient",
-        "value": "\u00b1100ppm/\u2103"
-      }
-    ]
-  },
   "C19726": {
     "lcsc": "C19726",
     "name": "onsemi BAT54SLT1G",
@@ -2591,78 +2439,6 @@
       }
     ]
   },
-  "C114668": {
-    "lcsc": "C114668",
-    "name": "YAGEO RC0603FR-071K5L",
-    "model": "RC0603FR-071K5L",
-    "brand": "YAGEO",
-    "package": "0603",
-    "category": "Chip Resistor - Surface Mount",
-    "stock": 890522,
-    "type": "Extended",
-    "price": 0.0035,
-    "price_breaks": [
-      {
-        "qty": 1,
-        "price": 0.0035
-      },
-      {
-        "qty": 1000,
-        "price": 0.0027
-      },
-      {
-        "qty": 5000,
-        "price": 0.0023
-      },
-      {
-        "qty": 10000,
-        "price": 0.0021
-      },
-      {
-        "qty": 50000,
-        "price": 0.0018
-      },
-      {
-        "qty": 50200,
-        "price": 0.0018
-      }
-    ],
-    "min_qty": 1,
-    "reel_qty": 5000,
-    "description": "-55\u2103~+155\u2103 1.5k\u03a9 100mW 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
-    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-071k5l_C114668.html",
-    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf",
-    "attributes": [
-      {
-        "name": "Resistance",
-        "value": "1.5k\u03a9"
-      },
-      {
-        "name": "Operating Temperature",
-        "value": "-55\u2103~+155\u2103"
-      },
-      {
-        "name": "Power(Watts)",
-        "value": "100mW"
-      },
-      {
-        "name": "Type",
-        "value": "Thick Film Resistor"
-      },
-      {
-        "name": "Voltage-Supply(Max)",
-        "value": "75V"
-      },
-      {
-        "name": "Tolerance",
-        "value": "\u00b11%"
-      },
-      {
-        "name": "Temperature Coefficient",
-        "value": "\u00b1100ppm/\u2103"
-      }
-    ]
-  },
   "C137736": {
     "lcsc": "C137736",
     "name": "YAGEO RC0603FR-0738K3L",
@@ -3016,6 +2792,290 @@
       {
         "name": "Temperature Coefficient",
         "value": "X7R"
+      }
+    ]
+  },
+  "C3177336": {
+    "lcsc": "C3177336",
+    "name": "BOURNS SF-1206F300M-2",
+    "model": "SF-1206F300M-2",
+    "brand": "BOURNS",
+    "package": "1206",
+    "category": "Disposable fuses",
+    "stock": 28,
+    "type": "Extended",
+    "price": 0.6434,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.6434
+      },
+      {
+        "qty": 10,
+        "price": 0.6287
+      },
+      {
+        "qty": 30,
+        "price": 0.619
+      },
+      {
+        "qty": 100,
+        "price": 0.6092
+      },
+      {
+        "qty": 102,
+        "price": 0.6092
+      },
+      {
+        "qty": 104,
+        "price": 0.6092
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3000,
+    "description": "-55\u2103~+125\u2103 0.85mm 1.6mm 2.424 3.2mm 3A 60A@65V 65V Surface Mount Fuse 1206 Disposable fuses ROHS",
+    "url": "https://www.lcsc.com/product-detail/disposable-fuses_bourns-sf-1206f300m-2_C3177336.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401291221_BOURNS-SF-1206F300M-2_C3177336.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+125\u2103"
+      },
+      {
+        "name": "Type",
+        "value": "Surface Mount Fuse"
+      },
+      {
+        "name": "Melting I2t",
+        "value": "2.424"
+      },
+      {
+        "name": "Interrupt Rating",
+        "value": "60A@65V"
+      },
+      {
+        "name": "Length",
+        "value": "3.2mm"
+      },
+      {
+        "name": "Current Rating",
+        "value": "3A"
+      },
+      {
+        "name": "Height",
+        "value": "0.85mm"
+      },
+      {
+        "name": "Voltage Rating (DC)",
+        "value": "65V"
+      },
+      {
+        "name": "Width",
+        "value": "1.6mm"
+      }
+    ]
+  },
+  "C107059": {
+    "lcsc": "C107059",
+    "name": "YAGEO CC0603KRX7R0BB103",
+    "model": "CC0603KRX7R0BB103",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 1242847,
+    "type": "Extended",
+    "price": 0.0089,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0089
+      },
+      {
+        "qty": 500,
+        "price": 0.0066
+      },
+      {
+        "qty": 1500,
+        "price": 0.0057
+      },
+      {
+        "qty": 4000,
+        "price": 0.0049
+      },
+      {
+        "qty": 24000,
+        "price": 0.0046
+      },
+      {
+        "qty": 48000,
+        "price": 0.0044
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "100V 10nF X7R \u00b110% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r0bb103_C107059.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R0BB103_C107059.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "100V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "10nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C137761": {
+    "lcsc": "C137761",
+    "name": "YAGEO RC0603FR-0724K9L",
+    "model": "RC0603FR-0724K9L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 659781,
+    "type": "Extended",
+    "price": 0.003,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.003
+      },
+      {
+        "qty": 1000,
+        "price": 0.0023
+      },
+      {
+        "qty": 5000,
+        "price": 0.0019
+      },
+      {
+        "qty": 10000,
+        "price": 0.0017
+      },
+      {
+        "qty": 50000,
+        "price": 0.0015
+      },
+      {
+        "qty": 50200,
+        "price": 0.0015
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 24.9k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0724k9l_C137761.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0724K9L_C137761.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "24.9k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C543357": {
+    "lcsc": "C543357",
+    "name": "PANASONIC ERJPA3F1501V",
+    "model": "ERJPA3F1501V",
+    "brand": "PANASONIC",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 2178,
+    "type": "Extended",
+    "price": 0.0518,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0518
+      },
+      {
+        "qty": 100,
+        "price": 0.0408
+      },
+      {
+        "qty": 300,
+        "price": 0.0352
+      },
+      {
+        "qty": 1000,
+        "price": 0.031
+      },
+      {
+        "qty": 5000,
+        "price": 0.0277
+      },
+      {
+        "qty": 10000,
+        "price": 0.0259
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 1.5k\u03a9 200V 250mW Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_panasonic-erjpa3f1501v_C543357.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_PANASONIC-ERJPA3F1501V_C543357.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "1.5k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "250mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "200V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
       }
     ]
   }
