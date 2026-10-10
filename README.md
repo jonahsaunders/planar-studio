@@ -120,7 +120,7 @@ and a portable rebuild pass. Factory DFM, ferrite installation and electrical,
 magnetic and thermal qualification remain open. 60 W is not a measured result.
 
 [Explore the native KiCad example](examples/planar-gan-60w/README.md)
-· [KiCad package](examples/PS-GAN-60W-A3-KiCad.zip)
+· [KiCad package](examples/PS-GAN-60W-A4-KiCad.zip)
 · [PER design study](examples/planar-gan-60w/PER-DESIGN-STUDY.md)
 · [Validation record](examples/planar-gan-60w/VALIDATION.md)
 

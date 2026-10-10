@@ -10,16 +10,21 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-A3 refines the schematic on one A3 sheet: power conversion across the top,
-then frequency control, bias, isolated feedback and independent OVP. Aligned
-reference/value fields, separate capacitor ratings and fewer internal net labels
-make the wired paths easier to follow. Matching signal names link the sections.
-Power arrows point up and returns point down. The PDF text-to-wire clearance
-screen and visual detail review pass; there are **zero four-way connections**.
+A4 puts the current-sense rectifier and filter beside the controller's OC pin,
+with a direct wire between them. Timing, feedback injection and soft start use
+separate branches. The bias buck, ripple-injection network, output capacitors and
+5 V regulator share continuous local wiring. Secondary sense resistors and the
+rectifier controller's supply also connect directly to the nearby power circuit.
 
-This is **A3 schematic presentation with A2 hardware**. Exact part identifiers,
-pin connections and PCB geometry are preserved. See the
-[comparison record](evidence/A3-equivalence.json) and
+Supply arrows attach cleanly to their rails, visible IC pins reach their symbol
+bodies, and reference/value fields have clear space around them. Matching labels
+are retained for signals between functional sections. There are **zero four-way
+connections**. The PDF text-to-wire clearance screen and enlarged visual review pass.
+
+This is **A4 schematic presentation with A2 hardware**. Exact part identifiers,
+symbol pin names/numbers, electrical connections and PCB geometry are preserved.
+See the [comparison record](evidence/A4-equivalence.json),
+[schematic geometry checks](evidence/schematic-geometry.json) and
 [readability check](evidence/readability-audit.json).
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
@@ -96,7 +101,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A3 presentation from circuit.json and the local symbol library;
+recreates the A4 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. Capacitor ratings are retained in the visible Voltage field and both BOMs.
