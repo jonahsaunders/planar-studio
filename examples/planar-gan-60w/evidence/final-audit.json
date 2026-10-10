@@ -17,5 +17,9 @@
     "No measured core loss, inductance or temperature",
     "No JLCPCB file-level DFM/assembly approval",
     "No insulation certification or production release"
-  ]
+  ],
+  "BOM_exact_MPN_manufacturer_and_code_match_native_manifest": true,
+  "CPL_matches_native_anchors_and_rotations": true,
+  "courtyard_check_scope": "Presence only; manufacturing-geometry.json separately finds incomplete courtyard extents.",
+  "manufacturing_release": "HOLD: see Manufacturing-audit.html and manufacturing-prototype/Manufacturing-issue-register.csv"
 }

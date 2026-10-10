@@ -10,6 +10,8 @@
   top-side electronics, removable screw-terminal power connectors and exposed-substrate M3 mounting
   holes. Includes an MIT PER board study, sourcing, calculations and CAD checks.
   **A10 schematic / unbuilt A8 hardware; factory acceptance and hardware qualification are open.**
+  **Do not order:** the [five-board manufacturing audit](planar-gan-60w/Manufacturing-audit.html)
+  identifies assembly defects and unconfirmed stack, panel and ferrite operations.
 
 These are editable engineering examples, separate from the KiCad plugin installer.
 

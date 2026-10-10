@@ -1,5 +1,14 @@
 Current: A10 schematic / A8 hardware. Output routing and adjacent reference planes improved; 60 verified stitches. Use the matching A10 BOM and A8 CPL. See DEEP-LAYOUT-REVIEW.md.
 
+MANUFACTURING AUDIT HOLD, FIVE UNITS: open ../Manufacturing-audit.html.
+Do not order current Gerbers. The audit found overlapping U5/C26 solder lands,
+14 incomplete courtyards, U1 mask/paste and package-origin issues, undersized
+legend and missing orientation markings. The available JLC081622-1080 stack
+differs from the native magnetic model and requires Standard PCBA. A factory
+handling panel and core/clip fitting are not approved. The BOM now contains
+exact MPN and manufacturer; CAD and raw CPL remain unchanged for review.
+See Manufacturing-issue-register.csv and SUPPLIER-REVIEW-REQUEST.txt.
+
 PS-GAN-60W / A8 / ENGINEERING PROTOTYPE — NOT PRODUCTION RELEASED
 
 75 electronic placements, all top. T1 is copper already in the PCB, not a purchased wound transformer. The two ferrite halves straddle the PCB; one half is below it. Do not add an SMT transformer at T1.

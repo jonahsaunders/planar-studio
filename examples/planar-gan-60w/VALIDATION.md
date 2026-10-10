@@ -3,6 +3,15 @@
 10 October 2026, KiCad 10.0.6. **Unbuilt. Electrical and manufacturing release
 remain on hold.** [Component findings and open limits](COMPONENT-RATINGS.md).
 
+**The [five-board manufacturing audit](Manufacturing-audit.html) finds design
+issues despite clean ERC/DRC.** In particular, same-net U5/C26 solder lands
+overlap and 14 courtyards omit portions of solder lands. The earlier
+"every footprint has a courtyard" check proves presence only. It does not
+establish correct assembly boundaries. See the measured
+[manufacturing geometry](evidence/manufacturing-geometry.json) and
+[issue register](manufacturing-prototype/Manufacturing-issue-register.csv).
+New independent ERC/DRC reports remain at zero; factory acceptance is pending.
+
 | Check | Result | Evidence |
 | --- | --- | --- |
 | Schematic ERC | 0 violations | [ERC](evidence/ERC.rpt) |

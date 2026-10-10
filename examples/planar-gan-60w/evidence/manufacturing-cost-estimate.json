@@ -1,0 +1,108 @@
+{
+  "quantity": 5,
+  "currency": "USD",
+  "status": "Planning estimate, NOT supplier quote or full-turnkey price",
+  "calculated_low_USD": 392.47,
+  "calculated_high_USD": 601.22,
+  "rounded_planning_range_USD": [
+    400,
+    650
+  ],
+  "rounded_per_board_USD": [
+    80,
+    130
+  ],
+  "electronic_fitted_parts_total_USD": 111.64,
+  "parts_source_timestamp": "2026-10-10T23:11:42.390355+00:00",
+  "fee_source": "https://jlcpcb.com/help/article/pcb-assembly-price",
+  "fee_source_last_updated": "2026-09-09",
+  "exclusions": [
+    "Shipping from JLCPCB and separate suppliers",
+    "Tax, duties, customs/brokerage",
+    "Ferrite/clip fitting labor or consignment/global sourcing charges",
+    "Mating-plug fitting if requested",
+    "Functional test fixture, test engineering, powered testing",
+    "Design repairs, bench validation, failed prototypes/re-spins",
+    "Unquoted supplier special-process surcharges beyond allowances"
+  ],
+  "rows": [
+    {
+      "Item": "PCB fabrication, one-up handling panel, ENIG, all-layer heavy copper, filled/capped vias",
+      "Low_USD": 100,
+      "High_USD": 250,
+      "Basis": "ENGINEERING ALLOWANCE; no valid online PCB quote; final panel and stack may exceed it"
+    },
+    {
+      "Item": "375 fitted electronic components",
+      "Low_USD": 111.64,
+      "High_USD": 111.64,
+      "Basis": "Current catalog price breaks applied to five-board fitted quantities; no attrition"
+    },
+    {
+      "Item": "Component attrition / minimum order / replenishment allowance",
+      "Low_USD": 15,
+      "High_USD": 40,
+      "Basis": "ENGINEERING ALLOWANCE; not a JLC attrition rule"
+    },
+    {
+      "Item": "Standard assembly setup, one side",
+      "Low_USD": 25.56,
+      "High_USD": 25.56,
+      "Basis": "Published fee"
+    },
+    {
+      "Item": "Assembly stencil, one side",
+      "Low_USD": 8.21,
+      "High_USD": 8.21,
+      "Basis": "Published fee; special stencil engineering not quoted"
+    },
+    {
+      "Item": "Feeder loading",
+      "Low_USD": 64.26,
+      "High_USD": 65.79,
+      "Basis": "42 SMT codes; upper bound includes the through-hole header code"
+    },
+    {
+      "Item": "SMT placement",
+      "Low_USD": 1.63,
+      "High_USD": 2.4,
+      "Basis": "204 unique KiCad SMT terminals; physical finger count/factory minimum may alter billing"
+    },
+    {
+      "Item": "Through-hole soldering",
+      "Low_USD": 3.91,
+      "High_USD": 3.91,
+      "Basis": "Published hand-solder labor plus 20 joints; actual wave/selective process may be different"
+    },
+    {
+      "Item": "Rigid-board fixtures",
+      "Low_USD": 16.42,
+      "High_USD": 16.42,
+      "Basis": "Published 1-29 board fixture tier"
+    },
+    {
+      "Item": "X-ray of U1, U4, Q1, Q2",
+      "Low_USD": 16.4,
+      "High_USD": 32.8,
+      "Basis": "20 inspected parts; aggregated versus per-part-type billing sensitivity"
+    },
+    {
+      "Item": "Packing / placement confirmation / applicable extra charges",
+      "Low_USD": 2.95,
+      "High_USD": 18,
+      "Basis": "Lower bound: 5 x $0.50 plus $0.45; upper allowance includes factory adjustments"
+    },
+    {
+      "Item": "10 core halves and 10 clips",
+      "Low_USD": 24.55,
+      "High_USD": 24.55,
+      "Basis": "DigiKey ten-piece price breaks; installation not included"
+    },
+    {
+      "Item": "10 mating plugs",
+      "Low_USD": 1.95,
+      "High_USD": 1.95,
+      "Basis": "LCSC/JLC catalog component price; separate accessory procurement, not in PCBA BOM"
+    }
+  ]
+}

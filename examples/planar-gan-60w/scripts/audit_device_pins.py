@@ -50,6 +50,6 @@ for ref,pins in branches.items():
 manifest={p['ref']:p for p in json.loads((R/'circuit.json').read_text())['parts']}
 for ref,value in [('R16','100kR'),('C11','2.2uF'),('C4','100nF'),('C20','2.2nF')]:assert manifest[ref]['value']==value
 assert manifest['C10']['Voltage']=='50V' and manifest['C10']['footprint']=='PS:C_0805_2012Metric'
-report={'result':'pass','date':'2026-10-10','hardware_revision':'A6','schematic_revision':'A8','device_checks':checks,'critical_branches':branches,'bias_output_nominal_V':1.2*(1+453/49.9),'bias_frequency_nominal_kHz':1.2*(1+453/49.9)*2500/100,'limitations':'Static pin functions, device polarity and selected application connections checked. Does not establish startup, stability, protection thresholds, switching margins, insulation, efficiency or thermal performance.'}
+report={'result':'pass','date':'2026-10-10','hardware_revision':'A8','schematic_revision':'A10','device_checks':checks,'critical_branches':branches,'bias_output_nominal_V':1.2*(1+453/49.9),'bias_frequency_nominal_kHz':1.2*(1+453/49.9)*2500/100,'limitations':'Static pin functions, device polarity and selected application connections checked. Does not establish startup, stability, protection thresholds, switching margins, insulation, efficiency or thermal performance.'}
 (R/'evidence/datasheet-pin-review.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')
 print(f'{len(checks)} device pin-function maps and {len(branches)} critical branches passed.')

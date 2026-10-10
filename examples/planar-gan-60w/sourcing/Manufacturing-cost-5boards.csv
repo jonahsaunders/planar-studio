@@ -1,0 +1,14 @@
+Item,Low_USD,High_USD,Basis
+"PCB fabrication, one-up handling panel, ENIG, all-layer heavy copper, filled/capped vias",100,250,ENGINEERING ALLOWANCE; no valid online PCB quote; final panel and stack may exceed it
+375 fitted electronic components,111.64,111.64,Current catalog price breaks applied to five-board fitted quantities; no attrition
+Component attrition / minimum order / replenishment allowance,15,40,ENGINEERING ALLOWANCE; not a JLC attrition rule
+"Standard assembly setup, one side",25.56,25.56,Published fee
+"Assembly stencil, one side",8.21,8.21,Published fee; special stencil engineering not quoted
+Feeder loading,64.26,65.79,42 SMT codes; upper bound includes the through-hole header code
+SMT placement,1.63,2.4,204 unique KiCad SMT terminals; physical finger count/factory minimum may alter billing
+Through-hole soldering,3.91,3.91,Published hand-solder labor plus 20 joints; actual wave/selective process may be different
+Rigid-board fixtures,16.42,16.42,Published 1-29 board fixture tier
+"X-ray of U1, U4, Q1, Q2",16.4,32.8,20 inspected parts; aggregated versus per-part-type billing sensitivity
+Packing / placement confirmation / applicable extra charges,2.95,18,Lower bound: 5 x $0.50 plus $0.45; upper allowance includes factory adjustments
+10 core halves and 10 clips,24.55,24.55,DigiKey ten-piece price breaks; installation not included
+10 mating plugs,1.95,1.95,"LCSC/JLC catalog component price; separate accessory procurement, not in PCBA BOM"

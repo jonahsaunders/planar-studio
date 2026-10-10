@@ -4,6 +4,16 @@ An editable KiCad 10 prototype targeting **48 V nominal input and isolated
 12 V / 5 A output**, using an integrated GaN half bridge and PCB transformer.
 Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
+**Manufacturing audit, five boards: DO NOT ORDER this revision.**
+The [manufacturing report](Manufacturing-audit.html) documents overlapping
+U5/C26 lands, incomplete courtyards, GaN mask/paste and placement-origin issues,
+the factory stack mismatch, and required panel/core-assembly acceptance.
+All 43 electronic catalog codes currently cover five fitted boards before
+attrition. Budget **$400–650 total**, excluding shipping, taxes, ferrite fitting
+and functional testing; this is an allowance, not a supplier quote.
+Full turnkey assembly is **not confirmed**. Native A10/A8 CAD is unchanged by
+the audit; the native-generated BOM now explicitly includes MPN/manufacturer.
+
 ![Native KiCad assembly render](Board-perspective.png)
 
 ## Schematic and layout

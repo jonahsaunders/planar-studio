@@ -1,5 +1,12 @@
 # JLCPCB electronics and separate ferrite sourcing
 
+**Five-board manufacturing audit: [DO NOT ORDER](Manufacturing-audit.html).**
+The latest [43-part snapshot and price-break calculation](sourcing/Manufacturing-parts-5boards.csv)
+totals **$111.64 for 375 fitted electronic parts**, before attrition. The
+five-board planning allowance is **$400–650**, excluding shipping/taxes,
+ferrite-fitting labor and functional test. This is not an accepted turnkey quote.
+The first-tier per-board allowance below is retained for comparison only.
+
 All **75 purchased PCB placements** have exact JLCPCB catalog identifiers,
 covering **43 unique parts**. The catalog snapshots show positive stock.
 Electronics total **$23.42** at the first listed price tiers. Two removable
