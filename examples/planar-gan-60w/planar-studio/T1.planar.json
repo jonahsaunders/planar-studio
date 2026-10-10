@@ -50,7 +50,7 @@
     "placementRotation": 0,
     "placementGrid": 0.5,
     "leakageModel": "geometry",
-    "measuredLeakage": 0.000001,
+    "measuredLeakage": 1e-06,
     "lossModel": "ac",
     "capacitanceModel": "estimate",
     "dielectricEr": 4.2,
@@ -155,7 +155,7 @@
     "copperOz": 2,
     "tempC": 80,
     "freq": 193000,
-    "current": 3.25,
+    "current": 4,
     "secondaryCurrent": 3.93,
     "ppt": 128,
     "tolerance": 0.004

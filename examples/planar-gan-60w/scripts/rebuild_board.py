@@ -1,4 +1,4 @@
-"""Rebuild A6 from bundled footprints and explicit manual routes.
+"""Rebuild A8 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
@@ -20,7 +20,7 @@ def pad(n,x,y,w,h,drill=0,layers=None):
 def footprint(name,body,attr='smd'):
  return f'(footprint "{name}" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr {attr}) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "{name}" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) {body})'
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(1.6))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A6 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A8 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
 aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
@@ -43,7 +43,7 @@ place={'C1': (39.6, 4.7, 90),
  'C20': (37, 34.4, 270),
  'C21': (33.1, 41.7, 90),
  'C22': (33.1, 47, 90),
- 'C23': (46.2, 40.2, 0),
+ 'C23': (34.6, 28.8, 0),
  'C24': (35.3, 37.8, 90),
  'C25': (42.5, 24.5, 90),
  'C26': (36.5, 24.5, 180),
@@ -59,7 +59,7 @@ place={'C1': (39.6, 4.7, 90),
  'C9': (22.1, 40.3, 180),
  'D1': (32.3, 3.5, 90),
  'D2': (28.5, 32.6, 180),
- 'F1': (36, 3, 180),
+ 'F1': (35.8, 3, 180),
  'J1': (50, 18.5, 90),
  'J2': (-2, 18.5, 270),
  'L1': (39.2, 19, 180),
@@ -76,7 +76,7 @@ place={'C1': (39.6, 4.7, 90),
  'R16': (42.5, 28.5, 0),
  'R17': (35.3, 31.5, 270),
  'R18': (35.3, 34.6, 270),
- 'R19': (46.2, 37.5, 0),
+ 'R19': (39.5, 28.3, 0),
  'R2': (22.1, 36.9, 180),
  'R20': (13.9, 32.6, 0),
  'R21': (13.9, 34.3, 0),
@@ -169,7 +169,7 @@ exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
 legend('PLANAR STUDIO',20,-1.6,1.2)
-legend('PS-GAN-60W  /  A6',24,50.6,.85)
+legend('PS-GAN-60W  /  A8',24,50.6,.85)
 legend('48V IN',51.8,12,.9);legend('12V OUT',-2,8.2,.9)
 legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
 legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)

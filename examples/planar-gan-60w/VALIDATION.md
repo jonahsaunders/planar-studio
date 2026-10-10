@@ -1,119 +1,64 @@
-# A8 schematic / A6 hardware validation record
+# A10 schematic / A8 hardware validation record
 
-CAD review date: 2026-10-10. KiCad 10.0.6. Hardware has not been built.
+10 October 2026, KiCad 10.0.6. **Unbuilt. Electrical and manufacturing release
+remain on hold.** [Component findings and open limits](COMPONENT-RATINGS.md).
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| Connected four-way wire nodes | 0, with 52 explicit T junctions | [Geometry audit](evidence/schematic-geometry.json) |
-| Rendered text-to-wire clearance | No glyph ink boxes cross wire segments, including a 0.15 mm reserve; text-to-text spacing also reviewed visually | [Readability audit](evidence/readability-audit.json) |
-| A5 hardware comparison | 24 placements changed; unchanged part identities, pin nets, winding geometry and mounting/connector positions | [Comparison](evidence/A8-layout-audit.json) |
-| GaN layout geometry | Smaller input loop; no filled-plane or internal-trace overlap with the full SW projection; VIN path has adjacent PGND | [GaN audit](evidence/GaN-layout-audit.json) |
-| Ground stitching | 54 added, each on at least two actual filled same-net layers; separate domains | [Stitch audit](evidence/stitching-audit.json) |
-| Adjacent return-plane coverage | All sampled points outside signal-via antipads covered on four checked GD/VG routes | [Filled copper audit](evidence/return-path-audit.json) |
-| Datasheet pin-function check | 13 device maps and 7 critical branches checked against intended connections | [Pin review](evidence/datasheet-pin-review.json) |
-| Symbol pin attachment and supply stems | 43 visible boxed-IC pins reach their bodies; 9 positive supply symbols attach to a rail or feed wiring below | [Geometry audit](evidence/schematic-geometry.json) |
-| Schematic ERC (four-way check enabled) | 0 violations | [ERC.rpt](evidence/ERC.rpt) |
-| PCB DRC and schematic parity | 0 violations, 0 unconnected items, 0 parity issues | [DRC.rpt](evidence/DRC.rpt) |
-| Circuit manifest versus schematic pin nets | 0 mismatches | [Final audit](evidence/final-audit.json) |
-| BOM/CPL/designator agreement | 75 purchased components, 42 catalog codes, all top | [Final audit](evidence/final-audit.json) |
-| Winding contact screen | No unintended contacts found by independent sampled geometry check | [Winding audit](evidence/winding-contact-audit.json) |
-| M3 mechanical features | Exact reused footprint; all eight copper layers excluded | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
-| Port mapping | Pin 2 positive / pin 1 return for both J1 and J2 | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
-| Exported Gerber inspection | 14 fabrication layers independently rendered and reviewed | [Gerber review](evidence/Gerber-review.png), [source hashes](evidence/gerber-render-audit.json) |
-| Layer inspection | All eight copper views reviewed | [Layer review](evidence/Layer-review.png) |
-| Assembly inspection | Top, perspective and underside renders reviewed; local model paths resolve | [Top](Board-preview.png), [underside](evidence/Board-bottom.png) |
-| Portable board rebuild | Matching tracks, vias, footprints, pads and zone outlines; filled-copper difference below 0.01 mm2 per zone; 0 DRC, unconnected or parity issues in a separate copied directory | [Rebuild audit](evidence/rebuild-audit.json), [DRC](evidence/rebuild-DRC.rpt) |
-| LLC gain screening | 27 selected full-load parameter corners have an inductive solution at 46 V | [Calculations](evidence/engineering-calculations.json) |
+| Schematic ERC | 0 violations | [ERC](evidence/ERC.rpt) |
+| PCB DRC and schematic parity | 0 violations, 0 unconnected pads, 0 parity issues | [DRC](evidence/DRC.rpt) |
+| Schematic readability | 0 text-to-wire hits with 0.15 mm reserve | [Rendered-glyph audit](evidence/readability-audit.json) |
+| Schematic connections | 269 orthogonal wires, 52 T junctions, zero four-way connections; 43 visible IC pins and nine supply stems checked | [Geometry](evidence/schematic-geometry.json) |
+| Device pin mapping | 13 maps and seven critical branches checked | [Pin review](evidence/datasheet-pin-review.json) |
+| BOM/CPL/manifest agreement | 75 placements, 43 catalog parts, all top; local models resolve | [Final audit](evidence/final-audit.json) |
+| Component ratings coverage | All 82 references accounted for; static screens and conditional/hold results distinguished | [Ratings audit](evidence/component-ratings-audit.json) |
+| Full-load analytical corners | 81 inductive FHA roots in the screened range; highest primary RMS 3.503 A | [Ratings calculations](evidence/component-ratings-audit.json) |
+| OC sensing model | Revised peak 0.779 V below 0.9 V minimum trip; timestep halving changes peak by less than 2 mV | [Model and limitations](COMPONENT-RATINGS.md) |
+| Bias network versus L2 | No RIPPLE/BIAS_FB trace polygon overlap with conservative L2 body projection | [Bias layout](evidence/bias-layout-audit.json) |
+| GaN routing | Full SW custom-land projection clear of foreign filled planes and internal tracks; adjacent PGND below VIN route | [GaN geometry](evidence/GaN-layout-audit.json) |
+| Drive references | Four checked GD/VG routes have 100% sampled adjacent-plane coverage outside signal-via antipads | [Filled-copper audit](evidence/return-path-audit.json) |
+| Ground stitching | 60 stitches, each connected to at least two same-net filled planes; LI return reduced to 1.05 mm, earlier GD1/VG2 improvements retained | [Stitching](evidence/stitching-audit.json) |
+| Sensitive-net references | 17 selected nets have 100% sampled adjacent same-domain ground coverage outside their own via clearances; raw coverage also reported | [Reference planes](evidence/reference-plane-audit.json) |
+| Output distribution | C13-to-J2 centerline route 60.899 → 10.206 mm; C14-to-J2 56.399 → 14.706 mm | [Comparison](evidence/A10-layout-audit.json), [drawing](evidence/Output-route-comparison.png) |
+| A7 comparison | No placement, part-identity or pin-net changes; winding geometry, outline and mounting/connector positions preserved | [Before/after](evidence/A10-layout-audit.json) |
+| Transformer contact geometry | No unintended winding contacts in independent sampled-path screen | [Winding audit](evidence/winding-contact-audit.json) |
+| Mechanical and assembly mapping | M3 exclusions on all eight copper layers, 75 top components, two 1.6 mm connector drills, three fiducials, six probe pads | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
+| Clean-copy rebuild | Schematic byte-identical; tracks, pads and zone outlines match; filled-copper differences below 0.01 mm² per zone; clean parity/DRC | [Rebuild](evidence/rebuild-audit.json), [DRC](evidence/rebuild-DRC.rpt) |
+| Fabrication and visual review | 14 actual Gerber layers independently rasterized; eight native copper layers, top/bottom/perspective and schematic/assembly views inspected | [Gerbers](evidence/Gerber-review.png), [source hashes](evidence/gerber-render-audit.json), [layers](evidence/Layer-review.png) |
 
-## A6 routing and return paths
+## What these checks do not establish
 
-The [layout review](LAYOUT-REVIEW.md) connects the changes to published TI, EPC
-and Analog Devices guidance. The GaN input-loop pad-center polygon decreases
-17.6%, from 8.5967 to 7.0817 mm². This includes a straight closing segment inside
-the package; it is not an extracted physical loop or inductance. Sampling the
-VIN trace at <=0.025 mm finds In1.Cu PGND under every centerline point.
+The 4 A primary thermal screen produces 3.69 W of winding DC loss at 80 °C,
+before core and AC copper losses. The earlier 3.25 A assumption was too low
+for the largest full-load analytical corner. There is no thermal qualification.
 
-The expanded SW keepout includes both custom U1 and L1 lands plus the route.
-Intersecting their native polygons with filled planes and internal traces finds
-zero overlap. The previous layout had overlap on four planes and the 5 V feed;
-the latter now runs around the outside of the switching cell.
+The OC model evaluates the sensing network driven by an ideal sine waveform;
+it is not a switching simulation. Capacitor-voltage sensing is frequency
+dependent and cannot prove fast short-circuit protection. Input surge energy,
+TVS/fuse coordination, switching-node ringing, start-up, no-load behavior,
+rectifier timing, optocoupler ageing, stability and OVP dynamics remain open.
 
-U2 DT, RT, OC-filter and SS connections are direct F.Cu routes. The two feedback
-cells use aligned divider columns and repeated LED resistor rows, with shorter
-sensitive reference and compensation connections. The original short GaN
-bootstrap, driver supply and rectifier paths remain intact. All four GD/VG
-routes retain sampled adjacent reference coverage outside signal-via antipads.
+Exact effective capacitance and ripple heating have not been established for
+every ceramic capacitor. A voltage-rating comparison is insufficient for those
+parts. The audit explicitly leaves those results conditional.
 
-There are 54 new ground stitches (25 PGND, 10 AGND, 19 SGND), 203 routed vias
-in total, and six winding transitions. Stitches use 0.6/0.3 mm geometry and
-each has at least two actual filled same-net plane connections. Placement avoids
-core/winding regions, the isolation corridor, fiducials, silkscreen text and
-foreign copper. U3 VSS retains its dedicated source trace, excluded from every
-SGND zone; AGND and PGND still join only inside U1.
+The proposed eight-layer 2 oz stack and filled/capped via process need JLCPCB
+file-level acceptance, as do placement rotations and mixed SMT/THT assembly.
+Core/clip installation is a separate operation until agreed. No order has been
+placed. Functional isolation only; no safety-isolation certification.
 
-## Retained electrical corrections and drawing review
+## Reproduction
 
-The previous R16 connection was incorrect. [TI's LM5164 datasheet](https://www.ti.com/lit/ds/symlink/lm5164.pdf),
-Rev D, pin-functions table and on-time-control section, specifies RON resistance
-to GND. A3 hardware connects R16.1 to PGND, keeping R16.2 on RON. At the nominal
-12.095 V bias output, the existing 100 kΩ resistor gives approximately 302 kHz
-using TI's steady-state CCM equation. Earlier manufacturing files are superseded. The board generator builds connectivity
-before filling zones and always removes isolated islands; this eliminates the
-isolated-fill warnings found during a repeat rebuild.
+Run `redraw_schematic.py` with sexpdata, then `rebuild_board.py` with KiCad 10
+pcbnew. `export_review.py` stops on ERC or parity/DRC failures and creates the
+native review, BOM/CPL, Gerbers and drill files. Run the included pin, geometry,
+winding, mechanical, return, reference-plane, GaN, bias, ratings and final audits. The ratings
+audit requires NumPy; the readability audit requires pypdfium2 and sexpdata;
+independent Gerber rendering uses PyGerber 2.4.x and Pillow.
 
-D1's former bidirectional drawing was wrong for the selected SMAJ54A-13-F.
-The [Diodes Incorporated datasheet](https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf)
-identifies the unidirectional part and cathode band. The schematic now uses a
-unidirectional TVS, pin 1 K / pin 2 A, matching the existing footprint polarity.
-
-The source-linked pin review checks U1–U9, Q1/Q2 and D1/D2, including hidden and
-stacked pins. Particular checks include TL431 DBZ versus TL432 DBZ pin ordering,
-LMG2100 bootstrap and ground pins, UCC24624 REG bypass, LM5164 timing/bypass and
-TPS7A2450 fixed-output pins. J1/J2 retain pin 2 positive and pin 1 return.
-All 82 schematic parts are also compared to the circuit manifest; PCB parity
-checks compare the resulting native schematic connections with the board.
-
-Native PDF and SVG review covers all five functional sections, including supply
-labels, U3 VD1/VG1 separation, vertical C11, test pads/flags, J2 leads and R16.
-The text-to-wire screen checks glyph ink boxes with a 0.15 mm reserve; symbol
-artwork and text-to-text spacing are inspected visually. This does not prove
-electrical operation: startup, loop compensation, current-limit calibration,
-no-load behavior and thermal margins still require switching analysis and tests.
-
-The winding footprint is a net tie. KiCad connectivity alone cannot establish
-that there are no shorted turns; `audit_windings.py` therefore samples external
-connections against the generated winding paths. This is a geometric screen,
-not field simulation or electrical testing.
-
-The four mechanical-hole footprints are byte-identical to the flyback example's
-published Edge variant. Their positions change to a 55 × 47 mm pattern. The
-KANGNEX header drawing was checked against its 5.08 mm pitch, 1.6 mm finished
-drills, 1 mm square pins and 4 mm solder tails. The supplier CAD drill was
-changed from 1.7 mm to the drawing's 1.6 mm. Pin 2 is positive on both ports;
-pin 1 is return. C71370 plugs are external accessories, not PCB placements.
-Renders show the unmated PCB headers.
-
-The reported component placement improvement is geometric: Q1-to-C15 center
-distance changes from 21.74 mm to 5.9 mm. No measured inductance, efficiency or
-temperature improvement is claimed. A2 reduces the outline bounding area by 22.76%, from 80 × 58 to 64 × 56 mm.
-Header overhang and plug/wiring clearances are additional. A6 changes the routing
-and 24 placements described above; transformer artwork, control values and the
-nominal stack are retained. Winding DC loss is still estimated at 2.85 W before
-AC/core losses. Magnetic and thermal qualification remains open.
-
-## Release holds
-
-1. JLCPCB file-level DFM, exact eight-layer 2 oz construction, filled/capped via
-   process, panel tooling and connector lead/soldering acceptance.
-2. Assembly rotation and polarity review in JLCPCB's placement preview; separate
-   agreement for fitting the DigiKey ferrite halves and clips after soldering.
-3. Core-fit tolerance, winding resistance, turns ratio/polarity, assembled
-   magnetizing inductance and leakage measurements.
-4. Switching and loop review; startup, no-load/burst operation, dead time,
-   synchronous rectifier timing, current limit and OVP validation.
-5. Thermal and efficiency measurements at increasing load, including magnetic
-   AC/core loss, capacitor derating and connector temperature.
-
-No switching simulation, hardware efficiency, thermal result, certified isolation
-rating or approved production process is supplied. DRC/ERC are necessary CAD
-checks; they are not electrical qualification.
+`audit_layout_changes.py` takes the previous A9 package directory as its
+argument. It rejects any part-identity or pin-net change in this layout revision.
+It splits overlapping centerlines and same-layer intersections before computing
+route lengths, and includes the plated connector barrels as transitions. The
+native project and source manifest remain the editable source; generated
+manufacturing files should not be edited separately.

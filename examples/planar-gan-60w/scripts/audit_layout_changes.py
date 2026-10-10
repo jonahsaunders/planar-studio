@@ -8,17 +8,44 @@ def xy(v):return (round(p.ToMM(v.x),4),round(p.ToMM(v.y),4))
 def pads(board):return {(f.GetReference(),q.GetNumber()):q for f in board.GetFootprints() for q in f.Pads()}
 def route(board,start,end):
  ps=pads(board);sp=ps[start];ep=ps[end];assert sp.GetNetname()==ep.GetNetname(),(start,end)
- g={}
+ g={};segments=[];nodes={l:set() for l in layers}
  def edge(u,v,d,n):g.setdefault(u,[]).append((v,d,n));g.setdefault(v,[]).append((u,d,n))
  for t in board.GetTracks():
   if t.GetNetname()!=sp.GetNetname():continue
   x,y=xy(t.GetStart())
   if isinstance(t,p.PCB_VIA):
    for l in layers:
+    nodes[l].add((x,y))
     for k in layers:
      if l<k:edge((x,y,l),(x,y,k),0,1)
   else:
-   X,Y=xy(t.GetEnd());edge((x,y,t.GetLayer()),(X,Y,t.GetLayer()),math.hypot(X-x,Y-y),0)
+   X,Y=xy(t.GetEnd());l=t.GetLayer();segments.append(((x,y),(X,Y),l));nodes[l].update([(x,y),(X,Y)])
+ # Through-hole connector pads provide physical layer transitions too.
+ for pd in ps.values():
+  if pd.GetNetname()==sp.GetNetname() and pd.GetAttribute()==p.PAD_ATTRIB_PTH:
+   x,y=xy(pd.GetPosition())
+   for l in layers:
+    nodes[l].add((x,y))
+    if l!=p.F_Cu:edge((x,y,p.F_Cu),(x,y,l),0,1)
+ # Split collinear overlaps and same-layer intersections before measuring.
+ # Otherwise a shared reservoir branch can be counted out-and-back twice.
+ def cross(a,b):return a[0]*b[1]-a[1]*b[0]
+ for i,(s,e,l) in enumerate(segments):
+  v=(e[0]-s[0],e[1]-s[1])
+  for c,d,k in segments[i+1:]:
+   if l!=k:continue
+   w=(d[0]-c[0],d[1]-c[1]);den=cross(v,w)
+   if abs(den)<1e-9:continue
+   off=(c[0]-s[0],c[1]-s[1]);u=cross(off,w)/den;z=cross(off,v)/den
+   if -1e-8<=u<=1+1e-8 and -1e-8<=z<=1+1e-8:
+    nodes[l].add((round(s[0]+u*v[0],4),round(s[1]+u*v[1],4)))
+ for s,e,l in segments:
+  v=(e[0]-s[0],e[1]-s[1]);length=math.hypot(*v);points=[]
+  for q in nodes[l]:
+   off=(q[0]-s[0],q[1]-s[1]);u=(off[0]*v[0]+off[1]*v[1])/(length*length)
+   if abs(cross(v,off))/length<.00015 and -1e-6<=u<=1+1e-6:points.append((u,q))
+  points.sort()
+  for (_,q),(_,r) in zip(points,points[1:]):edge((*q,l),(*r,l),math.dist(q,r),0)
  start=(*xy(sp.GetPosition()),p.F_Cu);end=(*xy(ep.GetPosition()),p.F_Cu)
  q=[(0.,0,start)];best={start:(0.,0)}
  while q:
@@ -38,15 +65,21 @@ pairs += [
  ('Feedback upper divider sense',('U7','2'),('R22','2')),('Feedback local compensation',('U7','2'),('C28','2')),
  ('OVP divider sense',('U9','2'),('R27','2')),('OVP filter to lower divider',('C29','1'),('R28','1')),
  ('Bias enable divider',('U4','3'),('R14','2'))]
+pairs += [('Bias ripple capacitor to FB injection',('C23','1'),('C24','1')),('Bias sampler resistor to capacitor',('R19','2'),('C23','1')),('Bias output Kelvin pickup',('C21','1'),('R17','1'))]
+pairs += [('Output reservoir to connector',('C13','1'),('J2','2')),('Output second reservoir to connector',('C14','1'),('J2','2')),('Output divider Kelvin pickup',('C16','1'),('R22','1'))]
 metrics=[]
 for title,start,end in pairs:
- m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A5':route(a,start,end),'A6':route(b,start,end)};metrics.append(m)
+ m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A7':route(a,start,end),'A8':route(b,start,end)};metrics.append(m)
+for m in metrics[-3:]:
+ assert m['A7']['trace_length_mm'] is not None and m['A8']['trace_length_mm'] is not None,m
 pa=json.loads((old/'circuit.json').read_text())['parts'];pb=json.loads((R/'circuit.json').read_text())['parts']
 assert len(pa)==len(pb)==82
-netchanges=[]
+netchanges=[];identity_changes=[]
 for x,y in zip(pa,pb):
  for key in ['ref','value','footprint','mpn','lcsc']:
-  assert x[key]==y[key],(key,x['ref'])
+  if x[key]!=y[key]:
+   raise AssertionError(('Unexpected part change',key,x['ref']))
+   identity_changes.append({'ref':x['ref'],'field':key,'before':x[key],'after':y[key]})
  for pin,net in x['nets'].items():
   if y['nets'][pin]!=net:netchanges.append([x['ref'],pin,net,y['nets'][pin]])
 assert not netchanges,netchanges
@@ -60,6 +93,6 @@ vs=pads(b)[('U3','5')];sense=vs.GetPosition()
 zones=[z for z in b.Zones() if z.GetNetname()==vs.GetNetname()]
 assert all(not z.Outline().Contains(sense) for z in zones),'VSS must enter its dedicated trace, not a ground pour'
 moved=[ref for ref in af if af[ref].GetPosition()!=bf[ref].GetPosition() or af[ref].GetOrientationDegrees()!=bf[ref].GetOrientationDegrees()]
-report={'revision':'A8 schematic / A6 hardware','comparison':'A7 schematic / A5 hardware','method':'Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':[],'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
-(R/'evidence/A8-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+report={'revision':'A10 schematic / A8 hardware','comparison':'A9 schematic / A7 hardware','method':'Shortest path through explicit native track centerlines split at collinear overlaps and same-layer intersections, with via and plated-connector transitions; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':identity_changes,'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
+(R/'evidence/A10-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

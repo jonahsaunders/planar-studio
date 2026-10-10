@@ -1,45 +1,97 @@
 {
-  "revision": "A6",
+  "revision": "A8",
   "diameter_mm": 0.6,
   "drill_mm": 0.3,
-  "added_stitches": 54,
+  "added_stitches": 60,
   "counts_by_net": {
     "PGND": 25,
-    "AGND": 10,
-    "SGND": 19
+    "AGND": 13,
+    "SGND": 22
   },
-  "method": "Selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.",
+  "method": "Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.",
+  "drive_transition_returns": [
+    {
+      "signal": "GD1",
+      "ground": "AGND",
+      "position_mm": [
+        49.175,
+        7.0
+      ],
+      "before_nearest_return_via_mm": 2.516,
+      "after_nearest_return_via_mm": 1.3
+    },
+    {
+      "signal": "GD1",
+      "ground": "AGND",
+      "position_mm": [
+        29.599999999999994,
+        35.099999999999994
+      ],
+      "before_nearest_return_via_mm": 2.53,
+      "after_nearest_return_via_mm": 1.05
+    },
+    {
+      "signal": "GD2",
+      "ground": "AGND",
+      "position_mm": [
+        39.075,
+        8.0
+      ],
+      "before_nearest_return_via_mm": 2.442,
+      "after_nearest_return_via_mm": 2.442
+    },
+    {
+      "signal": "GD2",
+      "ground": "AGND",
+      "position_mm": [
+        29.599999999999994,
+        38.900000000000006
+      ],
+      "before_nearest_return_via_mm": 1.27,
+      "after_nearest_return_via_mm": 1.27
+    },
+    {
+      "signal": "VG2",
+      "ground": "SGND",
+      "position_mm": [
+        2.325000000000003,
+        20.200000000000003
+      ],
+      "before_nearest_return_via_mm": 1.829,
+      "after_nearest_return_via_mm": 1.829
+    },
+    {
+      "signal": "VG2",
+      "ground": "SGND",
+      "position_mm": [
+        5.799999999999997,
+        18.400000000000006
+      ],
+      "before_nearest_return_via_mm": 1.875,
+      "after_nearest_return_via_mm": 1.3
+    },
+    {
+      "signal": "LI",
+      "ground": "AGND",
+      "position_mm": [
+        39.075,
+        9.799999999999997
+      ],
+      "before_nearest_return_via_mm": 1.65,
+      "after_nearest_return_via_mm": 1.65
+    },
+    {
+      "signal": "LI",
+      "ground": "AGND",
+      "position_mm": [
+        45.650000000000006,
+        8.329999999999998
+      ],
+      "before_nearest_return_via_mm": 2.797,
+      "after_nearest_return_via_mm": 1.05
+    }
+  ],
   "vias": [
-    {
-      "net": "PGND",
-      "position_mm": [
-        54,
-        6
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In6.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In6.Cu"
-      ]
-    },
-    {
-      "net": "PGND",
-      "position_mm": [
-        54,
-        10
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In6.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In6.Cu"
-      ]
-    },
     {
       "net": "PGND",
       "position_mm": [
@@ -300,7 +352,41 @@
     {
       "net": "PGND",
       "position_mm": [
+        47,
+        38
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In6.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In6.Cu"
+      ]
+    },
+    {
+      "net": "PGND",
+      "position_mm": [
         43,
+        42
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In6.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In6.Cu"
+      ]
+    },
+    {
+      "net": "PGND",
+      "position_mm": [
+        47,
         42
       ],
       "preexisting_reference_layers": [
@@ -415,14 +501,67 @@
     {
       "net": "AGND",
       "position_mm": [
-        19,
-        31
+        46.39246212024588,
+        7.587537879754123
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "AGND",
+      "position_mm": [
+        29.599999999999994,
+        34.05
+      ],
+      "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In6.Cu"
+      ]
+    },
+    {
+      "net": "AGND",
+      "position_mm": [
+        50.09423881554251,
+        6.080761184457488
+      ],
+      "preexisting_reference_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "AGND",
+      "position_mm": [
+        19,
+        31
+      ],
+      "preexisting_reference_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In6.Cu"
+      ],
+      "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -434,10 +573,12 @@
         31
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -449,10 +590,12 @@
         35
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -464,10 +607,12 @@
         39
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -479,10 +624,12 @@
         39
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -494,10 +641,12 @@
         43
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -509,10 +658,12 @@
         47
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -524,10 +675,12 @@
         47
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -539,10 +692,12 @@
         47
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ]
@@ -554,12 +709,63 @@
         47
       ],
       "preexisting_reference_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
       ],
       "connected_filled_layers": [
+        "In1.Cu",
         "In3.Cu",
         "In6.Cu"
+      ]
+    },
+    {
+      "net": "SGND",
+      "position_mm": [
+        6.719238815542509,
+        17.480761184457492
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "SGND",
+      "position_mm": [
+        -3,
+        6
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "SGND",
+      "position_mm": [
+        1,
+        6
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
       ]
     },
     {
@@ -649,10 +855,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -664,10 +872,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -679,10 +889,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -694,10 +906,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -709,10 +923,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -724,10 +940,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -739,10 +957,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -754,10 +974,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -769,10 +991,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -784,10 +1008,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -799,10 +1025,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -814,10 +1042,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -829,10 +1059,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     },
@@ -844,10 +1076,12 @@
       ],
       "preexisting_reference_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ],
       "connected_filled_layers": [
         "B.Cu",
+        "In1.Cu",
         "In5.Cu"
       ]
     }

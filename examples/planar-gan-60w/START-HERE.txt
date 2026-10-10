@@ -1,5 +1,5 @@
-PS-GAN-60W — A8 schematic / A6 hardware — KiCad 10 engineering prototype
-A6 aligns 24 placements, shortens control and feedback paths, reduces the GaN input loop, clears copper from beneath the complete SW node and adds 54 verified ground stitches. See LAYOUT-REVIEW.md for manufacturer resources, before/after geometry and validation limits. Earlier manufacturing packages are superseded.
+PS-GAN-60W — A10 schematic / A8 hardware — KiCad 10 engineering prototype
+A8 shortens output distribution, adds close reference planes under sensitive circuits and improves the LI return transition. See DEEP-LAYOUT-REVIEW.md for source-linked decisions and measured geometry. The previous component-rating findings remain open. Earlier manufacturing packages are superseded.
 
 Open Schematic.pdf for the clearer, visibly wired circuit with directly wired OC sensing and bias circuitry, attached supply arrows, aligned labels and no four-way connections. The 64 x 56 mm board uses 23% less outline area than A1; headers, mating plugs and wires add to the envelope. Open Review.html for the design review and interactive copper-layer viewer.
 Open kicad/PS-GAN-60W.kicad_pro in KiCad. Both schematic and PCB are editable, with local symbols, footprints and 3D models.
@@ -8,7 +8,7 @@ Board: 64 x 56 mm, eight layers, all electronic components on top. Four flyback-
 
 Schematic.pdf and PCB-layers.pdf are native KiCad documentation. manufacturing-prototype contains Gerbers, drills, electronics BOM and a CPL requiring JLCPCB placement-preview verification. Read manufacturing-prototype/READ-BEFORE-ORDER.txt before using these files.
 
-All 75 purchased electronic components have exact JLCPCB catalog IDs; 42 unique codes. Electronics-only catalog allowance is $23.67 at first listed price tiers. Two external mating plugs add $0.39; two DigiKey core halves and two clips add approximately $6.88 in the retrieved listing, for $30.94 in parts, excluding PCB, assembly, setup, attrition, shipping, tax and minimum quantities. Stock and prices can change.
+All 75 purchased electronic components have exact JLCPCB catalog IDs; 43 unique codes. Electronics-only catalog allowance is $23.42 at first listed price tiers. Two external mating plugs add $0.39; two DigiKey core halves and two clips add approximately $6.88 in the retrieved listing, for $30.69 in parts, excluding PCB, assembly, setup, attrition, shipping, tax and minimum quantities. Stock and prices can change.
 
 Planar Studio inspiration: examples/planar-flyback-5w from repository commit 71f6f4db9c1a7172bddca8c9c934d3a8ece2a481. This design changes topology, turns, control and power stage; it is not a power-scaled copy. T1.planar.json is an importable FOUR-section seed (P,S,S,P). The final board parallels each secondary section on an additional layer; see T1-artwork.json and T1-windings.kicad_pcb. Importing the seed alone does not recreate all six final winding layers.
 
@@ -17,3 +17,5 @@ Validation: evidence includes ERC, DRC, pin-by-pin manifest/netlist comparison, 
 scripts/export_review.py regenerates exports with an ERC/DRC gate using kicad-cli. scripts/audit_windings.py and final_audit.py require KiCad's pcbnew Python. engineering_review.py requires numpy. audit_schematic.py and redraw_schematic.py require sexpdata. regenerate_magnetics.mjs requires Node and a Planar Studio checkout passed as its first argument at the commit above; it regenerates winding review files, not the edited main PCB.
 
 KiStack workflow used: schematic, BOM, PCB, symbol/footprint and export skills. Manufacturer and JLCPCB/LCSC sources were used directly with the user's approval. See THIRD-PARTY-NOTICES.txt for source and CAD-license information.
+
+A9 ratings audit: COMPONENT-RATINGS.md and sourcing/Component-ratings-audit.csv. Electrical release remains on hold for magnetics heating, capacitor effective capacitance/ripple, switching transients and frequency-dependent fault protection. F1 C3177336 snapshot: only 28 pieces, not reserved. Do not substitute the 32 V fuse variant.

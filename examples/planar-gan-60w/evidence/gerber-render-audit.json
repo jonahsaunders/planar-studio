@@ -4,72 +4,72 @@
   "files": [
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-B_Cu.gbl",
-      "sha256": "2079bbd2cc6fd1f94481950f8fc95787a3ddbacef2781ba7f85cdbdb6f981269",
+      "sha256": "849d26e249a8e8f4452e3fbe47626d3d4dfe4ddb636c0a7ba2c340f148d19c4f",
       "render": "evidence/gerber-renders/PS-GAN-60W-B_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-B_Mask.gbs",
-      "sha256": "e244ea1e0ff4aef3bcdc8ccf2ef0011fa04df132969ec1c687f4447f4603b0eb",
+      "sha256": "ec4f681d13e85388942fa61c0ead7989a88474b27d694439ea8cab41057f7b9e",
       "render": "evidence/gerber-renders/PS-GAN-60W-B_Mask.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-B_Silkscreen.gbo",
-      "sha256": "ceb1bdb4c886f8ff7a7756f50bbc890e0124ca98028bcebc9eeb6afa7f149aa7",
+      "sha256": "7f6e3ed9a6be45930ba47f603128e258616f1a9429cf4cb40c6e3ee325a9bd57",
       "render": "evidence/gerber-renders/PS-GAN-60W-B_Silkscreen.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-Edge_Cuts.gm1",
-      "sha256": "bc9ff08f985438930ca8556a5a20e66c917631162d7d9a496a57bd3c19e43dad",
+      "sha256": "7d52d05637899c259d6a6f9503cc05ecf23fc1bf1e61e3029cfb146ba573107f",
       "render": "evidence/gerber-renders/PS-GAN-60W-Edge_Cuts.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-F_Cu.gtl",
-      "sha256": "c98256d729acffe26a69ea815d498239c78ffde310766e17f693769b9e34afa3",
+      "sha256": "f8c227110fb06ae979e9687ad357465a94773b19b9bde781cb3d9940dc2e53d2",
       "render": "evidence/gerber-renders/PS-GAN-60W-F_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-F_Mask.gts",
-      "sha256": "ccd592fcc159d1bace57e35e56404683a37af6b061836dbe43b738cddd87d938",
+      "sha256": "5b85917726e4d3b9c70b85cfa50285664ea37acbdfdf892d5448ef880c5eae91",
       "render": "evidence/gerber-renders/PS-GAN-60W-F_Mask.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-F_Paste.gtp",
-      "sha256": "44fc1b39d881a1c11c89b2fac2ffa53435b874efc14cf3bbb39464cf819278f4",
+      "sha256": "f4ca7363b878469bef5cc068b93688551982ab497875b69f9f3f70e245fe7dc6",
       "render": "evidence/gerber-renders/PS-GAN-60W-F_Paste.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-F_Silkscreen.gto",
-      "sha256": "98572d948fdb259177e556c7363450fd5e1c07101c0ec93dc05627dabfb51bc4",
+      "sha256": "fa28c0138c5c1a9ce9ecdbf7add6d8de5b116bbfc406edbca48a4c91b37a0407",
       "render": "evidence/gerber-renders/PS-GAN-60W-F_Silkscreen.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In1_Cu.g1",
-      "sha256": "21cf1b6641c239a5ac3c67145a8b0d5f59bc8c2a4e5bcf5254d6c7aab4252257",
+      "sha256": "d56a9eae81ad6408bf112d7debe2a2f2f3f141cfe81d8532dd6d6cddbc5c084b",
       "render": "evidence/gerber-renders/PS-GAN-60W-In1_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In2_Cu.g2",
-      "sha256": "de4c716292955127b53ecd4d3c5bb799c4904f849b935d8546799217d237a1dd",
+      "sha256": "fa9996ac9b65a66ffb2bff024d4ab179099066167c52a618bc91de039e44e0d8",
       "render": "evidence/gerber-renders/PS-GAN-60W-In2_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In3_Cu.g3",
-      "sha256": "db282f071861e1b2888a0f4c4b4e221191af6a6c1a3bd28c527df5e3073ab56b",
+      "sha256": "5ee50611c217b790f169761c790a9b75fa4817277215329d350704faf2f9dbd8",
       "render": "evidence/gerber-renders/PS-GAN-60W-In3_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In4_Cu.g4",
-      "sha256": "7ecaec8396bd8c5caa480f469a6d045c76d8d4f96bbbf758d3881114a43c8748",
+      "sha256": "9c4443324abab246bcad97c65741ddb300b4f683b9322975b2bb82532b13af09",
       "render": "evidence/gerber-renders/PS-GAN-60W-In4_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In5_Cu.g5",
-      "sha256": "51d773ec4062d4d81b3f0f4df3dc506194213a096629afa969da7bf85c333ea4",
+      "sha256": "90ff3f9d2db238e6143acf166b33ba069f5c2ed184bb3125f6d7c71c5270693d",
       "render": "evidence/gerber-renders/PS-GAN-60W-In5_Cu.png"
     },
     {
       "source": "manufacturing-prototype/gerbers/PS-GAN-60W-In6_Cu.g6",
-      "sha256": "acedfb56688de20395f184304c2c9f6a77653e07aa7fdd3a797f97d6e3e6aca7",
+      "sha256": "d9fb105333b31108f948444581ef9d8a15179bebd8cc5e7785b38aa3a7e2f63f",
       "render": "evidence/gerber-renders/PS-GAN-60W-In6_Cu.png"
     }
   ],
