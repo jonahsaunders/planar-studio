@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-10-10T16:30:36-04:00"
+    "CreationDate": "2026-10-10T16:50:26-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "PS-GAN-60W",
       "GUID": "50532d47-414e-42d3-9630-572e6b696361",
-      "Revision": "A5 REVIEW - NOT FOR FABRICATION"
+      "Revision": "A6 REVIEW - NOT FOR FABRICATION"
     },
     "Size": {
       "X": 64.05,

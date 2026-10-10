@@ -4,12 +4,12 @@
   "terminal_contacts": [
     [
       "Net-(T1-P_DOT)",
-      "L1.2",
+      "track",
       "F.Cu"
     ],
     [
       "Net-(T1-P_DOT)",
-      "track",
+      "L1.2",
       "F.Cu"
     ]
   ],

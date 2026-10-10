@@ -68,13 +68,13 @@ been agreed. Catalog availability therefore does not yet establish a confirmed
 fully assembled converter. Arrange core fitting after soldering or fit the
 ferrite after receiving the electronics assembly. No order has been placed.
 
-## A5 fabrication review
+## A6 fabrication review
 
 The revised native rules require at least 0.16 mm track width and global copper
 clearance, with 0.20 mm ordinary net clearance. This follows the 2 oz minimum in
 [JLCPCB's copper-weight guide](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
 The requested all-layer 2 oz construction still requires file-level acceptance.
-The layout has 163 routed vias plus six winding transitions; filled/capped vias
+The layout has 203 routed vias (including 54 ground stitches) plus six winding transitions; filled/capped vias
 remain required. Independent Gerber renders are supplied in
 [the fabrication-output review](evidence/Gerber-review.png).
 

@@ -1,5 +1,5 @@
 {
-  "revision": "A5",
+  "revision": "A6",
   "method": "Track centerline sampled every <=0.05 mm against native filled zone polygons on immediately adjacent copper layers. Coverage is union of those layers. A second figure excludes 0.65 mm around same-net signal vias because their required antipads remove reference copper. Coverage does not prove low inductance, uninterrupted current flow, EMI or electrical performance. Coordinates relative to circuit datum (60,60) mm.",
   "current": [
     {
@@ -67,92 +67,11 @@
         "In5.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 55.855,
-      "covered_percent": 0.0,
-      "outside_signal_via_antipads_coverage_percent": 0.0,
-      "uncovered_sample_count_outside_antipads": 1093,
-      "first_20_uncovered_samples_mm": [
-        [
-          48.519,
-          29.984
-        ],
-        [
-          48.558,
-          29.953
-        ],
-        [
-          48.597,
-          29.922
-        ],
-        [
-          48.636,
-          29.891
-        ],
-        [
-          48.675,
-          29.86
-        ],
-        [
-          48.714,
-          29.829
-        ],
-        [
-          48.753,
-          29.798
-        ],
-        [
-          48.791,
-          29.767
-        ],
-        [
-          48.83,
-          29.736
-        ],
-        [
-          48.869,
-          29.705
-        ],
-        [
-          48.908,
-          29.674
-        ],
-        [
-          48.947,
-          29.642
-        ],
-        [
-          48.986,
-          29.611
-        ],
-        [
-          49.025,
-          29.58
-        ],
-        [
-          49.063,
-          29.549
-        ],
-        [
-          49.102,
-          29.518
-        ],
-        [
-          49.141,
-          29.487
-        ],
-        [
-          49.18,
-          29.456
-        ],
-        [
-          49.219,
-          29.425
-        ],
-        [
-          49.258,
-          29.394
-        ]
-      ]
+      "total_track_length_mm": 45.942,
+      "covered_percent": 97.65,
+      "outside_signal_via_antipads_coverage_percent": 100.0,
+      "uncovered_sample_count_outside_antipads": 0,
+      "first_20_uncovered_samples_mm": []
     },
     {
       "path": "LLC GD2",
@@ -162,92 +81,11 @@
         "In3.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 49.388,
-      "covered_percent": 0.0,
-      "outside_signal_via_antipads_coverage_percent": 0.0,
-      "uncovered_sample_count_outside_antipads": 963,
-      "first_20_uncovered_samples_mm": [
-        [
-          30.241,
-          39.069
-        ],
-        [
-          30.289,
-          39.081
-        ],
-        [
-          30.336,
-          39.094
-        ],
-        [
-          30.384,
-          39.106
-        ],
-        [
-          30.431,
-          39.119
-        ],
-        [
-          30.479,
-          39.131
-        ],
-        [
-          30.526,
-          39.144
-        ],
-        [
-          30.574,
-          39.156
-        ],
-        [
-          30.621,
-          39.169
-        ],
-        [
-          30.669,
-          39.181
-        ],
-        [
-          30.716,
-          39.194
-        ],
-        [
-          30.764,
-          39.206
-        ],
-        [
-          30.811,
-          39.219
-        ],
-        [
-          30.859,
-          39.231
-        ],
-        [
-          30.906,
-          39.244
-        ],
-        [
-          30.954,
-          39.256
-        ],
-        [
-          31.001,
-          39.269
-        ],
-        [
-          31.049,
-          39.281
-        ],
-        [
-          31.096,
-          39.294
-        ],
-        [
-          31.144,
-          39.306
-        ]
-      ]
+      "total_track_length_mm": 40.006,
+      "covered_percent": 97.28,
+      "outside_signal_via_antipads_coverage_percent": 100.0,
+      "uncovered_sample_count_outside_antipads": 0,
+      "first_20_uncovered_samples_mm": []
     },
     {
       "path": "Rectifier VG1",
@@ -256,92 +94,11 @@
         "In1.Cu"
       ],
       "return_net": "SGND",
-      "total_track_length_mm": 11.432,
-      "covered_percent": 79.66,
-      "outside_signal_via_antipads_coverage_percent": 79.66,
-      "uncovered_sample_count_outside_antipads": 47,
-      "first_20_uncovered_samples_mm": [
-        [
-          7.824,
-          12.0
-        ],
-        [
-          7.872,
-          12.0
-        ],
-        [
-          7.919,
-          12.0
-        ],
-        [
-          7.967,
-          12.0
-        ],
-        [
-          8.015,
-          12.0
-        ],
-        [
-          8.062,
-          12.0
-        ],
-        [
-          8.11,
-          12.0
-        ],
-        [
-          8.158,
-          12.0
-        ],
-        [
-          8.206,
-          12.0
-        ],
-        [
-          8.253,
-          12.0
-        ],
-        [
-          8.301,
-          12.0
-        ],
-        [
-          7.525,
-          12.8
-        ],
-        [
-          7.575,
-          12.8
-        ],
-        [
-          7.625,
-          12.8
-        ],
-        [
-          7.675,
-          12.8
-        ],
-        [
-          7.725,
-          12.8
-        ],
-        [
-          7.775,
-          12.8
-        ],
-        [
-          8.325,
-          11.975
-        ],
-        [
-          8.325,
-          11.925
-        ],
-        [
-          8.325,
-          11.875
-        ]
-      ]
+      "total_track_length_mm": 1.114,
+      "covered_percent": 100.0,
+      "outside_signal_via_antipads_coverage_percent": 100.0,
+      "uncovered_sample_count_outside_antipads": 0,
+      "first_20_uncovered_samples_mm": []
     },
     {
       "path": "Rectifier VG2",
@@ -351,8 +108,8 @@
         "In3.Cu"
       ],
       "return_net": "SGND",
-      "total_track_length_mm": 11.665,
-      "covered_percent": 90.79,
+      "total_track_length_mm": 6.075,
+      "covered_percent": 81.89,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []

@@ -1,5 +1,5 @@
-PS-GAN-60W — A7 schematic / A5 hardware — KiCad 10 engineering prototype
-A5 shortens rectifier gate paths and local bypass connections, adds adjacent LLC ground-reference copper and upgrades C10 to TI's recommended 50 V 0805. See LAYOUT-REVIEW.md for before/after geometry and the remaining magnetic-loss constraint. Earlier manufacturing packages are superseded.
+PS-GAN-60W — A8 schematic / A6 hardware — KiCad 10 engineering prototype
+A6 aligns 24 placements, shortens control and feedback paths, reduces the GaN input loop, clears copper from beneath the complete SW node and adds 54 verified ground stitches. See LAYOUT-REVIEW.md for manufacturer resources, before/after geometry and validation limits. Earlier manufacturing packages are superseded.
 
 Open Schematic.pdf for the clearer, visibly wired circuit with directly wired OC sensing and bias circuitry, attached supply arrows, aligned labels and no four-way connections. The 64 x 56 mm board uses 23% less outline area than A1; headers, mating plugs and wires add to the envelope. Open Review.html for the design review and interactive copper-layer viewer.
 Open kicad/PS-GAN-60W.kicad_pro in KiCad. Both schematic and PCB are editable, with local symbols, footprints and 3D models.

@@ -10,22 +10,28 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-**A7 schematic / A5 hardware** adds adjacent ground references for the LLC
-control signals and tightens the rectifier and regulator placement. Nineteen
-components move. The 64 x 56 mm outline, M3 pattern, connectors and winding
-artwork stay fixed; every purchased component remains on top.
+**A8 schematic / A6 hardware** tightens 24 placements into aligned functional
+groups and adds **54 ground stitching vias**. The GaN switch-node cutout now
+covers the complete custom lands, and the 5 V feed no longer runs beneath that
+node. The 64 x 56 mm outline, M3 pattern, connectors, winding artwork and
+all-top assembly are retained.
 
-- First rectifier gate path: **12.85 -> 2.76 mm**, with no layer changes.
-- Second rectifier gate path: **14.28 -> 10.24 mm**; dedicated VSS sensing retained.
-- Rectifier VDD bypass: **7.33 -> 2.15 mm**, removing both via transitions.
-- LLC bypass now has direct top-layer VCC and ground connections and uses TI's
-  recommended **1 uF, 50 V, 0805 X7R** part (JLCPCB C28323).
-- Adjacent filled-ground coverage checked along both LLC outputs and both
-  rectifier gate-drive routes; 163 routed vias, down from 169.
+- GaN input loop pad-center area: **8.60 -> 7.08 mm²**, about 18% smaller.
+- U2 dead-time path: **5.95 -> 1.48 mm**; frequency-setting path: **4.09 -> 1.70 mm**.
+- U2 OC bypass path: **9.99 -> 1.82 mm**; soft-start path: **4.59 -> 2.14 mm**.
+- Feedback local compensation path: **11.72 -> 1.72 mm**.
+- Those four U2 connections and the local compensation connection stay on top
+  copper. The aligned feedback and OVP divider sense paths also lose their vias.
+- **25 PGND, 10 AGND and 19 SGND** stitches each connect at least two filled
+  ground layers; no stitch crosses the isolation or magnetic assembly envelope.
 
-Lengths describe explicit copper geometry, not measured inductance or efficiency.
-See the [layout review](LAYOUT-REVIEW.md), [before/after measurements](evidence/A7-layout-audit.json)
-and [filled return-plane audit](evidence/return-path-audit.json).
+These are geometric improvements, not measured inductance, EMI or efficiency.
+The small bootstrap and driver-supply loops, dedicated rectifier sensing and
+TI-recommended C10 1 uF / 50 V / 0805 bypass are retained. There are 203 routed
+vias: 149 circuit vias plus 54 new ground stitches, and six winding transitions.
+See the [layout review](LAYOUT-REVIEW.md), [before/after measurements](evidence/A8-layout-audit.json),
+[GaN-specific checks](evidence/GaN-layout-audit.json) and
+[stitching audit](evidence/stitching-audit.json).
 
 HS and SW are connected internally in the LMG2100. The external bootstrap return
 now connects only C4 to HS, eliminating the external SW–HS loop. The drawing
@@ -35,7 +41,7 @@ RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
 
 The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json) are refreshed for A7.
+[readability check](evidence/readability-audit.json) are refreshed for A8.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -118,7 +124,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A7 presentation from circuit.json and the local symbol library;
+recreates the A8 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.
