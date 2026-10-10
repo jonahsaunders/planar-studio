@@ -1,0 +1,2990 @@
+{
+  "C431092": {
+    "lcsc": "C431092",
+    "name": "Changzhou Amass Elec XT30PW-M30.G.Y",
+    "model": "XT30PW-M30.G.Y",
+    "brand": "Changzhou Amass Elec",
+    "package": "-",
+    "category": "Power connector / plug connector",
+    "stock": 24656,
+    "type": "Extended",
+    "price": 0.3828,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.3828
+      },
+      {
+        "qty": 10,
+        "price": 0.3339
+      },
+      {
+        "qty": 30,
+        "price": 0.2883
+      },
+      {
+        "qty": 100,
+        "price": 0.2623
+      },
+      {
+        "qty": 500,
+        "price": 0.246
+      },
+      {
+        "qty": 1000,
+        "price": 0.2313
+      }
+    ],
+    "min_qty": 28,
+    "reel_qty": 500,
+    "description": "-\u3001Aviation model plug 1.2m\u03a9 15A 16/18/20AWG 2pin DC 500V Male - Power connector / plug connector ROHS",
+    "url": "https://www.lcsc.com/product-detail/plug_changzhou-amass-elec-xt30pw-m30-g-y_C431092.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf",
+    "attributes": [
+      {
+        "name": "RecommendedWireGauge",
+        "value": "16/18/20AWG"
+      },
+      {
+        "name": "specifications",
+        "value": "2pin"
+      },
+      {
+        "name": "RatedVoltage",
+        "value": "DC 500V"
+      },
+      {
+        "name": "InterfaceType",
+        "value": "Male"
+      },
+      {
+        "name": "Type",
+        "value": "-\u3001Aviation model plug"
+      },
+      {
+        "name": "contact resistance",
+        "value": "1.2m\u03a9"
+      },
+      {
+        "name": "RatedCurrent",
+        "value": "15A"
+      }
+    ]
+  },
+  "C719183": {
+    "lcsc": "C719183",
+    "name": "BOURNS SF-1206F200-2",
+    "model": "SF-1206F200-2",
+    "brand": "BOURNS",
+    "package": "1206",
+    "category": "Disposable fuses",
+    "stock": 848,
+    "type": "Extended",
+    "price": 0.9968,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.9968
+      },
+      {
+        "qty": 10,
+        "price": 0.7981
+      },
+      {
+        "qty": 30,
+        "price": 0.6988
+      },
+      {
+        "qty": 100,
+        "price": 0.5994
+      },
+      {
+        "qty": 500,
+        "price": 0.5408
+      },
+      {
+        "qty": 1000,
+        "price": 0.5098
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-20\u2103~+105\u2103 0.181 1.6mm 2A 3.2mm 50A 63V Surface Mount Fuse 1206 Disposable fuses ROHS",
+    "url": "https://www.lcsc.com/product-detail/disposable-fuses_bourns-sf-1206f200-2_C719183.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-20\u2103~+105\u2103"
+      },
+      {
+        "name": "Type",
+        "value": "Surface Mount Fuse"
+      },
+      {
+        "name": "Melting I2t",
+        "value": "0.181"
+      },
+      {
+        "name": "Length",
+        "value": "3.2mm"
+      },
+      {
+        "name": "Interrupt Rating",
+        "value": "50A"
+      },
+      {
+        "name": "Current Rating",
+        "value": "2A"
+      },
+      {
+        "name": "Height",
+        "value": "0.6mm"
+      },
+      {
+        "name": "Voltage Rating (DC)",
+        "value": "63V"
+      },
+      {
+        "name": "Width",
+        "value": "1.6mm"
+      }
+    ]
+  },
+  "C134996": {
+    "lcsc": "C134996",
+    "name": "DIODES SMAJ54A-13-F",
+    "model": "SMAJ54A-13-F",
+    "brand": "Diodes Incorporated",
+    "package": "SMA",
+    "category": "ESD and Surge Protection (TVS/ESD)",
+    "stock": 1713,
+    "type": "Extended",
+    "price": 0.2484,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.2484
+      },
+      {
+        "qty": 50,
+        "price": 0.2049
+      },
+      {
+        "qty": 150,
+        "price": 0.1864
+      },
+      {
+        "qty": 500,
+        "price": 0.1631
+      },
+      {
+        "qty": 2500,
+        "price": 0.1528
+      },
+      {
+        "qty": 5000,
+        "price": 0.1465
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+150\u2103 4.6A 400W 54V 5uA 66.3V 87.1V TVS Unidirectional SMA ESD and Surge Protection (TVS/ESD) ROHS",
+    "url": "https://www.lcsc.com/product-detail/esd-and-surge-protection-tvs-esd_diodes-incorporated-smaj54a-13-f_C134996.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-SMAJ54A-13-F_C134996.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+150\u2103"
+      },
+      {
+        "name": "Type",
+        "value": "TVS"
+      },
+      {
+        "name": "Number of Channels",
+        "value": "1"
+      },
+      {
+        "name": "Peak Pulse Power Dissipation (Ppp)",
+        "value": "400W"
+      },
+      {
+        "name": "Clamping Voltage",
+        "value": "87.1V"
+      },
+      {
+        "name": "Polarity",
+        "value": "Unidirectional"
+      },
+      {
+        "name": "Voltage - Breakdown",
+        "value": "66.3V"
+      },
+      {
+        "name": "Peak Pulse Current (Ipp)",
+        "value": "4.6A"
+      },
+      {
+        "name": "Reverse Stand-Off Voltage (Vrwm)",
+        "value": "54V"
+      },
+      {
+        "name": "Reverse Leakage Current (Ir)",
+        "value": "5uA"
+      }
+    ]
+  },
+  "C86054": {
+    "lcsc": "C86054",
+    "name": "muRata GRM32ER72A225KA35L",
+    "model": "GRM32ER72A225KA35L",
+    "brand": "Murata Electronics",
+    "package": "1210",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 33058,
+    "type": "Extended",
+    "price": 0.3131,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.3131
+      },
+      {
+        "qty": 50,
+        "price": 0.2584
+      },
+      {
+        "qty": 150,
+        "price": 0.2349
+      },
+      {
+        "qty": 1000,
+        "price": 0.1729
+      },
+      {
+        "qty": 2000,
+        "price": 0.1598
+      },
+      {
+        "qty": 5000,
+        "price": 0.152
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 1000,
+    "description": "100V 2.2uF X7R \u00b110% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er72a225ka35l_C86054.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "100V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "2.2uF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C405303": {
+    "lcsc": "C405303",
+    "name": "muRata GRM31C5C2A104JA01L",
+    "model": "GRM31C5C2A104JA01L",
+    "brand": "Murata Electronics",
+    "package": "1206",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 22027,
+    "type": "Extended",
+    "price": 0.4004,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.4004
+      },
+      {
+        "qty": 50,
+        "price": 0.3315
+      },
+      {
+        "qty": 150,
+        "price": 0.302
+      },
+      {
+        "qty": 500,
+        "price": 0.2652
+      },
+      {
+        "qty": 2000,
+        "price": 0.2284
+      },
+      {
+        "qty": 4000,
+        "price": 0.2185
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2000,
+    "description": "100V 100nF C0G \u00b15% 1206 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm31c5c2a104ja01l_C405303.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "100V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b15%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "100nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "C0G"
+      }
+    ]
+  },
+  "C22453052": {
+    "lcsc": "C22453052",
+    "name": "TI LMG2100R044RARR",
+    "model": "LMG2100R044RARR",
+    "brand": "Texas Instruments",
+    "package": "VQFN-FCRLF-16(4.5x5.5)",
+    "category": "Gate Drivers",
+    "stock": 5193,
+    "type": "Extended",
+    "price": 8.5246,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 8.5246
+      },
+      {
+        "qty": 10,
+        "price": 7.4725
+      },
+      {
+        "qty": 30,
+        "price": 6.8324
+      },
+      {
+        "qty": 100,
+        "price": 6.2933
+      },
+      {
+        "qty": 102,
+        "price": 6.2933
+      },
+      {
+        "qty": 104,
+        "price": 6.2933
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2500,
+    "description": "1.48V~1.76V 1.87V~2.22V 2 200uA 33ns 4.75V~5.25V 50ns Dead-time control\u3001Built-in bootstrap diode Half-Bridge MOSFET VQFN-FCRLF-16(4.5x5.5) Gate Drivers ROHS",
+    "url": null,
+    "datasheet": null,
+    "attributes": [
+      {
+        "name": "Propagation Delay tpHL",
+        "value": "50ns"
+      },
+      {
+        "name": "Driven Configuration",
+        "value": "Half-Bridge"
+      },
+      {
+        "name": "Input Logic Level - High",
+        "value": "1.87V~2.22V"
+      },
+      {
+        "name": "Voltage - Supply",
+        "value": "4.75V~5.25V"
+      },
+      {
+        "name": "Features",
+        "value": "Dead-time control\u3001Built-in bootstrap diode"
+      },
+      {
+        "name": "Number of Drivers",
+        "value": "2"
+      },
+      {
+        "name": "Propagation Delay tpLH",
+        "value": "33ns"
+      },
+      {
+        "name": "Load Type",
+        "value": "MOSFET"
+      },
+      {
+        "name": "Input Logic Level - Low",
+        "value": "1.48V~1.76V"
+      },
+      {
+        "name": "Quiescent Current(Iq)",
+        "value": "200uA"
+      }
+    ]
+  },
+  "C77055": {
+    "lcsc": "C77055",
+    "name": "muRata GRM188R71H104KA93D",
+    "model": "GRM188R71H104KA93D",
+    "brand": "Murata Electronics",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 1305480,
+    "type": "Extended",
+    "price": 0.0168,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0168
+      },
+      {
+        "qty": 500,
+        "price": 0.0127
+      },
+      {
+        "qty": 1500,
+        "price": 0.0108
+      },
+      {
+        "qty": 4000,
+        "price": 0.0094
+      },
+      {
+        "qty": 24000,
+        "price": 0.0088
+      },
+      {
+        "qty": 48000,
+        "price": 0.0085
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "100nF 50V X7R \u00b110% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm188r71h104ka93d_C77055.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "100nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C86020": {
+    "lcsc": "C86020",
+    "name": "muRata GRM188R71E105KA12D",
+    "model": "GRM188R71E105KA12D",
+    "brand": "Murata Electronics",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 26251,
+    "type": "Extended",
+    "price": 0.0466,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0466
+      },
+      {
+        "qty": 100,
+        "price": 0.0385
+      },
+      {
+        "qty": 300,
+        "price": 0.0346
+      },
+      {
+        "qty": 1000,
+        "price": 0.0315
+      },
+      {
+        "qty": 4000,
+        "price": 0.0281
+      },
+      {
+        "qty": 8000,
+        "price": 0.0269
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "1uF 25V X7R \u00b110% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm188r71e105ka12d_C86020.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "25V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "1uF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C189931": {
+    "lcsc": "C189931",
+    "name": "BOURNS SRP5030T-3R3M",
+    "model": "SRP5030T-3R3M",
+    "brand": "BOURNS",
+    "package": "SMD,5.7x5.2mm",
+    "category": "Power Inductors",
+    "stock": 2216,
+    "type": "Extended",
+    "price": 0.6124,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.6124
+      },
+      {
+        "qty": 10,
+        "price": 0.4984
+      },
+      {
+        "qty": 30,
+        "price": 0.4479
+      },
+      {
+        "qty": 100,
+        "price": 0.3877
+      },
+      {
+        "qty": 500,
+        "price": 0.3388
+      },
+      {
+        "qty": 1000,
+        "price": 0.3225
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2000,
+    "description": "3.3uH 38m\u03a9 5A 8A \u00b120% SMD,5.7x5.2mm Power Inductors ROHS",
+    "url": "https://www.lcsc.com/product-detail/power-inductors_bourns-srp5030t-3r3m_C189931.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SRP5030T-3R3M_C189931.pdf",
+    "attributes": [
+      {
+        "name": "Current - Saturation(Isat)",
+        "value": "8A"
+      },
+      {
+        "name": "Inductance",
+        "value": "3.3uH"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b120%"
+      },
+      {
+        "name": "Current Rating",
+        "value": "5A"
+      },
+      {
+        "name": "DC Resistance(DCR)",
+        "value": "38m\u03a9"
+      }
+    ]
+  },
+  "C840100": {
+    "lcsc": "C840100",
+    "name": "TI CSD18543Q3A",
+    "model": "CSD18543Q3A",
+    "brand": "Texas Instruments",
+    "package": "VSONP-8(3.3x3.3)",
+    "category": "MOSFETs",
+    "stock": 1145,
+    "type": "Extended",
+    "price": 0.7949,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.7949
+      },
+      {
+        "qty": 10,
+        "price": 0.6515
+      },
+      {
+        "qty": 30,
+        "price": 0.5782
+      },
+      {
+        "qty": 100,
+        "price": 0.5082
+      },
+      {
+        "qty": 500,
+        "price": 0.4642
+      },
+      {
+        "qty": 1000,
+        "price": 0.4431
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2500,
+    "description": "-55\u2103~+150\u2103 1 N-channel 11.1nC@10V 168pF 2V 4.8pF 60A 60V 66W 8.1m\u03a9@10V 885pF N-Channel VSONP-8(3.3x3.3) MOSFETs ROHS",
+    "url": "https://www.lcsc.com/product-detail/mosfets_texas-instruments-csd18543q3a_C840100.html",
+    "datasheet": "https://www.ti.com/cn/lit/gpn/csd18543q3a",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+150\u2103"
+      },
+      {
+        "name": "Input Capacitance(Ciss)",
+        "value": "885pF"
+      },
+      {
+        "name": "Type",
+        "value": "N-Channel"
+      },
+      {
+        "name": "Gate Threshold Voltage (Vgs(th))",
+        "value": "2V"
+      },
+      {
+        "name": "Number",
+        "value": "1 N-channel"
+      },
+      {
+        "name": "Gate Charge(Qg)",
+        "value": "11.1nC@10V"
+      },
+      {
+        "name": "Reverse Transfer Capacitance (Crss@Vds)",
+        "value": "4.8pF"
+      },
+      {
+        "name": "Current - Continuous Drain(Id)",
+        "value": "60A"
+      },
+      {
+        "name": "Drain to Source Voltage",
+        "value": "60V"
+      },
+      {
+        "name": "Output Capacitance(Coss)",
+        "value": "168pF"
+      },
+      {
+        "name": "Pd - Power Dissipation",
+        "value": "66W"
+      },
+      {
+        "name": "RDS(on)",
+        "value": "8.1m\u03a9@10V"
+      }
+    ]
+  },
+  "C2862446": {
+    "lcsc": "C2862446",
+    "name": "TI UCC24624DR",
+    "model": "UCC24624DR",
+    "brand": "Texas Instruments",
+    "package": "SOIC-8",
+    "category": "DC-DC Converters",
+    "stock": 2723,
+    "type": "Extended",
+    "price": 1.0392,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 1.0392
+      },
+      {
+        "qty": 10,
+        "price": 0.8681
+      },
+      {
+        "qty": 30,
+        "price": 0.7818
+      },
+      {
+        "qty": 100,
+        "price": 0.676
+      },
+      {
+        "qty": 500,
+        "price": 0.6255
+      },
+      {
+        "qty": 1000,
+        "price": 0.5994
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2500,
+    "description": "-40\u2103~+125\u2103@(TJ) 180uA 2 4.25V~26V 625kHz Built-in Yes SOIC-8 DC-DC Converters ROHS",
+    "url": "https://www.lcsc.com/product-detail/dc-dc-converters_texas-instruments-ucc24624dr_C2862446.html",
+    "datasheet": "https://www.ti.com/cn/lit/gpn/ucc24624",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+125\u2103@(TJ)"
+      },
+      {
+        "name": "Synchronous Rectifier",
+        "value": "Yes"
+      },
+      {
+        "name": "Frequency - Switching",
+        "value": "625kHz"
+      },
+      {
+        "name": "Voltage - Supply",
+        "value": "4.25V~26V"
+      },
+      {
+        "name": "Quiescent Current",
+        "value": "180uA"
+      },
+      {
+        "name": "Features",
+        "value": "Adjustable current limiting\u3001Built-in LDO regulator"
+      },
+      {
+        "name": "Switch tube (built-in/external)",
+        "value": "Built-in"
+      },
+      {
+        "name": "Number of Outputs",
+        "value": "2"
+      }
+    ]
+  },
+  "C112307": {
+    "lcsc": "C112307",
+    "name": "YAGEO RC0603FR-072R2L",
+    "model": "RC0603FR-072R2L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 464095,
+    "type": "Extended",
+    "price": 0.0097,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0097
+      },
+      {
+        "qty": 1000,
+        "price": 0.0083
+      },
+      {
+        "qty": 5000,
+        "price": 0.0075
+      },
+      {
+        "qty": 10000,
+        "price": 0.0071
+      },
+      {
+        "qty": 50000,
+        "price": 0.0067
+      },
+      {
+        "qty": 100000,
+        "price": 0.0065
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 2.2\u03a9 75V Thick Film Resistor \u00b11% \u00b1200ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-072r2l_C112307.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072R2L_C112307.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "2.2\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1200ppm/\u2103"
+      }
+    ]
+  },
+  "C100044": {
+    "lcsc": "C100044",
+    "name": "YAGEO RC0603FR-070RL",
+    "model": "RC0603FR-070RL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 8414214,
+    "type": "Extended",
+    "price": 0.0034,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0034
+      },
+      {
+        "qty": 1000,
+        "price": 0.0025
+      },
+      {
+        "qty": 5000,
+        "price": 0.0021
+      },
+      {
+        "qty": 10000,
+        "price": 0.0018
+      },
+      {
+        "qty": 50000,
+        "price": 0.0016
+      },
+      {
+        "qty": 50200,
+        "price": 0.0016
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 0\u03a9 100mW 75V Thick Film Resistor \u00b11% 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip resistor - surface mount_yageo_rc0603fr-070rl_C100044.html",
+    "datasheet": "https://datasheet.lcsc.com/lcsc/2304140030_YAGEO-RC0603FR-070RL_C100044.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "0\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      }
+    ]
+  },
+  "C77081": {
+    "lcsc": "C77081",
+    "name": "muRata GRM21BR71E225KE11L",
+    "model": "GRM21BR71E225KE11L",
+    "brand": "Murata Electronics",
+    "package": "0805",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 157499,
+    "type": "Extended",
+    "price": 0.0561,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0561
+      },
+      {
+        "qty": 200,
+        "price": 0.0478
+      },
+      {
+        "qty": 600,
+        "price": 0.043
+      },
+      {
+        "qty": 3000,
+        "price": 0.0382
+      },
+      {
+        "qty": 9000,
+        "price": 0.0357
+      },
+      {
+        "qty": 21000,
+        "price": 0.0344
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3000,
+    "description": "2.2uF 25V X7R \u00b110% 0805 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm21br71e225ke11l_C77081.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "25V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "2.2uF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C21397": {
+    "lcsc": "C21397",
+    "name": "muRata GRM32ER71E226KE15L",
+    "model": "GRM32ER71E226KE15L",
+    "brand": "Murata Electronics",
+    "package": "1210",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 77956,
+    "type": "Extended",
+    "price": 0.4593,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.4593
+      },
+      {
+        "qty": 10,
+        "price": 0.3698
+      },
+      {
+        "qty": 30,
+        "price": 0.3258
+      },
+      {
+        "qty": 100,
+        "price": 0.2867
+      },
+      {
+        "qty": 500,
+        "price": 0.2769
+      },
+      {
+        "qty": 1000,
+        "price": 0.2444
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 1000,
+    "description": "22uF 25V X7R \u00b110% 1210 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm32er71e226ke15l_C21397.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "25V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "22uF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C2913282": {
+    "lcsc": "C2913282",
+    "name": "Changzhou Amass Elec XT30PW-F20.G.Y",
+    "model": "XT30PW-F20.G.Y",
+    "brand": "Changzhou Amass Elec",
+    "package": "-",
+    "category": "Power connector / plug connector",
+    "stock": 19333,
+    "type": "Extended",
+    "price": 0.3404,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.3404
+      },
+      {
+        "qty": 10,
+        "price": 0.3225
+      },
+      {
+        "qty": 30,
+        "price": 0.2851
+      },
+      {
+        "qty": 100,
+        "price": 0.2737
+      },
+      {
+        "qty": 500,
+        "price": 0.2623
+      },
+      {
+        "qty": 1000,
+        "price": 0.246
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 500,
+    "description": "Model aircraft plug - Power connector / plug connector ROHS",
+    "url": "https://www.lcsc.com/product-detail/plug_changzhou-amass-elec-xt30pw-f20-g-y_C2913282.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf",
+    "attributes": [
+      {
+        "name": "Connector type",
+        "value": "Model aircraft plug"
+      }
+    ]
+  },
+  "C130223": {
+    "lcsc": "C130223",
+    "name": "TI UCC25600DR",
+    "model": "UCC25600DR",
+    "brand": "Texas Instruments",
+    "package": "SOIC-8",
+    "category": "DC-DC Converters",
+    "stock": 12497,
+    "type": "Extended",
+    "price": 0.7313,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.7313
+      },
+      {
+        "qty": 10,
+        "price": 0.5929
+      },
+      {
+        "qty": 30,
+        "price": 0.5245
+      },
+      {
+        "qty": 100,
+        "price": 0.4561
+      },
+      {
+        "qty": 500,
+        "price": 0.3975
+      },
+      {
+        "qty": 1000,
+        "price": 0.3763
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2500,
+    "description": "-40\u2103~+125\u2103@(TJ) 11.5V~18V 2 40kHz~350kHz External Half-Bridge No SOIC-8 DC-DC Converters ROHS",
+    "url": "https://www.lcsc.com/product-detail/dc-dc-converters_texas-instruments-ucc25600dr_C130223.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810181612_Texas-Instruments-UCC25600DR_C130223.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+125\u2103@(TJ)"
+      },
+      {
+        "name": "Synchronous Rectifier",
+        "value": "No"
+      },
+      {
+        "name": "Frequency - Switching",
+        "value": "40kHz~350kHz"
+      },
+      {
+        "name": "Voltage - Supply",
+        "value": "11.5V~18V"
+      },
+      {
+        "name": "Output Type",
+        "value": "Adjustable"
+      },
+      {
+        "name": "Quiescent Current",
+        "value": "5mA"
+      },
+      {
+        "name": "Features",
+        "value": "Overcurrent Protection\u3001Protection latch\u3001Adjustable soft-start"
+      },
+      {
+        "name": "Switch tube (built-in/external)",
+        "value": "External"
+      },
+      {
+        "name": "Topology",
+        "value": "Half-Bridge"
+      },
+      {
+        "name": "Number of Outputs",
+        "value": "2"
+      }
+    ]
+  },
+  "C108078": {
+    "lcsc": "C108078",
+    "name": "YAGEO RC0603FR-073K3L",
+    "model": "RC0603FR-073K3L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 7490809,
+    "type": "Extended",
+    "price": 0.0029,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0029
+      },
+      {
+        "qty": 1000,
+        "price": 0.0025
+      },
+      {
+        "qty": 5000,
+        "price": 0.0023
+      },
+      {
+        "qty": 10000,
+        "price": 0.0022
+      },
+      {
+        "qty": 50000,
+        "price": 0.0021
+      },
+      {
+        "qty": 50200,
+        "price": 0.0021
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 3.3k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-073k3l_C108078.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-073K3L_C108078.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "3.3k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C185356": {
+    "lcsc": "C185356",
+    "name": "YAGEO RC0603FR-071K69L",
+    "model": "RC0603FR-071K69L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 2677,
+    "type": "Extended",
+    "price": 0.006,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.006
+      },
+      {
+        "qty": 1000,
+        "price": 0.0053
+      },
+      {
+        "qty": 5000,
+        "price": 0.0049
+      },
+      {
+        "qty": 10000,
+        "price": 0.0047
+      },
+      {
+        "qty": 50000,
+        "price": 0.0044
+      },
+      {
+        "qty": 50200,
+        "price": 0.0044
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 1.69k\u03a9 100mW 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-071k69l_C185356.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K69L_C185356.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "1.69k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C114635": {
+    "lcsc": "C114635",
+    "name": "YAGEO RC0603FR-07750RL",
+    "model": "RC0603FR-07750RL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 251378,
+    "type": "Extended",
+    "price": 0.0024,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0024
+      },
+      {
+        "qty": 1000,
+        "price": 0.002
+      },
+      {
+        "qty": 5000,
+        "price": 0.0018
+      },
+      {
+        "qty": 10000,
+        "price": 0.0016
+      },
+      {
+        "qty": 50000,
+        "price": 0.0015
+      },
+      {
+        "qty": 50200,
+        "price": 0.0015
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 750\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-07750rl_C114635.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07750RL_C114635.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "750\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C273748": {
+    "lcsc": "C273748",
+    "name": "YAGEO RC0603FR-072K21L",
+    "model": "RC0603FR-072K21L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 7826,
+    "type": "Extended",
+    "price": 0.0077,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0077
+      },
+      {
+        "qty": 1000,
+        "price": 0.0068
+      },
+      {
+        "qty": 5000,
+        "price": 0.0063
+      },
+      {
+        "qty": 10000,
+        "price": 0.006
+      },
+      {
+        "qty": 50000,
+        "price": 0.0057
+      },
+      {
+        "qty": 50200,
+        "price": 0.0057
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 2.21k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-072k21l_C273748.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "2.21k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C22548": {
+    "lcsc": "C22548",
+    "name": "YAGEO RC0603FR-071KL",
+    "model": "RC0603FR-071KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 10438570,
+    "type": "Extended",
+    "price": 0.0036,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0036
+      },
+      {
+        "qty": 1000,
+        "price": 0.0027
+      },
+      {
+        "qty": 5000,
+        "price": 0.0022
+      },
+      {
+        "qty": 10000,
+        "price": 0.0019
+      },
+      {
+        "qty": 50000,
+        "price": 0.0017
+      },
+      {
+        "qty": 50200,
+        "price": 0.0017
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 1k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-071kl_C22548.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "1k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C100042": {
+    "lcsc": "C100042",
+    "name": "YAGEO CC0603KRX7R9BB103",
+    "model": "CC0603KRX7R9BB103",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 808333,
+    "type": "Extended",
+    "price": 0.0065,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0065
+      },
+      {
+        "qty": 500,
+        "price": 0.0043
+      },
+      {
+        "qty": 1500,
+        "price": 0.0033
+      },
+      {
+        "qty": 4000,
+        "price": 0.0025
+      },
+      {
+        "qty": 24000,
+        "price": 0.0022
+      },
+      {
+        "qty": 48000,
+        "price": 0.002
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "10nF 50V X7R \u00b110% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603krx7r9bb103_C100042.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b110%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "10nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "X7R"
+      }
+    ]
+  },
+  "C114661": {
+    "lcsc": "C114661",
+    "name": "YAGEO RC0603FR-0715KL",
+    "model": "RC0603FR-0715KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 245070,
+    "type": "Extended",
+    "price": 0.0044,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0044
+      },
+      {
+        "qty": 1000,
+        "price": 0.0035
+      },
+      {
+        "qty": 5000,
+        "price": 0.003
+      },
+      {
+        "qty": 10000,
+        "price": 0.0027
+      },
+      {
+        "qty": 50000,
+        "price": 0.0024
+      },
+      {
+        "qty": 100000,
+        "price": 0.0022
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 15k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0715kl_C114661.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "15k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C19726": {
+    "lcsc": "C19726",
+    "name": "onsemi BAT54SLT1G",
+    "model": "BAT54SLT1G",
+    "brand": "onsemi",
+    "package": "SOT-23",
+    "category": "Schottky Diodes",
+    "stock": 163025,
+    "type": "Extended",
+    "price": 0.0253,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0253
+      },
+      {
+        "qty": 10,
+        "price": 0.0188
+      },
+      {
+        "qty": 30,
+        "price": 0.0159
+      },
+      {
+        "qty": 100,
+        "price": 0.0137
+      },
+      {
+        "qty": 500,
+        "price": 0.0129
+      },
+      {
+        "qty": 1000,
+        "price": 0.0123
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3000,
+    "description": "-55\u2103~+150\u2103 1 Pair Series Connection 200mA 2uA@25V 30V 800mV@100mA SOT-23 Schottky Diodes ROHS",
+    "url": "https://www.lcsc.com/product-detail/schottky-diodes_onsemi-bat54slt1g_C19726.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1810301516_onsemi-BAT54SLT1G_C19726.pdf",
+    "attributes": [
+      {
+        "name": "Voltage - Forward(Vf@If)",
+        "value": "800mV@100mA"
+      },
+      {
+        "name": "Voltage - DC Reverse(Vr)",
+        "value": "30V"
+      },
+      {
+        "name": "Operating Junction Temperature Range",
+        "value": "-55\u2103~+150\u2103"
+      },
+      {
+        "name": "Diode Configuration",
+        "value": "1 Pair Series Connection"
+      },
+      {
+        "name": "Current - Rectified",
+        "value": "200mA"
+      },
+      {
+        "name": "Reverse Leakage Current (Ir)",
+        "value": "2uA@25V"
+      }
+    ]
+  },
+  "C477928": {
+    "lcsc": "C477928",
+    "name": "TI LM5164DDAR",
+    "model": "LM5164DDAR",
+    "brand": "Texas Instruments",
+    "package": "SO-8-EP",
+    "category": "DC-DC Converters",
+    "stock": 6717,
+    "type": "Extended",
+    "price": 1.9756,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 1.9756
+      },
+      {
+        "qty": 10,
+        "price": 1.7623
+      },
+      {
+        "qty": 30,
+        "price": 1.6108
+      },
+      {
+        "qty": 100,
+        "price": 1.474
+      },
+      {
+        "qty": 500,
+        "price": 1.4105
+      },
+      {
+        "qty": 1000,
+        "price": 1.3844
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 2500,
+    "description": "-40\u2103~+150\u2103@(TJ) 1 10.5uA 1A 1MHz 6V~100V Adjustable Buck Buck Built-in Yes SO-8-EP DC-DC Converters ROHS",
+    "url": "https://www.lcsc.com/product-detail/dc-dc-converters_texas-instruments-lm5164ddar_C477928.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2410121943_Texas-Instruments-LM5164DDAR_C477928.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+150\u2103@(TJ)"
+      },
+      {
+        "name": "Function",
+        "value": "Step-down type"
+      },
+      {
+        "name": "Synchronous Rectifier",
+        "value": "Yes"
+      },
+      {
+        "name": "Frequency - Switching",
+        "value": "1MHz"
+      },
+      {
+        "name": "Voltage - Supply",
+        "value": "6V~100V"
+      },
+      {
+        "name": "Output Type",
+        "value": "Adjustable"
+      },
+      {
+        "name": "Output Current",
+        "value": "1A"
+      },
+      {
+        "name": "Quiescent Current",
+        "value": "10.5uA"
+      },
+      {
+        "name": "Features",
+        "value": "Overcurrent Protection\u3001Light load efficient mode\u3001Operating status indication\u3001Cycle-by-cycle current limiting\u3001Built-in LDO regulator"
+      },
+      {
+        "name": "Switch tube (built-in/external)",
+        "value": "Built-in"
+      },
+      {
+        "name": "Topology",
+        "value": "Buck"
+      },
+      {
+        "name": "Number of Outputs",
+        "value": "1"
+      }
+    ]
+  },
+  "C107043": {
+    "lcsc": "C107043",
+    "name": "YAGEO CC0603JRNPO9BN222",
+    "model": "CC0603JRNPO9BN222",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 99964,
+    "type": "Extended",
+    "price": 0.017,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.017
+      },
+      {
+        "qty": 500,
+        "price": 0.0133
+      },
+      {
+        "qty": 1500,
+        "price": 0.0113
+      },
+      {
+        "qty": 4000,
+        "price": 0.0101
+      },
+      {
+        "qty": 24000,
+        "price": 0.009
+      },
+      {
+        "qty": 48000,
+        "price": 0.0084
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "2.2nF 50V NP0 \u00b15% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn222_C107043.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRNPO9BN222_C107043.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b15%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "2.2nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "NP0"
+      }
+    ]
+  },
+  "C2047750": {
+    "lcsc": "C2047750",
+    "name": "BOURNS SRP7050TA-680M",
+    "model": "SRP7050TA-680M",
+    "brand": "BOURNS",
+    "package": "SMD,6.6x7.3mm",
+    "category": "Power Inductors",
+    "stock": 39,
+    "type": "Extended",
+    "price": 1.6711,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 1.6711
+      },
+      {
+        "qty": 10,
+        "price": 1.3893
+      },
+      {
+        "qty": 30,
+        "price": 1.2346
+      },
+      {
+        "qty": 100,
+        "price": 1.0603
+      },
+      {
+        "qty": 500,
+        "price": 0.9821
+      },
+      {
+        "qty": 800,
+        "price": 0.9479
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 800,
+    "description": "1.2A 2A 386m\u03a9 68uH \u00b120% SMD,6.6x7.3mm Power Inductors ROHS",
+    "url": "https://www.lcsc.com/product-detail/power-inductors_bourns-srp7050ta-680m_C2047750.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2108040930_BOURNS-SRP7050TA-680M_C2047750.pdf",
+    "attributes": [
+      {
+        "name": "Current - Saturation(Isat)",
+        "value": "2A"
+      },
+      {
+        "name": "Inductance",
+        "value": "68uH"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b120%"
+      },
+      {
+        "name": "Current Rating",
+        "value": "1.2A"
+      },
+      {
+        "name": "DC Resistance(DCR)",
+        "value": "386m\u03a9"
+      }
+    ]
+  },
+  "C137763": {
+    "lcsc": "C137763",
+    "name": "YAGEO RC0603FR-07249KL",
+    "model": "RC0603FR-07249KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 37780,
+    "type": "Extended",
+    "price": 0.0036,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0036
+      },
+      {
+        "qty": 1000,
+        "price": 0.0032
+      },
+      {
+        "qty": 5000,
+        "price": 0.003
+      },
+      {
+        "qty": 10000,
+        "price": 0.0029
+      },
+      {
+        "qty": 50000,
+        "price": 0.0028
+      },
+      {
+        "qty": 50200,
+        "price": 0.0028
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 249k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-07249kl_C137763.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07249KL_C137763.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "249k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C98220": {
+    "lcsc": "C98220",
+    "name": "YAGEO RC0603FR-0710KL",
+    "model": "RC0603FR-0710KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 9401072,
+    "type": "Extended",
+    "price": 0.0034,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0034
+      },
+      {
+        "qty": 1000,
+        "price": 0.0025
+      },
+      {
+        "qty": 5000,
+        "price": 0.0022
+      },
+      {
+        "qty": 10000,
+        "price": 0.0018
+      },
+      {
+        "qty": 50000,
+        "price": 0.0017
+      },
+      {
+        "qty": 50200,
+        "price": 0.0017
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 10k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0710kl_C98220.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "10k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C14675": {
+    "lcsc": "C14675",
+    "name": "YAGEO RC0603FR-07100KL",
+    "model": "RC0603FR-07100KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 8217333,
+    "type": "Extended",
+    "price": 0.0026,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0026
+      },
+      {
+        "qty": 1000,
+        "price": 0.0021
+      },
+      {
+        "qty": 5000,
+        "price": 0.0019
+      },
+      {
+        "qty": 10000,
+        "price": 0.0017
+      },
+      {
+        "qty": 50000,
+        "price": 0.0016
+      },
+      {
+        "qty": 50200,
+        "price": 0.0016
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100k\u03a9 100mW 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-07100kl_C14675.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809281124_YAGEO-RC0603FR-07100KL_C14675.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "100k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C273765": {
+    "lcsc": "C273765",
+    "name": "YAGEO RC0603FR-07453KL",
+    "model": "RC0603FR-07453KL",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 11092,
+    "type": "Extended",
+    "price": 0.0063,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0063
+      },
+      {
+        "qty": 1000,
+        "price": 0.0052
+      },
+      {
+        "qty": 5000,
+        "price": 0.0046
+      },
+      {
+        "qty": 10000,
+        "price": 0.0043
+      },
+      {
+        "qty": 50000,
+        "price": 0.0039
+      },
+      {
+        "qty": 50200,
+        "price": 0.0039
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 453k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-07453kl_C273765.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07453KL_C273765.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "453k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C114624": {
+    "lcsc": "C114624",
+    "name": "YAGEO RC0603FR-0749K9L",
+    "model": "RC0603FR-0749K9L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 102128,
+    "type": "Extended",
+    "price": 0.0052,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0052
+      },
+      {
+        "qty": 1000,
+        "price": 0.0046
+      },
+      {
+        "qty": 5000,
+        "price": 0.0042
+      },
+      {
+        "qty": 10000,
+        "price": 0.0041
+      },
+      {
+        "qty": 50000,
+        "price": 0.0039
+      },
+      {
+        "qty": 50200,
+        "price": 0.0039
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 49.9k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0749k9l_C114624.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0749K9L_C114624.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "49.9k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C77036": {
+    "lcsc": "C77036",
+    "name": "muRata GRM1885C1H332JA01D",
+    "model": "GRM1885C1H332JA01D",
+    "brand": "Murata Electronics",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 59072,
+    "type": "Extended",
+    "price": 0.0245,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0245
+      },
+      {
+        "qty": 500,
+        "price": 0.0202
+      },
+      {
+        "qty": 1500,
+        "price": 0.0178
+      },
+      {
+        "qty": 4000,
+        "price": 0.0148
+      },
+      {
+        "qty": 24000,
+        "price": 0.0135
+      },
+      {
+        "qty": 48000,
+        "price": 0.0129
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "3.3nF 50V C0G \u00b15% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_murata-electronics-grm1885c1h332ja01d_C77036.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C1H332JA01D_C77036.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b15%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "3.3nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "C0G"
+      }
+    ]
+  },
+  "C107053": {
+    "lcsc": "C107053",
+    "name": "YAGEO CC0603JRNPO9BN560",
+    "model": "CC0603JRNPO9BN560",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 673315,
+    "type": "Extended",
+    "price": 0.0057,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0057
+      },
+      {
+        "qty": 1000,
+        "price": 0.0048
+      },
+      {
+        "qty": 4000,
+        "price": 0.0044
+      },
+      {
+        "qty": 8000,
+        "price": 0.0042
+      },
+      {
+        "qty": 48000,
+        "price": 0.0039
+      },
+      {
+        "qty": 48200,
+        "price": 0.0039
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "50V 56pF NP0 \u00b15% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn560_C107053.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2111251230_YAGEO-CC0603JRNPO9BN560_C107053.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b15%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "56pF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "NP0"
+      }
+    ]
+  },
+  "C2864436": {
+    "lcsc": "C2864436",
+    "name": "TI TPS7A2450DBVR",
+    "model": "TPS7A2450DBVR",
+    "brand": "Texas Instruments",
+    "package": "SOT-23-5",
+    "category": "Voltage Regulators - Linear, Low Drop Out (LDO) Regulators",
+    "stock": 1587,
+    "type": "Extended",
+    "price": 0.2952,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.2952
+      },
+      {
+        "qty": 50,
+        "price": 0.238
+      },
+      {
+        "qty": 150,
+        "price": 0.1867
+      },
+      {
+        "qty": 500,
+        "price": 0.1562
+      },
+      {
+        "qty": 3000,
+        "price": 0.1426
+      },
+      {
+        "qty": 6000,
+        "price": 0.1344
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3000,
+    "description": "-40\u2103~+125\u2103@(Tj) 1 18V 200mA 250mV@(200mA) 2uA 300uVrms 5V 70dB@(100Hz) Fixed Over Current Protection\u3001Thermal Shutdown Positive SOT-23-5 Voltage Regulators - Linear, Low Drop Out (LDO) Regulators ROHS",
+    "url": "https://www.lcsc.com/product-detail/voltage-regulators-linear-low-drop-out-ldo-regulators_texas-instruments-tps7a2450dbvr_C2864436.html",
+    "datasheet": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212330_Texas-Instruments-TPS7A2450DBVR_C2864436.pdf",
+    "attributes": [
+      {
+        "name": "Power Supply Rejection Ratio (PSRR)",
+        "value": "70dB@(100Hz)"
+      },
+      {
+        "name": "standby current",
+        "value": "2uA"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+125\u2103@(Tj)"
+      },
+      {
+        "name": "Noise",
+        "value": "300uVrms"
+      },
+      {
+        "name": "Output Type",
+        "value": "Fixed"
+      },
+      {
+        "name": "Voltage - Supply",
+        "value": "18V"
+      },
+      {
+        "name": "Output Current",
+        "value": "200mA"
+      },
+      {
+        "name": "Output Configuration",
+        "value": "Positive"
+      },
+      {
+        "name": "Features",
+        "value": "Over Current Protection\u3001Thermal shutdown\u3001Enable control\u3001Input under-voltage protection"
+      },
+      {
+        "name": "Output Voltage",
+        "value": "5V"
+      },
+      {
+        "name": "Voltage Dropout",
+        "value": "250mV@(200mA)"
+      },
+      {
+        "name": "Number of Outputs",
+        "value": "1"
+      }
+    ]
+  },
+  "C359074": {
+    "lcsc": "C359074",
+    "name": "EVERLIGHT EL357N(A)(TA)-VG",
+    "model": "EL357N(A)(TA)-VG",
+    "brand": "Everlight Elec",
+    "package": "SOP-4-2.54mm",
+    "category": "Transistor, Photovoltaic Output Optoisolators",
+    "stock": 19340,
+    "type": "Extended",
+    "price": 0.1232,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.1232
+      },
+      {
+        "qty": 50,
+        "price": 0.0965
+      },
+      {
+        "qty": 150,
+        "price": 0.0831
+      },
+      {
+        "qty": 500,
+        "price": 0.0732
+      },
+      {
+        "qty": 3500,
+        "price": 0.0652
+      },
+      {
+        "qty": 7000,
+        "price": 0.0611
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3500,
+    "description": "-55\u2103~+110\u2103 1 1.2V 100mV@20mA,1mA 200mW 3.75kV 3us 4us 50% 50mA 50mA 600% 6V 80V DC Phototransistor SOP-4-2.54mm Transistor, Photovoltaic Output Optoisolators ROHS",
+    "url": "https://www.lcsc.com/product-detail/transistor-photovoltaic-output-optoisolators_everlight-elec-el357n-a-ta-vg_C359074.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+110\u2103"
+      },
+      {
+        "name": "Load Voltage",
+        "value": "80V"
+      },
+      {
+        "name": "Forward Current(If)",
+        "value": "50mA"
+      },
+      {
+        "name": "Rise time",
+        "value": "3us"
+      },
+      {
+        "name": "Output Type",
+        "value": "Phototransistor"
+      },
+      {
+        "name": "Output Current",
+        "value": "50mA"
+      },
+      {
+        "name": "Isolation Voltage(Vrms)",
+        "value": "3.75kV"
+      },
+      {
+        "name": "Reverse Voltage",
+        "value": "6V"
+      },
+      {
+        "name": "Total Power Dissipation(Pd)",
+        "value": "200mW"
+      },
+      {
+        "name": "Current Transfer Ratio (CTR) Maximum/Saturation Value",
+        "value": "600%"
+      },
+      {
+        "name": "Number of Outputs",
+        "value": "1"
+      },
+      {
+        "name": "Input type",
+        "value": "DC"
+      },
+      {
+        "name": "Current Transfer Ratio (CTR) Minimum",
+        "value": "50%"
+      },
+      {
+        "name": "Vce Saturation(VCE(sat))",
+        "value": "100mV@20mA,1mA"
+      },
+      {
+        "name": "Fall time",
+        "value": "4us"
+      },
+      {
+        "name": "Voltage - Forward(Vf)",
+        "value": "1.2V"
+      }
+    ]
+  },
+  "C23892": {
+    "lcsc": "C23892",
+    "name": "TI TL431AIDBZR",
+    "model": "TL431AIDBZR",
+    "brand": "Texas Instruments",
+    "package": "SOT-23-3",
+    "category": "Voltage Reference",
+    "stock": 139650,
+    "type": "Extended",
+    "price": 0.0803,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0803
+      },
+      {
+        "qty": 50,
+        "price": 0.0641
+      },
+      {
+        "qty": 150,
+        "price": 0.0556
+      },
+      {
+        "qty": 500,
+        "price": 0.0486
+      },
+      {
+        "qty": 3000,
+        "price": 0.0461
+      },
+      {
+        "qty": 6000,
+        "price": 0.0445
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 3000,
+    "description": "-40\u2103~+85\u2103 100mA 2.495V~36V 700uA Adjustable Parallel \u00b11% SOT-23-3 Voltage Reference ROHS",
+    "url": "https://www.lcsc.com/product-detail/voltage-reference_texas-instruments-tl431aidbzr_C23892.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+85\u2103"
+      },
+      {
+        "name": "Output Type",
+        "value": "Adjustable"
+      },
+      {
+        "name": "Output Current",
+        "value": "100mA"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Minimum Cathode Current for Regulation",
+        "value": "700uA"
+      },
+      {
+        "name": "Output Voltage",
+        "value": "2.495V~36V"
+      },
+      {
+        "name": "Reference Type",
+        "value": "Parallel"
+      }
+    ]
+  },
+  "C114668": {
+    "lcsc": "C114668",
+    "name": "YAGEO RC0603FR-071K5L",
+    "model": "RC0603FR-071K5L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 890522,
+    "type": "Extended",
+    "price": 0.0035,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0035
+      },
+      {
+        "qty": 1000,
+        "price": 0.0027
+      },
+      {
+        "qty": 5000,
+        "price": 0.0023
+      },
+      {
+        "qty": 10000,
+        "price": 0.0021
+      },
+      {
+        "qty": 50000,
+        "price": 0.0018
+      },
+      {
+        "qty": 50200,
+        "price": 0.0018
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 1.5k\u03a9 100mW 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-071k5l_C114668.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "1.5k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C137736": {
+    "lcsc": "C137736",
+    "name": "YAGEO RC0603FR-0738K3L",
+    "model": "RC0603FR-0738K3L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 3748,
+    "type": "Extended",
+    "price": 0.0035,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0035
+      },
+      {
+        "qty": 1000,
+        "price": 0.0029
+      },
+      {
+        "qty": 5000,
+        "price": 0.0026
+      },
+      {
+        "qty": 10000,
+        "price": 0.0024
+      },
+      {
+        "qty": 50000,
+        "price": 0.0022
+      },
+      {
+        "qty": 50200,
+        "price": 0.0022
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 38.3k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0738k3l_C137736.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0738K3L_C137736.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "38.3k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C106246": {
+    "lcsc": "C106246",
+    "name": "YAGEO CC0603JRNPO9BN102",
+    "model": "CC0603JRNPO9BN102",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+    "stock": 1638282,
+    "type": "Extended",
+    "price": 0.0053,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0053
+      },
+      {
+        "qty": 500,
+        "price": 0.0041
+      },
+      {
+        "qty": 1500,
+        "price": 0.0035
+      },
+      {
+        "qty": 4000,
+        "price": 0.0029
+      },
+      {
+        "qty": 24000,
+        "price": 0.0027
+      },
+      {
+        "qty": 48000,
+        "price": 0.0026
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 4000,
+    "description": "1nF 50V NP0 \u00b15% 0603 Multilayer Ceramic Capacitors MLCC - SMD/SMT ROHS",
+    "url": "https://www.lcsc.com/product-detail/multilayer-ceramic-capacitors-mlcc-smd-smt_yageo-cc0603jrnpo9bn102_C106246.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_1811021411_YAGEO-CC0603JRNPO9BN102_C106246.pdf",
+    "attributes": [
+      {
+        "name": "Voltage Rating",
+        "value": "50V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b15%"
+      },
+      {
+        "name": "Capacitance",
+        "value": "1nF"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "NP0"
+      }
+    ]
+  },
+  "C137720": {
+    "lcsc": "C137720",
+    "name": "YAGEO RC0603FR-0743K2L",
+    "model": "RC0603FR-0743K2L",
+    "brand": "YAGEO",
+    "package": "0603",
+    "category": "Chip Resistor - Surface Mount",
+    "stock": 15283,
+    "type": "Extended",
+    "price": 0.0055,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.0055
+      },
+      {
+        "qty": 1000,
+        "price": 0.0048
+      },
+      {
+        "qty": 5000,
+        "price": 0.0045
+      },
+      {
+        "qty": 10000,
+        "price": 0.0043
+      },
+      {
+        "qty": 50000,
+        "price": 0.004
+      },
+      {
+        "qty": 50200,
+        "price": 0.004
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 5000,
+    "description": "-55\u2103~+155\u2103 100mW 43.2k\u03a9 75V Thick Film Resistor \u00b11% \u00b1100ppm/\u2103 0603 Chip Resistor - Surface Mount ROHS",
+    "url": "https://www.lcsc.com/product-detail/chip-resistor-surface-mount_yageo-rc0603fr-0743k2l_C137720.html",
+    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0743K2L_C137720.pdf",
+    "attributes": [
+      {
+        "name": "Resistance",
+        "value": "43.2k\u03a9"
+      },
+      {
+        "name": "Operating Temperature",
+        "value": "-55\u2103~+155\u2103"
+      },
+      {
+        "name": "Power(Watts)",
+        "value": "100mW"
+      },
+      {
+        "name": "Type",
+        "value": "Thick Film Resistor"
+      },
+      {
+        "name": "Voltage-Supply(Max)",
+        "value": "75V"
+      },
+      {
+        "name": "Tolerance",
+        "value": "\u00b11%"
+      },
+      {
+        "name": "Temperature Coefficient",
+        "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  }
+}

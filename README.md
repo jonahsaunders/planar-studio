@@ -9,7 +9,7 @@ KiCad. Planar Studio reads your board's stack, calculates electrical estimates,
 and places the generated copper into the PCB as one undoable operation.
 
 **[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
-· [Install](#install) · [Guides](#guides) · [Flyback example](#5-w-planar-flyback-example)
+· [Install](#install) · [Guides](#guides) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example)
 
 [![Five workspaces: inductors, transformers, PCB motors, filters and antennas](docs/feature-overview.svg)](docs/gallery.md)
 
@@ -103,6 +103,25 @@ and magnetic qualification remain open.
 [Explore the board and schematic](examples/planar-flyback-5w/README.md)
 · [Review package](examples/PS-FLYBACK-5W-A5-review-package.zip)
 · [Validation record](examples/planar-flyback-5w/VALIDATION.md)
+
+## 60 W GaN planar LLC example
+
+[![KiCad render of PS-GAN-60W with planar magnetics, XT30 ports and M3 mounting holes](examples/planar-gan-60w/Board-perspective.png)](examples/planar-gan-60w/README.md)
+
+A **48 V nominal to isolated 12 V / 5 A target** using an integrated GaN half
+bridge, silicon synchronous rectifiers and an eight-layer PCB transformer.
+The 80 × 58 mm chamfered board has all electronics on top, polarized XT30 ports,
+and the flyback example's exposed-substrate M3 hole geometry on a 71 × 49 mm
+pattern. The accompanying MIT PER study explains the layout decisions.
+
+**Unbuilt engineering prototype.** ERC, DRC, connectivity, assembly-file agreement
+and a portable rebuild pass. Factory DFM, ferrite installation and electrical,
+magnetic and thermal qualification remain open. 60 W is not a measured result.
+
+[Explore the native KiCad example](examples/planar-gan-60w/README.md)
+· [KiCad package](examples/PS-GAN-60W-A1-KiCad.zip)
+· [PER design study](examples/planar-gan-60w/PER-DESIGN-STUDY.md)
+· [Validation record](examples/planar-gan-60w/VALIDATION.md)
 
 ## Guides
 

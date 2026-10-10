@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "filename": "PS-GAN-60W.kicad_pro",
+    "version": 1
+  },
+  "board": {
+    "design_settings": {
+      "rules": {
+        "min_clearance": 0.15,
+        "min_track_width": 0.16,
+        "min_via_diameter": 0.6,
+        "min_through_hole_diameter": 0.3,
+        "min_hole_to_hole": 0.25,
+        "min_copper_edge_clearance": 0.25
+      },
+      "defaults": {
+        "board_outline_line_width": 0.05
+      }
+    }
+  },
+  "net_settings": {
+    "classes": [
+      {
+        "name": "Default",
+        "clearance": 0.2,
+        "track_width": 0.25,
+        "via_diameter": 0.6,
+        "via_drill": 0.3
+      }
+    ],
+    "meta": {
+      "version": 3
+    }
+  },
+  "pcbnew": {
+    "page_layout_descr_file": ""
+  },
+  "schematic": {},
+  "text_variables": {
+    "DESIGN_STATUS": "ENGINEERING REVIEW ONLY"
+  }
+}

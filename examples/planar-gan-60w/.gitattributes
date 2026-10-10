@@ -1,0 +1,13 @@
+# Preserve published files byte-for-byte so checksums survive every checkout.
+* -text
+*.png binary
+*.pdf binary
+*.zip binary
+*.step linguist-generated=true -whitespace
+*.wrl linguist-generated=true -whitespace
+evidence/** linguist-generated=true -whitespace
+manufacturing-prototype/gerbers/** linguist-generated=true -whitespace
+*.svg linguist-generated=true -whitespace
+*.html linguist-generated=true
+kicad/** linguist-generated=true -whitespace
+planar-studio/** linguist-generated=true -whitespace

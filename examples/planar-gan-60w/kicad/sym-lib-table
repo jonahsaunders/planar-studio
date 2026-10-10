@@ -1,0 +1,1 @@
+(sym_lib_table (lib (name "PS") (type "KiCad") (uri "${KIPRJMOD}/PS.kicad_sym") (options "") (descr "Project-local, vendor-pin-checked symbols")))

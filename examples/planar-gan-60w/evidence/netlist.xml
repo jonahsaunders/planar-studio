@@ -1,0 +1,3436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>kicad/PS-GAN-60W.kicad_sch</source>
+    <date>2026-10-10T12:17:57</date>
+    <tool>Eeschema 10.0.6</tool>
+    <textvar name="DESIGN_STATUS">ENGINEERING REVIEW ONLY</textvar>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>PS-GAN-60W: planar LLC engineering prototype</title>
+        <company>Planar Studio / KiStack workflow</company>
+        <rev>A1-review</rev>
+        <date>2026-10-10</date>
+        <source>PS-GAN-60W.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>2.2uF/100V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER72A225KA35L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86054</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER72A225KA35L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86054"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b17adb0e-58bb-5976-9859-835047c4f4f4</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C2">
+      <value>2.2uF/100V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER72A225KA35L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86054</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER72A225KA35L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86054"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e5b6842f-4d46-5b73-98a5-cb17605b85a1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C3">
+      <value>100nF/100V C0G</value>
+      <footprint>PS:C_1206_3216Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM31C5C2A104JA01L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C405303</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1206_3216Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM31C5C2A104JA01L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C405303"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>68b1f730-cf2e-54c9-8014-2ab118b61330</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C4">
+      <value>100nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71H104KA93D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77055</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71H104KA93D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77055"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b890a026-3f81-5629-9d5c-3fd302367137</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C5">
+      <value>1uF/25V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71E105KA12D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86020</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71E105KA12D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86020"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>185c9e76-2d36-5619-bea5-b42a9d73f5e0</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C6">
+      <value>100nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71H104KA93D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77055</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71H104KA93D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77055"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6678e3ee-e149-54af-a7f5-d2d58dd0a3b6</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C7">
+      <value>100nF/100V C0G</value>
+      <footprint>PS:C_1206_3216Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM31C5C2A104JA01L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C405303</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1206_3216Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM31C5C2A104JA01L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C405303"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>97a4d5c2-1df2-575e-91bf-a77cd8e2514f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C8">
+      <value>100nF/100V C0G</value>
+      <footprint>PS:C_1206_3216Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM31C5C2A104JA01L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C405303</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1206_3216Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM31C5C2A104JA01L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C405303"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eee00847-5fd7-5e4c-994f-6c1e5d4dbc8e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C9">
+      <value>100nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71H104KA93D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77055</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2410010301_Murata-Electronics-GRM188R71H104KA93D_C77055.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71H104KA93D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77055"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cc30f079-5ccb-56c6-adb3-90ff054f9bf3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C10">
+      <value>1uF/25V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71E105KA12D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86020</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71E105KA12D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86020"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8e722f98-7c15-5329-a2c5-8ea071eb92a1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C11">
+      <value>2.2uF/25V</value>
+      <footprint>PS:C_0805_2012Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM21BR71E225KE11L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77081</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0805_2012Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM21BR71E225KE11L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77081"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5d727815-036e-562d-a241-f60a3333addb</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C12">
+      <value>1uF/25V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71E105KA12D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86020</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71E105KA12D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86020"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6ce8796a-1598-5f41-9cd9-550f81f12382</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C13">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note">88uF nameplate; DC bias derating must be measured/verified</field>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value="88uF nameplate; DC bias derating must be measured/verified"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a1a1ce5c-a472-5ae3-9113-e19e758a0310</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C14">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note">88uF nameplate; DC bias derating must be measured/verified</field>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value="88uF nameplate; DC bias derating must be measured/verified"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>26c8256d-7552-5dd7-af4f-57171ca01a51</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C15">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note">88uF nameplate; DC bias derating must be measured/verified</field>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value="88uF nameplate; DC bias derating must be measured/verified"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7c552bc5-9c30-5b95-9269-fef48c1a746b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C16">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note">88uF nameplate; DC bias derating must be measured/verified</field>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value="88uF nameplate; DC bias derating must be measured/verified"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>07ef90eb-0365-5ddc-aa5f-9aef21b73045</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C17">
+      <value>10nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB103</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100042</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB103"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100042"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ba007562-3658-5db2-bc67-576ab41e265b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C18">
+      <value>10nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB103</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100042</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB103"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100042"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ba53e9ab-b0d7-5e26-828b-223f16c6d899</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C19">
+      <value>2.2uF/100V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER72A225KA35L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86054</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Murata-Electronics-GRM32ER72A225KA35L_C86054.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER72A225KA35L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86054"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d77ddb33-228d-5538-a9f6-38ae0256b937</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C20">
+      <value>2.2nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRNPO9BN222_C107043.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603JRNPO9BN222</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C107043</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603JRNPO9BN222_C107043.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603JRNPO9BN222"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C107043"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5d4fb874-194c-5c34-b93a-9b32bc6218d3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C21">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5b060099-3775-504d-9a3e-e8f189cca8b3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C22">
+      <value>22uF/25V</value>
+      <footprint>PS:C_1210_3225Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM32ER71E226KE15L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C21397</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_1210_3225Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2308111542_Murata-Electronics-GRM32ER71E226KE15L_C21397.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM32ER71E226KE15L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C21397"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2db62e68-4697-5c20-b070-884dcfb7072f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C23">
+      <value>3.3nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C1H332JA01D_C77036.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM1885C1H332JA01D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77036</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM1885C1H332JA01D_C77036.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM1885C1H332JA01D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77036"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2663ccf8-ca83-5919-9f9b-ed8f36e7bb5b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C24">
+      <value>56pF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2111251230_YAGEO-CC0603JRNPO9BN560_C107053.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603JRNPO9BN560</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C107053</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2111251230_YAGEO-CC0603JRNPO9BN560_C107053.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603JRNPO9BN560"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C107053"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>20d7918c-a4cc-5fe9-bb5d-50ba4ca4aaae</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C25">
+      <value>1uF/25V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM188R71E105KA12D</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C86020</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM188R71E105KA12D"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C86020"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>03048213-da97-5657-9c2c-40c590b05bce</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C26">
+      <value>2.2uF/25V</value>
+      <footprint>PS:C_0805_2012Metric</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf</datasheet>
+      <fields>
+        <field name="MPN">GRM21BR71E225KE11L</field>
+        <field name="Manufacturer">Murata Electronics</field>
+        <field name="LCSC">C77081</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0805_2012Metric</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM21BR71E225KE11L_C77081.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="GRM21BR71E225KE11L"/>
+      <property name="Manufacturer" value="Murata Electronics"/>
+      <property name="LCSC" value="C77081"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c7f552da-9930-591d-a04d-e2d49c71cd38</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C27">
+      <value>10nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB103</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100042</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB103"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100042"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cd56444b-811a-5756-9c6f-9562493518bf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C28">
+      <value>1nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1811021411_YAGEO-CC0603JRNPO9BN102_C106246.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603JRNPO9BN102</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C106246</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1811021411_YAGEO-CC0603JRNPO9BN102_C106246.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603JRNPO9BN102"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C106246"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>11922710-c60b-5702-bca5-e9202fe13060</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C29">
+      <value>10nF/50V</value>
+      <footprint>PS:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB103</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100042</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-CC0603KRX7R9BB103_C100042.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB103"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100042"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cfebc1ed-d5e3-58c8-8a6b-bdb445214a9b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D1">
+      <value>SMAJ54A</value>
+      <footprint>PS:SMA_L4.4-W2.6-LS5.0-RD</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-SMAJ54A-13-F_C134996.pdf</datasheet>
+      <fields>
+        <field name="MPN">SMAJ54A-13-F</field>
+        <field name="Manufacturer">Diodes Incorporated</field>
+        <field name="LCSC">C134996</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SMA_L4.4-W2.6-LS5.0-RD</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Diodes-Incorporated-SMAJ54A-13-F_C134996.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="D" description="Bidirectional transient-voltage-suppression diode"/>
+      <property name="MPN" value="SMAJ54A-13-F"/>
+      <property name="Manufacturer" value="Diodes Incorporated"/>
+      <property name="LCSC" value="C134996"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="diode TVS thyrector"/>
+      <property name="ki_fp_filters" value="TO-???* *_Diode_* *SingleDiode* D_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b8ea8bf0-b30b-5bc5-abae-425402ab21ae</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="D2">
+      <value>BAT54SLT1G</value>
+      <footprint>PS:SOT-23_L2.9-W1.3-P1.90-LS2.4-BR</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1810301516_onsemi-BAT54SLT1G_C19726.pdf</datasheet>
+      <fields>
+        <field name="MPN">BAT54SLT1G</field>
+        <field name="Manufacturer">onsemi</field>
+        <field name="LCSC">C19726</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOT-23_L2.9-W1.3-P1.90-LS2.4-BR</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1810301516_onsemi-BAT54SLT1G_C19726.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="BAT54SLT1G" description="BAT54SLT1G"/>
+      <property name="MPN" value="BAT54SLT1G"/>
+      <property name="Manufacturer" value="onsemi"/>
+      <property name="LCSC" value="C19726"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="Schottky Barrier Diodes (SBD)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1dde8af3-3c9b-5b23-82d9-db0927a3cc38</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="3"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="F1">
+      <value>2A / 63V</value>
+      <footprint>PS:F1206</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf</datasheet>
+      <fields>
+        <field name="MPN">SF-1206F200-2</field>
+        <field name="Manufacturer">BOURNS</field>
+        <field name="LCSC">C719183</field>
+        <field name="Design_note">Fuse does not guarantee semiconductor protection</field>
+        <field name="Footprint">PS:F1206</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SF-1206F200-2_C719183.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="F" description="Fuse, small symbol"/>
+      <property name="MPN" value="SF-1206F200-2"/>
+      <property name="Manufacturer" value="BOURNS"/>
+      <property name="LCSC" value="C719183"/>
+      <property name="Design_note" value="Fuse does not guarantee semiconductor protection"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="fuse"/>
+      <property name="ki_fp_filters" value="*Fuse*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6c6a9b76-a57a-5b1b-bc7d-4087b1b9a0bf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J1">
+      <value>XT30 48V INPUT</value>
+      <footprint>PS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf</datasheet>
+      <fields>
+        <field name="MPN">XT30PW-M30.G.Y</field>
+        <field name="Manufacturer">Changzhou Amass Elec</field>
+        <field name="LCSC">C431092</field>
+        <field name="Design_note">AMASS XT30PW-M30.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top</field>
+        <field name="Footprint">PS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Power_Port" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="XT30PW-M30.G.Y"/>
+      <property name="Manufacturer" value="Changzhou Amass Elec"/>
+      <property name="LCSC" value="C431092"/>
+      <property name="Design_note" value="AMASS XT30PW-M30.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>70303932-8eaf-5ebc-9f7d-cb459de1e7cf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J2">
+      <value>XT30 12V OUTPUT</value>
+      <footprint>PS:AMASS_XT30PW-F_1x02_P2.50mm_Horizontal</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf</datasheet>
+      <fields>
+        <field name="MPN">XT30PW-F20.G.Y</field>
+        <field name="Manufacturer">Changzhou Amass Elec</field>
+        <field name="LCSC">C2913282</field>
+        <field name="Design_note">AMASS XT30PW-F20.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top</field>
+        <field name="Footprint">PS:AMASS_XT30PW-F_1x02_P2.50mm_Horizontal</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Power_Port" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="MPN" value="XT30PW-F20.G.Y"/>
+      <property name="Manufacturer" value="Changzhou Amass Elec"/>
+      <property name="LCSC" value="C2913282"/>
+      <property name="Design_note" value="AMASS XT30PW-F20.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c4bd17e7-b338-5d85-909a-1504319baace</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="L1">
+      <value>3.3uH</value>
+      <footprint>PS:L_Bourns_SRP5030T</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SRP5030T-3R3M_C189931.pdf</datasheet>
+      <fields>
+        <field name="MPN">SRP5030T-3R3M</field>
+        <field name="Manufacturer">BOURNS</field>
+        <field name="LCSC">C189931</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:L_Bourns_SRP5030T</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_BOURNS-SRP5030T-3R3M_C189931.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="L" description="Inductor, small symbol"/>
+      <property name="MPN" value="SRP5030T-3R3M"/>
+      <property name="Manufacturer" value="BOURNS"/>
+      <property name="LCSC" value="C189931"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0420ab65-f423-5dd7-bdf3-8815c45bfb68</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="L2">
+      <value>68uH</value>
+      <footprint>PS:L_Bourns_SRP7050TA</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2108040930_BOURNS-SRP7050TA-680M_C2047750.pdf</datasheet>
+      <fields>
+        <field name="MPN">SRP7050TA-680M</field>
+        <field name="Manufacturer">BOURNS</field>
+        <field name="LCSC">C2047750</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:L_Bourns_SRP7050TA</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2108040930_BOURNS-SRP7050TA-680M_C2047750.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="L" description="Inductor, small symbol"/>
+      <property name="MPN" value="SRP7050TA-680M"/>
+      <property name="Manufacturer" value="BOURNS"/>
+      <property name="LCSC" value="C2047750"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>76087d58-a744-5aa0-92ca-6c295c8caf6e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="Q1">
+      <value>CSD18543Q3A</value>
+      <footprint>PS:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</footprint>
+      <datasheet>https://www.ti.com/cn/lit/gpn/csd18543q3a</datasheet>
+      <fields>
+        <field name="MPN">CSD18543Q3A</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C840100</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</field>
+        <field name="Datasheet">https://www.ti.com/cn/lit/gpn/csd18543q3a</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="CSD18543Q3A" description=""/>
+      <property name="MPN" value="CSD18543Q3A"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C840100"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="MOSFETs"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4b7df1f0-25e1-533d-8e72-f10dc6466183</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+            <pin num="5"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="Q2">
+      <value>CSD18543Q3A</value>
+      <footprint>PS:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</footprint>
+      <datasheet>https://www.ti.com/cn/lit/gpn/csd18543q3a</datasheet>
+      <fields>
+        <field name="MPN">CSD18543Q3A</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C840100</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</field>
+        <field name="Datasheet">https://www.ti.com/cn/lit/gpn/csd18543q3a</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="CSD18543Q3A" description=""/>
+      <property name="MPN" value="CSD18543Q3A"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C840100"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="MOSFETs"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>418fcd74-6b1a-5df1-b54e-a8bcc9bd5e2f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="9"/>
+            <pin num="8"/>
+            <pin num="7"/>
+            <pin num="6"/>
+            <pin num="5"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R1">
+      <value>3.3kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-073K3L_C108078.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-073K3L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C108078</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-073K3L_C108078.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-073K3L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C108078"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>988fdeaa-9515-57b0-89a8-68bff15a3510</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R2">
+      <value>1.69kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K69L_C185356.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071K69L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C185356</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K69L_C185356.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071K69L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C185356"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>320f4a31-11f1-5356-9c66-24edc4c2848e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R3">
+      <value>750R</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07750RL_C114635.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07750RL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C114635</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07750RL_C114635.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-07750RL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C114635"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6f82a5d6-81da-53c2-8e26-b68e6510cddc</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R4">
+      <value>2.21kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-072K21L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C273748</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-072K21L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C273748"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3fb4c6d7-7dd2-5ae6-8452-478305a86c6a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R5">
+      <value>1kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C22548</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C22548"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4abb434b-ec07-550f-bb4c-ae673cf2590d</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R6">
+      <value>2.21kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-072K21L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C273748</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-072K21L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C273748"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>13a54aea-15d7-5482-8bb0-80fe92a82185</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R7">
+      <value>1kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C22548</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C22548"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8890613b-3123-5f61-b5ec-7c3a6e01945f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R8">
+      <value>15kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0715KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C114661</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0715KL_C114661.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0715KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C114661"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4d9252c8-81d4-5ab7-84a8-b01e44afe2de</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R9">
+      <value>2.21kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-072K21L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C273748</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072K21L_C273748.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-072K21L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C273748"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fc0a7b72-cd3c-5d62-8b6e-c6b18ed3ef51</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R10">
+      <value>2.2R</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072R2L_C112307.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-072R2L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C112307</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072R2L_C112307.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-072R2L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C112307"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>03ca5b27-b476-5778-9b57-9a7c02f36d26</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R11">
+      <value>2.2R</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072R2L_C112307.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-072R2L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C112307</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-072R2L_C112307.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-072R2L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C112307"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b493da84-9390-5ac6-a36e-3d4a30940b9b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R12">
+      <value>0R</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/2304140030_YAGEO-RC0603FR-070RL_C100044.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-070RL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100044</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://datasheet.lcsc.com/lcsc/2304140030_YAGEO-RC0603FR-070RL_C100044.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-070RL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100044"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9749c119-b2e8-53b1-9652-f1fb9eb5af2f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R13">
+      <value>0R</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://datasheet.lcsc.com/lcsc/2304140030_YAGEO-RC0603FR-070RL_C100044.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-070RL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C100044</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://datasheet.lcsc.com/lcsc/2304140030_YAGEO-RC0603FR-070RL_C100044.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-070RL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C100044"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f9e19862-585e-5ae0-aa00-af3694c89d47</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R14">
+      <value>249kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07249KL_C137763.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07249KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C137763</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07249KL_C137763.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-07249KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C137763"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d9b928f1-6c0a-5b89-92d0-731f9bd37acd</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R15">
+      <value>10kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0710KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C98220</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0710KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C98220"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b80958a6-b86c-50a6-aab7-4b39144f070f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R16">
+      <value>100kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1809281124_YAGEO-RC0603FR-07100KL_C14675.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07100KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C14675</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809281124_YAGEO-RC0603FR-07100KL_C14675.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-07100KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C14675"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8ae4b4e2-8ce2-5e30-8566-866965251875</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R17">
+      <value>453kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07453KL_C273765.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07453KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C273765</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07453KL_C273765.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-07453KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C273765"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ac5a9138-5278-5869-bfd2-b7e8b66defcd</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R18">
+      <value>49.9kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0749K9L_C114624.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0749K9L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C114624</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0749K9L_C114624.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0749K9L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C114624"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e8dbf122-2c5d-5006-b80a-be1ea954729b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R19">
+      <value>453kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07453KL_C273765.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-07453KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C273765</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-07453KL_C273765.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-07453KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C273765"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>37a9b4d7-d65e-5cab-a028-7df99bbd5f6e</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R20">
+      <value>1.5kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071K5L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C114668</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071K5L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C114668"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d7df510f-b6f2-537f-8840-7f82c6bd8e99</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R21">
+      <value>1kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C22548</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C22548"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e5c1e8e3-9e38-5308-b7c7-789b4c6c7248</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R22">
+      <value>38.3kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0738K3L_C137736.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0738K3L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C137736</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0738K3L_C137736.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0738K3L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C137736"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5df2b26d-e76f-5417-80f0-dcf2a501164f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R23">
+      <value>10kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0710KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C98220</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0710KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C98220"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c5379c19-2217-5980-93fa-d1e725455b82</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R24">
+      <value>10kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0710KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C98220</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0710KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C98220"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d44d1107-51a3-5604-abbe-e4791c2d137a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R25">
+      <value>1.5kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071K5L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C114668</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071K5L_C114668.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071K5L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C114668"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fd6c2b26-ea77-5711-a8d0-b324da17273a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R26">
+      <value>1kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-071KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C22548</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-071KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C22548"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>707a70b9-a2ff-5826-a6e0-660c14f11a61</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R27">
+      <value>43.2kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0743K2L_C137720.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0743K2L</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C137720</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0743K2L_C137720.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0743K2L"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C137720"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>18b2525a-48ea-588d-abfc-b791825473c7</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R28">
+      <value>10kR</value>
+      <footprint>PS:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</datasheet>
+      <fields>
+        <field name="MPN">RC0603FR-0710KL</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C98220</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="R" description="Resistor, small US symbol"/>
+      <property name="MPN" value="RC0603FR-0710KL"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C98220"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ca1db134-0a1f-523d-ab7c-85bd53198141</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="T1">
+      <value>4:2:2 / Lm 13.12uH</value>
+      <footprint>PS:Planar_ELP22_4_2_2</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">PCB winding; separate DigiKey core and clips; functional isolation only</field>
+        <field name="Footprint">PS:Planar_ELP22_4_2_2</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Planar_4_2_2" description=""/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="PCB winding; separate DigiKey core and clips; functional isolation only"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d7d2aed6-821f-59c9-9072-a4237ce8bfa3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="6"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="5"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP1">
+      <value>VIN</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4eec74a4-5443-51c1-ba6d-5db104a8725c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP2">
+      <value>PGND</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eb346886-e1fe-5546-bce2-2e7767198172</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP3">
+      <value>VOUT</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>eb6f2464-fea8-5595-b147-fab918dfcb95</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP4">
+      <value>SGND</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f3126c92-f5b8-5320-b19c-32bee18604bf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP5">
+      <value>V5</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>33ab8746-6951-5c1a-a75b-b644a17579d5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="TP6">
+      <value>AGND</value>
+      <footprint>PS:Probe_ENIG_1.2mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Design_note">Bare test pad; no paste or assembly item</field>
+        <field name="Footprint">PS:Probe_ENIG_1.2mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="Probe" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Design_note" value="Bare test pad; no paste or assembly item"/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>33e5b644-e098-5250-a52e-03e5b8ecba98</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U1">
+      <value>LMG2100R044RARR</value>
+      <footprint>PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044</footprint>
+      <datasheet>None</datasheet>
+      <fields>
+        <field name="MPN">LMG2100R044RARR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C22453052</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044</field>
+        <field name="Datasheet">None</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="LMG2100R044RARR" description=""/>
+      <property name="MPN" value="LMG2100R044RARR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C22453052"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>72017466-124f-5fa8-9067-35297088423c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="7"/>
+            <pin num="14"/>
+            <pin num="12"/>
+            <pin num="13"/>
+            <pin num="15"/>
+            <pin num="6"/>
+            <pin num="17"/>
+            <pin num="10"/>
+            <pin num="11"/>
+            <pin num="5"/>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="8"/>
+            <pin num="9"/>
+            <pin num="16"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U2">
+      <value>UCC25600DR</value>
+      <footprint>PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1810181612_Texas-Instruments-UCC25600DR_C130223.pdf</datasheet>
+      <fields>
+        <field name="MPN">UCC25600DR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C130223</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1810181612_Texas-Instruments-UCC25600DR_C130223.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="UCC25600DR" description=""/>
+      <property name="MPN" value="UCC25600DR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C130223"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>538f405a-b686-5f10-ba8a-d906a2133c10</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="5"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U3">
+      <value>UCC24624DR</value>
+      <footprint>PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</footprint>
+      <datasheet>https://www.ti.com/cn/lit/gpn/ucc24624</datasheet>
+      <fields>
+        <field name="MPN">UCC24624DR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C2862446</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</field>
+        <field name="Datasheet">https://www.ti.com/cn/lit/gpn/ucc24624</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="UCC24624DR" description=""/>
+      <property name="MPN" value="UCC24624DR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C2862446"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b2b91122-80af-55b9-bdf5-9b011f2bb9a3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="4"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="3"/>
+            <pin num="1"/>
+            <pin num="8"/>
+            <pin num="2"/>
+            <pin num="5"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U4">
+      <value>LM5164DDAR</value>
+      <footprint>PS:SO-8_L4.9-W3.9-P1.27-LS6.0-BL-EP</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2410121943_Texas-Instruments-LM5164DDAR_C477928.pdf</datasheet>
+      <fields>
+        <field name="MPN">LM5164DDAR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C477928</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SO-8_L4.9-W3.9-P1.27-LS6.0-BL-EP</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2410121943_Texas-Instruments-LM5164DDAR_C477928.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="LM5164DDAR" description=""/>
+      <property name="MPN" value="LM5164DDAR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C477928"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>228b5a80-5885-5750-a439-279d3b4d7e6b</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="4"/>
+            <pin num="1"/>
+            <pin num="9"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="5"/>
+            <pin num="6"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U5">
+      <value>TPS7A2450DBVR</value>
+      <footprint>PS:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR</footprint>
+      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212330_Texas-Instruments-TPS7A2450DBVR_C2864436.pdf</datasheet>
+      <fields>
+        <field name="MPN">TPS7A2450DBVR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C2864436</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR</field>
+        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212330_Texas-Instruments-TPS7A2450DBVR_C2864436.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="TPS7A2450DBVR" description=""/>
+      <property name="MPN" value="TPS7A2450DBVR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C2864436"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d5cc5018-49f2-50ec-a97d-3e981ae722e5</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="3"/>
+            <pin num="2"/>
+            <pin num="5"/>
+            <pin num="4"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U6">
+      <value>EL357N(A)(TA)-VG</value>
+      <footprint>PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</datasheet>
+      <fields>
+        <field name="MPN">EL357N(A)(TA)-VG</field>
+        <field name="Manufacturer">Everlight Elec</field>
+        <field name="LCSC">C359074</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="EL357N" description=""/>
+      <property name="MPN" value="EL357N(A)(TA)-VG"/>
+      <property name="Manufacturer" value="Everlight Elec"/>
+      <property name="LCSC" value="C359074"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="Optocouplers - Phototransistor Output"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a45f5fc4-257c-56e6-8994-6d9fead48683</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="4"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U7">
+      <value>TL431AIDBZR</value>
+      <footprint>PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</datasheet>
+      <fields>
+        <field name="MPN">TL431AIDBZR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C23892</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="TL431AIDBZR" description="Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)"/>
+      <property name="MPN" value="TL431AIDBZR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C23892"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="Voltage References"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>4e0c6fe3-a625-584d-b068-5b683576fc05</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="3"/>
+            <pin num="2"/>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U8">
+      <value>EL357N(A)(TA)-VG</value>
+      <footprint>PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</datasheet>
+      <fields>
+        <field name="MPN">EL357N(A)(TA)-VG</field>
+        <field name="Manufacturer">Everlight Elec</field>
+        <field name="LCSC">C359074</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="EL357N" description=""/>
+      <property name="MPN" value="EL357N(A)(TA)-VG"/>
+      <property name="Manufacturer" value="Everlight Elec"/>
+      <property name="LCSC" value="C359074"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="Optocouplers - Phototransistor Output"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9120c364-ea52-542a-adf4-b8bcf1e6d2bf</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+            <pin num="4"/>
+            <pin num="3"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U9">
+      <value>TL431AIDBZR</value>
+      <footprint>PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</datasheet>
+      <fields>
+        <field name="MPN">TL431AIDBZR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C23892</field>
+        <field name="Design_note"/>
+        <field name="Footprint">PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="PS" part="TL431AIDBZR" description="Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)"/>
+      <property name="MPN" value="TL431AIDBZR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C23892"/>
+      <property name="Design_note" value=""/>
+      <property name="Sheetname" value="PS-GAN-60W"/>
+      <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
+      <property name="ki_keywords" value="Voltage References"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7c13e5cf-c5bc-54fa-861c-8833b18e85e8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="3"/>
+            <pin num="2"/>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="PS" part="BAT54SLT1G">
+      <description>BAT54SLT1G</description>
+      <docs>https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_ON_BAT54SLT1G_BAT54SLT1G_C19726.html</docs>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">BAT54SLT1G</field>
+        <field name="Footprint">Supplier:SOT-23_L2.9-W1.3-P1.90-LS2.4-BR</field>
+        <field name="Datasheet">https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_ON_BAT54SLT1G_BAT54SLT1G_C19726.html</field>
+        <field name="Description">BAT54SLT1G</field>
+        <field name="Manufacturer">onsemi(安森美)</field>
+        <field name="MPN">BAT54SLT1G</field>
+        <field name="LCSC Part">C19726</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A" type="passive"/>
+        <pin num="2" name="C" type="passive"/>
+        <pin num="3" name="A/C" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="C">
+      <description>Unpolarized capacitor, small symbol</description>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor, small symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="CSD18543Q3A">
+      <docs>https://www.lcsc.com/datasheet/C840100.pdf</docs>
+      <fields>
+        <field name="Reference">Q</field>
+        <field name="Value">CSD18543Q3A</field>
+        <field name="Footprint">Supplier:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/C840100.pdf</field>
+        <field name="Description"/>
+        <field name="Manufacturer">TI(德州仪器)</field>
+        <field name="MPN">CSD18543Q3A</field>
+        <field name="LCSC Part">C840100</field>
+      </fields>
+      <pins>
+        <pin num="1" name="S" type="passive"/>
+        <pin num="2" name="S" type="passive"/>
+        <pin num="3" name="S" type="passive"/>
+        <pin num="4" name="G" type="passive"/>
+        <pin num="5" name="D" type="passive"/>
+        <pin num="6" name="D" type="passive"/>
+        <pin num="7" name="D" type="passive"/>
+        <pin num="8" name="D" type="passive"/>
+        <pin num="9" name="D" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="D">
+      <description>Bidirectional transient-voltage-suppression diode</description>
+      <footprints>
+        <fp>TO-???*</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+        <fp>D_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D_TVS</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Bidirectional transient-voltage-suppression diode</field>
+      </fields>
+      <pins>
+        <pin num="1" name="A1" type="passive"/>
+        <pin num="2" name="A2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="EL357N">
+      <docs>https://lcsc.com/product-detail/New-Arrivals_Everlight-Elec-EL357N-A-TA-VG_C359074.html</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">EL357N</field>
+        <field name="Footprint">Supplier:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</field>
+        <field name="Datasheet">https://lcsc.com/product-detail/New-Arrivals_Everlight-Elec-EL357N-A-TA-VG_C359074.html</field>
+        <field name="Description"/>
+        <field name="Manufacturer">EVERLIGHT(亿光)</field>
+        <field name="MPN">EL357N(A)(TA)-VG</field>
+        <field name="LCSC Part">C359074</field>
+      </fields>
+      <pins>
+        <pin num="1" name="AN" type="passive"/>
+        <pin num="2" name="CA" type="passive"/>
+        <pin num="3" name="EM" type="passive"/>
+        <pin num="4" name="COL" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="F">
+      <description>Fuse, small symbol</description>
+      <footprints>
+        <fp>*Fuse*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">F</field>
+        <field name="Value">Fuse_Small</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Fuse, small symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="L">
+      <description>Inductor, small symbol</description>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L_Small</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Inductor, small symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="LM5164DDAR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LM5164DDAR</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="passive"/>
+        <pin num="2" name="VIN" type="power_in"/>
+        <pin num="3" name="EN/UVLO" type="passive"/>
+        <pin num="4" name="RON" type="passive"/>
+        <pin num="5" name="FB" type="passive"/>
+        <pin num="6" name="PGOOD" type="open_collector"/>
+        <pin num="7" name="BST" type="passive"/>
+        <pin num="8" name="SW" type="output"/>
+        <pin num="9" name="EP" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="LMG2100R044RARR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LMG2100R044RARR</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="NC" type="passive"/>
+        <pin num="2" name="NC" type="passive"/>
+        <pin num="3" name="NC" type="passive"/>
+        <pin num="4" name="NC" type="passive"/>
+        <pin num="5" name="SW" type="output"/>
+        <pin num="6" name="PGND" type="passive"/>
+        <pin num="7" name="VIN" type="power_in"/>
+        <pin num="8" name="NC" type="passive"/>
+        <pin num="9" name="NC" type="passive"/>
+        <pin num="10" name="HB" type="passive"/>
+        <pin num="11" name="HS" type="passive"/>
+        <pin num="12" name="HI" type="input"/>
+        <pin num="13" name="LI" type="input"/>
+        <pin num="14" name="VCC" type="power_in"/>
+        <pin num="15" name="AGND" type="passive"/>
+        <pin num="16" name="NC" type="passive"/>
+        <pin num="17" name="PGND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="Planar_4_2_2">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">Planar_4_2_2</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="P_DOT" type="passive"/>
+        <pin num="2" name="P_END" type="passive"/>
+        <pin num="3" name="S_DOT" type="passive"/>
+        <pin num="4" name="S_CT" type="passive"/>
+        <pin num="5" name="S_END" type="passive"/>
+        <pin num="6" name="P_MID" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="Power_Port">
+      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x02</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="Probe">
+      <description>test point</description>
+      <footprints>
+        <fp>Pin*</fp>
+        <fp>Test*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TestPoint</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">test point</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="R">
+      <description>Resistor, small US symbol</description>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small_US</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor, small US symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="TL431AIDBZR">
+      <description>Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)</description>
+      <docs>https://lcsc.com/product-detail/Voltage-References_TI_TL431AIDBZR_TL431AIDBZR_C23892.html</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TL431AIDBZR</field>
+        <field name="Footprint">Supplier:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</field>
+        <field name="Datasheet">https://lcsc.com/product-detail/Voltage-References_TI_TL431AIDBZR_TL431AIDBZR_C23892.html</field>
+        <field name="Description">Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)</field>
+        <field name="Manufacturer">TI(德州仪器)</field>
+        <field name="MPN">TL431AIDBZR</field>
+        <field name="LCSC Part">C23892</field>
+      </fields>
+      <pins>
+        <pin num="1" name="CATHODE" type="passive"/>
+        <pin num="2" name="REF" type="passive"/>
+        <pin num="3" name="ANODE" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="TPS7A2450DBVR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TPS7A2450DBVR</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="IN" type="power_in"/>
+        <pin num="2" name="GND" type="passive"/>
+        <pin num="3" name="EN" type="passive"/>
+        <pin num="4" name="NC" type="passive"/>
+        <pin num="5" name="OUT" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="UCC24624DR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">UCC24624DR</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="VG1" type="output"/>
+        <pin num="2" name="PGND" type="passive"/>
+        <pin num="3" name="REG" type="power_out"/>
+        <pin num="4" name="VD1" type="passive"/>
+        <pin num="5" name="VSS" type="passive"/>
+        <pin num="6" name="VD2" type="passive"/>
+        <pin num="7" name="VDD" type="power_in"/>
+        <pin num="8" name="VG2" type="output"/>
+      </pins>
+    </libpart>
+    <libpart lib="PS" part="UCC25600DR">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">UCC25600DR</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <pins>
+        <pin num="1" name="DT" type="passive"/>
+        <pin num="2" name="RT" type="passive"/>
+        <pin num="3" name="OC" type="passive"/>
+        <pin num="4" name="SS" type="passive"/>
+        <pin num="5" name="GD2" type="output"/>
+        <pin num="6" name="GND" type="passive"/>
+        <pin num="7" name="VCC" type="power_in"/>
+        <pin num="8" name="GD1" type="output"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="PS">
+      <uri>${KIPRJMOD}/PS.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/AGND" class="Default">
+      <node ref="C10" pin="2" pintype="passive"/>
+      <node ref="C18" pin="2" pintype="passive"/>
+      <node ref="C25" pin="2" pintype="passive"/>
+      <node ref="C26" pin="2" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="C6" pin="2" pintype="passive"/>
+      <node ref="C9" pin="2" pintype="passive"/>
+      <node ref="D2" pin="1" pinfunction="A_1" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+      <node ref="R5" pin="2" pintype="passive"/>
+      <node ref="R7" pin="2" pintype="passive"/>
+      <node ref="R9" pin="2" pintype="passive"/>
+      <node ref="TP6" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="15" pinfunction="AGND_15" pintype="passive"/>
+      <node ref="U2" pin="6" pinfunction="GND_6" pintype="passive"/>
+      <node ref="U5" pin="2" pinfunction="GND_2" pintype="passive"/>
+      <node ref="U6" pin="3" pinfunction="EM_3" pintype="passive"/>
+      <node ref="U8" pin="3" pinfunction="EM_3" pintype="passive"/>
+    </net>
+    <net code="2" name="/BIAS12" class="Default">
+      <node ref="C10" pin="1" pintype="passive"/>
+      <node ref="C21" pin="1" pintype="passive"/>
+      <node ref="C22" pin="1" pintype="passive"/>
+      <node ref="C23" pin="2" pintype="passive"/>
+      <node ref="C25" pin="1" pintype="passive"/>
+      <node ref="L2" pin="2" pintype="passive"/>
+      <node ref="R17" pin="1" pintype="passive"/>
+      <node ref="U2" pin="7" pinfunction="VCC_7" pintype="power_in"/>
+      <node ref="U5" pin="1" pinfunction="IN_1" pintype="power_in"/>
+      <node ref="U5" pin="3" pinfunction="EN_3" pintype="passive"/>
+    </net>
+    <net code="3" name="/BIAS_BST" class="Default">
+      <node ref="C20" pin="1" pintype="passive"/>
+      <node ref="U4" pin="7" pinfunction="BST_7" pintype="passive"/>
+    </net>
+    <net code="4" name="/BIAS_EN" class="Default">
+      <node ref="R14" pin="2" pintype="passive"/>
+      <node ref="R15" pin="1" pintype="passive"/>
+      <node ref="U4" pin="3" pinfunction="EN/UVLO_3" pintype="passive"/>
+    </net>
+    <net code="5" name="/BIAS_FB" class="Default">
+      <node ref="C24" pin="2" pintype="passive"/>
+      <node ref="R17" pin="2" pintype="passive"/>
+      <node ref="R18" pin="1" pintype="passive"/>
+      <node ref="U4" pin="5" pinfunction="FB_5" pintype="passive"/>
+    </net>
+    <net code="6" name="/BIAS_SW" class="Default">
+      <node ref="C20" pin="2" pintype="passive"/>
+      <node ref="L2" pin="1" pintype="passive"/>
+      <node ref="R19" pin="1" pintype="passive"/>
+      <node ref="U4" pin="8" pinfunction="SW_8" pintype="output"/>
+    </net>
+    <net code="7" name="/COMP" class="Default">
+      <node ref="C27" pin="1" pintype="passive"/>
+      <node ref="R24" pin="2" pintype="passive"/>
+    </net>
+    <net code="8" name="/CS_AC" class="Default">
+      <node ref="C17" pin="2" pintype="passive"/>
+      <node ref="R8" pin="1" pintype="passive"/>
+    </net>
+    <net code="9" name="/CS_RECT" class="Default">
+      <node ref="D2" pin="3" pinfunction="A/C_3" pintype="passive"/>
+      <node ref="R8" pin="2" pintype="passive"/>
+    </net>
+    <net code="10" name="/DT" class="Default">
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="DT_1" pintype="passive"/>
+    </net>
+    <net code="11" name="/FB_COL" class="Default">
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="U6" pin="4" pinfunction="COL_4" pintype="passive"/>
+    </net>
+    <net code="12" name="/FB_K" class="Default">
+      <node ref="C28" pin="1" pintype="passive"/>
+      <node ref="R21" pin="2" pintype="passive"/>
+      <node ref="R24" pin="1" pintype="passive"/>
+      <node ref="U6" pin="2" pinfunction="CA_2" pintype="passive"/>
+      <node ref="U7" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
+    </net>
+    <net code="13" name="/FB_LED" class="Default">
+      <node ref="R20" pin="2" pintype="passive"/>
+      <node ref="R21" pin="1" pintype="passive"/>
+      <node ref="U6" pin="1" pinfunction="AN_1" pintype="passive"/>
+    </net>
+    <net code="14" name="/GD1" class="Default">
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="U2" pin="8" pinfunction="GD1_8" pintype="output"/>
+    </net>
+    <net code="15" name="/GD2" class="Default">
+      <node ref="R6" pin="1" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="GD2_5" pintype="output"/>
+    </net>
+    <net code="16" name="/HB" class="Default">
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="HB_10" pintype="passive"/>
+    </net>
+    <net code="17" name="/HI" class="Default">
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="U1" pin="12" pinfunction="HI_12" pintype="input"/>
+    </net>
+    <net code="18" name="/LI" class="Default">
+      <node ref="R6" pin="2" pintype="passive"/>
+      <node ref="R7" pin="1" pintype="passive"/>
+      <node ref="U1" pin="13" pinfunction="LI_13" pintype="input"/>
+    </net>
+    <net code="19" name="/OC" class="Default">
+      <node ref="C18" pin="1" pintype="passive"/>
+      <node ref="D2" pin="2" pinfunction="C_2" pintype="passive"/>
+      <node ref="R9" pin="1" pintype="passive"/>
+      <node ref="U2" pin="3" pinfunction="OC_3" pintype="passive"/>
+    </net>
+    <net code="20" name="/OV_K" class="Default">
+      <node ref="R26" pin="2" pintype="passive"/>
+      <node ref="U8" pin="2" pinfunction="CA_2" pintype="passive"/>
+      <node ref="U9" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
+    </net>
+    <net code="21" name="/OV_LED" class="Default">
+      <node ref="R25" pin="2" pintype="passive"/>
+      <node ref="R26" pin="1" pintype="passive"/>
+      <node ref="U8" pin="1" pinfunction="AN_1" pintype="passive"/>
+    </net>
+    <net code="22" name="/OV_REF" class="Default">
+      <node ref="C29" pin="1" pintype="passive"/>
+      <node ref="R27" pin="2" pintype="passive"/>
+      <node ref="R28" pin="1" pintype="passive"/>
+      <node ref="U9" pin="2" pinfunction="REF_2" pintype="passive"/>
+    </net>
+    <net code="23" name="/PGND" class="Default">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C19" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C21" pin="2" pintype="passive"/>
+      <node ref="C22" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C7" pin="2" pintype="passive"/>
+      <node ref="C8" pin="2" pintype="passive"/>
+      <node ref="D1" pin="2" pinfunction="A2_2" pintype="passive"/>
+      <node ref="J1" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="R15" pin="2" pintype="passive"/>
+      <node ref="R18" pin="2" pintype="passive"/>
+      <node ref="TP2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="17" pinfunction="PGND_17" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="PGND_6" pintype="passive"/>
+      <node ref="U4" pin="1" pinfunction="GND_1" pintype="passive"/>
+      <node ref="U4" pin="9" pinfunction="EP_9" pintype="passive"/>
+    </net>
+    <net code="24" name="/PRI_A" class="Default">
+      <node ref="L1" pin="2" pintype="passive"/>
+      <node ref="T1" pin="1" pinfunction="P_DOT_1" pintype="passive"/>
+    </net>
+    <net code="25" name="/RIPPLE" class="Default">
+      <node ref="C23" pin="1" pintype="passive"/>
+      <node ref="C24" pin="1" pintype="passive"/>
+      <node ref="R19" pin="2" pintype="passive"/>
+    </net>
+    <net code="26" name="/RON" class="Default">
+      <node ref="R16" pin="2" pintype="passive"/>
+      <node ref="U4" pin="4" pinfunction="RON_4" pintype="passive"/>
+    </net>
+    <net code="27" name="/RT" class="Default">
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="RT_2" pintype="passive"/>
+    </net>
+    <net code="28" name="/SEC_A" class="Default">
+      <node ref="Q1" pin="5" pinfunction="D_5" pintype="passive"/>
+      <node ref="Q1" pin="6" pinfunction="D_6" pintype="passive"/>
+      <node ref="Q1" pin="7" pinfunction="D_7" pintype="passive"/>
+      <node ref="Q1" pin="8" pinfunction="D_8" pintype="passive"/>
+      <node ref="Q1" pin="9" pinfunction="D_9" pintype="passive"/>
+      <node ref="R12" pin="1" pintype="passive"/>
+      <node ref="T1" pin="3" pinfunction="S_DOT_3" pintype="passive"/>
+    </net>
+    <net code="29" name="/SEC_B" class="Default">
+      <node ref="Q2" pin="5" pinfunction="D_5" pintype="passive"/>
+      <node ref="Q2" pin="6" pinfunction="D_6" pintype="passive"/>
+      <node ref="Q2" pin="7" pinfunction="D_7" pintype="passive"/>
+      <node ref="Q2" pin="8" pinfunction="D_8" pintype="passive"/>
+      <node ref="Q2" pin="9" pinfunction="D_9" pintype="passive"/>
+      <node ref="R13" pin="1" pintype="passive"/>
+      <node ref="T1" pin="5" pinfunction="S_END_5" pintype="passive"/>
+    </net>
+    <net code="30" name="/SGND" class="Default">
+      <node ref="C11" pin="2" pintype="passive"/>
+      <node ref="C12" pin="2" pintype="passive"/>
+      <node ref="C13" pin="2" pintype="passive"/>
+      <node ref="C14" pin="2" pintype="passive"/>
+      <node ref="C15" pin="2" pintype="passive"/>
+      <node ref="C16" pin="2" pintype="passive"/>
+      <node ref="C29" pin="2" pintype="passive"/>
+      <node ref="J2" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="Q1" pin="1" pinfunction="S_1" pintype="passive"/>
+      <node ref="Q1" pin="2" pinfunction="S_2" pintype="passive"/>
+      <node ref="Q1" pin="3" pinfunction="S_3" pintype="passive"/>
+      <node ref="Q2" pin="1" pinfunction="S_1" pintype="passive"/>
+      <node ref="Q2" pin="2" pinfunction="S_2" pintype="passive"/>
+      <node ref="Q2" pin="3" pinfunction="S_3" pintype="passive"/>
+      <node ref="R23" pin="2" pintype="passive"/>
+      <node ref="R28" pin="2" pintype="passive"/>
+      <node ref="TP4" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U3" pin="2" pinfunction="PGND_2" pintype="passive"/>
+      <node ref="U3" pin="5" pinfunction="VSS_5" pintype="passive"/>
+      <node ref="U7" pin="3" pinfunction="ANODE_3" pintype="passive"/>
+      <node ref="U9" pin="3" pinfunction="ANODE_3" pintype="passive"/>
+    </net>
+    <net code="31" name="/SR_G1" class="Default">
+      <node ref="Q1" pin="4" pinfunction="G_4" pintype="passive"/>
+      <node ref="R10" pin="2" pintype="passive"/>
+    </net>
+    <net code="32" name="/SR_G2" class="Default">
+      <node ref="Q2" pin="4" pinfunction="G_4" pintype="passive"/>
+      <node ref="R11" pin="2" pintype="passive"/>
+    </net>
+    <net code="33" name="/SR_REG" class="Default">
+      <node ref="C11" pin="1" pintype="passive"/>
+      <node ref="U3" pin="3" pinfunction="REG_3" pintype="power_out"/>
+    </net>
+    <net code="34" name="/SS" class="Default">
+      <node ref="C9" pin="1" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="SS_4" pintype="passive"/>
+      <node ref="U8" pin="4" pinfunction="COL_4" pintype="passive"/>
+    </net>
+    <net code="35" name="/SW" class="Default">
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="L1" pin="1" pintype="passive"/>
+      <node ref="U1" pin="11" pinfunction="HS_11" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="SW_5" pintype="output"/>
+    </net>
+    <net code="36" name="/TANK_C" class="Default">
+      <node ref="C17" pin="1" pintype="passive"/>
+      <node ref="C7" pin="1" pintype="passive"/>
+      <node ref="C8" pin="1" pintype="passive"/>
+      <node ref="T1" pin="2" pinfunction="P_END_2" pintype="passive"/>
+    </net>
+    <net code="37" name="/V5" class="Default">
+      <node ref="C26" pin="1" pintype="passive"/>
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="C6" pin="1" pintype="passive"/>
+      <node ref="TP5" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="14" pinfunction="VCC_14" pintype="power_in"/>
+      <node ref="U5" pin="5" pinfunction="OUT_5" pintype="power_out"/>
+    </net>
+    <net code="38" name="/VG1" class="Default">
+      <node ref="R10" pin="1" pintype="passive"/>
+      <node ref="U3" pin="1" pinfunction="VG1_1" pintype="output"/>
+    </net>
+    <net code="39" name="/VG2" class="Default">
+      <node ref="R11" pin="1" pintype="passive"/>
+      <node ref="U3" pin="8" pinfunction="VG2_8" pintype="output"/>
+    </net>
+    <net code="40" name="/VIN" class="Default">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="C19" pin="1" pintype="passive"/>
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="D1" pin="1" pinfunction="A1_1" pintype="passive"/>
+      <node ref="F1" pin="2" pintype="passive"/>
+      <node ref="R14" pin="1" pintype="passive"/>
+      <node ref="R16" pin="1" pintype="passive"/>
+      <node ref="TP1" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="7" pinfunction="VIN_7" pintype="power_in"/>
+      <node ref="U4" pin="2" pinfunction="VIN_2" pintype="power_in"/>
+    </net>
+    <net code="41" name="/VIN_RAW" class="Default">
+      <node ref="F1" pin="1" pintype="passive"/>
+      <node ref="J1" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+    </net>
+    <net code="42" name="/VOUT" class="Default">
+      <node ref="C12" pin="1" pintype="passive"/>
+      <node ref="C13" pin="1" pintype="passive"/>
+      <node ref="C14" pin="1" pintype="passive"/>
+      <node ref="C15" pin="1" pintype="passive"/>
+      <node ref="C16" pin="1" pintype="passive"/>
+      <node ref="J2" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="R20" pin="1" pintype="passive"/>
+      <node ref="R22" pin="1" pintype="passive"/>
+      <node ref="R25" pin="1" pintype="passive"/>
+      <node ref="R27" pin="1" pintype="passive"/>
+      <node ref="T1" pin="4" pinfunction="S_CT_4" pintype="passive"/>
+      <node ref="TP3" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U3" pin="7" pinfunction="VDD_7" pintype="power_in"/>
+    </net>
+    <net code="43" name="/VREF" class="Default">
+      <node ref="C27" pin="2" pintype="passive"/>
+      <node ref="C28" pin="2" pintype="passive"/>
+      <node ref="R22" pin="2" pintype="passive"/>
+      <node ref="R23" pin="1" pintype="passive"/>
+      <node ref="U7" pin="2" pinfunction="REF_2" pintype="passive"/>
+    </net>
+    <net code="44" name="/VS1" class="Default">
+      <node ref="R12" pin="2" pintype="passive"/>
+      <node ref="U3" pin="4" pinfunction="VD1_4" pintype="passive"/>
+    </net>
+    <net code="45" name="/VS2" class="Default">
+      <node ref="R13" pin="2" pintype="passive"/>
+      <node ref="U3" pin="6" pinfunction="VD2_6" pintype="passive"/>
+    </net>
+    <net code="46" name="unconnected-(T1-P_MID-Pad6)" class="Default">
+      <node ref="T1" pin="6" pinfunction="P_MID_6" pintype="passive+no_connect"/>
+    </net>
+    <net code="47" name="unconnected-(U1-NC-Pad1)" class="Default">
+      <node ref="U1" pin="1" pinfunction="NC_1" pintype="passive+no_connect"/>
+    </net>
+    <net code="48" name="unconnected-(U1-NC-Pad2)" class="Default">
+      <node ref="U1" pin="2" pinfunction="NC_2" pintype="passive+no_connect"/>
+    </net>
+    <net code="49" name="unconnected-(U1-NC-Pad3)" class="Default">
+      <node ref="U1" pin="3" pinfunction="NC_3" pintype="passive+no_connect"/>
+    </net>
+    <net code="50" name="unconnected-(U1-NC-Pad4)" class="Default">
+      <node ref="U1" pin="4" pinfunction="NC_4" pintype="passive+no_connect"/>
+    </net>
+    <net code="51" name="unconnected-(U1-NC-Pad8)" class="Default">
+      <node ref="U1" pin="8" pinfunction="NC_8" pintype="passive+no_connect"/>
+    </net>
+    <net code="52" name="unconnected-(U1-NC-Pad9)" class="Default">
+      <node ref="U1" pin="9" pinfunction="NC_9" pintype="passive+no_connect"/>
+    </net>
+    <net code="53" name="unconnected-(U1-NC-Pad16)" class="Default">
+      <node ref="U1" pin="16" pinfunction="NC_16" pintype="passive+no_connect"/>
+    </net>
+    <net code="54" name="unconnected-(U4-PGOOD-Pad6)" class="Default">
+      <node ref="U4" pin="6" pinfunction="PGOOD_6" pintype="open_collector+no_connect"/>
+    </net>
+    <net code="55" name="unconnected-(U5-NC-Pad4)" class="Default">
+      <node ref="U5" pin="4" pinfunction="NC_4" pintype="passive+no_connect"/>
+    </net>
+  </nets>
+</export>

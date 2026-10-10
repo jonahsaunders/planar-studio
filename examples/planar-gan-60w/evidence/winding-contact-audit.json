@@ -1,0 +1,17 @@
+{
+  "method": "Independent 0.08 mm swept-path samples against Planar Studio winding centerlines; 0.195 mm threshold. Intended terminal copper within 0.8 mm (the intended terminal landing) is excepted. Conservative rectangular pad envelope. Covers nets in the winding net-tie groups; KiCad checks other nets.",
+  "issues": [],
+  "terminal_contacts": [
+    [
+      "/PRI_A",
+      "L1.2",
+      "F.Cu"
+    ],
+    [
+      "/PRI_A",
+      "track",
+      "F.Cu"
+    ]
+  ],
+  "qualified": false
+}

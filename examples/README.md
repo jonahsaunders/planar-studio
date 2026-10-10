@@ -5,7 +5,16 @@
   project, calculations, manufacturing schedules and validation evidence.
   **Untested A1 engineering prototype; supplier feasibility is unconfirmed.**
 
+- [60 W GaN planar LLC converter](planar-gan-60w/README.md): 46–50 V DC input,
+  isolated 12 V / 5 A target, eight-layer PCB windings, native KiCad 10 project,
+  top-side electronics, XT30 power connectors and exposed-substrate M3 mounting
+  holes. Includes an MIT PER board study, sourcing, calculations and CAD checks.
+  **Unbuilt A1 engineering prototype; factory acceptance and hardware qualification are open.**
+
 These are editable engineering examples, separate from the KiCad plugin installer.
 
 [Download the complete A5 review package](PS-FLYBACK-5W-A5-review-package.zip?raw=true)
 for the flyback example, including its illustrated local report and checksums.
+
+[Download the complete GaN A1 KiCad package](PS-GAN-60W-A1-KiCad.zip?raw=true)
+for the GaN example, including its interactive local review and checksums.

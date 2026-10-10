@@ -1,0 +1,15 @@
+{
+  "review_date": "2026-10-10",
+  "source": "https://cart.jlcpcb.com/quote",
+  "method": "Read-only quote configurator; selected controls verified in rendered DOM",
+  "selected": {
+    "copper_layers": 8,
+    "outer_copper_oz": 2,
+    "inner_copper_oz": 2,
+    "nominal_thickness_mm": 1.6
+  },
+  "exact_dielectrics": "Proposed; not confirmed by JLCPCB",
+  "factory_file_review": false,
+  "files_uploaded": false,
+  "order_placed": false
+}

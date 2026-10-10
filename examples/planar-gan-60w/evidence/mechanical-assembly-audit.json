@@ -1,0 +1,74 @@
+{
+  "revision": "A1",
+  "board_mm": [
+    80,
+    58
+  ],
+  "hole_pattern_mm": [
+    71,
+    49
+  ],
+  "holes": [
+    {
+      "reference": "H1",
+      "diameter_mm": 3.2,
+      "all_8_copper_layers_prohibited": true,
+      "mask_diameter_mm": 6.4,
+      "copper_exclusion_diameter_mm": 10
+    },
+    {
+      "reference": "H2",
+      "diameter_mm": 3.2,
+      "all_8_copper_layers_prohibited": true,
+      "mask_diameter_mm": 6.4,
+      "copper_exclusion_diameter_mm": 10
+    },
+    {
+      "reference": "H3",
+      "diameter_mm": 3.2,
+      "all_8_copper_layers_prohibited": true,
+      "mask_diameter_mm": 6.4,
+      "copper_exclusion_diameter_mm": 10
+    },
+    {
+      "reference": "H4",
+      "diameter_mm": 3.2,
+      "all_8_copper_layers_prohibited": true,
+      "mask_diameter_mm": 6.4,
+      "copper_exclusion_diameter_mm": 10
+    }
+  ],
+  "connectors": [
+    {
+      "reference": "J1",
+      "pin_1": "/PGND",
+      "pin_2": "/VIN_RAW",
+      "contact_pitch_mm": 5,
+      "top_insertion": true,
+      "process": "through-hole solder after top SMT; supplier must approve lead protrusion/process"
+    },
+    {
+      "reference": "J2",
+      "pin_1": "/SGND",
+      "pin_2": "/VOUT",
+      "contact_pitch_mm": 5,
+      "top_insertion": true,
+      "process": "through-hole solder after top SMT; supplier must approve lead protrusion/process"
+    }
+  ],
+  "fiducials": 3,
+  "footprints_total": 89,
+  "probe_pads": 6,
+  "bare_probe_pads_have_no_paste_or_purchase": true,
+  "purchased_components_top": 75,
+  "SMT_components": 73,
+  "through_hole_connectors": 2,
+  "routing_vias": 162,
+  "copper_layers": 8,
+  "export_origin_absolute_mm": [
+    44,
+    114
+  ],
+  "mounting_footprint_sha256": "2383eaff676f671010a3d7e8bf41e2b10978f2e8ffc1a92a57f2c7d27edb5eb2",
+  "status": "Geometry and assembly mapping checked; factory process and hardware performance unqualified"
+}

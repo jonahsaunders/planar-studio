@@ -1,0 +1,204 @@
+{
+  "method": "First harmonic approximation, ideal center-tapped rectifier, constant lumped 0.35 ohm series loss. NOT a switching simulation.",
+  "n": 2,
+  "Rac_ohm": 7.781466903731541,
+  "Lr_uH": 3.4,
+  "Lr_basis": "3.3 uH purchased inductor + assumed 0.1 uH leakage; measure and tune",
+  "Cr_nF": 200,
+  "Lm_uH": 13.12,
+  "series_loss_ohm": 0.35,
+  "nominal_series_resonance_kHz": 193.0037180020742,
+  "operating_points": [
+    {
+      "VIN_V": 46,
+      "load_W": 60,
+      "frequency_kHz": 161.3,
+      "input_impedance_angle_deg": 17.22
+    },
+    {
+      "VIN_V": 48,
+      "load_W": 60,
+      "frequency_kHz": 176.0,
+      "input_impedance_angle_deg": 21.2
+    },
+    {
+      "VIN_V": 50,
+      "load_W": 60,
+      "frequency_kHz": 191.6,
+      "input_impedance_angle_deg": 24.58
+    }
+  ],
+  "corners": [
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 190.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 190.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 190.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 200.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 200.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 200.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 210.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 210.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 2.74,
+      "Cr_nF": 210.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 190.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 190.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 190.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 200.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 200.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 200.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 210.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 210.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 3.4,
+      "Cr_nF": 210.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 190.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 190.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 190.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 200.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 200.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 200.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 210.0,
+      "Lm_uH": 10.5,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 210.0,
+      "Lm_uH": 13.12,
+      "46V_60W_inductive_solution_in_controller_range": true
+    },
+    {
+      "Lr_uH": 4.0600000000000005,
+      "Cr_nF": 210.0,
+      "Lm_uH": 15.739999999999998,
+      "46V_60W_inductive_solution_in_controller_range": true
+    }
+  ],
+  "corner_failures": 0,
+  "f_min_kHz": 118.87779362815026,
+  "f_max_nominal_kHz": 349.10208189860674,
+  "feedback_setpoint_V": 12.05085,
+  "OVP_setpoint_V": 13.2734,
+  "SS_time_ms": 55.999999999999986,
+  "magnetic_copper_DC_loss_W": 2.8459169439444567,
+  "electronics_only_catalog_total_USD": 24.3,
+  "price_excludes": "Core, clips, PCB, assembly, extended-part setup, attrition, shipping, taxes and minimum purchase quantities."
+}
