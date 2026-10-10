@@ -1,5 +1,7 @@
 # A7 layout changes informed by video review
 
+Historical A9 package review. See [the current A10 / A8 review](DEEP-LAYOUT-REVIEW.md) for the subsequent routing and reference-plane changes.
+
 Reviewed 10 October 2026. Public YouTube caption transcripts were retrieved and
 read for the sections below; these notes do not claim a frame-by-frame video
 review. The advice was checked against the actual device documentation before

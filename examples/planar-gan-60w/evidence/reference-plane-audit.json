@@ -1,0 +1,1171 @@
+{
+  "revision": "A10 schematic / A8 hardware",
+  "sample_step_max_mm": 0.025,
+  "own_net_via_exclusion_radius_mm": 0.65,
+  "method": "Sample every explicit selected-net trace centerline against filled same-domain copper on either immediately adjacent layer. Report raw coverage and coverage excluding only the selected net's own via antipads. Never exclude foreign-net voids. Does not measure copper width, return-current distribution, inductance or crosstalk; not a universal all-net coverage claim.",
+  "current": [
+    {
+      "logical_net": "VREF",
+      "native_net": "Net-(U7-REF)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 14.772,
+      "raw_adjacent_coverage_percent": 81.508,
+      "length_outside_own_via_clearances_mm": 11.544,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "OV_REF",
+      "native_net": "Net-(U9-REF)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 10.928,
+      "raw_adjacent_coverage_percent": 79.945,
+      "length_outside_own_via_clearances_mm": 8.338,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "COMP",
+      "native_net": "Net-(C27-Pad1)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 1.7,
+      "raw_adjacent_coverage_percent": 100.0,
+      "length_outside_own_via_clearances_mm": 1.7,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "FB_K",
+      "native_net": "Net-(U6-CA)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "total_trace_length_mm": 20.808,
+      "raw_adjacent_coverage_percent": 89.529,
+      "length_outside_own_via_clearances_mm": 18.233,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "OV_K",
+      "native_net": "Net-(U8-CA)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 9.079,
+      "raw_adjacent_coverage_percent": 100.0,
+      "length_outside_own_via_clearances_mm": 9.079,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "FB_LED",
+      "native_net": "Net-(U6-AN)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "total_trace_length_mm": 7.236,
+      "raw_adjacent_coverage_percent": 77.218,
+      "length_outside_own_via_clearances_mm": 5.266,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "OV_LED",
+      "native_net": "Net-(U8-AN)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In4.Cu"
+      ],
+      "total_trace_length_mm": 7.236,
+      "raw_adjacent_coverage_percent": 77.218,
+      "length_outside_own_via_clearances_mm": 5.266,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "DT",
+      "native_net": "Net-(U2-DT)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 1.475,
+      "raw_adjacent_coverage_percent": 100.0,
+      "length_outside_own_via_clearances_mm": 1.475,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "RT",
+      "native_net": "Net-(U2-RT)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 7.554,
+      "raw_adjacent_coverage_percent": 77.867,
+      "length_outside_own_via_clearances_mm": 5.537,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "SS",
+      "native_net": "/SS",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In5.Cu"
+      ],
+      "total_trace_length_mm": 8.661,
+      "raw_adjacent_coverage_percent": 81.018,
+      "length_outside_own_via_clearances_mm": 6.718,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "OC",
+      "native_net": "Net-(D2-C)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 9.061,
+      "raw_adjacent_coverage_percent": 75.533,
+      "length_outside_own_via_clearances_mm": 6.37,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "FB_COL",
+      "native_net": "/FB_COL",
+      "reference": "AGND",
+      "signal_layers": [
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 7.019,
+      "raw_adjacent_coverage_percent": 84.541,
+      "length_outside_own_via_clearances_mm": 5.712,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "BIAS_FB",
+      "native_net": "Net-(U4-FB)",
+      "reference": "PGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 10.798,
+      "raw_adjacent_coverage_percent": 84.884,
+      "length_outside_own_via_clearances_mm": 8.869,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "RIPPLE",
+      "native_net": "Net-(C23-Pad1)",
+      "reference": "PGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 21.459,
+      "raw_adjacent_coverage_percent": 92.345,
+      "length_outside_own_via_clearances_mm": 19.518,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "HI",
+      "native_net": "/HI",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 9.298,
+      "raw_adjacent_coverage_percent": 100.0,
+      "length_outside_own_via_clearances_mm": 9.298,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "LI",
+      "native_net": "/LI",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 14.426,
+      "raw_adjacent_coverage_percent": 84.832,
+      "length_outside_own_via_clearances_mm": 11.84,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    },
+    {
+      "logical_net": "VS1",
+      "native_net": "Net-(U3-VD1)",
+      "reference": "SGND",
+      "signal_layers": [
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 11.03,
+      "raw_adjacent_coverage_percent": 90.068,
+      "length_outside_own_via_clearances_mm": 9.735,
+      "coverage_outside_own_via_clearances_percent": 100.0,
+      "uncovered_sample_examples": []
+    }
+  ],
+  "previous_A9": [
+    {
+      "logical_net": "VREF",
+      "native_net": "Net-(U7-REF)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 14.772,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 11.544,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          9.0899,
+          35.2999,
+          "F.Cu"
+        ],
+        [
+          9.0726,
+          35.2826,
+          "F.Cu"
+        ],
+        [
+          9.0552,
+          35.2652,
+          "F.Cu"
+        ],
+        [
+          9.0378,
+          35.2478,
+          "F.Cu"
+        ],
+        [
+          9.0205,
+          35.2305,
+          "F.Cu"
+        ],
+        [
+          9.0031,
+          35.2131,
+          "F.Cu"
+        ],
+        [
+          8.9858,
+          35.1958,
+          "F.Cu"
+        ],
+        [
+          8.9684,
+          35.1784,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "OV_REF",
+      "native_net": "Net-(U9-REF)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 10.928,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 8.338,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          8.9875,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.9625,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.9375,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.9125,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.8875,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.8625,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.8375,
+          42.475,
+          "F.Cu"
+        ],
+        [
+          8.8125,
+          42.475,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "COMP",
+      "native_net": "Net-(C27-Pad1)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 1.7,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 1.7,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          8.0375,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.0625,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.0875,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.1125,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.1375,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.1625,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.1875,
+          41.0,
+          "F.Cu"
+        ],
+        [
+          8.2125,
+          41.0,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "FB_K",
+      "native_net": "Net-(U6-CA)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In1.Cu"
+      ],
+      "total_trace_length_mm": 20.808,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 18.233,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          14.7338,
+          34.3088,
+          "F.Cu"
+        ],
+        [
+          14.7514,
+          34.3264,
+          "F.Cu"
+        ],
+        [
+          14.769,
+          34.344,
+          "F.Cu"
+        ],
+        [
+          14.7866,
+          34.3616,
+          "F.Cu"
+        ],
+        [
+          14.8042,
+          34.3792,
+          "F.Cu"
+        ],
+        [
+          14.8218,
+          34.3968,
+          "F.Cu"
+        ],
+        [
+          14.8394,
+          34.4144,
+          "F.Cu"
+        ],
+        [
+          14.8569,
+          34.4319,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "OV_K",
+      "native_net": "Net-(U8-CA)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 9.079,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 9.079,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          15.1912,
+          44.3288,
+          "F.Cu"
+        ],
+        [
+          15.1736,
+          44.3464,
+          "F.Cu"
+        ],
+        [
+          15.156,
+          44.364,
+          "F.Cu"
+        ],
+        [
+          15.1384,
+          44.3816,
+          "F.Cu"
+        ],
+        [
+          15.1207,
+          44.3993,
+          "F.Cu"
+        ],
+        [
+          15.1031,
+          44.4169,
+          "F.Cu"
+        ],
+        [
+          15.0855,
+          44.4345,
+          "F.Cu"
+        ],
+        [
+          15.0679,
+          44.4521,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "FB_LED",
+      "native_net": "Net-(U6-AN)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In1.Cu"
+      ],
+      "total_trace_length_mm": 7.236,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 5.266,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          14.725,
+          33.2625,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.2875,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.3125,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.3375,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.3625,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.3875,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.4125,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          33.4375,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "OV_LED",
+      "native_net": "Net-(U8-AN)",
+      "reference": "SGND",
+      "signal_layers": [
+        "F.Cu",
+        "In1.Cu"
+      ],
+      "total_trace_length_mm": 7.236,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 5.266,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          14.725,
+          40.8625,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          40.8875,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          40.9125,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          40.9375,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          40.9625,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          40.9875,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          41.0125,
+          "F.Cu"
+        ],
+        [
+          14.725,
+          41.0375,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "DT",
+      "native_net": "Net-(U2-DT)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 1.475,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 1.475,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          24.3875,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.3625,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.3375,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.3125,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.2875,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.2625,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.2375,
+          35.1,
+          "F.Cu"
+        ],
+        [
+          24.2125,
+          35.1,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "RT",
+      "native_net": "Net-(U2-RT)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 7.554,
+      "raw_adjacent_coverage_percent": 63.309,
+      "length_outside_own_via_clearances_mm": 5.537,
+      "coverage_outside_own_via_clearances_percent": 81.945,
+      "uncovered_sample_examples": [
+        [
+          24.3875,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.3625,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.3375,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.3125,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.2875,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.2625,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.2375,
+          36.37,
+          "F.Cu"
+        ],
+        [
+          24.2125,
+          36.37,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "SS",
+      "native_net": "/SS",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In5.Cu"
+      ],
+      "total_trace_length_mm": 8.661,
+      "raw_adjacent_coverage_percent": 62.664,
+      "length_outside_own_via_clearances_mm": 6.718,
+      "coverage_outside_own_via_clearances_percent": 77.816,
+      "uncovered_sample_examples": [
+        [
+          24.1666,
+          38.9091,
+          "F.Cu"
+        ],
+        [
+          24.1497,
+          38.9273,
+          "F.Cu"
+        ],
+        [
+          24.1328,
+          38.9455,
+          "F.Cu"
+        ],
+        [
+          24.1159,
+          38.9636,
+          "F.Cu"
+        ],
+        [
+          24.099,
+          38.9818,
+          "F.Cu"
+        ],
+        [
+          24.0821,
+          39.0,
+          "F.Cu"
+        ],
+        [
+          24.0653,
+          39.0182,
+          "F.Cu"
+        ],
+        [
+          24.0484,
+          39.0364,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "OC",
+      "native_net": "Net-(D2-C)",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In3.Cu"
+      ],
+      "total_trace_length_mm": 9.061,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 6.37,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          25.5625,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.5875,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.6125,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.6375,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.6625,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.6875,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.7125,
+          33.55,
+          "F.Cu"
+        ],
+        [
+          25.7375,
+          33.55,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "FB_COL",
+      "native_net": "/FB_COL",
+      "reference": "AGND",
+      "signal_layers": [
+        "In6.Cu"
+      ],
+      "total_trace_length_mm": 7.019,
+      "raw_adjacent_coverage_percent": 0.0,
+      "length_outside_own_via_clearances_mm": 5.712,
+      "coverage_outside_own_via_clearances_percent": 0.0,
+      "uncovered_sample_examples": [
+        [
+          20.4155,
+          36.1955,
+          "In6.Cu"
+        ],
+        [
+          20.4331,
+          36.2131,
+          "In6.Cu"
+        ],
+        [
+          20.4507,
+          36.2307,
+          "In6.Cu"
+        ],
+        [
+          20.4682,
+          36.2482,
+          "In6.Cu"
+        ],
+        [
+          20.4858,
+          36.2658,
+          "In6.Cu"
+        ],
+        [
+          20.5034,
+          36.2834,
+          "In6.Cu"
+        ],
+        [
+          20.5209,
+          36.3009,
+          "In6.Cu"
+        ],
+        [
+          20.5385,
+          36.3185,
+          "In6.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "BIAS_FB",
+      "native_net": "Net-(U4-FB)",
+      "reference": "PGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 10.798,
+      "raw_adjacent_coverage_percent": 61.866,
+      "length_outside_own_via_clearances_mm": 8.869,
+      "coverage_outside_own_via_clearances_percent": 75.322,
+      "uncovered_sample_examples": [
+        [
+          35.9875,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.9625,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.9375,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.9125,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.8875,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.8625,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.8375,
+          32.325,
+          "F.Cu"
+        ],
+        [
+          35.8125,
+          32.325,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "RIPPLE",
+      "native_net": "Net-(C23-Pad1)",
+      "reference": "PGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 21.459,
+      "raw_adjacent_coverage_percent": 19.882,
+      "length_outside_own_via_clearances_mm": 19.518,
+      "coverage_outside_own_via_clearances_percent": 21.859,
+      "uncovered_sample_examples": [
+        [
+          36.8962,
+          28.9963,
+          "F.Cu"
+        ],
+        [
+          36.8787,
+          28.9788,
+          "F.Cu"
+        ],
+        [
+          36.8612,
+          28.9613,
+          "F.Cu"
+        ],
+        [
+          36.8438,
+          28.9437,
+          "F.Cu"
+        ],
+        [
+          36.8263,
+          28.9262,
+          "F.Cu"
+        ],
+        [
+          36.8088,
+          28.9087,
+          "F.Cu"
+        ],
+        [
+          36.7875,
+          27.7,
+          "F.Cu"
+        ],
+        [
+          36.7625,
+          27.7,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "HI",
+      "native_net": "/HI",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu"
+      ],
+      "total_trace_length_mm": 9.298,
+      "raw_adjacent_coverage_percent": 70.234,
+      "length_outside_own_via_clearances_mm": 9.298,
+      "coverage_outside_own_via_clearances_percent": 70.234,
+      "uncovered_sample_examples": [
+        [
+          47.1548,
+          8.5452,
+          "F.Cu"
+        ],
+        [
+          47.1722,
+          8.5278,
+          "F.Cu"
+        ],
+        [
+          47.1897,
+          8.5103,
+          "F.Cu"
+        ],
+        [
+          47.2071,
+          8.4929,
+          "F.Cu"
+        ],
+        [
+          47.2246,
+          8.4754,
+          "F.Cu"
+        ],
+        [
+          47.2421,
+          8.4579,
+          "F.Cu"
+        ],
+        [
+          47.2595,
+          8.4405,
+          "F.Cu"
+        ],
+        [
+          47.277,
+          8.423,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "LI",
+      "native_net": "/LI",
+      "reference": "AGND",
+      "signal_layers": [
+        "F.Cu",
+        "In2.Cu"
+      ],
+      "total_trace_length_mm": 14.426,
+      "raw_adjacent_coverage_percent": 77.78,
+      "length_outside_own_via_clearances_mm": 11.84,
+      "coverage_outside_own_via_clearances_percent": 91.831,
+      "uncovered_sample_examples": [
+        [
+          44.33,
+          10.0076,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.9829,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.9581,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.9333,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.9086,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.8838,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.859,
+          "F.Cu"
+        ],
+        [
+          44.33,
+          9.8343,
+          "F.Cu"
+        ]
+      ]
+    },
+    {
+      "logical_net": "VS1",
+      "native_net": "Net-(U3-VD1)",
+      "reference": "SGND",
+      "signal_layers": [
+        "In6.Cu"
+      ],
+      "total_trace_length_mm": 11.03,
+      "raw_adjacent_coverage_percent": 86.906,
+      "length_outside_own_via_clearances_mm": 9.735,
+      "coverage_outside_own_via_clearances_percent": 97.441,
+      "uncovered_sample_examples": [
+        [
+          7.1154,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.1404,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.1653,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.1902,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.2151,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.24,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.2649,
+          8.175,
+          "In6.Cu"
+        ],
+        [
+          7.2899,
+          8.175,
+          "In6.Cu"
+        ]
+      ]
+    }
+  ]
+}

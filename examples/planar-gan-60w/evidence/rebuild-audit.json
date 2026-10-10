@@ -4,12 +4,17 @@
   "KiCad_version": "10.0.6",
   "method": "Rebuild in a separate copied example directory using bundled libraries and scripts; compare every track/via, footprint and pad geometry/net assignment, layer count and zone outlines exactly; compare filled copper with a symmetric-difference area limit of 0.01 mm2 per zone for KiCad corner tessellation; run KiCad DRC with schematic parity. UUIDs intentionally not compared.",
   "footprints": 89,
-  "track_via_items": 596,
+  "track_via_items": 606,
   "copper_layers": 8,
-  "zones": 15,
+  "zones": 16,
   "zone_outlines_identical": true,
   "filled_zone_corner_tessellation_tolerance_mm2": 0.01,
   "filled_zone_symmetric_differences": [
+    {
+      "net": "AGND",
+      "layer": "In1.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
     {
       "net": "AGND",
       "layer": "In1.Cu",
@@ -38,7 +43,7 @@
     {
       "net": "PGND",
       "layer": "F.Cu",
-      "symmetric_difference_mm2": 0.0
+      "symmetric_difference_mm2": 0.00176488
     },
     {
       "net": "PGND",
@@ -83,10 +88,10 @@
     {
       "net": "VIN",
       "layer": "F.Cu",
-      "symmetric_difference_mm2": 0.0
+      "symmetric_difference_mm2": 0.00242704
     }
   ],
-  "geometry_sha256": "e2ebd37c73056888857544d1830ed70b48ebfd0420acb98e96f90fb93dda562d",
+  "geometry_sha256": "2f28eca73b5ed6344e5abbfcd043c023e171831e4c0486f0b3588452264c8faa",
   "DRC_violations": 0,
   "unconnected_items": 0,
   "schematic_parity_issues": 0

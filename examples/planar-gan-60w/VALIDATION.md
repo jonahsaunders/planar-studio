@@ -1,4 +1,4 @@
-# A9 schematic / A7 hardware validation record
+# A10 schematic / A8 hardware validation record
 
 10 October 2026, KiCad 10.0.6. **Unbuilt. Electrical and manufacturing release
 remain on hold.** [Component findings and open limits](COMPONENT-RATINGS.md).
@@ -17,8 +17,10 @@ remain on hold.** [Component findings and open limits](COMPONENT-RATINGS.md).
 | Bias network versus L2 | No RIPPLE/BIAS_FB trace polygon overlap with conservative L2 body projection | [Bias layout](evidence/bias-layout-audit.json) |
 | GaN routing | Full SW custom-land projection clear of foreign filled planes and internal tracks; adjacent PGND below VIN route | [GaN geometry](evidence/GaN-layout-audit.json) |
 | Drive references | Four checked GD/VG routes have 100% sampled adjacent-plane coverage outside signal-via antipads | [Filled-copper audit](evidence/return-path-audit.json) |
-| Ground stitching | 59 stitches, each connected to at least two same-net filled planes; three drive transitions gain closer return vias | [Stitching](evidence/stitching-audit.json) |
-| A6 comparison | Three placements moved; five reference identities changed; pin nets, winding geometry, outline and mounting/connector positions preserved | [Before/after](evidence/A9-layout-audit.json) |
+| Ground stitching | 60 stitches, each connected to at least two same-net filled planes; LI return reduced to 1.05 mm, earlier GD1/VG2 improvements retained | [Stitching](evidence/stitching-audit.json) |
+| Sensitive-net references | 17 selected nets have 100% sampled adjacent same-domain ground coverage outside their own via clearances; raw coverage also reported | [Reference planes](evidence/reference-plane-audit.json) |
+| Output distribution | C13-to-J2 centerline route 60.899 → 10.206 mm; C14-to-J2 56.399 → 14.706 mm | [Comparison](evidence/A10-layout-audit.json), [drawing](evidence/Output-route-comparison.png) |
+| A7 comparison | No placement, part-identity or pin-net changes; winding geometry, outline and mounting/connector positions preserved | [Before/after](evidence/A10-layout-audit.json) |
 | Transformer contact geometry | No unintended winding contacts in independent sampled-path screen | [Winding audit](evidence/winding-contact-audit.json) |
 | Mechanical and assembly mapping | M3 exclusions on all eight copper layers, 75 top components, two 1.6 mm connector drills, three fiducials, six probe pads | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
 | Clean-copy rebuild | Schematic byte-identical; tracks, pads and zone outlines match; filled-copper differences below 0.01 mm² per zone; clean parity/DRC | [Rebuild](evidence/rebuild-audit.json), [DRC](evidence/rebuild-DRC.rpt) |
@@ -50,11 +52,13 @@ placed. Functional isolation only; no safety-isolation certification.
 Run `redraw_schematic.py` with sexpdata, then `rebuild_board.py` with KiCad 10
 pcbnew. `export_review.py` stops on ERC or parity/DRC failures and creates the
 native review, BOM/CPL, Gerbers and drill files. Run the included pin, geometry,
-winding, mechanical, return, GaN, bias, ratings and final audits. The ratings
+winding, mechanical, return, reference-plane, GaN, bias, ratings and final audits. The ratings
 audit requires NumPy; the readability audit requires pypdfium2 and sexpdata;
 independent Gerber rendering uses PyGerber 2.4.x and Pillow.
 
-`audit_layout_changes.py` takes the previous A8 package directory as its
-argument. It deliberately accepts only the five reviewed part changes. The
+`audit_layout_changes.py` takes the previous A9 package directory as its
+argument. It rejects any part-identity or pin-net change in this layout revision.
+It splits overlapping centerlines and same-layer intersections before computing
+route lengths, and includes the plated connector barrels as transitions. The
 native project and source manifest remain the editable source; generated
 manufacturing files should not be edited separately.

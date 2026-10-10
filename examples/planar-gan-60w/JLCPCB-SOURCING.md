@@ -74,7 +74,7 @@ The revised native rules require at least 0.16 mm track width and global copper
 clearance, with 0.20 mm ordinary net clearance. This follows the 2 oz minimum in
 [JLCPCB's copper-weight guide](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
 The requested all-layer 2 oz construction still requires file-level acceptance.
-The layout has 206 routed vias (including 59 ground stitches) plus six winding transitions; filled/capped vias
+The layout has 215 routed vias (including 60 ground stitches) plus six winding transitions; filled/capped vias
 remain required. Independent Gerber renders are supplied in
 [the fabrication-output review](evidence/Gerber-review.png).
 

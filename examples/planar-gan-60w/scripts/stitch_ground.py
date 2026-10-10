@@ -19,7 +19,7 @@ added=[]
 # Prioritize the return path at drive-signal layer changes before general rows.
 # Candidates still pass the same filled-plane, magnetic and clearance checks.
 transition_targets=[]
-for signal,ground in [('GD1','AGND'),('GD2','AGND'),('VG2','SGND')]:
+for signal,ground in [('GD1','AGND'),('GD2','AGND'),('VG2','SGND'),('LI','AGND')]:
  for t in occupied:
   if not isinstance(t,pcb.PCB_VIA) or t.GetNetname()!=nets[signal].GetNetname():continue
   x,y=xy(t.GetPosition());x-=60;y-=60
@@ -58,6 +58,6 @@ for a in added:
 for a in transition_targets:
  x,y=a['position_mm']
  a['after_nearest_return_via_mm']=round(min(math.dist(xy(v.GetPosition()),(x+60,y+60)) for v in board.GetTracks() if isinstance(v,pcb.PCB_VIA) and v.GetNetname()==nets[a['ground']].GetNetname()),3)
-report={'revision':'A7','diameter_mm':.6,'drill_mm':.3,'added_stitches':len(added),'counts_by_net':{n:sum(a['net']==n for a in added) for n in rows},'method':'Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.','drive_transition_returns':transition_targets,'vias':added}
+report={'revision':'A8','diameter_mm':.6,'drill_mm':.3,'added_stitches':len(added),'counts_by_net':{n:sum(a['net']==n for a in added) for n in rows},'method':'Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.','drive_transition_returns':transition_targets,'vias':added}
 (ROOT/'evidence/stitching-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Ground stitches:',report['counts_by_net'])

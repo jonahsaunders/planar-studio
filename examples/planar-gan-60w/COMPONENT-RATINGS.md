@@ -1,4 +1,6 @@
-# A9 component ratings audit
+# Component ratings audit (A9, retained for A10)
+
+A10 changes routing and reference copper only. Part identities and circuit values are unchanged; the findings below remain applicable.
 
 **The audit is complete; the hardware is not qualified for full-power operation.**
 Every one of the 82 schematic references is covered: 75 purchased placements,

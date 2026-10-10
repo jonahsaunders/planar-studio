@@ -1,7 +1,7 @@
 {
-  "revision": "A7",
+  "revision": "A8",
   "method": "Native custom pads and track polygons define SW projection; intersect with actual filled planes and internal traces. Input loop area is a pad-center polygon including a straight package-closing segment, not actual internal die geometry. VIN centerline sampled at <=0.025 mm for adjacent In1 PGND coverage. No inductance or emissions claim.",
-  "A7": {
+  "A8": {
     "projected_input_loop_pad_center_area_mm2": 7.0817,
     "VIN_trace_over_adjacent_PGND_percent": 100.0,
     "SW_projection_area_mm2": 7.8084,
@@ -13,7 +13,7 @@
     "https://www.ti.com/tool/LMG2100EVM-078",
     "https://epc-co.com/epc/Portals/0/epc/documents/papers/optimizing%20pcb%20layout%20with%20egan%20fets.pdf"
   ],
-  "A6": {
+  "A7": {
     "projected_input_loop_pad_center_area_mm2": 7.0817,
     "VIN_trace_over_adjacent_PGND_percent": 100.0,
     "SW_projection_area_mm2": 7.8084,

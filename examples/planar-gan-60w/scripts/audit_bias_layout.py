@@ -18,7 +18,7 @@ def inspect(root):
  return out
 current=inspect(R)
 assert not any(row['L2_body_track_projection_overlap'] for row in current)
-result={'revision':'A7','method':'Native track polygon projection versus a conservative 7.6 mm square around L2; checks sensitive RIPPLE and BIAS_FB on every copper layer. This is a geometry screen, not extracted magnetic coupling.','current':current}
-if len(sys.argv)>1:result['previous_A6']=inspect(Path(sys.argv[1]))
+result={'revision':'A8','method':'Native track polygon projection versus a conservative 7.6 mm square around L2; checks sensitive RIPPLE and BIAS_FB on every copper layer. This is a geometry screen, not extracted magnetic coupling.','current':current}
+if len(sys.argv)>1:result['previous_A7']=inspect(Path(sys.argv[1]))
 (R/'evidence/bias-layout-audit.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')
 print(json.dumps(result,indent=2))

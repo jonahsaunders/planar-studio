@@ -10,25 +10,27 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-**A9 schematic / A7 hardware** applies the [video layout review](VIDEO-LAYOUT-REVIEW.md)
-and adds a [reference-by-reference component audit](COMPONENT-RATINGS.md).
+**A10 schematic / A8 hardware** applies a [deeper creator-resource review](DEEP-LAYOUT-REVIEW.md)
+and retains the [reference-by-reference component audit](COMPONENT-RATINGS.md).
 
-- Moves sensitive bias routing out from beneath the inductor and takes the
-  divider reference directly from the output capacitor; that path drops from
-  51.52 to 19.51 mm.
-- Adds closer return vias at three drive transitions. There are now 59 ground
-  stitches and 206 routed vias, with the ground domains kept separate.
-- Uses a 3 A / 65 V fuse, 100 V C17 and high-power 0603 R20/R25. Changes R8 to
-  24.9 kΩ after the model exposed possible full-load overcurrent shutdown.
-- Retains the 64 × 56 mm outline, 55 × 47 mm M3 pattern, removable headers,
-  all-top components and the existing short GaN loops.
+- Shortens the C13-to-output-connector rail from **60.90 to 10.21 mm** and
+  the C14 route from **56.40 to 14.71 mm**, with parallel capacitor vias.
+- Provides adjacent filled-ground coverage along 17 selected signal nets,
+  outside their own via clearances. Removes routes that interrupted those
+  reference planes and adds a closer return at the GaN LI transition.
+- Has **60 verified ground stitches and 215 routed vias**; AGND, PGND and
+  the isolated secondary retain their required separation.
+- Retains the previous ratings corrections: 3 A / 65 V fuse, 100 V C17,
+  high-power 0603 R20/R25 and 24.9 kΩ R8.
+- Preserves every part position, the 64 × 56 mm outline, 55 × 47 mm M3
+  pattern, removable headers, top-only assembly and compact GaN loops.
 
 **Electrical release remains on hold.** Transformer heating, capacitor ripple
 and effective capacitance, switching transients, and startup/fault protection
 need validation. The ratings table distinguishes calculated screens from
 unresolved qualifications; 60 W is still an unbuilt target.
 
-See [A9 layout measurements](evidence/A9-layout-audit.json),
+See [A10 layout measurements](evidence/A10-layout-audit.json),
 [GaN checks](evidence/GaN-layout-audit.json),
 [stitching](evidence/stitching-audit.json) and the
 [validation record](VALIDATION.md).
@@ -41,7 +43,7 @@ RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
 
 The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json) are refreshed for A9.
+[readability check](evidence/readability-audit.json) are refreshed for A10.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -123,7 +125,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A9 presentation from circuit.json and the local symbol library;
+recreates the A10 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.
