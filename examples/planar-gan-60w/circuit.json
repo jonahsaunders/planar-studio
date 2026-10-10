@@ -725,23 +725,23 @@
     {
       "ref": "C10",
       "kind": "C",
-      "lcsc": "C86020",
+      "lcsc": "C28323",
       "value": "1uF",
-      "mpn": "GRM188R71E105KA12D",
-      "mfr": "Murata Electronics",
-      "source": "https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf",
-      "stock": 26251,
-      "unit_price_usd": 0.0466,
-      "footprint": "PS:C_0603_1608Metric",
-      "source_footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "mpn": "CL21B105KBFNNNE",
+      "mfr": "Samsung Electro-Mechanics",
+      "source": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf",
+      "stock": 1825874,
+      "unit_price_usd": 0.04,
+      "footprint": "PS:C_0805_2012Metric",
+      "source_footprint": "Capacitor_SMD:C_0805_2012Metric",
       "nets": {
         "1": "BIAS12",
         "2": "AGND"
       },
       "block": "control",
-      "note": "",
+      "note": "UCC25600 Rev D sections 9-10: 1 uF, 0805, 50 V X7R directly across VCC/GND.",
       "uuid": "8e722f98-7c15-5329-a2c5-8ea071eb92a1",
-      "Voltage": "25V"
+      "Voltage": "50V"
     },
     {
       "ref": "R4",

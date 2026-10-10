@@ -1,10 +1,10 @@
 # JLCPCB electronics and separate ferrite sourcing
 
 All **75 purchased PCB placements** have exact JLCPCB catalog identifiers,
-covering **41 unique parts**. The catalog snapshots show positive stock.
-Electronics total **$23.68** at the first listed price tiers. Two removable
+covering **42 unique parts**. The catalog snapshots show positive stock.
+Electronics total **$23.67** at the first listed price tiers. Two removable
 plugs add **$0.39**; two DigiKey core halves and two clips add about **$6.88**:
-approximately **$30.95 in parts**. PCB fabrication, assembly, setup, attrition,
+approximately **$30.94 in parts**. PCB fabrication, assembly, setup, attrition,
 minimum quantities, tax and shipping are excluded. Inventory is not reserved.
 
 | Function | Part | Catalog code | Stock snapshot |
@@ -13,6 +13,7 @@ minimum quantities, tax and shipping are excluded. Inventory is not reserved.
 | Two removable screw plugs | KANGNEX WJ2EDGK-5.08-02P-14-00A | C71370 | 92,238 |
 | GaN half bridge | TI LMG2100R044RARR | C22453052 | See snapshot |
 | LLC controller | TI UCC25600DR | C130223 | See snapshot |
+| LLC bypass C10 | Samsung CL21B105KBFNNNE, 1 uF 50 V 0805 X7R | C28323 | 1,825,874 |
 | SR controller | TI UCC24624DR | C2862446 | See snapshot |
 | Auxiliary inductor | Bourns SRP7050TA-680M | C2047750 | 39; recheck before order |
 
@@ -67,12 +68,14 @@ been agreed. Catalog availability therefore does not yet establish a confirmed
 fully assembled converter. Arrange core fitting after soldering or fit the
 ferrite after receiving the electronics assembly. No order has been placed.
 
-## A4 fabrication review
+## A5 fabrication review
 
 The revised native rules require at least 0.16 mm track width and global copper
 clearance, with 0.20 mm ordinary net clearance. This follows the 2 oz minimum in
 [JLCPCB's copper-weight guide](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
 The requested all-layer 2 oz construction still requires file-level acceptance.
-The layout has 169 routed vias plus six winding transitions; filled/capped vias
+The layout has 163 routed vias plus six winding transitions; filled/capped vias
 remain required. Independent Gerber renders are supplied in
 [the fabrication-output review](evidence/Gerber-review.png).
+
+C10 changes from the former 25 V 0603 to the 50 V 0805 recommended in [TI UCC25600 sections 9-10](https://www.ti.com/lit/ds/symlink/ucc25600.pdf). The [C28323 snapshot](sourcing/C28323-snapshot.json) reports a basic catalog part at $0.04 for the first tier. Its PCB footprint, schematic rating, BOM and placement file are updated together. Other part identities are retained.

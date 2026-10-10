@@ -27,6 +27,7 @@ from convert_position import convert_positions
 convert_positions(E/'positions-raw.csv',M/'CPL-JLCPCB-review.csv')
 run('pcb','export','svg','--output',E/'pcb-layers','--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Fab','--common-layers','Edge.Cuts','--mode-multi','--fit-page-to-board','--exclude-drawing-sheet',PCB)
 run('pcb','export','pdf','--output',R/'PCB-layers.pdf','--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Fab','--common-layers','Edge.Cuts','--mode-multipage',PCB)
+run('pcb','export','pdf','--output',M/'Assembly-top.pdf','--layers','F.Fab,Edge.Cuts','--mode-single','--black-and-white','--scale','3',PCB)
 run('pcb','render','--output',R/'Board-preview.png','--width','1600','--height','1400','--side','top','--background','opaque','--zoom','0.88',PCB)
 run('pcb','render','--output',R/'Board-perspective.png','--width','1500','--height','1100','--rotate','-40,0,25','--background','opaque','--zoom','0.9',PCB)
 run('pcb','render','--output',R/'evidence/Board-bottom.png','--width','1500','--height','1100','--side','bottom','--background','opaque',PCB)

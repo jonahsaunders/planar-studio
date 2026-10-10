@@ -10,20 +10,22 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad schematic](Schematic-preview.png)
 
-**A6 schematic / A4 hardware** shortens the GaN bootstrap, bypass and logic
-connections, separates rectifier VSS sensing from the gate-current return, and
-rearranges the bias buck around its local switching loop. Eighteen components
-move; every purchased part identity and value is retained.
+**A7 schematic / A5 hardware** adds adjacent ground references for the LLC
+control signals and tightens the rectifier and regulator placement. Nineteen
+components move. The 64 x 56 mm outline, M3 pattern, connectors and winding
+artwork stay fixed; every purchased component remains on top.
 
-- GaN bootstrap legs: **1.53 mm each**, entirely on the top copper layer.
-- GaN VCC bypass: **5.45 → 2.59 mm**, removing two via transitions.
-- LM5164 switch-to-inductor path: **11.94 → 3.66 mm**, removing two via transitions.
-- Dedicated rectifier source sensing, local return planes, copper spreading and
-  parallel return vias; readable section labels for bench work.
+- First rectifier gate path: **12.85 -> 2.76 mm**, with no layer changes.
+- Second rectifier gate path: **14.28 -> 10.24 mm**; dedicated VSS sensing retained.
+- Rectifier VDD bypass: **7.33 -> 2.15 mm**, removing both via transitions.
+- LLC bypass now has direct top-layer VCC and ground connections and uses TI's
+  recommended **1 uF, 50 V, 0805 X7R** part (JLCPCB C28323).
+- Adjacent filled-ground coverage checked along both LLC outputs and both
+  rectifier gate-drive routes; 163 routed vias, down from 169.
 
 Lengths describe explicit copper geometry, not measured inductance or efficiency.
-See the [first-principles layout review](LAYOUT-REVIEW.md) and
-[native geometry comparison](evidence/A6-layout-audit.json).
+See the [layout review](LAYOUT-REVIEW.md), [before/after measurements](evidence/A7-layout-audit.json)
+and [filled return-plane audit](evidence/return-path-audit.json).
 
 HS and SW are connected internally in the LMG2100. The external bootstrap return
 now connects only C4 to HS, eliminating the external SW–HS loop. The drawing
@@ -33,7 +35,7 @@ RON through 100 kΩ to PGND; D1 retains its unidirectional TVS polarity.
 
 The [datasheet pin review](evidence/datasheet-pin-review.json),
 [schematic geometry checks](evidence/schematic-geometry.json) and
-[readability check](evidence/readability-audit.json) are refreshed for A6.
+[readability check](evidence/readability-audit.json) are refreshed for A7.
 
 The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
 while preserving the winding geometry and all-top electronics. This compares
@@ -82,6 +84,7 @@ regulation, thermal performance or no-load operation.
   and models; [schematic PDF](Schematic.pdf).
 - [Interactive local review](Review.html): open after downloading the example.
   GitHub does not execute this HTML preview.
+- [Top assembly drawing](manufacturing-prototype/Assembly-top.pdf), with one clear reference per component.
 - [Gerber inspection](evidence/Gerber-review.png), [layout review](LAYOUT-REVIEW.md),
   [copper-layer PDF](PCB-layers.pdf), [validation record](VALIDATION.md) and
   [mechanical dimensions](mechanical.json).
@@ -106,6 +109,7 @@ python -X utf8 scripts/audit_readability.py
 python -X utf8 scripts/render_gerbers.py
 python -X utf8 scripts/audit_windings.py
 python -X utf8 scripts/audit_mechanical.py
+python -X utf8 scripts/audit_return_paths.py
 python -X utf8 scripts/final_audit.py
 ```
 
@@ -114,7 +118,7 @@ python -X utf8 scripts/final_audit.py
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
 The native schematic is the editable circuit source. redraw_schematic.py
-recreates the A6 presentation from circuit.json and the local symbol library;
+recreates the A7 presentation from circuit.json and the local symbol library;
 it overwrites schematic edits, so regenerate only intentionally. It and
 audit_schematic.py require the sexpdata package. audit_readability.py also needs
 pypdfium2. render_gerbers.py requires PyGerber 2.4.x and Pillow.

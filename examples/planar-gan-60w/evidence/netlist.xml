@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-GAN-60W.kicad_sch</source>
-    <date>2026-10-10T14:59:24</date>
+    <date>2026-10-10T16:30:33</date>
     <tool>Eeschema 10.0.6</tool>
     <textvar name="DESIGN_STATUS">ENGINEERING REVIEW ONLY</textvar>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>PS-GAN-60W: planar LLC converter</title>
         <company>Planar Studio</company>
-        <rev>A6-schematic</rev>
+        <rev>A7-schematic</rev>
         <date>2026-10-10</date>
         <source>PS-GAN-60W.kicad_sch</source>
         <comment number="1" value=""/>
@@ -342,24 +342,24 @@
     </comp>
     <comp ref="C10">
       <value>1uF</value>
-      <footprint>PS:C_0603_1608Metric</footprint>
-      <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</datasheet>
+      <footprint>PS:C_0805_2012Metric</footprint>
+      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf</datasheet>
       <fields>
-        <field name="Voltage">25V</field>
-        <field name="MPN">GRM188R71E105KA12D</field>
-        <field name="Manufacturer">Murata Electronics</field>
-        <field name="LCSC">C86020</field>
-        <field name="Design_note"/>
-        <field name="Footprint">PS:C_0603_1608Metric</field>
-        <field name="Datasheet">https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2304140030_Murata-Electronics-GRM188R71E105KA12D_C86020.pdf</field>
+        <field name="Voltage">50V</field>
+        <field name="MPN">CL21B105KBFNNNE</field>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="LCSC">C28323</field>
+        <field name="Design_note">UCC25600 Rev D sections 9-10: 1 uF, 0805, 50 V X7R directly across VCC/GND.</field>
+        <field name="Footprint">PS:C_0805_2012Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Samsung-Electro-Mechanics-CL21B105KBFNNNE_C28323.pdf</field>
         <field name="Description"/>
       </fields>
       <libsource lib="PS" part="C" description="Unpolarized capacitor, small symbol"/>
-      <property name="Voltage" value="25V"/>
-      <property name="MPN" value="GRM188R71E105KA12D"/>
-      <property name="Manufacturer" value="Murata Electronics"/>
-      <property name="LCSC" value="C86020"/>
-      <property name="Design_note" value=""/>
+      <property name="Voltage" value="50V"/>
+      <property name="MPN" value="CL21B105KBFNNNE"/>
+      <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
+      <property name="LCSC" value="C28323"/>
+      <property name="Design_note" value="UCC25600 Rev D sections 9-10: 1 uF, 0805, 50 V X7R directly across VCC/GND."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
       <property name="ki_keywords" value="capacitor cap"/>

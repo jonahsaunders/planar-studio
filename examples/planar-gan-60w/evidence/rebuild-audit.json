@@ -2,12 +2,91 @@
   "result": "pass",
   "schematic_rebuild_byte_identical": true,
   "KiCad_version": "10.0.6",
-  "method": "Rebuild in a separate copied example directory using bundled libraries and scripts; compare every track/via, footprint and pad geometry/net assignment, layer count and zone count; run KiCad DRC with schematic parity. UUIDs intentionally not compared.",
+  "method": "Rebuild in a separate copied example directory using bundled libraries and scripts; compare every track/via, footprint and pad geometry/net assignment, layer count and zone outlines exactly; compare filled copper with a symmetric-difference area limit of 0.01 mm2 per zone for KiCad corner tessellation; run KiCad DRC with schematic parity. UUIDs intentionally not compared.",
   "footprints": 89,
-  "track_via_items": 570,
+  "track_via_items": 550,
   "copper_layers": 8,
-  "zones": 13,
-  "geometry_sha256": "fe1b73488b7880a756421f100df582e45ebc7cefe8a9b0527f74cfd0d79a30eb",
+  "zones": 15,
+  "zone_outlines_identical": true,
+  "filled_zone_corner_tessellation_tolerance_mm2": 0.01,
+  "filled_zone_symmetric_differences": [
+    {
+      "net": "AGND",
+      "layer": "In1.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "AGND",
+      "layer": "In3.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "AGND",
+      "layer": "In5.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "AGND",
+      "layer": "In6.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "PGND",
+      "layer": "F.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "PGND",
+      "layer": "F.Cu",
+      "symmetric_difference_mm2": 0.00176488
+    },
+    {
+      "net": "PGND",
+      "layer": "B.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "PGND",
+      "layer": "In1.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "PGND",
+      "layer": "In1.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "PGND",
+      "layer": "In6.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "SGND",
+      "layer": "F.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "SGND",
+      "layer": "B.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "SGND",
+      "layer": "In1.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "SGND",
+      "layer": "In5.Cu",
+      "symmetric_difference_mm2": 0.0
+    },
+    {
+      "net": "VIN",
+      "layer": "F.Cu",
+      "symmetric_difference_mm2": 0.00242704
+    }
+  ],
+  "geometry_sha256": "1266226ee86087a9458c2625e7461a90deddd21c6c705aa3d171585cfa410d34",
   "DRC_violations": 0,
   "unconnected_items": 0,
   "schematic_parity_issues": 0

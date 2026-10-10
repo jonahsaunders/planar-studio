@@ -44,11 +44,12 @@ for ref,a,k,c in [('U6','FB_LED','FB_K','FB_COL'),('U8','OV_LED','OV_K','SS')]:
  check(ref,{1:'AN',2:'CA',3:'EM',4:'COL'},{1:a,2:k,3:'AGND',4:c},'https://www.alldatasheet.com/html-pdf/1104261/EVERLIGHT/EL357N/565/1/EL357N.html','Everlight manufacturer datasheet Rev 6 page 1, hosted mirror; official product page https://en.everlight.com/photo_coupler_igbt_ssr/category-photo_transistor/4pin_sop_dc/')
 check('D2',{1:'A',2:'C',3:'A/C'},{1:'AGND',2:'OC',3:'CS_RECT'},'https://www.onsemi.com/pdf/datasheet/bat54slt1-d.pdf','BAT54SLT1G Rev 18 page 1')
 check('D1',{1:'K',2:'A'},{1:'VIN',2:'PGND'},'https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf','Unidirectional SMAJ54A; banded cathode matches footprint pad 1')
-branches={'R16':{1:'PGND',2:'RON'},'C11':{1:'SR_REG',2:'SGND'},'C4':{1:'HB',2:'HS_LOCAL'},'C20':{1:'BIAS_BST',2:'BIAS_SW'},'J1':{1:'PGND',2:'VIN_RAW'},'J2':{1:'SGND',2:'VOUT'}}
+branches={'C10':{1:'BIAS12',2:'AGND'},'R16':{1:'PGND',2:'RON'},'C11':{1:'SR_REG',2:'SGND'},'C4':{1:'HB',2:'HS_LOCAL'},'C20':{1:'BIAS_BST',2:'BIAS_SW'},'J1':{1:'PGND',2:'VIN_RAW'},'J2':{1:'SGND',2:'VOUT'}}
 for ref,pins in branches.items():
  for pin,net in pins.items():assert nets[(ref,str(pin))]==net,(ref,pin)
 manifest={p['ref']:p for p in json.loads((R/'circuit.json').read_text())['parts']}
 for ref,value in [('R16','100kR'),('C11','2.2uF'),('C4','100nF'),('C20','2.2nF')]:assert manifest[ref]['value']==value
-report={'result':'pass','date':'2026-10-10','hardware_revision':'A4','schematic_revision':'A6','device_checks':checks,'critical_branches':branches,'bias_output_nominal_V':1.2*(1+453/49.9),'bias_frequency_nominal_kHz':1.2*(1+453/49.9)*2500/100,'limitations':'Static pin functions, device polarity and selected application connections checked. Does not establish startup, stability, protection thresholds, switching margins, insulation, efficiency or thermal performance.'}
+assert manifest['C10']['Voltage']=='50V' and manifest['C10']['footprint']=='PS:C_0805_2012Metric'
+report={'result':'pass','date':'2026-10-10','hardware_revision':'A5','schematic_revision':'A7','device_checks':checks,'critical_branches':branches,'bias_output_nominal_V':1.2*(1+453/49.9),'bias_frequency_nominal_kHz':1.2*(1+453/49.9)*2500/100,'limitations':'Static pin functions, device polarity and selected application connections checked. Does not establish startup, stability, protection thresholds, switching margins, insulation, efficiency or thermal performance.'}
 (R/'evidence/datasheet-pin-review.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')
 print(f'{len(checks)} device pin-function maps and {len(branches)} critical branches passed.')

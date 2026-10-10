@@ -1,5 +1,5 @@
 {
-  "revision": "A6",
+  "revision": "A7",
   "source": "kicad/PS-GAN-60W.kicad_sch",
   "method": "Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.",
   "four_way_connections": [],

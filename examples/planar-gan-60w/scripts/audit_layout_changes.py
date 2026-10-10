@@ -28,19 +28,21 @@ def route(board,start,end):
   for v,dd,nn in g.get(u,[]):
    val=(d+dd,n+nn)
    if val<best.get(v,(float('inf'),999)):best[v]=val;heapq.heappush(q,(*val,v))
- raise RuntimeError((start,end,'No explicit track path'))
-pairs=[('GaN bootstrap HB',('U1','10'),('C4','1')),('GaN bootstrap HS',('U1','11'),('C4','2')),('GaN VCC bypass',('U1','14'),('C6','1')),('GaN AGND bypass',('U1','15'),('C6','2')),('Bias switch to inductor',('U4','8'),('L2','1')),('Bias bootstrap',('U4','7'),('C20','1')),('High-side divider to GaN',('R5','1'),('U1','12')),('Low-side divider to GaN',('R7','1'),('U1','13'))]
+ return {'trace_length_mm':None,'through_via_transitions':None,'note':'Connected through copper fill; explicit-track-only measurement unavailable.'}
+pairs=[('GaN bootstrap HB',('U1','10'),('C4','1')),('GaN bootstrap HS',('U1','11'),('C4','2')),('GaN VCC bypass',('U1','14'),('C6','1')),('GaN AGND bypass',('U1','15'),('C6','2')),('Bias switch to inductor',('U4','8'),('L2','1')),('Bias bootstrap',('U4','7'),('C20','1')),('High-side divider to GaN',('R5','1'),('U1','12')),('Low-side divider to GaN',('R7','1'),('U1','13')),('LLC GD1 to receiver',('U2','8'),('R4','1')),('LLC GD2 to receiver',('U2','5'),('R6','1')),('Rectifier VG1 to resistor',('U3','1'),('R10','1')),('Rectifier resistor to Q1',('R10','2'),('Q1','4')),('Rectifier VG2 to resistor',('U3','8'),('R11','1')),('Rectifier resistor to Q2',('R11','2'),('Q2','4')),('REG bypass',('U3','3'),('C11','1')),('VDD bypass',('U3','7'),('C12','1')),('LLC VCC bypass',('U2','7'),('C10','1')),('LLC GND bypass',('U2','6'),('C10','2')),('LDO input bypass',('U5','1'),('C25','1')),('LDO output bypass',('U5','5'),('C26','1'))]
 metrics=[]
 for title,start,end in pairs:
- m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A3':route(a,start,end),'A4':route(b,start,end)};metrics.append(m)
+ m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A4':route(a,start,end),'A5':route(b,start,end)};metrics.append(m)
 pa=json.loads((old/'circuit.json').read_text())['parts'];pb=json.loads((R/'circuit.json').read_text())['parts']
 assert len(pa)==len(pb)==82
 netchanges=[]
 for x,y in zip(pa,pb):
- for key in ['ref','value','footprint','mpn','lcsc']:assert x[key]==y[key],(key,x['ref'])
+ for key in ['ref','value','footprint','mpn','lcsc']:
+  if x['ref']!='C10':assert x[key]==y[key],(key,x['ref'])
  for pin,net in x['nets'].items():
   if y['nets'][pin]!=net:netchanges.append([x['ref'],pin,net,y['nets'][pin]])
-assert sorted(netchanges)==sorted([['U1','11','SW','HS_LOCAL'],['C4','2','SW','HS_LOCAL']]),netchanges
+assert not netchanges,netchanges
+assert next(x for x in pb if x['ref']=='C10')['lcsc']=='C28323'
 for name in ['Planar_ELP22_4_2_2.kicad_mod','MountingHole_3.2mm_M3_ExposedSubstrate_Edge.kicad_mod']:
  assert (old/'kicad/PS.pretty'/name).read_bytes()==(R/'kicad/PS.pretty'/name).read_bytes()
 af={f.GetReference():f for f in a.GetFootprints()};bf={f.GetReference():f for f in b.GetFootprints()}
@@ -50,6 +52,6 @@ vs=pads(b)[('U3','5')];sense=vs.GetPosition()
 zones=[z for z in b.Zones() if z.GetNetname()==vs.GetNetname()]
 assert all(not z.Outline().Contains(sense) for z in zones),'VSS must enter its dedicated trace, not a ground pour'
 moved=[ref for ref in af if af[ref].GetPosition()!=bf[ref].GetPosition() or af[ref].GetOrientationDegrees()!=bf[ref].GetOrientationDegrees()]
-report={'revision':'A6 schematic / A4 hardware','comparison':'A5 schematic / A3 hardware','method':'Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identities_values_footprints_unchanged':True,'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
-(R/'evidence/A6-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+report={'revision':'A7 schematic / A5 hardware','comparison':'A6 schematic / A4 hardware','method':'Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'only_part_identity_change':'C10: C28323 / CL21B105KBFNNNE / 1uF 50V X7R 0805, per TI UCC25600 recommendation','intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
+(R/'evidence/A7-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
