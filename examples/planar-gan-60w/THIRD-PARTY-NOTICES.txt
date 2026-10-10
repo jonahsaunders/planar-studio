@@ -1,0 +1,49 @@
+THIRD-PARTY SOURCES / NOTICE
+Planar Studio https://github.com/jonahsaunders/planar-studio
+Commit 71f6f4db9c1a7172bddca8c9c934d3a8ece2a481. Generated winding geometry and nominal ELP22 core/clip STEP derive from the engine and example. The MIT license follows.
+
+MIT License
+
+Copyright (c) 2026 Jonah Saunders
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+KiStack https://github.com/American-Embedded/kistack
+Commit 8494dbde095669df081950cbb6b24d08a21e25b0. Workflow instructions used; convert_position.py copied under the following license. No American Embedded logo is reproduced.
+
+Copyright 2026 American Embedded, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+The American Embedded logo may not be reproduced without express written permission.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+KiCad stock symbols, footprints and generic package STEP files are redistributed under KiCad library licensing (CC BY-SA 4.0 with the KiCad libraries exception): https://www.kicad.org/libraries/license/
+Only used package models are included under kicad/3dmodels/stock. Stock package geometry is generic, not manufacturer-certified.
+
+Supplier electronic symbols/footprints/STEP/WRL originate from EasyEDA/LCSC public part CAD via easyeda2kicad. Exact catalog codes, manufacturers and datasheet URLs are in sourcing/catalog-selected.json. Pin numbers were retained and checked against the circuit definitions. Supplier material remains subject to its source terms; no independent license ownership is claimed. L2_nominal_envelope.wrl is an original nominal body envelope from the Bourns mechanical dimensions and is not a detailed manufacturer model.
+
+The American Embedded MountingHole_3.2mm_M3_ExposedSubstrate_Edge footprint is redistributed under CC BY 4.0, https://creativecommons.org/licenses/by/4.0/. See kicad/PS.pretty/MOUNTING-LICENSE.md for the original source, attribution and Planar Studio modifications. This example copies the flyback's modified Edge variant without further geometry changes. No affiliation or endorsement is implied.
+
+KANGNEX connector footprint and WRL model were obtained from the EasyEDA/LCSC C3697 record. The footprint finished-drill diameter was changed from the supplier CAD's nominal 1.7 mm to the manufacturer's specified 1.6 mm. The 5.08 mm pitch and pin numbers are retained; model placement was checked in native KiCad renders. The C71370 matching screw plug is a separate accessory and is not included in the render. These supplier CAD assets remain subject to their source terms and are not dimensional certification.

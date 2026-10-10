@@ -1,0 +1,335 @@
+{
+  "status": "ENGINEERING PROTOTYPE; NOT RELEASED FOR FABRICATION",
+  "generation": "Planar Studio 1.6.0 center-tapped seed; duplicate each secondary section on one adjacent layer. Six final winding layers.",
+  "seed_configuration": {
+    "driveMode": "current",
+    "sourceVoltage": 12,
+    "sourceR": 1,
+    "sourceX": 0,
+    "loadKind": "impedance",
+    "loadL": 0,
+    "loadC": 0,
+    "load2Kind": "impedance",
+    "load2L": 0,
+    "load2C": 0,
+    "load3Kind": "impedance",
+    "load3L": 0,
+    "load3C": 0,
+    "loadMode": "load",
+    "loadR": 60,
+    "loadX": 0,
+    "load2Mode": "load",
+    "load2R": 50,
+    "load2X": 0,
+    "load3Mode": "load",
+    "load3R": 50,
+    "load3X": 0,
+    "magneticModel": "ferrite",
+    "windingTopology": "tapped",
+    "routedWindings": true,
+    "windingOptions": {
+      "P": {
+        "width": 0.6,
+        "connection": "series"
+      },
+      "S": {
+        "width": 0.6,
+        "connection": "series"
+      }
+    },
+    "operatingLinked": false,
+    "scenarios": [],
+    "studies": [],
+    "calibrations": [],
+    "searchResults": null,
+    "prototypeName": "",
+    "windingNets": {},
+    "terminalOffsets": {},
+    "placementRotation": 0,
+    "placementGrid": 0.5,
+    "leakageModel": "geometry",
+    "measuredLeakage": 0.000001,
+    "lossModel": "ac",
+    "capacitanceModel": "estimate",
+    "dielectricEr": 4.2,
+    "measuredCapacitance": 2e-11,
+    "corePreset": "eelp22-stock-gap",
+    "coreLossModel": "n87-fit",
+    "coreGapTreatment": "factory-gapped",
+    "steinmetzK": 1,
+    "steinmetzAlpha": 1.3,
+    "steinmetzBeta": 2.5,
+    "coreTemperature": 100,
+    "thermalResistance": 0,
+    "ambientTemperature": 25,
+    "coreALMeasured": 0,
+    "coreALScale": 1,
+    "checkpoints": [],
+    "transformerTests": [],
+    "calibration": null,
+    "searchLocks": {
+      "core": true,
+      "turns": false,
+      "widths": false,
+      "stack": false,
+      "connections": false,
+      "footprint": false
+    },
+    "operatingRange": {
+      "voltage": [
+        10.8,
+        12,
+        13.2
+      ],
+      "frequency": [
+        90000,
+        100000,
+        110000
+      ],
+      "load": [
+        40,
+        60,
+        100
+      ],
+      "ambient": [
+        0,
+        25,
+        60
+      ],
+      "maxTemperature": 100,
+      "maxRegulation": 20
+    },
+    "transformerTolerances": {
+      "samples": 30,
+      "seed": 42,
+      "copper": 10,
+      "spacing": 5,
+      "al": 10
+    },
+    "sweepMin": 1000,
+    "sweepMax": 1000000,
+    "sweepPoints": 41,
+    "loadSweepMin": 1,
+    "loadSweepMax": 1000,
+    "candidates": [],
+    "requirements": {
+      "voltage": 12,
+      "outputVoltage": 6,
+      "outputCurrent": 0.1,
+      "frequency": 100000,
+      "diameter": 50,
+      "layers": 4,
+      "voltageTolerance": 10
+    },
+    "family": "aircore",
+    "stackPlan": "P,S,S,P",
+    "copperLayers": "F.Cu,In1.Cu,In6.Cu,B.Cu",
+    "layerPositions": "0,.20,1.33,1.53",
+    "secondary2Turns": 3,
+    "secondary3Turns": 3,
+    "viaPad": 0.6,
+    "viaDrill": 0.3,
+    "coreShape": "rectangular",
+    "corePostW": 5.1,
+    "corePostH": 16.1,
+    "coreClearance": 0.5,
+    "coreMaterial": "N87",
+    "coreMuR": 2200,
+    "coreAe": 78.3,
+    "coreLe": 32.5,
+    "coreGap": 0.1,
+    "coreWindowHeight": 6.2,
+    "coreFluxLimit": 0.2,
+    "coreVoltage": 24,
+    "leakageFraction": 0.02,
+    "coreLossDensity": 0,
+    "shape": "polygon",
+    "primaryTurns": 2,
+    "secondaryTurns": 2,
+    "dOuter": 14.4,
+    "traceW": 0.6,
+    "traceS": 0.2,
+    "boardT": 1.6,
+    "copperOz": 2,
+    "tempC": 80,
+    "freq": 193000,
+    "current": 3.25,
+    "secondaryCurrent": 3.93,
+    "ppt": 128,
+    "tolerance": 0.004
+  },
+  "ordered_core": {
+    "upper": "B66285G0050X187",
+    "lower": "B66285G0050X187",
+    "clips": "B66286A2000X000",
+    "clip_quantity": 2,
+    "AL_nH": 820,
+    "AL_basis": "TDK approximate value for 0.10 mm total gap; not measured and not guaranteed assembly tolerance",
+    "Lm_uH": 13.12
+  },
+  "seed_core_note": "Two stock 0.05 mm gapped halves; nominal total gap 0.10 mm and Lm 13.12 uH. Measure the assembled transformer.",
+  "turns": {
+    "primary": 4,
+    "secondary_half_A": 2,
+    "secondary_half_B": 2
+  },
+  "copper_um": 70,
+  "stackup_status": "8 layers, six winding layers plus two routing layers; 2 oz all layers; dielectric positions are preliminary. JLCPCB must accept exact build.",
+  "P_Rdc_80C_ohm": 0.1558958998019106,
+  "S_half_Rdc_80C_ohm": 0.038883552484576804,
+  "expected_P_Irms_A": 3.25,
+  "expected_S_half_Irms_A": 3.9269908169872414,
+  "winding_DC_loss_W": 2.8459169439444567,
+  "leakage_seed_H": 8.350327342309342e-8,
+  "leakage_note": "Seed estimate only; duplicated secondary layers and delivered stack change this. Measure Lshort; tune discrete resonant inductor.",
+  "flux_square_wave_screen_T": 0.09976920058265214,
+  "limitations": [
+    "No solved LLC rectifier waveforms in Planar Studio.",
+    "Core-loss model is sinusoidal and is not a thermal qualification.",
+    "Internal copper weights, dielectric spacing, DFM and core fit require factory review."
+  ],
+  "mechanical": {
+    "manufacturer": "TDK",
+    "material": "N87",
+    "name": "TDK EELP 22/6/16 · 2 × factory 0.05 mm gap · N87",
+    "parts": [
+      "2 × B66285G0050X187",
+      "2 × B66286A2000X000 clamps"
+    ],
+    "width": 21.8,
+    "widthMax": 22.2,
+    "depth": 15.8,
+    "postW": 5,
+    "postH": 15.8,
+    "postMaxW": 5.1,
+    "postMaxH": 16.1,
+    "innerLegSpan": 16.8,
+    "innerLegSpanMin": 16.4,
+    "outerLegW": 2.5,
+    "ae": 78.3,
+    "le": 32.5,
+    "volume": 2540,
+    "al": 8.2e-7,
+    "factoryGap": 0.1,
+    "height": 11.4,
+    "windowHeight": 6.4,
+    "windowMin": 6.2,
+    "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+    "alScope": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly.",
+    "mounting": "Two B66286A2000X000 spring clamps. Reserve separate clamp clearance; ferrite openings alone do not verify clamp fit.",
+    "modified": false,
+    "issues": [],
+    "fits": true,
+    "openings": [
+      [
+        [
+          -3.05,
+          -8.55
+        ],
+        [
+          3.05,
+          -8.55
+        ],
+        [
+          3.05,
+          8.55
+        ],
+        [
+          -3.05,
+          8.55
+        ],
+        [
+          -3.05,
+          -8.55
+        ]
+      ],
+      [
+        [
+          -11.6,
+          -8.55
+        ],
+        [
+          -7.699999999999999,
+          -8.55
+        ],
+        [
+          -7.699999999999999,
+          8.55
+        ],
+        [
+          -11.6,
+          8.55
+        ],
+        [
+          -11.6,
+          -8.55
+        ]
+      ],
+      [
+        [
+          7.699999999999999,
+          -8.55
+        ],
+        [
+          11.6,
+          -8.55
+        ],
+        [
+          11.6,
+          8.55
+        ],
+        [
+          7.699999999999999,
+          8.55
+        ],
+        [
+          7.699999999999999,
+          -8.55
+        ]
+      ]
+    ],
+    "cutoutStatus": "Not checked against destination board"
+  },
+  "ports": [
+    {
+      "x": 2.7648196048136238,
+      "y": 13.53777161611589,
+      "name": "P+ (dot)",
+      "net": "T1_PRI",
+      "nodeId": "P:0",
+      "winding": "P"
+    },
+    {
+      "x": -2.764819604813623,
+      "y": 13.53777161611589,
+      "name": "P−",
+      "net": "T1_PRI",
+      "nodeId": "P:2",
+      "winding": "P"
+    },
+    {
+      "x": -2.764819604813625,
+      "y": -13.53777161611589,
+      "name": "S+ (dot)",
+      "net": "T1_SEC",
+      "nodeId": "S:0",
+      "winding": "S"
+    },
+    {
+      "x": -8.63375993398884e-16,
+      "y": -10.200000000000001,
+      "name": "S_CT",
+      "net": "T1_SEC",
+      "nodeId": "S:1",
+      "winding": "S"
+    },
+    {
+      "x": 2.7648196048136215,
+      "y": -13.53777161611589,
+      "name": "S−",
+      "net": "T1_SEC",
+      "nodeId": "S:2",
+      "winding": "S"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "result": "pass",
+  "baseline": "A2 commit 35a92e23bb2065b52ad1c2e17ffffa0bd795171c",
+  "parts_compared": 82,
+  "MPNs_catalog_codes_footprints_and_pin_net_assignments_unchanged": true,
+  "capacitor_ratings_preserved_in_Voltage_field": true,
+  "PCB_identical_after_normalizing_only_UUIDs_net_names_and_capacitor_value_rating_fields": true,
+  "method": "Compare manifest pin maps and exact part identifiers, then every native PCB expression after the listed metadata normalization. Exact connected-pin-set comparison against the exported schematic is performed by update_net_aliases.py."
+}

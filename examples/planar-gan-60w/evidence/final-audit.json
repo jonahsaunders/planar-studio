@@ -1,0 +1,20 @@
+{
+  "status": "CAD checks passed; hardware unqualified",
+  "manifest_vs_netlist_pin_mismatches": [],
+  "electronic_placements": 75,
+  "all_components_top": true,
+  "BOM_CPL_and_manifest_designators_match": true,
+  "BOM_total_quantity": 75,
+  "unique_catalog_parts": 41,
+  "copper_layers": 8,
+  "every_footprint_has_courtyard": true,
+  "all_3d_models_resolve_locally": true,
+  "AGND_to_PGND_connection": "Inside LMG2100 only; no PCB short",
+  "CPL_rotation_status": "Raw KiCad rotations; verify every JLCPCB placement preview before order",
+  "limitations": [
+    "No electrical switching simulation",
+    "No measured core loss, inductance or temperature",
+    "No JLCPCB file-level DFM/assembly approval",
+    "No insulation certification or production release"
+  ]
+}
