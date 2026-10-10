@@ -1,5 +1,5 @@
-PS-GAN-60W — A5 schematic / A3 hardware — KiCad 10 engineering prototype
-A3 hardware corrects R16: LM5164 RON now goes through 100k to PGND, not VIN. Earlier manufacturing files are superseded. The schematic also corrects D1 to a unidirectional TVS symbol, preserving physical polarity. See VALIDATION.md.
+PS-GAN-60W — A6 schematic / A4 hardware — KiCad 10 engineering prototype
+A4 shortens the GaN bootstrap/bypass loops, separates rectifier source sensing from gate return, and tightens the LM5164 bias cell. R16 remains correctly connected to PGND. See LAYOUT-REVIEW.md for before/after route measurements and the remaining magnetic-loss constraint. Earlier manufacturing packages are superseded.
 
 Open Schematic.pdf for the clearer, visibly wired circuit with directly wired OC sensing and bias circuitry, attached supply arrows, aligned labels and no four-way connections. The 64 x 56 mm board uses 23% less outline area than A1; headers, mating plugs and wires add to the envelope. Open Review.html for the design review and interactive copper-layer viewer.
 Open kicad/PS-GAN-60W.kicad_pro in KiCad. Both schematic and PCB are editable, with local symbols, footprints and 3D models.
@@ -12,7 +12,7 @@ All 75 purchased electronic components have exact JLCPCB catalog IDs; 41 unique 
 
 Planar Studio inspiration: examples/planar-flyback-5w from repository commit 71f6f4db9c1a7172bddca8c9c934d3a8ece2a481. This design changes topology, turns, control and power stage; it is not a power-scaled copy. T1.planar.json is an importable FOUR-section seed (P,S,S,P). The final board parallels each secondary section on an additional layer; see T1-artwork.json and T1-windings.kicad_pcb. Importing the seed alone does not recreate all six final winding layers.
 
-Validation: evidence includes ERC, DRC, pin-by-pin manifest/netlist comparison, winding-contact sampling, all eight native copper views, magnetic assumptions and first-harmonic LLC calculations. No switching simulation or hardware test has been performed. 60 W, regulation, efficiency and temperature remain targets.
+Validation: evidence includes ERC, DRC, pin-by-pin manifest/netlist comparison, winding-contact sampling, all eight native copper views, independently rendered Gerbers, magnetic assumptions and first-harmonic LLC calculations. No switching simulation or hardware test has been performed. 60 W, regulation, efficiency and temperature remain targets.
 
 scripts/export_review.py regenerates exports with an ERC/DRC gate using kicad-cli. scripts/audit_windings.py and final_audit.py require KiCad's pcbnew Python. engineering_review.py requires numpy. audit_schematic.py and redraw_schematic.py require sexpdata. regenerate_magnetics.mjs requires Node and a Planar Studio checkout passed as its first argument at the commit above; it regenerates winding review files, not the edited main PCB.
 

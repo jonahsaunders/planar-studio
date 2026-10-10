@@ -1,0 +1,151 @@
+{
+  "revision": "A6 schematic / A4 hardware",
+  "comparison": "A5 schematic / A3 hardware",
+  "method": "Shortest path through explicit native track/via endpoints; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.",
+  "paths": [
+    {
+      "path": "GaN bootstrap HB",
+      "from": "U1.10",
+      "to": "C4.1",
+      "A3": {
+        "trace_length_mm": 4.091,
+        "through_via_transitions": 0
+      },
+      "A4": {
+        "trace_length_mm": 1.532,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN bootstrap HS",
+      "from": "U1.11",
+      "to": "C4.2",
+      "A3": {
+        "trace_length_mm": 4.242,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 1.532,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN VCC bypass",
+      "from": "U1.14",
+      "to": "C6.1",
+      "A3": {
+        "trace_length_mm": 5.45,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 2.591,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN AGND bypass",
+      "from": "U1.15",
+      "to": "C6.2",
+      "A3": {
+        "trace_length_mm": 2.669,
+        "through_via_transitions": 0
+      },
+      "A4": {
+        "trace_length_mm": 2.488,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias switch to inductor",
+      "from": "U4.8",
+      "to": "L2.1",
+      "A3": {
+        "trace_length_mm": 11.943,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 3.66,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias bootstrap",
+      "from": "U4.7",
+      "to": "C20.1",
+      "A3": {
+        "trace_length_mm": 5.552,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 2.116,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "High-side divider to GaN",
+      "from": "R5.1",
+      "to": "U1.12",
+      "A3": {
+        "trace_length_mm": 41.478,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 5.748,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Low-side divider to GaN",
+      "from": "R7.1",
+      "to": "U1.13",
+      "A3": {
+        "trace_length_mm": 54.811,
+        "through_via_transitions": 2
+      },
+      "A4": {
+        "trace_length_mm": 15.818,
+        "through_via_transitions": 2
+      }
+    }
+  ],
+  "moved_parts": [
+    "C19",
+    "C20",
+    "C23",
+    "C24",
+    "C4",
+    "C5",
+    "C6",
+    "L2",
+    "R11",
+    "R14",
+    "R15",
+    "R17",
+    "R18",
+    "R19",
+    "R4",
+    "R5",
+    "R6",
+    "R7"
+  ],
+  "part_identities_values_footprints_unchanged": true,
+  "intentional_pin_net_changes": [
+    [
+      "U1",
+      "11",
+      "SW",
+      "HS_LOCAL"
+    ],
+    [
+      "C4",
+      "2",
+      "SW",
+      "HS_LOCAL"
+    ]
+  ],
+  "winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged": true,
+  "U3_VSS_excluded_from_all_SGND_zone_outlines": true,
+  "routed_vias_before": 163,
+  "routed_vias_after": 169,
+  "qualification": "unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature"
+}

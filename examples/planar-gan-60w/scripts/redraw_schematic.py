@@ -1,4 +1,4 @@
-"""A5 schematic presentation: wired functional schematic, on a compact A3 sheet."""
+"""A6 schematic presentation: wired functional schematic, on a compact A3 sheet."""
 from pathlib import Path
 import json,uuid,copy,math
 import sexpdata as sx
@@ -34,7 +34,7 @@ oldpins['D']={'1':'K','2':'A'}
 tvs=poly([(-.5,0),(.5,.5),(.5,-.5),(-.5,0)])+poly([(-.75,.6),(-.5,.6),(-.5,-.6),(-.25,-.6)])
 custom('D',[(1,-1.5,0,0,'passive'),(2,1.5,0,180,'passive')],tvs)
 defs['D'].append([sx.Symbol('pin_numbers'),sx.Symbol('hide')])
-custom('LMG2100R044RARR',[(7,-7,3,0,'power_in'),(14,-7,6.5,0,'power_in'),(12,-7,0,0,'input'),(13,-7,-3,0,'input'),(10,7,5,180,'passive'),(11,7,1,180,'passive',True),(5,7,1,180,'output'),(15,-2,-8,90,'power_in'),(6,2,-8,90,'power_in'),(17,2,-8,90,'passive',True)]+[(n,-3+i,0,90,'no_connect',True) for i,n in enumerate([1,2,3,4,8,9,16])],'',box=(6,7))
+custom('LMG2100R044RARR',[(7,-7,3,0,'power_in'),(14,-7,6.5,0,'power_in'),(12,-7,0,0,'input'),(13,-7,-3,0,'input'),(10,7,5,180,'passive'),(11,7,3,180,'passive'),(5,7,1,180,'output'),(15,-2,-8,90,'power_in'),(6,2,-8,90,'power_in'),(17,2,-8,90,'passive',True)]+[(n,-3+i,0,90,'no_connect',True) for i,n in enumerate([1,2,3,4,8,9,16])],'',box=(6,7))
 custom('UCC25600DR',[(1,-4,-8,90,'passive'),(2,-10,-5,0,'passive'),(3,-10,2,0,'input'),(4,5,-8,90,'passive'),(7,0,8,270,'power_in'),(6,-7,-8,90,'power_in'),(8,10,3,180,'output'),(5,10,-3,180,'output')],'',box=(9,7))
 custom('UCC24624DR',[(1,-7,7.5,0,'output'),(4,-7,12.5,0,'input'),(6,-7,-2.5,0,'input'),(8,-7,-7.5,0,'output'),(7,7,12,180,'power_in'),(3,7,-3,180,'power_out'),(2,0,-9.5,90,'power_in'),(5,0,-9.5,90,'passive',True)],'',box=(6,14,8.5))
 custom('LM5164DDAR',[(2,-7,6,0,'power_in'),(3,-7,-2,0,'input'),(4,-7,2,0,'passive'),(7,7,6,180,'passive'),(8,7,2,180,'output'),(5,7,-3,180,'input'),(6,7,-7,180,'open_collector'),(1,0,-9,90,'power_in'),(9,0,-9,90,'passive',True)],'',box=(6,8))
@@ -114,7 +114,7 @@ def bank(refs,xs,y,top,bottom,plus,minus,ground_x=None):
  for ref,x in zip(refs,xs):sym(ref,x,y);wire(plus,(x,top),(ref,'1'));wire(minus,(ref,'2'),(x,bottom))
  wire(plus,*[(x,top) for x in xs]);wire(minus,*[(x,bottom) for x in xs]);power(minus,xs[0] if ground_x is None else ground_x,bottom,True)
 
-text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A5 schematic · A3 hardware',42,4,1.8)
+text('PS-GAN-60W',5,4,3.5,True);text('48 V nominal → isolated 12 V / 5 A target   |   A6 schematic · A4 hardware',42,4,1.8)
 text('PGND: input return   /   SGND: isolated output return   /   AGND: controller return (joins PGND inside U1)',42,7,1.15)
 box(5,9,155,36,'01  PLANAR POWER PATH')
 sym('J1',9,25,txt=(9,19.5,9,21,False),value='48 V INPUT')
@@ -131,7 +131,7 @@ bank(['C5','C6'],[29,35],17,14,20,'V5','AGND',ground_x=35)
 wire('V5',(35,14),(40,14),('U1','14'));power('V5',40,14)
 ground('AGND','U1','15',40);ground('PGND','U1','6',40)
 for net,n,y in [('HI','12',29),('LI','13',32)]:wire(net,(38,y),('U1',n));label(net,38,y)
-sym('C4',58,25,txt=(58,18,58,19.5,False));wire('HB',('U1','10'),('C4','1'));wire('SW',('U1','5'),(58,28),(62,28));wire('SW',('C4','2'),(58,28))
+sym('C4',58,25,txt=(58,18,58,19.5,False));wire('HB',('U1','10'),('C4','1'));wire('SW',('U1','5'),(62,28));wire('HS_LOCAL',('C4','2'),('U1','11'))
 sym('L1',63,28,90);sym('T1',77,28,txt=(77,16.5,77,18,False),value='4 : 2 : 2  /  ELP22')
 wire('PRI_A',('L1','2'),(67,28),(67,22),('T1','1'))
 bank(['C7','C8'],[62,70],38,35,41,'TANK_C','PGND');wire('TANK_C',('T1','2'),(70,35),(62,35));label('TANK_C',62,35)
@@ -278,10 +278,10 @@ for i,(n,x,y) in enumerate(flag_nodes):flag(n,x,y,i)
 assert placed==set(parts),(set(parts)-placed,placed-set(parts))
 for k,s in defs.items():
  s[1]='PS:'+k
-root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A5-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
+root=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {data["root_uuid"]}) (paper "A3") (title_block (title "PS-GAN-60W: planar LLC converter") (date "2026-10-10") (rev "A6-schematic") (company "Planar Studio")) (lib_symbols {"".join(sx.dumps(s) for s in defs.values())}) {"".join(elements)} (embedded_fonts no))'
 (CAD/(NAME+'.kicad_sch')).write_text(root,encoding='utf8')
 for k,s in defs.items():s[1]=k
 (CAD/'PS.kicad_sym').write_text('(kicad_symbol_lib (version 20250114) (generator "kicad_symbol_editor") '+''.join(sx.dumps(s) for s in defs.values())+')',encoding='utf8')
-(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A5','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
+(R/'evidence/schematic-geometry.json').write_text(json.dumps({'revision':'A6','four_way_connections':four,'wire_segments':len(segments),'placed_parts':len(placed),'symbol_pin_identities_preserved':True},indent=2),encoding='utf8')
 (R/'circuit.json').write_text(json.dumps(data,indent=2),encoding='utf8')
 print('Schematic saved:',len(placed),'parts;',len(segments),'wire segments; four-way:',four)

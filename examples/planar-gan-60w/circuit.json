@@ -148,7 +148,7 @@
         "8": null,
         "9": null,
         "10": "HB",
-        "11": "SW",
+        "11": "HS_LOCAL",
         "12": "HI",
         "13": "LI",
         "14": "V5",
@@ -157,7 +157,7 @@
         "17": "PGND"
       },
       "block": "power",
-      "note": "",
+      "note": "HS is internally connected to SW. Dedicated local C4 return to HS; no external HS-to-power-SW loop. TI pin functions and layout guidance.",
       "uuid": "72017466-124f-5fa8-9067-35297088423c"
     },
     {
@@ -174,7 +174,7 @@
       "source_footprint": "Capacitor_SMD:C_0603_1608Metric",
       "nets": {
         "1": "HB",
-        "2": "SW"
+        "2": "HS_LOCAL"
       },
       "block": "power",
       "note": "",

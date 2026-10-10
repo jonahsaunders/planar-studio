@@ -1,8 +1,8 @@
 {
   "result": "pass",
   "date": "2026-10-10",
-  "hardware_revision": "A3",
-  "schematic_revision": "A5",
+  "hardware_revision": "A4",
+  "schematic_revision": "A6",
   "device_checks": [
     {
       "ref": "U1",
@@ -39,7 +39,7 @@
         "6": "PGND",
         "7": "VIN",
         "10": "HB",
-        "11": "SW",
+        "11": "HS_LOCAL",
         "12": "HI",
         "13": "LI",
         "14": "V5",
@@ -314,7 +314,7 @@
     },
     "C4": {
       "1": "HB",
-      "2": "SW"
+      "2": "HS_LOCAL"
     },
     "C20": {
       "1": "BIAS_BST",

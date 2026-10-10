@@ -1,5 +1,5 @@
 {
-  "revision": "A3",
+  "revision": "A4",
   "board_mm": [
     64,
     56
@@ -65,7 +65,7 @@
   "purchased_components_top": 75,
   "SMT_components": 73,
   "through_hole_connectors": 2,
-  "routing_vias": 163,
+  "routing_vias": 169,
   "copper_layers": 8,
   "export_origin_absolute_mm": [
     53,
