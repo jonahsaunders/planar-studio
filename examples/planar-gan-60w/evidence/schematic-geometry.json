@@ -1,0 +1,11 @@
+{
+  "revision": "A2",
+  "source": "kicad/PS-GAN-60W.kicad_sch",
+  "method": "Parse actual wire segments and explicit junctions; count distinct incident directions at every endpoint and junction. Reject any connected four-direction node.",
+  "four_way_connections": [],
+  "wire_segments": 278,
+  "three_way_wire_nodes": 42,
+  "junction_dots": 42,
+  "orthogonal_wires_only": true,
+  "manifest_parts": 82
+}

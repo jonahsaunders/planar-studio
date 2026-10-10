@@ -1,5 +1,5 @@
 Drill report for PS-GAN-60W.kicad_pcb
-Created on 2026-10-10T12:18:01
+Created on 2026-10-10T13:15:11
 
 Copper Layer Stackup:
     =============================================================
@@ -18,10 +18,9 @@ Drill file 'PS-GAN-60W-PTH.drl' contains
     =============================================================
     T1  0.300mm  0.0118"  (162 holes))
     T2  0.300mm  0.0118"  (6 holes))
-    T3  1.000mm  0.0394"  (4 holes))
-    T4  1.900mm  0.0748"  (4 holes))
+    T3  1.600mm  0.0630"  (4 holes))
 
-    Total plated holes count 176
+    Total plated holes count 172
 
 
 Drill file 'PS-GAN-60W-NPTH.drl' contains

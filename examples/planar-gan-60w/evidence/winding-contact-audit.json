@@ -4,12 +4,12 @@
   "terminal_contacts": [
     [
       "/PRI_A",
-      "L1.2",
+      "track",
       "F.Cu"
     ],
     [
       "/PRI_A",
-      "track",
+      "L1.2",
       "F.Cu"
     ]
   ],

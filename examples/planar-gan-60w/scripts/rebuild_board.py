@@ -1,4 +1,4 @@
-"""Rebuild A1 from bundled footprints and explicit manual routes.
+"""Rebuild A2 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
@@ -20,10 +20,10 @@ def pad(n,x,y,w,h,drill=0,layers=None):
 def footprint(name,body,attr='smd'):
  return f'(footprint "{name}" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr {attr}) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "{name}" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) {body})'
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(1.6))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A1 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A2 REVIEW - NOT FOR FABRICATION');title.SetDate('2026-10-10');board.SetTitleBlock(title)
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
- n=pcb.NETINFO_ITEM(board,'/'+name);board.Add(n);nets[name]=n
+ n=pcb.NETINFO_ITEM(board,('' if name in ['VIN','PGND','AGND','VOUT','SGND','BIAS12','V5'] else '/')+name);board.Add(n);nets[name]=n
 # Placement in millimetres relative to the circuit datum (60,60).
 place={'C1': (38, 6.9, 90),
  'C10': (31.2, 36.4, 90),
@@ -31,7 +31,7 @@ place={'C1': (38, 6.9, 90),
  'C12': (1.3, 11.5, 90),
  'C13': (3.0, 26.5, 90),
  'C14': (7.5, 26.5, 90),
- 'C15': (4.3, 4, 0),
+ 'C15': (5.5, 4, 0),
  'C16': (7.5, 31.5, 90),
  'C17': (31.8, 26.6, 90),
  'C18': (22.8, 31, 0),
@@ -57,8 +57,8 @@ place={'C1': (38, 6.9, 90),
  'D1': (32.3, 3.5, 90),
  'D2': (32.8, 32.9, 0),
  'F1': (36, 3.0, 180),
- 'J1': (50.2, 19.5, 270),
- 'J2': (-2.2, 19.5, 90),
+ 'J1': (50, 18.5, 90),
+ 'J2': (-2, 18.5, 270),
  'L1': (39.2, 19, 180),
  'L2': (42, 44.5, 0),
  'Q1': (4.3, 9.8, 0),
@@ -82,7 +82,7 @@ place={'C1': (38, 6.9, 90),
  'R24': (7.4, 40.4, 0),
  'R25': (6.3, 43, 90),
  'R26': (8.0, 43, 90),
- 'R27': (3, 45.5, 90),
+ 'R27': (3.6, 43.3, 90),
  'R28': (5, 46.4, 90),
  'R3': (24.4, 44.1, 90),
  'R4': (27.5, 31, 0),
@@ -92,10 +92,10 @@ place={'C1': (38, 6.9, 90),
  'R8': (33.8, 29.8, 90),
  'R9': (30, 31.5, 90),
  'T1': (22, 15.5, 270),
- 'TP1': (54, 29, 0),
- 'TP2': (56.5, 29, 0),
- 'TP3': (-7, 29, 0),
- 'TP4': (-4.5, 29, 0),
+ 'TP1': (51, 29, 0),
+ 'TP2': (54, 29, 0),
+ 'TP3': (-3.5, 29, 0),
+ 'TP4': (-3.5, 32, 0),
  'TP5': (39, -1, 0),
  'TP6': (42, -1, 0),
  'U1': (44, 12, 0),
@@ -123,13 +123,13 @@ for p in data['parts']:
     pd.SetNet(nets[net])
  board.Add(f);x,y,a=place[p['ref']];f.SetPosition(pt(x+60,y+60));f.SetOrientationDegrees(a);f.Value().SetVisible(False)
  # Silkscreen component references remain available on F.Fab; compact board uses an assembly drawing.
- f.Reference().SetLayer(pcb.F_Fab);f.Reference().SetTextSize(pt(.7,.7));f.Reference().SetTextThickness(mm(.1))
+ f.Reference().SetLayer(pcb.F_Fab);f.Reference().SetTextSize(pt(.7,.8));f.Reference().SetTextThickness(mm(.1))
  fps[p['ref']]=f
  for pd in f.Pads():
   if pd.GetNumber():pads.setdefault((p['ref'],pd.GetNumber()),[]).append(pd)
 def edge(a,b):
  s=pcb.PCB_SHAPE();s.SetShape(pcb.SHAPE_T_SEGMENT);s.SetLayer(pcb.Edge_Cuts);s.SetWidth(mm(.05));s.SetStart(pt(a[0]+60,a[1]+60));s.SetEnd(pt(b[0]+60,b[1]+60));board.Add(s)
-pts=[(-14.5,-4),(62.5,-4),(64,-2.5),(64,52.5),(62.5,54),(-14.5,54),(-16,52.5),(-16,-2.5),(-14.5,-4)]
+pts=[(-5.5,-4),(55.5,-4),(57,-2.5),(57,50.5),(55.5,52),(-5.5,52),(-7,50.5),(-7,-2.5),(-5.5,-4)]
 for a,b in zip(pts,pts[1:]):edge(a,b)
 # Rotate Planar Studio mathematical XY into the placed T1 coordinate system.
 for opening in art['outline'][1:]:
@@ -155,21 +155,19 @@ exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 # Keep placement preview editable; routing status is measured by KiCad DRC.
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
-legend('PLANAR STUDIO',20,-1.6,1.4)
-legend('PS-GAN-60W  /  A1',23,52,1.1)
-legend('48V IN',54,7.5,1.1);legend('12V OUT',-6.5,7.5,1.1)
-legend('+',53.3,14.5,1);legend('-',53.3,19.5,1)
-legend('+',-5.3,14.5,1);legend('-',-5.3,19.5,1)
-legend('5A TARGET',-7,25.3,.95);legend('46-50V',55,25.3,.95)
-legend('VIN  GND',55.25,31.2,.85);legend('12V  GND',-5.75,31.2,.85)
+legend('PLANAR STUDIO',20,-1.6,1.2)
+legend('PS-GAN-60W  /  A2',24,50.6,.85)
+legend('48V IN',51,8.2,.9);legend('12V OUT',-2,8.2,.9)
+legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
+legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)
+legend('VIN  GND',52.5,31.3,.8)
+legend('12V',-3.5,27,.8);legend('GND',-3.5,34,.8)
 legend('5V  AGND',40.5,-2.9,.8)
-legend('ISOLATED',-7,37,1)
-legend('12V RETURN',-7,39, .85)
-legend('PRIMARY',55,37,1)
-legend('48V RETURN',55,39,.85)
-legend('ENGINEERING PROTOTYPE',24,52,1,pcb.B_SilkS)
+legend('ISOLATED',-2.6,38,.8)
+legend('PRIMARY',52.5,38,.8)
+legend('ENGINEERING PROTOTYPE',24,50.6,.85,pcb.B_SilkS)
 # Assembly reference IDs on the front fabrication layer remain uncluttered.
-board.GetDesignSettings().SetAuxOrigin(pt(44,114))
+board.GetDesignSettings().SetAuxOrigin(pt(53,112))
 out=CAD/'PS-GAN-60W.kicad_pcb';pcb.SaveBoard(str(out),board)
 # Record requested copper weights and preliminary dielectric positions in native CAD.
 stack='(stackup (layer "F.SilkS" (type "Top Silk Screen")) (layer "F.Mask" (type "Top Solder Mask") (thickness 0.01)) '
@@ -181,7 +179,8 @@ stack+='(layer "B.Mask" (type "Bottom Solder Mask") (thickness 0.01)) (layer "B.
 txt=out.read_text(encoding='utf8').replace('(setup\n','(setup\n'+stack+'\n',1).replace('(capping no)','(capping yes)',1).replace('(filling no)','(filling yes)',1)
 out.write_text(txt,encoding='utf8')
 # Explicit rules; functional isolation is not a certified mains-insulation design.
-project={'meta':{'filename':'PS-GAN-60W.kicad_pro','version':1},'board':{'design_settings':{'rules':{'min_clearance':.15,'min_track_width':.16,'min_via_diameter':.6,'min_through_hole_diameter':.3,'min_hole_to_hole':.25,'min_copper_edge_clearance':.25},'defaults':{'board_outline_line_width':.05}}},'net_settings':{'classes':[{'name':'Default','clearance':.2,'track_width':.25,'via_diameter':.6,'via_drill':.3}],'meta':{'version':3}},'pcbnew':{'page_layout_descr_file':''},'schematic':{},'text_variables':{'DESIGN_STATUS':'ENGINEERING REVIEW ONLY'}}
+project={'meta':{'filename':'PS-GAN-60W.kicad_pro','version':1},'board':{'design_settings':{'rules':{'min_clearance':.15,'min_track_width':.16,'min_via_diameter':.6,'min_through_hole_diameter':.3,'min_hole_to_hole':.25,'min_copper_edge_clearance':.25},'defaults':{'board_outline_line_width':.05}}},'net_settings':{'classes':[{'name':'Default','clearance':.2,'track_width':.25,'via_diameter':.6,'via_drill':.3}],'meta':{'version':3}},'pcbnew':{'page_layout_descr_file':''},'schematic':{'page_layout_descr_file':'${KIPRJMOD}/schematic-frame.kicad_wks'},'text_variables':{'DESIGN_STATUS':'ENGINEERING REVIEW ONLY'}}
+project['erc']={'rule_severities':{'four_way_junction':'error'}}
 (CAD/'PS-GAN-60W.kicad_pro').write_text(json.dumps(project,indent=2))
 layout={r:{'position':place[r],'pads':{p.GetNumber():[round(pcb.ToMM(p.GetPosition().x)-60,4),round(pcb.ToMM(p.GetPosition().y)-60,4)] for p in f.Pads()}} for r,f in fps.items()}
 (ROOT/'evidence/layout.json').write_text(json.dumps(layout,indent=2))

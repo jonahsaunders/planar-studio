@@ -1,16 +1,16 @@
 {
-  "revision": "A1",
+  "revision": "A2",
   "board_mm": [
-    80,
-    58
+    64,
+    56
   ],
   "outline_origin_absolute_mm": [
-    44,
+    53,
     56
   ],
   "hole_pattern_mm": [
-    71,
-    49
+    55,
+    47
   ],
   "mounting_footprint": "MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
   "same_footprint_as": "planar-flyback-5w A5",
@@ -24,7 +24,7 @@
     },
     {
       "ref": "H2",
-      "x_mm": 75.5,
+      "x_mm": 59.5,
       "y_mm": 4.5,
       "rotation_deg": 0,
       "drill_mm": 3.2
@@ -32,14 +32,14 @@
     {
       "ref": "H3",
       "x_mm": 4.5,
-      "y_mm": 53.5,
+      "y_mm": 51.5,
       "rotation_deg": 180,
       "drill_mm": 3.2
     },
     {
       "ref": "H4",
-      "x_mm": 75.5,
-      "y_mm": 53.5,
+      "x_mm": 59.5,
+      "y_mm": 51.5,
       "rotation_deg": 0,
       "drill_mm": 3.2
     }

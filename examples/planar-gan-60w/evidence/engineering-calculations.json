@@ -199,6 +199,6 @@
   "OVP_setpoint_V": 13.2734,
   "SS_time_ms": 55.999999999999986,
   "magnetic_copper_DC_loss_W": 2.8459169439444567,
-  "electronics_only_catalog_total_USD": 24.3,
-  "price_excludes": "Core, clips, PCB, assembly, extended-part setup, attrition, shipping, taxes and minimum purchase quantities."
+  "electronics_only_catalog_total_USD": 23.68,
+  "price_excludes": "Mating plugs, core, clips, PCB, assembly, extended-part setup, attrition, shipping, taxes and minimum purchase quantities."
 }

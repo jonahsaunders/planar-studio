@@ -1,12 +1,12 @@
 {
-  "revision": "A1",
+  "revision": "A2",
   "board_mm": [
-    80,
-    58
+    64,
+    56
   ],
   "hole_pattern_mm": [
-    71,
-    49
+    55,
+    47
   ],
   "holes": [
     {
@@ -41,17 +41,19 @@
   "connectors": [
     {
       "reference": "J1",
-      "pin_1": "/PGND",
+      "pin_1": "PGND",
       "pin_2": "/VIN_RAW",
-      "contact_pitch_mm": 5,
+      "contact_pitch_mm": 5.08,
+      "finished_drill_mm": 1.6,
       "top_insertion": true,
       "process": "through-hole solder after top SMT; supplier must approve lead protrusion/process"
     },
     {
       "reference": "J2",
-      "pin_1": "/SGND",
-      "pin_2": "/VOUT",
-      "contact_pitch_mm": 5,
+      "pin_1": "SGND",
+      "pin_2": "VOUT",
+      "contact_pitch_mm": 5.08,
+      "finished_drill_mm": 1.6,
       "top_insertion": true,
       "process": "through-hole solder after top SMT; supplier must approve lead protrusion/process"
     }
@@ -66,8 +68,8 @@
   "routing_vias": 162,
   "copper_layers": 8,
   "export_origin_absolute_mm": [
-    44,
-    114
+    53,
+    112
   ],
   "mounting_footprint_sha256": "2383eaff676f671010a3d7e8bf41e2b10978f2e8ffc1a92a57f2c7d27edb5eb2",
   "status": "Geometry and assembly mapping checked; factory process and hardware performance unqualified"

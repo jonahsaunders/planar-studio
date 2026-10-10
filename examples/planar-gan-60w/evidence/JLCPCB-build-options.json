@@ -11,5 +11,11 @@
   "exact_dielectrics": "Proposed; not confirmed by JLCPCB",
   "factory_file_review": false,
   "files_uploaded": false,
-  "order_placed": false
+  "order_placed": false,
+  "example_revision": "A2",
+  "board_outline_mm": [
+    64,
+    56
+  ],
+  "assembly_scope": "73 top SMT + two through-hole C3697 headers; two C71370 mating plugs procured separately; DigiKey core fitting unconfirmed"
 }

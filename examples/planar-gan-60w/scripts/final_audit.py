@@ -22,7 +22,7 @@ cpl=list(csv.DictReader((R/'manufacturing-prototype/CPL-JLCPCB-review.csv').open
 br={r.strip() for row in bom for r in row['Designator'].split(',')};cr={row['Designator'] for row in cpl};expected={x['ref'] for x in parts if x['lcsc']}
 assert br==cr==expected,(br^expected,cr^expected)
 assert all(x['Layer']=='T' for x in cpl)
-assert all(0<=float(x['Mid X'])<=80 and 0<=float(x['Mid Y'])<=58 for x in cpl)
+assert all(0<=float(x['Mid X'])<=64 and 0<=float(x['Mid Y'])<=56 for x in cpl)
 assert all(p['stock']>0 for p in parts if p['lcsc'])
 assert not errors,errors
 report={'status':'CAD checks passed; hardware unqualified','manifest_vs_netlist_pin_mismatches':errors,'electronic_placements':len(cpl),'all_components_top':True,'BOM_CPL_and_manifest_designators_match':True,'BOM_total_quantity':sum(int(r['Quantity']) for r in bom),'unique_catalog_parts':len(bom),'copper_layers':b.GetCopperLayerCount(),'every_footprint_has_courtyard':True,'all_3d_models_resolve_locally':True,'AGND_to_PGND_connection':'Inside LMG2100 only; no PCB short','CPL_rotation_status':'Raw KiCad rotations; verify every JLCPCB placement preview before order','limitations':['No electrical switching simulation','No measured core loss, inductance or temperature','No JLCPCB file-level DFM/assembly approval','No insulation certification or production release']}

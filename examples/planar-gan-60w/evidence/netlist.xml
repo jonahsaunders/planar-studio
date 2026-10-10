@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>kicad/PS-GAN-60W.kicad_sch</source>
-    <date>2026-10-10T12:17:57</date>
+    <date>2026-10-10T13:20:16</date>
     <tool>Eeschema 10.0.6</tool>
     <textvar name="DESIGN_STATUS">ENGINEERING REVIEW ONLY</textvar>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
-        <title>PS-GAN-60W: planar LLC engineering prototype</title>
-        <company>Planar Studio / KiStack workflow</company>
-        <rev>A1-review</rev>
+        <title>PS-GAN-60W: planar LLC converter</title>
+        <company>Planar Studio</company>
+        <rev>A2-review</rev>
         <date>2026-10-10</date>
         <source>PS-GAN-60W.kicad_sch</source>
         <comment number="1" value=""/>
@@ -224,7 +224,7 @@
       </units>
     </comp>
     <comp ref="C7">
-      <value>100nF/100V C0G</value>
+      <value>100nF/100V</value>
       <footprint>PS:C_1206_3216Metric</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</datasheet>
       <fields>
@@ -257,7 +257,7 @@
       </units>
     </comp>
     <comp ref="C8">
-      <value>100nF/100V C0G</value>
+      <value>100nF/100V</value>
       <footprint>PS:C_1206_3216Metric</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Murata-Electronics-GRM31C5C2A104JA01L_C405303.pdf</datasheet>
       <fields>
@@ -1016,7 +1016,7 @@
       </units>
     </comp>
     <comp ref="D2">
-      <value>BAT54SLT1G</value>
+      <value>BAT54S</value>
       <footprint>PS:SOT-23_L2.9-W1.3-P1.90-LS2.4-BR</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1810301516_onsemi-BAT54SLT1G_C19726.pdf</datasheet>
       <fields>
@@ -1028,14 +1028,13 @@
         <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1810301516_onsemi-BAT54SLT1G_C19726.pdf</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="BAT54SLT1G" description="BAT54SLT1G"/>
+      <libsource lib="PS" part="BAT54SLT1G" description=""/>
       <property name="MPN" value="BAT54SLT1G"/>
       <property name="Manufacturer" value="onsemi"/>
       <property name="LCSC" value="C19726"/>
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="Schottky Barrier Diodes (SBD)"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>1dde8af3-3c9b-5b23-82d9-db0927a3cc38</tstamps>
       <units>
@@ -1082,67 +1081,63 @@
       </units>
     </comp>
     <comp ref="J1">
-      <value>XT30 48V INPUT</value>
-      <footprint>PS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf</datasheet>
+      <value>48 V INPUT</value>
+      <footprint>PS:CONN-TH_2P-P5.08_WJ2EDGRC-5.08-2P</footprint>
+      <datasheet>https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697</datasheet>
       <fields>
-        <field name="MPN">XT30PW-M30.G.Y</field>
-        <field name="Manufacturer">Changzhou Amass Elec</field>
-        <field name="LCSC">C431092</field>
-        <field name="Design_note">AMASS XT30PW-M30.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top</field>
-        <field name="Footprint">PS:AMASS_XT30PW-M_1x02_P2.50mm_Horizontal</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf</field>
+        <field name="MPN">WJ2EDGRC-5.08-02P-14-00A</field>
+        <field name="Manufacturer">Ningbo Kangnex Elec</field>
+        <field name="LCSC">C3697</field>
+        <field name="Design_note">5.08 mm pluggable terminal header; pin 2 positive, pin 1 return. Mate with C71370 screw plug, supplied separately.</field>
+        <field name="Footprint">PS:CONN-TH_2P-P5.08_WJ2EDGRC-5.08-2P</field>
+        <field name="Datasheet">https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="Power_Port" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
-      <property name="MPN" value="XT30PW-M30.G.Y"/>
-      <property name="Manufacturer" value="Changzhou Amass Elec"/>
-      <property name="LCSC" value="C431092"/>
-      <property name="Design_note" value="AMASS XT30PW-M30.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top"/>
+      <libsource lib="PS" part="Power_Port" description=""/>
+      <property name="MPN" value="WJ2EDGRC-5.08-02P-14-00A"/>
+      <property name="Manufacturer" value="Ningbo Kangnex Elec"/>
+      <property name="LCSC" value="C3697"/>
+      <property name="Design_note" value="5.08 mm pluggable terminal header; pin 2 positive, pin 1 return. Mate with C71370 screw plug, supplied separately."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="connector"/>
-      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>70303932-8eaf-5ebc-9f7d-cb459de1e7cf</tstamps>
       <units>
         <unit name="A">
           <pins>
-            <pin num="1"/>
             <pin num="2"/>
+            <pin num="1"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="J2">
-      <value>XT30 12V OUTPUT</value>
-      <footprint>PS:AMASS_XT30PW-F_1x02_P2.50mm_Horizontal</footprint>
-      <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf</datasheet>
+      <value>12 V / 5 A</value>
+      <footprint>PS:CONN-TH_2P-P5.08_WJ2EDGRC-5.08-2P</footprint>
+      <datasheet>https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697</datasheet>
       <fields>
-        <field name="MPN">XT30PW-F20.G.Y</field>
-        <field name="Manufacturer">Changzhou Amass Elec</field>
-        <field name="LCSC">C2913282</field>
-        <field name="Design_note">AMASS XT30PW-F20.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top</field>
-        <field name="Footprint">PS:AMASS_XT30PW-F_1x02_P2.50mm_Horizontal</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf</field>
+        <field name="MPN">WJ2EDGRC-5.08-02P-14-00A</field>
+        <field name="Manufacturer">Ningbo Kangnex Elec</field>
+        <field name="LCSC">C3697</field>
+        <field name="Design_note">5.08 mm pluggable terminal header; pin 2 positive, pin 1 return. Mate with C71370 screw plug, supplied separately.</field>
+        <field name="Footprint">PS:CONN-TH_2P-P5.08_WJ2EDGRC-5.08-2P</field>
+        <field name="Datasheet">https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="Power_Port" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
-      <property name="MPN" value="XT30PW-F20.G.Y"/>
-      <property name="Manufacturer" value="Changzhou Amass Elec"/>
-      <property name="LCSC" value="C2913282"/>
-      <property name="Design_note" value="AMASS XT30PW-F20.G.Y; pin 2 positive, pin 1 return; through-hole assembly on top"/>
+      <libsource lib="PS" part="Power_Port" description=""/>
+      <property name="MPN" value="WJ2EDGRC-5.08-02P-14-00A"/>
+      <property name="Manufacturer" value="Ningbo Kangnex Elec"/>
+      <property name="LCSC" value="C3697"/>
+      <property name="Design_note" value="5.08 mm pluggable terminal header; pin 2 positive, pin 1 return. Mate with C71370 screw plug, supplied separately."/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="connector"/>
-      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>c4bd17e7-b338-5d85-909a-1504319baace</tstamps>
       <units>
         <unit name="A">
           <pins>
-            <pin num="1"/>
             <pin num="2"/>
+            <pin num="1"/>
           </pins>
         </unit>
       </units>
@@ -1233,21 +1228,20 @@
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="MOSFETs"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>4b7df1f0-25e1-533d-8e72-f10dc6466183</tstamps>
       <units>
         <unit name="A">
           <pins>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
             <pin num="1"/>
             <pin num="2"/>
             <pin num="3"/>
             <pin num="4"/>
-            <pin num="9"/>
-            <pin num="8"/>
-            <pin num="7"/>
-            <pin num="6"/>
-            <pin num="5"/>
           </pins>
         </unit>
       </units>
@@ -1272,21 +1266,20 @@
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="MOSFETs"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>418fcd74-6b1a-5df1-b54e-a8bcc9bd5e2f</tstamps>
       <units>
         <unit name="A">
           <pins>
+            <pin num="5"/>
+            <pin num="6"/>
+            <pin num="7"/>
+            <pin num="8"/>
+            <pin num="9"/>
             <pin num="1"/>
             <pin num="2"/>
             <pin num="3"/>
             <pin num="4"/>
-            <pin num="9"/>
-            <pin num="8"/>
-            <pin num="7"/>
-            <pin num="6"/>
-            <pin num="5"/>
           </pins>
         </unit>
       </units>
@@ -2216,7 +2209,7 @@
       </units>
     </comp>
     <comp ref="T1">
-      <value>4:2:2 / Lm 13.12uH</value>
+      <value>4 : 2 : 2  /  ELP22</value>
       <footprint>PS:Planar_ELP22_4_2_2</footprint>
       <fields>
         <field name="MPN"/>
@@ -2241,8 +2234,8 @@
         <unit name="A">
           <pins>
             <pin num="1"/>
-            <pin num="6"/>
             <pin num="2"/>
+            <pin num="6"/>
             <pin num="3"/>
             <pin num="4"/>
             <pin num="5"/>
@@ -2443,7 +2436,7 @@
       </units>
     </comp>
     <comp ref="U1">
-      <value>LMG2100R044RARR</value>
+      <value>LMG2100R044</value>
       <footprint>PS:QFN-17_L5.5-W4.5-P0.50-TL_LMG2100R044</footprint>
       <datasheet>None</datasheet>
       <fields>
@@ -2467,29 +2460,29 @@
       <units>
         <unit name="A">
           <pins>
-            <pin num="7"/>
             <pin num="14"/>
+            <pin num="7"/>
             <pin num="12"/>
             <pin num="13"/>
-            <pin num="15"/>
-            <pin num="6"/>
-            <pin num="17"/>
-            <pin num="10"/>
-            <pin num="11"/>
-            <pin num="5"/>
             <pin num="1"/>
             <pin num="2"/>
+            <pin num="15"/>
             <pin num="3"/>
             <pin num="4"/>
             <pin num="8"/>
             <pin num="9"/>
+            <pin num="6"/>
+            <pin num="17"/>
             <pin num="16"/>
+            <pin num="10"/>
+            <pin num="5"/>
+            <pin num="11"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="U2">
-      <value>UCC25600DR</value>
+      <value>UCC25600</value>
       <footprint>PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1810181612_Texas-Instruments-UCC25600DR_C130223.pdf</datasheet>
       <fields>
@@ -2513,20 +2506,20 @@
       <units>
         <unit name="A">
           <pins>
+            <pin num="7"/>
             <pin num="1"/>
             <pin num="2"/>
             <pin num="3"/>
             <pin num="4"/>
-            <pin num="7"/>
+            <pin num="6"/>
             <pin num="8"/>
             <pin num="5"/>
-            <pin num="6"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="U3">
-      <value>UCC24624DR</value>
+      <value>UCC24624</value>
       <footprint>PS:SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL</footprint>
       <datasheet>https://www.ti.com/cn/lit/gpn/ucc24624</datasheet>
       <fields>
@@ -2550,20 +2543,20 @@
       <units>
         <unit name="A">
           <pins>
+            <pin num="1"/>
             <pin num="4"/>
             <pin num="6"/>
-            <pin num="7"/>
-            <pin num="3"/>
-            <pin num="1"/>
             <pin num="8"/>
+            <pin num="7"/>
             <pin num="2"/>
             <pin num="5"/>
+            <pin num="3"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="U4">
-      <value>LM5164DDAR</value>
+      <value>LM5164</value>
       <footprint>PS:SO-8_L4.9-W3.9-P1.27-LS6.0-BL-EP</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_2410121943_Texas-Instruments-LM5164DDAR_C477928.pdf</datasheet>
       <fields>
@@ -2601,7 +2594,7 @@
       </units>
     </comp>
     <comp ref="U5">
-      <value>TPS7A2450DBVR</value>
+      <value>TPS7A2450</value>
       <footprint>PS:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR</footprint>
       <datasheet>https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2302212330_Texas-Instruments-TPS7A2450DBVR_C2864436.pdf</datasheet>
       <fields>
@@ -2628,14 +2621,14 @@
             <pin num="1"/>
             <pin num="3"/>
             <pin num="2"/>
-            <pin num="5"/>
             <pin num="4"/>
+            <pin num="5"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="U6">
-      <value>EL357N(A)(TA)-VG</value>
+      <value>EL357N</value>
       <footprint>PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</datasheet>
       <fields>
@@ -2654,7 +2647,6 @@
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="Optocouplers - Phototransistor Output"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>a45f5fc4-257c-56e6-8994-6d9fead48683</tstamps>
       <units>
@@ -2669,7 +2661,7 @@
       </units>
     </comp>
     <comp ref="U7">
-      <value>TL431AIDBZR</value>
+      <value>TL431A</value>
       <footprint>PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</datasheet>
       <fields>
@@ -2681,28 +2673,27 @@
         <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="TL431AIDBZR" description="Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)"/>
+      <libsource lib="PS" part="TL431AIDBZR" description=""/>
       <property name="MPN" value="TL431AIDBZR"/>
       <property name="Manufacturer" value="Texas Instruments"/>
       <property name="LCSC" value="C23892"/>
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="Voltage References"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>4e0c6fe3-a625-584d-b068-5b683576fc05</tstamps>
       <units>
         <unit name="A">
           <pins>
-            <pin num="3"/>
             <pin num="2"/>
             <pin num="1"/>
+            <pin num="3"/>
           </pins>
         </unit>
       </units>
     </comp>
     <comp ref="U8">
-      <value>EL357N(A)(TA)-VG</value>
+      <value>EL357N</value>
       <footprint>PS:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1912111437_Everlight-Elec-EL357N-A-TA-VG_C359074.pdf</datasheet>
       <fields>
@@ -2721,7 +2712,6 @@
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="Optocouplers - Phototransistor Output"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>9120c364-ea52-542a-adf4-b8bcf1e6d2bf</tstamps>
       <units>
@@ -2736,7 +2726,7 @@
       </units>
     </comp>
     <comp ref="U9">
-      <value>TL431AIDBZR</value>
+      <value>TL431A</value>
       <footprint>PS:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</footprint>
       <datasheet>https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</datasheet>
       <fields>
@@ -2748,22 +2738,21 @@
         <field name="Datasheet">https://www.lcsc.com/datasheet/lcsc_datasheet_1809111518_Texas-Instruments-TL431AIDBZR_C23892.pdf</field>
         <field name="Description"/>
       </fields>
-      <libsource lib="PS" part="TL431AIDBZR" description="Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)"/>
+      <libsource lib="PS" part="TL431AIDBZR" description=""/>
       <property name="MPN" value="TL431AIDBZR"/>
       <property name="Manufacturer" value="Texas Instruments"/>
       <property name="LCSC" value="C23892"/>
       <property name="Design_note" value=""/>
       <property name="Sheetname" value="PS-GAN-60W"/>
       <property name="Sheetfile" value="PS-GAN-60W.kicad_sch"/>
-      <property name="ki_keywords" value="Voltage References"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>7c13e5cf-c5bc-54fa-861c-8833b18e85e8</tstamps>
       <units>
         <unit name="A">
           <pins>
-            <pin num="3"/>
             <pin num="2"/>
             <pin num="1"/>
+            <pin num="3"/>
           </pins>
         </unit>
       </units>
@@ -2771,17 +2760,12 @@
   </components>
   <libparts>
     <libpart lib="PS" part="BAT54SLT1G">
-      <description>BAT54SLT1G</description>
-      <docs>https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_ON_BAT54SLT1G_BAT54SLT1G_C19726.html</docs>
       <fields>
-        <field name="Reference">D</field>
+        <field name="Reference">U</field>
         <field name="Value">BAT54SLT1G</field>
-        <field name="Footprint">Supplier:SOT-23_L2.9-W1.3-P1.90-LS2.4-BR</field>
-        <field name="Datasheet">https://lcsc.com/product-detail/Schottky-Barrier-Diodes-SBD_ON_BAT54SLT1G_BAT54SLT1G_C19726.html</field>
-        <field name="Description">BAT54SLT1G</field>
-        <field name="Manufacturer">onsemi(安森美)</field>
-        <field name="MPN">BAT54SLT1G</field>
-        <field name="LCSC Part">C19726</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
       </fields>
       <pins>
         <pin num="1" name="A" type="passive"/>
@@ -2807,22 +2791,18 @@
       </pins>
     </libpart>
     <libpart lib="PS" part="CSD18543Q3A">
-      <docs>https://www.lcsc.com/datasheet/C840100.pdf</docs>
       <fields>
-        <field name="Reference">Q</field>
+        <field name="Reference">U</field>
         <field name="Value">CSD18543Q3A</field>
-        <field name="Footprint">Supplier:VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL</field>
-        <field name="Datasheet">https://www.lcsc.com/datasheet/C840100.pdf</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
         <field name="Description"/>
-        <field name="Manufacturer">TI(德州仪器)</field>
-        <field name="MPN">CSD18543Q3A</field>
-        <field name="LCSC Part">C840100</field>
       </fields>
       <pins>
         <pin num="1" name="S" type="passive"/>
         <pin num="2" name="S" type="passive"/>
         <pin num="3" name="S" type="passive"/>
-        <pin num="4" name="G" type="passive"/>
+        <pin num="4" name="G" type="input"/>
         <pin num="5" name="D" type="passive"/>
         <pin num="6" name="D" type="passive"/>
         <pin num="7" name="D" type="passive"/>
@@ -2851,16 +2831,12 @@
       </pins>
     </libpart>
     <libpart lib="PS" part="EL357N">
-      <docs>https://lcsc.com/product-detail/New-Arrivals_Everlight-Elec-EL357N-A-TA-VG_C359074.html</docs>
       <fields>
         <field name="Reference">U</field>
         <field name="Value">EL357N</field>
-        <field name="Footprint">Supplier:OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL</field>
-        <field name="Datasheet">https://lcsc.com/product-detail/New-Arrivals_Everlight-Elec-EL357N-A-TA-VG_C359074.html</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
         <field name="Description"/>
-        <field name="Manufacturer">EVERLIGHT(亿光)</field>
-        <field name="MPN">EL357N(A)(TA)-VG</field>
-        <field name="LCSC Part">C359074</field>
       </fields>
       <pins>
         <pin num="1" name="AN" type="passive"/>
@@ -2915,11 +2891,11 @@
         <field name="Description"/>
       </fields>
       <pins>
-        <pin num="1" name="GND" type="passive"/>
+        <pin num="1" name="GND" type="power_in"/>
         <pin num="2" name="VIN" type="power_in"/>
-        <pin num="3" name="EN/UVLO" type="passive"/>
+        <pin num="3" name="EN/UVLO" type="input"/>
         <pin num="4" name="RON" type="passive"/>
-        <pin num="5" name="FB" type="passive"/>
+        <pin num="5" name="FB" type="input"/>
         <pin num="6" name="PGOOD" type="open_collector"/>
         <pin num="7" name="BST" type="passive"/>
         <pin num="8" name="SW" type="output"/>
@@ -2935,22 +2911,22 @@
         <field name="Description"/>
       </fields>
       <pins>
-        <pin num="1" name="NC" type="passive"/>
-        <pin num="2" name="NC" type="passive"/>
-        <pin num="3" name="NC" type="passive"/>
-        <pin num="4" name="NC" type="passive"/>
+        <pin num="1" name="NC" type="no_connect"/>
+        <pin num="2" name="NC" type="no_connect"/>
+        <pin num="3" name="NC" type="no_connect"/>
+        <pin num="4" name="NC" type="no_connect"/>
         <pin num="5" name="SW" type="output"/>
-        <pin num="6" name="PGND" type="passive"/>
+        <pin num="6" name="PGND" type="power_in"/>
         <pin num="7" name="VIN" type="power_in"/>
-        <pin num="8" name="NC" type="passive"/>
-        <pin num="9" name="NC" type="passive"/>
+        <pin num="8" name="NC" type="no_connect"/>
+        <pin num="9" name="NC" type="no_connect"/>
         <pin num="10" name="HB" type="passive"/>
         <pin num="11" name="HS" type="passive"/>
         <pin num="12" name="HI" type="input"/>
         <pin num="13" name="LI" type="input"/>
         <pin num="14" name="VCC" type="power_in"/>
-        <pin num="15" name="AGND" type="passive"/>
-        <pin num="16" name="NC" type="passive"/>
+        <pin num="15" name="AGND" type="power_in"/>
+        <pin num="16" name="NC" type="no_connect"/>
         <pin num="17" name="PGND" type="passive"/>
       </pins>
     </libpart>
@@ -2968,20 +2944,16 @@
         <pin num="3" name="S_DOT" type="passive"/>
         <pin num="4" name="S_CT" type="passive"/>
         <pin num="5" name="S_END" type="passive"/>
-        <pin num="6" name="P_MID" type="passive"/>
+        <pin num="6" name="P_MID" type="no_connect"/>
       </pins>
     </libpart>
     <libpart lib="PS" part="Power_Port">
-      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
-      <footprints>
-        <fp>Connector*:*_1x??_*</fp>
-      </footprints>
       <fields>
-        <field name="Reference">J</field>
-        <field name="Value">Conn_01x02</field>
+        <field name="Reference">U</field>
+        <field name="Value">Power_Port</field>
         <field name="Footprint"/>
         <field name="Datasheet"/>
-        <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+        <field name="Description"/>
       </fields>
       <pins>
         <pin num="1" name="Pin_1" type="passive"/>
@@ -3023,21 +2995,16 @@
       </pins>
     </libpart>
     <libpart lib="PS" part="TL431AIDBZR">
-      <description>Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)</description>
-      <docs>https://lcsc.com/product-detail/Voltage-References_TI_TL431AIDBZR_TL431AIDBZR_C23892.html</docs>
       <fields>
         <field name="Reference">U</field>
         <field name="Value">TL431AIDBZR</field>
-        <field name="Footprint">Supplier:SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR</field>
-        <field name="Datasheet">https://lcsc.com/product-detail/Voltage-References_TI_TL431AIDBZR_TL431AIDBZR_C23892.html</field>
-        <field name="Description">Adjustable Precision Shunt Regulator, 34 ppm  degC, 100 mA, -40 to 85 degC, 3-pin SOT-23 (DBZ), Green (RoHS  no SbBr)</field>
-        <field name="Manufacturer">TI(德州仪器)</field>
-        <field name="MPN">TL431AIDBZR</field>
-        <field name="LCSC Part">C23892</field>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
       </fields>
       <pins>
         <pin num="1" name="CATHODE" type="passive"/>
-        <pin num="2" name="REF" type="passive"/>
+        <pin num="2" name="REF" type="input"/>
         <pin num="3" name="ANODE" type="passive"/>
       </pins>
     </libpart>
@@ -3051,9 +3018,9 @@
       </fields>
       <pins>
         <pin num="1" name="IN" type="power_in"/>
-        <pin num="2" name="GND" type="passive"/>
-        <pin num="3" name="EN" type="passive"/>
-        <pin num="4" name="NC" type="passive"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="EN" type="input"/>
+        <pin num="4" name="NC" type="no_connect"/>
         <pin num="5" name="OUT" type="power_out"/>
       </pins>
     </libpart>
@@ -3067,11 +3034,11 @@
       </fields>
       <pins>
         <pin num="1" name="VG1" type="output"/>
-        <pin num="2" name="PGND" type="passive"/>
+        <pin num="2" name="PGND" type="power_in"/>
         <pin num="3" name="REG" type="power_out"/>
-        <pin num="4" name="VD1" type="passive"/>
+        <pin num="4" name="VD1" type="input"/>
         <pin num="5" name="VSS" type="passive"/>
-        <pin num="6" name="VD2" type="passive"/>
+        <pin num="6" name="VD2" type="input"/>
         <pin num="7" name="VDD" type="power_in"/>
         <pin num="8" name="VG2" type="output"/>
       </pins>
@@ -3087,10 +3054,10 @@
       <pins>
         <pin num="1" name="DT" type="passive"/>
         <pin num="2" name="RT" type="passive"/>
-        <pin num="3" name="OC" type="passive"/>
+        <pin num="3" name="OC" type="input"/>
         <pin num="4" name="SS" type="passive"/>
         <pin num="5" name="GD2" type="output"/>
-        <pin num="6" name="GND" type="passive"/>
+        <pin num="6" name="GND" type="power_in"/>
         <pin num="7" name="VCC" type="power_in"/>
         <pin num="8" name="GD1" type="output"/>
       </pins>
@@ -3102,7 +3069,196 @@
     </library>
   </libraries>
   <nets>
-    <net code="1" name="/AGND" class="Default">
+    <net code="1" name="/BIAS_BST" class="Default">
+      <node ref="C20" pin="1" pintype="passive"/>
+      <node ref="U4" pin="7" pinfunction="BST_7" pintype="passive"/>
+    </net>
+    <net code="2" name="/BIAS_EN" class="Default">
+      <node ref="R14" pin="2" pintype="passive"/>
+      <node ref="R15" pin="1" pintype="passive"/>
+      <node ref="U4" pin="3" pinfunction="EN/UVLO_3" pintype="input"/>
+    </net>
+    <net code="3" name="/BIAS_FB" class="Default">
+      <node ref="C24" pin="2" pintype="passive"/>
+      <node ref="R17" pin="2" pintype="passive"/>
+      <node ref="R18" pin="1" pintype="passive"/>
+      <node ref="U4" pin="5" pinfunction="FB_5" pintype="input"/>
+    </net>
+    <net code="4" name="/BIAS_SW" class="Default">
+      <node ref="C20" pin="2" pintype="passive"/>
+      <node ref="L2" pin="1" pintype="passive"/>
+      <node ref="R19" pin="1" pintype="passive"/>
+      <node ref="U4" pin="8" pinfunction="SW_8" pintype="output"/>
+    </net>
+    <net code="5" name="/COMP" class="Default">
+      <node ref="C27" pin="1" pintype="passive"/>
+      <node ref="R24" pin="2" pintype="passive"/>
+    </net>
+    <net code="6" name="/CS_AC" class="Default">
+      <node ref="C17" pin="2" pintype="passive"/>
+      <node ref="R8" pin="1" pintype="passive"/>
+    </net>
+    <net code="7" name="/CS_RECT" class="Default">
+      <node ref="D2" pin="3" pinfunction="A/C_3" pintype="passive"/>
+      <node ref="R8" pin="2" pintype="passive"/>
+    </net>
+    <net code="8" name="/DT" class="Default">
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="DT_1" pintype="passive"/>
+    </net>
+    <net code="9" name="/FB_COL" class="Default">
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="U6" pin="4" pinfunction="COL_4" pintype="passive"/>
+    </net>
+    <net code="10" name="/FB_K" class="Default">
+      <node ref="C28" pin="1" pintype="passive"/>
+      <node ref="R21" pin="2" pintype="passive"/>
+      <node ref="R24" pin="1" pintype="passive"/>
+      <node ref="U6" pin="2" pinfunction="CA_2" pintype="passive"/>
+      <node ref="U7" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
+    </net>
+    <net code="11" name="/FB_LED" class="Default">
+      <node ref="R20" pin="2" pintype="passive"/>
+      <node ref="R21" pin="1" pintype="passive"/>
+      <node ref="U6" pin="1" pinfunction="AN_1" pintype="passive"/>
+    </net>
+    <net code="12" name="/GD1" class="Default">
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="U2" pin="8" pinfunction="GD1_8" pintype="output"/>
+    </net>
+    <net code="13" name="/GD2" class="Default">
+      <node ref="R6" pin="1" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="GD2_5" pintype="output"/>
+    </net>
+    <net code="14" name="/HB" class="Default">
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="HB_10" pintype="passive"/>
+    </net>
+    <net code="15" name="/HI" class="Default">
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="U1" pin="12" pinfunction="HI_12" pintype="input"/>
+    </net>
+    <net code="16" name="/LI" class="Default">
+      <node ref="R6" pin="2" pintype="passive"/>
+      <node ref="R7" pin="1" pintype="passive"/>
+      <node ref="U1" pin="13" pinfunction="LI_13" pintype="input"/>
+    </net>
+    <net code="17" name="/OC" class="Default">
+      <node ref="C18" pin="1" pintype="passive"/>
+      <node ref="D2" pin="2" pinfunction="C_2" pintype="passive"/>
+      <node ref="R9" pin="1" pintype="passive"/>
+      <node ref="U2" pin="3" pinfunction="OC_3" pintype="input"/>
+    </net>
+    <net code="18" name="/OV_K" class="Default">
+      <node ref="R26" pin="2" pintype="passive"/>
+      <node ref="U8" pin="2" pinfunction="CA_2" pintype="passive"/>
+      <node ref="U9" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
+    </net>
+    <net code="19" name="/OV_LED" class="Default">
+      <node ref="R25" pin="2" pintype="passive"/>
+      <node ref="R26" pin="1" pintype="passive"/>
+      <node ref="U8" pin="1" pinfunction="AN_1" pintype="passive"/>
+    </net>
+    <net code="20" name="/OV_REF" class="Default">
+      <node ref="C29" pin="1" pintype="passive"/>
+      <node ref="R27" pin="2" pintype="passive"/>
+      <node ref="R28" pin="1" pintype="passive"/>
+      <node ref="U9" pin="2" pinfunction="REF_2" pintype="input"/>
+    </net>
+    <net code="21" name="/PRI_A" class="Default">
+      <node ref="L1" pin="2" pintype="passive"/>
+      <node ref="T1" pin="1" pinfunction="P_DOT_1" pintype="passive"/>
+    </net>
+    <net code="22" name="/RIPPLE" class="Default">
+      <node ref="C23" pin="1" pintype="passive"/>
+      <node ref="C24" pin="1" pintype="passive"/>
+      <node ref="R19" pin="2" pintype="passive"/>
+    </net>
+    <net code="23" name="/RON" class="Default">
+      <node ref="R16" pin="2" pintype="passive"/>
+      <node ref="U4" pin="4" pinfunction="RON_4" pintype="passive"/>
+    </net>
+    <net code="24" name="/RT" class="Default">
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="RT_2" pintype="passive"/>
+    </net>
+    <net code="25" name="/SEC_A" class="Default">
+      <node ref="Q1" pin="5" pinfunction="D_5" pintype="passive"/>
+      <node ref="Q1" pin="6" pinfunction="D_6" pintype="passive"/>
+      <node ref="Q1" pin="7" pinfunction="D_7" pintype="passive"/>
+      <node ref="Q1" pin="8" pinfunction="D_8" pintype="passive"/>
+      <node ref="Q1" pin="9" pinfunction="D_9" pintype="passive"/>
+      <node ref="R12" pin="1" pintype="passive"/>
+      <node ref="T1" pin="3" pinfunction="S_DOT_3" pintype="passive"/>
+    </net>
+    <net code="26" name="/SEC_B" class="Default">
+      <node ref="Q2" pin="5" pinfunction="D_5" pintype="passive"/>
+      <node ref="Q2" pin="6" pinfunction="D_6" pintype="passive"/>
+      <node ref="Q2" pin="7" pinfunction="D_7" pintype="passive"/>
+      <node ref="Q2" pin="8" pinfunction="D_8" pintype="passive"/>
+      <node ref="Q2" pin="9" pinfunction="D_9" pintype="passive"/>
+      <node ref="R13" pin="1" pintype="passive"/>
+      <node ref="T1" pin="5" pinfunction="S_END_5" pintype="passive"/>
+    </net>
+    <net code="27" name="/SR_G1" class="Default">
+      <node ref="Q1" pin="4" pinfunction="G_4" pintype="input"/>
+      <node ref="R10" pin="2" pintype="passive"/>
+    </net>
+    <net code="28" name="/SR_G2" class="Default">
+      <node ref="Q2" pin="4" pinfunction="G_4" pintype="input"/>
+      <node ref="R11" pin="2" pintype="passive"/>
+    </net>
+    <net code="29" name="/SR_REG" class="Default">
+      <node ref="C11" pin="1" pintype="passive"/>
+      <node ref="U3" pin="3" pinfunction="REG_3" pintype="power_out"/>
+    </net>
+    <net code="30" name="/SS" class="Default">
+      <node ref="C9" pin="1" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="SS_4" pintype="passive"/>
+      <node ref="U8" pin="4" pinfunction="COL_4" pintype="passive"/>
+    </net>
+    <net code="31" name="/SW" class="Default">
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="L1" pin="1" pintype="passive"/>
+      <node ref="U1" pin="11" pinfunction="HS_11" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="SW_5" pintype="output"/>
+    </net>
+    <net code="32" name="/TANK_C" class="Default">
+      <node ref="C17" pin="1" pintype="passive"/>
+      <node ref="C7" pin="1" pintype="passive"/>
+      <node ref="C8" pin="1" pintype="passive"/>
+      <node ref="T1" pin="2" pinfunction="P_END_2" pintype="passive"/>
+    </net>
+    <net code="33" name="/VG1" class="Default">
+      <node ref="R10" pin="1" pintype="passive"/>
+      <node ref="U3" pin="1" pinfunction="VG1_1" pintype="output"/>
+    </net>
+    <net code="34" name="/VG2" class="Default">
+      <node ref="R11" pin="1" pintype="passive"/>
+      <node ref="U3" pin="8" pinfunction="VG2_8" pintype="output"/>
+    </net>
+    <net code="35" name="/VIN_RAW" class="Default">
+      <node ref="F1" pin="1" pintype="passive"/>
+      <node ref="J1" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+    </net>
+    <net code="36" name="/VREF" class="Default">
+      <node ref="C27" pin="2" pintype="passive"/>
+      <node ref="C28" pin="2" pintype="passive"/>
+      <node ref="R22" pin="2" pintype="passive"/>
+      <node ref="R23" pin="1" pintype="passive"/>
+      <node ref="U7" pin="2" pinfunction="REF_2" pintype="input"/>
+    </net>
+    <net code="37" name="/VS1" class="Default">
+      <node ref="R12" pin="2" pintype="passive"/>
+      <node ref="U3" pin="4" pinfunction="VD1_4" pintype="input"/>
+    </net>
+    <net code="38" name="/VS2" class="Default">
+      <node ref="R13" pin="2" pintype="passive"/>
+      <node ref="U3" pin="6" pinfunction="VD2_6" pintype="input"/>
+    </net>
+    <net code="39" name="AGND" class="Default">
       <node ref="C10" pin="2" pintype="passive"/>
       <node ref="C18" pin="2" pintype="passive"/>
       <node ref="C25" pin="2" pintype="passive"/>
@@ -3117,13 +3273,13 @@
       <node ref="R7" pin="2" pintype="passive"/>
       <node ref="R9" pin="2" pintype="passive"/>
       <node ref="TP6" pin="1" pinfunction="1_1" pintype="passive"/>
-      <node ref="U1" pin="15" pinfunction="AGND_15" pintype="passive"/>
-      <node ref="U2" pin="6" pinfunction="GND_6" pintype="passive"/>
-      <node ref="U5" pin="2" pinfunction="GND_2" pintype="passive"/>
+      <node ref="U1" pin="15" pinfunction="AGND_15" pintype="power_in"/>
+      <node ref="U2" pin="6" pinfunction="GND_6" pintype="power_in"/>
+      <node ref="U5" pin="2" pinfunction="GND_2" pintype="power_in"/>
       <node ref="U6" pin="3" pinfunction="EM_3" pintype="passive"/>
       <node ref="U8" pin="3" pinfunction="EM_3" pintype="passive"/>
     </net>
-    <net code="2" name="/BIAS12" class="Default">
+    <net code="40" name="BIAS12" class="Default">
       <node ref="C10" pin="1" pintype="passive"/>
       <node ref="C21" pin="1" pintype="passive"/>
       <node ref="C22" pin="1" pintype="passive"/>
@@ -3133,106 +3289,9 @@
       <node ref="R17" pin="1" pintype="passive"/>
       <node ref="U2" pin="7" pinfunction="VCC_7" pintype="power_in"/>
       <node ref="U5" pin="1" pinfunction="IN_1" pintype="power_in"/>
-      <node ref="U5" pin="3" pinfunction="EN_3" pintype="passive"/>
+      <node ref="U5" pin="3" pinfunction="EN_3" pintype="input"/>
     </net>
-    <net code="3" name="/BIAS_BST" class="Default">
-      <node ref="C20" pin="1" pintype="passive"/>
-      <node ref="U4" pin="7" pinfunction="BST_7" pintype="passive"/>
-    </net>
-    <net code="4" name="/BIAS_EN" class="Default">
-      <node ref="R14" pin="2" pintype="passive"/>
-      <node ref="R15" pin="1" pintype="passive"/>
-      <node ref="U4" pin="3" pinfunction="EN/UVLO_3" pintype="passive"/>
-    </net>
-    <net code="5" name="/BIAS_FB" class="Default">
-      <node ref="C24" pin="2" pintype="passive"/>
-      <node ref="R17" pin="2" pintype="passive"/>
-      <node ref="R18" pin="1" pintype="passive"/>
-      <node ref="U4" pin="5" pinfunction="FB_5" pintype="passive"/>
-    </net>
-    <net code="6" name="/BIAS_SW" class="Default">
-      <node ref="C20" pin="2" pintype="passive"/>
-      <node ref="L2" pin="1" pintype="passive"/>
-      <node ref="R19" pin="1" pintype="passive"/>
-      <node ref="U4" pin="8" pinfunction="SW_8" pintype="output"/>
-    </net>
-    <net code="7" name="/COMP" class="Default">
-      <node ref="C27" pin="1" pintype="passive"/>
-      <node ref="R24" pin="2" pintype="passive"/>
-    </net>
-    <net code="8" name="/CS_AC" class="Default">
-      <node ref="C17" pin="2" pintype="passive"/>
-      <node ref="R8" pin="1" pintype="passive"/>
-    </net>
-    <net code="9" name="/CS_RECT" class="Default">
-      <node ref="D2" pin="3" pinfunction="A/C_3" pintype="passive"/>
-      <node ref="R8" pin="2" pintype="passive"/>
-    </net>
-    <net code="10" name="/DT" class="Default">
-      <node ref="R1" pin="1" pintype="passive"/>
-      <node ref="U2" pin="1" pinfunction="DT_1" pintype="passive"/>
-    </net>
-    <net code="11" name="/FB_COL" class="Default">
-      <node ref="R3" pin="2" pintype="passive"/>
-      <node ref="U6" pin="4" pinfunction="COL_4" pintype="passive"/>
-    </net>
-    <net code="12" name="/FB_K" class="Default">
-      <node ref="C28" pin="1" pintype="passive"/>
-      <node ref="R21" pin="2" pintype="passive"/>
-      <node ref="R24" pin="1" pintype="passive"/>
-      <node ref="U6" pin="2" pinfunction="CA_2" pintype="passive"/>
-      <node ref="U7" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
-    </net>
-    <net code="13" name="/FB_LED" class="Default">
-      <node ref="R20" pin="2" pintype="passive"/>
-      <node ref="R21" pin="1" pintype="passive"/>
-      <node ref="U6" pin="1" pinfunction="AN_1" pintype="passive"/>
-    </net>
-    <net code="14" name="/GD1" class="Default">
-      <node ref="R4" pin="1" pintype="passive"/>
-      <node ref="U2" pin="8" pinfunction="GD1_8" pintype="output"/>
-    </net>
-    <net code="15" name="/GD2" class="Default">
-      <node ref="R6" pin="1" pintype="passive"/>
-      <node ref="U2" pin="5" pinfunction="GD2_5" pintype="output"/>
-    </net>
-    <net code="16" name="/HB" class="Default">
-      <node ref="C4" pin="1" pintype="passive"/>
-      <node ref="U1" pin="10" pinfunction="HB_10" pintype="passive"/>
-    </net>
-    <net code="17" name="/HI" class="Default">
-      <node ref="R4" pin="2" pintype="passive"/>
-      <node ref="R5" pin="1" pintype="passive"/>
-      <node ref="U1" pin="12" pinfunction="HI_12" pintype="input"/>
-    </net>
-    <net code="18" name="/LI" class="Default">
-      <node ref="R6" pin="2" pintype="passive"/>
-      <node ref="R7" pin="1" pintype="passive"/>
-      <node ref="U1" pin="13" pinfunction="LI_13" pintype="input"/>
-    </net>
-    <net code="19" name="/OC" class="Default">
-      <node ref="C18" pin="1" pintype="passive"/>
-      <node ref="D2" pin="2" pinfunction="C_2" pintype="passive"/>
-      <node ref="R9" pin="1" pintype="passive"/>
-      <node ref="U2" pin="3" pinfunction="OC_3" pintype="passive"/>
-    </net>
-    <net code="20" name="/OV_K" class="Default">
-      <node ref="R26" pin="2" pintype="passive"/>
-      <node ref="U8" pin="2" pinfunction="CA_2" pintype="passive"/>
-      <node ref="U9" pin="1" pinfunction="CATHODE_1" pintype="passive"/>
-    </net>
-    <net code="21" name="/OV_LED" class="Default">
-      <node ref="R25" pin="2" pintype="passive"/>
-      <node ref="R26" pin="1" pintype="passive"/>
-      <node ref="U8" pin="1" pinfunction="AN_1" pintype="passive"/>
-    </net>
-    <net code="22" name="/OV_REF" class="Default">
-      <node ref="C29" pin="1" pintype="passive"/>
-      <node ref="R27" pin="2" pintype="passive"/>
-      <node ref="R28" pin="1" pintype="passive"/>
-      <node ref="U9" pin="2" pinfunction="REF_2" pintype="passive"/>
-    </net>
-    <net code="23" name="/PGND" class="Default">
+    <net code="41" name="PGND" class="Default">
       <node ref="C1" pin="2" pintype="passive"/>
       <node ref="C19" pin="2" pintype="passive"/>
       <node ref="C2" pin="2" pintype="passive"/>
@@ -3247,47 +3306,11 @@
       <node ref="R18" pin="2" pintype="passive"/>
       <node ref="TP2" pin="1" pinfunction="1_1" pintype="passive"/>
       <node ref="U1" pin="17" pinfunction="PGND_17" pintype="passive"/>
-      <node ref="U1" pin="6" pinfunction="PGND_6" pintype="passive"/>
-      <node ref="U4" pin="1" pinfunction="GND_1" pintype="passive"/>
+      <node ref="U1" pin="6" pinfunction="PGND_6" pintype="power_in"/>
+      <node ref="U4" pin="1" pinfunction="GND_1" pintype="power_in"/>
       <node ref="U4" pin="9" pinfunction="EP_9" pintype="passive"/>
     </net>
-    <net code="24" name="/PRI_A" class="Default">
-      <node ref="L1" pin="2" pintype="passive"/>
-      <node ref="T1" pin="1" pinfunction="P_DOT_1" pintype="passive"/>
-    </net>
-    <net code="25" name="/RIPPLE" class="Default">
-      <node ref="C23" pin="1" pintype="passive"/>
-      <node ref="C24" pin="1" pintype="passive"/>
-      <node ref="R19" pin="2" pintype="passive"/>
-    </net>
-    <net code="26" name="/RON" class="Default">
-      <node ref="R16" pin="2" pintype="passive"/>
-      <node ref="U4" pin="4" pinfunction="RON_4" pintype="passive"/>
-    </net>
-    <net code="27" name="/RT" class="Default">
-      <node ref="R2" pin="1" pintype="passive"/>
-      <node ref="R3" pin="1" pintype="passive"/>
-      <node ref="U2" pin="2" pinfunction="RT_2" pintype="passive"/>
-    </net>
-    <net code="28" name="/SEC_A" class="Default">
-      <node ref="Q1" pin="5" pinfunction="D_5" pintype="passive"/>
-      <node ref="Q1" pin="6" pinfunction="D_6" pintype="passive"/>
-      <node ref="Q1" pin="7" pinfunction="D_7" pintype="passive"/>
-      <node ref="Q1" pin="8" pinfunction="D_8" pintype="passive"/>
-      <node ref="Q1" pin="9" pinfunction="D_9" pintype="passive"/>
-      <node ref="R12" pin="1" pintype="passive"/>
-      <node ref="T1" pin="3" pinfunction="S_DOT_3" pintype="passive"/>
-    </net>
-    <net code="29" name="/SEC_B" class="Default">
-      <node ref="Q2" pin="5" pinfunction="D_5" pintype="passive"/>
-      <node ref="Q2" pin="6" pinfunction="D_6" pintype="passive"/>
-      <node ref="Q2" pin="7" pinfunction="D_7" pintype="passive"/>
-      <node ref="Q2" pin="8" pinfunction="D_8" pintype="passive"/>
-      <node ref="Q2" pin="9" pinfunction="D_9" pintype="passive"/>
-      <node ref="R13" pin="1" pintype="passive"/>
-      <node ref="T1" pin="5" pinfunction="S_END_5" pintype="passive"/>
-    </net>
-    <net code="30" name="/SGND" class="Default">
+    <net code="42" name="SGND" class="Default">
       <node ref="C11" pin="2" pintype="passive"/>
       <node ref="C12" pin="2" pintype="passive"/>
       <node ref="C13" pin="2" pintype="passive"/>
@@ -3305,41 +3328,12 @@
       <node ref="R23" pin="2" pintype="passive"/>
       <node ref="R28" pin="2" pintype="passive"/>
       <node ref="TP4" pin="1" pinfunction="1_1" pintype="passive"/>
-      <node ref="U3" pin="2" pinfunction="PGND_2" pintype="passive"/>
+      <node ref="U3" pin="2" pinfunction="PGND_2" pintype="power_in"/>
       <node ref="U3" pin="5" pinfunction="VSS_5" pintype="passive"/>
       <node ref="U7" pin="3" pinfunction="ANODE_3" pintype="passive"/>
       <node ref="U9" pin="3" pinfunction="ANODE_3" pintype="passive"/>
     </net>
-    <net code="31" name="/SR_G1" class="Default">
-      <node ref="Q1" pin="4" pinfunction="G_4" pintype="passive"/>
-      <node ref="R10" pin="2" pintype="passive"/>
-    </net>
-    <net code="32" name="/SR_G2" class="Default">
-      <node ref="Q2" pin="4" pinfunction="G_4" pintype="passive"/>
-      <node ref="R11" pin="2" pintype="passive"/>
-    </net>
-    <net code="33" name="/SR_REG" class="Default">
-      <node ref="C11" pin="1" pintype="passive"/>
-      <node ref="U3" pin="3" pinfunction="REG_3" pintype="power_out"/>
-    </net>
-    <net code="34" name="/SS" class="Default">
-      <node ref="C9" pin="1" pintype="passive"/>
-      <node ref="U2" pin="4" pinfunction="SS_4" pintype="passive"/>
-      <node ref="U8" pin="4" pinfunction="COL_4" pintype="passive"/>
-    </net>
-    <net code="35" name="/SW" class="Default">
-      <node ref="C4" pin="2" pintype="passive"/>
-      <node ref="L1" pin="1" pintype="passive"/>
-      <node ref="U1" pin="11" pinfunction="HS_11" pintype="passive"/>
-      <node ref="U1" pin="5" pinfunction="SW_5" pintype="output"/>
-    </net>
-    <net code="36" name="/TANK_C" class="Default">
-      <node ref="C17" pin="1" pintype="passive"/>
-      <node ref="C7" pin="1" pintype="passive"/>
-      <node ref="C8" pin="1" pintype="passive"/>
-      <node ref="T1" pin="2" pinfunction="P_END_2" pintype="passive"/>
-    </net>
-    <net code="37" name="/V5" class="Default">
+    <net code="43" name="V5" class="Default">
       <node ref="C26" pin="1" pintype="passive"/>
       <node ref="C5" pin="1" pintype="passive"/>
       <node ref="C6" pin="1" pintype="passive"/>
@@ -3347,15 +3341,7 @@
       <node ref="U1" pin="14" pinfunction="VCC_14" pintype="power_in"/>
       <node ref="U5" pin="5" pinfunction="OUT_5" pintype="power_out"/>
     </net>
-    <net code="38" name="/VG1" class="Default">
-      <node ref="R10" pin="1" pintype="passive"/>
-      <node ref="U3" pin="1" pinfunction="VG1_1" pintype="output"/>
-    </net>
-    <net code="39" name="/VG2" class="Default">
-      <node ref="R11" pin="1" pintype="passive"/>
-      <node ref="U3" pin="8" pinfunction="VG2_8" pintype="output"/>
-    </net>
-    <net code="40" name="/VIN" class="Default">
+    <net code="44" name="VIN" class="Default">
       <node ref="C1" pin="1" pintype="passive"/>
       <node ref="C19" pin="1" pintype="passive"/>
       <node ref="C2" pin="1" pintype="passive"/>
@@ -3368,11 +3354,7 @@
       <node ref="U1" pin="7" pinfunction="VIN_7" pintype="power_in"/>
       <node ref="U4" pin="2" pinfunction="VIN_2" pintype="power_in"/>
     </net>
-    <net code="41" name="/VIN_RAW" class="Default">
-      <node ref="F1" pin="1" pintype="passive"/>
-      <node ref="J1" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
-    </net>
-    <net code="42" name="/VOUT" class="Default">
+    <net code="45" name="VOUT" class="Default">
       <node ref="C12" pin="1" pintype="passive"/>
       <node ref="C13" pin="1" pintype="passive"/>
       <node ref="C14" pin="1" pintype="passive"/>
@@ -3387,50 +3369,35 @@
       <node ref="TP3" pin="1" pinfunction="1_1" pintype="passive"/>
       <node ref="U3" pin="7" pinfunction="VDD_7" pintype="power_in"/>
     </net>
-    <net code="43" name="/VREF" class="Default">
-      <node ref="C27" pin="2" pintype="passive"/>
-      <node ref="C28" pin="2" pintype="passive"/>
-      <node ref="R22" pin="2" pintype="passive"/>
-      <node ref="R23" pin="1" pintype="passive"/>
-      <node ref="U7" pin="2" pinfunction="REF_2" pintype="passive"/>
-    </net>
-    <net code="44" name="/VS1" class="Default">
-      <node ref="R12" pin="2" pintype="passive"/>
-      <node ref="U3" pin="4" pinfunction="VD1_4" pintype="passive"/>
-    </net>
-    <net code="45" name="/VS2" class="Default">
-      <node ref="R13" pin="2" pintype="passive"/>
-      <node ref="U3" pin="6" pinfunction="VD2_6" pintype="passive"/>
-    </net>
     <net code="46" name="unconnected-(T1-P_MID-Pad6)" class="Default">
-      <node ref="T1" pin="6" pinfunction="P_MID_6" pintype="passive+no_connect"/>
+      <node ref="T1" pin="6" pinfunction="P_MID_6" pintype="no_connect"/>
     </net>
     <net code="47" name="unconnected-(U1-NC-Pad1)" class="Default">
-      <node ref="U1" pin="1" pinfunction="NC_1" pintype="passive+no_connect"/>
+      <node ref="U1" pin="1" pinfunction="NC_1" pintype="no_connect"/>
     </net>
     <net code="48" name="unconnected-(U1-NC-Pad2)" class="Default">
-      <node ref="U1" pin="2" pinfunction="NC_2" pintype="passive+no_connect"/>
+      <node ref="U1" pin="2" pinfunction="NC_2" pintype="no_connect"/>
     </net>
     <net code="49" name="unconnected-(U1-NC-Pad3)" class="Default">
-      <node ref="U1" pin="3" pinfunction="NC_3" pintype="passive+no_connect"/>
+      <node ref="U1" pin="3" pinfunction="NC_3" pintype="no_connect"/>
     </net>
     <net code="50" name="unconnected-(U1-NC-Pad4)" class="Default">
-      <node ref="U1" pin="4" pinfunction="NC_4" pintype="passive+no_connect"/>
+      <node ref="U1" pin="4" pinfunction="NC_4" pintype="no_connect"/>
     </net>
     <net code="51" name="unconnected-(U1-NC-Pad8)" class="Default">
-      <node ref="U1" pin="8" pinfunction="NC_8" pintype="passive+no_connect"/>
+      <node ref="U1" pin="8" pinfunction="NC_8" pintype="no_connect"/>
     </net>
     <net code="52" name="unconnected-(U1-NC-Pad9)" class="Default">
-      <node ref="U1" pin="9" pinfunction="NC_9" pintype="passive+no_connect"/>
+      <node ref="U1" pin="9" pinfunction="NC_9" pintype="no_connect"/>
     </net>
     <net code="53" name="unconnected-(U1-NC-Pad16)" class="Default">
-      <node ref="U1" pin="16" pinfunction="NC_16" pintype="passive+no_connect"/>
+      <node ref="U1" pin="16" pinfunction="NC_16" pintype="no_connect"/>
     </net>
     <net code="54" name="unconnected-(U4-PGOOD-Pad6)" class="Default">
       <node ref="U4" pin="6" pinfunction="PGOOD_6" pintype="open_collector+no_connect"/>
     </net>
     <net code="55" name="unconnected-(U5-NC-Pad4)" class="Default">
-      <node ref="U5" pin="4" pinfunction="NC_4" pintype="passive+no_connect"/>
+      <node ref="U5" pin="4" pinfunction="NC_4" pintype="no_connect"/>
     </net>
   </nets>
 </export>

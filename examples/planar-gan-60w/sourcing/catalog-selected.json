@@ -1,76 +1,4 @@
 {
-  "C431092": {
-    "lcsc": "C431092",
-    "name": "Changzhou Amass Elec XT30PW-M30.G.Y",
-    "model": "XT30PW-M30.G.Y",
-    "brand": "Changzhou Amass Elec",
-    "package": "-",
-    "category": "Power connector / plug connector",
-    "stock": 24656,
-    "type": "Extended",
-    "price": 0.3828,
-    "price_breaks": [
-      {
-        "qty": 1,
-        "price": 0.3828
-      },
-      {
-        "qty": 10,
-        "price": 0.3339
-      },
-      {
-        "qty": 30,
-        "price": 0.2883
-      },
-      {
-        "qty": 100,
-        "price": 0.2623
-      },
-      {
-        "qty": 500,
-        "price": 0.246
-      },
-      {
-        "qty": 1000,
-        "price": 0.2313
-      }
-    ],
-    "min_qty": 28,
-    "reel_qty": 500,
-    "description": "-\u3001Aviation model plug 1.2m\u03a9 15A 16/18/20AWG 2pin DC 500V Male - Power connector / plug connector ROHS",
-    "url": "https://www.lcsc.com/product-detail/plug_changzhou-amass-elec-xt30pw-m30-g-y_C431092.html",
-    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_Changzhou-Amass-Elec-XT30PW-M30-G-Y_C431092.pdf",
-    "attributes": [
-      {
-        "name": "RecommendedWireGauge",
-        "value": "16/18/20AWG"
-      },
-      {
-        "name": "specifications",
-        "value": "2pin"
-      },
-      {
-        "name": "RatedVoltage",
-        "value": "DC 500V"
-      },
-      {
-        "name": "InterfaceType",
-        "value": "Male"
-      },
-      {
-        "name": "Type",
-        "value": "-\u3001Aviation model plug"
-      },
-      {
-        "name": "contact resistance",
-        "value": "1.2m\u03a9"
-      },
-      {
-        "name": "RatedCurrent",
-        "value": "15A"
-      }
-    ]
-  },
   "C719183": {
     "lcsc": "C719183",
     "name": "BOURNS SF-1206F200-2",
@@ -1048,54 +976,6 @@
       {
         "name": "Temperature Coefficient",
         "value": "X7R"
-      }
-    ]
-  },
-  "C2913282": {
-    "lcsc": "C2913282",
-    "name": "Changzhou Amass Elec XT30PW-F20.G.Y",
-    "model": "XT30PW-F20.G.Y",
-    "brand": "Changzhou Amass Elec",
-    "package": "-",
-    "category": "Power connector / plug connector",
-    "stock": 19333,
-    "type": "Extended",
-    "price": 0.3404,
-    "price_breaks": [
-      {
-        "qty": 1,
-        "price": 0.3404
-      },
-      {
-        "qty": 10,
-        "price": 0.3225
-      },
-      {
-        "qty": 30,
-        "price": 0.2851
-      },
-      {
-        "qty": 100,
-        "price": 0.2737
-      },
-      {
-        "qty": 500,
-        "price": 0.2623
-      },
-      {
-        "qty": 1000,
-        "price": 0.246
-      }
-    ],
-    "min_qty": 1,
-    "reel_qty": 500,
-    "description": "Model aircraft plug - Power connector / plug connector ROHS",
-    "url": "https://www.lcsc.com/product-detail/plug_changzhou-amass-elec-xt30pw-f20-g-y_C2913282.html",
-    "datasheet": "https://www.lcsc.com/datasheet/lcsc_datasheet_2312181139_Changzhou-Amass-Elec-XT30PW-F20-G-Y_C2913282.pdf",
-    "attributes": [
-      {
-        "name": "Connector type",
-        "value": "Model aircraft plug"
       }
     ]
   },
@@ -2984,6 +2864,98 @@
       {
         "name": "Temperature Coefficient",
         "value": "\u00b1100ppm/\u2103"
+      }
+    ]
+  },
+  "C3697": {
+    "lcsc": "C3697",
+    "name": "KANGNEX WJ2EDGRC-5.08-02P-14-00A",
+    "model": "WJ2EDGRC-5.08-02P-14-00A",
+    "brand": "Ningbo Kangnex Elec",
+    "package": "Push-Pull,P=5.08mm",
+    "category": "Pluggable System Terminal Block",
+    "stock": 89246,
+    "type": "Extended",
+    "price": 0.052,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.052
+      },
+      {
+        "qty": 100,
+        "price": 0.0426
+      },
+      {
+        "qty": 250,
+        "price": 0.0369
+      },
+      {
+        "qty": 1000,
+        "price": 0.0333
+      },
+      {
+        "qty": 5000,
+        "price": 0.0303
+      },
+      {
+        "qty": 10000,
+        "price": 0.0289
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 250,
+    "description": "-40\u2103~+105\u2103 1 10A 1x2P 2 2P 300V 5.08mm Board Side/Socket - Closed Green Hinged (Snap On) Right-Angle \u5f2f\u63d2,P=5.08mm Pluggable System Terminal Block ROHS",
+    "url": "https://www.lcsc.com/product-detail/pluggable-system-terminal-block_ningbo-kangnex-elec-wj2edgrc-5-08-2p_C3697.html",
+    "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+105\u2103"
+      },
+      {
+        "name": "Number of Positions or Pins",
+        "value": "1x2P"
+      },
+      {
+        "name": "Voltage Rating (Max)",
+        "value": "300V"
+      },
+      {
+        "name": "Number of Rows",
+        "value": "1"
+      },
+      {
+        "name": "Termination Style",
+        "value": "Without fixing device"
+      },
+      {
+        "name": "Color",
+        "value": "Green"
+      },
+      {
+        "name": "Current Rating",
+        "value": "10A"
+      },
+      {
+        "name": "Mounting Type",
+        "value": "Right-Angle"
+      },
+      {
+        "name": "Number of Pins",
+        "value": "2P"
+      },
+      {
+        "name": "Connector Type",
+        "value": "Board Side/Socket - Closed"
+      },
+      {
+        "name": "Pitch",
+        "value": "5.08mm"
+      },
+      {
+        "name": "Number of PINs Per Row",
+        "value": "2"
       }
     ]
   }

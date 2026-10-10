@@ -1,61 +1,68 @@
 # JLCPCB electronics and separate ferrite sourcing
 
-All 75 purchased electronic placements have exact JLCPCB catalog identifiers,
-covering 42 unique parts. The checked catalog snapshots show positive stock.
-The electronics allowance is **$24.30** at the first listed price tiers; two core
-halves and two clips add approximately **$6.88**, or **$31.18 in parts**.
-PCB fabrication, assembly, setup, attrition, minimum quantities, tax and shipping
-are excluded. These are snapshots, not a reserved or accepted order.
+All **75 purchased PCB placements** have exact JLCPCB catalog identifiers,
+covering **41 unique parts**. The catalog snapshots show positive stock.
+Electronics total **$23.68** at the first listed price tiers. Two removable
+plugs add **$0.39**; two DigiKey core halves and two clips add about **$6.88**:
+approximately **$30.95 in parts**. PCB fabrication, assembly, setup, attrition,
+minimum quantities, tax and shipping are excluded. Inventory is not reserved.
 
-| Function | Selected part | JLCPCB code | Checked stock |
+| Function | Part | Catalog code | Stock snapshot |
 | --- | --- | --- | --- |
-| Input power port | AMASS XT30PW-M30.G.Y | C431092 | 24,656 |
-| Output power port | AMASS XT30PW-F20.G.Y | C2913282 | 19,333 |
-| GaN half bridge | TI LMG2100R044RARR | C22453052 | See catalog snapshot |
-| LLC controller | TI UCC25600DR | C130223 | See catalog snapshot |
-| SR controller | TI UCC24624DR | C2862446 | See catalog snapshot |
-| Auxiliary inductor | Bourns SRP7050TA-680M | C2047750 | 39; check availability before ordering |
+| J1 and J2 PCB header | KANGNEX WJ2EDGRC-5.08-02P-14-00A | C3697 | 89,246 |
+| Two removable screw plugs | KANGNEX WJ2EDGK-5.08-02P-14-00A | C71370 | 92,238 |
+| GaN half bridge | TI LMG2100R044RARR | C22453052 | See snapshot |
+| LLC controller | TI UCC25600DR | C130223 | See snapshot |
+| SR controller | TI UCC24624DR | C2862446 | See snapshot |
+| Auxiliary inductor | Bourns SRP7050TA-680M | C2047750 | 39; recheck before order |
 
-[Complete priced BOM](sourcing/Electronics-BOM-review.csv) ·
-[Catalog snapshot](sourcing/catalog-selected.json) ·
+[PCB electronics BOM](sourcing/Electronics-BOM-review.csv) ·
+[PCB catalog snapshot](sourcing/catalog-selected.json) ·
+[Mating plugs](sourcing/Mating-plugs.csv) ·
+[Accessory snapshot](sourcing/accessory-catalog.json) ·
 [Core/clip list](sourcing/Core-and-clips.csv)
 
-## Connector and assembly process
+## Bench connections
 
-JLCPCB's current [assembly capability page](https://jlcpcb.com/capabilities/pcb-assembly-capabilities)
-supports mixed SMT and through-hole assembly in one PCBA order. This example has
-73 top SMT parts and two top-inserted through-hole connectors. Request the
-appropriate mixed-assembly service and obtain acceptance of the actual files.
+Both ports use the [C3697 header](https://www.lcsc.com/product-detail/C3697.html)
+and matching [C71370 removable plug](https://www.lcsc.com/product-detail/C71370.html).
+The screw plugs let bench supply/load leads be fitted or changed without
+soldering a dedicated harness. They are external accessories and must be
+included separately in procurement; they have no PCB placement or CPL entry.
+J1 is 48 V input; J2 is 12 V output. **Pin 2 is positive and pin 1 is return on
+both ports.** Use the board's polarity labels. The identical connectors do not
+prevent swapping input and output cables; label both mating plugs.
 
-The [AMASS M30 drawing](https://www.china-amass.net/uploads/32.XT30PW-M30-SPEC-2025V0.pdf)
-specifies 80 V DC and a 20 A rating under its stated wire/temperature-rise
-conditions. The [F20 catalog drawing](https://datasheet.lcsc.com/datasheet/pdf/8e4f5fbe132d96575dda54e56e670896.pdf?productCode=C2913282)
-lists 15 A. These ratings support selecting the family for the 5 A target, but
-do not establish the thermal rating of this PCB or a chosen mating harness.
-Use a suitably rated mating XT30 cable assembly, follow the molded polarity
-marks, and validate contact temperature. Mating cables are external test/system
-equipment, not PCBA BOM components.
+The [header drawing](https://datasheet.lcsc.com/datasheet/pdf/dce87f2b59e72b104c944c4b7a080558.pdf?productCode=C3697)
+and [plug drawing](https://datasheet.lcsc.com/datasheet/pdf/6f9bbd0ffb3f425ddacaafb272a2e6de.pdf?productCode=C71370)
+specify the 5.08 mm family, including a 10 A UL current rating. That supports
+selection for the 5 A target but does not qualify temperature rise on this PCB.
+The plug drawing specifies 24–12 AWG, 7–8 mm stripped length and 0.4 N·m torque.
+Select wiring for the actual current, insulation and terminal specifications.
 
-Both footprints have 5 mm contact pitch, 1.9 mm finished contact drills and
-11 mm retention-hole pitch. The 3 mm input and 2 mm output solder tails need
-review against the 1.6 mm board and solder process. **Keep all connector holes
-open.** The fill/cap requirement applies to the 0.30 mm interconnect holes, not
-the 1.0/1.9 mm connector holes or 3.2 mm mechanical holes.
+Six bare ENIG pads provide VIN/PGND, VOUT/SGND and V5/AGND measurements. They
+have no paste or purchased placement. The headers overhang the 64 × 56 mm board;
+allow additional space for plugs, wires and removal. Mating plugs are not shown
+in the supplied 3D renders.
 
-Use JLCPCB-managed panel tooling as needed. Three on-board fiducials are supplied;
-the four M3 mounting holes are not the panel's assembly tooling holes. Six probe
-pads have no paste and no purchased placement.
+## Assembly and PCB process
 
-## PCB and core
+JLCPCB's [assembly capabilities](https://jlcpcb.com/capabilities/pcb-assembly-capabilities)
+include mixed SMT and through-hole assembly. Request 73 top SMT placements and
+two top-inserted through-hole headers, and obtain acceptance of the actual files.
+Each header has two 1.6 mm finished plated holes and 4 mm solder tails. Confirm
+lead protrusion and the through-hole solder process for this 1.6 mm PCB.
+**Keep the four connector holes open.** Via filling/capping applies to the
+0.30 mm interconnect holes, not connector or 3.2 mm mechanical holes.
 
-Request eight copper layers, 2 oz on every layer, nominal 1.6 mm FR4, ENIG and
-epoxy-filled, copper-capped, planarized vias in SMT lands. The exact dielectric
-construction still needs factory approval and magnetic recalculation if changed.
-Read [manufacturing notes](manufacturing-prototype/READ-BEFORE-ORDER.txt) before
-using the Gerbers, drill files, BOM and CPL.
+The proposed stack has eight copper layers, 2 oz on every layer, nominal 1.6 mm
+FR4 and ENIG. Vias in SMT lands need epoxy filling, copper capping and
+planarization. The exact construction, panel tooling and placement rotations
+still need factory review. Three fiducials are provided; mounting holes are
+not panel tooling holes. See the [manufacturing notes](manufacturing-prototype/READ-BEFORE-ORDER.txt).
 
 The two TDK B66285G0050X187 core halves and two B66286A2000X000 clips are separate
-DigiKey items. JLCPCB's fitting of these externally supplied mechanical parts
-has **not** been agreed. Catalog availability therefore does not yet constitute
-a confirmed fully assembled converter. Arrange that operation after soldering,
-or fit the ferrite after receiving the electronics assembly.
+DigiKey items. JLCPCB fitting of these externally supplied parts has **not**
+been agreed. Catalog availability therefore does not yet establish a confirmed
+fully assembled converter. Arrange core fitting after soldering or fit the
+ferrite after receiving the electronics assembly. No order has been placed.

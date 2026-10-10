@@ -17,8 +17,8 @@ run('sch','export','netlist','--format','kicadxml','--output',E/'netlist.xml',SC
 # Keep the evidence portable; only normalize the source filename metadata.
 n=E/'netlist.xml'
 n.write_text(n.read_text(encoding='utf8').replace(str(SCH),'kicad/PS-GAN-60W.kicad_sch'),encoding='utf8')
-run('sch','export','pdf','--output',R/'Schematic.pdf',SCH)
-run('sch','export','svg','--output',E/'schematic-svg',SCH)
+run('sch','export','pdf','--output',R/'Schematic.pdf','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
+run('sch','export','svg','--output',E/'schematic-svg','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
 run('sch','export','bom','--fields','Value,Reference,Footprint,LCSC,QUANTITY','--labels','Comment,Designator,Footprint,LCSC Part #,Quantity','--group-by','LCSC','--ref-range-delimiter','','--output',M/'BOM-JLCPCB.csv',SCH)
 run('pcb','export','gerbers','--output',G,'--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.SilkS,B.SilkS,Edge.Cuts','--use-drill-file-origin','--subtract-soldermask',PCB)
 run('pcb','export','drill','--output',G,'--drill-origin','plot','--excellon-separate-th','--excellon-units','mm','--generate-report','--report-path',E/'Drill-report.txt',PCB)
@@ -27,8 +27,8 @@ from convert_position import convert_positions
 convert_positions(E/'positions-raw.csv',M/'CPL-JLCPCB-review.csv')
 run('pcb','export','svg','--output',E/'pcb-layers','--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Fab','--common-layers','Edge.Cuts','--mode-multi','--fit-page-to-board','--exclude-drawing-sheet',PCB)
 run('pcb','export','pdf','--output',R/'PCB-layers.pdf','--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Fab','--common-layers','Edge.Cuts','--mode-multipage',PCB)
-run('pcb','render','--output',R/'Board-preview.png','--width','1600','--height','1160','--side','top','--background','opaque',PCB)
-run('pcb','render','--output',R/'Board-perspective.png','--width','1500','--height','1100','--rotate','-40,0,25','--background','opaque',PCB)
+run('pcb','render','--output',R/'Board-preview.png','--width','1600','--height','1400','--side','top','--background','opaque','--zoom','0.88',PCB)
+run('pcb','render','--output',R/'Board-perspective.png','--width','1500','--height','1100','--rotate','-40,0,25','--background','opaque','--zoom','0.9',PCB)
 run('pcb','render','--output',R/'evidence/Board-bottom.png','--width','1500','--height','1100','--side','bottom','--background','opaque',PCB)
 with zipfile.ZipFile(M/'Gerbers-PROTOTYPE.zip','w',zipfile.ZIP_DEFLATED) as z:
  for f in sorted(G.iterdir()):

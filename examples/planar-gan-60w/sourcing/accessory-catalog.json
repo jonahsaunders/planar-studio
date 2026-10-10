@@ -1,0 +1,107 @@
+{
+  "review_date": "2026-10-10",
+  "C71370": {
+    "lcsc": "C71370",
+    "name": "KANGNEX WJ2EDGK-5.08-02P-14-00A",
+    "model": "WJ2EDGK-5.08-02P-14-00A",
+    "brand": "Ningbo Kangnex Elec",
+    "package": "P=5.08mm",
+    "category": "Pluggable System Terminal Block",
+    "stock": 92238,
+    "type": "Extended",
+    "price": 0.1947,
+    "price_breaks": [
+      {
+        "qty": 1,
+        "price": 0.1947
+      },
+      {
+        "qty": 50,
+        "price": 0.1538
+      },
+      {
+        "qty": 250,
+        "price": 0.1258
+      },
+      {
+        "qty": 500,
+        "price": 0.108
+      },
+      {
+        "qty": 2500,
+        "price": 0.1031
+      },
+      {
+        "qty": 5000,
+        "price": 0.1002
+      }
+    ],
+    "min_qty": 1,
+    "reel_qty": 250,
+    "description": "-40\u2103~+105\u2103 1 10A 14~28 1x2P 2 2.5 2P 300V 5.08mm Male Plug Screw Connection (M2.5) Top Entry P=5.08mm Pluggable System Terminal Block ROHS",
+    "url": "https://www.lcsc.com/product-detail/pluggable-system-terminal-block_ningbo-kangnex-elec-wj2edgk-5-08-2p_C71370.html",
+    "datasheet": "https://datasheet.lcsc.com/datasheet/pdf/6f9bbd0ffb3f425ddacaafb272a2e6de.pdf?productCode=C71370",
+    "attributes": [
+      {
+        "name": "Operating Temperature",
+        "value": "-40\u2103~+105\u2103"
+      },
+      {
+        "name": "Number of Positions or Pins",
+        "value": "1x2P"
+      },
+      {
+        "name": "Voltage Rating (Max)",
+        "value": "300V"
+      },
+      {
+        "name": "Number of Rows",
+        "value": "1"
+      },
+      {
+        "name": "Termination Style",
+        "value": "Without fixing device"
+      },
+      {
+        "name": "Current Rating",
+        "value": "10A"
+      },
+      {
+        "name": "Wire Gauge - mm2",
+        "value": "2.5"
+      },
+      {
+        "name": "Wire Gauge - AWG",
+        "value": "14~28"
+      },
+      {
+        "name": "Mounting Type",
+        "value": "Free-hanging"
+      },
+      {
+        "name": "Connection Type",
+        "value": "Screw Connection (M2.5)"
+      },
+      {
+        "name": "Connector Type",
+        "value": "Male Plug"
+      },
+      {
+        "name": "Number of Pins",
+        "value": "2P"
+      },
+      {
+        "name": "Pitch",
+        "value": "5.08mm"
+      },
+      {
+        "name": "Number of PINs Per Row",
+        "value": "2"
+      },
+      {
+        "name": "Outlet Direction (Vertical Basis)",
+        "value": "Top Entry"
+      }
+    ]
+  }
+}

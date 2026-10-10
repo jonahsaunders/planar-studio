@@ -6,14 +6,29 @@ Initial input range: **46–50 V**. **Unbuilt and untested; 60 W is a target.**
 
 ![Native KiCad assembly render](Board-perspective.png)
 
-## Mechanical and layout design
+## Schematic and layout
 
-- **80 × 58 mm** chamfered board; eight copper layers, nominal 1.6 mm thickness.
+![Native KiCad schematic](Schematic-preview.png)
+
+A2 redraws the circuit on one A3 sheet: power conversion across the top, then
+frequency control, bias, isolated feedback and independent OVP. Local parts
+connect with visible wires; matching signal names link the functional sections.
+Power arrows point up and returns point down. An independent check finds
+**zero four-way connections**.
+
+The outline shrinks from 80 × 58 to **64 × 56 mm**, about **23% less PCB area**,
+while preserving the winding geometry and all-top electronics. This compares
+outline bounding areas, not complete assembly volume. Headers overhang the
+edges; mating plugs, wiring and service clearance add to the envelope.
+
+
+- **64 × 56 mm** chamfered board; eight copper layers, nominal 1.6 mm thickness.
 - Four **3.2 mm M3 holes** reuse the actual exposed-substrate edge footprint from
   the flyback example: 6.4 mm mask openings and 10 mm copper exclusions on all
-  layers. The **71 × 49 mm** pattern is adapted to this outline; it is not the
+  layers. The **55 × 47 mm** pattern is adapted to this outline; it is not the
   flyback's 35 × 85 mm pattern.
-- Two polarized, horizontal **AMASS XT30 power connectors** face opposite edges.
+- Two horizontal **5.08 mm pluggable screw-terminal ports** face opposite edges.
+  Removable plugs accept bench leads without soldering; plugs are listed separately.
   J1 is input, J2 is output; **pin 2 = positive, pin 1 = return** on both.
 - All **75 purchased components are top-mounted**: 73 SMT and two through-hole
   connectors. The ferrite halves straddle the board. Six bare test pads and
@@ -63,6 +78,7 @@ Run with Python in UTF-8 mode. KiCad's bundled Python supplies `pcbnew`.
 
 ```text
 python -X utf8 scripts/export_review.py /path/to/kicad-cli
+python -X utf8 scripts/audit_schematic.py
 python -X utf8 scripts/audit_windings.py
 python -X utf8 scripts/audit_mechanical.py
 python -X utf8 scripts/final_audit.py
@@ -72,7 +88,10 @@ python -X utf8 scripts/final_audit.py
 `engineering_review.py` needs NumPy. `rebuild_board.py` recreates the canonical
 board from the included local footprints, placement definitions, manual routes
 and mechanical features; it overwrites PCB placement/routing and project rules.
-The native schematic is the editable circuit source.
+The native schematic is the editable circuit source. redraw_schematic.py
+recreates the A2 presentation from circuit.json and the local symbol library;
+it overwrites schematic edits, so regenerate only intentionally. It and
+audit_schematic.py require the sexpdata package.
 
 `planar-studio/T1.planar.json` is the **four-section seed**, not the complete
 six-winding-layer implementation. `T1-artwork.json` and the native winding/board

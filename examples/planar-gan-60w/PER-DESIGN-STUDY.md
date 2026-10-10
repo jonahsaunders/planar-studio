@@ -44,25 +44,25 @@ separate design problem. Its multiple-inverter ICN architecture is not adopted
 here. It reinforces the need to test light load, burst operation and switching
 waveforms rather than assuming that a resonant tank always achieves ZVS.
 
-## Concrete A1 decisions
+## Concrete A2 decisions
 
-- **80 × 58 mm, chamfered rectangle.** The central power/control assembly retains
-  its compact placement. The additional width accommodates opposing horizontal
-  power plugs and their approach space. Four corner mounts resist cable handling
+- **64 × 56 mm, chamfered rectangle.** The central power/control assembly retains
+  its compact placement. Trimming the previous connector margins removes 22.76% of
+  the board area. Opposing power ports open outward; mating plugs and their
+  approach space are outside the PCB outline. Four corner mounts resist cable handling
   loads without using the ferrite clips as structural supports.
 - **The actual flyback mounting footprint.** Four 3.2 mm NPTH M3 holes reuse its
   6.4 mm exposed-substrate openings, outward mask extensions, 10 mm copper
-  exclusions and enlarged courtyards. The new pattern is **71 × 49 mm**, rather
+  exclusions and enlarged courtyards. The new pattern is **55 × 47 mm**, rather
   than the flyback's 35 × 85 mm. The hole geometry and clearances are identical;
   the boards are not mounting-pattern interchangeable.
-- **Dedicated DC power ports.** AMASS XT30PW-M30.G.Y input and XT30PW-F20.G.Y
-  output replace three unshrouded headers. Both are polarized, edge-facing
-  two-contact ports. The output's two contacts now carry positive and return,
-  eliminating the previous separate parallel-pin headers. Pin 2 is positive
-  and pin 1 is return on both KiCad footprints. Opposite genders distinguish
-  the intended input/output harnesses but are not a voltage-specific interlock.
+- **Dedicated DC power ports.** KANGNEX 5.08 mm headers and removable screw
+  plugs make bench leads easier to change. Both face outward; pin 2 is positive
+  and pin 1 is return. The six nearby rail/return probe pads avoid attaching
+  probes directly to the power contacts. Identical input/output connectors need
+  clear cable labels; they are not a voltage-specific interlock.
 - **Local output storage.** C15 moves from the lower capacitor bank to the upper
-  rectifier region. Its center-to-Q1 distance decreases from 21.74 to 5.8 mm.
+  rectifier region. Its center-to-Q1 distance decreases from 21.74 to 5.9 mm.
   This is a placement metric, not a measured loop-inductance or loss reduction.
   The other output capacitors stay near the lower rectifier/output distribution.
 - **Return copper and testing.** Primary and secondary return pours expand into
@@ -77,8 +77,8 @@ waveforms rather than assuming that a resonant tank always achieves ZVS.
 
 T1 uses repeatable PCB winding geometry, parallel secondary copper and a stock
 ELP22 core without a bobbin or manually wound coil. It remains integrated into
-the same board as the GaN stage and rectifiers. A1 occupies 46.4 cm² versus
-41.36 cm² for the 5 W flyback example: approximately 12% more board area for a
+the same board as the GaN stage and rectifiers. A2 occupies 35.84 cm² versus
+41.36 cm² for the 5 W flyback example: approximately 13% less board area for a
 12× higher **power target**. This is a target comparison between different
 topologies, not a measured power-density achievement. Including connectors,
 core height, cooling and operating limits is necessary for a fair comparison.

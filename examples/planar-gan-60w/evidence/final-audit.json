@@ -5,7 +5,7 @@
   "all_components_top": true,
   "BOM_CPL_and_manifest_designators_match": true,
   "BOM_total_quantity": 75,
-  "unique_catalog_parts": 42,
+  "unique_catalog_parts": 41,
   "copper_layers": 8,
   "every_footprint_has_courtyard": true,
   "all_3d_models_resolve_locally": true,

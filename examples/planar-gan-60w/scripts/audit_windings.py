@@ -42,4 +42,4 @@ for v in issues:
  k=(v['net'],v['item'],v['layer'])
  if k not in worst or v['clearance_mm']<worst[k]['clearance_mm']:worst[k]=v
 report={'method':'Independent 0.08 mm swept-path samples against Planar Studio winding centerlines; 0.195 mm threshold. Intended terminal copper within 0.8 mm (the intended terminal landing) is excepted. Conservative rectangular pad envelope. Covers nets in the winding net-tie groups; KiCad checks other nets.','issues':list(worst.values()),'terminal_contacts':list(set(contacts)),'qualified':False}
-(R/'evidence/winding-contact-audit.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
+(R/'evidence/winding-contact-audit.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2));assert not issues, 'Unintended winding contacts found'

@@ -35,8 +35,15 @@
   "pcbnew": {
     "page_layout_descr_file": ""
   },
-  "schematic": {},
+  "schematic": {
+    "page_layout_descr_file": "${KIPRJMOD}/schematic-frame.kicad_wks"
+  },
   "text_variables": {
     "DESIGN_STATUS": "ENGINEERING REVIEW ONLY"
+  },
+  "erc": {
+    "rule_severities": {
+      "four_way_junction": "error"
+    }
   }
 }

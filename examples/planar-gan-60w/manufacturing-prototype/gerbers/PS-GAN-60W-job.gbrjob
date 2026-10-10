@@ -5,17 +5,17 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-10-10T12:18:01-04:00"
+    "CreationDate": "2026-10-10T13:15:10-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "PS-GAN-60W",
       "GUID": "50532d47-414e-42d3-9630-572e6b696361",
-      "Revision": "A1 REVIEW - NOT FOR FABRICATION"
+      "Revision": "A2 REVIEW - NOT FOR FABRICATION"
     },
     "Size": {
-      "X": 80.05,
-      "Y": 58.05
+      "X": 64.05,
+      "Y": 56.05
     },
     "LayerNumber": 8,
     "BoardThickness": 1.6,
