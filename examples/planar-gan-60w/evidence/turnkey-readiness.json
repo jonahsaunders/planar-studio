@@ -1,0 +1,277 @@
+{
+  "revision": "A14",
+  "checked_date": "2026-10-11",
+  "native_board_sha256": "966ad133c9f496af95ec70b98598d10c54d7ea4bba100d8ba58407e87bf3b657",
+  "verdict": "Ready for supplier engineering review only; full turnkey release NOT confirmed",
+  "cad_checks": [
+    {
+      "check": "All purchased placements on top",
+      "passed": true,
+      "measured": 75,
+      "requirement": "75 top-side placements"
+    },
+    {
+      "check": "Mixed assembly identity",
+      "passed": true,
+      "measured": [
+        "J1",
+        "J2"
+      ],
+      "requirement": "73 SMT components and J1/J2 insertion headers; Standard PCBA"
+    },
+    {
+      "check": "Copper layers",
+      "passed": true,
+      "measured": 8,
+      "requirement": "8, requiring Standard PCBA"
+    },
+    {
+      "check": "Routed width margin",
+      "passed": true,
+      "measured": 0.2,
+      "requirement": "0.20 mm design minimum; JLC 2 oz published minimum 0.16 mm"
+    },
+    {
+      "check": "2 oz connector annuli",
+      "passed": true,
+      "measured": [
+        {
+          "pad": "J1.1",
+          "drill_mm": 1.6,
+          "annular_ring_mm": 0.7
+        },
+        {
+          "pad": "J1.2",
+          "drill_mm": 1.6,
+          "annular_ring_mm": 0.7
+        },
+        {
+          "pad": "J2.1",
+          "drill_mm": 1.6,
+          "annular_ring_mm": 0.7
+        },
+        {
+          "pad": "J2.2",
+          "drill_mm": 1.6,
+          "annular_ring_mm": 0.7
+        }
+      ],
+      "requirement": "At least 0.254 mm nominal ring for insertion PTH"
+    },
+    {
+      "check": "hole_gap_under_0p2_mm",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "different_component_copper_overlaps",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "courtyard_does_not_enclose_copper_pads",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "foreign_mask_gaps_under_0p2_mm",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "internal_via_hole_clearance_under_0p2_mm",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "silkscreen_below_1mm_height_or_0p15mm_stroke",
+      "passed": true,
+      "measured": [],
+      "requirement": "No findings in the native geometry screen"
+    },
+    {
+      "check": "Mask opening to foreign trace",
+      "passed": true,
+      "measured": 0.2155,
+      "requirement": "JLC minimum 0.09 mm"
+    },
+    {
+      "check": "Stencil area-ratio screen",
+      "passed": true,
+      "measured": [
+        {
+          "ref": "U1",
+          "pad": "separate aperture",
+          "area_mm2": 0.134257,
+          "perimeter_mm": 1.450495,
+          "area_ratio": 0.7405
+        },
+        {
+          "ref": "U1",
+          "pad": "separate aperture",
+          "area_mm2": 0.134257,
+          "perimeter_mm": 1.450495,
+          "area_ratio": 0.7405
+        },
+        {
+          "ref": "U1",
+          "pad": "2",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "3",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "4",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "8",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "9",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "10",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "12",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "13",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "14",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        },
+        {
+          "ref": "U1",
+          "pad": "15",
+          "area_mm2": 0.174484,
+          "perimeter_mm": 1.858746,
+          "area_ratio": 0.751
+        }
+      ],
+      "requirement": "At 0.125 mm stencil, area/(wall perimeter x thickness) >= 0.66; supplier still approves transfer"
+    },
+    {
+      "check": "BOM/CPL reference bijection",
+      "passed": true,
+      "measured": {
+        "placements": 75,
+        "BOM_groups": 43
+      },
+      "requirement": "Exactly one CPL entry per fitted BOM reference; exact MPN/C-code preserved"
+    },
+    {
+      "check": "Five-board fitted-stock screen",
+      "passed": true,
+      "measured": [
+        {
+          "code": "C3177336",
+          "MPN": "SF-1206F300M-2",
+          "fitted": 5,
+          "public_stock": 28,
+          "surplus_before_attrition": 23
+        },
+        {
+          "code": "C2047750",
+          "MPN": "SRP7050TA-680M",
+          "fitted": 5,
+          "public_stock": 39,
+          "surplus_before_attrition": 34
+        },
+        {
+          "code": "C840100",
+          "MPN": "CSD18543Q3A",
+          "fitted": 10,
+          "public_stock": 1113,
+          "surplus_before_attrition": 1103
+        },
+        {
+          "code": "C2864436",
+          "MPN": "TPS7A2450DBVR",
+          "fitted": 5,
+          "public_stock": 1587,
+          "surplus_before_attrition": 1582
+        },
+        {
+          "code": "C134996",
+          "MPN": "SMAJ54A-13-F",
+          "fitted": 5,
+          "public_stock": 1713,
+          "surplus_before_attrition": 1708
+        }
+      ],
+      "requirement": "Public exact-code stock covers fitted quantity; order-specific attrition/MOQ and allocation remain unknown"
+    },
+    {
+      "check": "Pours and drill treatment",
+      "passed": true,
+      "measured": {
+        "filled_capped_holes": 204,
+        "zones": 19,
+        "ground_stitches": 50
+      },
+      "requirement": "No disconnected filled islands or connector thermal bypasses; separate drill-treatment map"
+    }
+  ],
+  "failed_cad_checks": [],
+  "external_release_holds": [
+    "Standard PCBA publishes a 70 x 70 mm minimum handling size, edge rails and fiducials. This 64 x 56 mm board needs JLC-defined handling rails/panel. Customer data remain single-board.",
+    "Exact 8-layer 2 oz construction, minimum delivered copper, laminate and thickness tolerance need order-specific acceptance.",
+    "Approve factory part-model rotations/pin 1 for all 75 placements and hidden-joint inspection/stencil process.",
+    "No factory acceptance for procurement and post-solder installation of two ferrite halves and two clips per board. Global sourcing acceptance alone is not assembly acceptance.",
+    "Ten mating plugs need an agreed accessory fitting/delivery operation. Library stock is for assembly and does not guarantee loose accessory delivery.",
+    "JLC BOM tool redirects to sign-in in this session. Actual assembly MOQ/attrition, stock allocation and full build quote are not obtained.",
+    "Physical core/clip fit and electrical bring-up remain open; the converter has not been built or qualified at 60 W."
+  ],
+  "sources": {
+    "stencil_transfer": "https://www.ti.com/lit/an/slua271c/slua271c.pdf",
+    "fabrication": "https://jlcpcb.com/capabilities/pcb-capabilities",
+    "copper": "https://jlcpcb.com/help/article/jlcpcb-copper-weight",
+    "assembly": "https://jlcpcb.com/capabilities/pcb-assembly-capabilities",
+    "sourcing": "https://jlcpcb.com/help/article/global-sourcing-parts-order-terms-conditions",
+    "inventory": "https://jlcpcb.com/help/article/pre-ordering-parts-terms-conditions",
+    "MOQ_attrition": "https://jlcpcb.com/help/article/pcb-assembly-faqs-part-2"
+  },
+  "catalog_retrieved_utc": "2026-10-11T18:47:52.059606+00:00",
+  "note": "Native CAD and public capabilities screen, not supplier CAM acceptance or measured performance. No upload, order, reservation or supplier message."
+}

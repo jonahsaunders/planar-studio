@@ -1,13 +1,13 @@
 {
   "date": "2026-10-11",
-  "native_revision": "A13",
+  "native_revision": "A14",
   "build_quantity": 5,
   "verdict": "CAD repairs completed; factory acceptance and electrical qualification remain open. Full turnkey not confirmed.",
-  "native_board_sha256": "419079a90fc0f151ad9b02cdfd5830efeffed2b52bdbc3f459cd82f75493c3e3",
+  "native_board_sha256": "966ad133c9f496af95ec70b98598d10c54d7ea4bba100d8ba58407e87bf3b657",
   "native_schematic_sha256": "ff252be7f8c8794cbf8041c706a8b0d10f1d4a3f6e86f16a485010f5b7caff85",
   "issues": [
     {
-      "ID": "M12",
+      "ID": "M13",
       "Status": "CAD SCREENED / PROCESS REVIEW",
       "Area": "Passive pad entries and direct routes",
       "Finding": "Eight feedback/OVP resistors have equal lands/paste and single outward 0.20 mm necks. Nearby vias clear their lands by at least 0.25 mm to the hole edge. Seven local signal nets use top copper without vias.",
@@ -59,7 +59,7 @@
       "Status": "FACTORY REVIEW",
       "Area": "Factory handling and insertion connectors",
       "Finding": "Single-board CAD, Gerbers and CPL only. Customer panel data have been removed. Connector pours retain 0.6 mm thermal spokes without direct trace bypasses.",
-      "Required_closure": "JLCPCB defines and quotes any assembly rails, panelization and depanelization needed for the 64 \u00d7 56 mm outline. Approve the factory placement mapping, overhanging headers, lead protrusion and solder fixture.",
+      "Required_closure": "Standard PCBA requires a 70 \u00d7 70 mm minimum handling size, rails and fiducials. JLCPCB must define and quote handling and depanelization for this 64 \u00d7 56 mm board. Approve the factory placement mapping, overhanging headers, lead protrusion and solder fixture.",
       "Evidence": "READ-BEFORE-ORDER.txt"
     },
     {
@@ -67,14 +67,14 @@
       "Status": "SERVICE OPEN",
       "Area": "Ferrite and accessories",
       "Finding": "Exact core-half, clip and removable-plug purchases remain specified. They are separately sourced mechanical/accessory items, not SMT placements.",
-      "Required_closure": "Obtain explicit JLC sourcing/consignment and post-solder fitting acceptance and a price. Otherwise delivery is electronics PCBA plus separate mechanical parts.",
+      "Required_closure": "Obtain JLC acceptance and pricing for sourcing and fitting cores/clips and supplying the mating plugs. Catalog inventory is for assembly; loose accessory delivery is not established.",
       "Evidence": "manufacturing-core-prices.json"
     },
     {
       "ID": "M08",
       "Status": "CAD SPECIFIED / PROCESS REVIEW",
       "Area": "Filled vias and hidden joints",
-      "Finding": "A coordinate-level drill map marks 203 small interconnects for resin fill/copper cap, including six transformer transitions. Four connector and four mounting holes stay open.",
+      "Finding": "A coordinate-level drill map marks 204 small interconnects for resin fill/copper cap, including six transformer transitions. Four connector and four mounting holes stay open.",
       "Required_closure": "Supplier must confirm the process for the listed 0.30 mm holes, not just objects named vias. Review hidden-joint X-ray and solder acceptance.",
       "Evidence": "Drill-process-map.csv"
     },
@@ -90,7 +90,7 @@
       "ID": "M10",
       "Status": "ORDER CHECK OPEN",
       "Area": "Sourcing",
-      "Finding": "43 exact electronic catalog codes cover all 75 placements. The 10 October snapshot supports five fitted boards before attrition; no electronic substitutions were made.",
+      "Finding": "43 exact electronic catalog codes cover all 75 placements. The 11 October snapshot supports five fitted boards before attrition; no electronic substitutions were made.",
       "Required_closure": "Refresh stock, order-specific MOQ/attrition and warehouse allocation before release. Snapshot stock is not reserved.",
       "Evidence": "Manufacturing-parts-5boards.csv"
     },
@@ -126,7 +126,7 @@
       130
     ],
     "electronic_fitted_parts_total_USD": 111.64,
-    "parts_source_timestamp": "2026-10-10T23:11:42.390355+00:00",
+    "parts_source_timestamp": "2026-10-11T18:47:52.059606+00:00",
     "fee_source": "https://jlcpcb.com/help/article/pcb-assembly-price",
     "fee_source_last_updated": "2026-09-09",
     "exclusions": [

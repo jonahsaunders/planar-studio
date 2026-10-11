@@ -56,7 +56,7 @@ for name in feedback:
  assert all(t.GetLayer()==p.F_Cu for t in ts),name
  assert not any(v.GetNetname()==net for v in vias),name
  topology.append({'net':name,'length_mm':round(sum(t.GetLength()/1e6 for t in ts),3),'segments':len(ts),'signal_vias':0,'layers':['F.Cu']})
-report={'revision':'A13','native_board_sha256':hashlib.sha256((R/'kicad/PS-GAN-60W.kicad_pcb').read_bytes()).hexdigest(),
+report={'revision':'A14','native_board_sha256':hashlib.sha256((R/'kicad/PS-GAN-60W.kicad_pcb').read_bytes()).hexdigest(),
  'scope':'Eight low-current feedback/OVP resistors. Geometric assembly-risk reduction only, not equal thermal impedance, reflow validation or a no-tombstoning guarantee.',
  'sources':['https://www.eurocircuits.com/technical-guidelines/pcb-assembly-guidelines/tombstoning/','https://article.murata.com/en-eu/article/basics-of-capacitors-6'],
  'resistors':sorted(rows,key=lambda x:int(x['ref'][1:])),'local_feedback_routes':topology,
@@ -64,7 +64,7 @@ report={'revision':'A13','native_board_sha256':hashlib.sha256((R/'kicad/PS-GAN-6
 if len(sys.argv)>2:
  old=p.LoadBoard(str(Path(sys.argv[2])/'kicad/PS-GAN-60W.kicad_pcb'))
  ot=[t for t in old.GetTracks() if not isinstance(t,p.PCB_VIA)]
- report['baseline_A12']={'segments':len(ot),'length_mm':round(sum(t.GetLength()/1e6 for t in ot),3),'vias':sum(isinstance(t,p.PCB_VIA) for t in old.GetTracks()),
+ report['baseline_A13']={'segments':len(ot),'length_mm':round(sum(t.GetLength()/1e6 for t in ot),3),'vias':sum(isinstance(t,p.PCB_VIA) for t in old.GetTracks()),
  'local_feedback_routes':[{'net':n,'length_mm':round(sum(t.GetLength()/1e6 for t in ot if t.GetNetname()==aliases[n]),3),'signal_vias':sum(isinstance(t,p.PCB_VIA) and t.GetNetname()==aliases[n] for t in old.GetTracks())} for n in feedback]}
 (R/'evidence/passive-routing-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps({k:v for k,v in report.items() if k!='resistors'},indent=2))

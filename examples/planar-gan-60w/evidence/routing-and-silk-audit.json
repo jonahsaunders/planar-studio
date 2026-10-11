@@ -1,8 +1,120 @@
 {
-  "revision": "A13",
-  "native_board_sha256": "419079a90fc0f151ad9b02cdfd5830efeffed2b52bdbc3f459cd82f75493c3e3",
+  "revision": "A14",
+  "native_board_sha256": "966ad133c9f496af95ec70b98598d10c54d7ea4bba100d8ba58407e87bf3b657",
   "method": "Native straight route segments only; T1 custom-pad winding unchanged. Elbows exclude branch junctions. Silkscreen uses actual stroke polygons without Gerber clipping, 0.001 mm polygon tolerance. Courtyard overlap is a conservative component-body visibility screen, excluding the transformer.",
   "current": {
+    "trace_segments": 497,
+    "non_octilinear_segments": [],
+    "right_angle_elbows": [
+      {
+        "net": "Net-(T1-S_END)",
+        "layer": "F.Cu",
+        "position": [
+          63.31,
+          85.1
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "VOUT",
+        "layer": "In4.Cu",
+        "position": [
+          73.65,
+          90.475
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": false
+      },
+      {
+        "net": "SGND",
+        "layer": "F.Cu",
+        "position": [
+          63.99,
+          82.1
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "VIN",
+        "layer": "In3.Cu",
+        "position": [
+          105.2,
+          80.125
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "/TANK_C",
+        "layer": "F.Cu",
+        "position": [
+          97.075,
+          72.0
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "Net-(T1-S_DOT)",
+        "layer": "F.Cu",
+        "position": [
+          65.29,
+          67.9
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "V5",
+        "layer": "In5.Cu",
+        "position": [
+          104.475,
+          64.5
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "/HI",
+        "layer": "F.Cu",
+        "position": [
+          110.175,
+          68.9
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "Net-(U4-SW)",
+        "layer": "F.Cu",
+        "position": [
+          99.0,
+          94.4
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      },
+      {
+        "net": "Net-(U4-FB)",
+        "layer": "F.Cu",
+        "position": [
+          95.3,
+          92.325
+        ],
+        "anchor": true,
+        "inside_same_net_land_projection": true
+      }
+    ],
+    "unanchored_right_angles_outside_lands": [],
+    "silk_items": 40,
+    "open_top_vias_included_in_mask_screen": 0,
+    "minimum_silk_to_mask_gap_mm": 0.2211,
+    "silk_mask_clearance_under_0p2mm": [],
+    "board_text_inside_component_courtyards": []
+  },
+  "baseline_A13": {
     "trace_segments": 501,
     "non_octilinear_segments": [],
     "right_angle_elbows": [
@@ -102,128 +214,6 @@
         "position": [
           99.0,
           94.4
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      }
-    ],
-    "unanchored_right_angles_outside_lands": [],
-    "silk_items": 40,
-    "open_top_vias_included_in_mask_screen": 0,
-    "minimum_silk_to_mask_gap_mm": 0.2211,
-    "silk_mask_clearance_under_0p2mm": [],
-    "board_text_inside_component_courtyards": []
-  },
-  "baseline_A12": {
-    "trace_segments": 797,
-    "non_octilinear_segments": [],
-    "right_angle_elbows": [
-      {
-        "net": "AGND",
-        "layer": "F.Cu",
-        "position": [
-          102.925,
-          67.7
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "VIN",
-        "layer": "In3.Cu",
-        "position": [
-          105.2,
-          80.125
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "SGND",
-        "layer": "F.Cu",
-        "position": [
-          63.99,
-          82.1
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "V5",
-        "layer": "F.Cu",
-        "position": [
-          104.475,
-          67.7
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "V5",
-        "layer": "In5.Cu",
-        "position": [
-          104.475,
-          64.5
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "Net-(T1-S_DOT)",
-        "layer": "F.Cu",
-        "position": [
-          65.29,
-          67.9
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "Net-(U4-FB)",
-        "layer": "F.Cu",
-        "position": [
-          95.3,
-          92.325
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "/TANK_C",
-        "layer": "F.Cu",
-        "position": [
-          97.075,
-          72.0
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "Net-(U8-CA)",
-        "layer": "F.Cu",
-        "position": [
-          73.65,
-          107.27
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "Net-(U4-SW)",
-        "layer": "F.Cu",
-        "position": [
-          99.0,
-          94.4
-        ],
-        "anchor": true,
-        "inside_same_net_land_projection": true
-      },
-      {
-        "net": "Net-(T1-S_END)",
-        "layer": "F.Cu",
-        "position": [
-          63.31,
-          85.1
         ],
         "anchor": true,
         "inside_same_net_land_projection": true

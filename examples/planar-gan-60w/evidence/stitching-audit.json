@@ -1,12 +1,12 @@
 {
-  "revision": "A13",
+  "revision": "A14",
   "diameter_mm": 0.6,
   "drill_mm": 0.3,
-  "added_stitches": 49,
+  "added_stitches": 50,
   "counts_by_net": {
     "PGND": 22,
     "AGND": 13,
-    "SGND": 14
+    "SGND": 15
   },
   "method": "Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.",
   "drive_transition_returns": [
@@ -74,11 +74,11 @@
       "signal": "VG2",
       "ground": "SGND",
       "position_mm": [
-        2.325000000000003,
-        20.5
+        1.5,
+        20.450000000000003
       ],
-      "before_nearest_return_via_mm": 2.024,
-      "after_nearest_return_via_mm": 1.3
+      "before_nearest_return_via_mm": 2.06,
+      "after_nearest_return_via_mm": 1.05
     },
     {
       "signal": "VG2",
@@ -88,7 +88,7 @@
         18.400000000000006
       ],
       "before_nearest_return_via_mm": 2.107,
-      "after_nearest_return_via_mm": 1.3
+      "after_nearest_return_via_mm": 1.05
     },
     {
       "signal": "LI",
@@ -697,7 +697,7 @@
     {
       "net": "SGND",
       "position_mm": [
-        6.399998999999997,
+        6.149998999999997,
         18.400000000000006
       ],
       "preexisting_reference_layers": [
@@ -714,8 +714,25 @@
     {
       "net": "SGND",
       "position_mm": [
-        1.4057611844574909,
-        19.580761184457486
+        2.55,
+        20.450000000000003
+      ],
+      "preexisting_reference_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "B.Cu",
+        "In1.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "SGND",
+      "position_mm": [
+        0.44999999999999996,
+        20.450000000000003
       ],
       "preexisting_reference_layers": [
         "B.Cu",

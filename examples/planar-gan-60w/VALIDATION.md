@@ -1,10 +1,10 @@
-# A13 validation record
+# A14 validation record
 
 11 October 2026, KiCad 10.0.6. **Unbuilt. Electrical and manufacturing release
 remain on hold.** [Component findings and open limits](COMPONENT-RATINGS.md).
 
-A13 redraws the lower-left feedback/OVP routing, reorients the dividers and
-shortens unnecessary detours throughout the PCB. Checks include passive pad
+A14 shortens the lower rectifier gate route and adds fabrication, stencil and
+BOM/CPL release screens. The A13 feedback improvements are retained. Checks include passive pad
 entries, actual copper pours, signal return references and unclipped silkscreen.
 Only single-board manufacturing data are supplied. Factory process acceptance,
 ferrite fitting and powered qualification remain open.
@@ -23,12 +23,13 @@ ferrite fitting and powered qualification remain open.
 | Bias network versus L2 | No RIPPLE/BIAS_FB trace polygon overlap with conservative L2 body projection | [Bias layout](evidence/bias-layout-audit.json) |
 | GaN routing | Full SW custom-land projection clear of foreign filled planes and internal tracks; adjacent PGND below VIN route | [GaN geometry](evidence/GaN-layout-audit.json) |
 | Drive references | Five checked GD/VG route segments have 100% sampled adjacent-plane coverage outside signal-via antipads | [Filled-copper audit](evidence/return-path-audit.json) |
-| Ground stitching | 49 stitches, each connected to at least two final same-net filled planes | [Stitching](evidence/stitching-audit.json) |
+| Ground stitching | 50 stitches, each connected to at least two final same-net filled planes | [Stitching](evidence/stitching-audit.json) |
 | Sensitive-net references | 17 selected nets have 100% sampled adjacent same-domain ground coverage outside their own via clearances; raw coverage also reported | [Reference planes](evidence/reference-plane-audit.json) |
 | Manufacturing geometry | No purchased pad outside its courtyard; no same-net land overlap; no undersized printed legend | [Geometry](evidence/manufacturing-geometry.json) |
 | Pours and stencil | All filled pieces touch same-net copper; no checked hot-node overlap; power paste 75–76%; no connector thermal bypass | [Native polygon audit](evidence/pour-and-stencil-audit.json) |
-| Routing and legend | 797 → 501 route segments; zero nonstandard angles or free 90° elbows; printed strokes clear mask by ≥0.22 mm | [Native measurements](evidence/routing-and-silk-audit.json) |
-| A12 comparison | Part identities/pin nets, winding footprint and mounting/connector positions retained; selected component positions/orientations and routing changed | [Before/after](evidence/A13-layout-audit.json) |
+| Routing and legend | 501 → 497 route segments; zero nonstandard angles or free 90° elbows; printed strokes clear mask by ≥0.22 mm | [Native measurements](evidence/routing-and-silk-audit.json) |
+| A13 comparison | Part identities/pin nets, winding footprint and mounting/connector positions retained; selected component positions/orientations and routing changed | [Before/after](evidence/A14-layout-audit.json) |
+| Turnkey CAD screen | 16 native/data checks pass; smallest paste aperture area ratio 0.7405 at 0.125 mm stencil; seven external holds remain | [Readiness](evidence/turnkey-readiness.json) |
 | Passive assembly entries | Eight feedback/OVP resistors: equal lands/paste, single 0.20 mm axial entries, ≥0.25 mm land-to-via-hole gap; seven local signal nets use no vias | [Passive routing](evidence/passive-routing-audit.json) |
 | Transformer contact geometry | No unintended winding contacts in independent sampled-path screen | [Winding audit](evidence/winding-contact-audit.json) |
 | Mechanical and assembly mapping | M3 exclusions on all eight copper layers, 75 top components, four 1.6 mm connector contact drills, three fiducials, six probe pads | [Mechanical audit](evidence/mechanical-assembly-audit.json) |
@@ -58,6 +59,8 @@ placed. Functional isolation only; no safety-isolation certification.
 
 ## Reproduction
 
+Run `audit_turnkey_readiness.py` after geometry, pour and export steps, with the Shapely directory argument.
+
 Run `redraw_schematic.py` with sexpdata, then `rebuild_board.py` with KiCad 10
 pcbnew plus Shapely 2.x (pass its site-packages directory as the first argument).
 `audit_routing_and_silk.py` (KiCad Python, Shapely directory argument) must
@@ -69,7 +72,7 @@ winding, mechanical, return, reference-plane, GaN, bias, ratings and final audit
 audit requires NumPy; the readability audit requires pypdfium2 and sexpdata;
 independent Gerber rendering uses PyGerber 2.4.x and Pillow.
 
-`audit_layout_changes.py` takes the previous A12 package directory as its
+`audit_layout_changes.py` takes the previous A13 package directory as its
 argument. It rejects any part-identity or pin-net change in this layout revision.
 It splits overlapping centerlines and same-layer intersections before computing
 route lengths, and includes the plated connector barrels as transitions. The

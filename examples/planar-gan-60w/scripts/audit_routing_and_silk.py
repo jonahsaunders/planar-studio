@@ -66,9 +66,9 @@ def inspect(path):
  return {'trace_segments':len(tracks),'non_octilinear_segments':odd,'right_angle_elbows':elbows,'unanchored_right_angles_outside_lands':[x for x in elbows if not x['anchor'] and not x['inside_same_net_land_projection']],
  'silk_items':len(gaps),'open_top_vias_included_in_mask_screen':len(open_vias),'minimum_silk_to_mask_gap_mm':min(x['gap_mm'] for x in gaps),'silk_mask_clearance_under_0p2mm':[x for x in gaps if x['gap_mm']<.199], 'board_text_inside_component_courtyards':bodyhits}
 current=inspect(R/'kicad/PS-GAN-60W.kicad_pcb')
-report={'revision':'A13','native_board_sha256':hashlib.sha256((R/'kicad/PS-GAN-60W.kicad_pcb').read_bytes()).hexdigest(),'method':'Native straight route segments only; T1 custom-pad winding unchanged. Elbows exclude branch junctions. Silkscreen uses actual stroke polygons without Gerber clipping, 0.001 mm polygon tolerance. Courtyard overlap is a conservative component-body visibility screen, excluding the transformer.','current':current}
+report={'revision':'A14','native_board_sha256':hashlib.sha256((R/'kicad/PS-GAN-60W.kicad_pcb').read_bytes()).hexdigest(),'method':'Native straight route segments only; T1 custom-pad winding unchanged. Elbows exclude branch junctions. Silkscreen uses actual stroke polygons without Gerber clipping, 0.001 mm polygon tolerance. Courtyard overlap is a conservative component-body visibility screen, excluding the transformer.','current':current}
 baseline=Path(sys.argv[2]) if len(sys.argv)>2 else None
-if baseline:report['baseline_A12']=inspect(baseline/'kicad/PS-GAN-60W.kicad_pcb')
+if baseline:report['baseline_A13']=inspect(baseline/'kicad/PS-GAN-60W.kicad_pcb')
 (R/'evidence/routing-and-silk-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(current,indent=2))
 assert not current['non_octilinear_segments']
