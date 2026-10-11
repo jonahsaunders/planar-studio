@@ -1,101 +1,50 @@
-PS-GAN-60W - FIVE UNITS - ENGINEERING REVIEW REQUEST, NOT AN ORDER
-Native revision: A10 schematic / A8 hardware, audited 10 October 2026.
+DRAFT FOR USER REVIEW — NOT SENT
 
-Do not manufacture this revision. Manufacturing-issue-register.csv identifies
-design corrections that must be completed before final CAM and assembly review.
-This document has not been sent to JLCPCB. It defines the questions and files
-needed to obtain an actual turnkey offer after those corrections.
+Please review and quote five PS-GAN-60W A11 units against the attached exact files.
+Confirm each fabrication, stencil, placement, insertion-solder and mechanical operation
+below explicitly. Identify any unsupported operation and quote electronics-only and
+finished assembly separately. Do not substitute parts or modify the magnetic stack
+without engineering review. Provide a CAM/placement preview and order-specific
+attrition/stock allocation before approval.
 
-Requested delivery scope
-Five converters with 73 top SMT placements and two top-inserted THT headers
-per board; no purchased electronics on the bottom. Transformer windings are
-PCB copper. A ferrite half goes below the board; that is a separate mechanical
-operation, not bottom-side SMT.
+PS-GAN-60W A11 — ENGINEERING / FACTORY REVIEW ONLY
+Do not order from this package until the remaining factory and engineering gates are closed.
+Five assembled units; 75 top-side placements each (73 SMT + 2 insertion headers).
+Use JLC Standard service. The single-board outline is 64 x 56 mm. The supplied one-up
+handling panel is 92 x 76 mm; five panels produce five boards. Panel CPL and panel
+Gerbers form a separate matched set. Do not mix panel and single-board coordinates.
 
-Review file set
-- Gerbers-PROTOTYPE.zip: eight copper layers, masks, top paste, legend,
-  outline and separate plated / non-plated Excellon drills.
-- BOM-JLCPCB.csv: exact MPN in Comment, exact C-code, manufacturer and quantity.
-- CPL-JLCPCB-review.csv: native footprint anchors / rotations, not approved
-  against supplier models. Assembly-pad-map.csv gives independent pad anchors
-  in the same lower-left datum (X right, Y up); do not import it as P&P data.
-- Assembly-top.pdf, mounting-holes.csv, the native KiCad project and issue
-  register. Check the release's SHA256 manifest before quoting final files.
+CONSTRUCTION
+JLC081622-1080 candidate: 1.655 mm nominal copper+dielectric stack, 70 um outer and
+61 um inner copper. See fabrication-stack.json for every dielectric thickness.
+ENIG, green mask, top assembly. Obtain final construction and tolerance acceptance.
+All 0.30 mm interconnect holes require resin fill, copper cap and planarization,
+including the six T1 transitions represented as plated pads. See Drill-process-map.csv.
+Keep 1.60 mm connector and 3.20 mm mounting holes open. Panel 0.50 mm mouse bites
+and 2.00 mm tooling holes also remain open. Do not fill by object type alone.
 
-Fabrication and panel acceptance
-1. Supply an approved eight-layer heavy-copper stack. The present design uses
-   nominal 1.6 mm and 70 um copper on all layers. JLC081622-1080 is only a
-   candidate: the quote UI lists 1.655 mm actual thickness and 61 um inner
-   copper. Engineering must first reconcile the magnetic model, native stack
-   and finished-thickness / copper tolerances. No silent substitution.
-2. Preserve the final 64 x 56 mm chamfered outline, 55 x 47 mm M3 pattern and
-   three CNC core openings. Agree laminate grade, finished thickness, routing
-   tolerance, material and plating acceptance in the fabrication drawing.
-3. Supply handling-panel CAM for approval. This outline is smaller than the
-   published 70 x 70 mm Standard PCBA envelope. Use routed tabs with adequate
-   edge rails, tooling and fiducials; allow opposing connector overhang and
-   soldering access. A roughly 90 x 76 mm one-up frame is a budgeting envelope
-   only. Final tab positions must clear copper, mounting holes, ferrite slots
-   and populated parts; do not V-score through chamfers or mounting features.
-4. Resin-fill, copper-cap and planarize ALL 221 interconnect drills of 0.30 mm.
-   These are PTH drill tools T1 (215 vias) and T2 (six T1 winding transitions).
-   The transitions are not component insertion holes. Confirm this explicitly
-   in CAM: automatic via detection may distinguish vias from plated pads.
-   Leave PTH tool T3 (four 1.60 mm connector holes) and all four 3.20 mm NPTH
-   mounting holes open. Tenting is not a substitute for plated-over fill.
-5. Confirm the approved U1 mask/stencil after footprint correction, including
-   the 2 oz mask bridge process. Do not silently delete the narrow mask dams.
-   No changes to winding turns, spacing or keepouts without engineering review.
+ASSEMBLY
+U1 uses TI RAR0017B separated copper/mask/paste, approximately 75–76% power-land
+paste coverage and the 0.125 mm stencil example. Supplier must approve transfer,
+mask registration, cap planarity, profile and hidden-joint X-ray criteria.
+Review every exact part code, package-center coordinate, pin 1 and rotation against
+the supplier model. KiCad angles are raw, not a universal JLC rotation correction.
+Both headers: pin 2 positive, pin 1 return; removable plugs ship separately unless agreed.
+Approve insertion lead protrusion, fixture and solder process; 0.6 mm thermal spokes.
 
-Electronics assembly acceptance
-6. Confirm all 43 exact C-codes, package identities, available factory stock,
-   purchase minima, attrition and substitutions policy for 375 fitted parts.
-   Recheck low-stock F1 C3177336 and L2 C2047750. No alternate 32 V fuse.
-7. Approve physical package centers, pin 1 / cathode and rotation for every
-   polarized component using pad overlays, not a universal angular correction.
-   The current U1 library origin is offset from its package center. Confirm
-   connector insertion orientation and pin 2 positive / pin 1 return on both.
-8. Review moisture handling, reflow profile and stencil for the actual parts
-   and heavy-copper assembly. Supply process-compatible apertures after the
-   GaN footprint repair. Inspect U1, U4, Q1 and Q2 hidden joints by X-ray and
-   agree voiding/acceptance limits with engineering rather than inventing a
-   generic acceptable percentage.
-9. Confirm the two WJ2EDGRC headers' separate THT operation. Their 4 mm tails
-   protrude through the nominal 1.6 mm PCB. Agree wave/selective/hand process,
-   lead protrusion, clearance, solder fill and panel removal sequence.
+MECHANICAL OPERATIONS
+Solder and inspect electronics, depanelize, then fit two B66285G0050X187 core halves
+and two B66286A2000X000 clips per board. Two C71370 mating plugs per board are
+accessories. No core grinding or extra spacer is specified. Verify actual core/slot,
+corner, clip and underside clearances before committing a build. Clips must not bridge
+the isolation domains or contact circuit copper. Nonconductive standoffs are specified.
+JLC procurement/consignment and core/clip installation have not been accepted.
 
-Mechanical assembly and accessory acceptance
-10. Confirm whether you can source through DigiKey/global sourcing or accept
-    consignment of 10 x TDK B66285G0050X187 and 10 x B66286A2000X000, then fit
-    two halves and two clips per PCB after soldering and depanelization.
-    Quote the operation and any attrition separately. A parts catalog listing
-    is not acceptance of a core-fitting operation.
-11. Fit only the exact gap suffix: each half has a 0.05 mm center gap; paired
-    nominal total gap is 0.10 mm. Seat clean outer-leg faces; no grinding,
-    spacer, adhesive in mating faces, chipped cores or forced PCB bending.
-    Final work instructions require a real tolerance/fit trial and measured
-    magnetics acceptance limits, currently outstanding.
-12. Two C71370 mating plugs per converter are external accessories. Confirm
-    an explicitly accepted plug-fitting operation if they are to ship fitted.
-    They are not in the current PCB BOM/CPL. Do not assume loose parts ship
-    with PCBA. Otherwise procure all 10 mating plugs separately from LCSC.
-13. Four M3 fasteners/standoffs per unit are not in the BOM and are not required
-    for standalone PCBA delivery. If an installed assembly is requested, agree
-    hardware separately. Preserve the exposed-substrate hole pattern; use
-    nonconductive supports with contact diameter <=6.4 mm and adequate ferrite
-    underside clearance. Provide protection for the ferrite during shipment.
+ELECTRICAL RELEASE
+Hardware is unbuilt and untested. 60 W is a target. Close transformer AC/core loss,
+temperature, MLCC effective capacitance/ripple, input surge/TVS margin, startup,
+short circuit, frequency-dependent current protection, regulation and SR timing.
+Use engineering bring-up to establish a test procedure before supplier functional testing.
+Bare-board continuity and AOI do not verify a working converter.
 
-Test and commercial acceptance
-14. Bare-board net test, AOI, SPI and X-ray do not prove converter function.
-    Electrical release is on hold. Do not perform a blind 48 V / 60 W power-up.
-    Engineering must validate startup, fault protection, surge margin, output
-    regulation, synchronous timing, capacitor ripple, magnetics and temperature
-    before issuing a controlled production-test specification.
-15. Return an itemized five-unit quote: PCB/panel/finish/fill, parts plus excess,
-    SMT/setup/stencil/feeders/fixtures, THT, X-ray, core/clip and plug operations,
-    test engineering/test per unit, depanelization, packing, shipping, tax and
-    duties. State accepted exceptions, lead time, final deliverables and whether
-    the result is electronics-only PCBA or a mechanically complete converter.
-
-No payment, order placement, supplier communication or stock reservation has
-been authorized by this document.
+See Manufacturing-issue-register.csv and ../Manufacturing-audit.html for status.

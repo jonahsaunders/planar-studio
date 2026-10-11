@@ -1,5 +1,5 @@
 {
-  "revision": "A8",
+  "revision": "A11",
   "method": "Track centerline sampled every <=0.05 mm against native filled zone polygons on immediately adjacent copper layers. Coverage is union of those layers. A second figure excludes 0.65 mm around same-net signal vias because their required antipads remove reference copper. Coverage does not prove low inductance, uninterrupted current flow, EMI or electrical performance. Coordinates relative to circuit datum (60,60) mm.",
   "current": [
     {
@@ -10,8 +10,8 @@
         "In5.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 45.942,
-      "covered_percent": 97.65,
+      "total_track_length_mm": 45.741,
+      "covered_percent": 97.56,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []
@@ -24,8 +24,22 @@
         "In3.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 40.006,
-      "covered_percent": 97.28,
+      "total_track_length_mm": 33.683,
+      "covered_percent": 93.52,
+      "outside_signal_via_antipads_coverage_percent": 100.0,
+      "uncovered_sample_count_outside_antipads": 0,
+      "first_20_uncovered_samples_mm": []
+    },
+    {
+      "path": "LLC GD2 local detour",
+      "signal_layer": "In6.Cu",
+      "adjacent_return_layers": [
+        "In5.Cu",
+        "B.Cu"
+      ],
+      "return_net": "AGND",
+      "total_track_length_mm": 6.455,
+      "covered_percent": 83.21,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []
@@ -37,7 +51,7 @@
         "In1.Cu"
       ],
       "return_net": "SGND",
-      "total_track_length_mm": 1.114,
+      "total_track_length_mm": 2.107,
       "covered_percent": 100.0,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
@@ -51,8 +65,8 @@
         "In3.Cu"
       ],
       "return_net": "SGND",
-      "total_track_length_mm": 6.075,
-      "covered_percent": 81.89,
+      "total_track_length_mm": 6.901,
+      "covered_percent": 84.18,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []

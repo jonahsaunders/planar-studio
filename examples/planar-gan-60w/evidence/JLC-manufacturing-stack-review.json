@@ -1,19 +1,19 @@
 {
-  "date": "2026-10-10",
+  "revision": "A11",
+  "construction": "JLC081622-1080",
   "source": "https://cart.jlcpcb.com/quote",
-  "observed_in_live_form": true,
-  "file_upload": false,
-  "supplier_acceptance": false,
-  "order_placed": false,
-  "name": "JLC081622-1080",
-  "quantity": 5,
-  "outline_mm": [
-    64,
-    56
+  "source_evidence": "../evidence/JLC-stack-candidate.jpg",
+  "status": "Specified design construction; order-specific factory CAM acceptance remains required",
+  "copper_layers": [
+    "F.Cu",
+    "In1.Cu",
+    "In2.Cu",
+    "In3.Cu",
+    "In4.Cu",
+    "In5.Cu",
+    "In6.Cu",
+    "B.Cu"
   ],
-  "ui_nominal_thickness_mm": 1.6,
-  "ui_actual_thickness_mm": 1.655,
-  "ui_thickness_tolerance_percent": 10,
   "copper_mm": [
     0.07,
     0.061,
@@ -33,32 +33,28 @@
     0.1,
     0.2275
   ],
-  "dielectric_sum_mm": 1.1495,
-  "copper_plus_dielectric_sum_mm": 1.6555,
-  "native_copper_mm": [
-    0.07,
-    0.07,
-    0.07,
-    0.07,
-    0.07,
-    0.07,
-    0.07,
-    0.07
+  "dielectric_types": [
+    "prepreg",
+    "core",
+    "prepreg",
+    "core",
+    "prepreg",
+    "core",
+    "prepreg"
   ],
-  "native_dielectric_mm": [
-    0.13,
-    0.13,
-    0.17,
-    0.18,
-    0.17,
-    0.13,
-    0.13
-  ],
-  "assembly_service": "Standard required; not Economic",
-  "quote_status": "No usable fabrication price was returned in this session. A displayed zero was not treated as a quote. Candidate stack not accepted for manufacturing.",
-  "screenshots": [
-    "JLC-stack-candidate.jpg",
-    "JLC-stack-thickness-warning.jpg"
-  ],
-  "note": "The form rounds total thickness to 1.655 mm. Native stack material-plus-copper totals 1.600 mm before the two 0.010 mm mask records. Actual finished thickness and copper minimums require supplier agreement."
+  "nominal_copper_plus_dielectric_mm": 1.655,
+  "supplier_thickness_tolerance_percent": 10,
+  "finish": "ENIG",
+  "solder_mask": "Green LPI; thickness additional and process controlled",
+  "filled_capped_interconnect_drill_mm": 0.3,
+  "open_connector_PTH_mm": 1.6,
+  "open_mounting_NPTH_mm": 3.2,
+  "laminate": "FR4; exact manufacturer grade and minimum delivered copper require factory confirmation",
+  "model_dielectric_constant": 4.5,
+  "model_loss_tangent": 0.02,
+  "dielectric_model_note": "Unqualified modeling assumptions, not measured properties or an impedance requirement",
+  "native_model_aligned": true,
+  "supplier_acceptance": false,
+  "copper_plus_dielectric_sum_mm": 1.655,
+  "note": "Native and magnetic model use this observed JLC construction; final order acceptance remains open."
 }

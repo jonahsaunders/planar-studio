@@ -63,8 +63,8 @@ lead protrusion and the through-hole solder process for this 1.6 mm PCB.
 **Keep the four connector holes open.** Via filling/capping applies to the
 0.30 mm interconnect holes, not connector or 3.2 mm mechanical holes.
 
-The proposed stack has eight copper layers, 2 oz on every layer, nominal 1.6 mm
-FR4 and ENIG. Vias in SMT lands need epoxy filling, copper capping and
+A11 specifies JLC081622-1080: eight copper layers, 70 µm outer / 61 µm inner,
+1.655 mm nominal copper-plus-dielectric thickness, FR4 and ENIG. Vias in SMT lands need epoxy filling, copper capping and
 planarization. The exact construction, panel tooling and placement rotations
 still need factory review. Three fiducials are provided; mounting holes are
 not panel tooling holes. See the [manufacturing notes](manufacturing-prototype/READ-BEFORE-ORDER.txt).
@@ -81,7 +81,7 @@ The revised native rules require at least 0.16 mm track width and global copper
 clearance, with 0.20 mm ordinary net clearance. This follows the 2 oz minimum in
 [JLCPCB's copper-weight guide](https://jlcpcb.com/help/article/jlcpcb-copper-weight).
 The requested all-layer 2 oz construction still requires file-level acceptance.
-The layout has 215 routed vias (including 60 ground stitches) plus six winding transitions; filled/capped vias
+The layout has 209 routed vias (including 50 ground stitches) plus six winding transitions; filled/capped vias
 remain required. Independent Gerber renders are supplied in
 [the fabrication-output review](evidence/Gerber-review.png).
 

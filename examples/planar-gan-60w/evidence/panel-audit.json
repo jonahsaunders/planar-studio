@@ -1,0 +1,36 @@
+{
+  "revision": "A11",
+  "size_mm": [
+    92,
+    76
+  ],
+  "board_instances": 1,
+  "assembly_quantity": 5,
+  "panels_for_5_boards": 5,
+  "fitted_placements_per_panel": 75,
+  "all_original_positions_translated_only": true,
+  "translation_mm": [
+    63.5,
+    -26.0
+  ],
+  "source_origin_mm": [
+    53.0,
+    112.0
+  ],
+  "panel_origin_mm": [
+    102.5,
+    96.0
+  ],
+  "frame_width_mm": 7,
+  "connector_side_gap_mm": 7,
+  "top_bottom_gap_mm": 3,
+  "tabs": "2 top + 2 bottom, 5 mm wide; no connector-side tabs",
+  "mousebite_drill_mm": 0.5,
+  "mousebite_pitch_mm": 0.75,
+  "tooling_holes": 3,
+  "tooling_diameter_mm": 2,
+  "panel_fiducials": 3,
+  "frame_copper": "None; no floating perimeter ring",
+  "DRC_violations": 0,
+  "status": "Factory-review panel; routing, tab positions, overhang, pallet and process acceptance remain open. Do not mix panel CPL with single-board Gerbers."
+}

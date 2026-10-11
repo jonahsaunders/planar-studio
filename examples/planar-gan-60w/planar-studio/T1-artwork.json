@@ -18,42 +18,50 @@
       {
         "layer": "F.Cu",
         "winding": "P1",
-        "z": 0
+        "z": 0,
+        "copper_mm": 0.07
       },
       {
         "layer": "In1.Cu",
         "winding": "S_A",
-        "z": 0.2
+        "z": 0.293,
+        "copper_mm": 0.061
       },
       {
         "layer": "In2.Cu",
         "winding": "S_A",
-        "z": 0.4
+        "z": 0.454,
+        "copper_mm": 0.061
       },
       {
         "layer": "In3.Cu",
         "winding": "ROUTING",
-        "z": 0.64
+        "z": 0.712,
+        "copper_mm": 0.061
       },
       {
         "layer": "In4.Cu",
         "winding": "ROUTING",
-        "z": 0.89
+        "z": 0.873,
+        "copper_mm": 0.061
       },
       {
         "layer": "In5.Cu",
         "winding": "S_B",
-        "z": 1.13
+        "z": 1.131,
+        "copper_mm": 0.061
       },
       {
         "layer": "In6.Cu",
         "winding": "S_B",
-        "z": 1.33
+        "z": 1.292,
+        "copper_mm": 0.061
       },
       {
         "layer": "B.Cu",
         "winding": "P2",
-        "z": 1.53
+        "z": 1.585,
+        "copper_mm": 0.07
       }
     ]
   },

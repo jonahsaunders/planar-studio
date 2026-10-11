@@ -1,106 +1,105 @@
 {
   "date": "2026-10-10",
-  "native_revision": "A10 schematic / A8 hardware",
+  "native_revision": "A11",
   "build_quantity": 5,
-  "verdict": "DO NOT ORDER: full turnkey manufacturing is NOT confirmed",
-  "audit_scope": "Design-file, public supplier capability, catalog stock/pricing, critical footprint/stencil, native geometry and release-document audit. Not supplier CAM/DFM acceptance, complete manufacturer land-pattern certification, placement model approval, physical fit testing or powered qualification.",
-  "native_board_sha256": "ceb2d3a80a1099888971126746ecbfd6fa775405466488097a5d05a81da13eb3",
-  "native_schematic_sha256": "7f53531c28848f8c2e5462fdab2e2398bba61f9152166823ab0795e4e46b1ac0",
+  "verdict": "CAD repairs completed; factory acceptance and electrical qualification remain open. Full turnkey not confirmed.",
+  "native_board_sha256": "69297a1401e220d8cb77dc134cb51f87b56748c10cc550edfc8604a96efacc69",
+  "native_schematic_sha256": "e15ed9834f2d2f212223b235381be1594bc92ca9bb1c82477eb83a4c2044d657",
   "issues": [
     {
       "ID": "M01",
-      "Status": "HOLD",
-      "Area": "Stack and magnetics",
-      "Finding": "Native dielectric stack and 70 um internal copper differ from JLC081622-1080: 1.655 mm finished target and 61 um inner copper. A thickness dropdown is not an approved construction.",
-      "Required_closure": "Select an approved stack; update native construction and magnetic/copper-loss model, check core/clip tolerances and validate the transformer. Do not silently substitute the candidate.",
-      "Evidence": "JLC-manufacturing-stack-review.json"
+      "Status": "CAD FIXED / FACTORY REVIEW",
+      "Area": "Stack and magnetic model",
+      "Finding": "Native construction and winding resistance now use JLC081622-1080: 1.655 mm, 70 \u00b5m outer / 61 \u00b5m inner copper. The dielectric sum is 1.149 mm; the previous audit arithmetic was corrected.",
+      "Required_closure": "Factory must accept the exact construction, minimum finished copper, material and thickness tolerance. Characterize the physical transformer.",
+      "Evidence": "fabrication-stack.json"
     },
     {
       "ID": "M02",
-      "Status": "HOLD",
-      "Area": "Overlapping component lands",
-      "Finding": "U5 pad 5 and C26 pad 1 overlap on V5. Same-net copper does not trigger normal electrical clearance DRC. The two components have connected paste/mask regions.",
-      "Required_closure": "Separate the lands and paste regions, reroute the local bypass connection, then recheck actual body/pad clearances and soldering access.",
+      "Status": "CAD CLOSED",
+      "Area": "U5 / C26 assembly overlap",
+      "Finding": "Separated the LDO output and bypass lands; corrected U5 to TI DBV0005A land dimensions and rerouted the supply. Purchased-component copper no longer overlaps.",
+      "Required_closure": "Review the final factory placement overlay and solder joints.",
       "Evidence": "manufacturing-geometry.json"
     },
     {
       "ID": "M03",
-      "Status": "HOLD",
-      "Area": "GaN mask / footprint / stencil",
-      "Finding": "U1 pad pairs 1-2 and 10-11 measure about 0.194 mm, below the published 0.20 mm 2 oz pad-spacing threshold for mask bridges. Imported custom polygons carry a 0.10 mm stroke. Power/thermal paste is full area rather than TI segmented examples.",
-      "Required_closure": "Rebuild and independently review U1 copper, separate mask and paste from TI RAR0017B; obtain a manufacturable 2 oz stencil/mask process. Do not blindly shrink the power lands or remove mask dams. TI example: 75% coverage on 5/6/7 and 76% on 17 with 0.125 mm stencil.",
-      "Evidence": "manufacturing-geometry.json"
+      "Status": "CAD FIXED / PROCESS REVIEW",
+      "Area": "GaN land, mask and stencil",
+      "Finding": "Rebuilt U1 from TI RAR0017B with a centered origin, zero-stroke custom copper and independent mask/paste. Power-pad paste coverage measures approximately 75\u201376%; mask openings remain inside their copper. Fine-pitch pad gaps exceed 0.20 mm.",
+      "Required_closure": "Approve 2 oz mask registration and the manufacturer 0.125 mm stencil example, paste transfer, fill/cap planarity and X-ray criteria.",
+      "Evidence": "pour-and-stencil-audit.json"
     },
     {
       "ID": "M04",
-      "Status": "HOLD",
+      "Status": "CAD CLOSED",
       "Area": "Courtyards and placement",
-      "Finding": "14 purchased footprints have copper pads extending beyond their courtyards. Existing zero courtyard overlaps therefore do not demonstrate adequate assembly clearance. Several component pad gaps are below JLC recommended spacing.",
-      "Required_closure": "Correct courtyards to cover maximum body and solder lands with assembly allowance; inspect all 75 placements. Preserve short GaN loops through specific factory approval where spacing recommendations conflict.",
+      "Finding": "Rebuilt undersized courtyards to include solder lands/body envelopes plus an assembly allowance. Repositioned the controller, receiver dividers, bias and feedback parts. No purchased pad lies outside its courtyard; no courtyard overlaps.",
+      "Required_closure": "Factory spacing/placement review still applies to the actual package models and process.",
       "Evidence": "manufacturing-geometry.json"
     },
     {
       "ID": "M05",
-      "Status": "HOLD",
-      "Area": "Placement origin and polarity",
-      "Finding": "U1 land coordinates are shifted about +0.625 mm in local Y relative to the TI package center; exported CPL is at the footprint anchor. All 13 polarized U/D/Q footprints have no top-silk graphics. Raw rotations are not calibrated to JLC part models.",
-      "Required_closure": "Resolve package centers and rotations against actual supplier placement models; add visible, unambiguous pin-1/cathode markers and approve a per-part placement overlay. Use pad coordinates in Assembly-pad-map.csv as independent evidence.",
+      "Status": "CAD FIXED / PLACEMENT REVIEW",
+      "Area": "Origins and orientation",
+      "Finding": "U1 now uses the manufacturer package center. Added visible top-side orientation marks to polarized U/D/Q packages and regenerated all 75 placement coordinates and 208 numbered pad anchors.",
+      "Required_closure": "Approve the supplier part-model overlay for every exact code; raw KiCad angles are not a universal JLC rotation correction.",
       "Evidence": "Assembly-pad-map.csv"
     },
     {
       "ID": "M06",
-      "Status": "HOLD",
-      "Area": "Panelization and THT",
-      "Finding": "64 x 56 mm outline is below Standard PCBA single/panel 70 x 70 mm minimum. Handling rails are absent, while headers overhang opposite sides. The four 1.6 mm contact holes require an approved THT solder operation.",
-      "Required_closure": "Factory-design and approve a routed handling panel with rails, tooling and fiducials; preserve original board outline/mounts. A roughly 90 x 76 mm one-up frame is only a planning envelope, not fabrication data. Approve lead protrusion, pallet access and depanelization before core fitting.",
-      "Evidence": "mechanical-assembly-audit.json"
+      "Status": "PANEL PREPARED / FACTORY REVIEW",
+      "Area": "Handling and insertion connectors",
+      "Finding": "Added a 92 \u00d7 76 mm one-up frame with 7 mm rails, four top/bottom tabs, 0.5 mm mouse bites, three tooling holes and three panel fiducials. Connector sides remain untabbed. Connector pours use 0.6 mm thermal spokes without direct trace bypasses.",
+      "Required_closure": "Approve depanelization, overhanging headers, finished lead protrusion, solder fixture and insertion process. Use panel CPL only with panel Gerbers.",
+      "Evidence": "panel-audit.json"
     },
     {
       "ID": "M07",
-      "Status": "HOLD",
+      "Status": "SERVICE OPEN",
       "Area": "Ferrite and accessories",
-      "Finding": "Two core halves and two clips per unit are separate DigiKey purchases; JLC installation is not accepted. Mating plugs are external and omitted from PCB BOM/CPL.",
-      "Required_closure": "Obtain written acceptance and price for sourcing/consignment, post-solder core/clip fitting and any plug-fitting operation. Loose accessory shipment is not standard PCBA scope. Otherwise the delivery is electronics-only PCBA plus separately procured mechanical/accessory parts.",
+      "Finding": "Exact core-half, clip and removable-plug purchases remain specified. They are separately sourced mechanical/accessory items, not SMT placements.",
+      "Required_closure": "Obtain explicit JLC sourcing/consignment and post-solder fitting acceptance and a price. Otherwise delivery is electronics PCBA plus separate mechanical parts.",
       "Evidence": "manufacturing-core-prices.json"
     },
     {
       "ID": "M08",
-      "Status": "HOLD",
-      "Area": "Filled vias / hidden joints",
-      "Finding": "150 routed vias intersect purchased SMT lands. All 221 small interconnect drills must be filled/capped, including six T1 transitions exported as plated pads; four connector holes and four mounting holes must stay open.",
-      "Required_closure": "Specify resin fill, copper cap and planarization by drill tool and location. Obtain CAM confirmation for T1 pads, appropriate paste engineering, solder profile and X-ray inspection of hidden joints.",
-      "Evidence": "manufacturing-geometry.json"
+      "Status": "CAD SPECIFIED / PROCESS REVIEW",
+      "Area": "Filled vias and hidden joints",
+      "Finding": "A coordinate-level drill map marks 215 small interconnects for resin fill/copper cap, including six transformer transitions. Four connector and four mounting holes stay open. Panel mouse bites/tooling also stay open.",
+      "Required_closure": "Supplier must confirm the process for the listed 0.30 mm holes, not just objects named vias. Review hidden-joint X-ray and solder acceptance.",
+      "Evidence": "Drill-process-map.csv"
     },
     {
       "ID": "M09",
-      "Status": "REPAIR",
-      "Area": "Printed legend",
-      "Finding": "18 front printed labels are 0.8-0.9 mm high versus the supplier 1 mm guidance. Some polarity text is close to the connector body.",
-      "Required_closure": "Enlarge/reposition legend and add polarity marks without covering mask openings or allowing assembly to hide essential orientation. Check final Gerber, not only a 3D render.",
+      "Status": "CAD CLOSED",
+      "Area": "Legend and polarity",
+      "Finding": "All visible board legend meets the checked 1.0 mm text-height / 0.15 mm stroke guidance. Connector polarity is outside the housing footprint.",
+      "Required_closure": "Inspect the final silkscreen CAM preview.",
       "Evidence": "manufacturing-geometry.json"
     },
     {
       "ID": "M10",
-      "Status": "CONDITIONAL",
+      "Status": "ORDER CHECK OPEN",
       "Area": "Sourcing",
-      "Finding": "43 exact electronic catalog matches, all with enough snapshot stock for five fitted boards. Lowest stocks: F1 28 and L2 39. Assembly attrition and warehouse/order allocation are unconfirmed.",
-      "Required_closure": "Refresh order-specific stock and excess quantities before payment; no substitutions without engineering review. Reserve or pre-order critical parts only after design release.",
-      "Evidence": "manufacturing-catalog-2026-10-10.json"
+      "Finding": "43 exact electronic catalog codes cover all 75 placements. The 10 October snapshot supports five fitted boards before attrition; no electronic substitutions were made.",
+      "Required_closure": "Refresh stock, order-specific MOQ/attrition and warehouse allocation before release. Snapshot stock is not reserved.",
+      "Evidence": "Manufacturing-parts-5boards.csv"
     },
     {
       "ID": "M11",
-      "Status": "HOLD",
-      "Area": "Electrical acceptance / production test",
-      "Finding": "The existing ratings audit still holds magnetics loss, MLCC effective capacitance/ripple, surge margin and frequency-dependent overcurrent protection. Hardware has not been powered.",
-      "Required_closure": "Resolve design limits and perform controlled engineering bring-up. Only then freeze measurable functional-test limits and supplier test procedure. AOI and bare-board flying probe are not a 60 W acceptance test.",
+      "Status": "ENGINEERING HOLD",
+      "Area": "Electrical qualification",
+      "Finding": "The updated nominal 80 \u00b0C winding DC-loss screen is 3.869 W before AC copper/core loss. Magnetics, effective capacitor capacitance/ripple, surge margin and frequency-dependent fault protection remain unqualified.",
+      "Required_closure": "Controlled bring-up, transformer characterization, surge/fault, regulation, ZVS/SR timing and thermal testing must close the electrical findings. No rated-power release is claimed.",
       "Evidence": "component-ratings-audit.json"
     },
     {
       "ID": "M12",
-      "Status": "CONDITIONAL",
-      "Area": "Mechanical fit and materials",
-      "Finding": "Nominal core openings are 17.1 x 6.1 mm and 17.1 x 5.4 mm, with 0.5 mm corner radii. Core tolerances, corner geometry, clips, standoffs and assembled height are not fully tolerance-qualified.",
-      "Required_closure": "Approve a mechanical fit trial with the actual core and clips, the chosen finished stack, routed-slot tolerance and underside clearance. No ferrite grinding or extra gap spacer.",
+      "Status": "FIT TRIAL OPEN",
+      "Area": "Core and clip fit",
+      "Finding": "The selected stack is included in the nominal fit model. The board outline, original mounting-footprint geometry and 55 \u00d7 47 mm mounting pattern are preserved. Core slots retain 0.5 mm internal corner radii.",
+      "Required_closure": "Verify actual routed corners, core tolerances, gap orientation, clips and underside clearance using physical parts; nominal renders do not establish fit.",
       "Evidence": "mechanical-assembly-audit.json"
     }
   ],
@@ -214,12 +213,6 @@
   },
   "checked_electronics_codes": 43,
   "fitted_placements_5boards": 375,
-  "board_or_schematic_modified": false,
-  "changes_this_audit": [
-    "Exact manufacturer part number now leads each native-generated BOM row; manufacturer field included",
-    "Dated sourcing and budget records",
-    "Geometry measurements including same-net land overlaps and incomplete courtyards",
-    "Pad coordinate and orientation review evidence",
-    "Supplier acceptance checklist and explicit release holds"
-  ]
+  "board_or_schematic_modified": true,
+  "scope": "Native CAD repairs, actual filled-copper and stencil geometry, exported fabrication files, sourcing and planning cost. Not factory CAM acceptance, powered testing or production release."
 }

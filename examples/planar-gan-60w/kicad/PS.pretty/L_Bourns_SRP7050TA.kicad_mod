@@ -1,1 +1,156 @@
-(footprint "L_Bourns_SRP7050TA" (version 20241229) (generator "pcbnew") (layer "F.Cu") (attr smd) (property "Reference" "REF**" (at 0 -4 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness .15)))) (property "Value" "L_Bourns_SRP7050TA" (at 0 4 0) (layer "F.Fab") (effects (font (size 1 1) (thickness .15)))) (pad "1" smd rect (at -2.95 0) (size 2.5 3.5) (layers "F.Cu" "F.Mask" "F.Paste"))(pad "2" smd rect (at 2.95 0) (size 2.5 3.5) (layers "F.Cu" "F.Mask" "F.Paste"))(fp_line (start -3.65 -3.3) (end 3.65 -3.3) (stroke (width 0.05) (type default)) (layer "F.Fab"))(fp_line (start 3.65 -3.3) (end 3.65 3.3) (stroke (width 0.05) (type default)) (layer "F.Fab"))(fp_line (start 3.65 3.3) (end -3.65 3.3) (stroke (width 0.05) (type default)) (layer "F.Fab"))(fp_line (start -3.65 3.3) (end -3.65 -3.3) (stroke (width 0.05) (type default)) (layer "F.Fab"))(fp_line (start -4.45 -3.55) (end 4.45 -3.55) (stroke (width 0.05) (type default)) (layer "F.CrtYd"))(fp_line (start 4.45 -3.55) (end 4.45 3.55) (stroke (width 0.05) (type default)) (layer "F.CrtYd"))(fp_line (start 4.45 3.55) (end -4.45 3.55) (stroke (width 0.05) (type default)) (layer "F.CrtYd"))(fp_line (start -4.45 3.55) (end -4.45 -3.55) (stroke (width 0.05) (type default)) (layer "F.CrtYd"))(model "${KIPRJMOD}/3dmodels/L2_nominal_envelope.wrl" (offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0))))
+(footprint "L_Bourns_SRP7050TA"
+	(version 20260206)
+	(generator "pcbnew")
+	(generator_version "10.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -4 0)
+		(layer "F.SilkS")
+		(uuid "76bbf5af-c437-46d5-bf4e-7fc70764178d")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "L_Bourns_SRP7050TA"
+		(at 0 4 0)
+		(layer "F.Fab")
+		(uuid "e8a56e06-3a12-49fd-ad28-417c4bff6578")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "34c3cc79-9a01-42ae-a073-e5e3af6a1750")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f0b59f67-0c18-499c-a59f-d748c1347d8e")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
+	(fp_line
+		(start -4.45 -3.6)
+		(end 4.45 -3.6)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "30c552e9-994d-4d08-952a-553b1b2f89a4")
+	)
+	(fp_line
+		(start -4.45 3.6)
+		(end -4.45 -3.6)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "aa98a8b8-627c-4495-bdd7-ed5f7510e2d8")
+	)
+	(fp_line
+		(start 4.45 -3.6)
+		(end 4.45 3.6)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "87af77ba-f958-4166-af0a-be1d98afb18c")
+	)
+	(fp_line
+		(start 4.45 3.6)
+		(end -4.45 3.6)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "ad4c834a-9687-476c-b9c4-217bfbc5fcc6")
+	)
+	(fp_line
+		(start -3.65 -3.3)
+		(end 3.65 -3.3)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "972c5d84-22b1-4fb5-965a-749200501a59")
+	)
+	(fp_line
+		(start -3.65 3.3)
+		(end -3.65 -3.3)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "fdbe041d-b34d-4294-88ce-b7793fdfbd12")
+	)
+	(fp_line
+		(start 3.65 -3.3)
+		(end 3.65 3.3)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "4abf6ea0-75b9-4554-865c-b3c38b6cedea")
+	)
+	(fp_line
+		(start 3.65 3.3)
+		(end -3.65 3.3)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.Fab")
+		(uuid "292babda-6451-412f-a87a-2d215338a836")
+	)
+	(pad "1" smd rect
+		(at -2.95 0)
+		(size 2.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "8ef7122b-e0e2-4aaf-8463-0e16c00324b8")
+	)
+	(pad "2" smd rect
+		(at 2.95 0)
+		(size 2.5 3.5)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "7a173d01-101d-42d6-afe1-20a7e86b797b")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/3dmodels/L2_nominal_envelope.wrl"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

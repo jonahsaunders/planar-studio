@@ -1,5 +1,5 @@
 {
-  "revision": "A9 schematic / A7 hardware",
+  "revision": "A11",
   "scope": "82 schematic references: 75 purchased placements, T1 and six test features; mechanical holes/fiducials are geometry-reviewed separately.",
   "review_envelope": {
     "input_V": [
@@ -954,7 +954,7 @@
       "Current_limit_A": null,
       "Current_stress_A": 4.0,
       "Power_limit_W": null,
-      "Power_stress_W": 3.6936008991173455,
+      "Power_stress_W": 3.8692618273799013,
       "Status": "HOLD_MAGNETICS",
       "Basis_and_open_checks": "4:2:2 PCB winding; 0.191 T flux screen (28.4 V primary, 119 kHz, Ae 78.3 mm2) vs N87 0.390 T at 100 C test point. Saturation headroom does not bound core loss. FHA predicts up to 3.503 Arms primary; prior 3.25 A winding-loss assumption underestimates this. 4 A thermal screen, gap/AL/leakage, AC copper/core loss and hotspot tests required. Functional isolation only.",
       "Source": "https://www.tdk-electronics.tdk.com/download/528882/18bc7459c2ccebbfdc3a7d5cb4cdbda9/pdf-n87.pdf"

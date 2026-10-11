@@ -1,12 +1,14 @@
 (footprint "L_Bourns_SRP5030T"
 	(version 20260206)
-	(generator "kicad-footprint-generator")
+	(generator "pcbnew")
+	(generator_version "10.0")
 	(layer "F.Cu")
 	(descr "Inductor, Bourns, SRP5030T, 5.7x5.2x2.8mm, (https://www.bourns.com/data/global/pdfs/SRP5030T.pdf)")
 	(tags "power shielded")
 	(property "Reference" "REF**"
 		(at 0 -3.55 0)
 		(layer "F.Fab")
+		(uuid "d2956f2e-250d-4a2b-848d-f1e24c131659")
 		(effects
 			(font
 				(size 1 1)
@@ -17,6 +19,7 @@
 	(property "Value" "L_Bourns_SRP5030T"
 		(at 0 3.55 0)
 		(layer "F.Fab")
+		(uuid "278612bb-8fa1-417c-a5de-745ac794ab91")
 		(effects
 			(font
 				(size 1 1)
@@ -24,10 +27,33 @@
 			)
 		)
 	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "957e1cc8-0a7c-4838-8c51-a051521f6f64")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "c662813b-8e78-450c-990b-bb9f3c5ef6ee")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
 	(property "KiLib_Generator" "inductor/SMD"
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
+		(uuid "c900843a-e4cc-4097-9a66-fb6e8c398fb4")
 		(effects
 			(font
 				(size 1 1)
@@ -38,6 +64,46 @@
 	(attr smd)
 	(duplicate_pad_numbers_are_jumpers no)
 	(fp_line
+		(start -3.5 -3.05)
+		(end 3.5 -3.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "30f8fb6e-42ea-42ea-bc1b-1769de1fd784")
+	)
+	(fp_line
+		(start -3.5 3.05)
+		(end -3.5 -3.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "c0102a69-4813-4ae5-8180-6f86d5dd5e91")
+	)
+	(fp_line
+		(start 3.5 -3.05)
+		(end 3.5 3.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "45426b22-ebb7-461d-b6c7-a642ecefc682")
+	)
+	(fp_line
+		(start 3.5 3.05)
+		(end -3.5 3.05)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(layer "F.CrtYd")
+		(uuid "918b5bf2-c80e-43ec-852c-abbecb4c5df4")
+	)
+	(fp_line
 		(start -2.96 -2.71)
 		(end 2.96 -2.71)
 		(stroke
@@ -45,6 +111,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
+		(uuid "a0c51b99-910d-4234-8cb1-71d9234fdeae")
 	)
 	(fp_line
 		(start -2.96 -1.16)
@@ -54,6 +121,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
+		(uuid "98e42ae0-c653-4620-a08b-b05f97cdc646")
 	)
 	(fp_line
 		(start -2.96 2.71)
@@ -63,6 +131,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
+		(uuid "7bfbf2a0-9ed9-4613-a253-9668ac5f051d")
 	)
 	(fp_line
 		(start 2.96 -2.71)
@@ -72,6 +141,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
+		(uuid "bb6c6123-ccd9-40ce-b7b4-ac9c52641d34")
 	)
 	(fp_line
 		(start 2.96 1.16)
@@ -81,6 +151,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
+		(uuid "809355f9-e675-4906-8ae4-d095237dd22f")
 	)
 	(fp_line
 		(start 2.96 2.71)
@@ -90,114 +161,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-	)
-	(fp_line
-		(start -3.5 -1.15)
-		(end -3.1 -1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start -3.5 1.15)
-		(end -3.5 -1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start -3.1 -2.85)
-		(end 3.1 -2.85)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start -3.1 -1.15)
-		(end -3.1 -2.85)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start -3.1 1.15)
-		(end -3.5 1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start -3.1 2.85)
-		(end -3.1 1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.1 -2.85)
-		(end 3.1 -1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.1 -1.15)
-		(end 3.5 -1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.1 1.15)
-		(end 3.1 2.85)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.1 2.85)
-		(end -3.1 2.85)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.5 -1.15)
-		(end 3.5 1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-	)
-	(fp_line
-		(start 3.5 1.15)
-		(end 3.1 1.15)
-		(stroke
-			(width 0.05)
-			(type solid)
-		)
-		(layer "F.CrtYd")
+		(uuid "314b1b3a-757a-4a76-8dde-851a07431778")
 	)
 	(fp_rect
 		(start -2.85 -2.6)
@@ -208,10 +172,12 @@
 		)
 		(fill no)
 		(layer "F.Fab")
+		(uuid "cf0ce453-a088-497f-9702-9500b62037e4")
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
+		(uuid "e74dad88-091f-4c5b-9ed4-a55a7a40c9a0")
 		(effects
 			(font
 				(size 1 1)
@@ -224,12 +190,14 @@
 		(size 2 1.8)
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(roundrect_rratio 0.138889)
+		(uuid "05113380-8e46-4e52-9810-3d35fd0ab854")
 	)
 	(pad "2" smd roundrect
 		(at 2.25 0)
 		(size 2 1.8)
 		(layers "F.Cu" "F.Mask" "F.Paste")
 		(roundrect_rratio 0.138889)
+		(uuid "855b40bf-771d-49c0-8f20-4d2ec4048997")
 	)
 	(embedded_fonts no)
 	(model "${KIPRJMOD}/3dmodels/stock/Inductor_SMD.3dshapes/L_Bourns_SRP5030T.step"

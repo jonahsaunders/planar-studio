@@ -1,0 +1,52 @@
+{
+  "revision": "A11",
+  "basis": "TDK B66285/B66286 ELP22/6/16 drawing pages 2\u20133, October 2022; geometric tolerance screen, not physical fit acceptance",
+  "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
+  "native_slots_mm": {
+    "center": [
+      17.1,
+      6.1
+    ],
+    "outer": [
+      17.1,
+      5.4
+    ],
+    "inside_corner_radius": 0.5
+  },
+  "core_max_center_leg_mm": [
+    16.1,
+    5.1
+  ],
+  "center_slot_nominal_margin_each_side_mm": 0.5,
+  "assumed_routed_dimension_minus_tolerance_mm": 0.2,
+  "center_slot_margin_each_side_with_assumed_route_tolerance_mm": 0.4,
+  "corner_check": "A maximum rectangular 16.1 x 5.1 leg fits inside a 16.9 x 5.9 rounded slot with R0.5 corners when centered; corner reserve remains positive. Does not include registration/tilt.",
+  "core_width_max_mm": 22.2,
+  "core_inner_span_min_mm": 16.4,
+  "core_outer_leg_interval_max_positive_axis_mm": [
+    8.2,
+    11.1
+  ],
+  "slot_positive_axis_interval_nominal_mm": [
+    7.7,
+    13.1
+  ],
+  "outer_leg_inner_edge_nominal_margin_mm": 0.5,
+  "finished_stack_nominal_mm": 1.655,
+  "finished_stack_max_at_10percent_mm": 1.8205,
+  "two_half_window_height_min_mm": 4.6,
+  "axial_window_minus_max_stack_mm": 2.7795,
+  "axial_note": "Computed as two times (5.7-0.1 minus 3.2+0.1), excluding process-controlled mask thickness; board centering is assumed, not guaranteed.",
+  "two_0p05mm_gap_halves_nominal_total_gap_mm": 0.1,
+  "two_gap_tolerance_worst_case_mm": [
+    0.08,
+    0.12
+  ],
+  "open_items": [
+    "Factory routed-slot dimension/position tolerance and corner approval",
+    "Physical clip clearance and installation force; clip bow is not fully dimensioned",
+    "Core vertical location and underside clearance in actual standoffs/fixture",
+    "No extra gap spacer, ferrite grinding or substitution without magnetic review",
+    "Winding insulation and actual Lm/leakage/core-loss qualification"
+  ]
+}

@@ -26,13 +26,19 @@ for f in b.GetFootprints():
     ref=f.GetReference()
     if ref in purchased:
         courtyard=convert(f.GetCourtyard(p.F_CrtYd))
-        copper=unary_union([shape(q,p.F_Cu) for q in f.Pads()])
+        copper=unary_union([shape(q,p.F_Cu) for q in f.Pads() if q.IsOnLayer(p.F_Cu)])
         outside=copper.difference(courtyard.buffer(.002)).area if not courtyard.is_empty else copper.area
         if outside>.001:courtyard_findings.append({'ref':ref,'pad_area_outside_courtyard_mm2':round(outside,5)})
         if ref[0] in 'UDQ':
             polarity.append({'ref':ref,'footprint_has_top_silk_graphics':any(g.GetLayer()==p.F_SilkS for g in f.GraphicalItems()),'note':'Graphics presence alone does not prove an unambiguous pin-1/cathode marker.'})
     for q in f.Pads():
         ident=ref+'.'+q.GetNumber();c=shape(q,p.F_Cu);net=q.GetNetname()
+        # Separate mask/paste-only pad objects have no electrical net. Attribute
+        # their openings to the underlying numbered land before spacing checks.
+        if not net and ref in purchased and not q.GetNumber() and q.IsOnLayer(p.F_Mask):
+            lands=[(c.intersection(shape(a,p.F_Cu)).area,a) for a in f.Pads() if a.IsOnLayer(p.F_Cu) and a.GetNumber()]
+            area,owner=max(lands,key=lambda a:a[0]);assert area>.001
+            net=owner.GetNetname();ident=ref+'.'+owner.GetNumber()+'(mask)'
         if q.IsOnLayer(p.F_Cu):pads.append((ident,net,c,q))
         d=q.GetDrillSize()
         if d.x:
@@ -40,7 +46,7 @@ for f in b.GetFootprints():
         if q.IsOnLayer(p.F_Mask):
             m=c.buffer(mm(q.GetSolderMaskExpansion(p.F_Mask)),quad_segs=16) if q.GetSolderMaskExpansion(p.F_Mask) else c
             mask.append((ident,net,m))
-        if ref in purchased:
+        if ref in purchased and q.GetNumber() and q.IsOnLayer(p.F_Cu):
             pm=q.GetSolderPasteMargin(p.F_Paste)
             padrows.append({'pad':ident,'net':net,'width_mm':mm(q.GetSize().x),'height_mm':mm(q.GetSize().y),'drill_mm':mm(d.x),'mask_expansion_mm':mm(q.GetSolderMaskExpansion(p.F_Mask)),'paste_margin_xy_mm':[mm(pm.x),mm(pm.y)],'smd':q.GetAttribute()==p.PAD_ATTRIB_SMD})
     for item in [f.Reference(),f.Value(),*list(f.GraphicalItems())]:
@@ -94,7 +100,7 @@ for i,t in enumerate(vias):
     hits=[a[0] for a in pads if a[3].GetAttribute()==p.PAD_ATTRIB_SMD and a[0].split('.')[0] in purchased and hole.intersects(a[2])]
     if hits:vip.append({'via':'via'+str(i),'pads':hits})
 def first(items,n=12):return [list(x) for x in sorted(items)[:n]]
-report={'date':'2026-10-10','revision':'A10 schematic / A8 hardware','method':'Native KiCad polygons approximated outward with maximum 0.001 mm error. Hole distances use nominal circular drills. Mask geometry uses copper polygon plus native mask expansion. Does not model registration tolerances, etch compensation, paste process, 3D collisions or supplier CAM edits.',
+report={'date':'2026-10-10','revision':'A11','method':'Native KiCad polygons approximated outward with maximum 0.001 mm error. Hole distances use nominal circular drills. Mask geometry uses copper polygon plus native mask expansion. Does not model registration tolerances, etch compensation, paste process, 3D collisions or supplier CAM edits.',
  'copper_layers':b.GetCopperLayerCount(),'board_nominal_thickness_mm':mm(b.GetDesignSettings().GetBoardThickness()),
  'min_routed_track_width_mm':min(mm(t.GetWidth()) for t in tracks),
  'via_count':len(vias),'via_sizes_mm':sorted(set((mm(t.GetWidth(p.F_Cu)),mm(t.GetDrillValue())) for t in vias)),
@@ -102,6 +108,7 @@ report={'date':'2026-10-10','revision':'A10 schematic / A8 hardware','method':'N
  'smallest_hole_edge_gaps_mm':first(holepairs),'hole_gap_under_0p2_mm':[list(x) for x in sorted(holepairs) if x[0]<.199],
  'smallest_foreign_pad_copper_gaps_mm':first(padgaps),'smallest_foreign_mask_gaps_mm':first(maskgaps),
  'closest_different_component_pad_gaps_mm':first(betweenparts,25),
+ 'different_component_copper_overlaps':[[a,z] for d,a,z in betweenparts if d<.0001],
  'courtyard_does_not_enclose_copper_pads':courtyard_findings,
  'polarized_footprint_silk_graphic_screen':polarity,
  'foreign_mask_gaps_under_0p2_mm':[list(x) for x in sorted(maskgaps) if x[0]<.199],
@@ -115,5 +122,4 @@ report={'date':'2026-10-10','revision':'A10 schematic / A8 hardware','method':'N
  'purchased_unique_tht_terminals':len({x['pad'] for x in padrows if not x['smd']})}
 (R/'evidence/manufacturing-geometry.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')
 print(json.dumps({k:v for k,v in report.items() if k not in ['purchased_pad_geometry','routed_vias_intersecting_purchased_SMT_lands']},indent=2))
-
 

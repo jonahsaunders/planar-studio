@@ -1,0 +1,1 @@
+(fp_lib_table (version 7) (lib (name "PS") (type "KiCad") (uri "${KIPRJMOD}/../../kicad/PS.pretty") (options "") (descr "Project footprints")))

@@ -1,34 +1,41 @@
-Current: A10 schematic / A8 hardware. Output routing and adjacent reference planes improved; 60 verified stitches. Use the matching A10 BOM and A8 CPL. See DEEP-LAYOUT-REVIEW.md.
+PS-GAN-60W A11 — ENGINEERING / FACTORY REVIEW ONLY
+Do not order from this package until the remaining factory and engineering gates are closed.
+Five assembled units; 75 top-side placements each (73 SMT + 2 insertion headers).
+Use JLC Standard service. The single-board outline is 64 x 56 mm. The supplied one-up
+handling panel is 92 x 76 mm; five panels produce five boards. Panel CPL and panel
+Gerbers form a separate matched set. Do not mix panel and single-board coordinates.
 
-MANUFACTURING AUDIT HOLD, FIVE UNITS: open ../Manufacturing-audit.html.
-Do not order current Gerbers. The audit found overlapping U5/C26 solder lands,
-14 incomplete courtyards, U1 mask/paste and package-origin issues, undersized
-legend and missing orientation markings. The available JLC081622-1080 stack
-differs from the native magnetic model and requires Standard PCBA. A factory
-handling panel and core/clip fitting are not approved. The BOM now contains
-exact MPN and manufacturer; CAD and raw CPL remain unchanged for review.
-See Manufacturing-issue-register.csv and SUPPLIER-REVIEW-REQUEST.txt.
+CONSTRUCTION
+JLC081622-1080 candidate: 1.655 mm nominal copper+dielectric stack, 70 um outer and
+61 um inner copper. See fabrication-stack.json for every dielectric thickness.
+ENIG, green mask, top assembly. Obtain final construction and tolerance acceptance.
+All 0.30 mm interconnect holes require resin fill, copper cap and planarization,
+including the six T1 transitions represented as plated pads. See Drill-process-map.csv.
+Keep 1.60 mm connector and 3.20 mm mounting holes open. Panel 0.50 mm mouse bites
+and 2.00 mm tooling holes also remain open. Do not fill by object type alone.
 
-PS-GAN-60W / A8 / ENGINEERING PROTOTYPE — NOT PRODUCTION RELEASED
+ASSEMBLY
+U1 uses TI RAR0017B separated copper/mask/paste, approximately 75–76% power-land
+paste coverage and the 0.125 mm stencil example. Supplier must approve transfer,
+mask registration, cap planarity, profile and hidden-joint X-ray criteria.
+Review every exact part code, package-center coordinate, pin 1 and rotation against
+the supplier model. KiCad angles are raw, not a universal JLC rotation correction.
+Both headers: pin 2 positive, pin 1 return; removable plugs ship separately unless agreed.
+Approve insertion lead protrusion, fixture and solder process; 0.6 mm thermal spokes.
 
-75 electronic placements, all top. T1 is copper already in the PCB, not a purchased wound transformer. The two ferrite halves straddle the PCB; one half is below it. Do not add an SMT transformer at T1.
+MECHANICAL OPERATIONS
+Solder and inspect electronics, depanelize, then fit two B66285G0050X187 core halves
+and two B66286A2000X000 clips per board. Two C71370 mating plugs per board are
+accessories. No core grinding or extra spacer is specified. Verify actual core/slot,
+corner, clip and underside clearances before committing a build. Clips must not bridge
+the isolation domains or contact circuit copper. Nonconductive standoffs are specified.
+JLC procurement/consignment and core/clip installation have not been accepted.
 
-Proposed PCB: 64 x 56 mm, 8 copper layers, nominal 1.6 mm FR4, 2 oz (70 um) copper on ALL layers, ENIG, 0.16 mm minimum routed track, 0.16 mm global minimum clearance / 0.20 mm ordinary net clearance, 0.60/0.30 mm vias. Winding trace/space is 0.60/0.20 mm. Native stack dielectric thicknesses are preliminary; do not substitute a factory stack without recalculating/measuring magnetics. JLCPCB's public quote form accepted 8 layers, 2 oz outer/inner, 1.6 mm on 2026-10-10. This is not file-level manufacturing acceptance.
+ELECTRICAL RELEASE
+Hardware is unbuilt and untested. 60 W is a target. Close transformer AC/core loss,
+temperature, MLCC effective capacitance/ripple, input surge/TVS margin, startup,
+short circuit, frequency-dependent current protection, regulation and SR timing.
+Use engineering bring-up to establish a test procedure before supplier functional testing.
+Bare-board continuity and AOI do not verify a working converter.
 
-REQUIRED: epoxy-filled, copper-capped and planarized vias in SMT lands. Standard tenting alone is insufficient. There are 215 routed vias (155 circuit vias plus 60 ground stitches) and 6 planar-winding interlayer pads, all 0.30 mm drill. The T1 interlayer holes are electrical transitions, not inserted component leads. Ask fabrication review to treat them consistently with the filled/capped interconnect process. Three rounded routed core openings are in Edge.Cuts; no plated slots. Check clip insertion clearance and core-fit tolerances. Keep all original transformer copper, turn spacing and keepouts. Never replace windings by solid pours.
-
-Gerbers, drill and CPL share the lower-left board datum, positive X right and positive Y up. CPL contains native KiCad rotations: verify every part's pin 1, polarity, land alignment and rotation in JLCPCB's placement preview. Do not assume a universal JLCPCB rotation offset. J1 (input) and J2 (output) are KANGNEX WJ2EDGRC-5.08-02P-14-00A (C3697) headers for removable screw plugs. Pin 2 is positive and pin 1 is return on BOTH footprints. Both are top-mounted through-hole connectors; 73 other purchased parts are top SMT. Connector leads require a separate through-hole soldering operation: do not process them as SMT. Confirm the 4 mm solder tails' protrusion through the 1.6 mm board and the approved soldering method. Their four 1.6 mm contact holes must remain OPEN and must not enter the filled/capped via process. Two matching WJ2EDGK-5.08-02P-14-00A (C71370) plugs are external accessories in sourcing/Mating-plugs.csv; do not place them on the PCB. Allow header overhang plus mating/wiring clearance beyond the outline. Both ports use the same family, so label the mating input/output plugs. Six bare ENIG test pads have no paste and no BOM/CPL entry.
-
-Electronics BOM includes exact JLCPCB catalog codes and dated positive-stock evidence; quantities do not include assembler attrition. No substitutions for GaN stage, resonant capacitors, magnetics or SR parts without engineering review. All 43 unique electronic parts are catalog candidates for turnkey electronics PCBA; inventory is not reserved. L2 C2047750 had only 39 units in the checked snapshot.
-
-Separate mechanical materials: 2 x TDK B66285G0050X187 gapped core halves, and 2 x B66286A2000X000 clips, available from DigiKey. Each half has 0.05 mm center-leg gap, nominal total 0.10 mm. Fit after SMT/reflow. Do not grind cores or add a spacer. JLCPCB installation of these externally sourced parts has NOT been confirmed. A completely assembled converter requires a separate agreed core-fitting operation; otherwise fit the core after receiving the electronics PCBA.
-
-RELEASE HOLDS: factory DFM and exact stack approval; placement preview/polarity approval; supplier pin/land independent review; core-fit and assembled magnetics measurement; switching/loop simulation and bench qualification; light-load/burst behavior; current limit and output overvoltage testing; temperature/efficiency verification at 60 W. CAD ERC/DRC passes are not proof of electrical function.
-
-Initial operating target: regulated 46–50 V source, nominal 48 V; 12 V / 5 A target. No reverse-polarity protection, no hot-swap/inrush qualification, no specified surge standard. Fuse and TVS do not prove GaN surge protection. Functional isolation only; no safety-rated or mains isolation claim. Never infer an insulation test voltage from generic PCB spacing.
-
-Mounting: four 3.2 mm non-plated holes on a 55 x 47 mm pattern, hole centers 4.5 mm from the board edges. The exact flyback exposed-substrate edge footprint is reused: 6.4 mm mask opening, 10 mm copper exclusion on every layer, 1.8 mm copper-to-mask margin. Use nonconductive standoffs and contact diameter at most 6.4 mm. Keep the ferrite underside clear of the mounting surface. Fasteners are not in the PCBA BOM.
-
-Renders show unmated headers. The core and inductor nominal 3D envelopes are illustrative; the L2 model is a bounding box. Mechanical drawings and delivered tolerances take precedence. No order or supplier message has been submitted.
-
-A9 ratings audit: COMPONENT-RATINGS.md and sourcing/Component-ratings-audit.csv. Electrical release remains on hold for magnetics heating, capacitor effective capacitance/ripple, switching transients and frequency-dependent fault protection. F1 C3177336 snapshot: only 28 pieces, not reserved. Do not substitute the 32 V fuse variant.
+See Manufacturing-issue-register.csv and ../Manufacturing-audit.html for status.

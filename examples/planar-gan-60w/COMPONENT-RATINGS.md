@@ -1,6 +1,6 @@
-# Component ratings audit (A9, retained for A10)
+# Component ratings audit (A11)
 
-A10 changes routing and reference copper only. Part identities and circuit values are unchanged; the findings below remain applicable.
+A11 retains the part identities and circuit values while repairing footprints, placement and pours. The transformer DC-loss model now uses 70 µm outer and 61 µm inner copper from the specified 1.655 mm JLC construction. The electrical qualification findings below remain open.
 
 **The audit is complete; the hardware is not qualified for full-power operation.**
 Every one of the 82 schematic references is covered: 75 purchased placements,
@@ -41,7 +41,7 @@ not reserved inventory. The similarly named 3 A **32 V** fuse is unsuitable.
 81 full-load first-harmonic corners cover three input voltages, Lr ±20%,
 Cr ±5% and the assumed Lm ±20%. Maximum calculated primary current is
 **3.503 Arms**, above the old 3.25 A winding-loss assumption. At the 4 Arms
-thermal screen, DC winding loss is **3.69 W at 80 °C**, before core and AC
+thermal screen, DC winding loss is **3.87 W at 80 °C**, before core and AC
 copper losses. The unchanged copper geometry therefore remains a thermal
 release hold, even though the 0.191 T flux screen (28.4 V primary at 119 kHz) is below N87's 0.39 T
 100 °C material test point. Saturation margin does not imply low core loss.

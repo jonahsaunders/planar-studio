@@ -1,3 +1,5 @@
+> Historical design study. A11 manufacturing repairs and current measurements are in [README.md](README.md), [VALIDATION.md](VALIDATION.md) and [Manufacturing-audit.html](Manufacturing-audit.html).
+
 Current: [A10 schematic / A8 hardware review](DEEP-LAYOUT-REVIEW.md). The A6 study below is retained as historical context.
 
 Current revision: **A9 schematic / A7 hardware**. See the [new video-based changes](VIDEO-LAYOUT-REVIEW.md) and [component audit](COMPONENT-RATINGS.md). The A6 study below records the previous revision. Its 2.85 W winding-loss estimate is superseded by the 3.69 W A9 thermal screen.

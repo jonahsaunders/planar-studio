@@ -1,0 +1,167 @@
+{
+  "revision": "A11",
+  "source": "https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf",
+  "U1": "RAR0017B copper, mask and stencil reconstructed from dimensioned TI example; package-center origin",
+  "courtyards": [
+    {
+      "footprint": "C_0603_1608Metric",
+      "courtyard_mm": [
+        -1.5,
+        -0.8500000000000001,
+        1.5,
+        0.8500000000000001
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "C_0805_2012Metric",
+      "courtyard_mm": [
+        -1.7000000000000002,
+        -1.05,
+        1.7000000000000002,
+        1.05
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "C_1206_3216Metric",
+      "courtyard_mm": [
+        -2.3000000000000003,
+        -1.25,
+        2.3000000000000003,
+        1.25
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "C_1210_3225Metric",
+      "courtyard_mm": [
+        -2.3000000000000003,
+        -1.7000000000000002,
+        2.3000000000000003,
+        1.7000000000000002
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "F1206",
+      "courtyard_mm": [
+        -2.6,
+        -1.4500000000000002,
+        2.6,
+        1.4500000000000002
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "L_Bourns_SRP5030T",
+      "courtyard_mm": [
+        -3.5,
+        -3.0500000000000003,
+        3.5,
+        3.0500000000000003
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "L_Bourns_SRP7050TA",
+      "courtyard_mm": [
+        -4.45,
+        -3.6,
+        4.45,
+        3.6
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL",
+      "courtyard_mm": [
+        -2.45,
+        -4.05,
+        2.45,
+        4.05
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "R_0603_1608Metric",
+      "courtyard_mm": [
+        -1.5,
+        -0.8500000000000001,
+        1.5,
+        0.8500000000000001
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SMA_L4.4-W2.6-LS5.0-RD",
+      "courtyard_mm": [
+        -3.35,
+        -1.75,
+        3.35,
+        1.75
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SO-8_L4.9-W3.9-P1.27-LS6.0-BL-EP",
+      "courtyard_mm": [
+        -2.85,
+        -4.05,
+        2.85,
+        4.05
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL",
+      "courtyard_mm": [
+        -2.9000000000000004,
+        -3.75,
+        2.9000000000000004,
+        3.75
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SOT-23-3_L2.9-W1.6-P1.90-LS2.8-BR",
+      "courtyard_mm": [
+        -2.0500000000000003,
+        -1.9000000000000001,
+        2.0500000000000003,
+        1.9000000000000001
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BR",
+      "courtyard_mm": [
+        -2.1,
+        -1.8,
+        2.1,
+        1.9000000000000001
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "SOT-23_L2.9-W1.3-P1.90-LS2.4-BR",
+      "courtyard_mm": [
+        -1.9000000000000001,
+        -1.9000000000000001,
+        1.9000000000000001,
+        1.9000000000000001
+      ],
+      "allowance_mm": 0.25
+    },
+    {
+      "footprint": "VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL",
+      "courtyard_mm": [
+        -1.85,
+        -2.0500000000000003,
+        1.85,
+        2.1
+      ],
+      "allowance_mm": 0.25
+    }
+  ]
+}
