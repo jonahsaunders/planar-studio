@@ -1,11 +1,19 @@
 {
-  "date": "2026-10-10",
-  "native_revision": "A12",
+  "date": "2026-10-11",
+  "native_revision": "A13",
   "build_quantity": 5,
   "verdict": "CAD repairs completed; factory acceptance and electrical qualification remain open. Full turnkey not confirmed.",
-  "native_board_sha256": "1371b960056d043ef220b1a163e97bb05f5dba6b7c5d7815280567da93f62426",
+  "native_board_sha256": "419079a90fc0f151ad9b02cdfd5830efeffed2b52bdbc3f459cd82f75493c3e3",
   "native_schematic_sha256": "ff252be7f8c8794cbf8041c706a8b0d10f1d4a3f6e86f16a485010f5b7caff85",
   "issues": [
+    {
+      "ID": "M12",
+      "Status": "CAD SCREENED / PROCESS REVIEW",
+      "Area": "Passive pad entries and direct routes",
+      "Finding": "Eight feedback/OVP resistors have equal lands/paste and single outward 0.20 mm necks. Nearby vias clear their lands by at least 0.25 mm to the hole edge. Seven local signal nets use top copper without vias.",
+      "Required_closure": "Assembly yield still depends on paste printing, placement and reflow; validate on the first articles.",
+      "Evidence": "passive-routing-audit.json"
+    },
     {
       "ID": "M01",
       "Status": "CAD FIXED / FACTORY REVIEW",
@@ -66,7 +74,7 @@
       "ID": "M08",
       "Status": "CAD SPECIFIED / PROCESS REVIEW",
       "Area": "Filled vias and hidden joints",
-      "Finding": "A coordinate-level drill map marks 217 small interconnects for resin fill/copper cap, including six transformer transitions. Four connector and four mounting holes stay open.",
+      "Finding": "A coordinate-level drill map marks 203 small interconnects for resin fill/copper cap, including six transformer transitions. Four connector and four mounting holes stay open.",
       "Required_closure": "Supplier must confirm the process for the listed 0.30 mm holes, not just objects named vias. Review hidden-joint X-ray and solder acceptance.",
       "Evidence": "Drill-process-map.csv"
     },

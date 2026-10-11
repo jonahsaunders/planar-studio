@@ -61,8 +61,8 @@
 	(attr smd)
 	(duplicate_pad_numbers_are_jumpers no)
 	(fp_circle
-		(center -1.27 4.25)
-		(end -1.15 4.25)
+		(center -1.7 4.25)
+		(end -1.58 4.25)
 		(stroke
 			(width 0.15)
 			(type default)

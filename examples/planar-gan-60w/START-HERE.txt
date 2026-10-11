@@ -1,9 +1,10 @@
-PS-GAN-60W A12 — editable KiCad 10 engineering prototype
+PS-GAN-60W A13 — editable KiCad 10 engineering prototype
 
 Open kicad/PS-GAN-60W.kicad_pro. Review.html provides board and copper-layer views.
 Manufacturing-audit.html and VALIDATION.md describe measured checks and open gates.
 
-A12 cleans up trace angles, free elbows, OVP feedback routes and printed legend.
+A13 repositions feedback/OVP parts for direct pad-to-pad routing, balanced
+low-current resistor entries and fewer vias. See ROUTING-ASSEMBLY-REVIEW.md.
 All electronic components remain on top; windings, outline and mounting pattern
 are retained. The archive supplies single-board CAD, Gerbers and matching CPL.
 JLCPCB defines and quotes any assembly handling rails or panelization it needs.
