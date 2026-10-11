@@ -1,4 +1,4 @@
-"""Rebuild A12 from bundled footprints and explicit manual routes.
+"""Rebuild A13 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
@@ -23,7 +23,7 @@ def footprint(name,body,attr='smd'):
 fab=json.loads((ROOT/'manufacturing-prototype/fabrication-stack.json').read_text(encoding='utf8'))
 assert abs(sum(fab['copper_mm'])+sum(fab['dielectric_mm'])-fab['nominal_copper_plus_dielectric_mm'])<1e-6
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(fab['nominal_copper_plus_dielectric_mm']))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A12 ENGINEERING PROTOTYPE');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A13 ENGINEERING PROTOTYPE');title.SetDate('2026-10-11');board.SetTitleBlock(title)
 aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
@@ -38,7 +38,7 @@ place={'C1': (40.3, 4.5, 90),
  'C13': (3, 28.5, 90),
  'C14': (7.5, 28.5, 90),
  'C15': (5.5, 5.4, 0),
- 'C16': (3, 33.3, 90),
+ 'C16': (2, 33.3, 90),
  'C17': (31.8, 26.6, 90),
  'C18': (22.5, 38.8, 180),
  'C19': (48.1, 33.1, 270),
@@ -46,13 +46,13 @@ place={'C1': (40.3, 4.5, 90),
  'C20': (37, 34.4, 270),
  'C21': (33.7, 41.7, 90),
  'C22': (33.1, 47, 90),
- 'C23': (34.6, 28.8, 0),
+ 'C23': (34.6, 28.8, 180),
  'C24': (35.3, 37.8, 90),
  'C25': (42.5, 24.5, 90),
  'C26': (35, 25.8, 180),
- 'C27': (10.5, 41, 0),
- 'C28': (9.7, 33.9, 180),
- 'C29': (9.7, 49.2, 0),
+ 'C27': (7, 40.3, 180),
+ 'C28': (8.9, 33.3, 180),
+ 'C29': (8.9, 42.3, 0),
  'C3': (45.2, 17.6, 180),
  'C4': (48, 10, 90),
  'C5': (43.7, 4.5, 180),
@@ -79,21 +79,21 @@ place={'C1': (40.3, 4.5, 90),
  'R16': (42.5, 28.5, 0),
  'R17': (35.3, 31.5, 270),
  'R18': (35.3, 34.6, 270),
- 'R19': (39.5, 28.3, 0),
+ 'R19': (39.5, 28.3, 180),
  'R2': (22.5, 36.95, 180),
- 'R20': (13.9, 31.1, 0),
- 'R21': (13.9, 33, 0),
- 'R22': (6.7, 35.3, 90),
- 'R23': (6.7, 38.5, 90),
- 'R24': (7.2, 41, 0),
- 'R25': (13.9, 40.5, 0),
- 'R26': (13.9, 42.4, 0),
- 'R27': (6.7, 43.7, 90),
- 'R28': (6.7, 47, 90),
+ 'R20': (13.65, 32.3, 270),
+ 'R21': (11.8, 37, 270),
+ 'R22': (5.3, 34, 270),
+ 'R23': (5.3, 37.2, 270),
+ 'R24': (10.5, 40.3, 180),
+ 'R25': (13.65, 41.3, 270),
+ 'R26': (11.8, 46, 270),
+ 'R27': (5.3, 43, 270),
+ 'R28': (5.3, 46.2, 270),
  'R3': (22.5, 42.6, 180),
- 'R4': (51, 7, 0),
+ 'R4': (51, 7, 180),
  'R5': (51, 8.9, 0),
- 'R6': (39.4, 7.9, 0),
+ 'R6': (39.4, 7.9, 180),
  'R7': (39.4, 9.8, 0),
  'R8': (31.5, 30.5, 270),
  'R9': (24.9, 32.3, 90),
@@ -110,9 +110,9 @@ place={'C1': (40.3, 4.5, 90),
  'U4': (42, 32.5, 90),
  'U5': (39, 24.1, 0),
  'U6': (16.8, 37.0, 270),
- 'U7': (10.5, 37.0, 90),
+ 'U7': (8.9, 37.115, 90),
  'U8': (16.8, 46, 270),
- 'U9': (10.5, 46, 90)}
+ 'U9': (8.9, 46.115, 90)}
 fps={};pads={}
 for p in data['parts']:
  name=p['footprint'].split(':')[1];f=pcb.FootprintLoad(str(LIB),name);assert f,name
@@ -175,7 +175,7 @@ exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
 legend('PLANAR STUDIO',20,-1.6,1.2)
-legend('PS-GAN-60W  /  A12',24,50.6,1)
+legend('PS-GAN-60W  /  A13',24,50.6,1)
 legend('48V IN',51.8,12,.9);legend('12V OUT',-2,8.2,.9)
 legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
 legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)
@@ -226,7 +226,7 @@ settings=board.GetDesignSettings()
 settings.m_MinClearance=mm(.16);settings.m_TrackMinWidth=mm(.16)
 settings.m_ViasMinSize=mm(.6);settings.m_MinThroughDrill=mm(.3)
 settings.m_HoleToHoleMin=mm(.25);settings.m_CopperEdgeClearance=mm(.25)
-def stable_id(item,key):item.SetUuid(pcb.KIID(str(uuid.uuid5(uuid.NAMESPACE_URL,'planar-studio/PS-GAN-60W/A12/'+key))))
+def stable_id(item,key):item.SetUuid(pcb.KIID(str(uuid.uuid5(uuid.NAMESPACE_URL,'planar-studio/PS-GAN-60W/A13/'+key))))
 def track_key(t):return str((t.GetClass(),t.GetNetname(),t.GetLayer(),xy(t.GetStart()),xy(t.GetEnd()),t.GetWidth(F) if isinstance(t,pcb.PCB_VIA) else t.GetWidth()))
 for i,t in enumerate(sorted(board.GetTracks(),key=track_key)):stable_id(t,'track/'+str(i)+'/'+track_key(t))
 for fp in board.GetFootprints():

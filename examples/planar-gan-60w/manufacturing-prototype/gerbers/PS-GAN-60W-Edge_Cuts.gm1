@@ -1,11 +1,11 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,10.0.6*%
-%TF.CreationDate,2026-10-10T20:35:56-04:00*%
-%TF.ProjectId,PS-GAN-60W,50532d47-414e-42d3-9630-572e6b696361,A12 ENGINEERING PROTOTYPE*%
+%TF.CreationDate,2026-10-11T09:24:26-04:00*%
+%TF.ProjectId,PS-GAN-60W,50532d47-414e-42d3-9630-572e6b696361,A13 ENGINEERING PROTOTYPE*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Profile,NP*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 10.0.6) date 2026-10-10 20:35:56*
+G04 Created by KiCad (PCBNEW 10.0.6) date 2026-10-11 09:24:26*
 %MOMM*%
 %LPD*%
 G01*

@@ -43,6 +43,9 @@ for net,points in rows.items():
   # A through-hole contact already connects its own plated barrel on every
   # layer. Drilling a stitching via into its solder land adds no useful path.
   if any(pd.GetDrillSize().x and pd.GetEffectiveShape(F).Collide(q,mm(.56)) for fp in board.GetFootprints() for pd in fp.Pads()):continue
+  # General stitching must not undo the deliberate necks around passives,
+  # even where a candidate has the same ground net as the component pad.
+  if any(fp.GetReference().startswith(('R','C')) and pd.GetEffectiveShape(F).Collide(q,mm(.56)) for fp in board.GetFootprints() for pd in fp.Pads()):continue
   if any(n!=native and s.Collide(q,mm(.56)) for n,s in pad_shapes+track_shapes):continue
   if any(isinstance(t,pcb.PCB_VIA) and math.dist(xy(t.GetPosition()),(x+60,y+60))<1.0 for t in occupied):continue
   if any(math.dist((x,y),tuple(a['position_mm']))<2 for a in added):continue
@@ -61,6 +64,6 @@ for a in added:
 for a in transition_targets:
  x,y=a['position_mm']
  a['after_nearest_return_via_mm']=round(min(math.dist(xy(v.GetPosition()),(x+60,y+60)) for v in board.GetTracks() if isinstance(v,pcb.PCB_VIA) and v.GetNetname()==nets[a['ground']].GetNetname()),3)
-report={'revision':'A12','diameter_mm':.6,'drill_mm':.3,'added_stitches':len(added),'counts_by_net':{n:sum(a['net']==n for a in added) for n in rows},'method':'Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.','drive_transition_returns':transition_targets,'vias':added}
+report={'revision':'A13','diameter_mm':.6,'drill_mm':.3,'added_stitches':len(added),'counts_by_net':{n:sum(a['net']==n for a in added) for n in rows},'method':'Prioritize return vias at drive-signal layer transitions, then selected 4 mm rows outside the magnetic assembly; reject foreign copper/edge conflicts and require full annulus on at least two preexisting same-net filled layers. Refilled and verified each stitch touches at least two same-net planes. Domains remain separate.','drive_transition_returns':transition_targets,'vias':added}
 (ROOT/'evidence/stitching-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print('Ground stitches:',report['counts_by_net'])

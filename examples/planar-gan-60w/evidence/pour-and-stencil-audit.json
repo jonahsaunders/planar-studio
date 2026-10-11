@@ -1,7 +1,18 @@
 {
-  "revision": "A12",
+  "revision": "A13",
   "method": "Actual filled zone polygons at 0.001 mm conversion error. Each piece must touch a same-net pad, explicit track or via. KiCad connectivity/DRC separately checks the resulting network. No ground-ring hole may contain the center leg. Fast-node projection exclusions checked separately; isolated copper always removed. No current-density, loop-inductance or EMC claim.",
   "zones": [
+    {
+      "name": "VIN / F.Cu / 1",
+      "net": "VIN",
+      "layer": "F.Cu",
+      "filled_area_mm2": 21.8469,
+      "pieces": 1,
+      "smallest_piece_mm2": 21.8469,
+      "pieces_without_same_net_pad_track_or_via": [],
+      "bias_hot_node_overlap_mm2": 0.0,
+      "closed_ground_ring_around_center_leg": false
+    },
     {
       "name": "PGND / F.Cu / 2",
       "net": "PGND",
@@ -14,45 +25,23 @@
       "closed_ground_ring_around_center_leg": false
     },
     {
-      "name": "SGND / F.Cu / 1",
-      "net": "SGND",
-      "layer": "F.Cu",
-      "filled_area_mm2": 12.8837,
-      "pieces": 2,
-      "smallest_piece_mm2": 0.9921,
-      "pieces_without_same_net_pad_track_or_via": [],
-      "bias_hot_node_overlap_mm2": 0.0,
-      "closed_ground_ring_around_center_leg": false
-    },
-    {
       "name": "PGND / F.Cu / 1",
       "net": "PGND",
       "layer": "F.Cu",
-      "filled_area_mm2": 16.2229,
+      "filled_area_mm2": 16.2257,
       "pieces": 1,
-      "smallest_piece_mm2": 16.2229,
+      "smallest_piece_mm2": 16.2257,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
     },
     {
-      "name": "VIN / F.Cu / 1",
-      "net": "VIN",
+      "name": "SGND / F.Cu / 1",
+      "net": "SGND",
       "layer": "F.Cu",
-      "filled_area_mm2": 21.8505,
-      "pieces": 1,
-      "smallest_piece_mm2": 21.8505,
-      "pieces_without_same_net_pad_track_or_via": [],
-      "bias_hot_node_overlap_mm2": 0.0,
-      "closed_ground_ring_around_center_leg": false
-    },
-    {
-      "name": "PGND / B.Cu / 1",
-      "net": "PGND",
-      "layer": "B.Cu",
-      "filled_area_mm2": 1044.034,
-      "pieces": 1,
-      "smallest_piece_mm2": 1044.034,
+      "filled_area_mm2": 13.4023,
+      "pieces": 2,
+      "smallest_piece_mm2": 1.5321,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -61,9 +50,20 @@
       "name": "SGND / B.Cu / 1",
       "net": "SGND",
       "layer": "B.Cu",
-      "filled_area_mm2": 711.4065,
+      "filled_area_mm2": 721.8886,
       "pieces": 1,
-      "smallest_piece_mm2": 711.4065,
+      "smallest_piece_mm2": 721.8886,
+      "pieces_without_same_net_pad_track_or_via": [],
+      "bias_hot_node_overlap_mm2": 0.0,
+      "closed_ground_ring_around_center_leg": false
+    },
+    {
+      "name": "PGND / B.Cu / 1",
+      "net": "PGND",
+      "layer": "B.Cu",
+      "filled_area_mm2": 1042.7205,
+      "pieces": 1,
+      "smallest_piece_mm2": 1042.7205,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -80,23 +80,12 @@
       "closed_ground_ring_around_center_leg": false
     },
     {
-      "name": "AGND / In1.Cu / 2",
-      "net": "AGND",
+      "name": "PGND / In1.Cu / 1",
+      "net": "PGND",
       "layer": "In1.Cu",
-      "filled_area_mm2": 258.6599,
+      "filled_area_mm2": 92.13,
       "pieces": 1,
-      "smallest_piece_mm2": 258.6599,
-      "pieces_without_same_net_pad_track_or_via": [],
-      "bias_hot_node_overlap_mm2": 0.0,
-      "closed_ground_ring_around_center_leg": false
-    },
-    {
-      "name": "AGND / In1.Cu / 1",
-      "net": "AGND",
-      "layer": "In1.Cu",
-      "filled_area_mm2": 98.9752,
-      "pieces": 1,
-      "smallest_piece_mm2": 98.9752,
+      "smallest_piece_mm2": 92.13,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -105,20 +94,31 @@
       "name": "SGND / In1.Cu / 1",
       "net": "SGND",
       "layer": "In1.Cu",
-      "filled_area_mm2": 685.0656,
+      "filled_area_mm2": 695.5464,
       "pieces": 1,
-      "smallest_piece_mm2": 685.0656,
+      "smallest_piece_mm2": 695.5464,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
     },
     {
-      "name": "PGND / In1.Cu / 1",
-      "net": "PGND",
+      "name": "AGND / In1.Cu / 1",
+      "net": "AGND",
       "layer": "In1.Cu",
-      "filled_area_mm2": 92.2998,
+      "filled_area_mm2": 98.9209,
       "pieces": 1,
-      "smallest_piece_mm2": 92.2998,
+      "smallest_piece_mm2": 98.9209,
+      "pieces_without_same_net_pad_track_or_via": [],
+      "bias_hot_node_overlap_mm2": 0.0,
+      "closed_ground_ring_around_center_leg": false
+    },
+    {
+      "name": "AGND / In1.Cu / 2",
+      "net": "AGND",
+      "layer": "In1.Cu",
+      "filled_area_mm2": 260.3682,
+      "pieces": 1,
+      "smallest_piece_mm2": 260.3682,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -127,9 +127,9 @@
       "name": "AGND / In3.Cu / 1",
       "net": "AGND",
       "layer": "In3.Cu",
-      "filled_area_mm2": 531.7841,
+      "filled_area_mm2": 533.0431,
       "pieces": 2,
-      "smallest_piece_mm2": 19.6936,
+      "smallest_piece_mm2": 24.7694,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -146,17 +146,6 @@
       "closed_ground_ring_around_center_leg": false
     },
     {
-      "name": "AGND / In5.Cu / 2",
-      "net": "AGND",
-      "layer": "In5.Cu",
-      "filled_area_mm2": 69.7331,
-      "pieces": 2,
-      "smallest_piece_mm2": 14.1689,
-      "pieces_without_same_net_pad_track_or_via": [],
-      "bias_hot_node_overlap_mm2": 0.0,
-      "closed_ground_ring_around_center_leg": false
-    },
-    {
       "name": "AGND / In5.Cu / 1",
       "net": "AGND",
       "layer": "In5.Cu",
@@ -168,12 +157,34 @@
       "closed_ground_ring_around_center_leg": false
     },
     {
+      "name": "AGND / In5.Cu / 2",
+      "net": "AGND",
+      "layer": "In5.Cu",
+      "filled_area_mm2": 70.0021,
+      "pieces": 2,
+      "smallest_piece_mm2": 14.1071,
+      "pieces_without_same_net_pad_track_or_via": [],
+      "bias_hot_node_overlap_mm2": 0.0,
+      "closed_ground_ring_around_center_leg": false
+    },
+    {
       "name": "SGND / In5.Cu / 1",
       "net": "SGND",
       "layer": "In5.Cu",
-      "filled_area_mm2": 711.4065,
+      "filled_area_mm2": 721.9394,
       "pieces": 1,
-      "smallest_piece_mm2": 711.4065,
+      "smallest_piece_mm2": 721.9394,
+      "pieces_without_same_net_pad_track_or_via": [],
+      "bias_hot_node_overlap_mm2": 0.0,
+      "closed_ground_ring_around_center_leg": false
+    },
+    {
+      "name": "AGND / In6.Cu / 1",
+      "net": "AGND",
+      "layer": "In6.Cu",
+      "filled_area_mm2": 321.3947,
+      "pieces": 1,
+      "smallest_piece_mm2": 321.3947,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -193,20 +204,9 @@
       "name": "PGND / In6.Cu / 1",
       "net": "PGND",
       "layer": "In6.Cu",
-      "filled_area_mm2": 446.888,
+      "filled_area_mm2": 445.4114,
       "pieces": 1,
-      "smallest_piece_mm2": 446.888,
-      "pieces_without_same_net_pad_track_or_via": [],
-      "bias_hot_node_overlap_mm2": 0.0,
-      "closed_ground_ring_around_center_leg": false
-    },
-    {
-      "name": "AGND / In6.Cu / 1",
-      "net": "AGND",
-      "layer": "In6.Cu",
-      "filled_area_mm2": 321.3947,
-      "pieces": 1,
-      "smallest_piece_mm2": 321.3947,
+      "smallest_piece_mm2": 445.4114,
       "pieces_without_same_net_pad_track_or_via": [],
       "bias_hot_node_overlap_mm2": 0.0,
       "closed_ground_ring_around_center_leg": false
@@ -397,28 +397,6 @@
       ],
       "final_connected_layers": [
         "F.Cu",
-        "B.Cu",
-        "In1.Cu",
-        "In6.Cu"
-      ]
-    },
-    {
-      "net": "PGND",
-      "position_mm": [
-        47,
-        34
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In6.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In6.Cu"
-      ],
-      "final_connected_layers": [
         "B.Cu",
         "In1.Cu",
         "In6.Cu"
@@ -704,8 +682,8 @@
     {
       "net": "AGND",
       "position_mm": [
-        46.39246212024588,
-        7.587537879754123
+        45.650000000000006,
+        7.2799999999999985
       ],
       "preexisting_reference_layers": [
         "In1.Cu",
@@ -726,20 +704,23 @@
     {
       "net": "AGND",
       "position_mm": [
-        37.65576118445749,
-        6.980761184457494
+        39.494238815542516,
+        8.880761184457485
       ],
       "preexisting_reference_layers": [
         "In1.Cu",
-        "In3.Cu"
+        "In3.Cu",
+        "In5.Cu"
       ],
       "connected_filled_layers": [
         "In1.Cu",
-        "In3.Cu"
+        "In3.Cu",
+        "In5.Cu"
       ],
       "final_connected_layers": [
         "In1.Cu",
-        "In3.Cu"
+        "In3.Cu",
+        "In5.Cu"
       ]
     },
     {
@@ -767,8 +748,30 @@
     {
       "net": "AGND",
       "position_mm": [
-        50.175,
+        51.825,
         5.95
+      ],
+      "preexisting_reference_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ],
+      "connected_filled_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ],
+      "final_connected_layers": [
+        "In1.Cu",
+        "In3.Cu",
+        "In5.Cu"
+      ]
+    },
+    {
+      "net": "AGND",
+      "position_mm": [
+        50.90576118445749,
+        7.919238815542512
       ],
       "preexisting_reference_layers": [
         "In1.Cu",
@@ -1031,52 +1034,8 @@
     {
       "net": "SGND",
       "position_mm": [
-        13,
-        30
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "final_connected_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ]
-    },
-    {
-      "net": "SGND",
-      "position_mm": [
         16,
         30
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "final_connected_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ]
-    },
-    {
-      "net": "SGND",
-      "position_mm": [
-        1,
-        34
       ],
       "preexisting_reference_layers": [
         "B.Cu",
@@ -1229,7 +1188,7 @@
     {
       "net": "SGND",
       "position_mm": [
-        5,
+        9,
         46
       ],
       "preexisting_reference_layers": [
@@ -1275,28 +1234,6 @@
       "position_mm": [
         16,
         46
-      ],
-      "preexisting_reference_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "connected_filled_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ],
-      "final_connected_layers": [
-        "B.Cu",
-        "In1.Cu",
-        "In5.Cu"
-      ]
-    },
-    {
-      "net": "SGND",
-      "position_mm": [
-        5,
-        48
       ],
       "preexisting_reference_layers": [
         "B.Cu",
@@ -1375,7 +1312,7 @@
       "paste_outside_mask_mm2": 0.0
     }
   ],
-  "filled_capped_drills": 217,
+  "filled_capped_drills": 203,
   "open_drills": 8,
   "connector_thermal_spokes_mm": 0.6,
   "connector_thermal_gap_mm": 0.3,

@@ -1,5 +1,5 @@
 {
-  "revision": "A12",
+  "revision": "A13",
   "method": "Track centerline sampled every <=0.05 mm against native filled zone polygons on immediately adjacent copper layers. Coverage is union of those layers. A second figure excludes 0.65 mm around same-net signal vias because their required antipads remove reference copper. Coverage does not prove low inductance, uninterrupted current flow, EMI or electrical performance. Coordinates relative to circuit datum (60,60) mm.",
   "current": [
     {
@@ -10,8 +10,8 @@
         "In5.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 46.034,
-      "covered_percent": 97.53,
+      "total_track_length_mm": 46.861,
+      "covered_percent": 97.68,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []
@@ -24,8 +24,8 @@
         "In3.Cu"
       ],
       "return_net": "AGND",
-      "total_track_length_mm": 33.85,
-      "covered_percent": 93.31,
+      "total_track_length_mm": 35.079,
+      "covered_percent": 93.7,
       "outside_signal_via_antipads_coverage_percent": 100.0,
       "uncovered_sample_count_outside_antipads": 0,
       "first_20_uncovered_samples_mm": []

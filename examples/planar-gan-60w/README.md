@@ -1,4 +1,4 @@
-# PS-GAN-60W — A12
+# PS-GAN-60W — A13
 
 48 V nominal → isolated 12 V / 5 A **design target**, with an integrated GaN
 half bridge and PCB transformer generated using Planar Studio. Native KiCad 10
@@ -11,23 +11,30 @@ for the repaired CAD findings and remaining factory/qualification gates.
 [Design review and copper-layer viewer](Review.html) · [Schematic PDF](Schematic.pdf) ·
 [KiCad project](kicad/PS-GAN-60W.kicad_pro) · [Validation](VALIDATION.md)
 
-![A12 top assembly](Board-preview.png)
+![A13 top assembly](Board-preview.png)
 
-## A12 routing and silkscreen cleanup
+## A13 placement and direct routing
 
-- Reduced nonstandard-angle route segments from 153 to zero, and free-standing
-  90° elbows from 46 to zero, using horizontal, vertical and 45° segments.
-  Chamfered free elbows while retaining pad, via and branch anchors. The OVP
-  feedback routes now follow their adjacent component bank without doubled-back legs.
-- Repositioned board labels and pin-one dots using their actual printed strokes:
-  at least 0.22 mm from solder-mask openings, with board text outside component
-  courtyards. Added clear secondary-controller and rectifier identifiers.
-- Removed the customer panel, panel Gerbers/CPL, tabs and panelization scripts.
-  Supply single-board data; JLCPCB defines any required assembly handling rails.
-- Preserved A11's GaN copper/mask/stencil, corrected LDO footprint, heavy-copper
-  stack, connector thermals, winding artwork, mounting pattern and top-only assembly.
-- Refilled and checked all 19 functional pours and the ground stitching against
-  the revised routes. AGND, PGND and SGND retain their separate PCB domains.
+- Turned and aligned the feedback/OVP resistor dividers so their connected pads
+  face each other. R22/R23 and R27/R28 now have straight vertical connections.
+- Repositioned the LED, shunt and compensation parts. All seven local feedback
+  nets use top copper, with **11 signal vias removed**. Their combined explicit
+  trace length falls from **80.9 to 49.9 mm** (38% shorter).
+- Eight low-current resistors have one outward axial 0.20 mm neck per pad,
+  equal lands/paste openings and at least 0.25 mm from land edge to via-hole edge.
+  Branches stay off their lands. General ground stitching now avoids all R/C pads.
+- Connected the GaN bypass capacitors directly, turned the GaN input-divider
+  resistors to remove their U-shaped links, and shortened the bias ripple network.
+- Removed obsolete waypoints from complete route chains. Across the board,
+  native route segments fall from **797 to 501**, explicit trace
+  length from **879.1 to 828.2 mm**, and routed vias from
+  **211 to 197**. These are geometry measurements, not performance claims.
+- Retained single-board manufacturing files, top-only electronics, winding
+  artwork, mounting pattern, connector thermals and separate ground domains.
+
+See the [routing and tombstoning review](ROUTING-ASSEMBLY-REVIEW.md),
+[lower-left comparison](evidence/Feedback-routing-before-after.png) and
+[native passive-entry audit](evidence/passive-routing-audit.json).
 
 The [issue register](manufacturing-prototype/Manufacturing-issue-register.csv)
 separates completed CAD corrections from factory process, service and hardware
@@ -114,4 +121,4 @@ the user's approval. [Source study](PER-DESIGN-STUDY.md),
 [layout resources](DEEP-LAYOUT-REVIEW.md), [licenses](THIRD-PARTY-NOTICES.txt).
 MIT PER, Rick Hartley, Robert Feranec and Phil's Lab are independent references;
 no affiliation or endorsement is implied. Earlier review documents describe
-historical revisions; this A12 guide and the current issue register take precedence.
+historical revisions; this A13 guide and the current issue register take precedence.

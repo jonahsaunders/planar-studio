@@ -1,0 +1,307 @@
+{
+  "revision": "A13",
+  "native_board_sha256": "419079a90fc0f151ad9b02cdfd5830efeffed2b52bdbc3f459cd82f75493c3e3",
+  "scope": "Eight low-current feedback/OVP resistors. Geometric assembly-risk reduction only, not equal thermal impedance, reflow validation or a no-tombstoning guarantee.",
+  "sources": [
+    "https://www.eurocircuits.com/technical-guidelines/pcb-assembly-guidelines/tombstoning/",
+    "https://article.murata.com/en-eu/article/basics-of-capacitors-6"
+  ],
+  "resistors": [
+    {
+      "ref": "R20",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 2.205,
+          "unbranched_neck_beyond_land_mm": 1.45,
+          "nearest_via_hole_edge_gap_mm": 1.8315
+        }
+      ]
+    },
+    {
+      "ref": "R21",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.4,
+          "unbranched_neck_beyond_land_mm": 0.4,
+          "nearest_via_hole_edge_gap_mm": 2.9375
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.625,
+          "unbranched_neck_beyond_land_mm": 0.625,
+          "nearest_via_hole_edge_gap_mm": 1.7902
+        }
+      ]
+    },
+    {
+      "ref": "R22",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 1.15,
+          "unbranched_neck_beyond_land_mm": 0.375,
+          "nearest_via_hole_edge_gap_mm": 2.025
+        }
+      ]
+    },
+    {
+      "ref": "R23",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 1.15,
+          "unbranched_neck_beyond_land_mm": 0.375,
+          "nearest_via_hole_edge_gap_mm": 2.1
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        }
+      ]
+    },
+    {
+      "ref": "R25",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 2.205,
+          "unbranched_neck_beyond_land_mm": 1.45,
+          "nearest_via_hole_edge_gap_mm": 1.725
+        }
+      ]
+    },
+    {
+      "ref": "R26",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.4,
+          "unbranched_neck_beyond_land_mm": 0.4,
+          "nearest_via_hole_edge_gap_mm": 0.7653
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.625,
+          "unbranched_neck_beyond_land_mm": 0.625,
+          "nearest_via_hole_edge_gap_mm": 0.7653
+        }
+      ]
+    },
+    {
+      "ref": "R27",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 1.15,
+          "unbranched_neck_beyond_land_mm": 0.375,
+          "nearest_via_hole_edge_gap_mm": 2.1
+        }
+      ]
+    },
+    {
+      "ref": "R28",
+      "equal_copper_land_areas": true,
+      "equal_paste_areas": true,
+      "pads": [
+        {
+          "pin": "1",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 1.15,
+          "unbranched_neck_beyond_land_mm": 0.375,
+          "nearest_via_hole_edge_gap_mm": 2.1
+        },
+        {
+          "pin": "2",
+          "entry_width_mm": 0.2,
+          "entry": "single outward axial top-layer neck",
+          "neck_to_first_vertex_beyond_land_mm": 0.6,
+          "unbranched_neck_beyond_land_mm": 0.6,
+          "nearest_via_hole_edge_gap_mm": 0.45
+        }
+      ]
+    }
+  ],
+  "local_feedback_routes": [
+    {
+      "net": "VREF",
+      "length_mm": 12.101,
+      "segments": 7,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "OV_REF",
+      "length_mm": 6.961,
+      "segments": 5,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "FB_K",
+      "length_mm": 11.192,
+      "segments": 9,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "OV_K",
+      "length_mm": 6.898,
+      "segments": 5,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "FB_LED",
+      "length_mm": 5.421,
+      "segments": 4,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "OV_LED",
+      "length_mm": 5.421,
+      "segments": 4,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    },
+    {
+      "net": "COMP",
+      "length_mm": 1.9,
+      "segments": 1,
+      "signal_vias": 0,
+      "layers": [
+        "F.Cu"
+      ]
+    }
+  ],
+  "native_routing": {
+    "segments": 501,
+    "length_mm": 828.205,
+    "vias": 197
+  },
+  "baseline_A12": {
+    "segments": 797,
+    "length_mm": 879.052,
+    "vias": 211,
+    "local_feedback_routes": [
+      {
+        "net": "VREF",
+        "length_mm": 15.795,
+        "signal_vias": 3
+      },
+      {
+        "net": "OV_REF",
+        "length_mm": 14.13,
+        "signal_vias": 2
+      },
+      {
+        "net": "FB_K",
+        "length_mm": 22.197,
+        "signal_vias": 2
+      },
+      {
+        "net": "OV_K",
+        "length_mm": 10.094,
+        "signal_vias": 0
+      },
+      {
+        "net": "FB_LED",
+        "length_mm": 8.643,
+        "signal_vias": 2
+      },
+      {
+        "net": "OV_LED",
+        "length_mm": 8.384,
+        "signal_vias": 2
+      },
+      {
+        "net": "COMP",
+        "length_mm": 1.7,
+        "signal_vias": 0
+      }
+    ]
+  }
+}

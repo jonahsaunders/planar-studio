@@ -1,13 +1,13 @@
 DRAFT FOR USER REVIEW — NOT SENT
 
-Please review and quote five PS-GAN-60W A12 units against the attached exact files.
+Please review and quote five PS-GAN-60W A13 units against the attached exact files.
 Confirm each fabrication, stencil, placement, insertion-solder and mechanical operation
 below explicitly. Identify any unsupported operation and quote electronics-only and
 finished assembly separately. Do not substitute parts or modify the magnetic stack
 without engineering review. Provide a CAM/placement preview and order-specific
 attrition/stock allocation before approval.
 
-PS-GAN-60W A12 — ENGINEERING / FACTORY REVIEW ONLY
+PS-GAN-60W A13 — ENGINEERING / FACTORY REVIEW ONLY
 Do not order from this package until the remaining factory and engineering gates are closed.
 Five assembled units; 75 top-side placements each (73 SMT + 2 insertion headers).
 Use JLC Standard service. The single-board outline is 64 x 56 mm. Supply the matched single-board
@@ -27,6 +27,9 @@ ASSEMBLY
 U1 uses TI RAR0017B separated copper/mask/paste, approximately 75–76% power-land
 paste coverage and the 0.125 mm stencil example. Supplier must approve transfer,
 mask registration, cap planarity, profile and hidden-joint X-ray criteria.
+R20-R23 and R25-R28 use matched 0.20 mm pad necks and off-land branches/vias.
+Keep these necks and the supplied equal paste apertures during CAM. Validate paste
+print, placement and reflow balance on first articles; routing alone does not qualify yield.
 Review every exact part code, package-center coordinate, pin 1 and rotation against
 the supplier model. KiCad angles are raw, not a universal JLC rotation correction.
 Both headers: pin 2 positive, pin 1 return; removable plugs ship separately unless agreed.

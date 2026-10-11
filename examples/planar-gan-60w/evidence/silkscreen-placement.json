@@ -1,11 +1,11 @@
 {
-  "revision": "A12",
+  "revision": "A13",
   "mask_clearance_target_mm": 0.22,
   "text_to_courtyard_target_mm": 0.1,
   "items": [
     {
       "owner": "board",
-      "item": "PS-GAN-60W  /  A12",
+      "item": "PS-GAN-60W  /  A13",
       "position_mm": [
         84.0,
         110.35

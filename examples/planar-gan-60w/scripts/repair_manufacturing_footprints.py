@@ -1,4 +1,4 @@
-"""Repair bundled A12 library footprints, using TI RAR0017B dimensions for U1.
+"""Repair bundled A13 library footprints, using TI RAR0017B dimensions for U1.
 
 Run with KiCad Python. Edits existing PS library items, never system libraries.
 The dimensions below are in mm about the manufacturer's package center.
@@ -110,9 +110,10 @@ for fn,part in sorted(byname.items()):
         else:y=(box.GetY()/1e6-.45) if y<0 else (box.GetBottom()/1e6+.45)
         if fn=='SOIC-8_L4.9-W3.9-P1.27-LS6.0-BL':x,y=-2.5,3.95
         if fn=='VSONP-8_L3.1-W3.1-P0.65-LS3.5-BL':x,y=-1.8,2.1
+        if fn=='OPTO-SMD-4_L4.4-W4.1-P2.54-LS7.0-BL':x,y=-1.7,4.25
         s=p.PCB_SHAPE(f);s.SetShape(p.SHAPE_T_CIRCLE);s.SetLayer(p.F_SilkS);s.SetWidth(p.FromMM(.15));s.SetFillMode(p.FILL_T_FILLED_SHAPE);s.SetCenter(p.VECTOR2I(p.FromMM(x),p.FromMM(y)));s.SetEnd(p.VECTOR2I(p.FromMM(x+.12),p.FromMM(y)));f.Add(s)
     f.SetFPID(p.LIB_ID('',fn))
     p.FootprintSave(str(L.resolve()),f)
     report.append({'footprint':fn,'courtyard_mm':[x0,y0,x1,y1],'allowance_mm':.25})
-(R/'evidence/footprint-repairs.json').write_text(json.dumps({'revision':'A12','source':'https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf','U1':'RAR0017B copper, mask and stencil reconstructed from dimensioned TI example; package-center origin','courtyards':report},indent=2)+'\n',encoding='utf8')
+(R/'evidence/footprint-repairs.json').write_text(json.dumps({'revision':'A13','source':'https://www.ti.com/lit/ds/symlink/lmg2100r044.pdf','U1':'RAR0017B copper, mask and stencil reconstructed from dimensioned TI example; package-center origin','courtyards':report},indent=2)+'\n',encoding='utf8')
 print('Repaired U1 and',len(report),'bundled footprint courtyards / polarity markers.')
