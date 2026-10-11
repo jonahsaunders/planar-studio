@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-10",
+  "source_type": "DigiKey public page displayed through web tool; not reserved; may be cached",
+  "parts": [
+    {
+      "mpn": "B66285G0050X187",
+      "stock": 530,
+      "quantity_for_5_boards": 10,
+      "unit_USD_at_10": 2.1,
+      "url": "https://www.digikey.com/en/products/detail/tdk/B66285G0050X187/11488590"
+    },
+    {
+      "mpn": "B66286A2000X000",
+      "stock": 9596,
+      "quantity_for_5_boards": 10,
+      "unit_USD_at_10": 0.355,
+      "url": "https://www.digikey.com/en/products/detail/tdk/B66286A2000X000/3915552"
+    }
+  ]
+}

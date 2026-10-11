@@ -1,3 +1,5 @@
+> Historical design study. A11 manufacturing repairs and current measurements are in [README.md](README.md), [VALIDATION.md](VALIDATION.md) and [Manufacturing-audit.html](Manufacturing-audit.html).
+
 # A10 schematic / A8 hardware: return paths and output distribution
 
 Reviewed 10 October 2026. This pass adds six creator resources to the three

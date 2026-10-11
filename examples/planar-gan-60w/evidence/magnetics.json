@@ -48,7 +48,7 @@
     "placementRotation": 0,
     "placementGrid": 0.5,
     "leakageModel": "geometry",
-    "measuredLeakage": 1e-06,
+    "measuredLeakage": 0.000001,
     "lossModel": "ac",
     "capacitanceModel": "estimate",
     "dielectricEr": 4.2,
@@ -124,7 +124,7 @@
     "family": "aircore",
     "stackPlan": "P,S,S,P",
     "copperLayers": "F.Cu,In1.Cu,In6.Cu,B.Cu",
-    "layerPositions": "0,.20,1.33,1.53",
+    "layerPositions": "0.000,0.293,1.292,1.585",
     "secondary2Turns": 3,
     "secondary3Turns": 3,
     "viaPad": 0.6,
@@ -149,7 +149,7 @@
     "dOuter": 14.4,
     "traceW": 0.6,
     "traceS": 0.2,
-    "boardT": 1.6,
+    "boardT": 1.655,
     "copperOz": 2,
     "tempC": 80,
     "freq": 193000,
@@ -173,28 +173,98 @@
     "secondary_half_A": 2,
     "secondary_half_B": 2
   },
-  "copper_um": 70,
-  "stackup_status": "8 layers, six winding layers plus two routing layers; 2 oz all layers; dielectric positions are preliminary. JLCPCB must accept exact build.",
-  "P_Rdc_80C_ohm": 0.1558958998019106,
-  "S_half_Rdc_80C_ohm": 0.038883552484576804,
+  "copper_um": {
+    "outer": 70,
+    "inner": 61
+  },
+  "stackup_status": "JLC081622-1080 specified: 1.655 mm copper/dielectric construction, 70 um outer and 61 um inner copper. Nominal CAD/model agree; order-specific acceptance and material tolerances remain open.",
+  "stack": {
+    "revision": "A11",
+    "construction": "JLC081622-1080",
+    "source": "https://cart.jlcpcb.com/quote",
+    "source_evidence": "../evidence/JLC-stack-candidate.jpg",
+    "status": "Specified design construction; order-specific factory CAM acceptance remains required",
+    "copper_layers": [
+      "F.Cu",
+      "In1.Cu",
+      "In2.Cu",
+      "In3.Cu",
+      "In4.Cu",
+      "In5.Cu",
+      "In6.Cu",
+      "B.Cu"
+    ],
+    "copper_mm": [
+      0.07,
+      0.061,
+      0.061,
+      0.061,
+      0.061,
+      0.061,
+      0.061,
+      0.07
+    ],
+    "dielectric_mm": [
+      0.2275,
+      0.1,
+      0.197,
+      0.1,
+      0.197,
+      0.1,
+      0.2275
+    ],
+    "dielectric_types": [
+      "prepreg",
+      "core",
+      "prepreg",
+      "core",
+      "prepreg",
+      "core",
+      "prepreg"
+    ],
+    "nominal_copper_plus_dielectric_mm": 1.655,
+    "supplier_thickness_tolerance_percent": 10,
+    "finish": "ENIG",
+    "solder_mask": "Green LPI; thickness additional and process controlled",
+    "filled_capped_interconnect_drill_mm": 0.3,
+    "open_connector_PTH_mm": 1.6,
+    "open_mounting_NPTH_mm": 3.2,
+    "laminate": "FR4; exact manufacturer grade and minimum delivered copper require factory confirmation",
+    "model_dielectric_constant": 4.5,
+    "model_loss_tangent": 0.02,
+    "dielectric_model_note": "Unqualified modeling assumptions, not measured properties or an impedance requirement"
+  },
+  "layer_center_positions_relative_to_top_copper_mm": [
+    0,
+    0.2929999999999999,
+    0.45399999999999996,
+    0.7119999999999999,
+    0.8729999999999999,
+    1.131,
+    1.292,
+    1.5849999999999997
+  ],
+  "P_Rdc_80C_ohm": 0.15594563192567534,
+  "S_half_Rdc_80C_ohm": 0.04455316864104263,
   "expected_P_Irms_A": 4,
   "expected_S_half_Irms_A": 3.9269908169872414,
-  "winding_DC_loss_W": 3.6936008991173455,
-  "leakage_seed_H": 8.350327342309342e-08,
+  "winding_DC_loss_W": 3.8692618273799013,
+  "leakage_seed_H": 1.2700283794401786e-7,
   "leakage_note": "Seed estimate only; duplicated secondary layers and delivered stack change this. Measure Lshort; tune discrete resonant inductor.",
   "flux_square_wave_screen_T": 0.09976920058265214,
   "limitations": [
     "No solved LLC rectifier waveforms in Planar Studio.",
     "Core-loss model is sinusoidal and is not a thermal qualification.",
-    "Internal copper weights, dielectric spacing, DFM and core fit require factory review."
+    "Secondary per-half resistance divides the seed full-secondary series value by four for two parallel layers; shared termination and via-barrel current distribution require extraction/measurement.",
+    "Published nominal construction is adopted; delivered copper minima, dielectric properties, finished thickness, DFM and core fit require factory review."
   ],
   "mechanical": {
     "manufacturer": "TDK",
     "material": "N87",
-    "name": "TDK EELP 22/6/16 \u00b7 2 \u00d7 factory 0.05 mm gap \u00b7 N87",
+    "name": "TDK EELP 22/6/16 · 2 × factory 0.05 mm gap · N87",
     "parts": [
-      "2 \u00d7 B66285G0050X187",
-      "2 \u00d7 B66286A2000X000 clamps"
+      "2 × B66285G0050X187",
+      "2 × B66286A2000X000 clamps"
     ],
     "width": 21.8,
     "widthMax": 22.2,
@@ -209,13 +279,13 @@
     "ae": 78.3,
     "le": 32.5,
     "volume": 2540,
-    "al": 8.2e-07,
+    "al": 8.2e-7,
     "factoryGap": 0.1,
     "height": 11.4,
     "windowHeight": 6.4,
     "windowMin": 6.2,
     "source": "https://www.tdk-electronics.tdk.com/inf/80/db/fer/elp_22_6_16.pdf",
-    "alScope": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 \u00b10.01 mm gap. Measure assembled L; not a toleranced-AL assembly.",
+    "alScope": "Estimated pair AL from the 0.10 mm total-gap table; each ordered half has 0.05 ±0.01 mm gap. Measure assembled L; not a toleranced-AL assembly.",
     "mounting": "Two B66286A2000X000 spring clamps. Reserve separate clamp clearance; ferrite openings alone do not verify clamp fit.",
     "modified": false,
     "issues": [],
@@ -302,7 +372,7 @@
     {
       "x": -2.764819604813623,
       "y": 13.53777161611589,
-      "name": "P\u2212",
+      "name": "P−",
       "net": "T1_PRI",
       "nodeId": "P:2",
       "winding": "P"
@@ -326,11 +396,10 @@
     {
       "x": 2.7648196048136215,
       "y": -13.53777161611589,
-      "name": "S\u2212",
+      "name": "S−",
       "net": "T1_SEC",
       "nodeId": "S:2",
       "winding": "S"
     }
-  ],
-  "current_basis": "4 Arms primary engineering thermal screen; A9 full-load FHA corner maximum 3.503 A. Not a guaranteed fault bound."
+  ]
 }

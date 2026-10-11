@@ -119,6 +119,12 @@ connections. The accompanying MIT PER and video studies explain the layout decis
 and a portable rebuild pass. Factory DFM, ferrite installation and electrical,
 magnetic and thermal qualification remain open. 60 W is not a measured result.
 
+**Manufacturing audit: do not order the current revision.** The five-board
+review found overlapping same-net component lands, incomplete courtyards,
+GaN stencil/mask and placement-origin issues, and a factory stack mismatch.
+The [audit and cost breakdown](examples/planar-gan-60w/Manufacturing-audit.html)
+record required corrections and unconfirmed turnkey operations.
+
 [Explore the native KiCad example](examples/planar-gan-60w/README.md)
 · [KiCad package](examples/PS-GAN-60W-A10-KiCad.zip)
 · [Layout resource review](examples/planar-gan-60w/DEEP-LAYOUT-REVIEW.md)

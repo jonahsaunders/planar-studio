@@ -1,3 +1,5 @@
+> Historical design study. A11 manufacturing repairs and current measurements are in [README.md](README.md), [VALIDATION.md](VALIDATION.md) and [Manufacturing-audit.html](Manufacturing-audit.html).
+
 # A7 layout changes informed by video review
 
 Historical A9 package review. See [the current A10 / A8 review](DEEP-LAYOUT-REVIEW.md) for the subsequent routing and reference-plane changes.

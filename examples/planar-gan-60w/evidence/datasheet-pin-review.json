@@ -1,8 +1,8 @@
 {
   "result": "pass",
   "date": "2026-10-10",
-  "hardware_revision": "A6",
-  "schematic_revision": "A8",
+  "hardware_revision": "A8",
+  "schematic_revision": "A10",
   "device_checks": [
     {
       "ref": "U1",

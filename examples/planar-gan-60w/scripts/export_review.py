@@ -3,10 +3,15 @@ Usage: python scripts/export_review.py [full/path/to/kicad-cli]
 This is an export gate, not authorization to order or a hardware qualification.
 """
 from pathlib import Path
-import subprocess,sys,csv,json,zipfile,shutil
+import subprocess,sys,csv,json,zipfile,shutil,hashlib
 R=Path(__file__).resolve().parents[1];K=Path(sys.argv[1]) if len(sys.argv)>1 else Path(shutil.which('kicad-cli') or 'C:/Program Files/KiCad/10.0/bin/kicad-cli.exe')
 SCH=R/'kicad/PS-GAN-60W.kicad_sch';PCB=SCH.with_suffix('.kicad_pcb');E=R/'evidence';M=R/'manufacturing-prototype';G=M/'gerbers'
 for d in [E,M,G,E/'pcb-layers',E/'schematic-svg']:d.mkdir(parents=True,exist_ok=True)
+# Export the real native legend, without mask-clipped fragments. Require the
+# unclipped stroke-clearance audit to match this exact board before plotting.
+style=json.loads((E/'routing-and-silk-audit.json').read_text(encoding='utf8'))
+assert style['native_board_sha256']==hashlib.sha256(PCB.read_bytes()).hexdigest(), 'Run audit_routing_and_silk.py for the current PCB first'
+assert not style['current']['silk_mask_clearance_under_0p2mm']
 def run(*a):
  r=subprocess.run([str(K),*[str(x) for x in a]],capture_output=True,text=True)
  print(r.stdout.strip())
@@ -19,8 +24,8 @@ n=E/'netlist.xml'
 n.write_text(n.read_text(encoding='utf8').replace(str(SCH),'kicad/PS-GAN-60W.kicad_sch'),encoding='utf8')
 run('sch','export','pdf','--output',R/'Schematic.pdf','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
 run('sch','export','svg','--output',E/'schematic-svg','--drawing-sheet',R/'kicad/schematic-frame.kicad_wks',SCH)
-run('sch','export','bom','--fields','Value,Voltage,Reference,Footprint,LCSC,QUANTITY','--labels','Comment,Voltage,Designator,Footprint,LCSC Part #,Quantity','--group-by','LCSC','--ref-range-delimiter','','--output',M/'BOM-JLCPCB.csv',SCH)
-run('pcb','export','gerbers','--output',G,'--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.SilkS,B.SilkS,Edge.Cuts','--use-drill-file-origin','--subtract-soldermask',PCB)
+run('sch','export','bom','--fields','MPN,Reference,Footprint,LCSC,Manufacturer,Value,Voltage,QUANTITY','--labels','Comment,Designator,Footprint,LCSC Part #,Manufacturer,Value,Voltage,Quantity','--group-by','LCSC','--ref-range-delimiter','','--output',M/'BOM-JLCPCB.csv',SCH)
+run('pcb','export','gerbers','--output',G,'--layers','F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,In5.Cu,In6.Cu,B.Cu,F.Mask,B.Mask,F.Paste,F.SilkS,B.SilkS,Edge.Cuts','--use-drill-file-origin',PCB)
 run('pcb','export','drill','--output',G,'--drill-origin','plot','--excellon-separate-th','--excellon-units','mm','--generate-report','--report-path',E/'Drill-report.txt',PCB)
 run('pcb','export','pos','--output',E/'positions-raw.csv','--format','csv','--units','mm','--side','front','--exclude-dnp','--use-drill-file-origin',PCB)
 from convert_position import convert_positions

@@ -5,21 +5,22 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-10-10T18:55:09-04:00"
+    "CreationDate": "2026-10-10T20:35:56-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "PS-GAN-60W",
       "GUID": "50532d47-414e-42d3-9630-572e6b696361",
-      "Revision": "A8 REVIEW - NOT FOR FABRICATION"
+      "Revision": "A12 ENGINEERING PROTOTYPE"
     },
     "Size": {
       "X": 64.05,
       "Y": 56.05
     },
     "LayerNumber": 8,
-    "BoardThickness": 1.6,
-    "Finish": "ENIG"
+    "BoardThickness": 1.655,
+    "Finish": "ENIG",
+    "ImpedanceControlled": true
   },
   "DesignRules": [
     {
@@ -33,8 +34,8 @@
     },
     {
       "Layers": "Inner",
-      "PadToPad": 0.2,
-      "PadToTrack": 0.2,
+      "PadToPad": 0.0,
+      "PadToTrack": 0.0,
       "TrackToTrack": 0.2,
       "MinLineWidth": 0.2,
       "TrackToRegion": 0.25,
@@ -133,6 +134,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "F.Cu/In1.Cu",
       "Notes": "Type: dielectric layer 1 (from F.Cu to In1.Cu)"
     },
@@ -143,6 +146,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In1.Cu/In2.Cu",
       "Notes": "Type: dielectric layer 2 (from In1.Cu to In2.Cu)"
     },
@@ -153,6 +158,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In2.Cu/In3.Cu",
       "Notes": "Type: dielectric layer 3 (from In2.Cu to In3.Cu)"
     },
@@ -163,6 +170,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In3.Cu/In4.Cu",
       "Notes": "Type: dielectric layer 4 (from In3.Cu to In4.Cu)"
     },
@@ -173,6 +182,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In4.Cu/In5.Cu",
       "Notes": "Type: dielectric layer 5 (from In4.Cu to In5.Cu)"
     },
@@ -183,6 +194,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In5.Cu/In6.Cu",
       "Notes": "Type: dielectric layer 6 (from In5.Cu to In6.Cu)"
     },
@@ -193,6 +206,8 @@
     {
       "Type": "Dielectric",
       "Material": "FR4",
+      "DielectricConstant": "4.5",
+      "LossTangent": "0.02",
       "Name": "In6.Cu/B.Cu",
       "Notes": "Type: dielectric layer 7 (from In6.Cu to B.Cu)"
     },
