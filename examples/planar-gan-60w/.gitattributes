@@ -11,4 +11,3 @@ manufacturing-prototype/gerbers/** linguist-generated=true -whitespace
 *.html linguist-generated=true
 kicad/** linguist-generated=true -whitespace
 planar-studio/** linguist-generated=true -whitespace
-build/panel-A11/** linguist-generated=true -whitespace

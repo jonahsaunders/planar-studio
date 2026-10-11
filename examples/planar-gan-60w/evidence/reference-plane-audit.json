@@ -1,5 +1,5 @@
 {
-  "revision": "A11",
+  "revision": "A12",
   "sample_step_max_mm": 0.025,
   "own_net_via_exclusion_radius_mm": 0.65,
   "method": "Sample every explicit selected-net trace centerline against filled same-domain copper on either immediately adjacent layer. Report raw coverage and coverage excluding only the selected net's own via antipads. Never exclude foreign-net voids. Does not measure copper width, return-current distribution, inductance or crosstalk; not a universal all-net coverage claim.",
@@ -12,9 +12,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 15.438,
-      "raw_adjacent_coverage_percent": 82.345,
-      "length_outside_own_via_clearances_mm": 12.217,
+      "total_trace_length_mm": 15.795,
+      "raw_adjacent_coverage_percent": 82.068,
+      "length_outside_own_via_clearances_mm": 12.467,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -26,9 +26,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 14.439,
-      "raw_adjacent_coverage_percent": 84.883,
-      "length_outside_own_via_clearances_mm": 11.86,
+      "total_trace_length_mm": 14.13,
+      "raw_adjacent_coverage_percent": 84.49,
+      "length_outside_own_via_clearances_mm": 11.492,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -53,9 +53,9 @@
         "F.Cu",
         "In4.Cu"
       ],
-      "total_trace_length_mm": 22.108,
-      "raw_adjacent_coverage_percent": 90.145,
-      "length_outside_own_via_clearances_mm": 19.533,
+      "total_trace_length_mm": 22.197,
+      "raw_adjacent_coverage_percent": 89.833,
+      "length_outside_own_via_clearances_mm": 19.495,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -66,9 +66,9 @@
       "signal_layers": [
         "F.Cu"
       ],
-      "total_trace_length_mm": 10.521,
+      "total_trace_length_mm": 10.094,
       "raw_adjacent_coverage_percent": 100.0,
-      "length_outside_own_via_clearances_mm": 10.521,
+      "length_outside_own_via_clearances_mm": 10.094,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -80,9 +80,9 @@
         "F.Cu",
         "In4.Cu"
       ],
-      "total_trace_length_mm": 8.818,
-      "raw_adjacent_coverage_percent": 81.403,
-      "length_outside_own_via_clearances_mm": 6.88,
+      "total_trace_length_mm": 8.643,
+      "raw_adjacent_coverage_percent": 80.984,
+      "length_outside_own_via_clearances_mm": 6.701,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -94,9 +94,9 @@
         "F.Cu",
         "In4.Cu"
       ],
-      "total_trace_length_mm": 8.435,
-      "raw_adjacent_coverage_percent": 78.635,
-      "length_outside_own_via_clearances_mm": 6.285,
+      "total_trace_length_mm": 8.384,
+      "raw_adjacent_coverage_percent": 78.472,
+      "length_outside_own_via_clearances_mm": 6.254,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -121,8 +121,8 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 8.813,
-      "raw_adjacent_coverage_percent": 80.919,
+      "total_trace_length_mm": 8.844,
+      "raw_adjacent_coverage_percent": 80.633,
       "length_outside_own_via_clearances_mm": 6.834,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
@@ -135,9 +135,9 @@
         "F.Cu",
         "In5.Cu"
       ],
-      "total_trace_length_mm": 13.561,
-      "raw_adjacent_coverage_percent": 87.854,
-      "length_outside_own_via_clearances_mm": 11.614,
+      "total_trace_length_mm": 13.251,
+      "raw_adjacent_coverage_percent": 87.571,
+      "length_outside_own_via_clearances_mm": 11.305,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -149,9 +149,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 10.654,
-      "raw_adjacent_coverage_percent": 76.911,
-      "length_outside_own_via_clearances_mm": 7.75,
+      "total_trace_length_mm": 10.715,
+      "raw_adjacent_coverage_percent": 77.634,
+      "length_outside_own_via_clearances_mm": 7.853,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -176,9 +176,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 10.798,
-      "raw_adjacent_coverage_percent": 84.884,
-      "length_outside_own_via_clearances_mm": 8.869,
+      "total_trace_length_mm": 10.505,
+      "raw_adjacent_coverage_percent": 84.463,
+      "length_outside_own_via_clearances_mm": 8.576,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -190,9 +190,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 21.459,
-      "raw_adjacent_coverage_percent": 92.345,
-      "length_outside_own_via_clearances_mm": 19.518,
+      "total_trace_length_mm": 21.02,
+      "raw_adjacent_coverage_percent": 92.185,
+      "length_outside_own_via_clearances_mm": 19.079,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -203,9 +203,9 @@
       "signal_layers": [
         "F.Cu"
       ],
-      "total_trace_length_mm": 10.943,
+      "total_trace_length_mm": 11.113,
       "raw_adjacent_coverage_percent": 100.0,
-      "length_outside_own_via_clearances_mm": 10.943,
+      "length_outside_own_via_clearances_mm": 11.113,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -217,9 +217,9 @@
         "F.Cu",
         "In2.Cu"
       ],
-      "total_trace_length_mm": 14.66,
-      "raw_adjacent_coverage_percent": 85.147,
-      "length_outside_own_via_clearances_mm": 12.063,
+      "total_trace_length_mm": 14.469,
+      "raw_adjacent_coverage_percent": 84.174,
+      "length_outside_own_via_clearances_mm": 11.761,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     },
@@ -230,9 +230,9 @@
       "signal_layers": [
         "In2.Cu"
       ],
-      "total_trace_length_mm": 11.078,
-      "raw_adjacent_coverage_percent": 90.089,
-      "length_outside_own_via_clearances_mm": 9.78,
+      "total_trace_length_mm": 11.171,
+      "raw_adjacent_coverage_percent": 90.193,
+      "length_outside_own_via_clearances_mm": 9.877,
       "coverage_outside_own_via_clearances_percent": 100.0,
       "uncovered_sample_examples": []
     }

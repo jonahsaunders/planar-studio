@@ -27,7 +27,7 @@
   ],
   "rows": [
     {
-      "Item": "PCB fabrication, one-up handling panel, ENIG, all-layer heavy copper, filled/capped vias",
+      "Item": "PCB fabrication and JLC factory panelization, ENIG, all-layer heavy copper, filled/capped vias",
       "Low_USD": 100,
       "High_USD": 250,
       "Basis": "ENGINEERING ALLOWANCE; no valid online PCB quote; final panel and stack may exceed it"

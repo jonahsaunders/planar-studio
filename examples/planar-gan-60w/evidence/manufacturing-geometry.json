@@ -1,11 +1,11 @@
 {
   "date": "2026-10-10",
-  "revision": "A11",
+  "revision": "A12",
   "method": "Native KiCad polygons approximated outward with maximum 0.001 mm error. Hole distances use nominal circular drills. Mask geometry uses copper polygon plus native mask expansion. Does not model registration tolerances, etch compensation, paste process, 3D collisions or supplier CAM edits.",
   "copper_layers": 8,
   "board_nominal_thickness_mm": 1.655,
   "min_routed_track_width_mm": 0.16,
-  "via_count": 209,
+  "via_count": 211,
   "via_sizes_mm": [
     [
       0.6,
@@ -13,70 +13,70 @@
     ]
   ],
   "holes_by_diameter_and_plating": {
+    "(0.3, True)": 217,
     "(3.2, False)": 4,
-    "(1.6, True)": 4,
-    "(0.3, True)": 215
+    "(1.6, True)": 4
   },
   "smallest_hole_edge_gaps_mm": [
     [
       0.3055782360686375,
-      "via55",
-      "via60"
+      "via80",
+      "via102"
     ],
     [
       0.34031242374328846,
-      "via16",
-      "via31"
+      "via72",
+      "via104"
     ],
     [
       0.3499999999999915,
-      "via107",
-      "via113"
+      "via1",
+      "via9"
     ],
     [
       0.3499999999999915,
-      "via47",
-      "via52"
+      "via75",
+      "via91"
     ],
     [
       0.3499999999999986,
-      "via110",
-      "via114"
+      "via0",
+      "via2"
     ],
     [
       0.3499999999999986,
-      "via112",
-      "via123"
+      "via131",
+      "via149"
     ],
     [
       0.3499999999999986,
-      "via114",
-      "via122"
+      "via133",
+      "via164"
     ],
     [
       0.3499999999999986,
-      "via116",
-      "via123"
+      "via136",
+      "via153"
     ],
     [
       0.3499999999999986,
-      "via65",
-      "via75"
+      "via137",
+      "via152"
     ],
     [
       0.3499999999999986,
-      "via65",
-      "via92"
+      "via142",
+      "via149"
     ],
     [
       0.3499999999999986,
-      "via74",
-      "via97"
+      "via154",
+      "via164"
     ],
     [
       0.3499999999999986,
-      "via77",
-      "via83"
+      "via2",
+      "via10"
     ]
   ],
   "hole_gap_under_0p2_mm": [],
@@ -222,28 +222,28 @@
     ],
     [
       0.6500010000007586,
-      "R18.1",
-      "R17.2"
+      "R17.2",
+      "R18.1"
     ],
     [
       0.6524103358048435,
-      "C21.2",
-      "C24.1"
+      "C24.1",
+      "C21.2"
     ],
     [
       0.6750000000000113,
-      "U6.3",
-      "C18.2"
+      "C18.2",
+      "U6.3"
     ],
     [
       0.6750001706327675,
-      "U3.4",
-      "C11.1"
+      "C11.1",
+      "U3.4"
     ],
     [
       0.6779636954377155,
-      "U6.4",
-      "R1.2"
+      "R1.2",
+      "U6.4"
     ],
     [
       0.700001000000379,
@@ -257,8 +257,8 @@
     ],
     [
       0.7036751945067465,
-      "C3.2",
-      "L1.1"
+      "L1.1",
+      "C3.2"
     ],
     [
       0.7250000000000085,
@@ -277,33 +277,33 @@
     ],
     [
       0.7500000338774998,
-      "R18.2",
-      "C24.2"
+      "C24.2",
+      "R18.2"
     ],
     [
       0.7500002821835788,
-      "R18.1",
-      "C20.1"
+      "C20.1",
+      "R18.1"
     ],
     [
       0.7500005184823861,
-      "R18.2",
-      "C20.2"
+      "C20.2",
+      "R18.2"
     ],
     [
       0.7500010000006007,
-      "R22.1",
-      "R23.2"
+      "R23.2",
+      "R22.1"
     ],
     [
       0.7529676942085308,
-      "U4.7",
-      "C20.1"
+      "C20.1",
+      "U4.7"
     ],
     [
       0.7750000000000058,
-      "U2.4",
-      "C18.1"
+      "C18.1",
+      "U2.4"
     ],
     [
       0.7750004596328403,
@@ -317,75 +317,25 @@
     ],
     [
       0.7850000000000108,
-      "C12.1",
-      "Q2.3"
+      "Q2.3",
+      "C12.1"
     ],
     [
       0.7850000000000108,
-      "C12.1",
-      "Q2.4"
+      "Q2.4",
+      "C12.1"
     ],
     [
       0.7850000000000109,
-      "C12.2",
-      "Q2.1"
+      "Q2.1",
+      "C12.2"
     ]
   ],
   "different_component_copper_overlaps": [],
   "courtyard_does_not_enclose_copper_pads": [],
   "polarized_footprint_silk_graphic_screen": [
     {
-      "ref": "D1",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U7",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U4",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U6",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U9",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U3",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
       "ref": "U8",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U2",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "U5",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "Q1",
-      "footprint_has_top_silk_graphics": true,
-      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
-    },
-    {
-      "ref": "Q2",
       "footprint_has_top_silk_graphics": true,
       "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
     },
@@ -398,114 +348,164 @@
       "ref": "U1",
       "footprint_has_top_silk_graphics": true,
       "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U5",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "Q2",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U3",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U7",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U9",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U4",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "Q1",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U6",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "D1",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
+    },
+    {
+      "ref": "U2",
+      "footprint_has_top_silk_graphics": true,
+      "note": "Graphics presence alone does not prove an unambiguous pin-1/cathode marker."
     }
   ],
   "foreign_mask_gaps_under_0p2_mm": [],
   "smallest_internal_via_hole_to_foreign_copper_mm": [
     [
       0.34940361765810457,
-      "via185",
+      "via201",
       "In5.Cu",
       "BIAS12"
     ],
     [
-      0.3750000000000058,
-      "via161",
-      "In2.Cu",
-      "Net-(U2-GD2)"
-    ],
-    [
-      0.3802681272327275,
-      "via182",
+      0.3743156128230426,
+      "via174",
       "In4.Cu",
       "VOUT"
     ],
     [
+      0.37500000000000555,
+      "via55",
+      "In2.Cu",
+      "Net-(U2-GD2)"
+    ],
+    [
+      0.399999999999997,
+      "via194",
+      "In3.Cu",
+      "/TANK_C"
+    ],
+    [
       0.39999999999999714,
-      "via152",
+      "via50",
       "In2.Cu",
       "/FB_COL"
     ],
     [
       0.39999999999999714,
-      "via27",
+      "via85",
       "In2.Cu",
       "/LI"
     ],
     [
       0.40049807969137174,
-      "via111",
+      "via14",
       "In1.Cu",
       "SGND"
     ],
     [
       0.40049807969137174,
-      "via111",
+      "via14",
       "In5.Cu",
       "SGND"
     ],
     [
       0.40049857779135856,
-      "via36",
+      "via113",
       "In3.Cu",
       "AGND"
     ],
     [
       0.4004985777913621,
-      "via110",
+      "via15",
       "In1.Cu",
       "SGND"
     ],
     [
       0.4004985777913621,
-      "via110",
+      "via15",
       "In5.Cu",
       "SGND"
     ],
     [
       0.4004985777913621,
-      "via114",
+      "via3",
       "In1.Cu",
-      "SGND"
-    ],
-    [
-      0.4004985777913621,
-      "via114",
-      "In5.Cu",
       "SGND"
     ]
   ],
   "internal_via_hole_clearance_under_0p2_mm": [],
   "smallest_mask_opening_to_foreign_top_track_mm": [
     [
-      0.2157242197212257,
+      0.20228121514613542,
+      "U5.3",
+      "AGND"
+    ],
+    [
+      0.21548420823300174,
       "R13.2",
       "Net-(T1-S_END)"
     ],
     [
-      0.2699179971738394,
+      0.25053853917611296,
+      "Q2.1",
+      "Net-(T1-S_END)"
+    ],
+    [
+      0.2622058010656949,
+      "U1.12",
+      "/LI"
+    ],
+    [
+      0.26999999999999597,
       "U1.13",
       "/HI"
-    ],
-    [
-      0.2732246029104019,
-      "U1.15",
-      "V5"
-    ],
-    [
-      0.2732246083164477,
-      "U1.14",
-      "AGND"
     ],
     [
       0.2740000000000009,
       "U1.11",
       "Net-(U1-HB)"
-    ],
-    [
-      0.2749299999999977,
-      "U1.16",
-      "AGND"
     ],
     [
       0.2749999999999915,
@@ -514,28 +514,28 @@
     ],
     [
       0.2749999999999915,
+      "U1.15",
+      "V5"
+    ],
+    [
+      0.2749999999999915,
+      "U1.16",
+      "AGND"
+    ],
+    [
+      0.2749999999999915,
       "U1.9",
       "Net-(U1-HB)"
     ],
     [
-      0.27586185451486434,
-      "U3.8",
-      "VOUT"
-    ],
-    [
-      0.27891810658400484,
-      "U5.3",
+      0.2750000000000057,
+      "U1.14",
       "AGND"
     ],
     [
-      0.29186425650194175,
-      "U1.12",
-      "/LI"
-    ],
-    [
-      0.3249999999999958,
-      "Q2.4",
-      "SGND"
+      0.27765115314489613,
+      "U3.8",
+      "VOUT"
     ]
   ],
   "silkscreen_below_1mm_height_or_0p15mm_stroke": [],
@@ -543,1167 +543,907 @@
     {
       "via": "via0",
       "pads": [
-        "C1.1"
+        "C13.1"
       ]
     },
     {
       "via": "via1",
       "pads": [
-        "D1.1"
+        "C15.1"
       ]
     },
     {
       "via": "via2",
       "pads": [
-        "F1.2"
+        "C13.1"
       ]
     },
     {
       "via": "via3",
       "pads": [
-        "R14.1"
+        "C16.1"
+      ]
+    },
+    {
+      "via": "via4",
+      "pads": [
+        "C15.1"
       ]
     },
     {
       "via": "via5",
       "pads": [
-        "C19.1"
+        "C14.1"
       ]
     },
     {
       "via": "via6",
       "pads": [
-        "C2.1"
+        "R27.1"
       ]
     },
     {
       "via": "via7",
       "pads": [
-        "U8.1"
+        "R22.1"
       ]
     },
     {
       "via": "via8",
       "pads": [
-        "R25.2"
+        "C16.1"
+      ]
+    },
+    {
+      "via": "via9",
+      "pads": [
+        "C15.1"
       ]
     },
     {
       "via": "via10",
       "pads": [
-        "C3.2"
+        "C13.1"
       ]
     },
     {
-      "via": "via12",
-      "pads": [
-        "U4.1"
-      ]
-    },
-    {
-      "via": "via13",
-      "pads": [
-        "R18.2"
-      ]
-    },
-    {
-      "via": "via14",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via16",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via17",
-      "pads": [
-        "C3.2"
-      ]
-    },
-    {
-      "via": "via19",
-      "pads": [
-        "U1.6"
-      ]
-    },
-    {
-      "via": "via20",
-      "pads": [
-        "C1.2"
-      ]
-    },
-    {
-      "via": "via27",
-      "pads": [
-        "C7.2"
-      ]
-    },
-    {
-      "via": "via28",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via29",
-      "pads": [
-        "C21.2"
-      ]
-    },
-    {
-      "via": "via30",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via31",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via35",
-      "pads": [
-        "C3.2"
-      ]
-    },
-    {
-      "via": "via36",
-      "pads": [
-        "C8.2"
-      ]
-    },
-    {
-      "via": "via37",
-      "pads": [
-        "R16.1"
-      ]
-    },
-    {
-      "via": "via38",
-      "pads": [
-        "U1.6"
-      ]
-    },
-    {
-      "via": "via43",
-      "pads": [
-        "C22.2"
-      ]
-    },
-    {
-      "via": "via44",
-      "pads": [
-        "C2.2"
-      ]
-    },
-    {
-      "via": "via45",
-      "pads": [
-        "U1.6"
-      ]
-    },
-    {
-      "via": "via46",
-      "pads": [
-        "C8.2"
-      ]
-    },
-    {
-      "via": "via47",
-      "pads": [
-        "C2.2"
-      ]
-    },
-    {
-      "via": "via48",
-      "pads": [
-        "C19.2"
-      ]
-    },
-    {
-      "via": "via49",
-      "pads": [
-        "R15.2"
-      ]
-    },
-    {
-      "via": "via50",
-      "pads": [
-        "C19.2"
-      ]
-    },
-    {
-      "via": "via51",
-      "pads": [
-        "U1.6"
-      ]
-    },
-    {
-      "via": "via52",
-      "pads": [
-        "C2.2"
-      ]
-    },
-    {
-      "via": "via53",
-      "pads": [
-        "C8.2"
-      ]
-    },
-    {
-      "via": "via55",
-      "pads": [
-        "U1.17"
-      ]
-    },
-    {
-      "via": "via56",
-      "pads": [
-        "D1.2"
-      ]
-    },
-    {
-      "via": "via57",
-      "pads": [
-        "C7.2"
-      ]
-    },
-    {
-      "via": "via58",
-      "pads": [
-        "C7.2"
-      ]
-    },
-    {
-      "via": "via60",
-      "pads": [
-        "U1.17"
-      ]
-    },
-    {
-      "via": "via61",
-      "pads": [
-        "U4.9"
-      ]
-    },
-    {
-      "via": "via62",
-      "pads": [
-        "R23.1"
-      ]
-    },
-    {
-      "via": "via63",
-      "pads": [
-        "U7.2"
-      ]
-    },
-    {
-      "via": "via64",
-      "pads": [
-        "C27.2"
-      ]
-    },
-    {
-      "via": "via65",
-      "pads": [
-        "C16.2"
-      ]
-    },
-    {
-      "via": "via66",
-      "pads": [
-        "C29.2"
-      ]
-    },
-    {
-      "via": "via67",
-      "pads": [
-        "C14.2"
-      ]
-    },
-    {
-      "via": "via69",
-      "pads": [
-        "U9.3"
-      ]
-    },
-    {
-      "via": "via74",
-      "pads": [
-        "Q1.1"
-      ]
-    },
-    {
-      "via": "via75",
-      "pads": [
-        "C16.2"
-      ]
-    },
-    {
-      "via": "via77",
-      "pads": [
-        "Q2.3"
-      ]
-    },
-    {
-      "via": "via79",
-      "pads": [
-        "C13.2"
-      ]
-    },
-    {
-      "via": "via81",
-      "pads": [
-        "C14.2"
-      ]
-    },
-    {
-      "via": "via83",
-      "pads": [
-        "Q2.2"
-      ]
-    },
-    {
-      "via": "via84",
-      "pads": [
-        "C13.2"
-      ]
-    },
-    {
-      "via": "via85",
-      "pads": [
-        "C11.2"
-      ]
-    },
-    {
-      "via": "via87",
-      "pads": [
-        "R23.2"
-      ]
-    },
-    {
-      "via": "via89",
-      "pads": [
-        "C13.2"
-      ]
-    },
-    {
-      "via": "via90",
-      "pads": [
-        "C14.2"
-      ]
-    },
-    {
-      "via": "via92",
-      "pads": [
-        "C16.2"
-      ]
-    },
-    {
-      "via": "via93",
-      "pads": [
-        "U7.3"
-      ]
-    },
-    {
-      "via": "via94",
-      "pads": [
-        "C12.2"
-      ]
-    },
-    {
-      "via": "via96",
-      "pads": [
-        "C15.2"
-      ]
-    },
-    {
-      "via": "via97",
-      "pads": [
-        "Q1.2"
-      ]
-    },
-    {
-      "via": "via99",
-      "pads": [
-        "U3.5"
-      ]
-    },
-    {
-      "via": "via102",
-      "pads": [
-        "Q2.1"
-      ]
-    },
-    {
-      "via": "via103",
-      "pads": [
-        "R28.2"
-      ]
-    },
-    {
-      "via": "via105",
-      "pads": [
-        "C15.2"
-      ]
-    },
-    {
-      "via": "via106",
-      "pads": [
-        "U3.2"
-      ]
-    },
-    {
-      "via": "via107",
-      "pads": [
-        "C15.1"
-      ]
-    },
-    {
-      "via": "via108",
+      "via": "via11",
       "pads": [
         "C12.1"
       ]
     },
     {
-      "via": "via109",
-      "pads": [
-        "C14.1"
-      ]
-    },
-    {
-      "via": "via110",
-      "pads": [
-        "C16.1"
-      ]
-    },
-    {
-      "via": "via111",
-      "pads": [
-        "C14.1"
-      ]
-    },
-    {
-      "via": "via112",
-      "pads": [
-        "C13.1"
-      ]
-    },
-    {
-      "via": "via113",
-      "pads": [
-        "C15.1"
-      ]
-    },
-    {
-      "via": "via114",
-      "pads": [
-        "C16.1"
-      ]
-    },
-    {
-      "via": "via115",
-      "pads": [
-        "R27.1"
-      ]
-    },
-    {
-      "via": "via116",
-      "pads": [
-        "C13.1"
-      ]
-    },
-    {
-      "via": "via117",
-      "pads": [
-        "C15.1"
-      ]
-    },
-    {
-      "via": "via118",
-      "pads": [
-        "R22.1"
-      ]
-    },
-    {
-      "via": "via120",
-      "pads": [
-        "R25.1"
-      ]
-    },
-    {
-      "via": "via121",
-      "pads": [
-        "C14.1"
-      ]
-    },
-    {
-      "via": "via122",
-      "pads": [
-        "C16.1"
-      ]
-    },
-    {
-      "via": "via123",
-      "pads": [
-        "C13.1"
-      ]
-    },
-    {
-      "via": "via124",
+      "via": "via13",
       "pads": [
         "R20.1"
       ]
     },
     {
-      "via": "via126",
+      "via": "via14",
       "pads": [
-        "U5.5"
+        "C14.1"
       ]
     },
     {
-      "via": "via128",
+      "via": "via15",
       "pads": [
-        "C5.1"
+        "C16.1"
       ]
     },
     {
-      "via": "via131",
+      "via": "via16",
       "pads": [
-        "R1.2"
+        "C14.1"
       ]
     },
     {
-      "via": "via133",
+      "via": "via17",
       "pads": [
-        "U5.2"
+        "R25.1"
       ]
     },
     {
-      "via": "via134",
+      "via": "via18",
       "pads": [
-        "C25.2"
+        "R25.2"
       ]
     },
     {
-      "via": "via135",
+      "via": "via19",
       "pads": [
-        "U2.6"
+        "U8.1"
       ]
     },
     {
-      "via": "via136",
-      "pads": [
-        "R2.2"
-      ]
-    },
-    {
-      "via": "via137",
-      "pads": [
-        "D2.1"
-      ]
-    },
-    {
-      "via": "via140",
-      "pads": [
-        "R5.2"
-      ]
-    },
-    {
-      "via": "via143",
-      "pads": [
-        "C26.2"
-      ]
-    },
-    {
-      "via": "via144",
-      "pads": [
-        "C5.2"
-      ]
-    },
-    {
-      "via": "via145",
-      "pads": [
-        "C10.2"
-      ]
-    },
-    {
-      "via": "via146",
-      "pads": [
-        "R9.2"
-      ]
-    },
-    {
-      "via": "via147",
-      "pads": [
-        "R7.2"
-      ]
-    },
-    {
-      "via": "via152",
-      "pads": [
-        "U6.3"
-      ]
-    },
-    {
-      "via": "via155",
-      "pads": [
-        "C6.2"
-      ]
-    },
-    {
-      "via": "via157",
-      "pads": [
-        "C18.2"
-      ]
-    },
-    {
-      "via": "via158",
-      "pads": [
-        "U8.3"
-      ]
-    },
-    {
-      "via": "via159",
-      "pads": [
-        "C9.2"
-      ]
-    },
-    {
-      "via": "via162",
-      "pads": [
-        "C9.1"
-      ]
-    },
-    {
-      "via": "via163",
-      "pads": [
-        "U8.4"
-      ]
-    },
-    {
-      "via": "via164",
-      "pads": [
-        "R28.1"
-      ]
-    },
-    {
-      "via": "via165",
-      "pads": [
-        "U9.2"
-      ]
-    },
-    {
-      "via": "via166",
-      "pads": [
-        "U4.3"
-      ]
-    },
-    {
-      "via": "via167",
-      "pads": [
-        "R14.2"
-      ]
-    },
-    {
-      "via": "via168",
-      "pads": [
-        "C24.2"
-      ]
-    },
-    {
-      "via": "via169",
-      "pads": [
-        "R18.1"
-      ]
-    },
-    {
-      "via": "via170",
-      "pads": [
-        "R19.1"
-      ]
-    },
-    {
-      "via": "via171",
-      "pads": [
-        "U4.8"
-      ]
-    },
-    {
-      "via": "via172",
-      "pads": [
-        "U5.1"
-      ]
-    },
-    {
-      "via": "via173",
-      "pads": [
-        "C21.1"
-      ]
-    },
-    {
-      "via": "via174",
-      "pads": [
-        "C10.1"
-      ]
-    },
-    {
-      "via": "via175",
-      "pads": [
-        "C23.2"
-      ]
-    },
-    {
-      "via": "via176",
-      "pads": [
-        "U5.3"
-      ]
-    },
-    {
-      "via": "via177",
-      "pads": [
-        "C17.1"
-      ]
-    },
-    {
-      "via": "via178",
-      "pads": [
-        "C8.1"
-      ]
-    },
-    {
-      "via": "via179",
-      "pads": [
-        "F1.1"
-      ]
-    },
-    {
-      "via": "via180",
-      "pads": [
-        "Q1.9"
-      ]
-    },
-    {
-      "via": "via181",
-      "pads": [
-        "U3.4"
-      ]
-    },
-    {
-      "via": "via182",
-      "pads": [
-        "R12.2"
-      ]
-    },
-    {
-      "via": "via183",
-      "pads": [
-        "R9.1"
-      ]
-    },
-    {
-      "via": "via184",
-      "pads": [
-        "U2.3"
-      ]
-    },
-    {
-      "via": "via185",
-      "pads": [
-        "C23.1"
-      ]
-    },
-    {
-      "via": "via186",
-      "pads": [
-        "C24.1"
-      ]
-    },
-    {
-      "via": "via187",
-      "pads": [
-        "U3.8"
-      ]
-    },
-    {
-      "via": "via188",
-      "pads": [
-        "R11.1"
-      ]
-    },
-    {
-      "via": "via189",
+      "via": "via20",
       "pads": [
         "R20.2"
       ]
     },
     {
-      "via": "via190",
+      "via": "via21",
       "pads": [
         "U6.1"
       ]
     },
     {
-      "via": "via191",
+      "via": "via22",
       "pads": [
         "U7.1"
       ]
     },
     {
-      "via": "via192",
+      "via": "via23",
       "pads": [
         "R24.1"
       ]
     },
     {
-      "via": "via193",
+      "via": "via24",
       "pads": [
-        "U6.4"
+        "U5.2"
       ]
     },
     {
-      "via": "via194",
+      "via": "via25",
+      "pads": [
+        "R5.2"
+      ]
+    },
+    {
+      "via": "via27",
+      "pads": [
+        "R9.2"
+      ]
+    },
+    {
+      "via": "via29",
+      "pads": [
+        "C5.2"
+      ]
+    },
+    {
+      "via": "via31",
+      "pads": [
+        "D2.1"
+      ]
+    },
+    {
+      "via": "via32",
+      "pads": [
+        "C9.2"
+      ]
+    },
+    {
+      "via": "via34",
+      "pads": [
+        "U8.3"
+      ]
+    },
+    {
+      "via": "via35",
+      "pads": [
+        "C18.2"
+      ]
+    },
+    {
+      "via": "via36",
+      "pads": [
+        "C10.2"
+      ]
+    },
+    {
+      "via": "via39",
+      "pads": [
+        "C6.2"
+      ]
+    },
+    {
+      "via": "via43",
+      "pads": [
+        "U2.6"
+      ]
+    },
+    {
+      "via": "via45",
+      "pads": [
+        "C26.2"
+      ]
+    },
+    {
+      "via": "via47",
+      "pads": [
+        "C25.2"
+      ]
+    },
+    {
+      "via": "via48",
+      "pads": [
+        "R1.2"
+      ]
+    },
+    {
+      "via": "via50",
+      "pads": [
+        "U6.3"
+      ]
+    },
+    {
+      "via": "via51",
+      "pads": [
+        "R7.2"
+      ]
+    },
+    {
+      "via": "via52",
+      "pads": [
+        "R2.2"
+      ]
+    },
+    {
+      "via": "via56",
       "pads": [
         "R3.2"
       ]
     },
     {
-      "via": "via195",
+      "via": "via57",
       "pads": [
-        "U3.6"
+        "U6.4"
       ]
     },
     {
-      "via": "via196",
+      "via": "via58",
       "pads": [
-        "R13.2"
+        "R9.1"
       ]
     },
     {
-      "via": "via197",
+      "via": "via59",
       "pads": [
-        "R2.1"
+        "U2.3"
       ]
     },
     {
-      "via": "via198",
+      "via": "via60",
       "pads": [
-        "R3.1"
+        "C7.2"
       ]
     },
     {
-      "via": "via200",
+      "via": "via61",
       "pads": [
-        "U2.5"
+        "U4.1"
       ]
     },
     {
-      "via": "via202",
+      "via": "via63",
       "pads": [
-        "R6.1"
+        "U4.9"
       ]
     },
     {
-      "via": "via204",
+      "via": "via65",
+      "pads": [
+        "C22.2"
+      ]
+    },
+    {
+      "via": "via66",
+      "pads": [
+        "C19.2"
+      ]
+    },
+    {
+      "via": "via67",
+      "pads": [
+        "R15.2"
+      ]
+    },
+    {
+      "via": "via70",
+      "pads": [
+        "U1.6"
+      ]
+    },
+    {
+      "via": "via71",
+      "pads": [
+        "U4.9"
+      ]
+    },
+    {
+      "via": "via72",
+      "pads": [
+        "U4.9"
+      ]
+    },
+    {
+      "via": "via75",
+      "pads": [
+        "C2.2"
+      ]
+    },
+    {
+      "via": "via77",
+      "pads": [
+        "C21.2"
+      ]
+    },
+    {
+      "via": "via78",
+      "pads": [
+        "U1.6"
+      ]
+    },
+    {
+      "via": "via80",
+      "pads": [
+        "U1.17"
+      ]
+    },
+    {
+      "via": "via82",
+      "pads": [
+        "R18.2"
+      ]
+    },
+    {
+      "via": "via84",
+      "pads": [
+        "C2.2"
+      ]
+    },
+    {
+      "via": "via85",
+      "pads": [
+        "C7.2"
+      ]
+    },
+    {
+      "via": "via87",
+      "pads": [
+        "C3.2"
+      ]
+    },
+    {
+      "via": "via89",
+      "pads": [
+        "C8.2"
+      ]
+    },
+    {
+      "via": "via90",
+      "pads": [
+        "U1.6"
+      ]
+    },
+    {
+      "via": "via91",
+      "pads": [
+        "C2.2"
+      ]
+    },
+    {
+      "via": "via94",
+      "pads": [
+        "U1.6"
+      ]
+    },
+    {
+      "via": "via99",
+      "pads": [
+        "D1.2"
+      ]
+    },
+    {
+      "via": "via100",
+      "pads": [
+        "C7.2"
+      ]
+    },
+    {
+      "via": "via102",
+      "pads": [
+        "U1.17"
+      ]
+    },
+    {
+      "via": "via103",
+      "pads": [
+        "C8.2"
+      ]
+    },
+    {
+      "via": "via104",
+      "pads": [
+        "U4.9"
+      ]
+    },
+    {
+      "via": "via106",
+      "pads": [
+        "R16.1"
+      ]
+    },
+    {
+      "via": "via107",
+      "pads": [
+        "U4.9"
+      ]
+    },
+    {
+      "via": "via108",
+      "pads": [
+        "C3.2"
+      ]
+    },
+    {
+      "via": "via109",
+      "pads": [
+        "C3.2"
+      ]
+    },
+    {
+      "via": "via110",
+      "pads": [
+        "C1.2"
+      ]
+    },
+    {
+      "via": "via111",
+      "pads": [
+        "C19.2"
+      ]
+    },
+    {
+      "via": "via112",
+      "pads": [
+        "U4.9"
+      ]
+    },
+    {
+      "via": "via113",
+      "pads": [
+        "C8.2"
+      ]
+    },
+    {
+      "via": "via115",
+      "pads": [
+        "F1.1"
+      ]
+    },
+    {
+      "via": "via116",
+      "pads": [
+        "D1.1"
+      ]
+    },
+    {
+      "via": "via117",
+      "pads": [
+        "C2.1"
+      ]
+    },
+    {
+      "via": "via118",
+      "pads": [
+        "R14.1"
+      ]
+    },
+    {
+      "via": "via119",
+      "pads": [
+        "C19.1"
+      ]
+    },
+    {
+      "via": "via120",
+      "pads": [
+        "C1.1"
+      ]
+    },
+    {
+      "via": "via122",
+      "pads": [
+        "F1.2"
+      ]
+    },
+    {
+      "via": "via126",
+      "pads": [
+        "C15.2"
+      ]
+    },
+    {
+      "via": "via129",
+      "pads": [
+        "C12.2"
+      ]
+    },
+    {
+      "via": "via131",
+      "pads": [
+        "C16.2"
+      ]
+    },
+    {
+      "via": "via132",
+      "pads": [
+        "C14.2"
+      ]
+    },
+    {
+      "via": "via133",
+      "pads": [
+        "C13.2"
+      ]
+    },
+    {
+      "via": "via134",
+      "pads": [
+        "R28.2"
+      ]
+    },
+    {
+      "via": "via135",
+      "pads": [
+        "U3.2"
+      ]
+    },
+    {
+      "via": "via136",
+      "pads": [
+        "Q2.3"
+      ]
+    },
+    {
+      "via": "via137",
+      "pads": [
+        "Q1.1"
+      ]
+    },
+    {
+      "via": "via138",
+      "pads": [
+        "C14.2"
+      ]
+    },
+    {
+      "via": "via139",
+      "pads": [
+        "C11.2"
+      ]
+    },
+    {
+      "via": "via142",
+      "pads": [
+        "C16.2"
+      ]
+    },
+    {
+      "via": "via145",
+      "pads": [
+        "Q2.1"
+      ]
+    },
+    {
+      "via": "via147",
+      "pads": [
+        "R23.2"
+      ]
+    },
+    {
+      "via": "via149",
+      "pads": [
+        "C16.2"
+      ]
+    },
+    {
+      "via": "via150",
+      "pads": [
+        "C14.2"
+      ]
+    },
+    {
+      "via": "via151",
+      "pads": [
+        "U7.3"
+      ]
+    },
+    {
+      "via": "via152",
+      "pads": [
+        "Q1.2"
+      ]
+    },
+    {
+      "via": "via153",
+      "pads": [
+        "Q2.2"
+      ]
+    },
+    {
+      "via": "via154",
+      "pads": [
+        "C13.2"
+      ]
+    },
+    {
+      "via": "via155",
+      "pads": [
+        "C29.2"
+      ]
+    },
+    {
+      "via": "via157",
+      "pads": [
+        "C15.2"
+      ]
+    },
+    {
+      "via": "via161",
+      "pads": [
+        "U9.3"
+      ]
+    },
+    {
+      "via": "via163",
+      "pads": [
+        "U3.5"
+      ]
+    },
+    {
+      "via": "via164",
+      "pads": [
+        "C13.2"
+      ]
+    },
+    {
+      "via": "via166",
       "pads": [
         "R7.1"
       ]
     },
     {
-      "via": "via205",
+      "via": "via169",
+      "pads": [
+        "C5.1"
+      ]
+    },
+    {
+      "via": "via170",
+      "pads": [
+        "U5.5"
+      ]
+    },
+    {
+      "via": "via172",
+      "pads": [
+        "Q1.9"
+      ]
+    },
+    {
+      "via": "via173",
+      "pads": [
+        "U3.4"
+      ]
+    },
+    {
+      "via": "via174",
+      "pads": [
+        "R12.2"
+      ]
+    },
+    {
+      "via": "via175",
+      "pads": [
+        "U7.2"
+      ]
+    },
+    {
+      "via": "via176",
+      "pads": [
+        "R23.1"
+      ]
+    },
+    {
+      "via": "via177",
+      "pads": [
+        "C27.2"
+      ]
+    },
+    {
+      "via": "via178",
+      "pads": [
+        "U5.3"
+      ]
+    },
+    {
+      "via": "via179",
+      "pads": [
+        "C21.1"
+      ]
+    },
+    {
+      "via": "via180",
+      "pads": [
+        "C23.2"
+      ]
+    },
+    {
+      "via": "via181",
+      "pads": [
+        "C10.1"
+      ]
+    },
+    {
+      "via": "via182",
+      "pads": [
+        "U5.1"
+      ]
+    },
+    {
+      "via": "via183",
+      "pads": [
+        "R18.1"
+      ]
+    },
+    {
+      "via": "via184",
+      "pads": [
+        "C24.2"
+      ]
+    },
+    {
+      "via": "via185",
+      "pads": [
+        "U4.3"
+      ]
+    },
+    {
+      "via": "via186",
+      "pads": [
+        "R14.2"
+      ]
+    },
+    {
+      "via": "via187",
+      "pads": [
+        "C8.1"
+      ]
+    },
+    {
+      "via": "via188",
+      "pads": [
+        "C17.1"
+      ]
+    },
+    {
+      "via": "via189",
+      "pads": [
+        "R3.1"
+      ]
+    },
+    {
+      "via": "via190",
+      "pads": [
+        "R2.1"
+      ]
+    },
+    {
+      "via": "via191",
       "pads": [
         "U2.8"
       ]
     },
     {
-      "via": "via206",
+      "via": "via192",
       "pads": [
         "R4.1"
       ]
     },
     {
-      "via": "via207",
+      "via": "via193",
       "pads": [
         "R8.1"
       ]
     },
     {
-      "via": "via208",
+      "via": "via194",
       "pads": [
         "C17.2"
+      ]
+    },
+    {
+      "via": "via195",
+      "pads": [
+        "R11.1"
+      ]
+    },
+    {
+      "via": "via196",
+      "pads": [
+        "U3.8"
+      ]
+    },
+    {
+      "via": "via197",
+      "pads": [
+        "C9.1"
+      ]
+    },
+    {
+      "via": "via198",
+      "pads": [
+        "U8.4"
+      ]
+    },
+    {
+      "via": "via199",
+      "pads": [
+        "R28.1"
+      ]
+    },
+    {
+      "via": "via200",
+      "pads": [
+        "U9.2"
+      ]
+    },
+    {
+      "via": "via201",
+      "pads": [
+        "C23.1"
+      ]
+    },
+    {
+      "via": "via202",
+      "pads": [
+        "C24.1"
+      ]
+    },
+    {
+      "via": "via203",
+      "pads": [
+        "R6.1"
+      ]
+    },
+    {
+      "via": "via206",
+      "pads": [
+        "U2.5"
+      ]
+    },
+    {
+      "via": "via207",
+      "pads": [
+        "R19.1"
+      ]
+    },
+    {
+      "via": "via208",
+      "pads": [
+        "U4.8"
+      ]
+    },
+    {
+      "via": "via209",
+      "pads": [
+        "R13.2"
+      ]
+    },
+    {
+      "via": "via210",
+      "pads": [
+        "U3.6"
       ]
     }
   ],
   "purchased_pad_geometry": [
     {
-      "pad": "C3.1",
-      "net": "VIN",
-      "width_mm": 1.15,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C3.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "F1.1",
-      "net": "/VIN_RAW",
-      "width_mm": 1.45,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "F1.2",
-      "net": "VIN",
-      "width_mm": 1.45,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "D1.1",
-      "net": "VIN",
-      "width_mm": 1.8,
-      "height_mm": 1.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "D1.2",
-      "net": "PGND",
-      "width_mm": 1.8,
-      "height_mm": 1.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U7.1",
-      "net": "Net-(U6-CA)",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U7.2",
-      "net": "Net-(U7-REF)",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U7.3",
-      "net": "SGND",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C26.1",
-      "net": "V5",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C26.2",
-      "net": "AGND",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.1",
-      "net": "PGND",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.2",
-      "net": "VIN",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.3",
-      "net": "Net-(U4-EN{slash}UVLO)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.4",
-      "net": "Net-(U4-RON)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.5",
-      "net": "Net-(U4-FB)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.6",
-      "net": "unconnected-(U4-PGOOD-Pad6)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.7",
-      "net": "Net-(U4-BST)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.8",
-      "net": "Net-(U4-SW)",
-      "width_mm": 0.6,
-      "height_mm": 1.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U4.9",
-      "net": "PGND",
-      "width_mm": 3.2,
-      "height_mm": 2.5,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R22.1",
+      "pad": "R25.1",
       "net": "VOUT",
       "width_mm": 0.8,
       "height_mm": 0.95,
@@ -1716,112 +1456,8 @@
       "smd": true
     },
     {
-      "pad": "R22.2",
-      "net": "Net-(U7-REF)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R18.1",
-      "net": "Net-(U4-FB)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R18.2",
-      "net": "PGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C17.1",
-      "net": "/TANK_C",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C17.2",
-      "net": "Net-(C17-Pad2)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R9.1",
-      "net": "Net-(D2-C)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R9.2",
-      "net": "AGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R10.1",
-      "net": "Net-(U3-VG1)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R10.2",
-      "net": "Net-(Q1-G)",
+      "pad": "R25.2",
+      "net": "Net-(U8-AN)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -1859,188 +1495,6 @@
       "smd": true
     },
     {
-      "pad": "C5.1",
-      "net": "V5",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C5.2",
-      "net": "AGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R13.1",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R13.2",
-      "net": "Net-(U3-VD2)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C28.1",
-      "net": "Net-(U6-CA)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C28.2",
-      "net": "Net-(U7-REF)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R16.1",
-      "net": "PGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R16.2",
-      "net": "Net-(U4-RON)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U6.1",
-      "net": "Net-(U6-AN)",
-      "width_mm": 0.56,
-      "height_mm": 1.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U6.2",
-      "net": "Net-(U6-CA)",
-      "width_mm": 0.56,
-      "height_mm": 1.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U6.3",
-      "net": "AGND",
-      "width_mm": 0.56,
-      "height_mm": 1.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U6.4",
-      "net": "/FB_COL",
-      "width_mm": 0.56,
-      "height_mm": 1.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "L2.1",
-      "net": "Net-(U4-SW)",
-      "width_mm": 2.5,
-      "height_mm": 3.5,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "L2.2",
-      "net": "BIAS12",
-      "width_mm": 2.5,
-      "height_mm": 3.5,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
       "pad": "C4.1",
       "net": "Net-(U1-HB)",
       "width_mm": 0.9,
@@ -2067,113 +1521,9 @@
       "smd": true
     },
     {
-      "pad": "C8.1",
-      "net": "/TANK_C",
-      "width_mm": 1.15,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C8.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C2.1",
-      "net": "VIN",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C2.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "J1.1",
-      "net": "PGND",
-      "width_mm": 3.0,
-      "height_mm": 3.0,
-      "drill_mm": 1.6,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": false
-    },
-    {
-      "pad": "J1.2",
-      "net": "/VIN_RAW",
-      "width_mm": 3.0,
-      "height_mm": 3.0,
-      "drill_mm": 1.6,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": false
-    },
-    {
-      "pad": "C1.1",
-      "net": "VIN",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C1.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C29.1",
+      "pad": "R28.1",
       "net": "Net-(U9-REF)",
-      "width_mm": 0.9,
+      "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -2184,47 +1534,8 @@
       "smd": true
     },
     {
-      "pad": "C29.2",
+      "pad": "R28.2",
       "net": "SGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C10.1",
-      "net": "BIAS12",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C10.2",
-      "net": "AGND",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R1.1",
-      "net": "Net-(U2-DT)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -2236,8 +1547,8 @@
       "smd": true
     },
     {
-      "pad": "R1.2",
-      "net": "AGND",
+      "pad": "R10.1",
+      "net": "Net-(U3-VG1)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -2249,138 +1560,8 @@
       "smd": true
     },
     {
-      "pad": "R12.1",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R12.2",
-      "net": "Net-(U3-VD1)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C23.1",
-      "net": "Net-(C23-Pad1)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C23.2",
-      "net": "BIAS12",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U9.1",
-      "net": "Net-(U8-CA)",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U9.2",
-      "net": "Net-(U9-REF)",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U9.3",
-      "net": "SGND",
-      "width_mm": 1.07,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R20.1",
-      "net": "VOUT",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R20.2",
-      "net": "Net-(U6-AN)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R6.1",
-      "net": "Net-(U2-GD2)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R6.2",
-      "net": "/LI",
+      "pad": "R10.2",
+      "net": "Net-(Q1-G)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -2418,124 +1599,7 @@
       "smd": true
     },
     {
-      "pad": "R7.1",
-      "net": "/LI",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R7.2",
-      "net": "AGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C6.1",
-      "net": "V5",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C6.2",
-      "net": "AGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R25.1",
-      "net": "VOUT",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R25.2",
-      "net": "Net-(U8-AN)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R28.1",
-      "net": "Net-(U9-REF)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R28.2",
-      "net": "SGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R4.1",
-      "net": "Net-(U2-GD1)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R4.2",
+      "pad": "R5.1",
       "net": "/HI",
       "width_mm": 0.8,
       "height_mm": 0.95,
@@ -2548,151 +1612,8 @@
       "smd": true
     },
     {
-      "pad": "C12.1",
-      "net": "VOUT",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C12.2",
-      "net": "SGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.1",
-      "net": "Net-(U3-VG1)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.2",
-      "net": "SGND",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.3",
-      "net": "Net-(U3-REG)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.4",
-      "net": "Net-(U3-VD1)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.5",
-      "net": "SGND",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.6",
-      "net": "Net-(U3-VD2)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.7",
-      "net": "VOUT",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U3.8",
-      "net": "Net-(U3-VG2)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R14.1",
-      "net": "VIN",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R14.2",
-      "net": "Net-(U4-EN{slash}UVLO)",
+      "pad": "R5.2",
+      "net": "AGND",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -2730,87 +1651,9 @@
       "smd": true
     },
     {
-      "pad": "L1.1",
-      "net": "/SW",
-      "width_mm": 2.0,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "L1.2",
-      "net": "Net-(T1-P_DOT)",
-      "width_mm": 2.0,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C11.1",
-      "net": "Net-(U3-REG)",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C11.2",
-      "net": "SGND",
-      "width_mm": 1.0,
-      "height_mm": 1.45,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C21.1",
-      "net": "BIAS12",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C21.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R2.1",
-      "net": "Net-(U2-RT)",
-      "width_mm": 0.8,
+      "pad": "C18.1",
+      "net": "Net-(D2-C)",
+      "width_mm": 0.9,
       "height_mm": 0.95,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -2821,9 +1664,9 @@
       "smd": true
     },
     {
-      "pad": "R2.2",
+      "pad": "C18.2",
       "net": "AGND",
-      "width_mm": 0.8,
+      "width_mm": 0.9,
       "height_mm": 0.95,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -2886,10 +1729,10 @@
       "smd": true
     },
     {
-      "pad": "R15.1",
-      "net": "Net-(U4-EN{slash}UVLO)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
+      "pad": "C26.1",
+      "net": "V5",
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -2899,218 +1742,10 @@
       "smd": true
     },
     {
-      "pad": "R15.2",
-      "net": "PGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R11.1",
-      "net": "Net-(U3-VG2)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R11.2",
-      "net": "Net-(Q2-G)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.1",
-      "net": "Net-(U2-DT)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.2",
-      "net": "Net-(U2-RT)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.3",
-      "net": "Net-(D2-C)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.4",
-      "net": "/SS",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.5",
-      "net": "Net-(U2-GD2)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.6",
+      "pad": "C26.2",
       "net": "AGND",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.7",
-      "net": "BIAS12",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U2.8",
-      "net": "Net-(U2-GD1)",
-      "width_mm": 0.588,
-      "height_mm": 1.8,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R26.1",
-      "net": "Net-(U8-AN)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R26.2",
-      "net": "Net-(U8-CA)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R21.1",
-      "net": "Net-(U6-AN)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R21.2",
-      "net": "Net-(U6-CA)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C15.1",
-      "net": "VOUT",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C15.2",
-      "net": "SGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -3146,10 +1781,10 @@
       "smd": true
     },
     {
-      "pad": "U5.1",
+      "pad": "C10.1",
       "net": "BIAS12",
-      "width_mm": 1.1,
-      "height_mm": 0.6,
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -3159,10 +1794,10 @@
       "smd": true
     },
     {
-      "pad": "U5.2",
+      "pad": "C10.2",
       "net": "AGND",
-      "width_mm": 1.1,
-      "height_mm": 0.6,
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -3172,10 +1807,10 @@
       "smd": true
     },
     {
-      "pad": "U5.3",
-      "net": "BIAS12",
-      "width_mm": 1.1,
-      "height_mm": 0.6,
+      "pad": "C11.1",
+      "net": "Net-(U3-REG)",
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -3185,114 +1820,10 @@
       "smd": true
     },
     {
-      "pad": "U5.4",
-      "net": "unconnected-(U5-NC-Pad4)",
-      "width_mm": 1.1,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "U5.5",
-      "net": "V5",
-      "width_mm": 1.1,
-      "height_mm": 0.6,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C18.1",
-      "net": "Net-(D2-C)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C18.2",
-      "net": "AGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C22.1",
-      "net": "BIAS12",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C22.2",
-      "net": "PGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C27.1",
-      "net": "Net-(C27-Pad1)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C27.2",
-      "net": "Net-(U7-REF)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.1",
+      "pad": "C11.2",
       "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
+      "width_mm": 1.0,
+      "height_mm": 1.45,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [
@@ -3302,165 +1833,9 @@
       "smd": true
     },
     {
-      "pad": "Q1.2",
-      "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.3",
-      "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.4",
-      "net": "Net-(Q1-G)",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.5",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.6",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.7",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.8",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q1.9",
-      "net": "Net-(T1-S_DOT)",
-      "width_mm": 2.65,
-      "height_mm": 2.0,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C9.1",
-      "net": "/SS",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C9.2",
-      "net": "AGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C16.1",
-      "net": "VOUT",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C16.2",
-      "net": "SGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C7.1",
-      "net": "/TANK_C",
-      "width_mm": 1.15,
+      "pad": "L1.1",
+      "net": "/SW",
+      "width_mm": 2.0,
       "height_mm": 1.8,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -3471,9 +1846,9 @@
       "smd": true
     },
     {
-      "pad": "C7.2",
-      "net": "PGND",
-      "width_mm": 1.15,
+      "pad": "L1.2",
+      "net": "Net-(T1-P_DOT)",
+      "width_mm": 2.0,
       "height_mm": 1.8,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -3510,8 +1885,86 @@
       "smd": true
     },
     {
-      "pad": "R19.1",
-      "net": "Net-(U4-SW)",
+      "pad": "C24.1",
+      "net": "Net-(C23-Pad1)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C24.2",
+      "net": "Net-(U4-FB)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C2.1",
+      "net": "VIN",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C2.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "F1.1",
+      "net": "/VIN_RAW",
+      "width_mm": 1.45,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "F1.2",
+      "net": "VIN",
+      "width_mm": 1.45,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R22.1",
+      "net": "VOUT",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -3523,8 +1976,60 @@
       "smd": true
     },
     {
-      "pad": "R19.2",
-      "net": "Net-(C23-Pad1)",
+      "pad": "R22.2",
+      "net": "Net-(U7-REF)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C22.1",
+      "net": "BIAS12",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C22.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R8.1",
+      "net": "Net-(C17-Pad2)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R8.2",
+      "net": "Net-(D2-A{slash}C)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -3551,227 +2056,6 @@
     {
       "pad": "C14.2",
       "net": "SGND",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R27.1",
-      "net": "VOUT",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R27.2",
-      "net": "Net-(U9-REF)",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.1",
-      "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.2",
-      "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.3",
-      "net": "SGND",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.4",
-      "net": "Net-(Q2-G)",
-      "width_mm": 0.68,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.5",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.6",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.7",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.8",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 0.6,
-      "height_mm": 0.3,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "Q2.9",
-      "net": "Net-(T1-S_END)",
-      "width_mm": 2.65,
-      "height_mm": 2.0,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R5.1",
-      "net": "/HI",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "R5.2",
-      "net": "AGND",
-      "width_mm": 0.8,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C25.1",
-      "net": "BIAS12",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C25.2",
-      "net": "AGND",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C19.1",
-      "net": "VIN",
-      "width_mm": 1.15,
-      "height_mm": 2.7,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C19.2",
-      "net": "PGND",
       "width_mm": 1.15,
       "height_mm": 2.7,
       "drill_mm": 0.0,
@@ -3822,60 +2106,8 @@
       "smd": true
     },
     {
-      "pad": "C24.1",
-      "net": "Net-(C23-Pad1)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "C24.2",
-      "net": "Net-(U4-FB)",
-      "width_mm": 0.9,
-      "height_mm": 0.95,
-      "drill_mm": 0.0,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": true
-    },
-    {
-      "pad": "J2.1",
-      "net": "SGND",
-      "width_mm": 3.0,
-      "height_mm": 3.0,
-      "drill_mm": 1.6,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": false
-    },
-    {
-      "pad": "J2.2",
-      "net": "VOUT",
-      "width_mm": 3.0,
-      "height_mm": 3.0,
-      "drill_mm": 1.6,
-      "mask_expansion_mm": 0.0,
-      "paste_margin_xy_mm": [
-        0.0,
-        0.0
-      ],
-      "smd": false
-    },
-    {
-      "pad": "R8.1",
-      "net": "Net-(C17-Pad2)",
+      "pad": "R6.1",
+      "net": "Net-(U2-GD2)",
       "width_mm": 0.8,
       "height_mm": 0.95,
       "drill_mm": 0.0,
@@ -3887,9 +2119,113 @@
       "smd": true
     },
     {
-      "pad": "R8.2",
-      "net": "Net-(D2-A{slash}C)",
+      "pad": "R6.2",
+      "net": "/LI",
       "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "L2.1",
+      "net": "Net-(U4-SW)",
+      "width_mm": 2.5,
+      "height_mm": 3.5,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "L2.2",
+      "net": "BIAS12",
+      "width_mm": 2.5,
+      "height_mm": 3.5,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C6.1",
+      "net": "V5",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C6.2",
+      "net": "AGND",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R12.1",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R12.2",
+      "net": "Net-(U3-VD1)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C5.1",
+      "net": "V5",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C5.2",
+      "net": "AGND",
+      "width_mm": 0.9,
       "height_mm": 0.95,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
@@ -4121,6 +2457,526 @@
       "smd": true
     },
     {
+      "pad": "R4.1",
+      "net": "Net-(U2-GD1)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R4.2",
+      "net": "/HI",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R13.1",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R13.2",
+      "net": "Net-(U3-VD2)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C8.1",
+      "net": "/TANK_C",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C8.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R16.1",
+      "net": "PGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R16.2",
+      "net": "Net-(U4-RON)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R18.1",
+      "net": "Net-(U4-FB)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R18.2",
+      "net": "PGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U5.1",
+      "net": "BIAS12",
+      "width_mm": 1.1,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U5.2",
+      "net": "AGND",
+      "width_mm": 1.1,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U5.3",
+      "net": "BIAS12",
+      "width_mm": 1.1,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U5.4",
+      "net": "unconnected-(U5-NC-Pad4)",
+      "width_mm": 1.1,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U5.5",
+      "net": "V5",
+      "width_mm": 1.1,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R27.1",
+      "net": "VOUT",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R27.2",
+      "net": "Net-(U9-REF)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C28.1",
+      "net": "Net-(U6-CA)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C28.2",
+      "net": "Net-(U7-REF)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C15.1",
+      "net": "VOUT",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C15.2",
+      "net": "SGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R14.1",
+      "net": "VIN",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R14.2",
+      "net": "Net-(U4-EN{slash}UVLO)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.1",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.2",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.3",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.4",
+      "net": "Net-(Q2-G)",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.5",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.6",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.7",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.8",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q2.9",
+      "net": "Net-(T1-S_END)",
+      "width_mm": 2.65,
+      "height_mm": 2.0,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R15.1",
+      "net": "Net-(U4-EN{slash}UVLO)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R15.2",
+      "net": "PGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C29.1",
+      "net": "Net-(U9-REF)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C29.2",
+      "net": "SGND",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C1.1",
+      "net": "VIN",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C1.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C7.1",
+      "net": "/TANK_C",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C7.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
       "pad": "R3.1",
       "net": "Net-(U2-RT)",
       "width_mm": 0.8,
@@ -4138,6 +2994,1150 @@
       "net": "/FB_COL",
       "width_mm": 0.8,
       "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C12.1",
+      "net": "VOUT",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C12.2",
+      "net": "SGND",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C27.1",
+      "net": "Net-(C27-Pad1)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C27.2",
+      "net": "Net-(U7-REF)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R21.1",
+      "net": "Net-(U6-AN)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R21.2",
+      "net": "Net-(U6-CA)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C19.1",
+      "net": "VIN",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C19.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "J2.1",
+      "net": "SGND",
+      "width_mm": 3.0,
+      "height_mm": 3.0,
+      "drill_mm": 1.6,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": false
+    },
+    {
+      "pad": "J2.2",
+      "net": "VOUT",
+      "width_mm": 3.0,
+      "height_mm": 3.0,
+      "drill_mm": 1.6,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": false
+    },
+    {
+      "pad": "U3.1",
+      "net": "Net-(U3-VG1)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.2",
+      "net": "SGND",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.3",
+      "net": "Net-(U3-REG)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.4",
+      "net": "Net-(U3-VD1)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.5",
+      "net": "SGND",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.6",
+      "net": "Net-(U3-VD2)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.7",
+      "net": "VOUT",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U3.8",
+      "net": "Net-(U3-VG2)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R20.1",
+      "net": "VOUT",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R20.2",
+      "net": "Net-(U6-AN)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R9.1",
+      "net": "Net-(D2-C)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R9.2",
+      "net": "AGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "J1.1",
+      "net": "PGND",
+      "width_mm": 3.0,
+      "height_mm": 3.0,
+      "drill_mm": 1.6,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": false
+    },
+    {
+      "pad": "J1.2",
+      "net": "/VIN_RAW",
+      "width_mm": 3.0,
+      "height_mm": 3.0,
+      "drill_mm": 1.6,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": false
+    },
+    {
+      "pad": "R7.1",
+      "net": "/LI",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R7.2",
+      "net": "AGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R19.1",
+      "net": "Net-(U4-SW)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R19.2",
+      "net": "Net-(C23-Pad1)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U7.1",
+      "net": "Net-(U6-CA)",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U7.2",
+      "net": "Net-(U7-REF)",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U7.3",
+      "net": "SGND",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U9.1",
+      "net": "Net-(U8-CA)",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U9.2",
+      "net": "Net-(U9-REF)",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U9.3",
+      "net": "SGND",
+      "width_mm": 1.07,
+      "height_mm": 0.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.1",
+      "net": "PGND",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.2",
+      "net": "VIN",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.3",
+      "net": "Net-(U4-EN{slash}UVLO)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.4",
+      "net": "Net-(U4-RON)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.5",
+      "net": "Net-(U4-FB)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.6",
+      "net": "unconnected-(U4-PGOOD-Pad6)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.7",
+      "net": "Net-(U4-BST)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.8",
+      "net": "Net-(U4-SW)",
+      "width_mm": 0.6,
+      "height_mm": 1.6,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U4.9",
+      "net": "PGND",
+      "width_mm": 3.2,
+      "height_mm": 2.5,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C17.1",
+      "net": "/TANK_C",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C17.2",
+      "net": "Net-(C17-Pad2)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C23.1",
+      "net": "Net-(C23-Pad1)",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C23.2",
+      "net": "BIAS12",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C9.1",
+      "net": "/SS",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C9.2",
+      "net": "AGND",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R1.1",
+      "net": "Net-(U2-DT)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R1.2",
+      "net": "AGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C25.1",
+      "net": "BIAS12",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C25.2",
+      "net": "AGND",
+      "width_mm": 0.9,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R2.1",
+      "net": "Net-(U2-RT)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R2.2",
+      "net": "AGND",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.1",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.2",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.3",
+      "net": "SGND",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.4",
+      "net": "Net-(Q1-G)",
+      "width_mm": 0.68,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.5",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.6",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.7",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.8",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 0.6,
+      "height_mm": 0.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "Q1.9",
+      "net": "Net-(T1-S_DOT)",
+      "width_mm": 2.65,
+      "height_mm": 2.0,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C16.1",
+      "net": "VOUT",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C16.2",
+      "net": "SGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U6.1",
+      "net": "Net-(U6-AN)",
+      "width_mm": 0.56,
+      "height_mm": 1.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U6.2",
+      "net": "Net-(U6-CA)",
+      "width_mm": 0.56,
+      "height_mm": 1.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U6.3",
+      "net": "AGND",
+      "width_mm": 0.56,
+      "height_mm": 1.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U6.4",
+      "net": "/FB_COL",
+      "width_mm": 0.56,
+      "height_mm": 1.3,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R26.1",
+      "net": "Net-(U8-AN)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R26.2",
+      "net": "Net-(U8-CA)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "D1.1",
+      "net": "VIN",
+      "width_mm": 1.8,
+      "height_mm": 1.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "D1.2",
+      "net": "PGND",
+      "width_mm": 1.8,
+      "height_mm": 1.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.1",
+      "net": "Net-(U2-DT)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.2",
+      "net": "Net-(U2-RT)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.3",
+      "net": "Net-(D2-C)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.4",
+      "net": "/SS",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.5",
+      "net": "Net-(U2-GD2)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.6",
+      "net": "AGND",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.7",
+      "net": "BIAS12",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "U2.8",
+      "net": "Net-(U2-GD1)",
+      "width_mm": 0.588,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C3.1",
+      "net": "VIN",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C3.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 1.8,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R11.1",
+      "net": "Net-(U3-VG2)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "R11.2",
+      "net": "Net-(Q2-G)",
+      "width_mm": 0.8,
+      "height_mm": 0.95,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C21.1",
+      "net": "BIAS12",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
+      "drill_mm": 0.0,
+      "mask_expansion_mm": 0.0,
+      "paste_margin_xy_mm": [
+        0.0,
+        0.0
+      ],
+      "smd": true
+    },
+    {
+      "pad": "C21.2",
+      "net": "PGND",
+      "width_mm": 1.15,
+      "height_mm": 2.7,
       "drill_mm": 0.0,
       "mask_expansion_mm": 0.0,
       "paste_margin_xy_mm": [

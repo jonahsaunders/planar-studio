@@ -6,7 +6,7 @@
 	(property "Reference" "REF**"
 		(at 0 -4 0)
 		(layer "F.SilkS")
-		(uuid "76bbf5af-c437-46d5-bf4e-7fc70764178d")
+		(uuid "f846905d-dd5a-4216-930a-a0e144bd3a9f")
 		(effects
 			(font
 				(size 1 1)
@@ -17,7 +17,7 @@
 	(property "Value" "L_Bourns_SRP7050TA"
 		(at 0 4 0)
 		(layer "F.Fab")
-		(uuid "e8a56e06-3a12-49fd-ad28-417c4bff6578")
+		(uuid "b883350a-1e2b-4e91-8f7e-4aa8166b731f")
 		(effects
 			(font
 				(size 1 1)
@@ -29,7 +29,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "34c3cc79-9a01-42ae-a073-e5e3af6a1750")
+		(uuid "6caaaeba-258a-49e9-b982-2ce92258b6e2")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -40,7 +40,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "f0b59f67-0c18-499c-a59f-d748c1347d8e")
+		(uuid "d55f6242-768d-46b5-a71f-e1a6fd448c42")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -57,7 +57,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "30c552e9-994d-4d08-952a-553b1b2f89a4")
+		(uuid "d4bd7231-ed81-4b6d-817f-127bf86d1476")
 	)
 	(fp_line
 		(start -4.45 3.6)
@@ -67,7 +67,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "aa98a8b8-627c-4495-bdd7-ed5f7510e2d8")
+		(uuid "32fc950a-2b59-41aa-84e8-281f5757aacd")
 	)
 	(fp_line
 		(start 4.45 -3.6)
@@ -77,7 +77,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "87af77ba-f958-4166-af0a-be1d98afb18c")
+		(uuid "f2dc21c3-05c1-4960-8367-57eb97a99ad8")
 	)
 	(fp_line
 		(start 4.45 3.6)
@@ -87,7 +87,7 @@
 			(type default)
 		)
 		(layer "F.CrtYd")
-		(uuid "ad4c834a-9687-476c-b9c4-217bfbc5fcc6")
+		(uuid "3c58f821-4f6d-41bc-99cb-e13f0b14303c")
 	)
 	(fp_line
 		(start -3.65 -3.3)
@@ -97,7 +97,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "972c5d84-22b1-4fb5-965a-749200501a59")
+		(uuid "fe858088-6283-47ef-9a82-2a0877e66862")
 	)
 	(fp_line
 		(start -3.65 3.3)
@@ -107,7 +107,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "fdbe041d-b34d-4294-88ce-b7793fdfbd12")
+		(uuid "7824391f-c298-411a-a9fd-543d12527537")
 	)
 	(fp_line
 		(start 3.65 -3.3)
@@ -117,7 +117,7 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "4abf6ea0-75b9-4554-865c-b3c38b6cedea")
+		(uuid "70af1eb5-82a1-4ce8-954e-e6a723cd8521")
 	)
 	(fp_line
 		(start 3.65 3.3)
@@ -127,19 +127,19 @@
 			(type default)
 		)
 		(layer "F.Fab")
-		(uuid "292babda-6451-412f-a87a-2d215338a836")
+		(uuid "1ccefec5-27e5-4583-9f19-a1c63fbf538c")
 	)
 	(pad "1" smd rect
 		(at -2.95 0)
 		(size 2.5 3.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "8ef7122b-e0e2-4aaf-8463-0e16c00324b8")
+		(uuid "347cadaf-5261-44bb-8342-5e3dab125ba3")
 	)
 	(pad "2" smd rect
 		(at 2.95 0)
 		(size 2.5 3.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "7a173d01-101d-42d6-afe1-20a7e86b797b")
+		(uuid "d49afec9-1ec7-40d2-909c-8045c25a1dcd")
 	)
 	(embedded_fonts no)
 	(model "${KIPRJMOD}/3dmodels/L2_nominal_envelope.wrl"

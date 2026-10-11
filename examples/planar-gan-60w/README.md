@@ -1,4 +1,4 @@
-# PS-GAN-60W — A11
+# PS-GAN-60W — A12
 
 48 V nominal → isolated 12 V / 5 A **design target**, with an integrated GaN
 half bridge and PCB transformer generated using Planar Studio. Native KiCad 10
@@ -11,21 +11,23 @@ for the repaired CAD findings and remaining factory/qualification gates.
 [Design review and copper-layer viewer](Review.html) · [Schematic PDF](Schematic.pdf) ·
 [KiCad project](kicad/PS-GAN-60W.kicad_pro) · [Validation](VALIDATION.md)
 
-![A11 top assembly](Board-preview.png)
+![A12 top assembly](Board-preview.png)
 
-## A11 manufacturing repairs
+## A12 routing and silkscreen cleanup
 
-- Reconstructed U1 from TI RAR0017B: centered package origin, dimensioned copper,
-  independent solder-mask openings and approximately 75–76% power-land paste.
-- Corrected the U5 land pattern and separated C26; rebuilt undersized courtyards,
-  regrouped/aligned component banks and added visible orientation marks.
-- Adopted the observed JLC081622-1080 construction in KiCad and the magnetic
-  model: 1.655 mm nominal, 70 µm outer and 61 µm inner copper.
-- Named and reviewed every functional pour. Removed isolated islands, retained
-  switching-node exclusions, restored adjacent drive return paths and verified
-  50 stitching vias against the final filled copper. No AGND/PGND PCB short.
-- Added 0.6 mm connector thermal spokes, a coordinate-level filled-drill map and
-  a separate [92 × 76 mm handling-panel package](build/panel-A11/README.txt).
+- Reduced nonstandard-angle route segments from 153 to zero, and free-standing
+  90° elbows from 46 to zero, using horizontal, vertical and 45° segments.
+  Chamfered free elbows while retaining pad, via and branch anchors. The OVP
+  feedback routes now follow their adjacent component bank without doubled-back legs.
+- Repositioned board labels and pin-one dots using their actual printed strokes:
+  at least 0.22 mm from solder-mask openings, with board text outside component
+  courtyards. Added clear secondary-controller and rectifier identifiers.
+- Removed the customer panel, panel Gerbers/CPL, tabs and panelization scripts.
+  Supply single-board data; JLCPCB defines any required assembly handling rails.
+- Preserved A11's GaN copper/mask/stencil, corrected LDO footprint, heavy-copper
+  stack, connector thermals, winding artwork, mounting pattern and top-only assembly.
+- Refilled and checked all 19 functional pours and the ground stitching against
+  the revised routes. AGND, PGND and SGND retain their separate PCB domains.
 
 The [issue register](manufacturing-prototype/Manufacturing-issue-register.csv)
 separates completed CAD corrections from factory process, service and hardware
@@ -69,12 +71,11 @@ costs can exceed the allowance. [Itemized model](sourcing/Manufacturing-cost-5bo
 
 - `manufacturing-prototype/` contains matched **single-board** exports and
   [construction/assembly notes](manufacturing-prototype/READ-BEFORE-ORDER.txt).
-- `build/panel-A11/` contains matched **one-up panel** Gerbers, native PCB and CPL.
-  Five panels produce five boards. Never combine the panel CPL with single-board
-  Gerbers. Review the tab/fixture/overhang process with JLC before release.
+- JLCPCB must define and quote its assembly panel/rails for the 64 × 56 mm board.
+  Review its final placement overlay and handling arrangement before release.
 - Every 0.30 mm interconnect, including six T1 plated-pad transitions, is specified
-  for resin fill, copper cap and planarization. Connector/mounting holes, panel
-  mouse bites and tooling holes remain open. Separate coordinate maps are provided.
+  for resin fill, copper cap and planarization. Connector and mounting holes
+  remain open. A single-board coordinate map identifies every drill treatment.
 - Raw KiCad placement rotations require a supplier-model overlay. Review the
   U1 stencil example, mask registration, hidden-joint inspection and THT process.
 - Depanelize after soldering/inspection and before fitting the core halves/clips.
@@ -90,13 +91,14 @@ fault protection. Clean CAD checks do not establish a working 60 W converter.
 `redraw_schematic.py` reconstructs the schematic from the manifest and bundled
 symbols; `rebuild_board.py` generates the native routed board from the bundled
 footprints and explicit placement/routing definitions. Use KiCad's Python for
-pcbnew scripts. `export_review.py` gates exports on clean ERC, DRC and parity.
+pcbnew scripts. Run `audit_routing_and_silk.py` before `export_review.py`; the
+export requires its matching PCB hash, then gates on clean ERC, DRC and parity.
+The verified legend is exported directly without solder-mask clipping.
 See [validation](VALIDATION.md) for the independent geometry/assembly audits.
 
 `repair_manufacturing_footprints.py` reproduces the dimensioned library repairs.
-`build_panel.py` uses KiKit 1.8.1 and `panelize.json`; pass its installed
-site-packages path when using KiCad Python. It writes only the versioned build
-subdirectory. Review the supplier process before using any panel exports.
+The board generator and geometry audits require Shapely 2.x. Pass its installed
+site-packages directory as the first argument when using KiCad Python.
 
 `regenerate_magnetics.mjs` uses Node and a Planar Studio checkout passed as its
 first argument. The original reference is repository commit
@@ -106,10 +108,10 @@ first argument. The original reference is repository commit
 onto an adjacent layer. Importing the seed alone does not recreate the six
 final winding layers. The winding review PCB is not the complete converter.
 
-KiStack PCB, footprint, schematic, BOM, export and panelization guidance was
+KiStack PCB, footprint, schematic, BOM and export guidance was
 used. Official manufacturer and JLCPCB/LCSC sources were used directly with
 the user's approval. [Source study](PER-DESIGN-STUDY.md),
 [layout resources](DEEP-LAYOUT-REVIEW.md), [licenses](THIRD-PARTY-NOTICES.txt).
 MIT PER, Rick Hartley, Robert Feranec and Phil's Lab are independent references;
 no affiliation or endorsement is implied. Earlier review documents describe
-historical revisions; this A11 guide and the current issue register take precedence.
+historical revisions; this A12 guide and the current issue register take precedence.

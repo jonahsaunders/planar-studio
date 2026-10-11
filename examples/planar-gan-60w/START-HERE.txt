@@ -1,21 +1,14 @@
-PS-GAN-60W A11 — editable KiCad 10 engineering prototype
-Open Review.html for the board, schematic and interactive copper-layer review.
-Open Manufacturing-audit.html for completed repairs, the five-board estimate
-and remaining factory/qualification gates. Read README.md and VALIDATION.md.
+PS-GAN-60W A12 — editable KiCad 10 engineering prototype
 
-A11 repairs GaN copper/mask/paste and package origin, U5/C26 overlap, courtyards,
-placement and orientation marks. It aligns the native/magnetic stack with the
-JLC construction and audits every filled pour. All 50 ground stitches connect
-at least two final ground layers. The drive and selected control/sense paths
-have adjacent returns outside their own required via antipads.
+Open kicad/PS-GAN-60W.kicad_pro. Review.html provides board and copper-layer views.
+Manufacturing-audit.html and VALIDATION.md describe measured checks and open gates.
 
-64 x 56 mm board, 55 x 47 mm M3 pattern, 75 top-side purchased components.
-The 92 x 76 mm one-up handling panel is in build/panel-A11. Panel Gerbers must
-use panel CPL; single-board Gerbers must use single-board CPL.
+A12 cleans up trace angles, free elbows, OVP feedback routes and printed legend.
+All electronic components remain on top; windings, outline and mounting pattern
+are retained. The archive supplies single-board CAD, Gerbers and matching CPL.
+JLCPCB defines and quotes any assembly handling rails or panelization it needs.
+No customer panel files, tabs or mouse bites are supplied.
 
-ERC/DRC/connectivity/parity and independent geometry checks pass. Hardware is
-unbuilt and untested. Full turnkey assembly remains unconfirmed: JLC factory
-acceptance, placement preview, core/clip fitting and electrical qualification
-remain open. No order, reservation, upload or supplier message was made.
-Five-board planning allowance: $400-650, excluding ferrite fitting, testing,
-shipping and tax. This is not a supplier quote. All earlier packages are superseded.
+Five-board planning allowance: $400–650 total, not a supplier quote. Ferrite fitting,
+functional testing, shipping and tax are excluded. Full turnkey is not confirmed.
+The converter is unbuilt; 60 W is a target, not a tested power rating.

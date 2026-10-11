@@ -1,5 +1,5 @@
 {
-  "revision": "A11",
+  "revision": "A12",
   "method": "Native track polygon projection versus a conservative 7.6 mm square around L2; checks sensitive RIPPLE and BIAS_FB on every copper layer. This is a geometry screen, not extracted magnetic coupling.",
   "current": [
     {

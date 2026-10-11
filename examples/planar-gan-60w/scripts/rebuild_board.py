@@ -1,9 +1,10 @@
-"""Rebuild A11 from bundled footprints and explicit manual routes.
+"""Rebuild A12 from bundled footprints and explicit manual routes.
 Requires KiCad 10 pcbnew. Overwrites the native PCB, project rules and layout metadata.
 The native schematic and local libraries are the editable sources.
 """
-import json, math, uuid
+import json, math, uuid, sys
 from pathlib import Path
+if len(sys.argv)>1:sys.path.append(sys.argv[1])
 import pcbnew as pcb
 ROOT=Path(__file__).resolve().parents[1];CAD=ROOT/'kicad';LIB=CAD/'PS.pretty'
 data=json.loads((ROOT/'circuit.json').read_text(encoding='utf8'))
@@ -22,7 +23,7 @@ def footprint(name,body,attr='smd'):
 fab=json.loads((ROOT/'manufacturing-prototype/fabrication-stack.json').read_text(encoding='utf8'))
 assert abs(sum(fab['copper_mm'])+sum(fab['dielectric_mm'])-fab['nominal_copper_plus_dielectric_mm'])<1e-6
 board=pcb.BOARD();board.SetCopperLayerCount(8);board.GetDesignSettings().SetBoardThickness(mm(fab['nominal_copper_plus_dielectric_mm']))
-title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A11 ENGINEERING PROTOTYPE');title.SetDate('2026-10-10');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('PS-GAN-60W / planar LLC');title.SetRevision('A12 ENGINEERING PROTOTYPE');title.SetDate('2026-10-10');board.SetTitleBlock(title)
 aliases=json.loads((ROOT/'net-aliases.json').read_text(encoding='utf8'))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values() if n}):
@@ -167,14 +168,14 @@ def via(net,x,y):
  intended_items.append((v,nets[net].GetNetname()))
 def path(net,refs,width=.25,layer=pcb.F_Cu):track(net,[pos(*p) if isinstance(p[0],str) else (p[0]+60,p[1]+60) for p in refs],width,layer)
 # Deliberately manual routes begin with local signal and decoupling connections.
-# No automatic routing, net renaming, clearance exemptions or hidden unrouted nets.
+# Constrained octilinear cleanup follows the explicit routes; no net renaming or clearance exemptions.
 exec((ROOT/'scripts/manual_routes.py').read_text(encoding='utf8'))
 exec((ROOT/'scripts/mechanical_features.py').read_text(encoding='utf8'))
 # Keep placement preview editable; routing status is measured by KiCad DRC.
 def legend(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x+60,y+60));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15));t.SetLayer(layer);t.SetMirrored(layer==pcb.B_SilkS);board.Add(t)
 legend('PLANAR STUDIO',20,-1.6,1.2)
-legend('PS-GAN-60W  /  A11',24,50.6,1)
+legend('PS-GAN-60W  /  A12',24,50.6,1)
 legend('48V IN',51.8,12,.9);legend('12V OUT',-2,8.2,.9)
 legend('+',47.8,15.96,1);legend('-',47.8,21.04,1)
 legend('-',-.1,14.3,.8);legend('+',-.1,23,.8)
@@ -192,11 +193,13 @@ legend('U8 / OVP',16.8,48.8,.8)
 legend('J2: 2+ 1-',-2,25.9,.8)
 legend('ENGINEERING PROTOTYPE',24,50.6,.85,pcb.B_SilkS)
 exec((ROOT/'scripts/refine_manufacturing_board.py').read_text(encoding='utf8'))
+exec((ROOT/'scripts/refine_silkscreen.py').read_text(encoding='utf8'))
 exec((ROOT/'scripts/stitch_ground.py').read_text(encoding='utf8'))
 # Filling can propagate a net into touching copper. Detect any such unintended
 # reassignment rather than accepting a superficially clean connectivity check.
 present={t.m_Uuid.AsString() for t in board.GetTracks()}
-assert all(t.GetNetname()==n for t,n in intended_items if t.m_Uuid.AsString() in present), 'Routing net changed during fill'
+bad=[(t.GetNetname(),n,xy(t.GetStart()),xy(t.GetEnd()),t.GetClass()) for t,n in intended_items if t.m_Uuid.AsString() in present and t.GetNetname()!=n]
+assert not bad, ('Routing net changed during fill',bad)
 # Assembly reference IDs on the front fabrication layer remain uncluttered.
 board.GetDesignSettings().SetAuxOrigin(pt(53,112))
 out=CAD/'PS-GAN-60W.kicad_pcb';pcb.SaveBoard(str(out),board)
@@ -223,7 +226,7 @@ settings=board.GetDesignSettings()
 settings.m_MinClearance=mm(.16);settings.m_TrackMinWidth=mm(.16)
 settings.m_ViasMinSize=mm(.6);settings.m_MinThroughDrill=mm(.3)
 settings.m_HoleToHoleMin=mm(.25);settings.m_CopperEdgeClearance=mm(.25)
-def stable_id(item,key):item.SetUuid(pcb.KIID(str(uuid.uuid5(uuid.NAMESPACE_URL,'planar-studio/PS-GAN-60W/A11/'+key))))
+def stable_id(item,key):item.SetUuid(pcb.KIID(str(uuid.uuid5(uuid.NAMESPACE_URL,'planar-studio/PS-GAN-60W/A12/'+key))))
 def track_key(t):return str((t.GetClass(),t.GetNetname(),t.GetLayer(),xy(t.GetStart()),xy(t.GetEnd()),t.GetWidth(F) if isinstance(t,pcb.PCB_VIA) else t.GetWidth()))
 for i,t in enumerate(sorted(board.GetTracks(),key=track_key)):stable_id(t,'track/'+str(i)+'/'+track_key(t))
 for fp in board.GetFootprints():

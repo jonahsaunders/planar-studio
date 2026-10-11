@@ -41,7 +41,7 @@ def inspect(root):
     return rows
 
 current=inspect(R)
-report={'revision':'A11','sample_step_max_mm':.025,'own_net_via_exclusion_radius_mm':.65,
+report={'revision':'A12','sample_step_max_mm':.025,'own_net_via_exclusion_radius_mm':.65,
         'method':'Sample every explicit selected-net trace centerline against filled same-domain copper on either immediately adjacent layer. Report raw coverage and coverage excluding only the selected net\'s own via antipads. Never exclude foreign-net voids. Does not measure copper width, return-current distribution, inductance or crosstalk; not a universal all-net coverage claim.',
         'current':current}
 if len(sys.argv)>1:report['previous_A9']=inspect(Path(sys.argv[1]))

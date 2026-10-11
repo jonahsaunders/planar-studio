@@ -3,7 +3,7 @@ from pathlib import Path
 import pcbnew as p,html
 R=Path(__file__).resolve().parents[1];b=p.LoadBoard(str(R/'kicad/PS-GAN-60W.kicad_pcb'))
 fs={f.GetReference():f for f in b.GetFootprints()}
-s=['<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660"><rect width="1200" height="660" fill="#fff"/><style>text{font-family:Arial;fill:#20362f}.t{font-size:23px;font-weight:bold}.h{font-size:17px;font-weight:bold}.n{font-size:13px}</style><text x="28" y="35" class="t">A11 repaired manufacturing geometry</text>']
+s=['<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660"><rect width="1200" height="660" fill="#fff"/><style>text{font-family:Arial;fill:#20362f}.t{font-size:23px;font-weight:bold}.h{font-size:17px;font-weight:bold}.n{font-size:13px}</style><text x="28" y="35" class="t">A12 repaired manufacturing geometry</text>']
 def draw(refs,layer,box,ox,oy,width,height,color):
     x0,y0,x1,y1=box;scale=min(width/(x1-x0),height/(y1-y0))
     for ref in refs:

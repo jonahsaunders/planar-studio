@@ -69,7 +69,7 @@ pairs += [('Bias ripple capacitor to FB injection',('C23','1'),('C24','1')),('Bi
 pairs += [('Output reservoir to connector',('C13','1'),('J2','2')),('Output second reservoir to connector',('C14','1'),('J2','2')),('Output divider Kelvin pickup',('C16','1'),('R22','1'))]
 metrics=[]
 for title,start,end in pairs:
- m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A10':route(a,start,end),'A11':route(b,start,end)};metrics.append(m)
+ m={'path':title,'from':'.'.join(start),'to':'.'.join(end),'A11':route(a,start,end),'A12':route(b,start,end)};metrics.append(m)
 pa=json.loads((old/'circuit.json').read_text())['parts'];pb=json.loads((R/'circuit.json').read_text())['parts']
 assert len(pa)==len(pb)==82
 netchanges=[];identity_changes=[]
@@ -91,6 +91,6 @@ vs=pads(b)[('U3','5')];sense=vs.GetPosition()
 zones=[z for z in b.Zones() if z.GetNetname()==vs.GetNetname()]
 assert all(not z.Outline().Contains(sense) for z in zones),'VSS must enter its dedicated trace, not a ground pour'
 moved=[ref for ref in af if af[ref].GetPosition()!=bf[ref].GetPosition() or af[ref].GetOrientationDegrees()!=bf[ref].GetOrientationDegrees()]
-report={'revision':'A11','comparison':'A10 schematic / A8 hardware','method':'Shortest path through explicit native track centerlines split at collinear overlaps and same-layer intersections, with via and plated-connector transitions; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':identity_changes,'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
-(R/'evidence/A11-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+report={'revision':'A12','comparison':'Previous A11 native design','method':'Shortest path through explicit native track centerlines split at collinear overlaps and same-layer intersections, with via and plated-connector transitions; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.','paths':metrics,'moved_parts':sorted(moved),'part_identity_changes':identity_changes,'intentional_pin_net_changes':netchanges,'winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged':True,'U3_VSS_excluded_from_all_SGND_zone_outlines':True,'routed_vias_before':sum(isinstance(t,p.PCB_VIA) for t in a.GetTracks()),'routed_vias_after':sum(isinstance(t,p.PCB_VIA) for t in b.GetTracks()),'qualification':'unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature'}
+(R/'evidence/A12-layout-audit.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

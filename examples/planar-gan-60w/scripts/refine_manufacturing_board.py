@@ -1,4 +1,4 @@
-"""A11 assembly and pour refinements, executed inside rebuild_board.py.
+"""A12 assembly and pour refinements, executed inside rebuild_board.py.
 
 Keep power SMT connections solid. Apply thermals only to insertion contacts;
 do not add copper or ground bridges across the transformer isolation domains.

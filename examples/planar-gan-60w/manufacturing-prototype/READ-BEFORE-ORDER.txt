@@ -1,9 +1,9 @@
-PS-GAN-60W A11 — ENGINEERING / FACTORY REVIEW ONLY
+PS-GAN-60W A12 — ENGINEERING / FACTORY REVIEW ONLY
 Do not order from this package until the remaining factory and engineering gates are closed.
 Five assembled units; 75 top-side placements each (73 SMT + 2 insertion headers).
-Use JLC Standard service. The single-board outline is 64 x 56 mm. The supplied one-up
-handling panel is 92 x 76 mm; five panels produce five boards. Panel CPL and panel
-Gerbers form a separate matched set. Do not mix panel and single-board coordinates.
+Use JLC Standard service. The single-board outline is 64 x 56 mm. Supply the matched single-board
+Gerbers and CPL. JLCPCB is to define and quote any required handling rails or panel,
+including tooling and final placement-coordinate mapping. No customer panel is supplied.
 
 CONSTRUCTION
 JLC081622-1080 candidate: 1.655 mm nominal copper+dielectric stack, 70 um outer and
@@ -11,8 +11,8 @@ JLC081622-1080 candidate: 1.655 mm nominal copper+dielectric stack, 70 um outer 
 ENIG, green mask, top assembly. Obtain final construction and tolerance acceptance.
 All 0.30 mm interconnect holes require resin fill, copper cap and planarization,
 including the six T1 transitions represented as plated pads. See Drill-process-map.csv.
-Keep 1.60 mm connector and 3.20 mm mounting holes open. Panel 0.50 mm mouse bites
-and 2.00 mm tooling holes also remain open. Do not fill by object type alone.
+Keep 1.60 mm connector and 3.20 mm mounting holes open.
+Any factory-added tooling is controlled by JLCPCB. Do not fill by object type alone.
 
 ASSEMBLY
 U1 uses TI RAR0017B separated copper/mask/paste, approximately 75–76% power-land

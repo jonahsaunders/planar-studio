@@ -100,7 +100,7 @@ for i,t in enumerate(vias):
     hits=[a[0] for a in pads if a[3].GetAttribute()==p.PAD_ATTRIB_SMD and a[0].split('.')[0] in purchased and hole.intersects(a[2])]
     if hits:vip.append({'via':'via'+str(i),'pads':hits})
 def first(items,n=12):return [list(x) for x in sorted(items)[:n]]
-report={'date':'2026-10-10','revision':'A11','method':'Native KiCad polygons approximated outward with maximum 0.001 mm error. Hole distances use nominal circular drills. Mask geometry uses copper polygon plus native mask expansion. Does not model registration tolerances, etch compensation, paste process, 3D collisions or supplier CAM edits.',
+report={'date':'2026-10-10','revision':'A12','method':'Native KiCad polygons approximated outward with maximum 0.001 mm error. Hole distances use nominal circular drills. Mask geometry uses copper polygon plus native mask expansion. Does not model registration tolerances, etch compensation, paste process, 3D collisions or supplier CAM edits.',
  'copper_layers':b.GetCopperLayerCount(),'board_nominal_thickness_mm':mm(b.GetDesignSettings().GetBoardThickness()),
  'min_routed_track_width_mm':min(mm(t.GetWidth()) for t in tracks),
  'via_count':len(vias),'via_sizes_mm':sorted(set((mm(t.GetWidth(p.F_Cu)),mm(t.GetDrillValue())) for t in vias)),

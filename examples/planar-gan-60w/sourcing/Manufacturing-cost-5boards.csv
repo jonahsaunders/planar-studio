@@ -1,5 +1,5 @@
 Item,Low_USD,High_USD,Basis
-"PCB fabrication, one-up handling panel, ENIG, all-layer heavy copper, filled/capped vias",100,250,ENGINEERING ALLOWANCE; no valid online PCB quote; final panel and stack may exceed it
+"PCB fabrication and JLC factory panelization, ENIG, all-layer heavy copper, filled/capped vias",100,250,ENGINEERING ALLOWANCE; no valid online PCB quote; final panel and stack may exceed it
 375 fitted electronic components,111.64,111.64,Current catalog price breaks applied to five-board fitted quantities; no attrition
 Component attrition / minimum order / replenishment allowance,15,40,ENGINEERING ALLOWANCE; not a JLC attrition rule
 "Standard assembly setup, one side",25.56,25.56,Published fee
