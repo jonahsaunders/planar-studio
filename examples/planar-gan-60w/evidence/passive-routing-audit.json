@@ -1,6 +1,6 @@
 {
-  "revision": "A13",
-  "native_board_sha256": "419079a90fc0f151ad9b02cdfd5830efeffed2b52bdbc3f459cd82f75493c3e3",
+  "revision": "A14",
+  "native_board_sha256": "966ad133c9f496af95ec70b98598d10c54d7ea4bba100d8ba58407e87bf3b657",
   "scope": "Eight low-current feedback/OVP resistors. Geometric assembly-risk reduction only, not equal thermal impedance, reflow validation or a no-tombstoning guarantee.",
   "sources": [
     "https://www.eurocircuits.com/technical-guidelines/pcb-assembly-guidelines/tombstoning/",
@@ -258,48 +258,48 @@
     }
   ],
   "native_routing": {
+    "segments": 497,
+    "length_mm": 824.95,
+    "vias": 198
+  },
+  "baseline_A13": {
     "segments": 501,
     "length_mm": 828.205,
-    "vias": 197
-  },
-  "baseline_A12": {
-    "segments": 797,
-    "length_mm": 879.052,
-    "vias": 211,
+    "vias": 197,
     "local_feedback_routes": [
       {
         "net": "VREF",
-        "length_mm": 15.795,
-        "signal_vias": 3
+        "length_mm": 12.101,
+        "signal_vias": 0
       },
       {
         "net": "OV_REF",
-        "length_mm": 14.13,
-        "signal_vias": 2
+        "length_mm": 6.961,
+        "signal_vias": 0
       },
       {
         "net": "FB_K",
-        "length_mm": 22.197,
-        "signal_vias": 2
+        "length_mm": 11.192,
+        "signal_vias": 0
       },
       {
         "net": "OV_K",
-        "length_mm": 10.094,
+        "length_mm": 6.898,
         "signal_vias": 0
       },
       {
         "net": "FB_LED",
-        "length_mm": 8.643,
-        "signal_vias": 2
+        "length_mm": 5.421,
+        "signal_vias": 0
       },
       {
         "net": "OV_LED",
-        "length_mm": 8.384,
-        "signal_vias": 2
+        "length_mm": 5.421,
+        "signal_vias": 0
       },
       {
         "net": "COMP",
-        "length_mm": 1.7,
+        "length_mm": 1.9,
         "signal_vias": 0
       }
     ]

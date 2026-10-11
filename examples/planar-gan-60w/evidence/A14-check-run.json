@@ -1,0 +1,70 @@
+[
+  {
+    "check": "DRC",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_windings",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_reference_planes",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_return_paths",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_gan_layout",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_bias_layout",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_mechanical",
+    "exit_code": 0
+  },
+  {
+    "check": "export_assembly_pad_map",
+    "exit_code": 0
+  },
+  {
+    "check": "final_audit",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_manufacturing_geometry",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_pours_and_stencil",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_turnkey_readiness",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_routing_and_silk",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_passive_routing",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_layout_changes",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_schematic",
+    "exit_code": 0
+  },
+  {
+    "check": "audit_device_pins",
+    "exit_code": 0
+  }
+]

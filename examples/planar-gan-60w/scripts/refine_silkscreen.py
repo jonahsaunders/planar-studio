@@ -50,4 +50,4 @@ for g in sorted(list(board.GetDrawings()),key=lambda q:0 if isinstance(q,pcb.PCB
         printed.append(s);found=True;break
     assert found,('No clear legend location',name)
     moves.append({'owner':'board','item':name,'position_mm':xy(g.GetPosition())})
-(ROOT/'evidence/silkscreen-placement.json').write_text(json.dumps({'revision':'A13','mask_clearance_target_mm':.22,'text_to_courtyard_target_mm':.1,'items':moves},indent=2)+'\n')
+(ROOT/'evidence/silkscreen-placement.json').write_text(json.dumps({'revision':'A14','mask_clearance_target_mm':.22,'text_to_courtyard_target_mm':.1,'items':moves},indent=2)+'\n')

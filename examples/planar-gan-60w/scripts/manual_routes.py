@@ -38,7 +38,7 @@ W('AGND',F,[('C6',2),('C5',2)],.4)
 # Dividers terminate at the GaN inputs; the long runs carry low-impedance GD.
 W('HI',F,[('U1',12),(44.82,9.7),(45.32,9.2),(46.5,9.2),(47.6,8.1),(48.6,8.1),('R5',1)],.2)
 W('HI',F,[('R5',1),('R4',2)],.2)
-W('LI',F,[('U1',13),(44.33,9.5),(45.65,8.33)],.16)
+W('LI',F,[('U1',13),(44.33,9.5),(45.65,8.33)],.2)
 V('LI',(45.65,8.33));W('LI',I2,[(45.65,8.33),(44.7,8.9),(42,8.9),(41,10.7),(39.075,10.7),('R7',1)],.2)
 W('LI',F,[('R7',1),('R6',2)],.2)
 W('V5',I6,[(41.1,22),(41.1,26.2),(37.7,26.2),('U5',5)],.35)
@@ -135,10 +135,10 @@ W('AGND',I4,[('C5',2),(42.125,2),('TP6',1)],.3)
 # continuous In1/In3 AGND planes; no long redundant ground track is needed.
 # Gate traces stay above the nearby secondary-return reference plane.
 W('VG1',F,[('U3',1),('R10',1)],.3)
-W('VG2',I2,[('U3',8),(6.4,19.2),(2.325,19.2),('R11',1)],.3)
-W('SR_G2',F,[('R11',2),(.675,21.7),('Q2',4)],.3)
+W('VG2',I2,[('U3',8),(4.35,19.15),(2.8,19.15),('R11',1)],.3)
+W('SR_G2',F,[('R11',2),('Q2',4)],.3)
 # Separate VSS sense route. Its via is isolated from SGND pours below.
-W('SGND',I3,[('U3',5),(1.2,19.2),(1.2,21.7),('Q2',1)],.2)
+W('SGND',I3,[('U3',5),(.4,19.3),(.4,21.2),(.9,21.7),('Q2',1)],.2)
 # Compact LM5164 cell: local input, bootstrap, switch, inductor and output storage.
 W('VIN',I3,[('C2',1),(47,22),(49,24),(51.4,24),(51.4,26),(51.4,31.625),('C19',1)],.8)
 W('VIN',F,[('C19',1),(47.1,31.625),(47.1,33.13),('U4',2)],.6)

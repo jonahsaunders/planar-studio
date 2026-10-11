@@ -1,3 +1,39 @@
+## A14 manufacturing and routing audit
+
+- Reoriented and lowered R11 to face Q2. Its output is a straight 1.840 mm
+  connection, down from 3.367 mm. The driver-to-resistor trace drops from
+  6.331 to 4.449 mm: combined explicit gate routing is **35% shorter**.
+  The dedicated VSS pickup is rerouted around the relocated via; its explicit
+  length increases from 7.368 to 8.021 mm while keeping the same source pickup.
+- Widened the only 0.16 mm routed control launch to 0.20 mm. All explicit
+  routed tracks are now at least 0.20 mm wide. Final pours preserve drive
+  references, switching-node exclusions and connector soldering thermals.
+- Refreshed all 43 exact electronic codes on 11 October. Every code has
+  stock for five fitted boards before order-specific attrition; F1 (28 units)
+  and L2 (39 units) have the lowest available quantities.
+- Added 16 explicit fabrication/assembly-data screens, including connector
+  annuli, BOM/CPL identity, mask clearances and every paste aperture. The
+  smallest aperture area ratio is **0.7405** at a 0.125 mm stencil.
+- JLC Standard PCBA publishes a 70 × 70 mm handling minimum, rails and
+  fiducials. The supplied design remains a single 64 × 56 mm board.
+  JLC must accept and provide the handling arrangement.
+- Corrected duplicate manufacturing issue IDs and added a file-specific
+  handoff. Core fitting, mating-plug delivery and full turnkey are unconfirmed.
+
+[Turnkey readiness and handoff](TURNKEY-READINESS.html) ·
+[Actual rectifier routing comparison](evidence/Rectifier-routing-before-after.png) ·
+[A14 measurements](evidence/A14-layout-audit.json).
+
+The A14 board contains 497 explicit track segments, 824.950 mm of summed
+centerline length and 198 routed vias, including 50 ground stitches.
+The six T1 transitions bring the filled/capped-hole requirement to 204.
+Electronic identities, values and pin nets are unchanged; the schematic
+remains A12. The inherited A13 feedback improvements below remain.
+
+![Actual rectifier routing](evidence/Rectifier-routing-before-after.png)
+
+The following A13 results are retained as historical context.
+
 # A13 direct routing and passive assembly review
 
 11 October 2026. Native KiCad PCB revision A13; the A12 electrical schematic,

@@ -1,8 +1,9 @@
-PS-GAN-60W A13 — ENGINEERING / FACTORY REVIEW ONLY
+PS-GAN-60W A14 — ENGINEERING / FACTORY REVIEW ONLY
 Do not order from this package until the remaining factory and engineering gates are closed.
 Five assembled units; 75 top-side placements each (73 SMT + 2 insertion headers).
 Use JLC Standard service. The single-board outline is 64 x 56 mm. Supply the matched single-board
-Gerbers and CPL. JLCPCB is to define and quote any required handling rails or panel,
+Gerbers and CPL. Standard PCBA requires a minimum 70 x 70 mm handling size, rails and fiducials.
+JLCPCB is to define and quote the required handling rails or panel,
 including tooling and final placement-coordinate mapping. No customer panel is supplied.
 
 CONSTRUCTION
@@ -23,13 +24,13 @@ Keep these necks and the supplied equal paste apertures during CAM. Validate pas
 print, placement and reflow balance on first articles; routing alone does not qualify yield.
 Review every exact part code, package-center coordinate, pin 1 and rotation against
 the supplier model. KiCad angles are raw, not a universal JLC rotation correction.
-Both headers: pin 2 positive, pin 1 return; removable plugs ship separately unless agreed.
+Both headers: pin 2 positive, pin 1 return. Explicitly agree fitting/delivery of
+ten removable mating plugs; JLC library inventory does not imply loose accessory delivery.
 Approve insertion lead protrusion, fixture and solder process; 0.6 mm thermal spokes.
 
 MECHANICAL OPERATIONS
 Solder and inspect electronics, depanelize, then fit two B66285G0050X187 core halves
-and two B66286A2000X000 clips per board. Two C71370 mating plugs per board are
-accessories. No core grinding or extra spacer is specified. Verify actual core/slot,
+and two B66286A2000X000 clips per board. Two C71370 mating plugs per board need an agreed accessory-fitting/delivery operation. No core grinding or extra spacer is specified. Verify actual core/slot,
 corner, clip and underside clearances before committing a build. Clips must not bridge
 the isolation domains or contact circuit copper. Nonconductive standoffs are specified.
 JLC procurement/consignment and core/clip installation have not been accepted.

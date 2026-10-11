@@ -9,10 +9,10 @@
   isolated 12 V / 5 A target, eight-layer PCB windings, native KiCad 10 project,
   top-side electronics, removable screw-terminal power connectors and exposed-substrate M3 mounting
   holes. Includes an MIT PER board study, sourcing, calculations and CAD checks.
-  **A13 unbuilt engineering prototype; factory acceptance and hardware qualification are open.**
-  **Do not order:** the [five-board manufacturing audit](planar-gan-60w/Manufacturing-audit.html)
+  **A14 unbuilt engineering prototype; factory acceptance and hardware qualification are open.**
+  **Supplier review only:** the [five-board turnkey handoff](planar-gan-60w/TURNKEY-READINESS.html)
   documents repaired footprints, placement and pours, a matched JLC stack/model,
-  and direct feedback routing with checked resistor pad entries. Single-board data are supplied; JLCPCB defines handling. Factory acceptance, ferrite fitting and powered
+  direct feedback routing, a shorter rectifier gate path and a fresh BOM/stencil screen. Single-board data are supplied; JLCPCB defines handling. Factory acceptance, ferrite fitting and powered
   qualification remain open.
 
 These are editable engineering examples, separate from the KiCad plugin installer.
@@ -20,5 +20,5 @@ These are editable engineering examples, separate from the KiCad plugin installe
 [Download the complete A5 review package](PS-FLYBACK-5W-A5-review-package.zip?raw=true)
 for the flyback example, including its illustrated local report and checksums.
 
-[Download the complete GaN A13 KiCad package](PS-GAN-60W-A13-KiCad.zip?raw=true)
+[Download the complete GaN A14 KiCad package](PS-GAN-60W-A14-KiCad.zip?raw=true)
 for the GaN example, including its interactive local review and checksums.

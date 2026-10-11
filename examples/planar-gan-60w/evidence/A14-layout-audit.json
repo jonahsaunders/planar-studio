@@ -1,0 +1,541 @@
+{
+  "revision": "A14",
+  "comparison": "Previous A13 native design",
+  "method": "Shortest path through explicit native track centerlines split at collinear overlaps and same-layer intersections, with via and plated-connector transitions; trace length in XY, excluding vertical barrel distance and pours. Via count is layer transitions along that path. Geometric comparison, not extracted loop inductance or performance measurement.",
+  "paths": [
+    {
+      "path": "GaN bootstrap HB",
+      "from": "U1.10",
+      "to": "C4.1",
+      "A13": {
+        "trace_length_mm": 1.91,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 1.91,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN bootstrap HS",
+      "from": "U1.11",
+      "to": "C4.2",
+      "A13": {
+        "trace_length_mm": 2.345,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.345,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN VCC bypass",
+      "from": "U1.14",
+      "to": "C6.1",
+      "A13": {
+        "trace_length_mm": 2.594,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.594,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN AGND bypass",
+      "from": "U1.15",
+      "to": "C6.2",
+      "A13": {
+        "trace_length_mm": 2.491,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.491,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias switch to inductor",
+      "from": "U4.8",
+      "to": "L2.1",
+      "A13": {
+        "trace_length_mm": 3.771,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.771,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias bootstrap",
+      "from": "U4.7",
+      "to": "C20.1",
+      "A13": {
+        "trace_length_mm": 2.205,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.205,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "High-side divider to GaN",
+      "from": "R5.1",
+      "to": "U1.12",
+      "A13": {
+        "trace_length_mm": 6.572,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 6.572,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Low-side divider to GaN",
+      "from": "R7.1",
+      "to": "U1.13",
+      "A13": {
+        "trace_length_mm": 10.669,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 10.669,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "LLC GD1 to receiver",
+      "from": "U2.8",
+      "to": "R4.1",
+      "A13": {
+        "trace_length_mm": 46.861,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 46.861,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "LLC GD2 to receiver",
+      "from": "U2.5",
+      "to": "R6.1",
+      "A13": {
+        "trace_length_mm": 41.683,
+        "through_via_transitions": 4
+      },
+      "A14": {
+        "trace_length_mm": 41.683,
+        "through_via_transitions": 4
+      }
+    },
+    {
+      "path": "Rectifier VG1 to resistor",
+      "from": "U3.1",
+      "to": "R10.1",
+      "A13": {
+        "trace_length_mm": 2.172,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.172,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Rectifier resistor to Q1",
+      "from": "R10.2",
+      "to": "Q1.4",
+      "A13": {
+        "trace_length_mm": 2.137,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.137,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Rectifier VG2 to resistor",
+      "from": "U3.8",
+      "to": "R11.1",
+      "A13": {
+        "trace_length_mm": 6.331,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 4.449,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Rectifier resistor to Q2",
+      "from": "R11.2",
+      "to": "Q2.4",
+      "A13": {
+        "trace_length_mm": 3.367,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 1.84,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "REG bypass",
+      "from": "U3.3",
+      "to": "C11.1",
+      "A13": {
+        "trace_length_mm": 2.866,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.866,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "VDD bypass",
+      "from": "U3.7",
+      "to": "C12.1",
+      "A13": {
+        "trace_length_mm": 2.143,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.143,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC VCC bypass",
+      "from": "U2.7",
+      "to": "C10.1",
+      "A13": {
+        "trace_length_mm": 2.633,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.633,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC GND bypass",
+      "from": "U2.6",
+      "to": "C10.2",
+      "A13": {
+        "trace_length_mm": 2.633,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.633,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LDO input bypass",
+      "from": "U5.1",
+      "to": "C25.1",
+      "A13": {
+        "trace_length_mm": 2.293,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.293,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LDO output bypass",
+      "from": "U5.5",
+      "to": "C26.1",
+      "A13": {
+        "trace_length_mm": 2.061,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.061,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN input VIN",
+      "from": "U1.7",
+      "to": "C3.1",
+      "A13": {
+        "trace_length_mm": 3.863,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.863,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "GaN input return",
+      "from": "U1.6",
+      "to": "C3.2",
+      "A13": {
+        "trace_length_mm": 3.749,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.749,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC dead time",
+      "from": "U2.1",
+      "to": "R1.1",
+      "A13": {
+        "trace_length_mm": 2.075,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.075,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC frequency setting",
+      "from": "U2.2",
+      "to": "R2.1",
+      "A13": {
+        "trace_length_mm": 2.315,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.315,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC soft start",
+      "from": "U2.4",
+      "to": "C9.1",
+      "A13": {
+        "trace_length_mm": 2.871,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.871,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC OC bypass",
+      "from": "U2.3",
+      "to": "C18.1",
+      "A13": {
+        "trace_length_mm": 2.61,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.61,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "LLC feedback injection",
+      "from": "R2.1",
+      "to": "R3.1",
+      "A13": {
+        "trace_length_mm": 6.345,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 6.345,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "LLC rectifier to OC",
+      "from": "D2.2",
+      "to": "U2.3",
+      "A13": {
+        "trace_length_mm": 7.633,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 7.633,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Feedback upper divider sense",
+      "from": "U7.2",
+      "to": "R22.2",
+      "A13": {
+        "trace_length_mm": 3.539,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.539,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Feedback local compensation",
+      "from": "U7.2",
+      "to": "C28.2",
+      "A13": {
+        "trace_length_mm": 2.647,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 2.647,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "OVP divider sense",
+      "from": "U9.2",
+      "to": "R27.2",
+      "A13": {
+        "trace_length_mm": 3.539,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.539,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "OVP filter to lower divider",
+      "from": "C29.1",
+      "to": "R28.1",
+      "A13": {
+        "trace_length_mm": 6.186,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 6.186,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias enable divider",
+      "from": "U4.3",
+      "to": "R14.2",
+      "A13": {
+        "trace_length_mm": 5.623,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 5.623,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Bias ripple capacitor to FB injection",
+      "from": "C23.1",
+      "to": "C24.1",
+      "A13": {
+        "trace_length_mm": 11.38,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 11.38,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Bias sampler resistor to capacitor",
+      "from": "R19.2",
+      "to": "C23.1",
+      "A13": {
+        "trace_length_mm": 3.507,
+        "through_via_transitions": 0
+      },
+      "A14": {
+        "trace_length_mm": 3.507,
+        "through_via_transitions": 0
+      }
+    },
+    {
+      "path": "Bias output Kelvin pickup",
+      "from": "C21.1",
+      "to": "R17.1",
+      "A13": {
+        "trace_length_mm": 18.619,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 18.619,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Output reservoir to connector",
+      "from": "C13.1",
+      "to": "J2.2",
+      "A13": {
+        "trace_length_mm": null,
+        "through_via_transitions": null,
+        "note": "Connected through copper fill; explicit-track-only measurement unavailable."
+      },
+      "A14": {
+        "trace_length_mm": null,
+        "through_via_transitions": null,
+        "note": "Connected through copper fill; explicit-track-only measurement unavailable."
+      }
+    },
+    {
+      "path": "Output second reservoir to connector",
+      "from": "C14.1",
+      "to": "J2.2",
+      "A13": {
+        "trace_length_mm": null,
+        "through_via_transitions": null,
+        "note": "Connected through copper fill; explicit-track-only measurement unavailable."
+      },
+      "A14": {
+        "trace_length_mm": null,
+        "through_via_transitions": null,
+        "note": "Connected through copper fill; explicit-track-only measurement unavailable."
+      }
+    },
+    {
+      "path": "Output divider Kelvin pickup",
+      "from": "C16.1",
+      "to": "R22.1",
+      "A13": {
+        "trace_length_mm": 6.314,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 6.314,
+        "through_via_transitions": 2
+      }
+    },
+    {
+      "path": "Rectifier dedicated VSS sense",
+      "from": "U3.5",
+      "to": "Q2.1",
+      "A13": {
+        "trace_length_mm": 7.368,
+        "through_via_transitions": 2
+      },
+      "A14": {
+        "trace_length_mm": 8.021,
+        "through_via_transitions": 2
+      }
+    }
+  ],
+  "moved_parts": [
+    "R11"
+  ],
+  "part_identity_changes": [],
+  "intentional_pin_net_changes": [],
+  "winding_artwork_mounting_footprints_and_connector_mount_positions_unchanged": true,
+  "U3_VSS_excluded_from_all_SGND_zone_outlines": true,
+  "routed_vias_before": 197,
+  "routed_vias_after": 198,
+  "qualification": "unbuilt; no measured efficiency, switching loss, AC magnetics loss or temperature"
+}

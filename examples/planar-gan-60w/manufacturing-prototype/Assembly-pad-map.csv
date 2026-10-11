@@ -94,8 +94,8 @@ R1,RC0603FR-073K3L,C108078,1,Net-(U2-DT),30.325,16.9,29.5,16.9,180.0,SMT,Inspect
 R1,RC0603FR-073K3L,C108078,2,AGND,28.675,16.9,29.5,16.9,180.0,SMT,Inspection reference only; not a placement file
 R10,RC0603FR-072R2L,C112307,1,Net-(U3-VG1),14.2,38.975,14.2,39.8,90.0,SMT,Inspection reference only; not a placement file
 R10,RC0603FR-072R2L,C112307,2,Net-(Q1-G),14.2,40.625,14.2,39.8,90.0,SMT,Inspection reference only; not a placement file
-R11,RC0603FR-072R2L,C112307,1,Net-(U3-VG2),9.325,31.5,8.5,31.5,180.0,SMT,Inspection reference only; not a placement file
-R11,RC0603FR-072R2L,C112307,2,Net-(Q2-G),7.675,31.5,8.5,31.5,180.0,SMT,Inspection reference only; not a placement file
+R11,RC0603FR-072R2L,C112307,1,Net-(U3-VG2),8.5,31.55,8.5,30.725,-90.0,SMT,Inspection reference only; not a placement file
+R11,RC0603FR-072R2L,C112307,2,Net-(Q2-G),8.5,29.9,8.5,30.725,-90.0,SMT,Inspection reference only; not a placement file
 R12,RC0603FR-070RL,C100044,1,Net-(T1-S_DOT),15.0,42.175,15.0,43.0,90.0,SMT,Inspection reference only; not a placement file
 R12,RC0603FR-070RL,C100044,2,Net-(U3-VD1),15.0,43.825,15.0,43.0,90.0,SMT,Inspection reference only; not a placement file
 R13,RC0603FR-070RL,C100044,1,Net-(T1-S_END),15.0,27.975,15.0,28.8,90.0,SMT,Inspection reference only; not a placement file

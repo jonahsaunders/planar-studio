@@ -1,4 +1,4 @@
-# PS-GAN-60W — A13
+# PS-GAN-60W — A14
 
 48 V nominal → isolated 12 V / 5 A **design target**, with an integrated GaN
 half bridge and PCB transformer generated using Planar Studio. Native KiCad 10
@@ -11,9 +11,40 @@ for the repaired CAD findings and remaining factory/qualification gates.
 [Design review and copper-layer viewer](Review.html) · [Schematic PDF](Schematic.pdf) ·
 [KiCad project](kicad/PS-GAN-60W.kicad_pro) · [Validation](VALIDATION.md)
 
-![A13 top assembly](Board-preview.png)
+![A14 top assembly](Board-preview.png)
 
-## A13 placement and direct routing
+## A14 manufacturing and routing audit
+
+- Reoriented and lowered R11 to face Q2. Its output is a straight 1.840 mm
+  connection, down from 3.367 mm. The driver-to-resistor trace drops from
+  6.331 to 4.449 mm: combined explicit gate routing is **35% shorter**.
+  The dedicated VSS pickup is rerouted around the relocated via.
+- Widened the only 0.16 mm routed control launch to 0.20 mm. All explicit
+  routed tracks are now at least 0.20 mm wide. Final pours preserve drive
+  references, switching-node exclusions and connector soldering thermals.
+- Refreshed all 43 exact electronic codes on 11 October. Every code has
+  stock for five fitted boards before order-specific attrition; F1 (28 units)
+  and L2 (39 units) have the lowest available quantities.
+- Added 16 explicit fabrication/assembly-data screens, including connector
+  annuli, BOM/CPL identity, mask clearances and every paste aperture. The
+  smallest aperture area ratio is **0.7405** at a 0.125 mm stencil.
+- JLC Standard PCBA publishes a 70 × 70 mm handling minimum, rails and
+  fiducials. The supplied design remains a single 64 × 56 mm board.
+  JLC must accept and provide the handling arrangement.
+- Corrected duplicate manufacturing issue IDs and added a file-specific
+  handoff. Core fitting, mating-plug delivery and full turnkey are unconfirmed.
+
+[Turnkey readiness and handoff](TURNKEY-READINESS.html) ·
+[Actual rectifier routing comparison](evidence/Rectifier-routing-before-after.png) ·
+[A14 measurements](evidence/A14-layout-audit.json).
+
+The A14 board contains 497 explicit track segments, 824.950 mm of summed
+centerline length and 198 routed vias, including 50 ground stitches.
+The six T1 transitions bring the filled/capped-hole requirement to 204.
+Electronic identities, values and pin nets are unchanged; the schematic
+remains A12. The inherited A13 feedback improvements below remain.
+
+## A13 placement and direct routing (retained history)
 
 - Turned and aligned the feedback/OVP resistor dividers so their connected pads
   face each other. R22/R23 and R27/R28 now have straight vertical connections.
@@ -64,11 +95,12 @@ qualification or an efficiency prediction.
 
 ## Manufacturing files and five-board estimate
 
-All 43 exact electronic catalog codes have snapshot stock for five fitted
+All 43 exact electronic catalog codes have 11 October snapshot stock for five fitted
 boards before attrition. [Exact BOM and stock](sourcing/Manufacturing-parts-5boards.csv).
 Stock is not reserved. Core halves and clips are specified from DigiKey;
-removable plugs are separate accessories. JLC procurement/consignment and
-installation of those mechanical items have not been accepted.
+removable plugs require an agreed accessory fitting/delivery operation. JLC
+procurement/consignment and installation have not been accepted. Its parts
+library does not guarantee delivery of loose accessories.
 
 Allow **$400–650 total for five boards** ($80–130 each) as a planning estimate
 for electronics assembly plus separate cores/clips/plugs. It excludes ferrite
