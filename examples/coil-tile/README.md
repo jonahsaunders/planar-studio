@@ -1,14 +1,16 @@
-# CoilTile A2 — a four-pixel metal-sensing PCB
+# CoilTile A3 — a four-pixel metal-sensing PCB
 
 **Prototype design, not yet fabricated or tested on hardware.** Four printed
 24 mm coils sense changes in nearby conductive targets. An LDC1614 measures
 their resonant frequencies; an MCP2221A connects them to a USB desktop heatmap.
 This is a near-field inductive array, not radar or an RF direction-finding array.
 
-A2 draws USB-C → ESD → USB/I²C bridge → sensor → four LC tanks as one continuous
-schematic. Power rails and local passives are wired into that drawing. All four
-mounting holes now reuse the American Embedded exposed-substrate edge footprint
-from the flyback and GaN examples. See [A2 changes](docs/A2-CHANGES.md).
+A3 keeps the continuous USB-C → ESD → USB/I²C bridge → sensor → LC-tank
+schematic, with smaller symbols, tighter spacing and clear service notes.
+The PCB has shorter I²C/CC1 routes, labeled service pads and a closer sensor
+bypass capacitor. All four mounting holes retain the American Embedded
+exposed-substrate footprint used by the flyback and GaN examples.
+See [A3 changes and measured routing improvements](docs/A3-CHANGES.md).
 
 ![Connected schematic](evidence/schematic.png)
 

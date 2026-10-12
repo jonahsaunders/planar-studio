@@ -54,7 +54,7 @@ run('pcb','export','drill','--format','excellon','--excellon-units','mm','--dril
     '--excellon-separate-th','--generate-report','--report-path',EVIDENCE/'drill-report.txt','-o',str(g)+'/',PCB)
 run('pcb','export','svg','--mode-single','--exclude-drawing-sheet','--layers','F.Fab,F.SilkS,Edge.Cuts',
     '--page-size-mode','2','-o',ROOT/'docs/assembly-top.svg',PCB)
-with zipfile.ZipFile(OUT/'CoilTile-A2-fabrication.zip','w',zipfile.ZIP_DEFLATED) as z:
+with zipfile.ZipFile(OUT/'CoilTile-A3-fabrication.zip','w',zipfile.ZIP_DEFLATED) as z:
     for f in sorted(g.iterdir()):
         if f.is_file():z.write(f,f.name)
 print(f'PASS: {len(brefs)} matched assembly references; clean native gates and fabrication export.')

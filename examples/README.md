@@ -18,7 +18,7 @@
 - [CoilTile USB inductive sensing array](coil-tile/README.md): four 24 mm printed
   coils, LDC1614 readout, USB HID/I2C bridge, connected KiCad 9 schematic,
   four-layer board and the same exposed-substrate M3 edge mounting footprints.
-  Includes host heatmap/CSV software, fabrication data and A2 review evidence.
+  Includes host heatmap/CSV software, fabrication data and A3 routing/readability review evidence.
   **Unbuilt prototype; sensing performance and factory acceptance are unverified.**
 
 These are editable engineering examples, separate from the KiCad plugin installer.

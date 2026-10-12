@@ -78,7 +78,7 @@ def box(a,b,title):
 exec((ROOT/'scripts/schematic-layout.py').read_text())
 # Persist embedded symbols and a project-local library for consistent edits.
 rootuid=uid(NAME)
-header=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {rootuid}) (paper "A3") (title_block (title "CoilTile - 2 x 2 inductive sensing prototype") (date "2026-10-12") (rev "A2") (company "USB HID / Planar Studio"))'
+header=f'(kicad_sch (version 20250114) (generator "eeschema") (uuid {rootuid}) (paper "A3") (title_block (title "CoilTile - 2 x 2 inductive sensing prototype") (date "2026-10-12") (rev "A3") (company "USB HID / Planar Studio"))'
 (CAD/(NAME+'.kicad_sch')).write_text(header+' (lib_symbols '+''.join(dump(d) for d in defs.values())+')\n'+'\n'.join(elements)+f' (sheet_instances (path "/" (page "1"))))')
 local=[]
 for name,d in defs.items():s=copy.deepcopy(d);s[1]=Q(name);local.append(dump(s))

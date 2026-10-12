@@ -38,8 +38,11 @@ KiCad/Python on PATH. It refills zones, runs strict native ERC/DRC/parity gates,
 exports the current schematic's BOM, verifies the BOM/CPL reference sets and
 creates the fabrication ZIP. It refuses export when the native gates fail.
 After changes, inspect the plots again and update the review evidence, costs,
-revision, package manifest and top-level project archive. Old preview images
-are not automatically refreshed by this minimal release script.
+revision and package manifest. Refresh the review images separately with
+`python3 scripts/render-previews.py`. This optional script requires CairoSVG,
+PyMuPDF, Pillow and PyGerber 2.4.3 alongside the KiCad CLI; it renders the
+schematic PDF/SVG, board layers, independent Gerbers and a bare-board preview.
+Its images are review artifacts, not substitutes for ERC/DRC or hardware tests.
 
 The portable coil design JSON can be imported through Planar Studio's JSON
 import function. Its geometry is one F.Cu winding; the board generator adds

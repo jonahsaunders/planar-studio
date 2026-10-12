@@ -1,6 +1,6 @@
-# JLCPCB order handoff — CoilTile A2 prototype
+# JLCPCB order handoff — CoilTile A3 prototype
 
-Upload `CoilTile-A2-fabrication.zip` for PCB fabrication, `BOM-JLCPCB.csv` for
+Upload `CoilTile-A3-fabrication.zip` for PCB fabrication, `BOM-JLCPCB.csv` for
 parts, and `CPL-JLCPCB.csv` for placement. Gerbers/drills/CPL share a plot origin
 at the board's bottom-left bounding corner; placement units are millimeters,
 X right and Y up. All components are top side. Do not mirror the CPL.

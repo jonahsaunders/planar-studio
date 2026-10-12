@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.9-9.0.9~ubuntu24.04.1"
     },
-    "CreationDate": "2026-10-12T16:24:59+01:00"
+    "CreationDate": "2026-10-12T16:48:46+01:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "CoilTile",
       "GUID": "436f696c-5469-46c6-952e-6b696361645f",
-      "Revision": "A2"
+      "Revision": "A3"
     },
     "Size": {
       "X": 72.05,

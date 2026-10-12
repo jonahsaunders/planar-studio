@@ -1,4 +1,4 @@
-# A2 validation record
+# A3 validation record
 
 This is a design release for prototype fabrication, not a production qualification.
 
@@ -13,8 +13,10 @@ This is a design release for prototype fabrication, not a production qualificati
 | Symbols vs specification | Exported KiCad netlist drives pad assignment; generator asserts named pin nets |
 | Fabrication plots | Four copper layers; top/bottom mask/paste/silk; outline; separate PTH/NPTH drills |
 | Independent Gerber parse | Copper, mask, paste, top silk and outline rendered using PyGerber |
-| Schematic review | SVG and native PDF rendered and inspected; wire-visibility issue corrected |
+| Schematic review | Compact continuous drawing; SVG and native PDF rendered and inspected |
 | Layout review | Front, inner and back copper plus soldermask/paste views inspected |
+| A2 → A3 equivalence | Exact electrical net groups and symbol pin identities preserved; coil/mounting footprints and placements unchanged |
+| Routing measurements | SDA 78.901 → 62.575 mm; SCL 82.326 → 53.138 mm; CC1 21.716 → 11.145 mm, including branches; `evidence/A3-review.json` |
 | Driver tests | 7 mocked tests: IDs, configuration, drive mode, coherent reads/error flags, timeout, baseline faults, channel map |
 | Software smoke test | Explicit headless simulation and CSV output; no fabricated hardware measurements |
 
@@ -40,7 +42,7 @@ Stock/price snapshots do not reserve parts or constitute a JLCPCB quote.
 ## Layout tradeoffs to measure
 
 The LDC is multiplexed, not four simultaneous receivers. Neighboring resonators
-remain physically coupled. The three adjacent sensor sectors have unequal lead
+remain physically coupled. The four sensor channels have unequal lead
 lengths, so empty-board frequencies may differ. Per-channel baseline calibration
 is provided; it does not remove all crosstalk or temperature drift. The internal
 reference oscillator is convenient and inexpensive but not a precision timebase.

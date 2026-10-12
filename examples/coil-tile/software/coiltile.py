@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CoilTile A2. USB/HID via Adafruit Blinka; no device firmware required."""
+"""CoilTile A3. USB/HID via Adafruit Blinka; no device firmware required."""
 import argparse
 import csv
 import json
@@ -162,7 +162,7 @@ class Log:
 def gui(sensor, args, log):
     import tkinter as tk
     window = tk.Tk()
-    window.title("CoilTile A2 — " + ("SIMULATION" if args.demo else "USB metal sensing"))
+    window.title("CoilTile A3 — " + ("SIMULATION" if args.demo else "USB metal sensing"))
     window.configure(bg="#101b2a")
     tk.Label(window, text="COIL TILE  /  2 × 2", bg="#101b2a", fg="white",
              font=("Helvetica", 22, "bold")).pack(padx=28, pady=(24, 8))

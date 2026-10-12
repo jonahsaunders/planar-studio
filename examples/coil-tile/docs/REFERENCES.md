@@ -23,7 +23,7 @@ Access/review date: 2026-10-12. Generated native CAD with KiCad 9.0.9.
   artwork patterns; their switch-mode power circuitry is not transplanted here.
 - Stock KiCad 9 symbols were flattened correctly from library inheritance into
   a local library. LDC1614 INTB electrical type was corrected to push-pull per TI.
-  A2 reflows the bridge, sensor, ESD and USB symbols with pin identities preserved.
+  A2/A3 reflow the bridge, sensor, ESD and USB symbols with pin identities preserved.
   The mounting footprints now exactly reuse the other examples, with their
   American Embedded CC BY 4.0 notice included alongside them.
 - Footprints are copied into the project. Only USB off-board silk was trimmed;

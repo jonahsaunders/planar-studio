@@ -2,13 +2,13 @@
 <export version="E">
   <design>
     <source>/workspace/scratch/c7dcaf29d6cb/coil-tile/kicad/CoilTile.kicad_sch</source>
-    <date>2026-10-12T16:24:59+0100</date>
+    <date>2026-10-12T16:48:45+0100</date>
     <tool>Eeschema 9.0.9-9.0.9~ubuntu24.04.1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>CoilTile - 2 x 2 inductive sensing prototype</title>
         <company>USB HID / Planar Studio</company>
-        <rev>A2</rev>
+        <rev>A3</rev>
         <date>2026-10-12</date>
         <source>CoilTile.kicad_sch</source>
         <comment number="1" value=""/>

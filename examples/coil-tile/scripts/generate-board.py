@@ -40,7 +40,7 @@ body+=rect((-12.3,-12.3),(13.1,12.3),'F.CrtYd')
 body+='(fp_circle (center 0 0)(end 12.25 0)(stroke(width .12)(type default))(fill none)(layer "F.SilkS"))'
 (LIB/'Planar_24mm_16T.kicad_mod').write_text(f'(footprint "Planar_24mm_16T" (version 20241229)(generator "pcbnew")(layer "F.Cu")(attr exclude_from_pos_files exclude_from_bom)(property "Reference" "REF**" (at 0 -13.5 0)(layer "F.SilkS")(effects(font(size 1 1)(thickness .15))))(property "Value" "PCB coil" (at 0 0 0)(layer "F.Fab")(effects(font(size 1 1)(thickness .15)))){body})')
 board=pcb.BOARD();board.SetCopperLayerCount(4);board.GetDesignSettings().SetBoardThickness(mm(1.6));board.GetDesignSettings().SetAuxOrigin(pt(52,142))
-t=pcb.TITLE_BLOCK();t.SetTitle('CoilTile / four-pixel inductive sensing');t.SetRevision('A2');t.SetDate('2026-10-12');board.SetTitleBlock(t)
+t=pcb.TITLE_BLOCK();t.SetTitle('CoilTile / four-pixel inductive sensing');t.SetRevision('A3');t.SetDate('2026-10-12');board.SetTitleBlock(t)
 # Take the actual KiCad-exported pin/net mapping, including NC identity.
 xml=ET.parse(ROOT/'evidence/netlist.xml');pin_nets={};nets={}
 for n in xml.findall('.//nets/net'):
@@ -49,12 +49,12 @@ for n in xml.findall('.//nets/net'):
 placement={
  'L1':(106,106,135),'L2':(106,70,225),'L3':(70,70,315),'L4':(70,106,45),
  'U3':(88,88,0),'C7':(94.5,92.5,270),'C8':(94.5,84.5,90),'C9':(89.5,81.5,0),'C10':(81.5,85.5,270),
- 'C5':(88.25,94,270),'C6':(91.5,96,270),
+ 'C5':(88.25,92.5,270),'C6':(91.5,96,270),
  'U2':(88,128,0),'C3':(82.5,126.05,180),'C4':(95,129.5,0),'R3':(81.5,130,270),
  'R4':(83,121,90),'R5':(86,121,90),
  'J1':(108,138.35,0),'U4':(101.5,130.5,0),'U1':(113,124,0),'C1':(109.5,127,180),'C2':(117.5,123.05,0),
  'R1':(104.5,128,270),'R2':(112,130,270),
- 'TP1':(97,123,0),'TP2':(100,123,0),'TP3':(75,128,0),'TP4':(75,132,0),
+ 'TP1':(97,123,0),'TP2':(100,123,0),'TP3':(81,123,0),'TP4':(89,123,0),
  'H1':(56,56,180),'H2':(120,56,0),'H3':(56,138,180),'H4':(120,138,0),
 }
 fps={};pads={}
@@ -74,6 +74,8 @@ for p in DATA['parts']:
  f.Reference().SetTextSize(pt(.8,.8));f.Reference().SetTextThickness(mm(.12));f.Reference().SetTextAngle(pcb.EDA_ANGLE(0,pcb.DEGREES_T));f.Value().SetVisible(False)
  # Keep references off component bodies and coil copper.
  if ref.startswith('L'):f.Reference().SetPosition(pt(x,y-13.8));f.Reference().SetVisible(False)
+ elif ref=='C5':f.Reference().SetPosition(pt(88.25,95.2))
+ elif ref=='U2':f.Reference().SetPosition(pt(88,132.5))
  elif ref=='J1':f.Reference().SetPosition(pt(115,136.5))
  elif ref.startswith('H'):f.Reference().SetVisible(False)
  elif ref.startswith('TP'):f.Reference().SetPosition(pt(x,y-1.5))
@@ -139,10 +141,10 @@ for r,n,v in [('C3',2,(80.7,126.05)),('C4',2,(96.8,129.5)),('U2',14,(90,124.5))]
 # Signal via escapes avoid the closely pitched neighboring TSSOP pads.
 for n,v in [(9,(93,129.3)),(10,(91.7,128.65))]:route('U2',n,[v]);via('U2',n,*v,small=(n==10))
 for ref,v in [('R4',(82,119.3)),('R5',(87,119.3))]:route(ref,2,[v]);via(ref,2,*v)
-track(net('U2',9),[(93,129.3),(94.5,130.8),(94.5,132.5),(79,132.5),(79,119.3),(82,119.3)],pcb.B_Cu)
-track(net('U2',10),[(91.7,128.65),(91,127.95),(91,119.3),(87,119.3)],pcb.B_Cu)
+track(net('U2',9),[(93,129.3),(93.5,128.8),(93.5,121.5),(90.5,118.5),(82.8,118.5),(82,119.3)],pcb.B_Cu)
+track(net('U2',10),[(91.7,128.65),(91,127.95),(91,121.5),(88.8,119.3),(87,119.3)],pcb.B_Cu)
 # Local power vias connect to the dedicated inner 3.3 V plane.
-for r,n,v in [('C3',1,(83.275,124.95)),('C4',1,(94.225,128.5)),('R3',1,(80.6,129.175)),('R4',1,(83,122.8)),('R5',1,(86,122.8)),('C5',1,(88.25,92.4)),('C6',1,(91.5,94.3)),('C2',1,(116.55,122)),('TP1',1,(97,122))]:
+for r,n,v in [('C3',1,(83.275,124.95)),('C4',1,(94.225,128.5)),('R3',1,(80.6,129.175)),('R4',1,(83,122.8)),('R5',1,(86,122.8)),('C5',1,(88.25,91.2)),('C6',1,(91.5,94.3)),('C2',1,(116.55,122)),('TP1',1,(97,122))]:
  route(r,n,[v],w=.25);via(r,n,*v)
 # USB pair: short F.Cu path, one back-layer crossover to join reversible pins.
 join(('J1','A6'),('J1','B6'),[(107.75,132.6),(108.75,132.6)],w=.18)
@@ -158,7 +160,7 @@ join(('U2',12),('U4',3),[(92.2,127.35),(93.35,126.2),(97.5,126.2),(98.4,127.1),(
 for n,v in [('A5',(106.5,135.5)),('B5',(109.75,135.5))]:
  x,y=pos('J1',n);route('J1',n,[(x,134.85),v],w=.18);via('J1',n,*v)
 for r,v in [('R1',(104.5,126.8)),('R2',(112,128.7))]:route(r,1,[v]);via(r,1,*v)
-track(net('R1',1),[(106.5,135.5),(106.5,136.7),(101,136.7),(101,126.8),(104.5,126.8)],pcb.In2_Cu,.2)
+track(net('R1',1),[(106.5,135.5),(106.5,134.1),(104.5,132.1),(104.5,126.8)],pcb.In2_Cu,.2)
 track(net('R2',1),[(109.75,135.5),(109.75,130.95),(112,128.7)],pcb.In2_Cu,.2)
 for r in ['R1','R2']:
  x,y=pos(r,2);gv(r,2,x+1,y)
@@ -176,8 +178,8 @@ for r,n,v in [('U1',2,(112.7,124)),('C1',2,(108.55,128.4)),('C2',2,(119.5,123.05
 for n in ['A1','A12']:
  x,y=pos('J1',n);gv('J1',n,x,y+.6)
 gv('TP2',1,100,124)
-route('TP3',1,[(74,128)]);via('TP3',1,74,128);track(net('TP3',1),[(74,128),(79,128)],pcb.B_Cu)
-route('TP4',1,[(74,132)]);via('TP4',1,74,132);track(net('TP4',1),[(74,132),(72,132),(72,122),(87,122),(87,119.3)],pcb.In2_Cu)
+route('TP3',1,[(81,122.2)]);via('TP3',1,81,122.2);track(net('TP3',1),[(81,122.2),(81,120.3),(82,119.3)],pcb.B_Cu)
+route('TP4',1,[(89,122.2)]);via('TP4',1,89,122.2);track(net('TP4',1),[(89,122.2),(91,122.2)],pcb.B_Cu)
 # Ground zones only central electronics corridor and bottom strip.
 def zone(poly,layer):
  z=pcb.ZONE(board);z.SetLayer(layer);z.SetNet(nets['GND']);z.SetLocalClearance(mm(.2));z.SetThermalReliefGap(mm(.25));z.SetThermalReliefSpokeWidth(mm(.3));z.SetPadConnection(pcb.ZONE_CONNECTION_THERMAL)
@@ -198,7 +200,7 @@ def text(s,x,y,size=1,layer=pcb.F_SilkS):
  t=pcb.PCB_TEXT(board);t.SetText(s);t.SetPosition(pt(x,y));t.SetTextSize(pt(size,size));t.SetTextThickness(mm(.15 if size>=1 else .12));t.SetLayer(layer);board.Add(t)
 text('COIL TILE',88,56,2);text('2 x 2  /  INDUCTIVE',88,59,1)
 for s,x,y in [('02',70,70),('01',106,70),('03',70,106),('00',106,106)]:text(s,x,y,2)
-text('USB / I2C',88,139,1);text('A2',59,133,1);text('3V3  GND',98.5,119.2,.8)
+text('USB / I2C',88,139,1);text('A3',59,133,1);text('3V3  GND',98.5,119.2,.8);text('SDA',78.2,123,.8);text('SCL',91.8,123,.8)
 text('24 mm / 16 turns / 0.20 mm trace + gap',88,145,1,pcb.Dwgs_User)
 pcb.SaveBoard(str(CAD/(NAME+'.kicad_pcb')),board)
 board=pcb.LoadBoard(str(CAD/(NAME+'.kicad_pcb')))

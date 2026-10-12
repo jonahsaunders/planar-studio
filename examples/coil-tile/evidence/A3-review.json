@@ -1,0 +1,129 @@
+{
+  "revision": "A3",
+  "baseline_commit": "f539333d109807755a2f7cc014862567ccf29275",
+  "electrical_net_groups_unchanged": true,
+  "symbol_pin_identities_unchanged": true,
+  "mounting_footprint_unchanged": true,
+  "coil_footprint_unchanged": true,
+  "coil_and_mounting_positions_unchanged": true,
+  "before": {
+    "/SDA": {
+      "total_trace_mm": 78.901,
+      "In2_Cu_trace_mm": 0
+    },
+    "/SCL": {
+      "total_trace_mm": 82.326,
+      "In2_Cu_trace_mm": 29.7
+    },
+    "/CC1": {
+      "total_trace_mm": 21.716,
+      "In2_Cu_trace_mm": 20.1
+    },
+    "sensor_supply_to_C5_pad_center_mm": 3.2875,
+    "vias": 62,
+    "segments": 217,
+    "fixed_positions": {
+      "L1": [
+        106.0,
+        106.0,
+        135.0
+      ],
+      "L2": [
+        106.0,
+        70.0,
+        -135.0
+      ],
+      "L3": [
+        70.0,
+        70.0,
+        -45.0
+      ],
+      "L4": [
+        70.0,
+        106.0,
+        45.0
+      ],
+      "H1": [
+        56.0,
+        56.0,
+        180.0
+      ],
+      "H2": [
+        120.0,
+        56.0,
+        0.0
+      ],
+      "H3": [
+        56.0,
+        138.0,
+        180.0
+      ],
+      "H4": [
+        120.0,
+        138.0,
+        0.0
+      ]
+    }
+  },
+  "after": {
+    "/SDA": {
+      "total_trace_mm": 62.575,
+      "In2_Cu_trace_mm": 0
+    },
+    "/SCL": {
+      "total_trace_mm": 53.138,
+      "In2_Cu_trace_mm": 0
+    },
+    "/CC1": {
+      "total_trace_mm": 11.145,
+      "In2_Cu_trace_mm": 9.528
+    },
+    "sensor_supply_to_C5_pad_center_mm": 1.7875,
+    "vias": 62,
+    "segments": 215,
+    "fixed_positions": {
+      "L1": [
+        106.0,
+        106.0,
+        135.0
+      ],
+      "L2": [
+        106.0,
+        70.0,
+        -135.0
+      ],
+      "L3": [
+        70.0,
+        70.0,
+        -45.0
+      ],
+      "L4": [
+        70.0,
+        106.0,
+        45.0
+      ],
+      "H1": [
+        56.0,
+        56.0,
+        180.0
+      ],
+      "H2": [
+        120.0,
+        56.0,
+        0.0
+      ],
+      "H3": [
+        56.0,
+        138.0,
+        180.0
+      ],
+      "H4": [
+        120.0,
+        138.0,
+        0.0
+      ]
+    }
+  },
+  "measurement_notes": "Trace sums include every segment and branch on the named net, excluding vias, pad copper and zone copper. Capacitor distance is pad-center distance; the direct F.Cu supply route is collinear.",
+  "physical_hardware_tested": false
+}
