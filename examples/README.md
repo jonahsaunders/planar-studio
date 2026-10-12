@@ -15,6 +15,12 @@
   direct feedback routing, a shorter rectifier gate path and a fresh BOM/stencil screen. Single-board data are supplied; JLCPCB defines handling. Factory acceptance, ferrite fitting and powered
   qualification remain open.
 
+- [CoilTile USB inductive sensing array](coil-tile/README.md): four 24 mm printed
+  coils, LDC1614 readout, USB HID/I2C bridge, connected KiCad 9 schematic,
+  four-layer board and the same exposed-substrate M3 edge mounting footprints.
+  Includes host heatmap/CSV software, fabrication data and A2 review evidence.
+  **Unbuilt prototype; sensing performance and factory acceptance are unverified.**
+
 These are editable engineering examples, separate from the KiCad plugin installer.
 
 [Download the complete A5 review package](PS-FLYBACK-5W-A5-review-package.zip?raw=true)

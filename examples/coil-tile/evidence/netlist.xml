@@ -1,0 +1,1160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/workspace/scratch/c7dcaf29d6cb/coil-tile/kicad/CoilTile.kicad_sch</source>
+    <date>2026-10-12T16:24:59+0100</date>
+    <tool>Eeschema 9.0.9-9.0.9~ubuntu24.04.1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>CoilTile - 2 x 2 inductive sensing prototype</title>
+        <company>USB HID / Planar Studio</company>
+        <rev>A2</rev>
+        <date>2026-10-12</date>
+        <source>CoilTile.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>4.7uF / 25V</value>
+      <footprint>CoilTile:C_0805_2012Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C354262.html</datasheet>
+      <fields>
+        <field name="MPN">CC0805KKX7R8BB475</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C354262</field>
+        <field name="Footprint">CoilTile:C_0805_2012Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C354262.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0805KKX7R8BB475"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C354262"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>daa5a919-edce-54f1-af81-b224d689999e</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>4.7uF / 25V</value>
+      <footprint>CoilTile:C_0805_2012Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C354262.html</datasheet>
+      <fields>
+        <field name="MPN">CC0805KKX7R8BB475</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C354262</field>
+        <field name="Footprint">CoilTile:C_0805_2012Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C354262.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0805KKX7R8BB475"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C354262"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2c4647e1-4e8f-53ce-b286-e12334d6971a</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>100nF / 50V</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C14663.html</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB104</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C14663</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C14663.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB104"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C14663"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f0d46143-be26-5f63-a841-87bc2fc63b68</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>470nF / 25V</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C1623.html</datasheet>
+      <fields>
+        <field name="MPN">CL10B474KA8NNNC</field>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="LCSC">C1623</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C1623.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CL10B474KA8NNNC"/>
+      <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
+      <property name="LCSC" value="C1623"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f26e3c10-728f-539c-8140-604a05361e0d</tstamps>
+    </comp>
+    <comp ref="C5">
+      <value>100nF / 50V</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C14663.html</datasheet>
+      <fields>
+        <field name="MPN">CC0603KRX7R9BB104</field>
+        <field name="Manufacturer">YAGEO</field>
+        <field name="LCSC">C14663</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C14663.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CC0603KRX7R9BB104"/>
+      <property name="Manufacturer" value="YAGEO"/>
+      <property name="LCSC" value="C14663"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>84495de2-70b1-5da7-8381-65939260c602</tstamps>
+    </comp>
+    <comp ref="C6">
+      <value>470nF / 25V</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C1623.html</datasheet>
+      <fields>
+        <field name="MPN">CL10B474KA8NNNC</field>
+        <field name="Manufacturer">Samsung Electro-Mechanics</field>
+        <field name="LCSC">C1623</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C1623.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="CL10B474KA8NNNC"/>
+      <property name="Manufacturer" value="Samsung Electro-Mechanics"/>
+      <property name="LCSC" value="C1623"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cac2b076-f828-5687-8d76-ee393e2b3c35</tstamps>
+    </comp>
+    <comp ref="C7">
+      <value>220pF / C0G</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C156398.html</datasheet>
+      <fields>
+        <field name="MPN">0603CG221J500NT</field>
+        <field name="Manufacturer">FH (Guangdong Fenghua Advanced Tech)</field>
+        <field name="LCSC">C156398</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C156398.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="0603CG221J500NT"/>
+      <property name="Manufacturer" value="FH (Guangdong Fenghua Advanced Tech)"/>
+      <property name="LCSC" value="C156398"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>685564e3-1c08-5285-bc73-a757526df02d</tstamps>
+    </comp>
+    <comp ref="C8">
+      <value>220pF / C0G</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C156398.html</datasheet>
+      <fields>
+        <field name="MPN">0603CG221J500NT</field>
+        <field name="Manufacturer">FH (Guangdong Fenghua Advanced Tech)</field>
+        <field name="LCSC">C156398</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C156398.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="0603CG221J500NT"/>
+      <property name="Manufacturer" value="FH (Guangdong Fenghua Advanced Tech)"/>
+      <property name="LCSC" value="C156398"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>cf3873c2-016f-599c-adc6-da60012ac317</tstamps>
+    </comp>
+    <comp ref="C9">
+      <value>220pF / C0G</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C156398.html</datasheet>
+      <fields>
+        <field name="MPN">0603CG221J500NT</field>
+        <field name="Manufacturer">FH (Guangdong Fenghua Advanced Tech)</field>
+        <field name="LCSC">C156398</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C156398.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="0603CG221J500NT"/>
+      <property name="Manufacturer" value="FH (Guangdong Fenghua Advanced Tech)"/>
+      <property name="LCSC" value="C156398"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ba7e1200-8719-5975-9cce-5086fecbff32</tstamps>
+    </comp>
+    <comp ref="C10">
+      <value>220pF / C0G</value>
+      <footprint>CoilTile:C_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C156398.html</datasheet>
+      <fields>
+        <field name="MPN">0603CG221J500NT</field>
+        <field name="Manufacturer">FH (Guangdong Fenghua Advanced Tech)</field>
+        <field name="LCSC">C156398</field>
+        <field name="Footprint">CoilTile:C_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C156398.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="C_Small" description="Unpolarized capacitor, small symbol"/>
+      <property name="MPN" value="0603CG221J500NT"/>
+      <property name="Manufacturer" value="FH (Guangdong Fenghua Advanced Tech)"/>
+      <property name="LCSC" value="C156398"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="capacitor cap"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>65b9e956-f071-5fba-9161-fb51292f4aa4</tstamps>
+    </comp>
+    <comp ref="H1">
+      <value>M3 / NPTH 3.2mm</value>
+      <footprint>CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <property name="ki_fp_filters" value="MountingHole*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>5f6d6a01-06cc-50e3-8015-49c0c86d8cbf</tstamps>
+    </comp>
+    <comp ref="H2">
+      <value>M3 / NPTH 3.2mm</value>
+      <footprint>CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <property name="ki_fp_filters" value="MountingHole*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1d03e2a5-4327-57fd-a892-ad3b7236e01c</tstamps>
+    </comp>
+    <comp ref="H3">
+      <value>M3 / NPTH 3.2mm</value>
+      <footprint>CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <property name="ki_fp_filters" value="MountingHole*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d5d1df57-4205-5b0e-86c2-8ee5cc9dd1d1</tstamps>
+    </comp>
+    <comp ref="H4">
+      <value>M3 / NPTH 3.2mm</value>
+      <footprint>CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="MountingHole" description="Mounting Hole without connection"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="mounting hole"/>
+      <property name="ki_fp_filters" value="MountingHole*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d71b1e1c-6663-5f79-84bb-2294e215aa45</tstamps>
+    </comp>
+    <comp ref="J1">
+      <value>USB-C / USB 2.0</value>
+      <footprint>CoilTile:USB_C_Receptacle_HRO_TYPE-C-31-M-12</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C165948.html</datasheet>
+      <fields>
+        <field name="MPN">TYPE-C-31-M-12</field>
+        <field name="Manufacturer">Korean Hroparts Elec</field>
+        <field name="LCSC">C165948</field>
+        <field name="Footprint">CoilTile:USB_C_Receptacle_HRO_TYPE-C-31-M-12</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C165948.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="USB_C_Receptacle_USB2.0_16P" description="USB 2.0-only 16P Type-C Receptacle connector"/>
+      <property name="MPN" value="TYPE-C-31-M-12"/>
+      <property name="Manufacturer" value="Korean Hroparts Elec"/>
+      <property name="LCSC" value="C165948"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="usb universal serial bus type-C USB2.0"/>
+      <property name="ki_fp_filters" value="USB*C*Receptacle*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b8c139ca-eb57-518d-bd23-791e9728cc15</tstamps>
+    </comp>
+    <comp ref="L1">
+      <value>5.51uH nominal</value>
+      <footprint>CoilTile:Planar_24mm_16T</footprint>
+      <datasheet>Planar Studio coil.planar.json</datasheet>
+      <fields>
+        <field name="MPN">PCB winding / not fitted</field>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:Planar_24mm_16T</field>
+        <field name="Datasheet">Planar Studio coil.planar.json</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="L_Small" description="Inductor, small symbol"/>
+      <property name="MPN" value="PCB winding / not fitted"/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>af88d63a-d0a2-5d93-96c2-c0d57b6d5602</tstamps>
+    </comp>
+    <comp ref="L2">
+      <value>5.51uH nominal</value>
+      <footprint>CoilTile:Planar_24mm_16T</footprint>
+      <datasheet>Planar Studio coil.planar.json</datasheet>
+      <fields>
+        <field name="MPN">PCB winding / not fitted</field>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:Planar_24mm_16T</field>
+        <field name="Datasheet">Planar Studio coil.planar.json</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="L_Small" description="Inductor, small symbol"/>
+      <property name="MPN" value="PCB winding / not fitted"/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3913a731-054e-5223-b018-1c35fd697247</tstamps>
+    </comp>
+    <comp ref="L3">
+      <value>5.51uH nominal</value>
+      <footprint>CoilTile:Planar_24mm_16T</footprint>
+      <datasheet>Planar Studio coil.planar.json</datasheet>
+      <fields>
+        <field name="MPN">PCB winding / not fitted</field>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:Planar_24mm_16T</field>
+        <field name="Datasheet">Planar Studio coil.planar.json</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="L_Small" description="Inductor, small symbol"/>
+      <property name="MPN" value="PCB winding / not fitted"/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0d9206b5-49eb-50af-9077-ff5df7c8acf6</tstamps>
+    </comp>
+    <comp ref="L4">
+      <value>5.51uH nominal</value>
+      <footprint>CoilTile:Planar_24mm_16T</footprint>
+      <datasheet>Planar Studio coil.planar.json</datasheet>
+      <fields>
+        <field name="MPN">PCB winding / not fitted</field>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:Planar_24mm_16T</field>
+        <field name="Datasheet">Planar Studio coil.planar.json</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="L_Small" description="Inductor, small symbol"/>
+      <property name="MPN" value="PCB winding / not fitted"/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="inductor choke coil reactor magnetic"/>
+      <property name="ki_fp_filters" value="Choke_* *Coil* Inductor_* L_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>020b05d6-83e5-5f77-90cf-dc623f59f305</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>5.1kR</value>
+      <footprint>CoilTile:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C23186.html</datasheet>
+      <fields>
+        <field name="MPN">0603WAF5101T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C23186</field>
+        <field name="Footprint">CoilTile:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C23186.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="MPN" value="0603WAF5101T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C23186"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8ab11887-d96d-507d-93d3-c7d101a2a40c</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>5.1kR</value>
+      <footprint>CoilTile:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C23186.html</datasheet>
+      <fields>
+        <field name="MPN">0603WAF5101T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C23186</field>
+        <field name="Footprint">CoilTile:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C23186.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="MPN" value="0603WAF5101T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C23186"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>d962972c-aaa6-5119-979d-11b6b43671cc</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>10kR</value>
+      <footprint>CoilTile:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C25804.html</datasheet>
+      <fields>
+        <field name="MPN">0603WAF1002T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C25804</field>
+        <field name="Footprint">CoilTile:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C25804.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="MPN" value="0603WAF1002T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C25804"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1004c331-21fe-5a14-9b2d-fc90164e3db2</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>4.7kR</value>
+      <footprint>CoilTile:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C23162.html</datasheet>
+      <fields>
+        <field name="MPN">0603WAF4701T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C23162</field>
+        <field name="Footprint">CoilTile:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C23162.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="MPN" value="0603WAF4701T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C23162"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6d08753a-0c87-506e-a410-5b74ba8409eb</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>4.7kR</value>
+      <footprint>CoilTile:R_0603_1608Metric</footprint>
+      <datasheet>https://www.lcsc.com/product-detail/C23162.html</datasheet>
+      <fields>
+        <field name="MPN">0603WAF4701T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C23162</field>
+        <field name="Footprint">CoilTile:R_0603_1608Metric</field>
+        <field name="Datasheet">https://www.lcsc.com/product-detail/C23162.html</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="R_Small_US" description="Resistor, small US symbol"/>
+      <property name="MPN" value="0603WAF4701T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C23162"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="r resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b5473692-413a-5219-a15c-957a2f9fdf85</tstamps>
+    </comp>
+    <comp ref="TP1">
+      <value>+3V3</value>
+      <footprint>CoilTile:TestPoint_Pad_D1.0mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:TestPoint_Pad_D1.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="TestPoint" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b4016b6e-1912-5e5d-9ab7-76ccb6f13e6b</tstamps>
+    </comp>
+    <comp ref="TP2">
+      <value>GND</value>
+      <footprint>CoilTile:TestPoint_Pad_D1.0mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:TestPoint_Pad_D1.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="TestPoint" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c3afe805-519f-5642-80fa-102cf77eb3be</tstamps>
+    </comp>
+    <comp ref="TP3">
+      <value>SDA</value>
+      <footprint>CoilTile:TestPoint_Pad_D1.0mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:TestPoint_Pad_D1.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="TestPoint" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c9c8c47f-57d7-5eaf-aacb-d0fa56a664bd</tstamps>
+    </comp>
+    <comp ref="TP4">
+      <value>SCL</value>
+      <footprint>CoilTile:TestPoint_Pad_D1.0mm</footprint>
+      <fields>
+        <field name="MPN"/>
+        <field name="Manufacturer"/>
+        <field name="LCSC"/>
+        <field name="Footprint">CoilTile:TestPoint_Pad_D1.0mm</field>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="TestPoint" description="test point"/>
+      <property name="MPN" value=""/>
+      <property name="Manufacturer" value=""/>
+      <property name="LCSC" value=""/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="exclude_from_bom"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fef88e2c-e9e8-5e62-8fc5-6ec0761bd5f0</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>AP2112K-3.3TRG1</value>
+      <footprint>CoilTile:SOT-23-5</footprint>
+      <datasheet>https://www.diodes.com/assets/Datasheets/AP2112.pdf</datasheet>
+      <fields>
+        <field name="MPN">AP2112K-3.3TRG1</field>
+        <field name="Manufacturer">Diodes Incorporated</field>
+        <field name="LCSC">C51118</field>
+        <field name="Footprint">CoilTile:SOT-23-5</field>
+        <field name="Datasheet">https://www.diodes.com/assets/Datasheets/AP2112.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="AP2112K-3.3" description="600mA low dropout linear regulator, with enable pin, 3.8V-6V input voltage range, 3.3V fixed positive output, SOT-23-5"/>
+      <property name="MPN" value="AP2112K-3.3TRG1"/>
+      <property name="Manufacturer" value="Diodes Incorporated"/>
+      <property name="LCSC" value="C51118"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="linear regulator ldo fixed positive"/>
+      <property name="ki_fp_filters" value="SOT?23?5*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>32f2d4ca-3b87-50a1-9669-748aef1d08f3</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>MCP2221A-I/ST</value>
+      <footprint>CoilTile:TSSOP-14_4.4x5mm_P0.65mm</footprint>
+      <datasheet>https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP2221A-Data-Sheet-20005565E.pdf</datasheet>
+      <fields>
+        <field name="MPN">MCP2221A-I/ST</field>
+        <field name="Manufacturer">Microchip Technology</field>
+        <field name="LCSC">C130462</field>
+        <field name="Footprint">CoilTile:TSSOP-14_4.4x5mm_P0.65mm</field>
+        <field name="Datasheet">https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP2221A-Data-Sheet-20005565E.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="MCP2221AxST" description="USB to I2C/UART Protocol Converter with GPIO, TSSOP-14"/>
+      <property name="MPN" value="MCP2221A-I/ST"/>
+      <property name="Manufacturer" value="Microchip Technology"/>
+      <property name="LCSC" value="C130462"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="USB I2C UART Converter Bridge"/>
+      <property name="ki_fp_filters" value="TSSOP*4.4x5mm*P0.65mm*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>25107161-e1b8-5507-88bd-54f125ead15f</tstamps>
+    </comp>
+    <comp ref="U3">
+      <value>LDC1614RGHR</value>
+      <footprint>CoilTile:WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/ldc1614.pdf</datasheet>
+      <fields>
+        <field name="MPN">LDC1614RGHR</field>
+        <field name="Manufacturer">Texas Instruments</field>
+        <field name="LCSC">C968448</field>
+        <field name="Footprint">CoilTile:WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/ldc1614.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="LDC1614" description="Inductance to digital converter, 4-channel 28-bit, WQFN-16"/>
+      <property name="MPN" value="LDC1614RGHR"/>
+      <property name="Manufacturer" value="Texas Instruments"/>
+      <property name="LCSC" value="C968448"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="inductance sensor"/>
+      <property name="ki_fp_filters" value="WQFN*1EP*4x4mm*P0.5mm*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>075db69e-0c76-5d64-9799-b919bd62da9f</tstamps>
+    </comp>
+    <comp ref="U4">
+      <value>USBLC6-2SC6</value>
+      <footprint>CoilTile:SOT-23-6</footprint>
+      <datasheet>https://www.st.com/resource/en/datasheet/usblc6-2.pdf</datasheet>
+      <fields>
+        <field name="MPN">USBLC6-2SC6</field>
+        <field name="Manufacturer">STMicroelectronics</field>
+        <field name="LCSC">C7519</field>
+        <field name="Footprint">CoilTile:SOT-23-6</field>
+        <field name="Datasheet">https://www.st.com/resource/en/datasheet/usblc6-2.pdf</field>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="CoilTile" part="USBLC6-2SC6" description="Very low capacitance ESD protection diode, 2 data-line, SOT-23-6"/>
+      <property name="MPN" value="USBLC6-2SC6"/>
+      <property name="Manufacturer" value="STMicroelectronics"/>
+      <property name="LCSC" value="C7519"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="CoilTile.kicad_sch"/>
+      <property name="ki_keywords" value="usb ethernet video"/>
+      <property name="ki_fp_filters" value="SOT?23*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a49b336d-5e17-5f16-991c-947c7e10ed32</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="CoilTile" part="AP2112K-3.3">
+      <description>600mA low dropout linear regulator, with enable pin, 3.8V-6V input voltage range, 3.3V fixed positive output, SOT-23-5</description>
+      <docs>https://www.diodes.com/assets/Datasheets/AP2112.pdf</docs>
+      <footprints>
+        <fp>SOT?23?5*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">AP2112K-3.3</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-23-5</field>
+        <field name="Datasheet">https://www.diodes.com/assets/Datasheets/AP2112.pdf</field>
+        <field name="Description">600mA low dropout linear regulator, with enable pin, 3.8V-6V input voltage range, 3.3V fixed positive output, SOT-23-5</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VIN" type="power_in"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="EN" type="input"/>
+        <pin num="4" name="NC" type="no_connect"/>
+        <pin num="5" name="VOUT" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="C_Small">
+      <description>Unpolarized capacitor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C_Small</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Unpolarized capacitor, small symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="LDC1614">
+      <description>Inductance to digital converter, 4-channel 28-bit, WQFN-16</description>
+      <docs>http://www.ti.com/lit/ds/symlink/ldc1612.pdf</docs>
+      <footprints>
+        <fp>WQFN*1EP*4x4mm*P0.5mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">LDC1614</field>
+        <field name="Footprint">Package_DFN_QFN:WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm_ThermalVias</field>
+        <field name="Datasheet">http://www.ti.com/lit/ds/symlink/ldc1612.pdf</field>
+        <field name="Description">Inductance to digital converter, 4-channel 28-bit, WQFN-16</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SCL" type="input"/>
+        <pin num="2" name="SDA" type="bidirectional"/>
+        <pin num="3" name="CLKIN" type="input"/>
+        <pin num="4" name="ADDR" type="input"/>
+        <pin num="5" name="INTB" type="output"/>
+        <pin num="6" name="SD" type="input"/>
+        <pin num="7" name="VDD" type="power_in"/>
+        <pin num="8" name="GND" type="power_in"/>
+        <pin num="9" name="IN0A" type="input"/>
+        <pin num="10" name="IN0B" type="input"/>
+        <pin num="11" name="IN1A" type="input"/>
+        <pin num="12" name="IN1B" type="input"/>
+        <pin num="13" name="IN2A" type="input"/>
+        <pin num="14" name="IN2B" type="input"/>
+        <pin num="15" name="IN3A" type="input"/>
+        <pin num="16" name="IN3B" type="input"/>
+        <pin num="17" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="L_Small">
+      <description>Inductor, small symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Choke_*</fp>
+        <fp>*Coil*</fp>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">L</field>
+        <field name="Value">L_Small</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Inductor, small symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="MCP2221AxST">
+      <description>USB to I2C/UART Protocol Converter with GPIO, TSSOP-14</description>
+      <docs>http://ww1.microchip.com/downloads/en/DeviceDoc/20005565B.pdf</docs>
+      <footprints>
+        <fp>TSSOP*4.4x5mm*P0.65mm*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">MCP2221AxST</field>
+        <field name="Footprint">Package_SO:TSSOP-14_4.4x5mm_P0.65mm</field>
+        <field name="Datasheet">http://ww1.microchip.com/downloads/en/DeviceDoc/20005565B.pdf</field>
+        <field name="Description">USB to I2C/UART Protocol Converter with GPIO, TSSOP-14</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="power_in"/>
+        <pin num="2" name="GP0" type="bidirectional"/>
+        <pin num="3" name="GP1" type="bidirectional"/>
+        <pin num="4" name="~{RST}" type="input"/>
+        <pin num="5" name="URx" type="input"/>
+        <pin num="6" name="UTx" type="output"/>
+        <pin num="7" name="GP2" type="bidirectional"/>
+        <pin num="8" name="GP3" type="bidirectional"/>
+        <pin num="9" name="SDA" type="bidirectional"/>
+        <pin num="10" name="SCL" type="bidirectional"/>
+        <pin num="11" name="VUSB" type="passive"/>
+        <pin num="12" name="D-" type="bidirectional"/>
+        <pin num="13" name="D+" type="bidirectional"/>
+        <pin num="14" name="VSS" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="MountingHole">
+      <description>Mounting Hole without connection</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>MountingHole*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">H</field>
+        <field name="Value">MountingHole</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Mounting Hole without connection</field>
+      </fields>
+    </libpart>
+    <libpart lib="CoilTile" part="R_Small_US">
+      <description>Resistor, small US symbol</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R_Small_US</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Resistor, small US symbol</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="TestPoint">
+      <description>test point</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Pin*</fp>
+        <fp>Test*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TestPoint</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">test point</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="USBLC6-2SC6">
+      <description>Very low capacitance ESD protection diode, 2 data-line, SOT-23-6</description>
+      <docs>https://www.st.com/resource/en/datasheet/usblc6-2.pdf</docs>
+      <footprints>
+        <fp>SOT?23*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">USBLC6-2SC6</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-23-6</field>
+        <field name="Datasheet">https://www.st.com/resource/en/datasheet/usblc6-2.pdf</field>
+        <field name="Description">Very low capacitance ESD protection diode, 2 data-line, SOT-23-6</field>
+      </fields>
+      <pins>
+        <pin num="1" name="I/O1" type="passive"/>
+        <pin num="2" name="GND" type="passive"/>
+        <pin num="3" name="I/O2" type="passive"/>
+        <pin num="4" name="I/O2" type="passive"/>
+        <pin num="5" name="VBUS" type="passive"/>
+        <pin num="6" name="I/O1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="CoilTile" part="USB_C_Receptacle_USB2.0_16P">
+      <description>USB 2.0-only 16P Type-C Receptacle connector</description>
+      <docs>https://www.usb.org/sites/default/files/documents/usb_type-c.zip</docs>
+      <footprints>
+        <fp>USB*C*Receptacle*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">USB_C_Receptacle_USB2.0_16P</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://www.usb.org/sites/default/files/documents/usb_type-c.zip</field>
+        <field name="Description">USB 2.0-only 16P Type-C Receptacle connector</field>
+      </fields>
+      <pins>
+        <pin num="A1" name="GND" type="passive"/>
+        <pin num="A4" name="VBUS" type="passive"/>
+        <pin num="A5" name="CC1" type="bidirectional"/>
+        <pin num="A6" name="D+" type="bidirectional"/>
+        <pin num="A7" name="D-" type="bidirectional"/>
+        <pin num="A8" name="SBU1" type="bidirectional"/>
+        <pin num="A9" name="VBUS" type="passive"/>
+        <pin num="A12" name="GND" type="passive"/>
+        <pin num="B1" name="GND" type="passive"/>
+        <pin num="B4" name="VBUS" type="passive"/>
+        <pin num="B5" name="CC2" type="bidirectional"/>
+        <pin num="B6" name="D+" type="bidirectional"/>
+        <pin num="B7" name="D-" type="bidirectional"/>
+        <pin num="B8" name="SBU2" type="bidirectional"/>
+        <pin num="B9" name="VBUS" type="passive"/>
+        <pin num="B12" name="GND" type="passive"/>
+        <pin num="S1" name="SHIELD" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="CoilTile">
+      <uri>/workspace/scratch/c7dcaf29d6cb/coil-tile/kicad/CoilTile.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+3V3" class="Default">
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="C6" pin="1" pintype="passive"/>
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="TP1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="5" pinfunction="VOUT" pintype="power_out"/>
+      <node ref="U2" pin="1" pinfunction="VDD" pintype="power_in"/>
+      <node ref="U2" pin="11" pinfunction="VUSB" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="URx" pintype="input"/>
+      <node ref="U3" pin="7" pinfunction="VDD" pintype="power_in"/>
+    </net>
+    <net code="2" name="/CC1" class="Default">
+      <node ref="J1" pin="A5" pinfunction="CC1" pintype="bidirectional"/>
+      <node ref="R1" pin="1" pintype="passive"/>
+    </net>
+    <net code="3" name="/CC2" class="Default">
+      <node ref="J1" pin="B5" pinfunction="CC2" pintype="bidirectional"/>
+      <node ref="R2" pin="1" pintype="passive"/>
+    </net>
+    <net code="4" name="/CH0_A" class="Default">
+      <node ref="C7" pin="1" pintype="passive"/>
+      <node ref="L1" pin="1" pintype="passive"/>
+      <node ref="U3" pin="9" pinfunction="IN0A" pintype="input"/>
+    </net>
+    <net code="5" name="/CH0_B" class="Default">
+      <node ref="C7" pin="2" pintype="passive"/>
+      <node ref="L1" pin="2" pintype="passive"/>
+      <node ref="U3" pin="10" pinfunction="IN0B" pintype="input"/>
+    </net>
+    <net code="6" name="/CH1_A" class="Default">
+      <node ref="C8" pin="1" pintype="passive"/>
+      <node ref="L2" pin="1" pintype="passive"/>
+      <node ref="U3" pin="11" pinfunction="IN1A" pintype="input"/>
+    </net>
+    <net code="7" name="/CH1_B" class="Default">
+      <node ref="C8" pin="2" pintype="passive"/>
+      <node ref="L2" pin="2" pintype="passive"/>
+      <node ref="U3" pin="12" pinfunction="IN1B" pintype="input"/>
+    </net>
+    <net code="8" name="/CH2_A" class="Default">
+      <node ref="C9" pin="1" pintype="passive"/>
+      <node ref="L3" pin="1" pintype="passive"/>
+      <node ref="U3" pin="13" pinfunction="IN2A" pintype="input"/>
+    </net>
+    <net code="9" name="/CH2_B" class="Default">
+      <node ref="C9" pin="2" pintype="passive"/>
+      <node ref="L3" pin="2" pintype="passive"/>
+      <node ref="U3" pin="14" pinfunction="IN2B" pintype="input"/>
+    </net>
+    <net code="10" name="/CH3_A" class="Default">
+      <node ref="C10" pin="1" pintype="passive"/>
+      <node ref="L4" pin="1" pintype="passive"/>
+      <node ref="U3" pin="15" pinfunction="IN3A" pintype="input"/>
+    </net>
+    <net code="11" name="/CH3_B" class="Default">
+      <node ref="C10" pin="2" pintype="passive"/>
+      <node ref="L4" pin="2" pintype="passive"/>
+      <node ref="U3" pin="16" pinfunction="IN3B" pintype="input"/>
+    </net>
+    <net code="12" name="/RESET_N" class="Default">
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="U2" pin="4" pinfunction="~{RST}" pintype="input"/>
+    </net>
+    <net code="13" name="/SCL" class="Default">
+      <node ref="R5" pin="2" pintype="passive"/>
+      <node ref="TP4" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="10" pinfunction="SCL" pintype="bidirectional"/>
+      <node ref="U3" pin="1" pinfunction="SCL" pintype="input"/>
+    </net>
+    <net code="14" name="/SDA" class="Default">
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="TP3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="9" pinfunction="SDA" pintype="bidirectional"/>
+      <node ref="U3" pin="2" pinfunction="SDA" pintype="bidirectional"/>
+    </net>
+    <net code="15" name="/USB_N" class="Default">
+      <node ref="J1" pin="A7" pinfunction="D-" pintype="bidirectional"/>
+      <node ref="J1" pin="B7" pinfunction="D-" pintype="bidirectional"/>
+      <node ref="U2" pin="12" pinfunction="D-" pintype="bidirectional"/>
+      <node ref="U4" pin="3" pinfunction="I/O2" pintype="passive"/>
+      <node ref="U4" pin="4" pinfunction="I/O2" pintype="passive"/>
+    </net>
+    <net code="16" name="/USB_P" class="Default">
+      <node ref="J1" pin="A6" pinfunction="D+" pintype="bidirectional"/>
+      <node ref="J1" pin="B6" pinfunction="D+" pintype="bidirectional"/>
+      <node ref="U2" pin="13" pinfunction="D+" pintype="bidirectional"/>
+      <node ref="U4" pin="1" pinfunction="I/O1" pintype="passive"/>
+      <node ref="U4" pin="6" pinfunction="I/O1" pintype="passive"/>
+    </net>
+    <net code="17" name="GND" class="Default">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="C6" pin="2" pintype="passive"/>
+      <node ref="J1" pin="A1" pinfunction="GND" pintype="passive"/>
+      <node ref="J1" pin="A12" pinfunction="GND" pintype="passive"/>
+      <node ref="J1" pin="B1" pinfunction="GND" pintype="passive"/>
+      <node ref="J1" pin="B12" pinfunction="GND" pintype="passive"/>
+      <node ref="J1" pin="S1" pinfunction="SHIELD" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+      <node ref="TP2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="GND" pintype="power_in"/>
+      <node ref="U2" pin="14" pinfunction="VSS" pintype="power_in"/>
+      <node ref="U3" pin="17" pinfunction="GND" pintype="passive"/>
+      <node ref="U3" pin="3" pinfunction="CLKIN" pintype="input"/>
+      <node ref="U3" pin="4" pinfunction="ADDR" pintype="input"/>
+      <node ref="U3" pin="6" pinfunction="SD" pintype="input"/>
+      <node ref="U3" pin="8" pinfunction="GND" pintype="power_in"/>
+      <node ref="U4" pin="2" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="18" name="VBUS" class="Default">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="J1" pin="A4" pinfunction="VBUS" pintype="passive"/>
+      <node ref="J1" pin="A9" pinfunction="VBUS" pintype="passive"/>
+      <node ref="J1" pin="B4" pinfunction="VBUS" pintype="passive"/>
+      <node ref="J1" pin="B9" pinfunction="VBUS" pintype="passive"/>
+      <node ref="U1" pin="1" pinfunction="VIN" pintype="power_in"/>
+      <node ref="U1" pin="3" pinfunction="EN" pintype="input"/>
+      <node ref="U4" pin="5" pinfunction="VBUS" pintype="passive"/>
+    </net>
+    <net code="19" name="unconnected-(J1-SBU1-PadA8)" class="Default">
+      <node ref="J1" pin="A8" pinfunction="SBU1" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="20" name="unconnected-(J1-SBU2-PadB8)" class="Default">
+      <node ref="J1" pin="B8" pinfunction="SBU2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="21" name="unconnected-(U1-NC-Pad4)" class="Default">
+      <node ref="U1" pin="4" pinfunction="NC" pintype="no_connect"/>
+    </net>
+    <net code="22" name="unconnected-(U2-GP0-Pad2)" class="Default">
+      <node ref="U2" pin="2" pinfunction="GP0" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="23" name="unconnected-(U2-GP1-Pad3)" class="Default">
+      <node ref="U2" pin="3" pinfunction="GP1" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="24" name="unconnected-(U2-GP2-Pad7)" class="Default">
+      <node ref="U2" pin="7" pinfunction="GP2" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="25" name="unconnected-(U2-GP3-Pad8)" class="Default">
+      <node ref="U2" pin="8" pinfunction="GP3" pintype="bidirectional+no_connect"/>
+    </net>
+    <net code="26" name="unconnected-(U2-UTx-Pad6)" class="Default">
+      <node ref="U2" pin="6" pinfunction="UTx" pintype="output+no_connect"/>
+    </net>
+    <net code="27" name="unconnected-(U3-INTB-Pad5)" class="Default">
+      <node ref="U3" pin="5" pinfunction="INTB" pintype="output+no_connect"/>
+    </net>
+  </nets>
+</export>

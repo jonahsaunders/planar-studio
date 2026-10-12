@@ -1,0 +1,2 @@
+Adafruit-Blinka==9.2.0
+hidapi>=0.14,<1

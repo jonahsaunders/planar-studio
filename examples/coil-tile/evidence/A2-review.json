@@ -1,0 +1,32 @@
+{
+  "revision": "A2",
+  "unchanged_electrical_net_groups": true,
+  "native_erc_violations": 0,
+  "native_drc_violations": 0,
+  "unconnected_items": 0,
+  "schematic_parity_issues": 0,
+  "pins_reflowed_without_name_number_or_type_changes": true,
+  "mounting_footprint_identical_to_gan_example": true,
+  "mounting_footprint_sha256": "2383eaff676f671010a3d7e8bf41e2b10978f2e8ffc1a92a57f2c7d27edb5eb2",
+  "mounting_pattern_mm": [
+    64,
+    82
+  ],
+  "hole_drill_mm": 3.2,
+  "mask_opening_diameter_mm": 6.4,
+  "copper_exclusion_diameter_mm": 10,
+  "outward_mask_extension_mm": 5,
+  "left_holes_rotation": 180,
+  "right_holes_rotation": 0,
+  "ground_stitch_move_mm": {
+    "before": [
+      116,
+      140
+    ],
+    "after": [
+      113.8,
+      140
+    ]
+  },
+  "supplier_and_hardware_qualification": "not performed"
+}

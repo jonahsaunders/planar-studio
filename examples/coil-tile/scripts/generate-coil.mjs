@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const root=path.resolve(process.env.PLANAR_STUDIO_ROOT||'references/planar-studio');
+const {defaults,compute}=await import(pathToFileURL(root+'/web/js/ws/inductor.js'));
+const {exportSvg}=await import(pathToFileURL(root+'/web/js/engine/exporters.js'));
+const cfg={...defaults(),shape:'circle',turns:16,dOuter:24,traceW:.2,traceS:.2,layers:1,ppt:96,copperOz:1,viaDrill:.3,viaPad:.6,padSize:.7,padDrill:.3,current:.001,freq:4e6};
+const r=compute(cfg,{name:'CoilTile-L',board:null});
+const out=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../planar-studio');
+fs.writeFileSync(out+'/coil.planar.json',JSON.stringify({tool:'planar-studio',version:'1.6.0',kind:'inductor',name:'CoilTile 24mm 16-turn',config:cfg},null,2));
+fs.writeFileSync(out+'/artwork.json',JSON.stringify(r.art,null,2));
+fs.writeFileSync(out+'/model.json',JSON.stringify(r.analysis,null,2));
+fs.writeFileSync(out+'/geometry.json',JSON.stringify({path:r.coil.spiral.path,config:cfg},null,2));
+fs.writeFileSync(out+'/coil.svg',exportSvg(r.art,{name:'CoilTile coil'}));
+console.log(JSON.stringify(r.analysis,null,2));

@@ -1,0 +1,309 @@
+{
+  "USB_C_Receptacle_USB2.0_16P": {
+    "S1": {
+      "name": "SHIELD",
+      "type": "passive"
+    },
+    "A1": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "A12": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "B1": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "B12": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "A4": {
+      "name": "VBUS",
+      "type": "passive"
+    },
+    "A9": {
+      "name": "VBUS",
+      "type": "passive"
+    },
+    "B4": {
+      "name": "VBUS",
+      "type": "passive"
+    },
+    "B9": {
+      "name": "VBUS",
+      "type": "passive"
+    },
+    "A5": {
+      "name": "CC1",
+      "type": "bidirectional"
+    },
+    "B5": {
+      "name": "CC2",
+      "type": "bidirectional"
+    },
+    "A7": {
+      "name": "D-",
+      "type": "bidirectional"
+    },
+    "B7": {
+      "name": "D-",
+      "type": "bidirectional"
+    },
+    "A6": {
+      "name": "D+",
+      "type": "bidirectional"
+    },
+    "B6": {
+      "name": "D+",
+      "type": "bidirectional"
+    },
+    "A8": {
+      "name": "SBU1",
+      "type": "bidirectional"
+    },
+    "B8": {
+      "name": "SBU2",
+      "type": "bidirectional"
+    }
+  },
+  "AP2112K-3.3": {
+    "1": {
+      "name": "VIN",
+      "type": "power_in"
+    },
+    "3": {
+      "name": "EN",
+      "type": "input"
+    },
+    "2": {
+      "name": "GND",
+      "type": "power_in"
+    },
+    "4": {
+      "name": "NC",
+      "type": "no_connect"
+    },
+    "5": {
+      "name": "VOUT",
+      "type": "power_out"
+    }
+  },
+  "MCP2221AxST": {
+    "4": {
+      "name": "~{RST}",
+      "type": "input"
+    },
+    "13": {
+      "name": "D+",
+      "type": "bidirectional"
+    },
+    "12": {
+      "name": "D-",
+      "type": "bidirectional"
+    },
+    "1": {
+      "name": "VDD",
+      "type": "power_in"
+    },
+    "14": {
+      "name": "VSS",
+      "type": "power_in"
+    },
+    "11": {
+      "name": "VUSB",
+      "type": "passive"
+    },
+    "9": {
+      "name": "SDA",
+      "type": "bidirectional"
+    },
+    "10": {
+      "name": "SCL",
+      "type": "bidirectional"
+    },
+    "5": {
+      "name": "URx",
+      "type": "input"
+    },
+    "6": {
+      "name": "UTx",
+      "type": "output"
+    },
+    "2": {
+      "name": "GP0",
+      "type": "bidirectional"
+    },
+    "3": {
+      "name": "GP1",
+      "type": "bidirectional"
+    },
+    "7": {
+      "name": "GP2",
+      "type": "bidirectional"
+    },
+    "8": {
+      "name": "GP3",
+      "type": "bidirectional"
+    }
+  },
+  "LDC1614": {
+    "3": {
+      "name": "CLKIN",
+      "type": "input"
+    },
+    "9": {
+      "name": "IN0A",
+      "type": "input"
+    },
+    "10": {
+      "name": "IN0B",
+      "type": "input"
+    },
+    "11": {
+      "name": "IN1A",
+      "type": "input"
+    },
+    "12": {
+      "name": "IN1B",
+      "type": "input"
+    },
+    "13": {
+      "name": "IN2A",
+      "type": "input"
+    },
+    "14": {
+      "name": "IN2B",
+      "type": "input"
+    },
+    "15": {
+      "name": "IN3A",
+      "type": "input"
+    },
+    "16": {
+      "name": "IN3B",
+      "type": "input"
+    },
+    "7": {
+      "name": "VDD",
+      "type": "power_in"
+    },
+    "17": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "8": {
+      "name": "GND",
+      "type": "power_in"
+    },
+    "6": {
+      "name": "SD",
+      "type": "input"
+    },
+    "5": {
+      "name": "INTB",
+      "type": "output"
+    },
+    "2": {
+      "name": "SDA",
+      "type": "bidirectional"
+    },
+    "1": {
+      "name": "SCL",
+      "type": "input"
+    },
+    "4": {
+      "name": "ADDR",
+      "type": "input"
+    }
+  },
+  "USBLC6-2SC6": {
+    "1": {
+      "name": "I/O1",
+      "type": "passive"
+    },
+    "3": {
+      "name": "I/O2",
+      "type": "passive"
+    },
+    "5": {
+      "name": "VBUS",
+      "type": "passive"
+    },
+    "2": {
+      "name": "GND",
+      "type": "passive"
+    },
+    "6": {
+      "name": "I/O1",
+      "type": "passive"
+    },
+    "4": {
+      "name": "I/O2",
+      "type": "passive"
+    }
+  },
+  "R_Small_US": {
+    "1": {
+      "name": "~",
+      "type": "passive"
+    },
+    "2": {
+      "name": "~",
+      "type": "passive"
+    }
+  },
+  "C_Small": {
+    "1": {
+      "name": "~",
+      "type": "passive"
+    },
+    "2": {
+      "name": "~",
+      "type": "passive"
+    }
+  },
+  "L_Small": {
+    "1": {
+      "name": "~",
+      "type": "passive"
+    },
+    "2": {
+      "name": "~",
+      "type": "passive"
+    }
+  },
+  "TestPoint": {
+    "1": {
+      "name": "1",
+      "type": "passive"
+    }
+  },
+  "MountingHole": {},
+  "GND": {
+    "1": {
+      "name": "~",
+      "type": "power_in"
+    }
+  },
+  "+3V3": {
+    "1": {
+      "name": "~",
+      "type": "power_in"
+    }
+  },
+  "PWR_FLAG": {
+    "1": {
+      "name": "~",
+      "type": "power_out"
+    }
+  },
+  "VBUS": {
+    "1": {
+      "name": "~",
+      "type": "power_in"
+    }
+  }
+}

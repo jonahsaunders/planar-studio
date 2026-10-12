@@ -1,0 +1,579 @@
+[
+  {
+    "ref": "J1",
+    "value": "USB-C / USB 2.0",
+    "lib": "Connector",
+    "symbol": "USB_C_Receptacle_USB2.0_16P",
+    "footprint": "CoilTile:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+    "stock_footprint": "Connector_USB:USB_C_Receptacle_HRO_TYPE-C-31-M-12",
+    "nets": {
+      "A1": "GND",
+      "A12": "GND",
+      "B1": "GND",
+      "B12": "GND",
+      "S1": "GND",
+      "A4": "VBUS",
+      "A9": "VBUS",
+      "B4": "VBUS",
+      "B9": "VBUS",
+      "A5": "CC1",
+      "B5": "CC2",
+      "A6": "USB_P",
+      "B6": "USB_P",
+      "A7": "USB_N",
+      "B7": "USB_N",
+      "A8": null,
+      "B8": null
+    },
+    "lcsc": "C165948",
+    "mpn": "TYPE-C-31-M-12",
+    "mfr": "Korean Hroparts Elec",
+    "source": "https://www.lcsc.com/product-detail/C165948.html",
+    "bom": true
+  },
+  {
+    "ref": "U1",
+    "value": "AP2112K-3.3TRG1",
+    "lib": "Regulator_Linear",
+    "symbol": "AP2112K-3.3",
+    "footprint": "CoilTile:SOT-23-5",
+    "stock_footprint": "Package_TO_SOT_SMD:SOT-23-5",
+    "nets": {
+      "1": "VBUS",
+      "2": "GND",
+      "3": "VBUS",
+      "4": null,
+      "5": "+3V3"
+    },
+    "lcsc": "C51118",
+    "mpn": "AP2112K-3.3TRG1",
+    "mfr": "Diodes Incorporated",
+    "source": "https://www.diodes.com/assets/Datasheets/AP2112.pdf",
+    "bom": true
+  },
+  {
+    "ref": "U2",
+    "value": "MCP2221A-I/ST",
+    "lib": "Interface_USB",
+    "symbol": "MCP2221AxST",
+    "footprint": "CoilTile:TSSOP-14_4.4x5mm_P0.65mm",
+    "stock_footprint": "Package_SO:TSSOP-14_4.4x5mm_P0.65mm",
+    "nets": {
+      "1": "+3V3",
+      "2": null,
+      "3": null,
+      "4": "RESET_N",
+      "5": "+3V3",
+      "6": null,
+      "7": null,
+      "8": null,
+      "9": "SDA",
+      "10": "SCL",
+      "11": "+3V3",
+      "12": "USB_N",
+      "13": "USB_P",
+      "14": "GND"
+    },
+    "lcsc": "C130462",
+    "mpn": "MCP2221A-I/ST",
+    "mfr": "Microchip Technology",
+    "source": "https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP2221A-Data-Sheet-20005565E.pdf",
+    "bom": true
+  },
+  {
+    "ref": "U3",
+    "value": "LDC1614RGHR",
+    "lib": "Sensor_Proximity",
+    "symbol": "LDC1614",
+    "footprint": "CoilTile:WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm",
+    "stock_footprint": "Package_DFN_QFN:WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm",
+    "nets": {
+      "1": "SCL",
+      "2": "SDA",
+      "3": "GND",
+      "4": "GND",
+      "5": null,
+      "6": "GND",
+      "7": "+3V3",
+      "8": "GND",
+      "9": "CH0_A",
+      "10": "CH0_B",
+      "11": "CH1_A",
+      "12": "CH1_B",
+      "13": "CH2_A",
+      "14": "CH2_B",
+      "15": "CH3_A",
+      "16": "CH3_B",
+      "17": "GND"
+    },
+    "lcsc": "C968448",
+    "mpn": "LDC1614RGHR",
+    "mfr": "Texas Instruments",
+    "source": "https://www.ti.com/lit/ds/symlink/ldc1614.pdf",
+    "bom": true
+  },
+  {
+    "ref": "U4",
+    "value": "USBLC6-2SC6",
+    "lib": "Power_Protection",
+    "symbol": "USBLC6-2SC6",
+    "footprint": "CoilTile:SOT-23-6",
+    "stock_footprint": "Package_TO_SOT_SMD:SOT-23-6",
+    "nets": {
+      "1": "USB_P",
+      "6": "USB_P",
+      "3": "USB_N",
+      "4": "USB_N",
+      "2": "GND",
+      "5": "VBUS"
+    },
+    "lcsc": "C7519",
+    "mpn": "USBLC6-2SC6",
+    "mfr": "STMicroelectronics",
+    "source": "https://www.st.com/resource/en/datasheet/usblc6-2.pdf",
+    "bom": true
+  },
+  {
+    "ref": "R1",
+    "value": "5.1kR",
+    "lib": "Device",
+    "symbol": "R_Small_US",
+    "footprint": "CoilTile:R_0603_1608Metric",
+    "stock_footprint": "Resistor_SMD:R_0603_1608Metric",
+    "nets": {
+      "1": "CC1",
+      "2": "GND"
+    },
+    "lcsc": "C23186",
+    "mpn": "0603WAF5101T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://www.lcsc.com/product-detail/C23186.html",
+    "bom": true
+  },
+  {
+    "ref": "R2",
+    "value": "5.1kR",
+    "lib": "Device",
+    "symbol": "R_Small_US",
+    "footprint": "CoilTile:R_0603_1608Metric",
+    "stock_footprint": "Resistor_SMD:R_0603_1608Metric",
+    "nets": {
+      "1": "CC2",
+      "2": "GND"
+    },
+    "lcsc": "C23186",
+    "mpn": "0603WAF5101T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://www.lcsc.com/product-detail/C23186.html",
+    "bom": true
+  },
+  {
+    "ref": "R3",
+    "value": "10kR",
+    "lib": "Device",
+    "symbol": "R_Small_US",
+    "footprint": "CoilTile:R_0603_1608Metric",
+    "stock_footprint": "Resistor_SMD:R_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "RESET_N"
+    },
+    "lcsc": "C25804",
+    "mpn": "0603WAF1002T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://www.lcsc.com/product-detail/C25804.html",
+    "bom": true
+  },
+  {
+    "ref": "R4",
+    "value": "4.7kR",
+    "lib": "Device",
+    "symbol": "R_Small_US",
+    "footprint": "CoilTile:R_0603_1608Metric",
+    "stock_footprint": "Resistor_SMD:R_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "SDA"
+    },
+    "lcsc": "C23162",
+    "mpn": "0603WAF4701T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://www.lcsc.com/product-detail/C23162.html",
+    "bom": true
+  },
+  {
+    "ref": "R5",
+    "value": "4.7kR",
+    "lib": "Device",
+    "symbol": "R_Small_US",
+    "footprint": "CoilTile:R_0603_1608Metric",
+    "stock_footprint": "Resistor_SMD:R_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "SCL"
+    },
+    "lcsc": "C23162",
+    "mpn": "0603WAF4701T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://www.lcsc.com/product-detail/C23162.html",
+    "bom": true
+  },
+  {
+    "ref": "C1",
+    "value": "4.7uF / 25V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0805_2012Metric",
+    "stock_footprint": "Capacitor_SMD:C_0805_2012Metric",
+    "nets": {
+      "1": "VBUS",
+      "2": "GND"
+    },
+    "lcsc": "C354262",
+    "mpn": "CC0805KKX7R8BB475",
+    "mfr": "YAGEO",
+    "source": "https://www.lcsc.com/product-detail/C354262.html",
+    "bom": true
+  },
+  {
+    "ref": "C2",
+    "value": "4.7uF / 25V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0805_2012Metric",
+    "stock_footprint": "Capacitor_SMD:C_0805_2012Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "GND"
+    },
+    "lcsc": "C354262",
+    "mpn": "CC0805KKX7R8BB475",
+    "mfr": "YAGEO",
+    "source": "https://www.lcsc.com/product-detail/C354262.html",
+    "bom": true
+  },
+  {
+    "ref": "C3",
+    "value": "100nF / 50V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "GND"
+    },
+    "lcsc": "C14663",
+    "mpn": "CC0603KRX7R9BB104",
+    "mfr": "YAGEO",
+    "source": "https://www.lcsc.com/product-detail/C14663.html",
+    "bom": true
+  },
+  {
+    "ref": "C5",
+    "value": "100nF / 50V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "GND"
+    },
+    "lcsc": "C14663",
+    "mpn": "CC0603KRX7R9BB104",
+    "mfr": "YAGEO",
+    "source": "https://www.lcsc.com/product-detail/C14663.html",
+    "bom": true
+  },
+  {
+    "ref": "C4",
+    "value": "470nF / 25V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "GND"
+    },
+    "lcsc": "C1623",
+    "mpn": "CL10B474KA8NNNC",
+    "mfr": "Samsung Electro-Mechanics",
+    "source": "https://www.lcsc.com/product-detail/C1623.html",
+    "bom": true
+  },
+  {
+    "ref": "C6",
+    "value": "470nF / 25V",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "+3V3",
+      "2": "GND"
+    },
+    "lcsc": "C1623",
+    "mpn": "CL10B474KA8NNNC",
+    "mfr": "Samsung Electro-Mechanics",
+    "source": "https://www.lcsc.com/product-detail/C1623.html",
+    "bom": true
+  },
+  {
+    "ref": "C7",
+    "value": "220pF / C0G",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "CH0_A",
+      "2": "CH0_B"
+    },
+    "lcsc": "C156398",
+    "mpn": "0603CG221J500NT",
+    "mfr": "FH (Guangdong Fenghua Advanced Tech)",
+    "source": "https://www.lcsc.com/product-detail/C156398.html",
+    "bom": true
+  },
+  {
+    "ref": "L1",
+    "value": "5.51uH nominal",
+    "lib": "Device",
+    "symbol": "L_Small",
+    "footprint": "CoilTile:Planar_24mm_16T",
+    "stock_footprint": "CoilTile:Planar_24mm_16T",
+    "nets": {
+      "1": "CH0_A",
+      "2": "CH0_B"
+    },
+    "lcsc": "",
+    "mpn": "PCB winding / not fitted",
+    "mfr": "",
+    "source": "Planar Studio coil.planar.json",
+    "bom": false
+  },
+  {
+    "ref": "C8",
+    "value": "220pF / C0G",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "CH1_A",
+      "2": "CH1_B"
+    },
+    "lcsc": "C156398",
+    "mpn": "0603CG221J500NT",
+    "mfr": "FH (Guangdong Fenghua Advanced Tech)",
+    "source": "https://www.lcsc.com/product-detail/C156398.html",
+    "bom": true
+  },
+  {
+    "ref": "L2",
+    "value": "5.51uH nominal",
+    "lib": "Device",
+    "symbol": "L_Small",
+    "footprint": "CoilTile:Planar_24mm_16T",
+    "stock_footprint": "CoilTile:Planar_24mm_16T",
+    "nets": {
+      "1": "CH1_A",
+      "2": "CH1_B"
+    },
+    "lcsc": "",
+    "mpn": "PCB winding / not fitted",
+    "mfr": "",
+    "source": "Planar Studio coil.planar.json",
+    "bom": false
+  },
+  {
+    "ref": "C9",
+    "value": "220pF / C0G",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "CH2_A",
+      "2": "CH2_B"
+    },
+    "lcsc": "C156398",
+    "mpn": "0603CG221J500NT",
+    "mfr": "FH (Guangdong Fenghua Advanced Tech)",
+    "source": "https://www.lcsc.com/product-detail/C156398.html",
+    "bom": true
+  },
+  {
+    "ref": "L3",
+    "value": "5.51uH nominal",
+    "lib": "Device",
+    "symbol": "L_Small",
+    "footprint": "CoilTile:Planar_24mm_16T",
+    "stock_footprint": "CoilTile:Planar_24mm_16T",
+    "nets": {
+      "1": "CH2_A",
+      "2": "CH2_B"
+    },
+    "lcsc": "",
+    "mpn": "PCB winding / not fitted",
+    "mfr": "",
+    "source": "Planar Studio coil.planar.json",
+    "bom": false
+  },
+  {
+    "ref": "C10",
+    "value": "220pF / C0G",
+    "lib": "Device",
+    "symbol": "C_Small",
+    "footprint": "CoilTile:C_0603_1608Metric",
+    "stock_footprint": "Capacitor_SMD:C_0603_1608Metric",
+    "nets": {
+      "1": "CH3_A",
+      "2": "CH3_B"
+    },
+    "lcsc": "C156398",
+    "mpn": "0603CG221J500NT",
+    "mfr": "FH (Guangdong Fenghua Advanced Tech)",
+    "source": "https://www.lcsc.com/product-detail/C156398.html",
+    "bom": true
+  },
+  {
+    "ref": "L4",
+    "value": "5.51uH nominal",
+    "lib": "Device",
+    "symbol": "L_Small",
+    "footprint": "CoilTile:Planar_24mm_16T",
+    "stock_footprint": "CoilTile:Planar_24mm_16T",
+    "nets": {
+      "1": "CH3_A",
+      "2": "CH3_B"
+    },
+    "lcsc": "",
+    "mpn": "PCB winding / not fitted",
+    "mfr": "",
+    "source": "Planar Studio coil.planar.json",
+    "bom": false
+  },
+  {
+    "ref": "TP1",
+    "value": "+3V3",
+    "lib": "Connector",
+    "symbol": "TestPoint",
+    "footprint": "CoilTile:TestPoint_Pad_D1.0mm",
+    "stock_footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+    "nets": {
+      "1": "+3V3"
+    },
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "TP2",
+    "value": "GND",
+    "lib": "Connector",
+    "symbol": "TestPoint",
+    "footprint": "CoilTile:TestPoint_Pad_D1.0mm",
+    "stock_footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+    "nets": {
+      "1": "GND"
+    },
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "TP3",
+    "value": "SDA",
+    "lib": "Connector",
+    "symbol": "TestPoint",
+    "footprint": "CoilTile:TestPoint_Pad_D1.0mm",
+    "stock_footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+    "nets": {
+      "1": "SDA"
+    },
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "TP4",
+    "value": "SCL",
+    "lib": "Connector",
+    "symbol": "TestPoint",
+    "footprint": "CoilTile:TestPoint_Pad_D1.0mm",
+    "stock_footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+    "nets": {
+      "1": "SCL"
+    },
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "H1",
+    "value": "M3 / NPTH 3.2mm",
+    "lib": "Mechanical",
+    "symbol": "MountingHole",
+    "footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "stock_footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "nets": {},
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "H2",
+    "value": "M3 / NPTH 3.2mm",
+    "lib": "Mechanical",
+    "symbol": "MountingHole",
+    "footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "stock_footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "nets": {},
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "H3",
+    "value": "M3 / NPTH 3.2mm",
+    "lib": "Mechanical",
+    "symbol": "MountingHole",
+    "footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "stock_footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "nets": {},
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  },
+  {
+    "ref": "H4",
+    "value": "M3 / NPTH 3.2mm",
+    "lib": "Mechanical",
+    "symbol": "MountingHole",
+    "footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "stock_footprint": "CoilTile:MountingHole_3.2mm_M3_ExposedSubstrate_Edge",
+    "nets": {},
+    "lcsc": "",
+    "mpn": "",
+    "mfr": "",
+    "source": "",
+    "bom": false
+  }
+]

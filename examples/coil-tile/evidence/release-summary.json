@@ -1,0 +1,30 @@
+{
+  "revision": "A2",
+  "date": "2026-10-12",
+  "status": "UNBUILT PROTOTYPE",
+  "kicad": "9.0.9",
+  "board_mm": [
+    72,
+    90,
+    1.6
+  ],
+  "copper_layers": 4,
+  "assembled_components": 20,
+  "bom_lines": 12,
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "unconnected": 0,
+  "schematic_parity_issues": 0,
+  "driver_tests_passed": 7,
+  "physical_hardware_tests": false,
+  "indicative_components_usd_per_board": 8.8648,
+  "assembly_estimate_five_usd": [
+    85,
+    120
+  ],
+  "assembly_estimate_excludes": [
+    "shipping",
+    "tax"
+  ],
+  "jlc_order_placed": false
+}

@@ -1,0 +1,12 @@
+test_baseline_rejects_faults_and_zero (test_coiltile.Tests.test_baseline_rejects_faults_and_zero) ... ok
+test_coherent_reads_and_errors (test_coiltile.Tests.test_coherent_reads_and_errors) ... ok
+test_configuration_sleep_then_active (test_coiltile.Tests.test_configuration_sleep_then_active) ... ok
+test_fixed_drive (test_coiltile.Tests.test_fixed_drive) ... ok
+test_ids_reject_wrong_device (test_coiltile.Tests.test_ids_reject_wrong_device) ... ok
+test_physical_orientation (test_coiltile.Tests.test_physical_orientation) ... ok
+test_timeout (test_coiltile.Tests.test_timeout) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.121s
+
+OK

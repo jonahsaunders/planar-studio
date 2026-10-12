@@ -1,0 +1,367 @@
+[
+  {
+    "lcsc": "C165948",
+    "mpn": "TYPE-C-31-M-12",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C165948",
+      "model": "TYPE-C-31-M-12",
+      "manufacturer": "Korean Hroparts Elec",
+      "package": "SMD",
+      "stock": 402038,
+      "price": 0.186,
+      "price_10": 0.147,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Connectors",
+      "subcategory": "USB Connectors",
+      "subcategory_id": 2945,
+      "mounting_type": "smd",
+      "specs": {
+        "Operating Temperature": "-30\u2103~+80\u2103",
+        "Number of Ports": "1",
+        "Length": "7.35mm",
+        "Current Rating-Power": "5A",
+        "Voltage Rating": "20V",
+        "Connector Type": "Type-C",
+        "Number of Contacts": "16P",
+        "Gender": "Female",
+        "Connect-Disconnect Life": "10,000 cycles",
+        "Mounting Type": "Surface Mount, Right Angle",
+        "Protocol Standard": "-"
+      }
+    }
+  },
+  {
+    "lcsc": "C51118",
+    "mpn": "AP2112K-3.3TRG1",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C51118",
+      "model": "AP2112K-3.3TRG1",
+      "manufacturer": "Diodes Incorporated",
+      "package": "SOT-25-5",
+      "stock": 25951,
+      "price": 0.1713,
+      "price_10": 0.1359,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Power Management (PMIC)",
+      "subcategory": "Voltage Regulators - Linear, Low Drop Out (LDO) Regulators",
+      "subcategory_id": 2956,
+      "mounting_type": "smd",
+      "specs": {
+        "Power Supply Rejection Ratio (PSRR)": "65dB@(1kHz)",
+        "Operating Temperature": "-40\u2103~+85\u2103@(Ta)",
+        "standby current": "55uA",
+        "Noise": "50uVrms",
+        "Voltage - Supply": "6V",
+        "Output Type": "Fixed",
+        "Output Current": "600mA",
+        "Output Configuration": "Positive",
+        "Features": "Over Current Protection\u3001Short Circuit Protection\u3001Thermal shutdown\u3001Enable control\u3001Output discharge",
+        "Voltage Dropout": "250mV@(600mA)",
+        "Output Voltage": "3.3V",
+        "Number of Outputs": "1"
+      }
+    }
+  },
+  {
+    "lcsc": "C130462",
+    "mpn": "MCP2221A-I/ST",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C130462",
+      "model": "MCP2221A-I/ST",
+      "manufacturer": "Microchip Tech",
+      "package": "TSSOP-14",
+      "stock": 428,
+      "price": 4.4903,
+      "price_10": 3.8731,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Interface",
+      "subcategory": "USB Converters",
+      "subcategory_id": 3069,
+      "mounting_type": "smd",
+      "specs": {
+        "Operating Temperature": "-40\u2103~+85\u2103",
+        "Data Rate": "-",
+        "Number of Channels": "-",
+        "Applications Function": "USB to UART\u3001USB to I2C",
+        "Voltage - Supply": "3V~5.5V",
+        "USB Protocol": "USB 2.0",
+        "Current - Supply": "13mA",
+        "Quiescent Supply Current": "46uA"
+      }
+    }
+  },
+  {
+    "lcsc": "C968448",
+    "mpn": "LDC1614RGHR",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C968448",
+      "model": "LDC1614RGHR",
+      "manufacturer": "Texas Instruments",
+      "package": "WQFN-16-EP(4x4)",
+      "stock": 5501,
+      "price": 3.5636,
+      "price_10": 3.1841,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Sensors",
+      "subcategory": "Specialized Sensors",
+      "subcategory_id": 2156,
+      "mounting_type": "smd",
+      "specs": {
+        "Operating Temperature": "-40\u2103~+125\u2103",
+        "Length": "4.1mm",
+        "Sensor Type": "Inductance-to-Digital Converter",
+        "Voltage - Supply": "2.7V~3.6V",
+        "Pitch": "0.5mm",
+        "Height": "0.8mm",
+        "Features": "Low-power mode\u3001Interrupt output\u3001Integrated ADC",
+        "Current - Supply": "2.1mA",
+        "Width": "4.1mm",
+        "Interface": "I2C"
+      }
+    }
+  },
+  {
+    "lcsc": "C7519",
+    "mpn": "USBLC6-2SC6",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C7519",
+      "model": "USBLC6-2SC6",
+      "manufacturer": "STMicroelectronics",
+      "package": "SOT-23-6L",
+      "stock": 45991,
+      "price": 0.177,
+      "price_10": 0.1362,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Circuit Protection",
+      "subcategory": "ESD and Surge Protection (TVS/ESD)",
+      "subcategory_id": 3035,
+      "mounting_type": "smd",
+      "specs": {
+        "Operating Temperature": "-40\u2103~+125\u2103@(Tj)",
+        "Type": "ESD",
+        "Junction Capacitance": "3.5pF",
+        "Number of Channels": "2",
+        "level of protection": "IEC 61000-4-2",
+        "Clamping Voltage": "17V",
+        "Polarity": "Unidirectional",
+        "Peak Pulse Current (Ipp)": "5A",
+        "Voltage - Breakdown": "6V",
+        "Reverse Stand-Off Voltage (Vrwm)": "5.25V",
+        "Reverse Leakage Current (Ir)": "150nA"
+      }
+    }
+  },
+  {
+    "lcsc": "C23186",
+    "mpn": "0603WAF5101T5E",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C23186",
+      "model": "0603WAF5101T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "stock": 24251523,
+      "price": 0.0015,
+      "price_10": 0.0012,
+      "library_type": "basic",
+      "preferred": false,
+      "category": "Resistors",
+      "subcategory": "Chip Resistor - Surface Mount",
+      "subcategory_id": 2980,
+      "mounting_type": "smd",
+      "specs": {
+        "Resistance": "5.1k\u03a9",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Power(Watts)": "100mW",
+        "Type": "Thick Film Resistor",
+        "Voltage-Supply(Max)": "75V",
+        "Tolerance": "\u00b11%",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103"
+      }
+    }
+  },
+  {
+    "lcsc": "C25804",
+    "mpn": "0603WAF1002T5E",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C25804",
+      "model": "0603WAF1002T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "stock": 32740109,
+      "price": 0.0022,
+      "price_10": 0.0018,
+      "library_type": "basic",
+      "preferred": false,
+      "category": "Resistors",
+      "subcategory": "Chip Resistor - Surface Mount",
+      "subcategory_id": 2980,
+      "mounting_type": "smd",
+      "specs": {
+        "Resistance": "10k\u03a9",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Power(Watts)": "100mW",
+        "Type": "Thick Film Resistor",
+        "Voltage-Supply(Max)": "75V",
+        "Tolerance": "\u00b11%",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103"
+      }
+    }
+  },
+  {
+    "lcsc": "C23162",
+    "mpn": "0603WAF4701T5E",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C23162",
+      "model": "0603WAF4701T5E",
+      "manufacturer": "UNI-ROYAL(Uniroyal Elec)",
+      "package": "0603",
+      "stock": 20564410,
+      "price": 0.0028,
+      "price_10": 0.0022,
+      "library_type": "basic",
+      "preferred": false,
+      "category": "Resistors",
+      "subcategory": "Chip Resistor - Surface Mount",
+      "subcategory_id": 2980,
+      "mounting_type": "smd",
+      "specs": {
+        "Resistance": "4.7k\u03a9",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Power(Watts)": "100mW",
+        "Type": "Thick Film Resistor",
+        "Voltage-Supply(Max)": "75V",
+        "Tolerance": "\u00b11%",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103"
+      }
+    }
+  },
+  {
+    "lcsc": "C354262",
+    "mpn": "CC0805KKX7R8BB475",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C354262",
+      "model": "CC0805KKX7R8BB475",
+      "manufacturer": "YAGEO",
+      "package": "0805",
+      "stock": 574377,
+      "price": 0.0722,
+      "price_10": 0.0544,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Capacitors",
+      "subcategory": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+      "subcategory_id": 2929,
+      "mounting_type": "smd",
+      "specs": {
+        "Voltage Rating": "25V",
+        "Tolerance": "\u00b110%",
+        "Capacitance": "4.7uF",
+        "Temperature Coefficient": "X7R"
+      }
+    }
+  },
+  {
+    "lcsc": "C14663",
+    "mpn": "CC0603KRX7R9BB104",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C14663",
+      "model": "CC0603KRX7R9BB104",
+      "manufacturer": "YAGEO",
+      "package": "0603",
+      "stock": 54685107,
+      "price": 0.014,
+      "price_10": 0.0106,
+      "library_type": "basic",
+      "preferred": false,
+      "category": "Capacitors",
+      "subcategory": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+      "subcategory_id": 2929,
+      "mounting_type": "smd",
+      "specs": {
+        "Voltage Rating": "50V",
+        "Tolerance": "\u00b110%",
+        "Capacitance": "100nF",
+        "Temperature Coefficient": "X7R"
+      }
+    }
+  },
+  {
+    "lcsc": "C1623",
+    "mpn": "CL10B474KA8NNNC",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C1623",
+      "model": "CL10B474KA8NNNC",
+      "manufacturer": "Samsung Electro-Mechanics",
+      "package": "0603",
+      "stock": 856147,
+      "price": 0.0297,
+      "price_10": 0.0232,
+      "library_type": "basic",
+      "preferred": false,
+      "category": "Capacitors",
+      "subcategory": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+      "subcategory_id": 2929,
+      "mounting_type": "smd",
+      "specs": {
+        "Voltage Rating": "25V",
+        "Tolerance": "\u00b110%",
+        "Capacitance": "470nF",
+        "Temperature Coefficient": "X7R"
+      }
+    }
+  },
+  {
+    "lcsc": "C156398",
+    "mpn": "0603CG221J500NT",
+    "checked": "2026-10-12",
+    "source": "pcbparts.dev jlc_stock_check",
+    "result": {
+      "lcsc": "C156398",
+      "model": "0603CG221J500NT",
+      "manufacturer": "FH (Guangdong Fenghua Advanced Tech)",
+      "package": "0603",
+      "stock": 110632,
+      "price": 0.0085,
+      "price_10": 0.0069,
+      "library_type": "extended",
+      "preferred": false,
+      "category": "Capacitors",
+      "subcategory": "Multilayer Ceramic Capacitors MLCC - SMD/SMT",
+      "subcategory_id": 2929,
+      "mounting_type": "smd",
+      "specs": {
+        "Voltage Rating": "50V",
+        "Tolerance": "\u00b15%",
+        "Capacitance": "220pF",
+        "Temperature Coefficient": "C0G"
+      }
+    }
+  }
+]
