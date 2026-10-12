@@ -1,0 +1,33 @@
+# HRO TYPE-C-31-M-12 nominal visualization using KiCad's USB generator.
+# External dimensions from the HRO drawing dated 2020-11-09.
+# Pin/hole locations matched to the existing KiCad footprint.
+# Internal tongue/cavity details are illustrative, not tooling dimensions.
+body:
+  width: 8.94
+  depth: 7.35
+  height: 3.16
+  radius: 1.5
+  wall_thickness: 0.30
+  cavity_depth: 6.0
+  offset: [0, 0, 0]
+tounge:
+  width: 6.4
+  height: 0.8
+  depth: 4.8
+  tip_chamfer: 0.3
+pegs:
+  diameter: 0.5
+  length: 0.5
+  tip_chamfer: 0.1
+  centers: [[2.89, -2.6], [-2.89, -2.6]]
+pins:
+  width: 0.2
+  length: 0.45
+  height: 0.15
+  centers: [[-3.35, 0], [-3.15, 0], [-2.55, 0], [-2.35, 0]]
+shield:
+  thickness: 0.3
+  length: 1.1
+  width: [0.8, 1.4]
+  centers_front: [[-4.32, 1.05], [4.32, 1.05]]
+  centers_back: [[-4.32, -3.13], [4.32, -3.13]]

@@ -7251,6 +7251,17 @@
 			(uuid "f39d731f-3cd8-4b4c-9afb-548b5a3f5923")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Package_SO.3dshapes/TSSOP-14_4.4x5mm_P0.65mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "CoilTile:R_0603_1608Metric"
 		(layer "F.Cu")
@@ -8421,6 +8432,17 @@
 			(uuid "9c10e37d-54fa-45df-9596-32be736712e4")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "CoilTile:C_0603_1608Metric"
 		(layer "F.Cu")
@@ -9340,6 +9362,17 @@
 			(uuid "0c807309-4cc2-405f-9cb6-8354c55759f0")
 		)
 		(embedded_fonts no)
+		(model "${KIPRJMOD}/3dmodels/Package_DFN_QFN.3dshapes/WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "CoilTile:SOT-23-5"
 		(layer "F.Cu")

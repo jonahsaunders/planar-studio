@@ -60,6 +60,7 @@ placement={
 fps={};pads={}
 for p in DATA['parts']:
  ref=p['ref'];name=p['footprint'].split(':')[1];f=pcb.FootprintLoad(str(LIB),name);assert f,name
+ if p['bom']:assert len(f.Models())==1, f'Missing local 3D model: {ref}'
  f.SetReference(ref);f.SetValue(p['value']);f.SetFPID(pcb.LIB_ID('CoilTile',name));f.SetPath(pcb.KIID_PATH('/'+DATA['root_uuid']+'/'+p['uuid']))
  for k,v in [('MPN',p['mpn']),('Manufacturer',p['mfr']),('LCSC',p['lcsc']),('Datasheet',p['source'])]:f.SetField(k,v);None
  if not p['bom']:f.SetAttributes(f.GetAttributes()|pcb.FP_EXCLUDE_FROM_BOM|pcb.FP_EXCLUDE_FROM_POS_FILES)

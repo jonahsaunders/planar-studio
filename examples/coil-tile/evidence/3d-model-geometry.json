@@ -1,0 +1,114 @@
+[
+  {
+    "path": "3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+    "sha256": "4857b3dc717675bf1fb22edda622ac3b3ae03cf44d81eefaf3fa3ba3a86d84c1",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -0.8,
+      "xmax": 0.8,
+      "ymin": -0.4,
+      "ymax": 0.4,
+      "zmin": 0.0,
+      "zmax": 0.8
+    }
+  },
+  {
+    "path": "3dmodels/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+    "sha256": "9a669c1a2f1ea25b88b401acef6efeaa80a067bd7da9db6993de719a7fbe155c",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -1.0,
+      "xmax": 1.0,
+      "ymin": -0.625,
+      "ymax": 0.625,
+      "zmin": 0.0,
+      "zmax": 1.25
+    }
+  },
+  {
+    "path": "3dmodels/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step",
+    "sha256": "0d396d39ee6ea5f57ab6fe25d6b36c3e3182a72ca019fbdf9086bf1face7d7dd",
+    "valid_solid_geometry": true,
+    "solids": 16,
+    "bounding_box_mm": {
+      "xmin": -4.47,
+      "xmax": 4.47,
+      "ymin": -3.675,
+      "ymax": 4.125,
+      "zmin": -1.1,
+      "zmax": 3.16
+    }
+  },
+  {
+    "path": "3dmodels/Package_DFN_QFN.3dshapes/WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step",
+    "sha256": "26c2e38608bbc16d02a02f22e76aeb5c8c4830f66e5151a218a2c01b61fbd940",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -2.0,
+      "xmax": 2.0,
+      "ymin": -2.0,
+      "ymax": 2.0,
+      "zmin": 0.0,
+      "zmax": 0.8
+    }
+  },
+  {
+    "path": "3dmodels/Package_SO.3dshapes/TSSOP-14_4.4x5mm_P0.65mm.step",
+    "sha256": "3ee5786aae56190997aa793ba3cfc003fd616782770e29719b4562f012982245",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -3.2,
+      "xmax": 3.2,
+      "ymin": -2.5,
+      "ymax": 2.5,
+      "zmin": -0.0,
+      "zmax": 1.0
+    }
+  },
+  {
+    "path": "3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step",
+    "sha256": "720a6eab0024069bbee68e7cb4c3ff1149468a34611225cdc852662c5d0ec2b7",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -1.4,
+      "xmax": 1.4,
+      "ymin": -1.45,
+      "ymax": 1.45,
+      "zmin": 0.0,
+      "zmax": 1.55
+    }
+  },
+  {
+    "path": "3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+    "sha256": "c9fe686b4d1b56927a41fa84a9bc1efb61d8a45a123a3db43bcaa05c2891d635",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -1.4,
+      "xmax": 1.4,
+      "ymin": -1.45,
+      "ymax": 1.45,
+      "zmin": 0.0,
+      "zmax": 1.55
+    }
+  },
+  {
+    "path": "3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+    "sha256": "1875571c326d0d9e96f36b4efeb8094068ef7619f0a449c781caf0b49c2e5861",
+    "valid_solid_geometry": true,
+    "solids": 1,
+    "bounding_box_mm": {
+      "xmin": -0.8,
+      "xmax": 0.8,
+      "ymin": -0.4,
+      "ymax": 0.4,
+      "zmin": -0.0,
+      "zmax": 0.45
+    }
+  }
+]

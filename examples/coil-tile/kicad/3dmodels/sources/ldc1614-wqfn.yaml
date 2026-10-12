@@ -1,0 +1,38 @@
+WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm:
+  datasheet:
+    url: 'http://www.ti.com/lit/ds/symlink/ldc1312.pdf'
+    page: 59
+  device_type: 'WQFN'
+  ipc_class: 'qfn'
+  body_size_x:
+    minimum: 3.9
+    maximum: 4.1
+  body_size_y:
+    minimum: 3.9
+    maximum: 4.1
+  overall_height:
+    maximum: 0.8
+  num_pins_x: 4
+  num_pins_y: 4
+  pitch: 0.5
+  lead_width:
+    minimum: 0.2
+    maximum: 0.3
+  lead_len:
+    minimum: 0.3
+    maximum: 0.5
+  EP_size_x:
+    nominal: 2.6
+    tolerance: 0.1
+  EP_size_y:
+    nominal: 2.6
+    tolerance: 0.1
+  EP_num_paste_pads: [2, 2]
+  thermal_vias:
+    count: [3, 3]
+    drill: 0.2
+    EP_num_paste_pads: [2, 2]
+    EP_paste_coverage: 0.75
+    paste_via_clearance: 0.1
+    paste_avoid_via: False
+

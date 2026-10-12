@@ -17,6 +17,8 @@ This is a design release for prototype fabrication, not a production qualificati
 | Layout review | Front, inner and back copper plus soldermask/paste views inspected |
 | A2 → A3 equivalence | Exact electrical net groups and symbol pin identities preserved; coil/mounting footprints and placements unchanged |
 | Routing measurements | SDA 78.901 → 62.575 mm; SCL 82.326 → 53.138 mm; CC1 21.716 → 11.145 mm, including branches; `evidence/A3-review.json` |
+| 3D coverage | 20/20 fitted parts; 8 local STEP models; all solids valid; top and angled renders inspected |
+| 3D-only change isolation | Board content excluding model blocks is identical; footprint geometry, routing, BOM and fabrication data unchanged |
 | Driver tests | 7 mocked tests: IDs, configuration, drive mode, coherent reads/error flags, timeout, baseline faults, channel map |
 | Software smoke test | Explicit headless simulation and CSV output; no fabricated hardware measurements |
 

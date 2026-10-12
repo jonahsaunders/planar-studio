@@ -45,6 +45,8 @@ for i,name in enumerate(names):
     im.thumbnail((470,590))
     canvas.paste(im,(x+(500-im.width)//2,y+50+(590-im.height)//2),im)
 canvas.save(E/'gerber-review.png')
-run('pcb','render','-o',E/'bare-board-top.png','--width','1300','--height','1600',
+run('pcb','render','-o',E/'assembled-board-top.png','--width','1300','--height','1600',
     '--side','top','--background','opaque','--quality','high',CAD/'CoilTile.kicad_pcb')
-print('Updated schematic, copper-layer, independent Gerber and bare-board previews.')
+run('pcb','render','-o',E/'assembled-board-perspective.png','--width','1600','--height','1500',
+    '--side','top','--rotate','-35,0,20','--zoom','0.78','--perspective','--background','opaque','--quality','high',CAD/'CoilTile.kicad_pcb')
+print('Updated schematic, copper-layer, independent Gerber and assembled-board previews.')

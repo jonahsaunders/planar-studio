@@ -49,6 +49,8 @@ under MIT (`LICENSE`). Planar Studio and KiStack carry their upstream MIT notice
 in `licenses/`. KiCad symbols, footprints and available 3D models retain their
 upstream CC-BY-SA license with the KiCad library exception; included distribution
 notices are in `licenses/`. Third-party data/datasheets are linked, not relicensed.
-Six optional stock STEP models are included. U3 and J1 have no bundled 3D model;
-2D native footprints/assembly drawings are the mechanical authority. The provided
-board image is deliberately an **unpopulated** PCB preview.
+Eight local STEP models cover all 20 fitted parts. The bridge uses the KiCad
+9.0.9 package model; the sensor and nominal USB connector models use the official
+KiCad Library Tools generators. Sources, licenses, assumptions and regeneration
+instructions are in [3D-MODELS.md](3D-MODELS.md). Coils, test pads and mounting holes
+are represented by native PCB geometry.

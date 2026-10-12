@@ -2,8 +2,8 @@
 
 Normal use: install KiCad 9, open `kicad/CoilTile.kicad_pro`, and edit normally.
 All electrical libraries are project-local. Keep the `.kicad_pro` with the PCB
-because it contains the clearance/track/via rules. Six optional 3D models are
-local; missing optional U3/J1 models do not affect native footprints or fabrication.
+because it contains the clearance/track/via rules. Eight project-local STEP models cover all 20 assembled parts; they load without
+a system-wide model library. See `3D-MODELS.md` for sources and regeneration.
 
 **Generators overwrite CAD files.** Preserve manual edits before running them.
 The files supplied in this package already contain the complete routed design.
@@ -41,7 +41,7 @@ After changes, inspect the plots again and update the review evidence, costs,
 revision and package manifest. Refresh the review images separately with
 `python3 scripts/render-previews.py`. This optional script requires CairoSVG,
 PyMuPDF, Pillow and PyGerber 2.4.3 alongside the KiCad CLI; it renders the
-schematic PDF/SVG, board layers, independent Gerbers and a bare-board preview.
+schematic PDF/SVG, board layers, independent Gerbers and assembled-board previews.
 Its images are review artifacts, not substitutes for ERC/DRC or hardware tests.
 
 The portable coil design JSON can be imported through Planar Studio's JSON

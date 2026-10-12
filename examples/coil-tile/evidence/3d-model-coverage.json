@@ -1,0 +1,448 @@
+{
+  "assembled_parts": 20,
+  "assembled_parts_with_local_models": 20,
+  "pcb_features": 12,
+  "electrical_and_fabrication_geometry_unchanged": true,
+  "footprints": [
+    {
+      "reference": "J1",
+      "model": "${KIPRJMOD}/3dmodels/Connector_USB.3dshapes/USB_C_Receptacle_HRO_TYPE-C-31-M-12.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "U1",
+      "model": "${KIPRJMOD}/3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-5.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "U2",
+      "model": "${KIPRJMOD}/3dmodels/Package_SO.3dshapes/TSSOP-14_4.4x5mm_P0.65mm.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "U3",
+      "model": "${KIPRJMOD}/3dmodels/Package_DFN_QFN.3dshapes/WQFN-16-1EP_4x4mm_P0.5mm_EP2.6x2.6mm.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "U4",
+      "model": "${KIPRJMOD}/3dmodels/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "R1",
+      "model": "${KIPRJMOD}/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "R2",
+      "model": "${KIPRJMOD}/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "R3",
+      "model": "${KIPRJMOD}/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "R4",
+      "model": "${KIPRJMOD}/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "R5",
+      "model": "${KIPRJMOD}/3dmodels/Resistor_SMD.3dshapes/R_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C1",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C2",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0805_2012Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C3",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C5",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C4",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C6",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "C7",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "L1",
+      "representation": "native PCB geometry",
+      "reason": "printed copper winding"
+    },
+    {
+      "reference": "C8",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "L2",
+      "representation": "native PCB geometry",
+      "reason": "printed copper winding"
+    },
+    {
+      "reference": "C9",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "L3",
+      "representation": "native PCB geometry",
+      "reason": "printed copper winding"
+    },
+    {
+      "reference": "C10",
+      "model": "${KIPRJMOD}/3dmodels/Capacitor_SMD.3dshapes/C_0603_1608Metric.step",
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "offset_mm": [
+        0,
+        0,
+        0
+      ],
+      "rotation_deg": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "reference": "L4",
+      "representation": "native PCB geometry",
+      "reason": "printed copper winding"
+    },
+    {
+      "reference": "TP1",
+      "representation": "native PCB geometry",
+      "reason": "copper test pad"
+    },
+    {
+      "reference": "TP2",
+      "representation": "native PCB geometry",
+      "reason": "copper test pad"
+    },
+    {
+      "reference": "TP3",
+      "representation": "native PCB geometry",
+      "reason": "copper test pad"
+    },
+    {
+      "reference": "TP4",
+      "representation": "native PCB geometry",
+      "reason": "copper test pad"
+    },
+    {
+      "reference": "H1",
+      "representation": "native PCB geometry",
+      "reason": "NPTH hole and exposed substrate"
+    },
+    {
+      "reference": "H2",
+      "representation": "native PCB geometry",
+      "reason": "NPTH hole and exposed substrate"
+    },
+    {
+      "reference": "H3",
+      "representation": "native PCB geometry",
+      "reason": "NPTH hole and exposed substrate"
+    },
+    {
+      "reference": "H4",
+      "representation": "native PCB geometry",
+      "reason": "NPTH hole and exposed substrate"
+    }
+  ]
+}
