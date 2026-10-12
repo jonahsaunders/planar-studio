@@ -12,9 +12,9 @@ bypass capacitor. All four mounting holes retain the American Embedded
 exposed-substrate footprint used by the flyback and GaN examples.
 See [A3 changes and measured routing improvements](docs/A3-CHANGES.md).
 
-![Connected schematic](evidence/schematic.png)
+![PCB layout — bare board](evidence/bare-board-top.png)
 
-![Bare PCB preview](evidence/bare-board-top.png)
+[View the schematic PDF](docs/CoilTile-schematic.pdf).
 
 ## What is included
 
