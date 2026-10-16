@@ -43,3 +43,5 @@ Sources checked October 9, 2026: [ADI LT8302 Rev. G, pp. 2, 16–17](https://www
 R6 uses `Flyback:R_EverOhms_CRH2512`: body 6.30 × 3.20 mm nominal, two 1.60 × 3.40 mm lands with 4.90 mm inner gap and 8.10 mm outer span (6.50 mm pitch). Datasheet page 6 supplies these dimensions. The existing generic 2512 STEP model is illustrative. The electrical value remains 39 Ω; D4 moves 4.5 mm right and three local ground stitches move. The independently checked local-change region is X=98.5–117 mm, Y=62–72.5 mm. All other component pads, the winding, board outline and stack are retained.
 
 A6 changes the separate output preload and secondary via connection; R6/D4/snubber routing is unchanged from A5. The local-change statement above describes the historical A4-to-A5 transition. See PRELOAD-REVISION.md for current containment evidence.
+
+A7 retains all A6 electrical values and routing; its snubber screen is rerun unchanged. Current containment is in [PROCUREMENT-REVISION.md](PROCUREMENT-REVISION.md).

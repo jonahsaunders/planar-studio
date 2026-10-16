@@ -88,12 +88,12 @@
     "voltage_rating_V": 100
   },
   "R1": {
-    "mpn": "RC0603FR-07649KL",
-    "mfr": "Yageo",
-    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL",
+    "mpn": "0603WAF6493T5E",
+    "mfr": "UNI-ROYAL",
+    "source": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
     "value": "649k 1%",
-    "lcsc": "C245991",
-    "purpose": "Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start."
+    "lcsc": "C25821",
+    "purpose": "A7 same-value replacement for C245991 after the order reported 14 available versus 20 required. Retains 649k 1%, 100 ppm/C, 0.1 W, 75 V and the centered 0603 footprint; UVLO divider and startup calculations are unchanged. Verify cold start and fresh factory placement preview."
   },
   "R2": {
     "mpn": "RC0603FR-0761K9L",

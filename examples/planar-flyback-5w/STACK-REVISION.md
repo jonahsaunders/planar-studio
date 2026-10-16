@@ -1,6 +1,6 @@
 # A4 historical stack revision — 1 oz inner copper, no specified stack
 
-Order six layers, **nominal 1.6 mm, 1 oz outer copper, 1 oz inner copper, Specify Stackup: No**, no impedance control, ENIG and Standard PCBA. This replaces A3's paid JLC061611-1080A selection. The reference below is not a requirement to purchase a named stack or exact prepreg construction.
+Order six layers, **nominal 1.6 mm, 1 oz outer copper, 1 oz inner copper, Specify Stackup: No**, no impedance control, OSP and Standard PCBA. This replaces A3's paid JLC061611-1080A selection. The reference below is not a requirement to purchase a named stack or exact prepreg construction.
 
 The [JLCPCB public stack table](https://jlcpcb.com/impedance), with six layers / 1.6 mm / 1 oz outer / 1 oz inner selected on October 8, 2026, shows this **No requirement** construction:
 

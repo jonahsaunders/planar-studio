@@ -118,7 +118,7 @@ for x,y,txt in [(6.1,-13.1,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A6-development');title.SetDate('2026-10-16');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A7-development');title.SetDate('2026-10-16');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -202,7 +202,7 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A6 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A7 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -341,7 +341,7 @@ gaps=stack_spec['dielectric_mm']
 for i,name in enumerate(names):
     stack+=f'(layer "{name}" (type "copper") (thickness {stack_spec["copper_mm"][i]}))'
     if i<5:stack+=f'(layer "dielectric {i+1}" (type "{ "prepreg" if i%2==0 else "core" }") (thickness {gaps[i]}) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))'
-stack+='(layer "B.Mask" (type "Bottom Solder Mask")) (copper_finish "ENIG") (dielectric_constraints no))'
+stack+='(layer "B.Mask" (type "Bottom Solder Mask")) (copper_finish "OSP") (dielectric_constraints no))'
 contents=out.read_text().replace('(setup','(setup\n'+stack,1).replace('(capping no)','(capping yes)',1).replace('(filling no)','(filling yes)',1)
 out.write_text(contents)
 # SaveBoard serializes a fresh BOARD's default project rules. Restore explicit

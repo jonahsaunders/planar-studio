@@ -1,4 +1,4 @@
-# A6 validation and remaining qualification
+# A7 validation and remaining qualification
 
 This is an unbuilt engineering prototype. Automated checks establish geometry, connectivity and analytical screens, not measured temperature, retention, EMI or efficiency.
 
@@ -6,7 +6,7 @@ This is an unbuilt engineering prototype. Automated checks establish geometry, c
 | --- | --- |
 | ERC, DRC, connectivity and schematic parity | `evidence/erc.rpt`, `evidence/board-drc.json` |
 | Every ignored DRC category temporarily enabled; zero violations | `evidence/audit/all-drc-checks.json` |
-| R7 margin/identity, centered secondary connection, retained topology/footprints/winding/stack/mechanics | `evidence/audit/preload-revision-checks.json` |
+| R1 replacement, OSP finish, retained A6 values/routing/geometry, R7 margin | `evidence/audit/procurement-revision-checks.json` |
 | Standard silkscreen dimensions and clearance | `evidence/audit/silkscreen-checks.json` |
 | Snubber energy, frequency, ambient derating and pulse screen | `evidence/audit/snubber-checks.json`, `SNUBBER-REVIEW.md` |
 | Native pad/net agreement, winding polygons and mounting copper exclusions | `evidence/independent-checks.json`, `evidence/audit/mounting-checks.json` |
@@ -16,11 +16,11 @@ This is an unbuilt engineering prototype. Automated checks establish geometry, c
 | Local models and nominal solid intersections | `evidence/audit/3d-model-checks.json`, `evidence/audit/3d-solid-checks.json` |
 | Manufacturer package/pin review and ground-stitch attachment | `evidence/audit/component-checks.json` |
 | BOM/CPL, six copper layers, 66 filled/capped holes and mounting | `evidence/manufacturing-checks.json` |
-| 24 placements: 52 exact catalog pad centers + 2 R6 manufacturer lands + 2 R7 same-series reference centers; 15 rejected wrong rotations/origins | `evidence/audit/placement-checks.json` |
+| 24 placements: 50 exact catalog pad centers + 4 R1/R6 manufacturer lands + 2 R7 same-series reference centers; 15 rejected wrong rotations/origins | `evidence/audit/placement-checks.json` |
 | Electrical sizing and 54 analytical cases | `evidence/electrical-sizing.json`, `evidence/cycle-model.json` |
 | Board STEP/GLB and actual exported Gerber renders | `evidence/audit/3d-render-provenance.json`, `evidence/audit/render-provenance.json` |
 
-A6 compares directly with A5 commit `43a22c9`. R7 changes to 180 Ω / 0.25 W in the same 1206 footprint. One off-center In2.Cu segment is replaced with a segment to the first via center and a link to the second via center. All other component values and procurement, every footprint/pad/pose, the winding, stack, outline, mounting and filled ground pours remain unchanged. The routing rule is enabled as an error. The strengthened preload gate rejects the old 220 Ω value.
+A7 compares directly with A6 commit `f76e1b4`. Only R1 procurement identity, the OSP finish and revision markings change. Every electrical value, footprint/pad/pose, route/via, winding, stack, outline, mounting feature and filled ground pour is retained. The off-center-via rule remains an error. The preload gate still requires at least 20% current margin and no more than 80% derated power, and rejects the former 220 Ω value.
 
 The preload screen includes 1% initial tolerance, 100 ppm/°C over 100 °C and a separate 1% aging reserve. Minimum current is 25.613 mA against 21.111 mA required (21.33% margin). Worst power is 0.158 W, or 76.65% of the 0.206 W derated rating at 85 °C local ambient. The reserve is not a lifetime qualification. Measure no-load regulation and temperature. [Preload derivation](PRELOAD-REVISION.md).
 
@@ -34,4 +34,4 @@ The magnetic design is unchanged from A2: estimated 13.12 µH, accepted measured
 
 JLCPCB's published capabilities support this six-layer geometry. The delivered standard construction, selective filled/capped vias, panel, Standard-PCBA reflow and connector process still need factory acceptance. See the prototype test plan before production. No supplier-accepted quotation, submission or order has been made.
 
-The A4 stack selection is retained in A6. Native ERC/DRC and every current check above are rerun for A6. Historical A1–A5 comparisons and before-images remain background only, including `snubber-revision-checks.json`, `a3-layout-comparison.json` and `mounting-clearance-comparison.json`. Current mounting and A6 containment checks establish the retained geometry. No safety-isolation or hardware manufacturing approval is implied.
+The A4 stack selection is retained in A7. Native ERC/DRC and every current check above are rerun for A7. Historical A1–A6 comparisons and before-images remain background only, including `snubber-revision-checks.json`, `a3-layout-comparison.json` and `mounting-clearance-comparison.json`. Current mounting and A7 containment checks establish the retained geometry. No safety-isolation or hardware manufacturing approval is implied.

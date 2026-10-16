@@ -1,6 +1,6 @@
 {
   "project": "PS-FLYBACK-5W",
-  "revision": "A6-development",
+  "revision": "A7-development",
   "input_voltage_V": {
     "min": 18,
     "nominal": 24,
@@ -46,5 +46,5 @@
     "Measured SW-VIN peak <=17.5 V including overshoot and uncertainty, RFB pin voltage/current compliance, regulation and clamp/snubber temperatures across input/temperature, startup, full load, light-load bursts, overload and short-circuit recovery"
   ],
   "publication_status": "Public GitHub engineering example; no supplier submission, purchase or fabrication authorization",
-  "manufacturing_status": "Dated catalog snapshots cover all 20 electronic MPNs, including replacement R7 checked 2026-10-16. Factory stack/panel/reflow acceptance and physical qualification remain pending."
+  "manufacturing_status": "Dated catalog snapshots cover all 20 electronic MPNs, including R1 C25821 and R7 checked 2026-10-16. OSP finish selected. Factory stack/panel/reflow acceptance and physical qualification remain pending."
 }

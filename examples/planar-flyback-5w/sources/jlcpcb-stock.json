@@ -120,7 +120,7 @@
       "headline_stock": 978,
       "available_order_quantity": 925,
       "displayed_minimum": 1,
-      "package": "SMD, 6.3 \u00d7 5.9 mm",
+      "package": "SMD, 6.3 × 5.9 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
@@ -193,20 +193,20 @@
         "R1"
       ],
       "quantity_per_board": 1,
-      "mpn": "RC0603FR-07649KL",
-      "manufacturer": "Yageo",
-      "original_bom_code": null,
-      "verified_jlcpcb_code": "C245991",
-      "headline_stock": 114,
-      "available_order_quantity": 74,
+      "mpn": "0603WAF6493T5E",
+      "manufacturer": "UNI-ROYAL",
+      "original_bom_code": "C245991",
+      "verified_jlcpcb_code": "C25821",
+      "headline_stock": 1087,
+      "available_order_quantity": 1065,
       "displayed_minimum": 1,
       "package": "0603",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C245991",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start.",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
+      "note": "Fresh public JLCPCB page: overseasStockCount=1087, canPresaleNumber=1065, leastPatchNumber=20, lossNumber=10; first price tier starts at 1. More than the 20 pieces required in the user order screenshot. Not reserved. Identical electrical value/ratings and 0603 package; manufacturer land reference used because exact catalog API returned 403.",
+      "observed_local_date": "2026-10-16"
     },
     {
       "references": [
@@ -400,7 +400,7 @@
       "headline_stock": 436,
       "available_order_quantity": 427,
       "displayed_minimum": 1,
-      "package": "SMD, 8 \u00d7 10.2 mm",
+      "package": "SMD, 8 × 10.2 mm",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
@@ -460,7 +460,7 @@
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
       "source_url": "https://jlcpcb.com/partdetail/C95204",
-      "note": "Exact 10 k\u03a9, 0.1% thin-film resistor.",
+      "note": "Exact 10 kΩ, 0.1% thin-film resistor.",
       "observed_local_date": "2026-09-29"
     },
     {

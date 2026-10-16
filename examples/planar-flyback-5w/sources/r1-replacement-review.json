@@ -1,0 +1,112 @@
+{
+  "revision": "A7-development",
+  "observed_local_date": "2026-10-16",
+  "source_url": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
+  "previous": {
+    "mpn": "RC0603FR-07649KL",
+    "lcsc": "C245991",
+    "user_order_available": 14,
+    "user_order_required": 20
+  },
+  "replacement": {
+    "mpn": "0603WAF6493T5E",
+    "manufacturer": "UNI-ROYAL",
+    "lcsc": "C25821",
+    "resistance_ohm": 649000,
+    "tolerance_fraction": 0.01,
+    "tcr_ppm_per_C": 100,
+    "power_W_at_70C": 0.1,
+    "working_voltage_V": 75,
+    "temperature_C": [
+      -55,
+      155
+    ],
+    "body_mm": [
+      1.6,
+      0.8,
+      0.45
+    ]
+  },
+  "fresh_catalog_fields": {
+    "componentCode": "C25821",
+    "componentModelEn": "0603WAF6493T5E",
+    "componentBrandEn": "UNI-ROYAL(Uniroyal Elec)",
+    "componentSpecificationEn": "0603",
+    "componentSpecification": "$undefined",
+    "lcscComponentId": 26564,
+    "isBuyComponent": "1",
+    "allowPostFlag": true,
+    "componentAlternativesCode": null,
+    "shopShowForeignPriceFlag": true,
+    "miniNumLimit": "$undefined",
+    "preMinPurchaseNum": 5000,
+    "encapsulationNumber": 5000,
+    "canPresaleNumber": 1065,
+    "overseasStockCount": 1087,
+    "fullReelPrice": null,
+    "initialPrice": 0.0014,
+    "priceList": "$undefined",
+    "prices": "$4d",
+    "buyPrices": null,
+    "lossNumber": 10,
+    "leastPatchNumber": 20,
+    "noBuyReason": null,
+    "recentBuyUnitPrice": null,
+    "recentBuyNum": null,
+    "buyCustomerCode": null
+  },
+  "catalog_html_sha256": "c0f113b9299715ab9be2532e7db0caf0b1a3d78deb93fbed50f446eea35e56bf",
+  "datasheet": {
+    "title": "UNI-ROYAL Thick Film Chip Resistors",
+    "revision": "V3, 2019-02-12",
+    "pages_reviewed": [
+      2,
+      4,
+      5,
+      6,
+      7,
+      9
+    ],
+    "sha256": "11cd644d5d8a34a6d12775afb80bf58d8fc11f0c3b700dbd0f7a59942ceaa5ef",
+    "retrieval": "Manufacturer PDF linked from the exact public JLCPCB product page; expiring signed URL omitted.",
+    "body_tolerance_mm": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "land_reference_mm": {
+      "A_gap": 0.9,
+      "B_length": 0.65,
+      "C_width": 0.8,
+      "D_printed_span": 2.1,
+      "derived_centers_abs": 0.775,
+      "alternative_centers_abs": 0.725
+    },
+    "land_table_note": "A+2B=2.20 mm differs from printed D=2.10 mm. Both center interpretations fit the unchanged PCB pads. No factory catalog alignment is claimed."
+  },
+  "pcb": {
+    "footprint": "Flyback:R_0603_1608Metric",
+    "pad_centers_mm": [
+      [
+        -0.825,
+        0
+      ],
+      [
+        0.825,
+        0
+      ]
+    ],
+    "pad_size_mm": [
+      0.8,
+      0.95
+    ],
+    "placement_and_nets": "Unchanged from A6; nonpolar.",
+    "uvlo_divider": "Unchanged R1=649k 1%, R2=61.9k 1%; same 100 ppm/C class.",
+    "power_screen_W_at_42V_full_voltage": 0.002745482560582715
+  },
+  "limitations": [
+    "Stock is not reserved; confirm order allocation.",
+    "Exact C25821 EasyEDA API returned HTTP 403. Use manufacturer land reference and review the new factory preview.",
+    "Manufacturer storage/soldering guidance applies; no new hardware qualification is claimed."
+  ]
+}

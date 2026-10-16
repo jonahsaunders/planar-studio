@@ -1,0 +1,64 @@
+{
+  "revision": "A7-development",
+  "baseline_commit": "f76e1b478e1bfd95fa561dfa65c0c002126cc49b",
+  "status": "PASS",
+  "changed_R1_fields": [
+    "lcsc",
+    "mfr",
+    "mpn",
+    "purpose",
+    "source"
+  ],
+  "finish": {
+    "before": "ENIG",
+    "after": "OSP"
+  },
+  "retained_all_electrical_values_and_other_parts": true,
+  "unchanged_topology_footprints_pad_nets_and_component_poses": true,
+  "unchanged_routes_vias_outline_and_ground_pours": true,
+  "unchanged_magnetic_stack_mechanical_and_rule_sources": [
+    "planar-studio/T1-artwork.json",
+    "planar-studio/T1-config.json",
+    "planar-studio/T1.planar.json",
+    "evidence/winding-model.json",
+    "stackup.json",
+    "mechanical.json",
+    "layout.json",
+    "magnetics.json",
+    "kicad/PS-FLYBACK-5W.kicad_pro"
+  ],
+  "R1_same_value_ratings_and_manufacturer_land_center_fit": true,
+  "R1_exact_factory_catalog_frame_verified": false,
+  "R1_available_quantity_snapshot": 1065,
+  "preload_budget": {
+    "resistance_ohm": 180,
+    "initial_tolerance_fraction": 0.01,
+    "temperature_excursion_C": 100,
+    "TCR_fraction": 0.009999999999999998,
+    "aging_reserve_fraction": 0.01,
+    "maximum_resistance_ohm": 185.45418000000004,
+    "minimum_resistance_ohm": 174.65381999999997,
+    "nominal_current_at_5V_A": 0.027777777777777776,
+    "nominal_power_at_5V_W": 0.1388888888888889,
+    "required_minimum_load_A": 0.02111055494736842,
+    "minimum_current_A": 0.025612795570312836,
+    "current_margin_fraction": 0.21326964801110782,
+    "maximum_power_W": 0.15781217954465585,
+    "local_ambient_screen_C": 85,
+    "derated_rating_W": 0.20588235294117646,
+    "derated_power_fraction": 0.7665163006454713,
+    "scope": "4.75-5.25 V, Lm maximum acceptance, specified 1.04 A / 12.7 kHz limits. TCR and aging are multiplicative reserves. Aging reserve is not lifetime qualification; measure no-load regulation and local temperature."
+  },
+  "old_220_ohm_rejected_by_margin_gate": true,
+  "scope": "CAD consistency, exact change containment and analytical margin only. Fresh factory placement preview and hardware qualification remain required.",
+  "source_SHA256": {
+    "parts.json": "be0f59a7d40339318f0cf5f275487e24df64afeee5fc8a456b6ff3b1b1afbb90",
+    "requirements.json": "d16a483da78344770fdd22b6968e0e9f05811ec02ab68a5389639704c2ac1329",
+    "circuit.json": "a97189bd721ff2796c9aa27c0b79ed963b475a4c2b74d3c3392dc4de2bfc7dc5",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
+    "sources/r1-replacement-review.json": "d70143558035a1ccd3df168ecb2160c52d5d92d2714cef1105ae3efe1ad4437a",
+    "sources/placement-library.json": "e1ccf8685c45c573948f1bbc4cae996061a198ef0e1a56cd6086c5cf4bc452ea",
+    "scripts/preload.py": "e9c5d847f713a02fcfd61c28438fa76fe3dc2ae76d429dee1d32700e2ea5b1c4",
+    "scripts/verify-procurement-revision.py": "bccce950ce6120ba8e64ec8ba32491b7cbf11bf98722a3624a67ac1c985e84f8"
+  }
+}

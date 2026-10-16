@@ -20,9 +20,9 @@ def text(x, y, label, cls='small'):
     svg.append(f'<text x="{x}" y="{y}" class="{cls}">{html.escape(label)}</text>')
 
 
-text(30, 48, 'Flyback A6 | Placement and polarity check', 'title')
+text(30, 48, 'Flyback A7 | Placement and polarity check', 'title')
 text(30, 80, 'Top-side view. Gold = actual PCB pads; green dots = reference pad centers.')
-text(30, 106, 'Numbers identify PCB pads. 54 catalog centers + 2 R6 manufacturer lands; live factory preview remains unverified.')
+text(30, 106, 'Numbers identify PCB pads. 50 catalog centers + 4 R1/R6 lands + 2 R7 references; live factory preview remains unverified.')
 cards = [
     ('U1', 'U1 · LT8302', 'Pin 1 at upper-left; CPL 270°.', 'Pin 1 = EN/UVLO; exposed pad = GND.'),
     ('D2', 'D2 · PowerDI5', 'Cathode below; two anodes above.', 'Catalog pins 1/2 → A; pin 3 → K.'),

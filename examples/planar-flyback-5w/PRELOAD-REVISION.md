@@ -31,4 +31,6 @@ On In2.Cu, the 1.30 mm SEC_A trace now runs from (101.000, 98.075) to the via ce
 
 `scripts/verify-preload-revision.py` compares against A5 commit `43a22c9`: exactly one secondary route segment removed and two added, only R7's value/procurement changed, and every footprint/pad/pose, winding, stack, outline, mounting feature and filled ground pour retained. It rejects the old preload under the new margin gate. Native ERC/DRC/parity, component/placement, feedback/snubber, mechanical/3D, manufacturing and analytical checks are rerun by `scripts/rebuild.py`.
 
-[Current revision evidence](evidence/audit/preload-revision-checks.json) · [Electrical sizing](evidence/electrical-sizing.json) · [Validation and remaining qualification](VALIDATION.md)
+[Historical A6 revision evidence](evidence/audit/preload-revision-checks.json) · [Electrical sizing](evidence/electrical-sizing.json) · [Validation and remaining qualification](VALIDATION.md)
+
+A7 retains this preload and centered routing unchanged. The A6 containment report above is historical; current values, geometry and the strengthened margin gate are checked by `scripts/verify-procurement-revision.py`. See [A7 procurement revision](PROCUREMENT-REVISION.md).

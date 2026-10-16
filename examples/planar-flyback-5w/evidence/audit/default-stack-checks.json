@@ -1,5 +1,5 @@
 {
-  "revision": "A6-development",
+  "revision": "A7-development",
   "baseline_commit": "81d4d69b00f03c73f7c4649d1f1d6e00366bb0ff",
   "ordering": {
     "layers": 6,
@@ -12,6 +12,7 @@
   "unchanged_electrical_topology_and_2D_winding_artwork": true,
   "R6_procurement_rating_and_footprint_updated": true,
   "R7_preload_updated_in_A6": true,
+  "R1_procurement_updated_in_A7": true,
   "changed_winding_parameters": [
     "dielectricEr",
     "layerPositions"
@@ -60,7 +61,7 @@
     "planar-studio/T1-config.json": "2c3bf9d3660202a53d9d920cdc5253124f72e7a8d78415aa07b73df319e548a3",
     "planar-studio/T1-artwork.json": "6a61277c70d829a54512c0f90c6464fe8e5f1b0c577a588786d6b72c0e077b0f",
     "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
-    "scripts/verify-default-stack.py": "cd715864c52942cfedefe93cbc08036e7531bca3e490d1e5f6c981389697fa10"
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
+    "scripts/verify-default-stack.py": "a5c949e77f565321c29caf63b8b03a55635b557fc889bc15202f77d8c5f7f131"
   }
 }
