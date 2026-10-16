@@ -10,6 +10,7 @@ import math,json,csv
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 m=json.loads((R/'evidence/winding-model.json').read_text())
+rpre=json.loads((R/'parts.json').read_text())['R7']['resistance_ohm']
 L=m['magnetizingInductance_H'];n=2;rp=m['analysis']['R1'];rs=m['analysis']['R2'];ron=.2;fmax=380000
 def integrate(values,dt):return dt*(sum(values)-(values[0]+values[-1])/2)
 def cycle(vin,peak):
@@ -22,7 +23,7 @@ def cycle(vin,peak):
     return ton,toff,on,off,qo/T
 rows=[];waves=[]
 for vin in [18,24,36]:
-    target=1+5/220;lo=.001;hi=3.6
+    target=1+5/rpre;lo=.001;hi=3.6
     for _ in range(60):
         mid=(lo+hi)/2
         if cycle(vin,mid)[4]>target:hi=mid
@@ -35,7 +36,7 @@ for vin in [18,24,36]:
     residual=vin*iin-5*current-copper-fet-diodes
     assert abs(residual)<1e-5,('energy mismatch',residual)
     assert abs(current-target)<1e-7
-    rows.append(dict(Vin_V=vin,Iout_A=1,Ipreload_A=5/220,Ipk_A=peak,frequency_Hz=1/T,duty=ton/T,idle_s=T-ton-toff,
+    rows.append(dict(Vin_V=vin,Iout_A=1,Ipreload_A=5/rpre,Ipk_A=peak,frequency_Hz=1/T,duty=ton/T,idle_s=T-ton-toff,
         primary_RMS_A=prms,secondary_RMS_A=srms,input_average_A=iin,copper_DC_W=copper,
         FET_conduction_W=fet,diode_loss_W=diodes,energy_balance_residual_W=residual))
     for phase,seq,duration,offset in [('on',on,ton,0),('off',off,toff,ton)]:
@@ -60,7 +61,7 @@ for L_uH in [mag['Lm_acceptance_uH'][0],m['magnetizingInductance_H']*1e6,mag['Lm
     rp=m['analysis']['R1']*scale;rs=m['analysis']['R2']*scale
     for fmax in [350000,380000,420000]:
       for vin in [18,24,36]:
-        target=1+5/220;lo=.001;hi=3.6
+        target=1+5/rpre;lo=.001;hi=3.6
         for _ in range(50):
           peak=(lo+hi)/2
           if cycle(vin,peak)[4]>target:hi=peak

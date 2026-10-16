@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="720" viewBox="0 0 1000 720" role="img" aria-labelledby="title description">
+<title id="title">PS-FLYBACK-5W six-layer reference stack</title>
+<desc id="description">Top to bottom: F.Cu 0.035 mm, prepreg 0.203 mm, In1.Cu 0.030 mm, core 0.250 mm, In2.Cu 0.030 mm, prepreg 0.513 mm, In3.Cu 0.030 mm, core 0.250 mm, In4.Cu 0.030 mm, prepreg 0.203 mm, B.Cu 0.035 mm. Total 1.609 mm excluding solder mask. Illustration not to scale; factory construction requires confirmation.</desc>
+<!-- Thicknesses and dielectric materials from ../stackup.json; winding roles from ../scripts/generate-winding.mjs. -->
+<rect width="1000" height="720" rx="16" fill="#f5f7fa"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#172b45">
+<text x="36" y="48" font-size="28" font-weight="700">Six-layer PCB stack</text>
+<text x="36" y="79" font-size="17" fill="#526176">Top → bottom · published reference · layer heights not to scale</text>
+<g font-size="13" font-weight="700" fill="#526176"><text x="36" y="119">LAYER</text><text x="250" y="119">CROSS-SECTION</text><text x="450" y="119">WINDING / DIELECTRIC MATERIAL</text><text x="960" y="119" text-anchor="end">THICKNESS</text></g>
+<rect x="22" y="131" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="157" font-size="18" font-weight="700">L1 · F.Cu</text>
+<rect x="250" y="145" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="157" font-size="17">Primary · 2 turns + surface routing</text>
+<text x="960" y="157" font-size="18" text-anchor="end">0.035 mm</text>
+<rect x="22" y="174" width="956" height="40" rx="6" fill="#edf1f6"/>
+<text x="36" y="200" font-size="18" font-weight="400">Prepreg</text>
+<rect x="250" y="178" width="162" height="32" rx="2" fill="#cbd8e8"/>
+<text x="450" y="200" font-size="17">7628 ×1</text>
+<text x="960" y="200" font-size="18" text-anchor="end">0.203 mm</text>
+<rect x="22" y="217" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="243" font-size="18" font-weight="700">L2 · In1.Cu</text>
+<rect x="250" y="231" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="243" font-size="17">Secondary · 2 turns</text>
+<text x="960" y="243" font-size="18" text-anchor="end">0.030 mm</text>
+<rect x="22" y="260" width="956" height="40" rx="6" fill="#edf1f6"/>
+<text x="36" y="286" font-size="18" font-weight="400">Core</text>
+<rect x="250" y="264" width="162" height="32" rx="2" fill="#cbd8e8"/>
+<text x="450" y="286" font-size="17">0.25 mm 1/1 oz core</text>
+<text x="960" y="286" font-size="18" text-anchor="end">0.250 mm</text>
+<rect x="22" y="303" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="329" font-size="18" font-weight="700">L3 · In2.Cu</text>
+<rect x="250" y="317" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="329" font-size="17">Routing / via pads</text>
+<text x="960" y="329" font-size="18" text-anchor="end">0.030 mm</text>
+<rect x="22" y="346" width="956" height="40" rx="6" fill="#edf1f6"/>
+<text x="36" y="372" font-size="18" font-weight="400">Prepreg</text>
+<rect x="250" y="350" width="162" height="32" rx="2" fill="#cbd8e8"/>
+<text x="450" y="372" font-size="17">7628 ×1 + 3313 ×1 + 7628 ×1</text>
+<text x="960" y="372" font-size="18" text-anchor="end">0.513 mm</text>
+<rect x="22" y="389" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="415" font-size="18" font-weight="700">L4 · In3.Cu</text>
+<rect x="250" y="403" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="415" font-size="17">Routing / via pads</text>
+<text x="960" y="415" font-size="18" text-anchor="end">0.030 mm</text>
+<rect x="22" y="432" width="956" height="40" rx="6" fill="#edf1f6"/>
+<text x="36" y="458" font-size="18" font-weight="400">Core</text>
+<rect x="250" y="436" width="162" height="32" rx="2" fill="#cbd8e8"/>
+<text x="450" y="458" font-size="17">0.25 mm 1/1 oz core</text>
+<text x="960" y="458" font-size="18" text-anchor="end">0.250 mm</text>
+<rect x="22" y="475" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="501" font-size="18" font-weight="700">L5 · In4.Cu</text>
+<rect x="250" y="489" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="501" font-size="17">Secondary · 2 turns</text>
+<text x="960" y="501" font-size="18" text-anchor="end">0.030 mm</text>
+<rect x="22" y="518" width="956" height="40" rx="6" fill="#edf1f6"/>
+<text x="36" y="544" font-size="18" font-weight="400">Prepreg</text>
+<rect x="250" y="522" width="162" height="32" rx="2" fill="#cbd8e8"/>
+<text x="450" y="544" font-size="17">7628 ×1</text>
+<text x="960" y="544" font-size="18" text-anchor="end">0.203 mm</text>
+<rect x="22" y="561" width="956" height="40" rx="6" fill="#ffffff"/>
+<text x="36" y="587" font-size="18" font-weight="700">L6 · B.Cu</text>
+<rect x="250" y="575" width="162" height="12" rx="2" fill="#c97524"/>
+<text x="450" y="587" font-size="17">Primary · 2 turns + surface routing</text>
+<text x="960" y="587" font-size="18" text-anchor="end">0.035 mm</text>
+<line x1="36" y1="614" x2="964" y2="614" stroke="#c8d1df"/>
+<text x="36" y="646" font-size="21" font-weight="700">1.609 mm reference total</text>
+<text x="960" y="646" font-size="19" text-anchor="end">1.6 mm nominal order</text>
+<text x="36" y="678" font-size="16" fill="#526176">Solder mask excluded. Confirm the delivered factory stack; no specified stackup is requested.</text>
+</g></svg>

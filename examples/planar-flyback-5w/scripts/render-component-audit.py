@@ -5,7 +5,7 @@ R=Path(__file__).resolve().parents[1]
 a=json.loads((R/'evidence/audit/component-checks.json').read_text())
 c=json.loads((R/'evidence/electrical-sizing.json').read_text())
 f=a['filter_checks']
-text=f'''# Component audit — PS-FLYBACK-5W A5
+text=f'''# Component audit — PS-FLYBACK-5W A6
 
 Reviewed {a['review_date']}. All {a['reviewed_footprints']} footprints have an explicit package/pin mapping review; {a['electronic_references']} are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 

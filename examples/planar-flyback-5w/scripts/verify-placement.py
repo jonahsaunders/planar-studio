@@ -93,8 +93,9 @@ for ref, field, delta in [('U1', 'Rotation', 90), ('D1', 'Rotation', 180), ('D2'
         mutations.append(f'{ref}: wrong {field} rejected')
     else:
         raise AssertionError(f'{ref}: invalid {field} accepted')
-out = {'status': 'PASS: 54 catalog pad centers plus 2 manufacturer land centers and PCB net mapping; live factory preview remains unverified',
-       'placements': len(checks), 'catalog_parts': len(library), 'catalog_pads_checked': sum(len(c['pads']) for c in checks if c['geometry_source']=='catalog'), 'manufacturer_land_centers_checked': sum(len(c['pads']) for c in checks if c['geometry_source']!='catalog'),
+out = {'status': 'PASS: 52 exact catalog pad centers, 2 R6 manufacturer land centers, and 2 R7 same-series reference centers; live factory preview remains unverified',
+       'placements': len(checks), 'catalog_parts': len(library), 'catalog_pads_checked': sum(len(c['pads']) for c in checks if c['geometry_source']=='catalog'), 'manufacturer_land_centers_checked': sum(len(c['pads']) for c in checks if c['geometry_source']=='manufacturer_recommended_lands'),
+       'same_series_reference_centers_checked': sum(len(c['pads']) for c in checks if c['geometry_source']=='same_series_catalog_reference'),
        'regressions_rejected': mutations, 'checks': checks}
 out['coordinate_origin_board_mm'] = [ox, oy]
 out['source_SHA256'] = {name: hashlib.sha256((R/name).read_bytes()).hexdigest() for name in [

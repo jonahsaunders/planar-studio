@@ -64,25 +64,73 @@
       "stroke_mm": 0.15
     },
     {
-      "text": "A5 ENGINEERING PROTOTYPE",
+      "text": "A6 ENGINEERING PROTOTYPE",
       "layer": "B.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
-      "text": "J1",
+      "text": "R8",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
-      "text": "C1",
+      "text": "R2",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
-      "text": "C6",
+      "text": "F1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R7",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R1",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -112,139 +160,13 @@
       "stroke_mm": 0.15
     },
     {
-      "text": "R8",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H3",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D3",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
       "text": "R3",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
-      "text": "R5",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "J2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R6",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C7",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "U1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "F1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C5",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C8",
+      "text": "C1",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -256,7 +178,85 @@
       "stroke_mm": 0.15
     },
     {
-      "text": "R7",
+      "text": "C5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "J1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "U1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "J2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C8",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C7",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -265,9 +265,9 @@
   "source": "https://jlcpcb.com/capabilities/pcb-capabilities/",
   "scope": "CAD legend/clearance verification, not factory process or hardware qualification.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
-    "kicad/PS-FLYBACK-5W.kicad_pro": "2a0e8c6c36a01760541e6d388562e551fd8eb14040d19a197f399697216afed0",
-    "evidence/board-drc.json": "88616e7abc136f8f3432a55764eccc38c0c2c849bfe1556077fc09917c456f95",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
+    "kicad/PS-FLYBACK-5W.kicad_pro": "1f4750b49c74562e42074937a907f99e789c5b628d940eb7def3f5dd6cea2b9f",
+    "evidence/board-drc.json": "1e3c3ca6014e07d17c9fbdde42e0cf7aa1b6462128f5e1980e54c5bfe1efaf0c",
     "scripts/verify-silkscreen.py": "ccc16cf7260baa8dc80af9fd0681fc2eb13d682b2c79f2d0a72ccf4e77573cfb"
   }
 }

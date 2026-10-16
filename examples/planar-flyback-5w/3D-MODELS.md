@@ -1,4 +1,4 @@
-# A5 local 3D models
+# A6 local 3D models
 
 All 29 footprints have visible project-relative STEP models. T1 contains two factory-gapped ELP22 halves and two clips. The complete assembly is exported as STEP and GLB.
 
@@ -11,3 +11,5 @@ The other models retain A1/A2 provenance: manufacturer Bourns fuse CAD, generic 
 Current evidence: `3d-model-checks.json`, `3d-solid-checks.json`, `core-fit-checks.json`, `clip-copper-checks.json` and `snubber-revision-checks.json` under `evidence/audit/`. Older before-images and audit comparisons are historical.
 
 A5 assigns R6 the existing generic KiCad `R_2512_6332Metric.step` model at its new position. The CRH body is nominally 6.30 × 3.20 × 0.65 mm; the illustrative model does not replace the Ever Ohms datasheet or the manufacturer-derived footprint lands. R6 and D4 placements are refreshed in the native assembly, STEP, GLB and rendered views.
+
+A6 retains all component packages and model placements. R7 changes to 180 ohm within the same RC1206 package; assembly exports and all five views are refreshed for the A6 board.

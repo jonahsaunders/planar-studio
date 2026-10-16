@@ -656,42 +656,6 @@
       "rotation_offset_deg": 0,
       "reason": "Centered origin and orientation agree with the KiCad footprint."
     },
-    "C137353": {
-      "mpn": "RC1206FR-07220RL",
-      "footprint": "Flyback:R_1206_3216Metric",
-      "references": [
-        "R7"
-      ],
-      "source_url": "https://easyeda.com/api/products/C137353/components?version=6.4.19.5",
-      "source_sha256": "3cd4bb1cb8883b2fecd0c4f1acb98eca1ccabb0fd5486e4954aac1fec03d2cd1",
-      "catalog_package": "R1206",
-      "catalog_pads": [
-        {
-          "number": "2",
-          "xy_mm": [
-            1.478788,
-            0.0
-          ]
-        },
-        {
-          "number": "1",
-          "xy_mm": [
-            -1.478788,
-            0.0
-          ]
-        }
-      ],
-      "catalog_to_pcb_pad": {
-        "2": "2",
-        "1": "1"
-      },
-      "origin_in_footprint_mm": [
-        0,
-        0
-      ],
-      "rotation_offset_deg": 0,
-      "reason": "Centered origin and orientation agree with the KiCad footprint."
-    },
     "C840598": {
       "mpn": "CRM2512-JW-2R2ELF",
       "footprint": "Flyback:R_Bourns_CRM2512",
@@ -801,6 +765,47 @@
       ],
       "rotation_offset_deg": 0,
       "reason": "Nonpolar resistor with centered body and symmetric lands. R6 placement is checked against manufacturer lands; exact factory catalog origin remains to be confirmed in the assembly preview."
+    },
+    "C137380": {
+      "mpn": "RC1206FR-07180RL",
+      "footprint": "Flyback:R_1206_3216Metric",
+      "references": [
+        "R7"
+      ],
+      "source_url": "https://easyeda.com/api/products/C137353/components?version=6.4.19.5",
+      "source_sha256": "3cd4bb1cb8883b2fecd0c4f1acb98eca1ccabb0fd5486e4954aac1fec03d2cd1",
+      "catalog_package": "R1206",
+      "catalog_pads": [
+        {
+          "number": "2",
+          "xy_mm": [
+            1.478788,
+            0.0
+          ]
+        },
+        {
+          "number": "1",
+          "xy_mm": [
+            -1.478788,
+            0.0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "2": "2",
+        "1": "1"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Retained symmetric centered R1206 catalog geometry from the prior 220 ohm part in the identical Yageo RC1206 package. Manufacturer confirms unchanged package dimensions. Replacement catalog API returned 403; confirm C137380 frame in the factory preview.",
+      "geometry_source": "same_series_catalog_reference",
+      "reference_mpn": "RC1206FR-07220RL",
+      "reference_lcsc": "C137353",
+      "manufacturer_source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
+      "observed_date": "2026-10-16"
     }
   }
 }

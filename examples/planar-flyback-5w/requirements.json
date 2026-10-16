@@ -1,6 +1,6 @@
 {
   "project": "PS-FLYBACK-5W",
-  "revision": "A4-development",
+  "revision": "A6-development",
   "input_voltage_V": {
     "min": 18,
     "nominal": 24,
@@ -27,7 +27,12 @@
     "board_layers": 6,
     "board_thickness_mm": 1.6,
     "assembly_sides": "top-side electronic components; ferrite halves above and below PCB",
-    "quantity_for_sourcing_review": 5
+    "quantity_for_sourcing_review": 5,
+    "preload_resistor_temperature_excursion_assumption_C": 100,
+    "preload_resistor_aging_reserve_fraction": 0.01,
+    "preload_minimum_current_margin_fraction": 0.2,
+    "preload_local_ambient_screen_C": 85,
+    "preload_maximum_derated_power_fraction": 0.8
   },
   "release_gates": [
     "Factory-gapped core fit, clip retention, measured inductance/bias acceptance and first-article thermal verification",
@@ -41,5 +46,5 @@
     "Measured SW-VIN peak <=17.5 V including overshoot and uncertainty, RFB pin voltage/current compliance, regulation and clamp/snubber temperatures across input/temperature, startup, full load, light-load bursts, overload and short-circuit recovery"
   ],
   "publication_status": "Public GitHub engineering example; no supplier submission, purchase or fabrication authorization",
-  "manufacturing_status": "All 20 electronic MPNs stocked in 2026-09-30 snapshot. Factory standard-construction/panel/reflow acceptance and physical qualification remain pending."
+  "manufacturing_status": "Dated catalog snapshots cover all 20 electronic MPNs, including replacement R7 checked 2026-10-16. Factory stack/panel/reflow acceptance and physical qualification remain pending."
 }

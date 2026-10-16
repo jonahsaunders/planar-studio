@@ -353,20 +353,20 @@
         "R7"
       ],
       "quantity_per_board": 1,
-      "mpn": "RC1206FR-07220RL",
+      "mpn": "RC1206FR-07180RL",
       "manufacturer": "Yageo",
-      "original_bom_code": "C137353",
-      "verified_jlcpcb_code": "C137353",
-      "headline_stock": 311021,
-      "available_order_quantity": 303188,
-      "displayed_minimum": 1,
+      "original_bom_code": "C137380",
+      "verified_jlcpcb_code": "C137380",
+      "headline_stock": 198278,
+      "available_order_quantity": 192951,
+      "displayed_minimum": null,
       "package": "1206",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C137353",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/Yageo-RC1206FR07180RL/C137380",
+      "note": "Exact MPN/package verified in the public JLCPCB page data. overseasStockCount=198278 and canPresaleNumber=192951. Minimum/attrition allocation requires supplier confirmation. Inventory not reserved.",
+      "observed_local_date": "2026-10-16"
     },
     {
       "references": [
@@ -487,9 +487,9 @@
   "counts": {
     "Stocked": 20
   },
-  "source_bom_sha256": "0383a43f25caabe405f13aedc629907b45f00f7e47a02df68234030a3223b473",
+  "source_bom_sha256": "01945f450d548a59ce7d0009faa313b3bc4ae5237b2d0407e274e1b8e5852b52",
   "review_quantity_boards": 5,
   "inventory_covers_twice_board_quantities": true,
   "supplier_attrition_allocation_confirmed": false,
-  "conclusion": "All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
+  "conclusion": "All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09 and R7 on 2026-10-16. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
 }
