@@ -1,5 +1,5 @@
 {
-  "review_date": "2026-10-09",
+  "review_date": "2026-10-16",
   "status": "All components reviewed; analytical/package checks complete with explicit hardware/process qualification gates. Not a production release.",
   "components": [
     {
@@ -256,17 +256,17 @@
     },
     {
       "reference": "R7",
-      "expected_mpn": "RC1206FR-07220RL",
+      "expected_mpn": "RC1206FR-07180RL",
       "expected_footprint": "R_1206_3216Metric",
-      "rating": "220 ohm +/-1%, 0.25 W at 70 C, 200 V limiting element voltage.",
-      "package_review": "1206 / 3.2 x 1.6 mm resistor lands; no polarity.",
-      "use_case": "Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.",
-      "remaining_validation": "Verify no-load burst ripple and temperature; derate above 70 C. Minimum switching timing/hysteresis assumptions need hardware confirmation.",
+      "rating": "180 ohm +/-1%, 100 ppm/C, 0.25 W at 70 C, linearly derated to zero at 155 C; 200 V limiting element voltage.",
+      "package_review": "Same nonpolar Yageo RC1206 family and 3.10 x 1.60 mm body; existing 1206 lands and centered pose retained. Replacement catalog geometry was unavailable; verify the factory preview.",
+      "use_case": "Minimum-load resistor. At 4.75 V, >=25.61 mA including initial tolerance, 100 C TCR excursion and 1% aging reserve, versus 21.111 mA required: >=21.3% margin. Worst power <=0.158 W; below 80% of the 0.206 W rating at 85 C local ambient.",
+      "remaining_validation": "Verify no-load burst regulation and ripple at Lm=14.6 uH and temperature. Confirm local ambient <=85 C for the thermal screen. The 1% aging allowance is a design reserve, not a service-life qualification.",
       "expected_nets": {
         "1": "+5V_ISO",
         "2": "GND_ISO"
       },
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL"
+      "source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL"
     },
     {
       "reference": "R8",

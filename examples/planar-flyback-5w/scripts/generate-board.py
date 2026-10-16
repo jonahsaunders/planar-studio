@@ -118,7 +118,7 @@ for x,y,txt in [(6.1,-13.1,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A5-development');title.SetDate('2026-10-09');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A6-development');title.SetDate('2026-10-16');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -202,7 +202,7 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A5 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A6 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -239,7 +239,8 @@ path('INTVCC',[pos('C5',1),(87.44,58.365),pos('U1',2)],width=.4)
 
 # Secondary rectifier faces the winding; capacitors and connector follow below.
 sec=pos('T1',4)
-path('SEC_A',[sec,(101.075,103.0),(101,103.075),(101,107.138)],pcb.In2_Cu,1.3)
+# Land on each via center; the old midpoint endpoint generated an off-center warning.
+path('SEC_A',[sec,(101.075,103.0),(101,103.075),(100.55,107.138),(101.45,107.138)],pcb.In2_Cu,1.3)
 for x in [100.55,101.45]:via('SEC_A',(x,107.138),.9,.45)
 path('SEC_A',[pos('D2',2,0),(100.55,107.138),(101,107.138),(101.45,107.138),pos('D2',2,1)],width=1.1)
 path('+5V_ISO',[pos('D2',1),pos('C4',1)],width=1.5)
@@ -348,6 +349,8 @@ out.write_text(contents)
 project_file=CAD/(NAME+'.kicad_pro')
 project=json.loads(project_file.read_text())
 project.setdefault('erc',{}).setdefault('rule_severities',{})['four_way_junction']='error'
+# Treat the reviewed routing warning as a release error so it cannot recur silently.
+project['board']['design_settings']['rule_severities']['track_not_centered_on_via']='error'
 project['board']['design_settings']['rules'].update({
     'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,
     'min_through_hole_diameter':.3,'min_copper_edge_clearance':.5,

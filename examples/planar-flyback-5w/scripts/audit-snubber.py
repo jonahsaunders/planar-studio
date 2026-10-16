@@ -96,7 +96,7 @@ record = {
     'capacitance_max_F': cmax, 'resistance_min_initial_tolerance_ohm': rmin,
     'worksheet_full_load_cases': cases,
     'frequency_sensitivity_cases': frequency_cases,
-    'frequency_scope': '380 kHz typical; 350/420 kHz chosen sensitivity assumptions. The uncapped worksheet reaches approximately 454 kHz and is intentionally conservative for this screen, not a predicted operating frequency.',
+    'frequency_scope': '380 kHz typical; 350/420 kHz chosen sensitivity assumptions. The uncapped worksheet reaches approximately 452 kHz and is intentionally conservative for this screen, not a predicted operating frequency.',
     'local_ambient_derating': thermal,
     'worksheet_target_swing_W': worst,
     'maximum_local_ambient_at_rating_C': 155-85*worst/rating,

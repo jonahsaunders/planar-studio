@@ -1,9 +1,10 @@
 {
-  "status": "PASS: 54 catalog pad centers plus 2 manufacturer land centers and PCB net mapping; live factory preview remains unverified",
+  "status": "PASS: 52 exact catalog pad centers, 2 R6 manufacturer land centers, and 2 R7 same-series reference centers; live factory preview remains unverified",
   "placements": 24,
   "catalog_parts": 20,
-  "catalog_pads_checked": 54,
+  "catalog_pads_checked": 52,
   "manufacturer_land_centers_checked": 2,
+  "same_series_reference_centers_checked": 2,
   "regressions_rejected": [
     "U1: wrong Rotation rejected",
     "D1: wrong Rotation rejected",
@@ -793,11 +794,11 @@
     },
     {
       "reference": "R7",
-      "lcsc": "C137353",
+      "lcsc": "C137380",
       "x_mm": 31.0,
       "y_mm": 18.5,
       "rotation_deg": 270.0,
-      "geometry_source": "catalog",
+      "geometry_source": "same_series_catalog_reference",
       "pads": [
         {
           "catalog_pin": "2",
@@ -996,14 +997,14 @@
     132.0
   ],
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
     "layout.json": "2babe0c5e7ad4da95e325668eb6e07261a95daac7956dbef4fa2d6de3602a7c8",
-    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
-    "sources/placement-library.json": "bcef46bec31c71f5b3585e350e409f6345d8c04e688250814c317b16e78067be",
-    "manufacturing/KiCad-positions.csv": "1c7b600eb5266ea1a46a927fbc563c5838ca32fb1661d9e0dc809c06bc3c70f7",
-    "manufacturing/JLCPCB-positions-corrected.csv": "6fc9a96b8ff81000df5339c658c8ad5ab550a1f52c9c335d58023e63713cc299",
+    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
+    "sources/placement-library.json": "d8efa5efc8bdfb75232d0f8365b441a454888f1f41ce7889a3e909a4b15e29fb",
+    "manufacturing/KiCad-positions.csv": "1cbf8f30a0e18afd860f44555472d88ce35e1c2fb1536f6ba6fa6b39b3ab920e",
+    "manufacturing/JLCPCB-positions-corrected.csv": "f18709c61474ca3de5602403c33999c50548f91365ecdb1308b88fc814ede0da",
     "manufacturing/CPL-JLCPCB.csv": "99d09f3b597a20e9d01c38e06b9905262be41f1b5cd99089d91b28a587db8d84",
     "scripts/placement.py": "f58156c431a9b786108d6a023b41d48e96c6d865de11b39d77c0a4c3abfada59",
-    "scripts/verify-placement.py": "fd616e7b39bdbacc5e7fb998d4a646b33a14af2b3ee20ec68795fc111db30659"
+    "scripts/verify-placement.py": "73f932fae4dec029cc179512fb31eb12d762059238b2de39ec81f880c73f0db1"
   }
 }

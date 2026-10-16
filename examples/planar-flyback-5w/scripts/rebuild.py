@@ -16,6 +16,8 @@ parser.add_argument('--kicad-python', default=sys.executable, help='KiCad Python
 parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding; default retains the validated A4 magnetic geometry')
 parser.add_argument('--cadquery-python', required=True, help='Python with cadquery 2.6.1 or 2.7.0, pygerber==2.4.3 and Pillow')
 args = parser.parse_args()
+# Use the same text encoding in child tools on Windows as in the repository.
+os.environ.setdefault('PYTHONUTF8', '1')
 os.environ.setdefault('KICAD_CONFIG_HOME', str(R / '.kicad-config'))
 (R / '.kicad-config').mkdir(exist_ok=True)
 
@@ -34,6 +36,7 @@ sch = 'kicad/PS-FLYBACK-5W.kicad_sch'
 pcb = 'kicad/PS-FLYBACK-5W.kicad_pcb'
 run(args.kicad_cli, 'sch', 'erc', '--exit-code-violations', '-o', 'evidence/erc.rpt', sch)
 run(args.kicad_cli, 'pcb', 'drc', '--exit-code-violations', '--refill-zones', '--schematic-parity', '--format', 'json', '-o', 'evidence/board-drc.json', pcb)
+run(args.kicad_python, R / 'scripts/verify-all-drc.py', '--kicad-cli', args.kicad_cli)
 run(args.kicad_cli, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', 'evidence/schematic-netlist.xml', sch)
 # KiCad records an absolute source path; retain a portable reference in published evidence.
 netlist = R / 'evidence/schematic-netlist.xml'
@@ -42,7 +45,8 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-silkscreen.py')
-py('verify-snubber-revision.py')
+# A5 snubber containment is historical; A6 compares directly with the saved A5 board.
+py('verify-preload-revision.py')
 py('verify-default-stack.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
@@ -83,8 +87,8 @@ run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A5'
-    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A5-review-package.zip', R.parent / 'PS-FLYBACK-5W-A5-review-package.zip')
+    package = Path(temp) / 'PS-FLYBACK-5W-A6'
+    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A6-review-package.zip', R.parent / 'PS-FLYBACK-5W-A6-review-package.zip')
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

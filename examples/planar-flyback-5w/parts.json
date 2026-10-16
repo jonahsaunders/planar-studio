@@ -154,12 +154,17 @@
     "footprint": "Flyback:R_EverOhms_CRH2512"
   },
   "R7": {
-    "value": "220R 0.25 W",
-    "mpn": "RC1206FR-07220RL",
+    "value": "180R 0.25 W",
+    "mpn": "RC1206FR-07180RL",
     "mfr": "Yageo",
-    "lcsc": "C137353",
-    "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
-    "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz"
+    "lcsc": "C137380",
+    "source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
+    "purpose": "27.78 mA nominal preload; >=20% minimum-load margin including 1% tolerance, 100 ppm/C over 100 C and a 1% aging reserve. Verify no-load regulation and local temperature.",
+    "resistance_ohm": 180,
+    "tolerance_fraction": 0.01,
+    "tcr_ppm_per_C": 100,
+    "power_rating_W_at_70C": 0.25,
+    "zero_power_ambient_C": 155
   },
   "D2": {
     "mpn": "PDS835L-13",

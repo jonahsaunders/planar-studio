@@ -1,11 +1,11 @@
 {
-  "review_date": "2026-10-09",
-  "board_sha256": "66ada14491e077a9def182166773016d14ffbccd3d978de358bd96dcb4c78f27",
+  "review_date": "2026-10-16",
+  "board_sha256": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
   "source_SHA256": {
-    "sources/component-review.json": "67202cbaea4c3955ac45e3ef15e17eb3939e3e7745e46154f242f6c149e790c5",
-    "circuit.json": "3d8d32b41099c7e9016b97c21f5521cabcf369fb290496032ba97efae1b47aa5",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "d5dc7a45530c7cb16b1c3bdad9c84b1acbd994b6e13361e24ce926ee163d41f3",
-    "evidence/electrical-sizing.json": "bb904a512ace6b91c12f8c2f4f781c4d41d6554f8f710d2525e637aaef16e56b"
+    "sources/component-review.json": "eea14967d24ec11f4303b909b5825c8d95f487b9224eabe37a0886f27c4b407e",
+    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "87f096ff61d39eed86b7e9f0db88b7f689124b7e8243531f24ce2196946565db",
+    "evidence/electrical-sizing.json": "cd93c3db44fcd0268ec43eb19e06eb1b520f1657d7f1341f32d9f605cf3b4277"
   },
   "reviewed_footprints": 29,
   "electronic_references": 24,
@@ -283,9 +283,9 @@
     }
   ],
   "filter_checks": {
-    "input_cap_rms_screening_bound_A": 0.6254754388421657,
+    "input_cap_rms_screening_bound_A": 0.6285642064413862,
     "C7_ripple_rating_A_at_100kHz": 1.1,
-    "R8_loss_if_all_input_ripple_in_branch_W": 0.9217914438502676,
+    "R8_loss_if_all_input_ripple_in_branch_W": 0.9309180361673705,
     "R8_rating_W_at_70C": 2,
     "R8_rating_requires_total_pad_and_trace_area_mm2": 300,
     "R8_board_thermal_rating_verified": false,
@@ -294,7 +294,7 @@
     "C7_max_empty_charge_energy_J": 0.036547199999999995,
     "ideal_hard_step_initial_R8_power_W": 632.7507079386778,
     "output_bulk_minimum_F": 0.000288,
-    "output_ripple_estimate_V": 0.05108361850655024,
+    "output_ripple_estimate_V": 0.051363965889334395,
     "limits": "Sinusoidal/distributed branch current, source/cable impedance, MLCC bias, frequency-dependent ESR and transients are not simulated. A hard step is not qualified."
   },
   "components": [
@@ -1362,18 +1362,18 @@
     },
     {
       "reference": "R7",
-      "expected_mpn": "RC1206FR-07220RL",
+      "expected_mpn": "RC1206FR-07180RL",
       "expected_footprint": "R_1206_3216Metric",
-      "rating": "220 ohm +/-1%, 0.25 W at 70 C, 200 V limiting element voltage.",
-      "package_review": "1206 / 3.2 x 1.6 mm resistor lands; no polarity.",
-      "use_case": "Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.",
-      "remaining_validation": "Verify no-load burst ripple and temperature; derate above 70 C. Minimum switching timing/hysteresis assumptions need hardware confirmation.",
+      "rating": "180 ohm +/-1%, 100 ppm/C, 0.25 W at 70 C, linearly derated to zero at 155 C; 200 V limiting element voltage.",
+      "package_review": "Same nonpolar Yageo RC1206 family and 3.10 x 1.60 mm body; existing 1206 lands and centered pose retained. Replacement catalog geometry was unavailable; verify the factory preview.",
+      "use_case": "Minimum-load resistor. At 4.75 V, >=25.61 mA including initial tolerance, 100 C TCR excursion and 1% aging reserve, versus 21.111 mA required: >=21.3% margin. Worst power <=0.158 W; below 80% of the 0.206 W rating at 85 C local ambient.",
+      "remaining_validation": "Verify no-load burst regulation and ripple at Lm=14.6 uH and temperature. Confirm local ambient <=85 C for the thermal screen. The 1% aging allowance is a design reserve, not a service-life qualification.",
       "expected_nets": {
         "1": "+5V_ISO",
         "2": "GND_ISO"
       },
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
-      "selected_value": "220R 0.25 W",
+      "source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
+      "selected_value": "180R 0.25 W",
       "position_mm": [
         109.0,
         113.5

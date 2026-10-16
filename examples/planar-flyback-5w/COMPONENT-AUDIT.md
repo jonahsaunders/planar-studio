@@ -1,6 +1,6 @@
-# Component audit — PS-FLYBACK-5W A5
+# Component audit — PS-FLYBACK-5W A6
 
-Reviewed 2026-10-09. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
+Reviewed 2026-10-16. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 
 The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOURCING.md). This is an engineering prototype: ratings and calculations do not establish measured performance or factory process acceptance.
 
@@ -8,9 +8,9 @@ The electronic BOM is fully stocked in the [dated sourcing snapshot](JLCPCB-SOUR
 | --- | ---: | --- |
 | Nominal output at 0.3 V sampled diode drop | 4.980 V | Requires output and temperature trim |
 | RFB resistive current at 17.5 V SW−VIN | 159.85 µA | Excludes capacitive current and pin excursions |
-| Snubber loss including +5% capacitance | 0.470 W | 2 W R6 rating at 70 °C; measure pulses and temperature |
-| R8 loss if all input ripple enters its branch | 0.922 W | 2 W rating needs 300 mm² copper; actual thermal capacity unverified |
-| Bulk-only output ripple sizing | 51.08 mV | Boundary estimate; burst/control behavior not represented |
+| Snubber loss including +5% capacitance | 0.468 W | 2 W R6 rating at 70 °C; measure pulses and temperature |
+| R8 loss if all input ripple enters its branch | 0.931 W | 2 W rating needs 300 mm² copper; actual thermal capacity unverified |
+| Bulk-only output ripple sizing | 51.36 mV | Boundary estimate; burst/control behavior not represented |
 
 R8 uses Bourns' recommended 2.45 × 3.7 mm lands, centered 5.15 mm apart. The stocked feedback network preserves the original compensation ratio within 1%. All three feedback resistors must change together. [Feedback assumptions](FEEDBACK-REVISION.md).
 
@@ -318,17 +318,17 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 **Remaining validation:** Measure repetitive pulse stress, mean(v^2/R), local ambient and body temperature; 680 pF/1 nF remain unapproved tuning changes despite improved average-power margin.
 
-### R7 — RC1206FR-07220RL
+### R7 — RC1206FR-07180RL
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL) · R_1206_3216Metric
+[Manufacturer/source](https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL) · R_1206_3216Metric
 
-**Rating:** 220 ohm +/-1%, 0.25 W at 70 C, 200 V limiting element voltage.
+**Rating:** 180 ohm +/-1%, 100 ppm/C, 0.25 W at 70 C, linearly derated to zero at 155 C; 200 V limiting element voltage.
 
-**Footprint and pin mapping:** 1206 / 3.2 x 1.6 mm resistor lands; no polarity.
+**Footprint and pin mapping:** Same nonpolar Yageo RC1206 family and 3.10 x 1.60 mm body; existing 1206 lands and centered pose retained. Replacement catalog geometry was unavailable; verify the factory preview.
 
-**Use:** Minimum-load resistor. Worst 0.12655 W at 5.25 V / -1% resistance; minimum 21.38 mA at 4.75 V exceeds estimated 19.87 mA minimum-energy load requirement.
+**Use:** Minimum-load resistor. At 4.75 V, >=25.61 mA including initial tolerance, 100 C TCR excursion and 1% aging reserve, versus 21.111 mA required: >=21.3% margin. Worst power <=0.158 W; below 80% of the 0.206 W rating at 85 C local ambient.
 
-**Remaining validation:** Verify no-load burst ripple and temperature; derate above 70 C. Minimum switching timing/hysteresis assumptions need hardware confirmation.
+**Remaining validation:** Verify no-load burst regulation and ripple at Lm=14.6 uH and temperature. Confirm local ambient <=85 C for the thermal screen. The 1% aging allowance is a design reserve, not a service-life qualification.
 
 ### R8 — CRM2512-JW-2R2ELF
 

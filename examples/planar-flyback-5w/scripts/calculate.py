@@ -11,7 +11,10 @@ mag=json.loads((ROOT/'magnetics.json').read_text())
 lp=m['magnetizingInductance_H']; n=mag['primary_turns']/mag['secondary_turns']; ae=mag['minimum_area_mm2']*1e-6
 lp_min,lp_max=(v*1e-6 for v in mag['Lm_acceptance_uH'])
 parts=json.loads((ROOT/'parts.json').read_text())
+from preload import preload_budget
 targets=json.loads((ROOT/'requirements.json').read_text())['provisional_design_targets']
+preload=preload_budget(parts['R7'],targets,lp_max)
+rpre=parts['R7']['resistance_ohm']
 rfb,rref,rtc=(parts[ref]['resistance_ohm'] for ref in ['R3','R4','R5'])
 rfb_tol=parts['R3']['tolerance_fraction']; rref_tol=parts['R4']['tolerance_fraction']
 rfb_tcr=parts['R3']['tcr_ppm_per_C']; rref_tcr=parts['R4']['tcr_ppm_per_C']
@@ -34,7 +37,7 @@ rows=[]
 for vin in [18,24,36]:
   for output in [.1,.5,1.0]:
     # Full-load boundary-mode approximation; light load may use DCM/burst.
-    v=vin-1.0; load=output+5/220; vf=.4; eta=.75
+    v=vin-1.0; load=output+5/rpre; vf=.4; eta=.75
     duty=n*(5+vf)/(v+n*(5+vf))
     ipk=2*5*load/(eta*v*duty)
     freq=v*duty/(lp*ipk)
@@ -91,7 +94,7 @@ limits={
   'RFB_absolute_max_injected_current_A':200e-6,
   'maximum_rectifier_reverse_V_with_5pct_output':5.25+36/n,
   'maximum_switch_plateau_V_with_5pct_output_and_0p6V_diode':36+n*(5.25+.6),
-  'preload_ohm':220,
+  'preload_ohm':rpre,
   'feedback_ohm':rfb,'reference_ohm':rref,'temperature_compensation_ohm':rtc,
   'feedback_to_temperature_compensation_ratio':rfb/rtc,
   'nominal_output_at_sample_diode_drop_0p3V':rfb/rref/n-.3,
@@ -103,11 +106,11 @@ limits={
   'minimum_energy_packet_cap_rise_V_at_Ipk_1p04A':lp_max*1.04**2/(2*4.75*288e-6),
   'TVS_rating_based_switch_clamp_V_excluding_dynamic_overshoot':36+19.9+1,
   'switch_absolute_max_V':65,'switch_prototype_acceptance_peak_V':60,
-  'preload_power_at_5p25V_W':5.25**2/(220*.99),
+  'preload_power_at_5p25V_W':preload['maximum_power_W'],
   'secondary_fault_average_rating_check_A':.6*5.4*n,
   'rectifier_average_current_rating_A':8,
   'minimum_load_required_A_at_low_output':lp_max*1.04**2*12700/(2*4.75),
-  'minimum_preload_A_at_low_output':4.75/(220*1.01),
+  'minimum_preload_A_at_low_output':preload['minimum_current_A'],
   'overcurrent_restart_typical_7p2A_flux_T':lp_max*7.2/(4*ae),
   'core_flux_screen_basis':mag['flux_screen_basis'],
   'scope':'Boundary-mode stress sizing only. 75% efficiency is assumed, not measured. Does not prove loop stability, burst ripple, EMC, isolation rating or final output trim.'
@@ -125,12 +128,14 @@ limits['full_load_snubber_CV2f_upper_W']=max(r['snubber_CV2f_upper_W'] for r in 
 limits['snubber_capacitance_loss_sweep']=[{'capacitance_pF':cap,'estimated_W':limits['full_load_snubber_CV2f_upper_W']*cap/470,'exceeds_fitted_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>parts['R6']['power_rating_W_at_70C'],'exceeds_80pct_fitted_rating':limits['full_load_snubber_CV2f_upper_W']*cap/470>.8*parts['R6']['power_rating_W_at_70C']} for cap in [470,680,1000]]
 limits['full_load_output_cap_rms_upper_A']=max(r['output_cap_rms_upper_A'] for r in full)
 limits['open_issues']=['TVS rating-based clamp is 56.9 V before dynamic overshoot; verify peak below 60 V and tune on hardware.', 'Core loss and AC/fringing winding loss are unknown; 75% efficiency is not a pass result.', 'Burst ripple, control stability, startup, load steps, temperature and EMC require hardware tests.', 'Demonstrate SW-VIN peak <=17.5 V including overshoot/uncertainty at all operating corners; verify RFB voltage/current and final regulation. Resistor changes and analytical separation do not qualify dynamic behavior.', 'R8/C7 add damping but do not qualify hot-plug: use a controlled input ramp; input surge voltage must remain below 42 V.', 'UVLO corner uses specified threshold/current limits but typical 14 mV hysteresis; verify 18 V startup at temperature.', 'Minimum on/off timing used for L sizing is datasheet typical; current bounds use the specified limits. Verify timing on samples.']
-assert limits['minimum_preload_A_at_low_output']>limits['minimum_load_required_A_at_low_output']
+limits['preload_budget']=preload
+assert preload['current_margin_fraction']>=targets['preload_minimum_current_margin_fraction']
+assert preload['derated_power_fraction']<=targets['preload_maximum_derated_power_fraction']
 assert limits['full_load_output_cap_rms_upper_A']<3.3
 limits['snubber_resistor_rating_W_at_70C']=parts['R6']['power_rating_W_at_70C']
 limits['snubber_loss_with_capacitance_tolerance_W']=limits['full_load_snubber_CV2f_upper_W']*(1+parts['C6']['tolerance_fraction'])
 limits['snubber_loss_full_target_swing_CV2f_W']=max(parts['C6']['capacitance_F']*(1+parts['C6']['tolerance_fraction'])*(r['Vin']+sw_vin_target)**2*r['frequency_Hz']*lp/lp_min for r in full)
-limits['snubber_full_swing_scope']='Screening bound using full VIN+17.5 V excursion each cycle and worksheet Lmin frequency; not a measured repetitive-power result. Little thermal headroom remains; accept only after waveform and temperature checks, with redesign if necessary.'
+limits['snubber_full_swing_scope']='Screening bound using full VIN+17.5 V excursion each cycle and worksheet Lmin frequency; not a measured repetitive-power result. Average-power margin passes; repetitive pulses and hardware temperature still require qualification.'
 assert limits['snubber_loss_full_target_swing_CV2f_W']<parts['R6']['power_rating_W_at_70C']
 assert limits['snubber_loss_with_capacitance_tolerance_W']<.8*parts['R6']['power_rating_W_at_70C']
 assert limits['full_load_ripple_sizing_max_V']<.1

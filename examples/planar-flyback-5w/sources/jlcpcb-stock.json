@@ -353,20 +353,20 @@
         "R7"
       ],
       "quantity_per_board": 1,
-      "mpn": "RC1206FR-07220RL",
+      "mpn": "RC1206FR-07180RL",
       "manufacturer": "Yageo",
-      "original_bom_code": "C137353",
-      "verified_jlcpcb_code": "C137353",
-      "headline_stock": 311021,
-      "available_order_quantity": 303188,
-      "displayed_minimum": 1,
+      "original_bom_code": "C137380",
+      "verified_jlcpcb_code": "C137380",
+      "headline_stock": 198278,
+      "available_order_quantity": 192951,
+      "displayed_minimum": null,
       "package": "1206",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C137353",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. 22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/Yageo-RC1206FR07180RL/C137380",
+      "note": "Exact MPN/package verified in the public JLCPCB page data. overseasStockCount=198278 and canPresaleNumber=192951. Minimum/attrition allocation requires supplier confirmation. Inventory not reserved.",
+      "observed_local_date": "2026-10-16"
     },
     {
       "references": [

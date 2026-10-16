@@ -1,0 +1,31 @@
+{
+  "observed_date": "2026-10-16",
+  "mpn": "RC1206FR-07180RL",
+  "lcsc": "C137380",
+  "manufacturer_specsheet": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
+  "manufacturer_series_datasheet": "https://yageogroup.com/content/datasheet/asset/file/PYu-RC_Group_51_RoHS_L",
+  "package_mm": [
+    3.1,
+    1.6,
+    0.55
+  ],
+  "rating": {
+    "resistance_ohm": 180,
+    "tolerance_fraction": 0.01,
+    "TCR_ppm_per_C": 100,
+    "power_W_at_70C": 0.25,
+    "zero_power_ambient_C": 155
+  },
+  "jlcpcb_public_page": {
+    "url": "https://jlcpcb.com/partdetail/Yageo-RC1206FR07180RL/C137380",
+    "overseasStockCount": 198278,
+    "canPresaleNumber": 192951,
+    "stock_reserved": false
+  },
+  "source_sha256": {
+    "r7.pdf": "518464bfcdc4c70532cdb514c62a5183744af6893c6e0fb1f2e66629dcc082a0",
+    "rc.pdf": "7b6f0ae72708ca4b38126f84b5407a3e970a94cb60bc1a0afdaeb25a23d839bb",
+    "jlcpcb.html": "a4abde573d3508eb320abc52c1053e78bb27fd52b5616d3562ac7ce268bcda82"
+  },
+  "placement_scope": "Same-series geometry transfer, not a newly retrieved replacement catalog footprint. Factory preview required."
+}

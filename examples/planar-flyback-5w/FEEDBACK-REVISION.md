@@ -32,7 +32,7 @@ Retain **SMAJ12A and 39 Ω / 470 pF** for initial measurements. SMAJ12A's 19.9 V
 
 SMAJ11A remains a bench candidate only. Its 18.2 V rating gives about 170.52 µA in the historical screen. Its 12.2 V minimum breakdown plus D3 drop must avoid excessive conduction during ordinary transfer: the upper reflected-voltage estimate is already 11.7 V before winding drops. Measure repetitive energy and temperature before substitution.
 
-A5 fits Ever Ohms CRH2512F39R0E04Z (C175263), 39 Ω ±1%, 2 W at 70 °C in 2512. C6 remains 470 pF ±5%, 100 V C0G. Current plateau estimates are 0.448 W at 470 pF, 0.648 W at 680 pF and 0.953 W at 1 nF; all fit an 80% nominal-power allowance but neither larger capacitor is an approved fitted value. With +5% C and a full 53.5 V transition, the fitted value screens at 0.641 W. At 85 °C local ambient the rating is 1.647 W. The datasheet provides no repetitive-pulse curve; qualification requires measured waveforms and temperature. [Current snubber review](SNUBBER-REVIEW.md).
+A5 fits Ever Ohms CRH2512F39R0E04Z (C175263), 39 Ω ±1%, 2 W at 70 °C in 2512. C6 remains 470 pF ±5%, 100 V C0G. Current plateau estimates are 0.446 W at 470 pF, 0.645 W at 680 pF and 0.948 W at 1 nF; all fit an 80% nominal-power allowance but neither larger capacitor is an approved fitted value. With +5% C and a full 53.5 V transition, the fitted value screens at 0.638 W. At 85 °C local ambient the rating is 1.647 W. The datasheet provides no repetitive-pulse curve; qualification requires measured waveforms and temperature. [Current snubber review](SNUBBER-REVIEW.md).
 
 ## Release gate
 

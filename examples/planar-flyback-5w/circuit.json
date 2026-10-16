@@ -392,7 +392,7 @@
     },
     {
       "ref": "R7",
-      "value": "220R 0.25 W",
+      "value": "180R 0.25 W",
       "kind": "R",
       "nets": {
         "1": "+5V_ISO",
@@ -400,11 +400,11 @@
       },
       "footprint": "Flyback:R_1206_3216Metric",
       "source_footprint": "Resistor_SMD:R_1206_3216Metric",
-      "mpn": "RC1206FR-07220RL",
-      "lcsc": "C137353",
+      "mpn": "RC1206FR-07180RL",
+      "lcsc": "C137380",
       "mfr": "Yageo",
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC1206FR-07220RL",
-      "purpose": "22.7 mA nominal preload; covers minimum-energy pulses at L+15%, 1.04 A and 12.7 kHz",
+      "source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
+      "purpose": "27.78 mA nominal preload; >=20% minimum-load margin including 1% tolerance, 100 ppm/C over 100 C and a 1% aging reserve. Verify no-load regulation and local temperature.",
       "uuid": "01726ee0-1cfa-5098-a317-73af0ab3b333",
       "exclude_from_bom": false
     },

@@ -1,0 +1,59 @@
+{
+  "revision": "A6-development",
+  "baseline_commit": "43a22c94b6160a8baf41078342bdcc7df596c406",
+  "status": "PASS",
+  "changed_R7_fields": [
+    "lcsc",
+    "mpn",
+    "purpose",
+    "source",
+    "value"
+  ],
+  "retained_all_other_parts": true,
+  "unchanged_topology_footprints_pad_nets_and_component_poses": true,
+  "unchanged_magnetic_stack_and_mechanical_sources": [
+    "planar-studio/T1-artwork.json",
+    "planar-studio/T1-config.json",
+    "planar-studio/T1.planar.json",
+    "evidence/winding-model.json",
+    "stackup.json",
+    "mechanical.json",
+    "layout.json",
+    "magnetics.json"
+  ],
+  "unchanged_outline_and_ground_pours": true,
+  "secondary_route_segments_removed": 1,
+  "secondary_route_segments_added": 2,
+  "both_secondary_via_centers_connected_on_In2_Cu": true,
+  "off_center_via_rule_severity": "error",
+  "preload_budget": {
+    "resistance_ohm": 180,
+    "initial_tolerance_fraction": 0.01,
+    "temperature_excursion_C": 100,
+    "TCR_fraction": 0.009999999999999998,
+    "aging_reserve_fraction": 0.01,
+    "maximum_resistance_ohm": 185.45418000000004,
+    "minimum_resistance_ohm": 174.65381999999997,
+    "nominal_current_at_5V_A": 0.027777777777777776,
+    "nominal_power_at_5V_W": 0.1388888888888889,
+    "required_minimum_load_A": 0.02111055494736842,
+    "minimum_current_A": 0.025612795570312836,
+    "current_margin_fraction": 0.21326964801110782,
+    "maximum_power_W": 0.15781217954465585,
+    "local_ambient_screen_C": 85,
+    "derated_rating_W": 0.20588235294117646,
+    "derated_power_fraction": 0.7665163006454713,
+    "scope": "4.75-5.25 V, Lm maximum acceptance, specified 1.04 A / 12.7 kHz limits. TCR and aging are multiplicative reserves. Aging reserve is not lifetime qualification; measure no-load regulation and local temperature."
+  },
+  "old_220_ohm_rejected_by_margin_gate": true,
+  "old_220_ohm_margin_with_same_reserves": -0.007324833445457091,
+  "scope": "CAD consistency, exact change containment and analytical margin only. Factory placement and hardware behavior remain unqualified.",
+  "source_SHA256": {
+    "parts.json": "6d3806e1b584b7bf51227f1ccae3fc09f8b6559dcb88afdae0877c9c66739c0e",
+    "requirements.json": "eb92b635a2178055b9f9e31f56bc31dc50cceb7202245ce604ce941c4f51fb8c",
+    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
+    "scripts/preload.py": "e9c5d847f713a02fcfd61c28438fa76fe3dc2ae76d429dee1d32700e2ea5b1c4",
+    "scripts/verify-preload-revision.py": "99ceb3445e4ad18cb0aa309253305c862dae2cdcff36184c3d21c768fc19ec80"
+  }
+}
