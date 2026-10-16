@@ -102,9 +102,9 @@
     "https://www.diodes.com/datasheet/download/SMAJ5.0A.pdf"
   ],
   "source_SHA256": {
-    "parts.json": "6d3806e1b584b7bf51227f1ccae3fc09f8b6559dcb88afdae0877c9c66739c0e",
-    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
-    "evidence/schematic-netlist.xml": "fe3a798710315bd41a9af9091df1b82de8a9c87b67d6a8c368604d646a6508d2",
+    "parts.json": "be0f59a7d40339318f0cf5f275487e24df64afeee5fc8a456b6ff3b1b1afbb90",
+    "circuit.json": "a97189bd721ff2796c9aa27c0b79ed963b475a4c2b74d3c3392dc4de2bfc7dc5",
+    "evidence/schematic-netlist.xml": "1ede07c28c046c1a4697547ec5576c50c4c8b320c6f405fcc13254e1eb742838",
     "evidence/electrical-sizing.json": "ff0144f5bda7c6c9b65453603c0f4ddc957811662cec70254fd6a972134ff5ef",
     "evidence/operating-points.csv": "06ad34b5653dd4b48200079c427b7f3c2d2bd90a0e267cfb9d09f365384a8aa1",
     "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",

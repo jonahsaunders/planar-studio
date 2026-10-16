@@ -1,9 +1,9 @@
 {
-  "status": "PASS: 52 exact catalog pad centers, 2 R6 manufacturer land centers, and 2 R7 same-series reference centers; live factory preview remains unverified",
+  "status": "PASS: 50 exact catalog pad centers, 4 R1/R6 manufacturer land centers, and 2 R7 same-series reference centers; live factory preview remains unverified",
   "placements": 24,
   "catalog_parts": 20,
-  "catalog_pads_checked": 52,
-  "manufacturer_land_centers_checked": 2,
+  "catalog_pads_checked": 50,
+  "manufacturer_land_centers_checked": 4,
   "same_series_reference_centers_checked": 2,
   "regressions_rejected": [
     "U1: wrong Rotation rejected",
@@ -578,35 +578,35 @@
     },
     {
       "reference": "R1",
-      "lcsc": "C245991",
+      "lcsc": "C25821",
       "x_mm": 12.5,
       "y_mm": 76.0,
       "rotation_deg": 0.0,
-      "geometry_source": "catalog",
+      "geometry_source": "manufacturer_recommended_lands",
       "pads": [
-        {
-          "catalog_pin": "2",
-          "pcb_pad": "2",
-          "net": "/UVLO",
-          "catalog_center_mm": [
-            13.253364,
-            76.0
-          ],
-          "pcb_center_mm": [
-            13.325,
-            76.0
-          ]
-        },
         {
           "catalog_pin": "1",
           "pcb_pad": "1",
           "net": "/VIN",
           "catalog_center_mm": [
-            11.746636,
+            11.725,
             76.0
           ],
           "pcb_center_mm": [
             11.675,
+            76.0
+          ]
+        },
+        {
+          "catalog_pin": "2",
+          "pcb_pad": "2",
+          "net": "/UVLO",
+          "catalog_center_mm": [
+            13.275,
+            76.0
+          ],
+          "pcb_center_mm": [
+            13.325,
             76.0
           ]
         }
@@ -997,14 +997,14 @@
     132.0
   ],
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
     "layout.json": "2babe0c5e7ad4da95e325668eb6e07261a95daac7956dbef4fa2d6de3602a7c8",
-    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
-    "sources/placement-library.json": "d8efa5efc8bdfb75232d0f8365b441a454888f1f41ce7889a3e909a4b15e29fb",
+    "circuit.json": "a97189bd721ff2796c9aa27c0b79ed963b475a4c2b74d3c3392dc4de2bfc7dc5",
+    "sources/placement-library.json": "e1ccf8685c45c573948f1bbc4cae996061a198ef0e1a56cd6086c5cf4bc452ea",
     "manufacturing/KiCad-positions.csv": "1cbf8f30a0e18afd860f44555472d88ce35e1c2fb1536f6ba6fa6b39b3ab920e",
     "manufacturing/JLCPCB-positions-corrected.csv": "f18709c61474ca3de5602403c33999c50548f91365ecdb1308b88fc814ede0da",
     "manufacturing/CPL-JLCPCB.csv": "99d09f3b597a20e9d01c38e06b9905262be41f1b5cd99089d91b28a587db8d84",
     "scripts/placement.py": "f58156c431a9b786108d6a023b41d48e96c6d865de11b39d77c0a4c3abfada59",
-    "scripts/verify-placement.py": "73f932fae4dec029cc179512fb31eb12d762059238b2de39ec81f880c73f0db1"
+    "scripts/verify-placement.py": "d48c860d2b512fee42467965bd9b5b9d3a76375eb28e478851d3f0a66eb44953"
   }
 }

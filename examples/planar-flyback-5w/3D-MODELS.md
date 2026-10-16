@@ -1,4 +1,4 @@
-# A6 local 3D models
+# A7 local 3D models
 
 All 29 footprints have visible project-relative STEP models. T1 contains two factory-gapped ELP22 halves and two clips. The complete assembly is exported as STEP and GLB.
 
@@ -12,4 +12,4 @@ Current evidence: `3d-model-checks.json`, `3d-solid-checks.json`, `core-fit-chec
 
 A5 assigns R6 the existing generic KiCad `R_2512_6332Metric.step` model at its new position. The CRH body is nominally 6.30 × 3.20 × 0.65 mm; the illustrative model does not replace the Ever Ohms datasheet or the manufacturer-derived footprint lands. R6 and D4 placements are refreshed in the native assembly, STEP, GLB and rendered views.
 
-A6 retains all component packages and model placements. R7 changes to 180 ohm within the same RC1206 package; assembly exports and all five views are refreshed for the A6 board.
+A7 retains all A6 component packages and model placements. R1 changes manufacturer within the same nominal 1.6 × 0.8 × 0.45 mm 0603 body; all resistor values remain unchanged. Assembly exports and all five views are refreshed for the A7 board.

@@ -1,6 +1,6 @@
 # JLCPCB electronics sourcing
 
-**All 20 electronic MPNs / 24 placements had orderable stock in the dated snapshots: September 30, 2026, except R6 checked October 9 and R7 checked October 16.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
+**All 20 electronic MPNs / 24 placements had orderable stock in the dated snapshots: September 30, 2026, except R6 checked October 9 and R1/R7 checked October 16.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
 
 The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLCPCB supplies and assembles the electronics, including J1/J2. DigiKey supplies two B66285G0050X187 factory-gapped halves and two B66286A2000X000 clips separately; install after PCBA and measure assembled inductance. A3 uses no grinding or adhesive. There has been no supplier upload, message, reservation or purchase.
 
@@ -15,7 +15,7 @@ The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLC
 | C4 | CL32B226KOJNNNE | [C55530](https://jlcpcb.com/partdetail/C55530) | 62,973 | 1 | 2026-09-30 |
 | U1 | LT8302IS8E#PBF | [C673679](https://jlcpcb.com/partdetail/C673679) | 26 | 1 | 2026-09-30 |
 | C5 | GRM188R61C475KE11D | [C77045](https://jlcpcb.com/partdetail/C77045) | 15,637 | 1 | 2026-09-30 |
-| R1 | RC0603FR-07649KL | [C245991](https://jlcpcb.com/partdetail/C245991) | 74 | 1 | 2026-09-30 |
+| R1 | 0603WAF6493T5E | [C25821](https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821) | 1,065 | 1 | 2026-10-16 |
 | R2 | RC0603FR-0761K9L | [C137696](https://jlcpcb.com/partdetail/C137696) | 2,530 | 1 | 2026-09-30 |
 | R3 | RT0603BRD07113KL | [C705718](https://jlcpcb.com/partdetail/C705718) | 3,987 | 1 | 2026-09-30 |
 | R4 | RT0603BRD0710K7L | [C861078](https://jlcpcb.com/partdetail/C861078) | 957 | 1 | 2026-09-30 |
@@ -28,6 +28,8 @@ The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLC
 | C7 | EEHZC1J470P | [C454353](https://jlcpcb.com/partdetail/C454353) | 427 | 1 | 2026-09-30 |
 
 ## Engineering substitutions
+
+A7 replaces the short-stock R1 with **UNI-ROYAL 0603WAF6493T5E (C25821)**, retaining 649 kΩ ±1%, 100 ppm/°C, 100 mW, 75 V and 0603. The fresh October 16 page reports 1,065 available, exceeding the 20 required in the order screenshot. No electrical value or placement changes. OSP is the current board finish. [Procurement revision](PROCUREMENT-REVISION.md).
 
 A6 changes R7 to **180 ohm / 0.25 W / 1206, RC1206FR-07180RL (C137380)**. Its preload budget includes tolerance, temperature drift and an aging reserve. Confirm the replacement factory placement preview. [Preload revision](PRELOAD-REVISION.md).
 

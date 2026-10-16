@@ -1,10 +1,10 @@
 {
   "review_date": "2026-10-16",
-  "board_sha256": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
+  "board_sha256": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
   "source_SHA256": {
-    "sources/component-review.json": "eea14967d24ec11f4303b909b5825c8d95f487b9224eabe37a0886f27c4b407e",
-    "circuit.json": "52f112aae449d186289572e423184cb75d670c313489a5a3a1e1252db71a5df8",
-    "kicad/PS-FLYBACK-5W.kicad_sch": "87f096ff61d39eed86b7e9f0db88b7f689124b7e8243531f24ce2196946565db",
+    "sources/component-review.json": "21a1843fbdf1029e288233593c1cb23f2567862e1639c8554acb3ef311712023",
+    "circuit.json": "a97189bd721ff2796c9aa27c0b79ed963b475a4c2b74d3c3392dc4de2bfc7dc5",
+    "kicad/PS-FLYBACK-5W.kicad_sch": "881df28449bfc4192110441c6d21b637bc9a22748fcc0f182f67002951ddd1a7",
     "evidence/electrical-sizing.json": "cd93c3db44fcd0268ec43eb19e06eb1b520f1657d7f1341f32d9f605cf3b4277"
   },
   "reviewed_footprints": 29,
@@ -1008,17 +1008,17 @@
     },
     {
       "reference": "R1",
-      "expected_mpn": "RC0603FR-07649KL",
+      "expected_mpn": "0603WAF6493T5E",
       "expected_footprint": "R_0603_1608Metric",
-      "rating": "649 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.",
-      "package_review": "0603 / 1.6 x 0.8 mm resistor lands; no polarity.",
+      "rating": "649 kohm +/-1%, +/-100 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage, -55 to +155 C.",
+      "package_review": "UNI-ROYAL thick-film datasheet V3 (2019-02-12), pp. 4-6: body 1.60 x 0.80 x 0.45 mm nominal; 0603, nonpolar. Retained pads are 0.8 x 0.95 mm at +/-0.825 mm. Manufacturer land-center reference +/-0.775 mm lies inside both pads; catalog origin unavailable, so confirm the factory preview. See sources/r1-replacement-review.json.",
       "use_case": "Upper UVLO divider. Reduced from 681 kohm: 17.55 V connector startup screening corner, including resistor/threshold/current limits and 1 V diode drop. At 42 V, less than 2.8 mW even assigning full voltage to R1.",
       "remaining_validation": "UVLO hysteresis is only typical in the datasheet: verify startup at 18 V, full load and 0-50 C; this calculation is not a guaranteed production corner.",
       "expected_nets": {
         "1": "VIN",
         "2": "UVLO"
       },
-      "source": "https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL",
+      "source": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
       "selected_value": "649k 1%",
       "position_mm": [
         90.5,

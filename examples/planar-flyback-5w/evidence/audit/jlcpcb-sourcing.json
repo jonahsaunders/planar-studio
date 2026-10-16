@@ -193,20 +193,20 @@
         "R1"
       ],
       "quantity_per_board": 1,
-      "mpn": "RC0603FR-07649KL",
-      "manufacturer": "Yageo",
-      "original_bom_code": null,
-      "verified_jlcpcb_code": "C245991",
-      "headline_stock": 114,
-      "available_order_quantity": 74,
+      "mpn": "0603WAF6493T5E",
+      "manufacturer": "UNI-ROYAL",
+      "original_bom_code": "C245991",
+      "verified_jlcpcb_code": "C25821",
+      "headline_stock": 1087,
+      "available_order_quantity": 1065,
       "displayed_minimum": 1,
       "package": "0603",
       "status": "Stocked",
       "catalog_type": "Extended",
       "assembly_type": "SMT Assembly",
-      "source_url": "https://jlcpcb.com/partdetail/C245991",
-      "note": "Exact MPN and Available Order Qty verified on the live JLCPCB detail page. Inventory not reserved. Lowered from 681k to provide 18 V startup margin with resistor/UVLO tolerances and input-diode drop. Hysteresis typical only; verify cold start.",
-      "observed_local_date": "2026-09-30"
+      "source_url": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
+      "note": "Fresh public JLCPCB page: overseasStockCount=1087, canPresaleNumber=1065, leastPatchNumber=20, lossNumber=10; first price tier starts at 1. More than the 20 pieces required in the user order screenshot. Not reserved. Identical electrical value/ratings and 0603 package; manufacturer land reference used because exact catalog API returned 403.",
+      "observed_local_date": "2026-10-16"
     },
     {
       "references": [
@@ -487,9 +487,9 @@
   "counts": {
     "Stocked": 20
   },
-  "source_bom_sha256": "01945f450d548a59ce7d0009faa313b3bc4ae5237b2d0407e274e1b8e5852b52",
+  "source_bom_sha256": "55024fb7a91fb7bbcb99d836b84b480c80e9ec05f3a5d5dab2d82a84361dfecd",
   "review_quantity_boards": 5,
   "inventory_covers_twice_board_quantities": true,
   "supplier_attrition_allocation_confirmed": false,
-  "conclusion": "All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09 and R7 on 2026-10-16. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
+  "conclusion": "All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09 and R1/R7 on 2026-10-16. Inventory is not reserved. Factory acceptance and hardware qualification remain open."
 }

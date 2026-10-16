@@ -1,4 +1,4 @@
-# Component audit — PS-FLYBACK-5W A6
+# Component audit — PS-FLYBACK-5W A7
 
 Reviewed 2026-10-16. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 
@@ -246,13 +246,13 @@ Allowable resistor voltage is the smaller of its limiting voltage and √(P·R),
 
 **Remaining validation:** Qualify wire range, solder fill, 0.4 Nm screw torque, tool access and manual assembly.
 
-### R1 — RC0603FR-07649KL
+### R1 — 0603WAF6493T5E
 
-[Manufacturer/source](https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL) · R_0603_1608Metric
+[Manufacturer/source](https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821) · R_0603_1608Metric
 
-**Rating:** 649 kohm +/-1%, 0.1 W at 70 C, 75 V limiting element voltage.
+**Rating:** 649 kohm +/-1%, +/-100 ppm/C, 0.1 W at 70 C, 75 V limiting element voltage, -55 to +155 C.
 
-**Footprint and pin mapping:** 0603 / 1.6 x 0.8 mm resistor lands; no polarity.
+**Footprint and pin mapping:** UNI-ROYAL thick-film datasheet V3 (2019-02-12), pp. 4-6: body 1.60 x 0.80 x 0.45 mm nominal; 0603, nonpolar. Retained pads are 0.8 x 0.95 mm at +/-0.825 mm. Manufacturer land-center reference +/-0.775 mm lies inside both pads; catalog origin unavailable, so confirm the factory preview. See sources/r1-replacement-review.json.
 
 **Use:** Upper UVLO divider. Reduced from 681 kohm: 17.55 V connector startup screening corner, including resistor/threshold/current limits and 1 V diode drop. At 42 V, less than 2.8 mW even assigning full voltage to R1.
 

@@ -103,7 +103,7 @@
     "use_height_for_length_calcs": true
   },
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "8bbea5738ccd79f496bba79246eacb35e06ea815ab9f3c0e60871ae17f6482fe",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
     "mechanical.json": "4944cc636119970bc210a6aece98ebe3bf75cfffa8730c56610723c68703332c"
   }
 }

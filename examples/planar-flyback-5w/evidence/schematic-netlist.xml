@@ -2,13 +2,13 @@
 <export version="E">
   <design>
     <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
-    <date>2026-10-16T12:15:06</date>
+    <date>2026-10-16T12:51:55</date>
     <tool>Eeschema 10.0.6</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>18-36 V to isolated 5 V / 1 A planar flyback</title>
         <company>Planar Studio example</company>
-        <rev>A6-development</rev>
+        <rev>A7-development</rev>
         <date>2026-10-16</date>
         <source>kicad/PS-FLYBACK-5W.kicad_sch</source>
         <comment number="1" value=""/>
@@ -566,19 +566,19 @@
     <comp ref="R1">
       <value>649k 1%</value>
       <footprint>Flyback:R_0603_1608Metric</footprint>
-      <datasheet>https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL</datasheet>
+      <datasheet>https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821</datasheet>
       <fields>
-        <field name="MPN">RC0603FR-07649KL</field>
-        <field name="Manufacturer">Yageo</field>
-        <field name="LCSC">C245991</field>
+        <field name="MPN">0603WAF6493T5E</field>
+        <field name="Manufacturer">UNI-ROYAL</field>
+        <field name="LCSC">C25821</field>
         <field name="Footprint">Flyback:R_0603_1608Metric</field>
-        <field name="Datasheet">https://www.yageogroup.com/component-documentation/download/specsheet/RC0603FR-07649KL</field>
+        <field name="Datasheet">https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821</field>
         <field name="Description"/>
       </fields>
       <libsource lib="Flyback" part="R" description=""/>
-      <property name="MPN" value="RC0603FR-07649KL"/>
-      <property name="Manufacturer" value="Yageo"/>
-      <property name="LCSC" value="C245991"/>
+      <property name="MPN" value="0603WAF6493T5E"/>
+      <property name="Manufacturer" value="UNI-ROYAL"/>
+      <property name="LCSC" value="C25821"/>
       <property name="Sheetname" value="PS-FLYBACK-5W"/>
       <property name="Sheetfile" value="PS-FLYBACK-5W.kicad_sch"/>
       <sheetpath names="/" tstamps="/"/>

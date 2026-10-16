@@ -34,8 +34,10 @@ for data in [before_circuit,after_circuit]:
     for part in data['parts']:
         if part['ref'] in ['R6','R7']:
             for key in ['value','mpn','mfr','lcsc','source','purpose','footprint','source_footprint','power_rating_W_at_70C']:part.pop(key,None)
-assert before_circuit==after_circuit,'Unexpected circuit change beyond reviewed R6/R7 updates'
-# A6 R7 identity, unchanged R6 and all retained geometry are checked by verify-preload-revision.py.
+        if part['ref']=='R1':
+            for key in ['mpn','mfr','lcsc','source','purpose']:part.pop(key,None)
+assert before_circuit==after_circuit,'Unexpected circuit change beyond reviewed R1/R6/R7 updates'
+# A7 procurement containment checks retain all A6 values, R6/R7 and geometry.
 before_art=old('planar-studio/T1-artwork.json');after_art=read('planar-studio/T1-artwork.json')
 before_art['meta'].pop('stack');after_art['meta'].pop('stack')
 assert before_art==after_art,'Two-dimensional winding/core-slot artwork changed'
@@ -44,11 +46,11 @@ assert model['magnetizingInductance_H']==before['magnetizingInductance_H']
 assert abs(model['analysis']['R1']/before['analysis']['R1']-1)<.001
 assert model['analysis']['R2']==before['analysis']['R2']
 board=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'))
-assert board.GetTitleBlock().GetRevision()=='A6-development'
+assert board.GetTitleBlock().GetRevision()=='A7-development'
 assert abs(pcb.ToMM(board.GetDesignSettings().GetBoardThickness())-total)<1e-6
-report={'revision':'A6-development','baseline_commit':baseline,
+report={'revision':'A7-development','baseline_commit':baseline,
  'ordering':{'layers':6,'nominal_thickness_mm':1.6,'outer_copper_oz':1,'inner_copper_oz':1,'specify_stackup':False,'impedance_control':False},
- 'unchanged_electrical_topology_and_2D_winding_artwork':True, 'R6_procurement_rating_and_footprint_updated':True, 'R7_preload_updated_in_A6':True,
+ 'unchanged_electrical_topology_and_2D_winding_artwork':True, 'R6_procurement_rating_and_footprint_updated':True, 'R7_preload_updated_in_A6':True, 'R1_procurement_updated_in_A7':True,
  'changed_winding_parameters':sorted(changed),'reference_stack_total_mm':total,'reference_winding_centers_mm':winding_z,
  'old':{k:before['analysis'][k] for k in ['R1','R2','leakage','capacitance']},
  'new':{k:model['analysis'][k] for k in ['R1','R2','leakage','capacitance']},

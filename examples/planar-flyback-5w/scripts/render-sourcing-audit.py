@@ -21,11 +21,11 @@ record={**snapshot,'counts':dict(Counter(row['status'] for row in rows)),
         'source_bom_sha256':hashlib.sha256((R/'manufacturing/BOM-MASTER.csv').read_bytes()).hexdigest(),
         'review_quantity_boards':quantity,'inventory_covers_twice_board_quantities':True,
         'supplier_attrition_allocation_confirmed':False,
-        'conclusion':'All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09 and R7 on 2026-10-16. Inventory is not reserved. Factory acceptance and hardware qualification remain open.'}
+        'conclusion':'All 20 exact electronic MPNs had orderable stock on their individual snapshot dates: 2026-09-30, except R6 on 2026-10-09 and R1/R7 on 2026-10-16. Inventory is not reserved. Factory acceptance and hardware qualification remain open.'}
 (R/'evidence/audit/jlcpcb-sourcing.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf8')
 text='''# JLCPCB electronics sourcing
 
-**All 20 electronic MPNs / 24 placements had orderable stock in the dated snapshots: September 30, 2026, except R6 checked October 9 and R7 checked October 16.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
+**All 20 electronic MPNs / 24 placements had orderable stock in the dated snapshots: September 30, 2026, except R6 checked October 9 and R1/R7 checked October 16.** The table uses JLCPCB's **Available Order Qty**, not headline inventory. Each quantity covers twice the five-board requirement as a planning allowance; JLCPCB's actual attrition and allocation rules still need confirmation. Inventory is not reserved. The limiting stocked device is U1, with 26 available.
 
 The user authorized direct JLCPCB catalog and manufacturer-datasheet review. JLCPCB supplies and assembles the electronics, including J1/J2. DigiKey supplies two B66285G0050X187 factory-gapped halves and two B66286A2000X000 clips separately; install after PCBA and measure assembled inductance. A3 uses no grinding or adhesive. There has been no supplier upload, message, reservation or purchase.
 
@@ -36,6 +36,8 @@ for row in rows:
     text+=f"| {', '.join(row['references'])} | {row['mpn']} | [{row['verified_jlcpcb_code']}]({row['source_url']}) | {row['available_order_quantity']:,} | {row['quantity_per_board']} | {row.get('observed_local_date',snapshot['observed_local_date'])} |\n"
 text+='''
 ## Engineering substitutions
+
+A7 replaces the short-stock R1 with **UNI-ROYAL 0603WAF6493T5E (C25821)**, retaining 649 kΩ ±1%, 100 ppm/°C, 100 mW, 75 V and 0603. The fresh October 16 page reports 1,065 available, exceeding the 20 required in the order screenshot. No electrical value or placement changes. OSP is the current board finish. [Procurement revision](PROCUREMENT-REVISION.md).
 
 A6 changes R7 to **180 ohm / 0.25 W / 1206, RC1206FR-07180RL (C137380)**. Its preload budget includes tolerance, temperature drift and an aging reserve. Confirm the replacement factory placement preview. [Preload revision](PRELOAD-REVISION.md).
 

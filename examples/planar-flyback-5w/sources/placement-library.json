@@ -1,6 +1,6 @@
 {
   "observed_date": "2026-09-30",
-  "source": "Factual pad coordinates extracted from JLCEDA / EasyEDA public component library for the exact LCSC codes. Raw responses are not redistributed. R6 C175263 was updated 2026-10-09 from the manufacturer recommended land pattern, not catalog geometry.",
+  "source": "Factual pad coordinates extracted from JLCEDA / EasyEDA public component library for the exact LCSC codes. Raw responses are not redistributed. R6 C175263 was updated 2026-10-09 from the manufacturer recommended land pattern, not catalog geometry. R1 C25821 was updated 2026-10-16 from the UNI-ROYAL manufacturer land reference; exact catalog API returned 403.",
   "coordinates": "Local XY in mm, X right / Y down, viewed from top. Output CPL is X right / Y up, CCW degrees.",
   "limitation": "Catalog geometry check, not a JLCPCB order-preview approval. Review the fresh assembly preview and factory placement before fabrication.",
   "parts": {
@@ -404,42 +404,6 @@
       "rotation_offset_deg": 0,
       "reason": "Centered origin and orientation agree with the KiCad footprint."
     },
-    "C245991": {
-      "mpn": "RC0603FR-07649KL",
-      "footprint": "Flyback:R_0603_1608Metric",
-      "references": [
-        "R1"
-      ],
-      "source_url": "https://easyeda.com/api/products/C245991/components?version=6.4.19.5",
-      "source_sha256": "024ffa152dc8724cf7a15bb04310b517a27f08ac00299af399d9541a1ee29a78",
-      "catalog_package": "R0603",
-      "catalog_pads": [
-        {
-          "number": "2",
-          "xy_mm": [
-            0.753364,
-            0.0
-          ]
-        },
-        {
-          "number": "1",
-          "xy_mm": [
-            -0.753364,
-            0.0
-          ]
-        }
-      ],
-      "catalog_to_pcb_pad": {
-        "2": "2",
-        "1": "1"
-      },
-      "origin_in_footprint_mm": [
-        0,
-        0
-      ],
-      "rotation_offset_deg": 0,
-      "reason": "Centered origin and orientation agree with the KiCad footprint."
-    },
     "C137696": {
       "mpn": "RC0603FR-0761K9L",
       "footprint": "Flyback:R_0603_1608Metric",
@@ -806,6 +770,45 @@
       "reference_lcsc": "C137353",
       "manufacturer_source": "https://yageogroup.com/component-documentation/download/specsheet/RC1206FR-07180RL",
       "observed_date": "2026-10-16"
+    },
+    "C25821": {
+      "mpn": "0603WAF6493T5E",
+      "footprint": "Flyback:R_0603_1608Metric",
+      "references": [
+        "R1"
+      ],
+      "source_url": "https://jlcpcb.com/partdetail/26564-0603WAF6493T5E/C25821",
+      "source_sha256": "11cd644d5d8a34a6d12775afb80bf58d8fc11f0c3b700dbd0f7a59942ceaa5ef",
+      "geometry_source": "manufacturer_recommended_lands",
+      "observed_date": "2026-10-16",
+      "source_document": "UNI-ROYAL Thick Film Chip Resistors V3, 2019-02-12, p.5: inner gap A=0.90, land length B=0.65, width C=0.80 mm. Centers +/- (A+B)/2 = 0.775 mm. Printed D=2.10 differs from A+2B=2.20; the alternative centers +/-0.725 also lie inside the retained pads. This is a land-center fit reference, not an exact factory catalog frame.",
+      "catalog_package": "0603; manufacturer land reference, catalog geometry unavailable",
+      "catalog_pads": [
+        {
+          "number": "1",
+          "xy_mm": [
+            -0.775,
+            0
+          ]
+        },
+        {
+          "number": "2",
+          "xy_mm": [
+            0.775,
+            0
+          ]
+        }
+      ],
+      "catalog_to_pcb_pad": {
+        "1": "1",
+        "2": "2"
+      },
+      "origin_in_footprint_mm": [
+        0,
+        0
+      ],
+      "rotation_offset_deg": 0,
+      "reason": "Centered symmetric nonpolar 0603 resistor; retained board pads cover both manufacturer reference centers. Confirm C25821 body center and lands in the fresh assembly preview."
     }
   }
 }
