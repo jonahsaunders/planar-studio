@@ -118,7 +118,7 @@ for x,y,txt in [(6.1,-13.1,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A7-development');title.SetDate('2026-10-16');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A8-development');title.SetDate('2026-10-19');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -202,7 +202,7 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A7 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('A8 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -328,6 +328,25 @@ for z in board.Zones():
 for d in board.GetDrawings():
     if isinstance(d,pcb.PCB_TEXT):d.SetPosition(compact_vector(d.GetPosition()))
 for site in probe_sites:site['position_mm']=compact_point(site['position_mm'])
+
+# T1.2 terminates the B.Cu winding. Its F.Cu approaches must not touch the
+# nearby F.Cu winding, even though the net tie permits that short in DRC.
+# Neck only the final 1 mm of both SW routes to the existing winding width.
+# Apply after compaction so both ends use final board coordinates.
+terminal=pos('T1',2)
+approaches=[t for t in board.GetTracks() if not isinstance(t,pcb.PCB_VIA)
+            and t.GetNetname()=='/SW' and t.GetLayer()==pcb.F_Cu
+            and terminal in (xy(t.GetStart()),xy(t.GetEnd()))]
+assert len(approaches)==2,'Expected the switch and snubber approaches to T1.2'
+for t in approaches:
+    starts_at_terminal=xy(t.GetStart())==terminal
+    other=xy(t.GetEnd() if starts_at_terminal else t.GetStart())
+    distance=math.dist(terminal,other)
+    assert distance>1.0
+    neck=tuple(a+(b-a)/distance for a,b in zip(terminal,other))
+    if starts_at_terminal:t.SetStart(pt(*neck))
+    else:t.SetEnd(pt(*neck))
+    path('SW',[neck,terminal],width=.6)
 
 (ROOT/'evidence/audit/probe-sites.json').write_text(json.dumps(probe_sites,indent=2)+'\n',encoding='utf8')
 

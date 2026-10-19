@@ -1,12 +1,12 @@
-# A7 placement correction — October 16, 2026
+# A8 placement verification — October 19, 2026
 
-The September 30 placement corrections have been transferred to the compact A7 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The CPL uses reviewed catalog frames plus the explicitly identified manufacturer and same-series references below. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
+The September 30 placement corrections have been transferred to the compact A8 board using its current lower-left datum. The previous CPL copied KiCad rotations directly and corrected only the connector body centers. The supplied JLCPCB preview exposed a sideways U1, inward-facing connectors and an offset D2. The CPL uses reviewed catalog frames plus the explicitly identified manufacturer and same-series references below. Replace the previous placement upload; confirm the fresh JLCPCB preview before fabrication.
 
 Open the [placement and polarity drawing](placement-review.svg) alongside the [top assembly drawing](assembly-top.svg). Both use a top-side view, with the input connector at the top. The placement drawing shows actual PCB pads and transformed catalog pin centers; it is **not a screenshot or approval of a live JLCPCB order preview**.
 
 ## Corrected placements
 
-Coordinates are millimeters from the board's bottom-left datum, X right and Y up. Angles are counterclockwise. These six corrections were introduced previously and remain in the A7 CPL; A7 changes no placement coordinates or angles.
+Coordinates are millimeters from the board's bottom-left datum, X right and Y up. Angles are counterclockwise. These six corrections were introduced previously and remain in the A8 CPL; A8 changes no placement coordinates or angles.
 
 | Part | Corrected X | Corrected Y | Corrected angle | Reason |
 | --- | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ Ceramic capacitors, resistors and F1 are nonpolarized. The existing D4 and polar
 
 ## Evidence and regeneration
 
-The A7 check covers 24 placements / 20 exact parts: 50 saved exact-part catalog pad centers, four R1/R6 manufacturer land centers, and two R7 reference centers transferred from the previous resistor in the identical Yageo RC1206 package. R1 uses the UNI-ROYAL manufacturer land reference because its catalog API was unavailable. The replacement R7 catalog API was also unavailable; this is not newly verified C137380 catalog geometry. [Saved reference geometry](../sources/placement-library.json) records the distinction. Fifteen deliberately wrong rotations and origins are rejected. R1, R6 and R7 are nonpolar centered packages; verify the current factory preview, especially their body centers and both lands. A7 retains every A6 placement and changes only R1's procurement identity; all resistor values are retained.
+The A8 check covers 24 placements / 20 exact parts: 50 saved exact-part catalog pad centers, four R1/R6 manufacturer land centers, and two R7 reference centers transferred from the previous resistor in the identical Yageo RC1206 package. R1 uses the UNI-ROYAL manufacturer land reference because its catalog API was unavailable. The replacement R7 catalog API was also unavailable; this is not newly verified C137380 catalog geometry. [Saved reference geometry](../sources/placement-library.json) records the distinction. Fifteen deliberately wrong rotations and origins are rejected. R1, R6 and R7 are nonpolar centered packages; verify the current factory preview, especially their body centers and both lands. A8 retains every A7 placement and part identity; the only routing change is the SW terminal repair.
 
 For D1/D3 the offset is the exact common translation between the two sets of land centers. For D2 the catalog 3D origin and physical lead-span center are approximately −0.9000 mm from the catalog placement origin; the native footprint origin is the package center. After correction, the catalog anode and cathode land-center differences from native lands are 0.070 and 0.012 mm respectively. For J1/J2, the prior ±0.2 mm body-center shift is removed so the actual pin row aligns with the drilled holes.
 

@@ -1,0 +1,29 @@
+{
+  "checked_item_layers": 398,
+  "violations": [],
+  "revision": "A8-development",
+  "status": "PASS",
+  "minimum_clearance_mm": 0.2,
+  "polygon_error_mm": 0.0005,
+  "allowed_contact_radius_mm": 0.8,
+  "allowed_terminal_numbers_by_layer": {
+    "F.Cu": [
+      "1",
+      "5"
+    ],
+    "B.Cu": [
+      "2",
+      "5"
+    ],
+    "In1.Cu": [
+      "3",
+      "4"
+    ],
+    "In4.Cu": [
+      "3",
+      "4"
+    ]
+  },
+  "board_sha256": "9e2130b462380668798bb987b734bdd7da4665b228b5a0564f432b689f4d8f85",
+  "scope": "Final-board copper clearance to the four winding polygons, with local terminal contacts only; independent of net-tie DRC permissions. Not a magnetic or thermal qualification."
+}

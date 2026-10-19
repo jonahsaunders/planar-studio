@@ -1,4 +1,4 @@
-# Component audit — PS-FLYBACK-5W A7
+# Component audit — PS-FLYBACK-5W A8
 
 Reviewed 2026-10-16. All 29 footprints have an explicit package/pin mapping review; 24 are electronic placements. The independent check compares reviewed MPNs, footprints and nets to the actual board, checks package-specific lands and confirms ground-via attachment to filled copper.
 

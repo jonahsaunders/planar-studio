@@ -90,6 +90,8 @@ code** archives contain the repository, not a PCM installer.
 
 ## 5 W planar flyback example
 
+A8 corrects an unintended SW-to-winding copper bridge in A7 and adds an independent winding-clearance regression check. Use the A8 package for the corrected geometry.
+
 [![KiCad render of the assembled planar flyback converter](examples/planar-flyback-5w/evidence/audit/board-3d-assembled.png)](examples/planar-flyback-5w/README.md)
 
 An **18–36 V DC to isolated 5 V / 1 A** converter with an LT8302 controller and
@@ -101,7 +103,7 @@ JLCPCB-managed panelization.
 and magnetic qualification remain open.
 
 [Explore the board and schematic](examples/planar-flyback-5w/README.md)
-· [Review package](examples/PS-FLYBACK-5W-A5-review-package.zip)
+· [Review package](examples/PS-FLYBACK-5W-A8-review-package.zip)
 · [Validation record](examples/planar-flyback-5w/VALIDATION.md)
 
 ## 60 W GaN planar LLC example
