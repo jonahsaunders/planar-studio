@@ -1,0 +1,156 @@
+{
+  "revision": "A8-development",
+  "baseline_commit": "8dca6ed98bcd7ba8268f86910679d13682896f17",
+  "status": "PASS",
+  "changed_routes": {
+    "removed": [
+      [
+        "track",
+        "/SW",
+        [
+          [
+            96378023,
+            70150000
+          ],
+          [
+            97128047,
+            71926237
+          ]
+        ],
+        800000,
+        0
+      ],
+      [
+        "track",
+        "/SW",
+        [
+          [
+            94101500,
+            68530284
+          ],
+          [
+            97128047,
+            71926237
+          ]
+        ],
+        1200000,
+        0
+      ]
+    ],
+    "added": [
+      [
+        "track",
+        "/SW",
+        [
+          [
+            94101500,
+            68530284
+          ],
+          [
+            96462710,
+            71179693
+          ]
+        ],
+        1200000,
+        0
+      ],
+      [
+        "track",
+        "/SW",
+        [
+          [
+            96378023,
+            70150000
+          ],
+          [
+            96739049,
+            71004998
+          ]
+        ],
+        800000,
+        0
+      ],
+      [
+        "track",
+        "/SW",
+        [
+          [
+            96739049,
+            71004998
+          ],
+          [
+            97128047,
+            71926237
+          ]
+        ],
+        600000,
+        0
+      ],
+      [
+        "track",
+        "/SW",
+        [
+          [
+            96462710,
+            71179693
+          ],
+          [
+            97128047,
+            71926237
+          ]
+        ],
+        600000,
+        0
+      ]
+    ],
+    "neck_width_mm": 0.6,
+    "neck_length_mm_each": 1.0
+  },
+  "unchanged_component_pads_placements_values": true,
+  "unchanged_winding_polygons_stack_outline_vias": true,
+  "unchanged_ground_pours_outside_SW_clearance_envelope": true,
+  "local_pour_difference_mm2": 1.5836555e-06,
+  "unchanged_inputs": [
+    "circuit.json",
+    "parts.json",
+    "requirements.json",
+    "layout.json",
+    "mechanical.json",
+    "magnetics.json",
+    "stackup.json",
+    "planar-studio/T1-artwork.json",
+    "planar-studio/T1-config.json",
+    "planar-studio/T1.planar.json",
+    "evidence/winding-model.json",
+    "kicad/PS-FLYBACK-5W.kicad_pro"
+  ],
+  "original_A7_rejected": [
+    {
+      "layer": "F.Cu",
+      "item": "track",
+      "net": "/SW",
+      "position_mm": [
+        97.128047,
+        71.926237
+      ],
+      "uuid": "a21ddb1f-1c58-42bf-8b7e-6e6486849ed5"
+    },
+    {
+      "layer": "F.Cu",
+      "item": "track",
+      "net": "/SW",
+      "position_mm": [
+        94.1015,
+        68.530284
+      ],
+      "uuid": "e01e08e4-7e8d-442b-beda-6123c322f260"
+    }
+  ],
+  "scope": "Exact geometric containment of the routing repair and rejection of the shipped A7 fault. No measured hardware qualification.",
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "9e2130b462380668798bb987b734bdd7da4665b228b5a0564f432b689f4d8f85",
+    "scripts/generate-board.py": "3a9ba78701464c89e04addfd7900a2d22fd02d3dadb76fc74025a8079cba83b5",
+    "scripts/verify-winding-clearance.py": "2f10d9ecc5ee47498eaf8148c24c81a71f8838d3bf1fc4ff3f598ae0d737db91",
+    "scripts/verify-a8-revision.py": "baea8ae79f22acd9301beb26236f456e7527744f74dafa0f921481ac77e6a369"
+  }
+}

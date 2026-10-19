@@ -64,19 +64,13 @@
       "stroke_mm": 0.15
     },
     {
-      "text": "A7 ENGINEERING PROTOTYPE",
+      "text": "A8 ENGINEERING PROTOTYPE",
       "layer": "B.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
-      "text": "R3",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C3",
+      "text": "U1",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -88,13 +82,145 @@
       "stroke_mm": 0.15
     },
     {
+      "text": "C6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C5",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "C1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R7",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D4",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "F1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "J1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "H2",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
       "text": "C2",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
     },
     {
+      "text": "R3",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R6",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D1",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "R8",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
       "text": "C8",
+      "layer": "F.Silkscreen",
+      "height_mm": 1.0,
+      "stroke_mm": 0.15
+    },
+    {
+      "text": "D2",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -124,37 +250,7 @@
       "stroke_mm": 0.15
     },
     {
-      "text": "C1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R5",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R8",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
       "text": "J2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "J1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C6",
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
@@ -164,110 +260,14 @@
       "layer": "F.Silkscreen",
       "height_mm": 1.0,
       "stroke_mm": 0.15
-    },
-    {
-      "text": "R4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "U1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H3",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R6",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D4",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "F1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "H1",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D3",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "C5",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "R7",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
-    },
-    {
-      "text": "D2",
-      "layer": "F.Silkscreen",
-      "height_mm": 1.0,
-      "stroke_mm": 0.15
     }
   ],
   "source": "https://jlcpcb.com/capabilities/pcb-capabilities/",
   "scope": "CAD legend/clearance verification, not factory process or hardware qualification.",
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "59538546c4e07f9e768bd5d476dcf030e9e53b497d02ed84e6c1180d528e7c13",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "9e2130b462380668798bb987b734bdd7da4665b228b5a0564f432b689f4d8f85",
     "kicad/PS-FLYBACK-5W.kicad_pro": "1f4750b49c74562e42074937a907f99e789c5b628d940eb7def3f5dd6cea2b9f",
-    "evidence/board-drc.json": "ddc80c1fe774c1e392c95f568bf7dcb407ca92f45d0a356c6ad95beeb9566061",
+    "evidence/board-drc.json": "8a26798688db8637278ae5449eacb2ef41e910ffea7bba87481fdcaef73558e1",
     "scripts/verify-silkscreen.py": "ccc16cf7260baa8dc80af9fd0681fc2eb13d682b2c79f2d0a72ccf4e77573cfb"
   }
 }

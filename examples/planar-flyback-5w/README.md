@@ -1,18 +1,20 @@
-# PS-FLYBACK-5W A7 — OSP finish and available R1 replacement
+# PS-FLYBACK-5W A8 — corrected SW-to-winding clearance
 
 An engineering prototype for 18–36 V input and isolated 5 V / 1 A output. [Review report](report.html) · [Validation](VALIDATION.md) · [Manufacturing handoff](manufacturing/START-HERE.md).
 
-A7 changes the fabrication finish to **OSP** and replaces short-stock R1 with **UNI-ROYAL 0603WAF6493T5E, JLCPCB C25821**. It retains **649 kΩ ±1%, 100 ppm/°C, 100 mW, 75 V, 0603**, with unchanged startup-divider values, footprint and placement. JLCPCB's fresh October 16 catalog reports **1,065 available**, exceeding the 20 required in the order screenshot; stock is not reserved. [Replacement review](PROCUREMENT-REVISION.md).
+**A8 supersedes A7 for fabrication.** A7's 1.2 mm SW approach overlapped the F.Cu primary winding by approximately 0.075 mm; the other 0.8 mm approach also violated the 0.20 mm clearance. Both routes now narrow to 0.6 mm for their final 1 mm into T1 pad 2. The nominal minimum gap is approximately 0.225 mm. [Repair details](WINDING-CLEARANCE-REVISION.md).
 
-The A6 improvements remain: **180 Ω / 0.25 W R7**, **21.33% minimum preload margin** after tolerance, temperature and aging reserves, and the secondary connection centered on both vias. A comparison against A6 commit `f76e1b4` verifies all electrical values, pads, placements, routing, windings, stack, mounting and ground pours are retained. [A7 revision evidence](evidence/audit/procurement-revision-checks.json) · [A6 preload derivation](PRELOAD-REVISION.md).
+The new check evaluates actual track, via, pad and filled-zone copper against every winding layer, allowing only local intended terminal contacts. It rejects A7 and passes A8 independently of KiCad's net-tie exemption. [Clearance evidence](evidence/audit/winding-clearance-checks.json) · [A7-to-A8 comparison](evidence/audit/a8-revision-checks.json).
+
+A8 retains the A7 **OSP** finish and **649 kΩ R1 / C25821**, the **180 Ω / 0.25 W R7**, and the existing winding, stack, component placements and circuit values. Earlier procurement stock figures are historical snapshots. [R1 procurement](PROCUREMENT-REVISION.md) · [Preload derivation](PRELOAD-REVISION.md).
 
 The retained 39 Ω / 2 W snubber screens at **0.638 W**. Its repetitive-pulse capability and measured clamp/thermal behavior remain unqualified. [Snubber review](SNUBBER-REVIEW.md).
 
 ## 3D assembly
 
-[![Assembled A7 flyback board with components, planar transformer core and spring clips](evidence/audit/board-3d-assembled.png)](evidence/audit/board-3d-assembled.png)
+[![Assembled A8 flyback board with components, planar transformer core and spring clips](evidence/audit/board-3d-assembled.png)](evidence/audit/board-3d-assembled.png)
 
-KiCad render of the saved A7 board. [Underside view](evidence/audit/board-3d-underside.png) · [Side view](evidence/audit/board-3d-side.png) · [STEP model](3d/PS-FLYBACK-5W.step) · [GLB model](3d/PS-FLYBACK-5W.glb). Package/core geometry is nominal; mounting hardware and clip retention include provisional envelopes. See [3D model sources and scope](3D-MODELS.md).
+KiCad render of the saved A8 board. [Underside view](evidence/audit/board-3d-underside.png) · [Side view](evidence/audit/board-3d-side.png) · [STEP model](3d/PS-FLYBACK-5W.step) · [GLB model](3d/PS-FLYBACK-5W.glb). Package/core geometry is nominal; mounting hardware and clip retention include provisional envelopes. See [3D model sources and scope](3D-MODELS.md).
 
 ## Layer stack
 
@@ -34,9 +36,9 @@ The primary connects the two-turn windings on **F.Cu and B.Cu in series** for fo
 
 ## Schematic
 
-[![Complete A7 flyback schematic: input protection, LT8302 controller, 39-ohm 2 W snubber, planar transformer and isolated 5 V output](evidence/schematic.svg)](evidence/schematic.svg)
+[![Complete A8 flyback schematic: input protection, LT8302 controller, 39-ohm 2 W snubber, planar transformer and isolated 5 V output](evidence/schematic.svg)](evidence/schematic.svg)
 
-Current A7 schematic exported from KiCad. Open the image to zoom, or download the [native schematic](kicad/PS-FLYBACK-5W.kicad_sch).
+Current A8 schematic exported from KiCad. Open the image to zoom, or download the [native schematic](kicad/PS-FLYBACK-5W.kicad_sch).
 
 ## Retained construction
 
@@ -50,10 +52,10 @@ Native ERC/DRC, schematic parity, package/net mapping, local-change containment,
 
 The placement check covers 24 components, 50 saved exact-part catalog pad centers, four R1/R6 manufacturer land centers and two R7 same-series reference centers, with 15 rejected incorrect rotations/origins. Replacement R1/R6/R7 catalog geometry was unavailable; confirm these centered nonpolar placements in the fresh factory preview. [Placement review](manufacturing/PLACEMENT-REVIEW.md).
 
-This remains an unbuilt prototype. Supplier acceptance of the stack, filled/capped vias, panel, Standard-PCBA reflow and connector process is open. Bench qualification must establish clamp and RFB waveforms, snubber pulse/thermal behavior, regulation, magnetics, startup/fault behavior and clip retention. No purchase or supplier submission has occurred.
+This remains an unbuilt prototype. Supplier acceptance of the stack, filled/capped vias, panel, Standard-PCBA reflow and connector process is open. Bench qualification must establish clamp and RFB waveforms, snubber pulse/thermal behavior, regulation, magnetics, startup/fault behavior and clip retention. The A8 repair has been checked in CAD; hardware qualification remains open.
 
 ## Rebuild
 
-Run `scripts/rebuild.py --kicad-cli <KiCad-10-cli> --kicad-python <KiCad-Python-or-wrapper> --cadquery-python <Python-with-CadQuery-PyGerber-Pillow>`. The default retains the validated winding/core source; `--regenerate-magnetics` explicitly rebuilds those inputs and the revision comparison will reject unintended changes. The build refreshes native files, checks, manufacturing data, views and the A7 review ZIP.
+Run `scripts/rebuild.py --kicad-cli <KiCad-10-cli> --kicad-python <KiCad-Python-or-wrapper> --cadquery-python <Python-with-CadQuery-PyGerber-Pillow>`. The default retains the validated winding/core source; `--regenerate-magnetics` explicitly rebuilds those inputs and the revision comparison will reject unintended changes. The build refreshes native files, checks, manufacturing data, views and the A8 review ZIP.
 
-The current A7 evidence is enumerated in VALIDATION.md. Earlier A1–A6 reports and images are historical context, not fresh proof for this board.
+The current A8 evidence is enumerated in VALIDATION.md. Earlier A1–A7 reports and images are historical context, not fresh proof for this board.

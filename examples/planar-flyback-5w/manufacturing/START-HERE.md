@@ -1,8 +1,10 @@
 # JLCPCB handoff — single board, factory panelization
 
-Use the files in this directory for **JLCPCB-managed panelization** of the A7 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; no supplier submission or order has been made.
+Use the files in this directory for **JLCPCB-managed panelization** of the A8 flyback converter. This package supersedes the earlier customer-panel proposal. It is prepared for feasibility review and quotation; A8 supersedes the defective A7 routing.
 
 Order six layers, nominal 1.6 mm, **1 oz outer / 1 oz inner**, **Specify Stackup: No**, no impedance control, OSP and Standard PCBA. The reference cross-section in stackup.json is used for modeling; it is not a request for a paid named stack.
+
+**Replace the previous Gerber upload with the A8 ZIP.** The PCB and back silkscreen identify A8. The corrected SW landing is described in [the repair record](../WINDING-CLEARANCE-REVISION.md). BOM and placement values are retained.
 
 ## Upload files
 
@@ -12,7 +14,7 @@ Order six layers, nominal 1.6 mm, **1 oz outer / 1 oz inner**, **Specify Stackup
 | Electronic components | [BOM-JLCPCB.csv](BOM-JLCPCB.csv) |
 | Component placement | [CPL-JLCPCB.csv](CPL-JLCPCB.csv) |
 
-The CPL includes the saved catalog rotation/origin corrections plus the R1/R6 manufacturer land references and R7 same-series reference for the current A7 board. Upload it again if an earlier file was used, and compare the fresh preview with PLACEMENT-REVIEW.md. The raw KiCad positions are reference data only.
+The CPL includes the saved catalog rotation/origin corrections plus the R1/R6 manufacturer land references and R7 same-series reference for the current A8 board. Upload it again if an earlier file was used, and compare the fresh preview with PLACEMENT-REVIEW.md. The raw KiCad positions are reference data only.
 
 The outer review-package ZIP contains the complete project and supporting documents. Extract it to reach these three upload files; it is not the Gerber upload itself. Each file describes one 44 × 94 mm board. Ask JLCPCB to prepare the assembly panel and convert coordinates as needed. The requested quantity is **five finished converter boards**, subject to the quoted panel arrangement.
 
@@ -33,4 +35,4 @@ The ferrite cores are separate from the electronic BOM: [core materials](CORE-BO
 
 Use this matching single-board set throughout. Do not use `PANEL-GERBERS-REVIEW-ONLY.zip` or placement files from an older `build/panel-A1` download. Factory process acceptance and [prototype testing](PROTOTYPE-TEST-PLAN.md) remain open.
 
-A7 replaces R1 with **0603WAF6493T5E / C25821** and specifies **OSP**. Refresh the Gerber ZIP and BOM in the order, use the matching CPL, and review the new component preview. When using Panel by JLCPCB, reconcile panel quantity with the requested **five finished boards**; the panel count is not the finished-board count.
+A8 retains the A7 replacement of R1 with **0603WAF6493T5E / C25821** and specifies **OSP**. Refresh the Gerber ZIP and BOM in the order, use the matching CPL, and review the new component preview. When using Panel by JLCPCB, reconcile panel quantity with the requested **five finished boards**; the panel count is not the finished-board count.

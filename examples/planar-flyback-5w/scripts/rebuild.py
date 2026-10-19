@@ -45,8 +45,10 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-silkscreen.py')
-# A5/A6 change records are historical; A7 compares directly with the saved A6 board.
-py('verify-procurement-revision.py')
+# Historical revision checks remain evidence for their original boards.
+py('verify-winding-clearance.py')
+py('test-winding-clearance.py')
+py('verify-a8-revision.py')
 py('verify-default-stack.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
@@ -81,6 +83,7 @@ for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
     run(args.kicad_cli, 'pcb', 'export', 'svg', '--mode-single', '--fit-page-to-board',
         '--exclude-drawing-sheet', '--layers', layers, '-o', output, pcb)
 py('render-layout.py')
+py('render-winding-repair.py')
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 run(sys.executable, R / 'scripts/render-3d.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-cli', args.kicad_cli)
@@ -90,8 +93,8 @@ run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A7'
-    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A7-review-package.zip', R.parent / 'PS-FLYBACK-5W-A7-review-package.zip')
+    package = Path(temp) / 'PS-FLYBACK-5W-A8'
+    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A8-review-package.zip', R.parent / 'PS-FLYBACK-5W-A8-review-package.zip')
     for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))
