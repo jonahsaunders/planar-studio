@@ -2,24 +2,24 @@
   "layers": {
     "F.Cu": {
       "width_mm": 0.6,
-      "segments": 276,
-      "nonlocal_segment_pairs": 36362,
-      "centerline_based_copper_gap_mm": 0.2397820992249493,
-      "conservative_copper_gap_lower_bound_mm": 0.2367820992249493,
-      "saved_polygon_gap_at_tightest_pair_mm": 0.2397819126466435,
+      "segments": 278,
+      "nonlocal_segment_pairs": 36917,
+      "centerline_based_copper_gap_mm": 0.28871712441447195,
+      "conservative_copper_gap_lower_bound_mm": 0.28571712441447195,
+      "saved_polygon_gap_at_tightest_pair_mm": 0.288717830397063,
       "gap_endpoints_mm": [
         [
-          105.202215,
-          73.993778
+          105.258276,
+          73.937531
         ],
         [
-          105.19917494847911,
-          73.75401535962575
+          105.25446845480877,
+          73.64883827721538
         ]
       ],
       "closest_segments": [
-        130,
-        256
+        132,
+        258
       ],
       "extra_copper_outside_tolerance_mm2": 0.0,
       "missing_copper_inside_tolerance_mm2": 0.0,
@@ -27,19 +27,19 @@
     },
     "B.Cu": {
       "width_mm": 0.6,
-      "segments": 276,
-      "nonlocal_segment_pairs": 36367,
-      "centerline_based_copper_gap_mm": 0.2397820992249493,
-      "conservative_copper_gap_lower_bound_mm": 0.2367820992249493,
-      "saved_polygon_gap_at_tightest_pair_mm": 0.23978191961337314,
+      "segments": 278,
+      "nonlocal_segment_pairs": 36922,
+      "centerline_based_copper_gap_mm": 0.28871712441447195,
+      "conservative_copper_gap_lower_bound_mm": 0.28571712441447195,
+      "saved_polygon_gap_at_tightest_pair_mm": 0.28871780908335465,
       "gap_endpoints_mm": [
         [
-          94.797785,
-          73.993778
+          94.741725,
+          73.937531
         ],
         [
-          94.80082504579977,
-          73.75401535258592
+          94.7455325520512,
+          73.64883829862141
         ]
       ],
       "closest_segments": [
@@ -52,24 +52,24 @@
     },
     "In1.Cu": {
       "width_mm": 0.6,
-      "segments": 274,
-      "nonlocal_segment_pairs": 35842,
-      "centerline_based_copper_gap_mm": 0.2397820992249493,
-      "conservative_copper_gap_lower_bound_mm": 0.2367820992249493,
-      "saved_polygon_gap_at_tightest_pair_mm": 0.23978191961337314,
+      "segments": 276,
+      "nonlocal_segment_pairs": 36393,
+      "centerline_based_copper_gap_mm": 0.28871712441447195,
+      "conservative_copper_gap_lower_bound_mm": 0.28571712441447195,
+      "saved_polygon_gap_at_tightest_pair_mm": 0.28871780908335465,
       "gap_endpoints_mm": [
         [
-          94.80082504579977,
-          96.24598464741408
+          94.7455325520512,
+          96.35116170137859
         ],
         [
-          94.797785,
-          96.006222
+          94.741725,
+          96.062469
         ]
       ],
       "closest_segments": [
-        122,
-        248
+        123,
+        249
       ],
       "extra_copper_outside_tolerance_mm2": 0.0,
       "missing_copper_inside_tolerance_mm2": 0.0,
@@ -77,24 +77,24 @@
     },
     "In4.Cu": {
       "width_mm": 0.6,
-      "segments": 274,
-      "nonlocal_segment_pairs": 35842,
-      "centerline_based_copper_gap_mm": 0.2397820992249493,
-      "conservative_copper_gap_lower_bound_mm": 0.2367820992249493,
-      "saved_polygon_gap_at_tightest_pair_mm": 0.23978191961337314,
+      "segments": 276,
+      "nonlocal_segment_pairs": 36393,
+      "centerline_based_copper_gap_mm": 0.28871712441447195,
+      "conservative_copper_gap_lower_bound_mm": 0.28571712441447195,
+      "saved_polygon_gap_at_tightest_pair_mm": 0.28871780908335465,
       "gap_endpoints_mm": [
         [
-          94.80082504579977,
-          96.24598464741408
+          94.7455325520512,
+          96.35116170137859
         ],
         [
-          94.797785,
-          96.006222
+          94.741725,
+          96.062469
         ]
       ],
       "closest_segments": [
-        122,
-        248
+        123,
+        249
       ],
       "extra_copper_outside_tolerance_mm2": 0.0,
       "missing_copper_inside_tolerance_mm2": 0.0,
@@ -106,30 +106,30 @@
   "gerber_regions": {
     "F.Cu": {
       "file": "PS-FLYBACK-5W-F_Cu.gtl",
-      "sha256": "d4e63e4f5058370058c51ff4830a4f06cc423c87269d88a414154ab61dcfb427",
+      "sha256": "7829ed7c15d9ea04eda3679617ca02634a42f44331cd1971e9f6ac8ab455600a",
       "native_polygon_match": true
     },
     "B.Cu": {
       "file": "PS-FLYBACK-5W-B_Cu.gbl",
-      "sha256": "f2871ec77ed69caebbf957f31fe4fbef6a7c6a1f58e4da9985bfa794644d2cab",
+      "sha256": "f29aa85aa1577e8bb7edc909b00aff7505276a2b2d29fc579a66e0a78a97db54",
       "native_polygon_match": true
     },
     "In1.Cu": {
       "file": "PS-FLYBACK-5W-In1_Cu.g1",
-      "sha256": "856949cf6eaa953c4844ebeb632856f118d2e1f396b32b33130786a06a6f5cce",
+      "sha256": "c83a89364c761d2d79336180d19538fca9481071d2fdff2b96ea53340f7e5a2e",
       "native_polygon_match": true
     },
     "In4.Cu": {
       "file": "PS-FLYBACK-5W-In4_Cu.g4",
-      "sha256": "cf84ac28d1644ea25754b0f6b9af4ea9a45bad93d01a2b6dcdcf11991c900878",
+      "sha256": "5101e70ba6817369e6213aeff69eb55d805c3a45c3196d594fd5763ea4939ddd",
       "native_polygon_match": true
     }
   },
-  "revision": "A9-development",
-  "minimum_copper_gap_mm": 0.2,
+  "revision": "A10-development",
+  "minimum_copper_gap_mm": 0.26,
   "envelope_tolerance_mm": 0.0015,
   "adjacent_path_exclusion_mm": 2.0,
-  "board_sha256": "2221610ae6b8befe986ba66ce190908d62deeb62cf8a2df79d7cffe30bcdacfb",
-  "artwork_sha256": "2c9c47865ae1915cf73f18ebcd4550a2b3aa4fefa16efb27ce7e18bd90deb9b5",
+  "board_sha256": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
+  "artwork_sha256": "347f52d656242036b50c890b802729ef1f4513f175c25d1196e5b42f44303894",
   "scope": "Self-spacing of nonlocal path segments and actual copper envelope for the four simple winding polygons. Segments less than 2 mm apart along the path are adjacent conductor. Complements external-copper clearance and topology audit; not a universal winding verifier or hardware qualification."
 }

@@ -1,5 +1,7 @@
 """Regenerate the example and check KiCad exports. Run with KiCad 10's Python."""
 import argparse
+import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -12,10 +14,11 @@ R = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--kicad-cli', default=os.environ.get('KICAD_CLI', 'kicad-cli'))
 parser.add_argument('--node', default='node')
+parser.add_argument('--sharp-module', default='sharp', help='Sharp package name or absolute module directory')
 parser.add_argument('--kicad-python', default=sys.executable, help='KiCad Python executable or wrapper')
-parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding from the A9 clearance specification')
+parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding from the A10 clearance specification')
 parser.add_argument('--cadquery-python', required=True, help='Python with cadquery 2.6.1 or 2.7.0, pygerber==2.4.3 and Pillow')
-parser.add_argument('--geometry-python', help='Python with Shapely 2.2; defaults to --cadquery-python')
+parser.add_argument('--geometry-python', help='Python with Shapely 2.2 and pygerber==2.4.3; defaults to --cadquery-python')
 args = parser.parse_args()
 args.geometry_python = args.geometry_python or args.cadquery_python
 # Use the same text encoding in child tools on Windows as in the repository.
@@ -37,7 +40,7 @@ py('generate-board.py')
 sch = 'kicad/PS-FLYBACK-5W.kicad_sch'
 pcb = 'kicad/PS-FLYBACK-5W.kicad_pcb'
 run(args.kicad_cli, 'sch', 'erc', '--exit-code-violations', '-o', 'evidence/erc.rpt', sch)
-run(args.kicad_cli, 'pcb', 'drc', '--exit-code-violations', '--refill-zones', '--schematic-parity', '--format', 'json', '-o', 'evidence/board-drc.json', pcb)
+run(args.kicad_cli, 'pcb', 'drc', '--exit-code-violations', '--schematic-parity', '--format', 'json', '-o', 'evidence/board-drc.json', pcb)
 run(args.kicad_python, R / 'scripts/verify-all-drc.py', '--kicad-cli', args.kicad_cli)
 run(args.kicad_cli, 'sch', 'export', 'netlist', '--format', 'kicadxml', '-o', 'evidence/schematic-netlist.xml', sch)
 # KiCad records an absolute source path; retain a portable reference in published evidence.
@@ -47,13 +50,21 @@ netlist.write_text(re.sub(r'<source>.*?</source>', f'<source>{sch}</source>', ne
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 py('verify-project.py')
 py('verify-silkscreen.py')
+py('verify-clearance-rules.py')
+run(args.kicad_python,R/'scripts/test-clearance-rules.py','--kicad-cli',args.kicad_cli)
 # Historical revision checks remain evidence for their original boards.
 py('verify-winding-clearance.py')
 py('test-winding-clearance.py')
 py('verify-winding-integrity.py')
 py('test-winding-integrity.py')
-py('verify-a9-revision.py')
+regressions={'status':'PASS','cases':14,'suites':{'test-clearance-rules.py':4,'test-winding-integrity.py':5,'test-winding-clearance.py':5},
+             'board_sha256':hashlib.sha256((R/pcb).read_bytes()).hexdigest(),
+             'scope':'All three unittest subprocesses above completed successfully; old geometries and disabled constraints are rejected.'}
+(R/'evidence/audit/regression-summary.json').write_text(json.dumps(regressions,indent=2)+'\n',encoding='utf8')
+py('verify-a10-revision.py')
 py('export-copper-geometry.py')
+py('export-clearance-geometry.py')
+run(args.geometry_python,R/'scripts/audit-board-clearance.py')
 run(args.geometry_python, R/'scripts/audit-winding-topology.py')
 py('verify-default-stack.py')
 py('verify-clip-copper.py')
@@ -77,6 +88,7 @@ py('manufacturing-data.py')
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 # Gerber line endings are now final; capture the exact published file hashes.
 run(args.kicad_python, R/'scripts/verify-winding-integrity.py', '--gerbers', R/'manufacturing/gerbers')
+run(args.geometry_python,R/'scripts/verify-gerber-geometry.py')
 py('audit-snubber.py')
 py('verify-placement.py')
 py('render-placement.py')
@@ -85,6 +97,9 @@ py('render-sourcing-audit.py')
 with tempfile.TemporaryDirectory(dir=R/'.kicad-config', prefix='flyback-svg-') as temp:
     run(args.kicad_cli, 'sch', 'export', 'svg', '-o', temp, sch)
     shutil.copy2(Path(temp) / 'PS-FLYBACK-5W.svg', R / 'evidence/schematic.svg')
+# Capture hashes only after normalizing the native SVG used by the previews.
+run(sys.executable, R / 'scripts/check-manifest.py', '--write')
+run(args.node, R/'scripts/render-schematic.mjs', args.sharp_module)
 for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
                        ('evidence/board-back.svg', 'B.Cu,B.Silkscreen,Edge.Cuts'),
                        ('manufacturing/assembly-top.svg', 'F.Fab,F.Silkscreen,Edge.Cuts')]:
@@ -96,14 +111,15 @@ py('render-turn-spacing.py')
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 run(sys.executable, R / 'scripts/render-3d.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-cli', args.kicad_cli)
+py('audit-layout.py')
 # Normalize newly generated render records before copying them into the archive.
 # Otherwise Windows CRLF records differ from the final LF repository copies.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A9'
-    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A9-review-package.zip', R.parent / 'PS-FLYBACK-5W-A9-review-package.zip')
+    package = Path(temp) / 'PS-FLYBACK-5W-A10'
+    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A10-review-package.zip', R.parent / 'PS-FLYBACK-5W-A10-review-package.zip')
     for file in [package / 'report.html', package/'COMMON-ISSUES.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))

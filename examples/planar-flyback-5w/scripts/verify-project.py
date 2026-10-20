@@ -122,7 +122,10 @@ for t in art['tracks']:
             assert contains(p,polys[t['layer']]),('missing winding copper',t['layer'],p)
             samples+=1
 setup=child(tree,'setup');stack=child(setup,'stackup')
-layers=children(stack,'layer');thickness=sum(float(child(l,'thickness')[1]) for l in layers if children(l,'thickness'))
+layers=children(stack,'layer')
+# KiCad adds nominal mask thickness when saving a loaded board. The published
+# construction and board datum explicitly refer to copper plus dielectric.
+thickness=sum(float(child(l,'thickness')[1]) for l in layers if child(l,'type')[1] in ['copper','core','prepreg'])
 stack_spec=json.loads((ROOT/'stackup.json').read_text())
 assert abs(thickness-stack_spec['published_copper_plus_dielectric_mm'])<1e-8
 assert [float(child(l,'thickness')[1]) for l in layers if child(l,'type')[1]=='copper']==stack_spec['copper_mm']

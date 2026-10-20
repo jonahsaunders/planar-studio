@@ -57,14 +57,14 @@ after = render(current)
 t1=next(f for f in current.GetFootprints() if f.GetReference()=='T1')
 pad=next(p for p in t1.Pads() if p.GetNumber()=='2')
 winding=next(g for g in t1.GraphicalItems() if isinstance(g,pcb.PCB_SHAPE) and g.GetLayer()==pcb.F_Cu)
-landing_gap=pcb.ToMM(winding.GetEffectiveShape().Distance(pad.GetPosition()))-.3
+landing_gap=pcb.ToMM(winding.GetEffectiveShape().Distance(pad.GetPosition()))-pcb.ToMM(pad.GetSize().x)/2
 out = Image.new('RGB', (1330, 830), 'white')
 draw = ImageDraw.Draw(out)
 draw.text((30, 20), 'SW landing: copper bridge removed', fill='#172331', font=font(30))
 for x, panel, title, caption in [(25, before, 'A7 — original', '1.2 mm approach overlaps winding by about 0.075 mm'),
-                                  (675, after, 'A9 — corrected', f'0.6 mm landing; about {landing_gap:.3f} mm end-cap gap')]:
+                                  (675, after, 'A10 — corrected', f'0.6 mm landing; about {landing_gap:.3f} mm pad-to-winding gap')]:
     draw.text((x, 72), title, fill='#172331', font=font(25))
     out.paste(panel, (x, 116))
     draw.text((x, 783), caption, fill='#38475a', font=font(18))
 out.save(ROOT/'evidence/audit/sw-landing-before-after.png')
-print('Saved A7/A9 native-copper comparison.')
+print('Saved A7/A10 native-copper comparison.')

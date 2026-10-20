@@ -1,4 +1,4 @@
-# PS-FLYBACK-5W A9 — fabrication and assembly review
+# PS-FLYBACK-5W A10 — fabrication and assembly review
 
 **Engineering prototype / quotation package. Not a production release.**
 
@@ -12,19 +12,19 @@ Budgeting quantity: five boards with all electronic components sourced and assem
 | Material | FR-4, nominal 1.6 mm, six copper layers |
 | Copper | Order 1 oz external / 1 oz internal; 35 µm / 30 µm in the published reference construction; confirm delivered tolerances |
 | Finish | OSP; green solder mask; white legend |
-| Smallest routed track / clearance | 0.25 mm smallest routed track; 0.20 mm minimum track/clearance rules; winding spacing 0.20 mm |
+| Smallest routed track / clearance | 0.25 mm smallest routed track; 0.20 mm minimum track/clearance rules; winding nominal spacing 0.30 mm; measured turn gap about 0.289 mm; independent CAD minimum 0.260 mm |
 | Through vias | 0.30, 0.40 and 0.45 mm drills; identify in via schedule |
 | Via-in-pad | Nonconductive epoxy filled and copper capped, including U1 thermal vias |
 | Connector holes | 1.30 mm finished nominal; 1.00 mm maximum pins; supplier to confirm fit/tolerance |
 | Mounting holes | Four 3.2 mm NPTH holes; 35 × 85 mm center spacing; 10 mm copper exclusion and 1.8 mm copper-to-mask margin on all six layers; do not fill/cap; see MOUNTING.md |
-| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A9 fit model |
+| Core slots | Three routed, unplated openings; R0.50 mm corners; ±0.20 mm per-wall routing allowance in the A10 fit model |
 | Panelization | JLCPCB to prepare the assembly panel from the single-board files; return a panel drawing for review; see PANEL.md |
 | Silkscreen | Standard process: text height ≥1.0 mm, text and graphic stroke ≥0.15 mm, silk clearance ≥0.15 mm; enlarged labels pass native DRC |
 | Isolation | Functional low-voltage galvanic isolation only; no safety isolation voltage rating |
 
 All electronic parts are on the front. Core halves occupy both faces. Complete reflow, connector soldering, cleaning and inspection before core installation. Avoid extra thermal processing after clipping the core. Respect each part's solder profile; Panasonic SVPF requires its applicable profile (peak 250 °C maximum), not an unrestricted 260 °C profile.
 
-A9 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
+A10 allows 0.20 mm inward error on every internal-slot wall, including R0.50 corners, and does not depend on a precision-routing upgrade. The smallest actual slot width is 5.4 mm, above JLCPCB's 1.0 mm nonplated-slot minimum. Confirm the delivered internal-slot dimensions and stack at DFM review. See [JLCPCB capabilities](https://jlcpcb.com/capabilities/pcb-capabilities/) and [core fit evidence](../evidence/audit/core-fit-checks.json).
 
 ## Default 1 oz construction — no specified stack
 
@@ -50,7 +50,7 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 - PGND and ISO GND each have one 1.2 mm probe land, exposed on the top mask only, filled/capped and without paste. Preserve those openings. J1/J2 ground pins use 0.30 mm thermal gaps and 0.50 mm spokes; validate solderability.
 - CPL positions and angles include reviewed exact-part catalog-frame corrections. Use CPL-JLCPCB.csv, not the raw KiCad export. Compare the fresh assembly preview with PLACEMENT-REVIEW.md and placement-review.svg; verify pin 1, polarity and outward connector openings before approval.
 - J1 pin 1 is positive at the left when viewed from the top. J2 pin 1 is positive at the right. Wire-entry sides face their nearest board end.
-- All exported manufacturing data is A9 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
+- All exported manufacturing data is A10 review data. A release requires agreement on stack, component sourcing, core installation, retention and tests.
 
 ## Required vendor response
 
@@ -59,7 +59,9 @@ The winding model uses 30 µm for all winding layers to conservatively screen DC
 3. Record actual standard-stack dimensions, and confirm slot tolerance, via filling, connector soldering and component substitutions (if any).
 4. Return an assembly preview, sourcing exceptions, NRE/tooling charges, lead time and quotation. Do not substitute ungapped core halves, an ordinary catalog transformer, the LT8302-3, or a bidirectional TVS.
 
-Obtain factory acceptance for the corrected A9 files.
+T1 is intentional coil artwork: preserve all turns and gaps exactly; do not merge nearby same-net copper or modify winding geometry without design review. T1 interlayer lands are 0.70/0.30 mm (0.20 mm nominal ring). Four paired secondary via lands are 1.00/0.45 mm on 0.90 mm pitch. The supplied Gerbers have been compared with the checked native board.
+
+Obtain factory acceptance for the corrected A10 files.
 
 ## JLCPCB-managed panelization
 
@@ -67,4 +69,4 @@ Supply `GERBERS-REVIEW-ONLY.zip`, `BOM-JLCPCB.csv`, `CPL-JLCPCB.csv` and `via-fi
 
 The earlier customer-designed panel is withdrawn and excluded from the current review package. Do not use its Gerbers or placement files from older downloads. Review JLCPCB's proposed panel, component orientation preview and finished-board quantity before authorizing fabrication. See [panelization requirements](PANEL.md).
 
-A9 retains OSP and R1 with C25821 at the same value/package. Re-upload the matching Gerber ZIP and BOM; confirm OSP in the quote. See [procurement revision](../PROCUREMENT-REVISION.md).
+A10 retains OSP and R1 with C25821 at the same value/package. Re-upload the matching Gerber ZIP and BOM; confirm OSP in the quote. See [procurement revision](../PROCUREMENT-REVISION.md).

@@ -12,12 +12,12 @@ const stack=JSON.parse(fs.readFileSync(path.join(root,'stackup.json'),'utf8'));
 const mag=JSON.parse(fs.readFileSync(path.join(root,'magnetics.json'),'utf8'));
 const clearance=JSON.parse(fs.readFileSync(path.join(root,'winding-clearance.json'),'utf8'));
 const cfg={...defaults(),...corePresetPatch(mag.core_preset),
-  coreClearance:mag.core_clearance_mm,viaPad:.6,viaDrill:.3,
+  coreClearance:mag.core_clearance_mm,viaPad:clearance.terminal_land_diameter_mm,viaDrill:clearance.terminal_drill_mm,
   primaryTurns:2,secondaryTurns:2,stackPlan:'P,S,S,P',
   copperLayers:'F.Cu,In1.Cu,In4.Cu,B.Cu',layerPositions:stack.winding_centers_relative_top_center_mm.join(','),
   // Nominal pitch spacing needs margin at sloped corners; the saved-board
   // integrity check measures actual copper. See COMMON-ISSUES.md.
-  dOuter:13.6,traceW:clearance.winding_width_mm,traceS:clearance.generator_spacing_mm,copperOz:stack.winding_model_copper_mm/0.035,
+  dOuter:clearance.generator_outer_size_mm,traceW:clearance.winding_width_mm,traceS:clearance.generator_spacing_mm,copperOz:stack.winding_model_copper_mm/0.035,
   terminalOffsets:{'P:0':clearance.primary_terminal_radial_offset_mm,'P:2':clearance.primary_terminal_radial_offset_mm},
   windingOptions:{P:{width:clearance.winding_width_mm,connection:'series'},S:{width:clearance.winding_width_mm,connection:'parallel'}},
   driveMode:'current',operatingLinked:false,coreVoltage:1,current:1,secondaryCurrent:1,

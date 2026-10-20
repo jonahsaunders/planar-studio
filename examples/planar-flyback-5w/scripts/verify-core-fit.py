@@ -1,4 +1,4 @@
-"""Independent A8 fit proof from the SAVED board's STEP cutouts. CadQuery.
+"""Independent A10 fit proof from the SAVED board's STEP cutouts. CadQuery.
 
 TDK pp2-3 dimensions are transcribed here independently of the winding generator.
 Checks nominal solids, maximum ferrite corners, inward routing error, rounded
@@ -64,9 +64,9 @@ assert min(clip_margins)>=.249
 vertical_margin=(2*3.1-1.78)/2
 assert vertical_margin>2.2
 # Full maximum body (no recess credit) against all other installed components.
-maximum=cq.Workplane('XY').box(22.2,16.1,11.6).translate((100,-85,-.89)).val()
+maximum=cq.Workplane('XY').box(24.2,18.1,11.6).translate((100,-85,-.89)).val()
 for sign in [-1,1]:
-    clip=cq.Workplane('XY').box(1.5,2.4,11.6).translate((100+sign*11.85,-85,-.89)).val()
+    clip=cq.Workplane('XY').box(3.5,4.4,11.6).translate((100+sign*11.85,-85,-.89)).val()
     maximum=maximum.fuse(clip)
 collisions=[]
 for item in checks['models']:
@@ -75,19 +75,20 @@ for item in checks['models']:
     x,y=item['position_mm'];s=s.rotate((0,0,0),(0,0,1),item['rotation_deg']).translate((x,-y,0))
     # 1 mm lateral wander bounds normal clearance-driven core motion relative
     # to component bodies; insertion fit above is checked at the centered pose.
-    for dx,dy in itertools.product([-1,1],repeat=2):
+    # Expanded boxes cover every translation in the full +/-1 mm XY square.
+    for dx,dy in [(0,0)]:
         v=maximum.translate((dx,dy,0)).intersect(s).Volume()
         if v>1e-6:collisions.append([item['reference'],dx,dy,v])
 assert not collisions,collisions
 result={
-    'revision':'A8-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
+    'revision':'A10-development','source':'TDK ELP22/6/16 October 2022 pp2-3; JLCPCB regular routing ±0.2 mm',
     'method':__doc__,'actual_saved_board_slots_local_mm':slots,'rounded_slot_radius_mm':.5,
     'routing_inward_error_per_wall_mm':.2,'centered_insertion_pose_allowance_mm':.05,
     'maximum_ferrite_corner_checks':len(corners),'minimum_corner_clearance_mm':min(corners),
     'maximum_board_thickness_mm':1.78,'minimum_vertical_clearance_per_face_mm':vertical_margin,
     'nominal_core_clip_solid_count':len(nominal.Solids()),'nominal_substrate_intersection_mm3':nominal.intersect(substrate).Volume(),
     'minimum_clip_envelope_slot_clearance_mm':min(clip_margins),
-    'maximum_body_component_intersections':collisions,'component_pose_wander_checked_mm':1,
+    'maximum_body_component_intersections':collisions,'component_pose_wander_checked_mm':1,'component_sweep':'Continuous XY square, expanded maximum boxes; no recess credit',
     'conditional_clip_limit':'Installed bow must stay <=1.5 mm beyond maximum core edge, strip <=2.4 mm wide. TDK CAD supplies nominal recess/free-clip geometry, but no installed spring-force/tolerance specification; verify the first physical pair. TDK source geometry is retained; the displayed spring opening is estimated, not an elastic-force simulation.',
     'mechanical_scope':'Centered insertion guaranteed only within the stated dimensional model; no measured part, retention-force, vibration or thermal qualification. Core may float after clipping.',
     'source_SHA256':{str(f.relative_to(R)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest() for f in [board,model,R/'magnetics.json']}}

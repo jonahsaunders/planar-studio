@@ -118,7 +118,7 @@ for x,y,txt in [(6.1,-13.1,'1 VIN'),(-3,-14.3,'2 SW'),(-3,14.9,'3 GND'),(4.5,10.
 # conductor. Overlapping independent strokes are ambiguous to connectivity.
 
 board=pcb.BOARD(); board.SetCopperLayerCount(6)
-title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A9-development');title.SetDate('2026-10-19');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
+title=pcb.TITLE_BLOCK();title.SetTitle('18-36 V to isolated 5 V / 1 A planar flyback');title.SetRevision('A10-development');title.SetDate('2026-10-19');title.SetCompany('Planar Studio example');board.SetTitleBlock(title)
 board.GetDesignSettings().SetBoardThickness(mm(stack_thickness))
 nets={}
 for name in sorted({n for p in data['parts'] for n in p['nets'].values()}):
@@ -202,10 +202,11 @@ txt('18-36V DC',110,42,.8)
 txt('5V 1A',113,127,.8);txt('OUT -    +',100,135,.85)
 txt('PCB PLANAR 4:2',100,74,1.1);txt('2 x 0.05 mm GAPPED ELP22',100,75.5,.8)
 txt('FUNCTIONAL ISOLATION',100,101.5,.8,pcb.B_SilkS)
-txt('A9 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
-txt('T1: 0.25 mm nominal turn spacing / 0.20 mm minimum copper gap',158,80,1,pcb.Dwgs_User)
+txt('A10 ENGINEERING PROTOTYPE',100,134,1,pcb.B_SilkS)
+txt('T1: 0.30 mm nominal spacing / >=0.26 mm verified CAD turn gap',158,80,1,pcb.Dwgs_User)
 txt('Net-tie DRC cannot prove winding topology or turn spacing.',158,82,1,pcb.Dwgs_User)
 txt('Run winding checks; see COMMON-ISSUES.md for known failure modes.',158,84,1,pcb.Dwgs_User)
+txt('T1 lands 0.70/0.30 mm; paired secondary via lands 1.00/0.45 mm.',158,86,1,pcb.Dwgs_User)
 
 # Placement follows the two pulsed-current loops. SW, clamp and damping stay
 # on F.Cu beside the primary terminals; In3.Cu carries only the quiet VIN feed.
@@ -244,7 +245,9 @@ path('INTVCC',[pos('C5',1),(87.44,58.365),pos('U1',2)],width=.4)
 sec=pos('T1',4)
 # Land on each via center; the old midpoint endpoint generated an off-center warning.
 path('SEC_A',[sec,(101.075,103.0),(101,103.075),(100.55,107.138),(101.45,107.138)],pcb.In2_Cu,1.3)
-for x in [100.55,101.45]:via('SEC_A',(x,107.138),.9,.45)
+# 1.00 mm lands overlap on 0.90 mm pitch on every layer. The old 0.90 mm
+# lands were tangent on unused layers; minimum connection width now rejects it.
+for x in [100.55,101.45]:via('SEC_A',(x,107.138),1.0,.45)
 path('SEC_A',[pos('D2',2,0),(100.55,107.138),(101,107.138),(101.45,107.138),pos('D2',2,1)],width=1.1)
 path('+5V_ISO',[pos('D2',1),pos('C4',1)],width=1.5)
 path('+5V_ISO',[pos('D2',1),(97.025,111.12),(93.8,114.345),pos('C8',1)],width=1.5)
@@ -252,7 +255,7 @@ path('+5V_ISO',[pos('C4',1),(105.025,117.275),pos('C3',1)],width=1.5)
 path('+5V_ISO',[pos('C3',1),(107.5375,118.5),pos('R7',1)],width=1)
 path('+5V_ISO',[pos('C3',1),(103.8,127.7),pos('J2',1)],width=2)
 path('GND_ISO',[pos('T1',3),(98.169595,106.5)],width=1.5)
-for x in [97.269595,98.169595]:via('GND_ISO',(x,106.5),.9,.45)
+for x in [97.269595,98.169595]:via('GND_ISO',(x,106.5),1.0,.45)
 path('GND_ISO',[(97.269595,106.5),(98.169595,106.5)],width=1.3)
 
 # Ground pads join planes on their own side of the transformer. Thermal vias
@@ -378,10 +381,12 @@ project=json.loads(project_file.read_text())
 project.setdefault('erc',{}).setdefault('rule_severities',{})['four_way_junction']='error'
 # Treat the reviewed routing warning as a release error so it cannot recur silently.
 project['board']['design_settings']['rule_severities']['track_not_centered_on_via']='error'
+project['board']['design_settings']['rule_severities']['connection_width']='error'
 project['board']['design_settings']['rules'].update({
     'min_clearance':.2,'min_track_width':.2,'min_via_diameter':.6,
     'min_through_hole_diameter':.3,'min_copper_edge_clearance':.5,
-    'min_hole_clearance':.25,'min_hole_to_hole':.25,
+    'min_hole_clearance':.30,'min_hole_to_hole':.25,
+    'min_connection':.20,'min_via_annular_width':.15,'solder_mask_to_copper_clearance':.09,
     'min_text_height':1.0,'min_text_thickness':.15,'min_silk_clearance':.15})
 project['board']['design_settings']['defaults'].update({
     'silk_line_width':.15,'silk_text_size_h':1.0,'silk_text_size_v':1.0,'silk_text_thickness':.15})
@@ -390,3 +395,17 @@ project_file.write_text(json.dumps(project,indent=2))
 print(f'{out}: {len(fps)} footprints, {len(list(board.GetTracks()))} routes/vias')
 from models_3d import attach_models
 attach_models(out)
+# Refill the saved board after restoring project rules. A DRC-only refill is
+# in memory and must not substitute for current copper in the deliverable.
+project_bytes=project_file.read_bytes()
+# A fresh manager avoids the initial SaveBoard's cached default project.
+settings=pcb.SETTINGS_MANAGER()
+assert settings.LoadProject(str(project_file))
+saved=pcb.LoadBoard(str(out))
+saved.SetProject(settings.GetProject(str(project_file)))
+assert saved.GetDesignSettings().m_MinClearance==mm(.2)
+pcb.ZONE_FILLER(saved).Fill(saved.Zones())
+# Save only the board: a Python board save must not replace the project's
+# stricter DRC/ERC constraints with defaults.
+assert pcb.SaveBoard(str(out),saved,True)
+assert project_file.read_bytes()==project_bytes

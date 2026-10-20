@@ -1,0 +1,398 @@
+{
+  "revision": "A10-development",
+  "baseline_commit": "3b78238ea610fda599e0ad74c3479fc5de1ed315",
+  "status": "PASS",
+  "unchanged_inputs": [
+    "circuit.json",
+    "parts.json",
+    "requirements.json",
+    "layout.json",
+    "mechanical.json",
+    "magnetics.json",
+    "stackup.json"
+  ],
+  "changed_winding_parameters": [
+    "dOuter",
+    "terminalOffsets",
+    "traceS",
+    "viaPad"
+  ],
+  "unchanged_winding_width_turns_core_stack": true,
+  "unchanged_component_placements_values_and_non_T1_pads": true,
+  "unchanged_via_positions_drills_and_board_cutouts": true,
+  "enlarged_secondary_via_lands": [
+    {
+      "net": "/GND_ISO",
+      "position_mm": [
+        97.269595,
+        101.5
+      ],
+      "old_land_mm": 0.9,
+      "new_land_mm": 1.0,
+      "drill_mm": 0.45
+    },
+    {
+      "net": "/GND_ISO",
+      "position_mm": [
+        98.169595,
+        101.5
+      ],
+      "old_land_mm": 0.9,
+      "new_land_mm": 1.0,
+      "drill_mm": 0.45
+    },
+    {
+      "net": "/SEC_A",
+      "position_mm": [
+        100.55,
+        102.138
+      ],
+      "old_land_mm": 0.9,
+      "new_land_mm": 1.0,
+      "drill_mm": 0.45
+    },
+    {
+      "net": "/SEC_A",
+      "position_mm": [
+        101.45,
+        102.138
+      ],
+      "old_land_mm": 0.9,
+      "new_land_mm": 1.0,
+      "drill_mm": 0.45
+    }
+  ],
+  "terminal_positions_mm": {
+    "1": {
+      "before": [
+        103.121064,
+        71.863151
+      ],
+      "after": [
+        103.627864,
+        71.592497
+      ]
+    },
+    "2": {
+      "before": [
+        96.878936,
+        71.863151
+      ],
+      "after": [
+        96.372136,
+        71.592497
+      ]
+    },
+    "3": {
+      "before": [
+        98.428916,
+        98.497137
+      ],
+      "after": [
+        98.207317,
+        98.706478
+      ]
+    },
+    "4": {
+      "before": [
+        100.8,
+        94.572162
+      ],
+      "after": [
+        100.875,
+        94.505543
+      ]
+    },
+    "5": {
+      "before": [
+        100.0,
+        75.35
+      ],
+      "after": [
+        100.0,
+        75.4
+      ]
+    }
+  },
+  "removed_tracks": [
+    [
+      "/GND_ISO",
+      0,
+      1500000,
+      [
+        [
+          98169595,
+          101500000
+        ],
+        [
+          98428916,
+          98497137
+        ]
+      ]
+    ],
+    [
+      "/SEC_A",
+      6,
+      600000,
+      [
+        [
+          100800000,
+          94572162
+        ],
+        [
+          100879968,
+          95568959
+        ]
+      ]
+    ],
+    [
+      "/SEC_A",
+      6,
+      1300000,
+      [
+        [
+          100879968,
+          95568959
+        ],
+        [
+          101075000,
+          98000000
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      600000,
+      [
+        [
+          96598293,
+          70903338
+        ],
+        [
+          96878936,
+          71863151
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      1200000,
+      [
+        [
+          94101500,
+          68530284
+        ],
+        [
+          96238745,
+          71094935
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      600000,
+      [
+        [
+          96238745,
+          71094935
+        ],
+        [
+          96878936,
+          71863151
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      800000,
+      [
+        [
+          96378023,
+          70150000
+        ],
+        [
+          96598293,
+          70903338
+        ]
+      ]
+    ],
+    [
+      "/VIN",
+      0,
+      1200000,
+      [
+        [
+          103121064,
+          71863151
+        ],
+        [
+          104600000,
+          71300000
+        ]
+      ]
+    ]
+  ],
+  "added_tracks": [
+    [
+      "/GND_ISO",
+      0,
+      1500000,
+      [
+        [
+          98169595,
+          101500000
+        ],
+        [
+          98207317,
+          98706478
+        ]
+      ]
+    ],
+    [
+      "/VIN",
+      0,
+      1200000,
+      [
+        [
+          103627864,
+          71592497
+        ],
+        [
+          104600000,
+          71300000
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      600000,
+      [
+        [
+          96372136,
+          71592497
+        ],
+        [
+          96376217,
+          70592505
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      600000,
+      [
+        [
+          95776513,
+          70789232
+        ],
+        [
+          96372136,
+          71592497
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      1200000,
+      [
+        [
+          94101500,
+          68530284
+        ],
+        [
+          95776513,
+          70789232
+        ]
+      ]
+    ],
+    [
+      "/SW",
+      0,
+      800000,
+      [
+        [
+          96376217,
+          70592505
+        ],
+        [
+          96378023,
+          70150000
+        ]
+      ]
+    ],
+    [
+      "/SEC_A",
+      6,
+      1300000,
+      [
+        [
+          100932139,
+          95503909
+        ],
+        [
+          101075000,
+          98000000
+        ]
+      ]
+    ],
+    [
+      "/SEC_A",
+      6,
+      600000,
+      [
+        [
+          100875000,
+          94505543
+        ],
+        [
+          100932139,
+          95503909
+        ]
+      ]
+    ]
+  ],
+  "local_pour_difference_mm2": 0.4344750943755,
+  "outside_envelope_rounding_residue_mm2": 1.16665e-08,
+  "magnetic_estimates": {
+    "Lm_uH": 13.12,
+    "before": {
+      "R1": 0.324189077931375,
+      "R2": 0.08020428340332657,
+      "leakage": 9.554753007073575e-08,
+      "capacitance": {
+        "pairs": [
+          {
+            "pair": "P \u2194 S",
+            "value": 2.3089077913407107e-11
+          }
+        ],
+        "value": 2.3089077913407107e-11,
+        "source": "estimate"
+      }
+    },
+    "after": {
+      "R1": 0.32985857527532897,
+      "R2": 0.08137692857918168,
+      "leakage": 9.172001559584181e-08,
+      "capacitance": {
+        "pairs": [
+          {
+            "pair": "P \u2194 S",
+            "value": 2.2125176139137575e-11
+          }
+        ],
+        "value": 2.2125176139137575e-11,
+        "source": "estimate"
+      }
+    }
+  },
+  "board_sha256": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
+  "scope": "Bounds intentional winding, T1 terminal and attached approach changes. Analytical estimates refreshed; no hardware qualification."
+}

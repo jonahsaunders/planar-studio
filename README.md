@@ -90,7 +90,7 @@ code** archives contain the repository, not a PCM installer.
 
 ## 5 W planar flyback example
 
-A9 corrects the SW-to-winding bridge found in A7 and the insufficient turn spacing retained in A8. It adds independent copper, current-path and Gerber checks. Use the A9 package and the [common PCB issues reference](docs/common-pcb-issues.md) when reviewing or editing the design.
+A10 retains the winding-short repair, increases measured turn gaps to about 0.289 mm, enlarges T1 annular rings and removes tangent secondary-via contacts. Independent geometry, connection-width and full copper/mask Gerber checks protect these changes. Use the A10 package and the [common PCB issues reference](docs/common-pcb-issues.md) when reviewing or editing the design.
 
 [![KiCad render of the assembled planar flyback converter](examples/planar-flyback-5w/evidence/audit/board-3d-assembled.png)](examples/planar-flyback-5w/README.md)
 
@@ -103,7 +103,7 @@ JLCPCB-managed panelization.
 and magnetic qualification remain open.
 
 [Explore the board and schematic](examples/planar-flyback-5w/README.md)
-· [Review package](examples/PS-FLYBACK-5W-A9-review-package.zip)
+· [Review package](examples/PS-FLYBACK-5W-A10-review-package.zip)
 · [Validation record](examples/planar-flyback-5w/VALIDATION.md)
 
 ## 60 W GaN planar LLC example
