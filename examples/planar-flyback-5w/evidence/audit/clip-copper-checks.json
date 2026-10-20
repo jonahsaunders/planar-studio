@@ -16,34 +16,34 @@
   ],
   "includes_pair_xy_float_mm": 0.5,
   "scope": "Conservative projection including hooks above/below the board; no soldermask insulation credit. Spring opening/retention force remains a first-article check.",
-  "minimum_copper_clearance_mm": 0.7981414794921875,
+  "minimum_copper_clearance_mm": 0.8104896545410156,
   "layers": [
     {
       "layer": "F.Cu",
-      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+      "minimum_projected_copper_clearance_mm": 0.8147296905517578
     },
     {
       "layer": "In1.Cu",
-      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+      "minimum_projected_copper_clearance_mm": 0.8147296905517578
     },
     {
       "layer": "In2.Cu",
-      "minimum_projected_copper_clearance_mm": 9.953271865844727
+      "minimum_projected_copper_clearance_mm": 10.168025970458984
     },
     {
       "layer": "In3.Cu",
-      "minimum_projected_copper_clearance_mm": 10.303260803222656
+      "minimum_projected_copper_clearance_mm": 10.168025970458984
     },
     {
       "layer": "In4.Cu",
-      "minimum_projected_copper_clearance_mm": 0.8020839691162109
+      "minimum_projected_copper_clearance_mm": 0.8147296905517578
     },
     {
       "layer": "B.Cu",
-      "minimum_projected_copper_clearance_mm": 0.7981414794921875
+      "minimum_projected_copper_clearance_mm": 0.8104896545410156
     }
   ],
   "source_SHA256": {
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "9e2130b462380668798bb987b734bdd7da4665b228b5a0564f432b689f4d8f85"
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "2221610ae6b8befe986ba66ce190908d62deeb62cf8a2df79d7cffe30bcdacfb"
   }
 }

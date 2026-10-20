@@ -13,9 +13,11 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--kicad-cli', default=os.environ.get('KICAD_CLI', 'kicad-cli'))
 parser.add_argument('--node', default='node')
 parser.add_argument('--kicad-python', default=sys.executable, help='KiCad Python executable or wrapper')
-parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding; default retains the validated A4 magnetic geometry')
+parser.add_argument('--regenerate-magnetics', action='store_true', help='Explicitly regenerate core and winding from the A9 clearance specification')
 parser.add_argument('--cadquery-python', required=True, help='Python with cadquery 2.6.1 or 2.7.0, pygerber==2.4.3 and Pillow')
+parser.add_argument('--geometry-python', help='Python with Shapely 2.2; defaults to --cadquery-python')
 args = parser.parse_args()
+args.geometry_python = args.geometry_python or args.cadquery_python
 # Use the same text encoding in child tools on Windows as in the repository.
 os.environ.setdefault('PYTHONUTF8', '1')
 os.environ.setdefault('KICAD_CONFIG_HOME', str(R / '.kicad-config'))
@@ -48,7 +50,11 @@ py('verify-silkscreen.py')
 # Historical revision checks remain evidence for their original boards.
 py('verify-winding-clearance.py')
 py('test-winding-clearance.py')
-py('verify-a8-revision.py')
+py('verify-winding-integrity.py')
+py('test-winding-integrity.py')
+py('verify-a9-revision.py')
+py('export-copper-geometry.py')
+run(args.geometry_python, R/'scripts/audit-winding-topology.py')
 py('verify-default-stack.py')
 py('verify-clip-copper.py')
 py('verify-3d-models.py')
@@ -69,6 +75,8 @@ py('manufacturing-data.py')
 # Calculations and CSV exports are inputs to the feedback provenance record.
 # Normalize them before recording hashes so Windows publication stays exact.
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
+# Gerber line endings are now final; capture the exact published file hashes.
+run(args.kicad_python, R/'scripts/verify-winding-integrity.py', '--gerbers', R/'manufacturing/gerbers')
 py('audit-snubber.py')
 py('verify-placement.py')
 py('render-placement.py')
@@ -84,6 +92,7 @@ for output, layers in [('evidence/board.svg', 'F.Cu,F.Silkscreen,Edge.Cuts'),
         '--exclude-drawing-sheet', '--layers', layers, '-o', output, pcb)
 py('render-layout.py')
 py('render-winding-repair.py')
+py('render-turn-spacing.py')
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 run(sys.executable, R / 'scripts/render-3d.py', '--kicad-cli', args.kicad_cli)
 run(args.cadquery_python, R / 'scripts/audit-renders.py', '--skip-3d', '--kicad-cli', args.kicad_cli)
@@ -93,9 +102,9 @@ run(sys.executable, R / 'scripts/check-manifest.py', '--write')
 # Refresh derived HTML and review archive without leaving stale generated files.
 with tempfile.TemporaryDirectory(dir=R.parent, prefix='flyback-package-') as temp:
     run(sys.executable, R / 'scripts/package-project.py', '--output', temp)
-    package = Path(temp) / 'PS-FLYBACK-5W-A8'
-    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A8-review-package.zip', R.parent / 'PS-FLYBACK-5W-A8-review-package.zip')
-    for file in [package / 'report.html', *list((package / 'manufacturing').glob('*.html')),
+    package = Path(temp) / 'PS-FLYBACK-5W-A9'
+    shutil.copy2(Path(temp) / 'PS-FLYBACK-5W-A9-review-package.zip', R.parent / 'PS-FLYBACK-5W-A9-review-package.zip')
+    for file in [package / 'report.html', package/'COMMON-ISSUES.html', *list((package / 'manufacturing').glob('*.html')),
                  package / 'manufacturing/core-assembly.svg', package / 'manufacturing/GERBERS-REVIEW-ONLY.zip']:
         shutil.copy2(file, R / file.relative_to(package))
 run(sys.executable, R / 'scripts/check-manifest.py', '--write')

@@ -10,12 +10,16 @@ const {exportKicadPcb,exportSvg}=await import(new URL('web/js/engine/exporters.j
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const stack=JSON.parse(fs.readFileSync(path.join(root,'stackup.json'),'utf8'));
 const mag=JSON.parse(fs.readFileSync(path.join(root,'magnetics.json'),'utf8'));
+const clearance=JSON.parse(fs.readFileSync(path.join(root,'winding-clearance.json'),'utf8'));
 const cfg={...defaults(),...corePresetPatch(mag.core_preset),
   coreClearance:mag.core_clearance_mm,viaPad:.6,viaDrill:.3,
   primaryTurns:2,secondaryTurns:2,stackPlan:'P,S,S,P',
   copperLayers:'F.Cu,In1.Cu,In4.Cu,B.Cu',layerPositions:stack.winding_centers_relative_top_center_mm.join(','),
-  dOuter:13.6,traceW:0.6,traceS:0.2,copperOz:stack.winding_model_copper_mm/0.035,
-  windingOptions:{P:{width:.6,connection:'series'},S:{width:.6,connection:'parallel'}},
+  // Nominal pitch spacing needs margin at sloped corners; the saved-board
+  // integrity check measures actual copper. See COMMON-ISSUES.md.
+  dOuter:13.6,traceW:clearance.winding_width_mm,traceS:clearance.generator_spacing_mm,copperOz:stack.winding_model_copper_mm/0.035,
+  terminalOffsets:{'P:0':clearance.primary_terminal_radial_offset_mm,'P:2':clearance.primary_terminal_radial_offset_mm},
+  windingOptions:{P:{width:clearance.winding_width_mm,connection:'series'},S:{width:clearance.winding_width_mm,connection:'parallel'}},
   driveMode:'current',operatingLinked:false,coreVoltage:1,current:1,secondaryCurrent:1,
   coreLossModel:'density',coreLossDensity:0,freq:200000,tempC:60,
   dielectricEr:stack.winding_model_dielectric_er,boardT:stack.nominal_order_thickness_mm,

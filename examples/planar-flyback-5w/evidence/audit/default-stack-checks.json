@@ -1,5 +1,5 @@
 {
-  "revision": "A8-development",
+  "revision": "A9-development",
   "baseline_commit": "81d4d69b00f03c73f7c4649d1f1d6e00366bb0ff",
   "ordering": {
     "layers": 6,
@@ -9,13 +9,16 @@
     "specify_stackup": false,
     "impedance_control": false
   },
-  "unchanged_electrical_topology_and_2D_winding_artwork": true,
+  "unchanged_electrical_topology_and_core_slots": true,
+  "winding_spacing_and_terminals_updated_in_A9": true,
   "R6_procurement_rating_and_footprint_updated": true,
   "R7_preload_updated_in_A6": true,
   "R1_procurement_updated_in_A7": true,
   "changed_winding_parameters": [
     "dielectricEr",
-    "layerPositions"
+    "layerPositions",
+    "terminalOffsets",
+    "traceS"
   ],
   "reference_stack_total_mm": 1.609,
   "reference_winding_centers_mm": [
@@ -40,17 +43,17 @@
     }
   },
   "new": {
-    "R1": 0.3249318107348425,
-    "R2": 0.08051597992901575,
-    "leakage": 1.0178193946652876e-07,
+    "R1": 0.324189077931375,
+    "R2": 0.08020428340332657,
+    "leakage": 9.554753007073575e-08,
     "capacitance": {
       "pairs": [
         {
           "pair": "P \u2194 S",
-          "value": 2.462748413683106e-11
+          "value": 2.3089077913407107e-11
         }
       ],
-      "value": 2.462748413683106e-11,
+      "value": 2.3089077913407107e-11,
       "source": "estimate"
     }
   },
@@ -58,10 +61,10 @@
   "source_SHA256": {
     "stackup.json": "2f331ca127e63a80d2d7f918967b87f2ed635c81f6946c7d26b8289cc08d8cd5",
     "sources/jlcpcb-default-1oz-stack.json": "c815227d6995aed76a7464aeef91de628f49bd5d26b9d872a81b8ece59487c55",
-    "planar-studio/T1-config.json": "2c3bf9d3660202a53d9d920cdc5253124f72e7a8d78415aa07b73df319e548a3",
-    "planar-studio/T1-artwork.json": "6a61277c70d829a54512c0f90c6464fe8e5f1b0c577a588786d6b72c0e077b0f",
-    "evidence/winding-model.json": "a56d4b70716da6ccdc492ba4110d19c67dbe58223ed13f272899e7a29f248b51",
-    "kicad/PS-FLYBACK-5W.kicad_pcb": "9e2130b462380668798bb987b734bdd7da4665b228b5a0564f432b689f4d8f85",
-    "scripts/verify-default-stack.py": "2e533c72eea60b3b58a2d31e8c6f8522723855d96509febeb37675b0448c1f0f"
+    "planar-studio/T1-config.json": "25c265418feca258bd934de780deb36f2734f1e865c649e807c1d084572d849d",
+    "planar-studio/T1-artwork.json": "2c9c47865ae1915cf73f18ebcd4550a2b3aa4fefa16efb27ce7e18bd90deb9b5",
+    "evidence/winding-model.json": "e70851f71f56718a215dc344f91a530139281c544bc396c860bcce70b33bb4e0",
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "2221610ae6b8befe986ba66ce190908d62deeb62cf8a2df79d7cffe30bcdacfb",
+    "scripts/verify-default-stack.py": "450d2f05dbd75369334e2a23cf880288d3eef879fe8e66604b0c3ed19c1be002"
   }
 }
