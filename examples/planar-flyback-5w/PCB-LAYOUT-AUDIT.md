@@ -134,3 +134,7 @@ the board fix tight-crop artifacts without changing fabrication files.
 Evidence is a snapshot. Regenerate it and review images after future geometry
 edits. Historical `schematic-layout-checks.json` and `3d-revision-checks.json`
 describe earlier revisions, not this routing change.
+
+## Current successor
+
+A10 supersedes this historical revision. See [the A10 clearance revision](CLEARANCE-A10-REVISION.md), [current validation](VALIDATION.md), and [common issues](COMMON-ISSUES.md). Current route metrics are regenerated for A10; historical before/after reports remain identified by their source hashes.

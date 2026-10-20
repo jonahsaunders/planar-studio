@@ -1,5 +1,5 @@
 """Create JLCPCB review schedules from the final board and exported positions."""
-import csv,json
+import csv,hashlib,json,re
 from pathlib import Path
 import pcbnew as pcb
 from vendor.convert_position import convert_positions
@@ -62,9 +62,41 @@ assert 'C3.200' in npth
 mechanical=json.loads((R/'mechanical.json').read_text())
 expected_holes={f"X{h['x_mm']-ox:.1f}Y{oy-h['y_mm']:.1f}" for h in mechanical['holes']}
 assert {line for line in npth.splitlines() if line.startswith('X')}==expected_holes
+# Terminal positions move when winding spacing changes. Check actual exported
+# drill coordinates and diameters, not just the number of holes. KiCad emits
+# decimal millimetres rounded to three places in this project's drill files.
+def drill_hits(text):
+    assert 'METRIC' in text and 'G90' in text and 'absolute / metric / decimal' in text
+    tools={m[1]:float(m[2]) for m in re.finditer(r'^T(\d+)C([\d.]+)$',text,re.M)}
+    hits=[];tool=None
+    for line in text.splitlines():
+        if re.fullmatch(r'T\d+',line):tool=line[1:]
+        if line.startswith('X'):
+            m=re.fullmatch(r'X(-?[\d.]+)Y(-?[\d.]+)',line)
+            assert m and tool in tools,('Unsupported drill record',line)
+            hits.append((float(m[1]),float(m[2]),tools[tool]))
+    return hits
+expected_drills={'PTH':[],'NPTH':[]}
+for v in b.GetTracks():
+    if isinstance(v,pcb.PCB_VIA):expected_drills['PTH'].append((pcb.ToMM(v.GetPosition().x)-ox,oy-pcb.ToMM(v.GetPosition().y),pcb.ToMM(v.GetDrillValue())))
+for f in b.GetFootprints():
+    for p in f.Pads():
+        if not p.GetDrillSize().x:continue
+        assert p.GetDrillSize().x==p.GetDrillSize().y,'Slotted drill needs a geometry-aware export check'
+        expected_drills['NPTH' if p.GetAttribute()==pcb.PAD_ATTRIB_NPTH else 'PTH'].append((pcb.ToMM(p.GetPosition().x)-ox,oy-pcb.ToMM(p.GetPosition().y),pcb.ToMM(p.GetDrillSize().x)))
+for kind,text in [('PTH',drill),('NPTH',npth)]:
+    actual=drill_hits(text);assert len(actual)==len(expected_drills[kind])
+    for point in expected_drills[kind]:
+        match=next((hit for hit in actual if all(abs(a-b)<=.000501 for a,b in zip(point,hit))),None)
+        assert match is not None,('Missing/moved/resized exported drill',kind,point)
+        actual.remove(match)
+    assert not actual
 write('mounting-holes.csv',[{'Reference':h['ref'],'X_mm':h['x_mm']-ox,'Y_mm':oy-h['y_mm'],'Drill_mm':3.2,'Plated':'No','Fill':'No'} for h in mechanical['holes']])
 out={'BOM_electronic_references':len(bom),'CPL_references':len(cpl),'BOM_CPL_match':True,'SMD_components':sum(bool(f.GetAttributes() & pcb.FP_SMD) for f in b.GetFootprints() if f.GetReference() in expected),'THT_connectors':2,'core_sets_per_board':1,'filled_capped_holes':len(vias),'open_connector_holes':4,'copper_Gerbers':6,'coordinate_origin':'Bottom-left board datum; X right/Y up','connector_CPL_origin':'Exact catalog pin-row midpoint; openings outward; see PLACEMENT-REVIEW.md','release_status':'Supplier review only; no manufacturing approval'}
 out.update({'nonplated_M3_mounting_holes':4,'mounting_holes_match_drill_coordinates':True,'mounting_holes_excluded_from_BOM_CPL':True,'CPL_converter':'KiStack convert_position.py, upstream commit 8494dbd; reviewed exact-part frame corrections applied first'})
 out['placement_review']='sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required'
+out['native_to_exported_drill_matches']={kind:len(points) for kind,points in expected_drills.items()}
+out['drill_coordinate_and_diameter_tolerance_mm']=.000501
+out['source_SHA256']={str(f.relative_to(R)).replace('\\','/'):hashlib.sha256(f.read_bytes()).hexdigest() for f in [R/'kicad/PS-FLYBACK-5W.kicad_pcb',M/'gerbers/PS-FLYBACK-5W-PTH.drl',M/'gerbers/PS-FLYBACK-5W-NPTH.drl']}
 (R/'evidence/manufacturing-checks.json').write_text(json.dumps(out,indent=2))
 print(json.dumps(out,indent=2))

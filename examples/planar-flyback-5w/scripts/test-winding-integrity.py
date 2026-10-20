@@ -21,7 +21,7 @@ class WindingIntegrity(unittest.TestCase):
         self.front=next(g for g in t1.GraphicalItems() if isinstance(g,pcb.PCB_SHAPE) and g.GetLayer()==pcb.F_Cu)
 
     def test_current_copper_passes(self):
-        self.assertEqual(check.inspect(self.board,self.art)['status'],'PASS')
+        self.assertEqual(check.inspect(self.board,self.art,.26)['status'],'PASS')
 
     def test_old_0p191mm_gap_fails_all_four_layers(self):
         def old(name):return subprocess.check_output(['git','show',f'{BASE}:examples/planar-flyback-5w/{name}'],cwd=ROOT)
@@ -31,6 +31,15 @@ class WindingIntegrity(unittest.TestCase):
         self.assertEqual({v['layer'] for v in result['violations']},check.LAYERS)
         for layer in result['layers'].values():
             self.assertLess(layer['saved_polygon_gap_at_tightest_pair_mm'],.192)
+
+    def test_a9_gap_fails_new_0p26mm_requirement(self):
+        commit='3b78238ea610fda599e0ad74c3479fc5de1ed315'
+        def old(name):return subprocess.check_output(['git','show',f'{commit}:examples/planar-flyback-5w/{name}'],cwd=ROOT)
+        with tempfile.TemporaryDirectory() as temp:
+            file=Path(temp)/'A9.kicad_pcb';file.write_bytes(old('kicad/PS-FLYBACK-5W.kicad_pcb'))
+            result=check.inspect(pcb.LoadBoard(str(file)),json.loads(old('planar-studio/T1-artwork.json')),.26)
+        self.assertEqual({v['layer'] for v in result['violations']},check.LAYERS)
+        self.assertTrue(all(r['saved_polygon_gap_at_tightest_pair_mm']<.25 for r in result['layers'].values()))
 
     def test_extra_copper_cannot_hide_behind_centerline_containment(self):
         poly=pcb.SHAPE_POLY_SET(self.front.GetPolyShape())

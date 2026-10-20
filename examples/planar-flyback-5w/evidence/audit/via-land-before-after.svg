@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="360" viewBox="0 0 1080 360" role="img" aria-label="Two 0.9 mm via lands on 0.9 mm pitch just touch; 1.0 mm lands overlap with a 0.436 mm neck.">
+<rect width="1080" height="360" rx="16" fill="#101c2a"/><g font-family="Segoe UI,Arial" fill="#eef4fc">
+<text x="34" y="42" font-size="23" font-weight="600">A9: point contact</text><text x="574" y="42" font-size="23" font-weight="600">A10: wider lands</text>
+<g fill="#e9a345" stroke="#f7c77e" stroke-width="1"><circle cx="192" cy="175" r="72"/><circle cx="336" cy="175" r="72"/><circle cx="732" cy="175" r="80"/><circle cx="876" cy="175" r="80"/></g>
+<g fill="#101c2a" stroke="#aac0d6" stroke-width="1"><circle cx="192" cy="175" r="36"/><circle cx="336" cy="175" r="36"/><circle cx="732" cy="175" r="36"/><circle cx="876" cy="175" r="36"/></g>
+<path d="M264 90 L264 164" stroke="#ff7a78" stroke-width="3"/><circle cx="264" cy="175" r="8" fill="none" stroke="#ff7a78" stroke-width="3"/>
+<path d="M804 140 L804 210 M798 140 L810 140 M798 210 L810 210" stroke="#56d2b0" stroke-width="3"/>
+<text x="34" y="285" font-size="19">Land Ø0.90 mm • pitch 0.90 mm</text><text x="574" y="285" font-size="19">Land Ø1.00 mm • pitch unchanged</text>
+<text x="34" y="318" font-size="17" fill="#bdccdc">No finite-width neck between ideal circles</text><text x="574" y="318" font-size="17" fill="#bdccdc">Nominal overlap neck ≈0.436 mm</text>
+<text x="34" y="343" font-size="14" fill="#8fa6bd">Both: Ø0.45 mm drills. Plan view of a layer without an added connecting track.</text></g></svg>

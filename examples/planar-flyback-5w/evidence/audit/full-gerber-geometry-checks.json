@@ -1,0 +1,56 @@
+{
+  "board_sha256": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
+  "envelope_tolerance_mm": 0.0003,
+  "layers": {
+    "F.Cu": {
+      "gerber_sha256": "7829ed7c15d9ea04eda3679617ca02634a42f44331cd1971e9f6ac8ab455600a",
+      "commands": 187,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "B.Cu": {
+      "gerber_sha256": "f29aa85aa1577e8bb7edc909b00aff7505276a2b2d29fc579a66e0a78a97db54",
+      "commands": 73,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "In1.Cu": {
+      "gerber_sha256": "c83a89364c761d2d79336180d19538fca9481071d2fdff2b96ea53340f7e5a2e",
+      "commands": 71,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "In2.Cu": {
+      "gerber_sha256": "daf5865728ba9034e22427058f326e91e6b8669939eb7bbe92953154543af8d6",
+      "commands": 75,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "In3.Cu": {
+      "gerber_sha256": "1360d9fba3c409328105997930d1f2dda3244f6446c7e7559494d80c36999d60",
+      "commands": 80,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "In4.Cu": {
+      "gerber_sha256": "5101e70ba6817369e6213aeff69eb55d805c3a45c3196d594fd5763ea4939ddd",
+      "commands": 71,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "F.Mask": {
+      "gerber_sha256": "54a01635d7fb7156de25e0249a03ea0de518d6555670a9b96df2eddc1a42cb36",
+      "commands": 70,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    },
+    "B.Mask": {
+      "gerber_sha256": "9dc5b7c5aa51ca075f00028b9739b5a37746a9244c57b6b9c79e0bb0bb224f50",
+      "commands": 16,
+      "extra_outside_envelope_mm2": 0.0,
+      "missing_outside_envelope_mm2": 0.0
+    }
+  },
+  "scope": "All six copper layers and both solder-mask exports equal native geometry within a 0.0003 mm approximation envelope; unsupported Gerber primitives fail closed. Circle approximation 1024 vertices. Does not verify delivered manufacturing tolerances.",
+  "status": "PASS"
+}

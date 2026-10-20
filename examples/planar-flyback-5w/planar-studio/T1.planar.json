@@ -47,8 +47,8 @@
     "prototypeName": "",
     "windingNets": {},
     "terminalOffsets": {
-      "P:0": 0.1,
-      "P:2": 0.1
+      "P:0": 0.3,
+      "P:2": 0.3
     },
     "placementRotation": 0,
     "placementGrid": 0.5,
@@ -132,7 +132,7 @@
     "layerPositions": "0,0.2355,1.3385,1.574",
     "secondary2Turns": 3,
     "secondary3Turns": 3,
-    "viaPad": 0.6,
+    "viaPad": 0.7,
     "viaDrill": 0.3,
     "coreShape": "rectangular",
     "corePostW": 5.1,
@@ -151,9 +151,9 @@
     "shape": "polygon",
     "primaryTurns": 2,
     "secondaryTurns": 2,
-    "dOuter": 13.6,
+    "dOuter": 13.9,
     "traceW": 0.6,
-    "traceS": 0.25,
+    "traceS": 0.3,
     "boardT": 1.6,
     "copperOz": 0.857142857142857,
     "tempC": 60,

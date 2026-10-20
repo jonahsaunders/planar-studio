@@ -167,5 +167,6 @@ args.output.write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')
 
 assert not unexpected and not missing and not opens, 'Unexpected physical connectivity'
 assert all(not r['bypasses'] for r in report['cut_tests'].values()), 'Winding bypass detected'
-assert all(r['saved_polygon_local_gap_mm']>=.20 for r in report['layers'].values()), 'Turn spacing below minimum'
+minimum=json.loads((ROOT/'winding-clearance.json').read_text())['minimum_finished_copper_gap_mm']
+assert all(r['saved_polygon_local_gap_mm']>=minimum for r in report['layers'].values()), 'Turn spacing below minimum'
 print('All six-layer physical connectivity and virtual-cut checks passed.')

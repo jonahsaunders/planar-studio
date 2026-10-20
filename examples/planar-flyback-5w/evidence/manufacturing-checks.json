@@ -15,5 +15,15 @@
   "mounting_holes_match_drill_coordinates": true,
   "mounting_holes_excluded_from_BOM_CPL": true,
   "CPL_converter": "KiStack convert_position.py, upstream commit 8494dbd; reviewed exact-part frame corrections applied first",
-  "placement_review": "sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required"
+  "placement_review": "sources/placement-library.json; evidence/audit/placement-checks.json; fresh JLCPCB preview still required",
+  "native_to_exported_drill_matches": {
+    "PTH": 70,
+    "NPTH": 4
+  },
+  "drill_coordinate_and_diameter_tolerance_mm": 0.000501,
+  "source_SHA256": {
+    "kicad/PS-FLYBACK-5W.kicad_pcb": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
+    "manufacturing/gerbers/PS-FLYBACK-5W-PTH.drl": "00e19d116ca60051ac174d4be58cbb05c82abe1b641b668ee77bf57a63421c5b",
+    "manufacturing/gerbers/PS-FLYBACK-5W-NPTH.drl": "9d6d514b9a038e490a3db289178f620b0193e7c9bfb41a85303a4508cc340839"
+  }
 }

@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "violations": [],
+  "constraints_mm": {
+    "min_connection": 0.2,
+    "min_via_annular_width": 0.15,
+    "min_hole_clearance": 0.3,
+    "solder_mask_to_copper_clearance": 0.09
+  },
+  "T1_annular_rings": [
+    {
+      "pad": "1",
+      "annular_ring_mm": 0.2
+    },
+    {
+      "pad": "2",
+      "annular_ring_mm": 0.2
+    },
+    {
+      "pad": "3",
+      "annular_ring_mm": 0.2
+    },
+    {
+      "pad": "4",
+      "annular_ring_mm": 0.2
+    },
+    {
+      "pad": "5",
+      "annular_ring_mm": 0.2
+    }
+  ],
+  "paired_vias": [
+    {
+      "net": "/SEC_A",
+      "positions_mm": [
+        [
+          100.55,
+          102.138
+        ],
+        [
+          101.45,
+          102.138
+        ]
+      ],
+      "land_diameters_mm": [
+        1.0,
+        1.0
+      ],
+      "pitch_mm": 0.9000000000000057,
+      "analytic_overlap_neck_mm": 0.43588989435405556
+    },
+    {
+      "net": "/GND_ISO",
+      "positions_mm": [
+        [
+          97.269595,
+          101.5
+        ],
+        [
+          98.169595,
+          101.5
+        ]
+      ],
+      "land_diameters_mm": [
+        1.0,
+        1.0
+      ],
+      "pitch_mm": 0.9000000000000057,
+      "analytic_overlap_neck_mm": 0.43588989435405556
+    }
+  ],
+  "board_sha256": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
+  "project_sha256": "355f61cd8cd5a2bf4d85c68b75edcf34c81455292b5b35628c9b21cb411ab920",
+  "scope": "Enforces nonzero project constraints, T1 annular margin and explicit paired-via overlap; native DRC checks all other copper connections."
+}

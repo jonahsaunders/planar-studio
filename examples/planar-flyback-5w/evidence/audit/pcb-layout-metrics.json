@@ -1,5 +1,5 @@
 {
-  "board_sha256": "861d3217f71628ad30748050abc53af71862a964d0468fd5311ebc4912f6bd55",
+  "board_sha256": "261ad0ae9024329a689f0f05fa39ec00d0af680552095e9dc1e23d39ae968b53",
   "method": "Shortest explicit trace centerline paths, split at collinear endpoints (2 nm tolerance). Through vias and plated pads join layers at zero vertical length. No pad-spreading shortcuts.",
   "scope": "Geometry only; excludes winding length, component internals, plane spreading, via barrel length, parasitic extraction and measured performance.",
   "routes": [
@@ -7,35 +7,40 @@
       "from": "C2.1",
       "to": "T1.1",
       "net": "/VIN",
-      "routed_centerline_mm": 6.7,
-      "straight_pad_distance_mm": 5.3452,
+      "routed_centerline_mm": 18.5615,
+      "straight_pad_distance_mm": 6.1288,
       "minimum_track_width_mm": 1.2,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
           "x_mm": 104.0,
-          "y_mm": 60.475
+          "y_mm": 65.475
         },
         {
           "layer": "F.Cu",
-          "x_mm": 104.0,
-          "y_mm": 61.9375
+          "x_mm": 109.8,
+          "y_mm": 65.475
         },
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.4
+          "x_mm": 110.45,
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.966284
+          "x_mm": 110.45,
+          "y_mm": 71.3
         },
         {
           "layer": "F.Cu",
-          "x_mm": 103.621977,
-          "y_mm": 65.806807
+          "x_mm": 104.6,
+          "y_mm": 71.3
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 103.627864,
+          "y_mm": 71.592497
         }
       ]
     },
@@ -51,17 +56,17 @@
         {
           "layer": "F.Cu",
           "x_mm": 86.975,
-          "y_mm": 60.635
+          "y_mm": 65.635
         },
         {
           "layer": "F.Cu",
           "x_mm": 86.975,
-          "y_mm": 59.635
+          "y_mm": 64.635
         },
         {
           "layer": "F.Cu",
           "x_mm": 88.8985,
-          "y_mm": 59.635
+          "y_mm": 64.635
         }
       ]
     },
@@ -69,25 +74,30 @@
       "from": "U1.5",
       "to": "T1.2",
       "net": "/SW",
-      "routed_centerline_mm": 5.8448,
-      "straight_pad_distance_mm": 5.4047,
-      "minimum_track_width_mm": 1.2,
+      "routed_centerline_mm": 6.4375,
+      "straight_pad_distance_mm": 6.124,
+      "minimum_track_width_mm": 0.6,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
           "x_mm": 94.1015,
-          "y_mm": 60.905
+          "y_mm": 65.905
         },
         {
           "layer": "F.Cu",
           "x_mm": 94.1015,
-          "y_mm": 63.530284
+          "y_mm": 68.530284
         },
         {
           "layer": "F.Cu",
-          "x_mm": 96.378023,
-          "y_mm": 65.806807
+          "x_mm": 95.776513,
+          "y_mm": 70.789232
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 96.372136,
+          "y_mm": 71.592497
         }
       ]
     },
@@ -95,40 +105,45 @@
       "from": "T1.2",
       "to": "D3.2",
       "net": "/SW",
-      "routed_centerline_mm": 6.6222,
-      "straight_pad_distance_mm": 5.8405,
-      "minimum_track_width_mm": 0.8,
+      "routed_centerline_mm": 7.4079,
+      "straight_pad_distance_mm": 6.4785,
+      "minimum_track_width_mm": 0.6,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
-          "x_mm": 96.378023,
-          "y_mm": 65.806807
+          "x_mm": 96.372136,
+          "y_mm": 71.592497
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 96.376217,
+          "y_mm": 70.592505
         },
         {
           "layer": "F.Cu",
           "x_mm": 96.378023,
-          "y_mm": 65.15
+          "y_mm": 70.15
         },
         {
           "layer": "F.Cu",
           "x_mm": 98.128023,
-          "y_mm": 63.4
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
           "x_mm": 99.05,
-          "y_mm": 63.4
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
           "x_mm": 99.05,
-          "y_mm": 62.175
+          "y_mm": 67.175
         },
         {
           "layer": "F.Cu",
           "x_mm": 100.0,
-          "y_mm": 61.225
+          "y_mm": 66.225
         }
       ]
     },
@@ -136,30 +151,30 @@
       "from": "D3.1",
       "to": "D4.1",
       "net": "/CLAMP",
-      "routed_centerline_mm": 9.1036,
-      "straight_pad_distance_mm": 9.0001,
+      "routed_centerline_mm": 13.6036,
+      "straight_pad_distance_mm": 13.5001,
       "minimum_track_width_mm": 0.6,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
           "x_mm": 100.0,
-          "y_mm": 58.85
+          "y_mm": 63.85
         },
         {
           "layer": "F.Cu",
           "x_mm": 100.15,
-          "y_mm": 59.0
+          "y_mm": 64.0
         },
         {
           "layer": "F.Cu",
-          "x_mm": 108.9,
-          "y_mm": 59.0
+          "x_mm": 113.4,
+          "y_mm": 64.0
         },
         {
           "layer": "F.Cu",
-          "x_mm": 109.0,
-          "y_mm": 58.9
+          "x_mm": 113.5,
+          "y_mm": 63.9
         }
       ]
     },
@@ -167,35 +182,40 @@
       "from": "D4.2",
       "to": "T1.1",
       "net": "/VIN",
-      "routed_centerline_mm": 6.9138,
-      "straight_pad_distance_mm": 6.1133,
+      "routed_centerline_mm": 12.9332,
+      "straight_pad_distance_mm": 10.5401,
       "minimum_track_width_mm": 1.0,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
-          "x_mm": 109.0,
-          "y_mm": 62.9
+          "x_mm": 113.5,
+          "y_mm": 67.9
         },
         {
           "layer": "F.Cu",
-          "x_mm": 108.5,
-          "y_mm": 63.4
+          "x_mm": 112.5,
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.4
+          "x_mm": 110.45,
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.966284
+          "x_mm": 110.45,
+          "y_mm": 71.3
         },
         {
           "layer": "F.Cu",
-          "x_mm": 103.621977,
-          "y_mm": 65.806807
+          "x_mm": 104.6,
+          "y_mm": 71.3
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 103.627864,
+          "y_mm": 71.592497
         }
       ]
     },
@@ -203,30 +223,35 @@
       "from": "T1.2",
       "to": "C6.2",
       "net": "/SW",
-      "routed_centerline_mm": 4.0537,
-      "straight_pad_distance_mm": 3.5961,
-      "minimum_track_width_mm": 0.8,
+      "routed_centerline_mm": 4.8394,
+      "straight_pad_distance_mm": 4.1669,
+      "minimum_track_width_mm": 0.6,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
-          "x_mm": 96.378023,
-          "y_mm": 65.806807
+          "x_mm": 96.372136,
+          "y_mm": 71.592497
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 96.376217,
+          "y_mm": 70.592505
         },
         {
           "layer": "F.Cu",
           "x_mm": 96.378023,
-          "y_mm": 65.15
+          "y_mm": 70.15
         },
         {
           "layer": "F.Cu",
           "x_mm": 98.128023,
-          "y_mm": 63.4
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
           "x_mm": 99.05,
-          "y_mm": 63.4
+          "y_mm": 68.4
         }
       ]
     },
@@ -234,25 +259,30 @@
       "from": "R6.1",
       "to": "T1.1",
       "net": "/VIN",
-      "routed_centerline_mm": 3.1692,
-      "straight_pad_distance_mm": 3.0299,
+      "routed_centerline_mm": 9.7652,
+      "straight_pad_distance_mm": 7.5322,
       "minimum_track_width_mm": 1.2,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.4
+          "x_mm": 110.45,
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
-          "x_mm": 105.4625,
-          "y_mm": 63.966284
+          "x_mm": 110.45,
+          "y_mm": 71.3
         },
         {
           "layer": "F.Cu",
-          "x_mm": 103.621977,
-          "y_mm": 65.806807
+          "x_mm": 104.6,
+          "y_mm": 71.3
+        },
+        {
+          "layer": "F.Cu",
+          "x_mm": 103.627864,
+          "y_mm": 71.592497
         }
       ]
     },
@@ -260,20 +290,20 @@
       "from": "R6.2",
       "to": "C6.1",
       "net": "/SNUB",
-      "routed_centerline_mm": 1.5875,
-      "straight_pad_distance_mm": 1.5875,
+      "routed_centerline_mm": 3.0,
+      "straight_pad_distance_mm": 3.0,
       "minimum_track_width_mm": 0.6,
       "layer_transitions": 0,
       "path": [
         {
           "layer": "F.Cu",
-          "x_mm": 102.5375,
-          "y_mm": 63.4
+          "x_mm": 103.95,
+          "y_mm": 68.4
         },
         {
           "layer": "F.Cu",
           "x_mm": 100.95,
-          "y_mm": 63.4
+          "y_mm": 68.4
         }
       ]
     },
@@ -289,17 +319,17 @@
         {
           "layer": "F.Cu",
           "x_mm": 87.275,
-          "y_mm": 58.2
+          "y_mm": 63.2
         },
         {
           "layer": "F.Cu",
           "x_mm": 87.44,
-          "y_mm": 58.365
+          "y_mm": 63.365
         },
         {
           "layer": "F.Cu",
           "x_mm": 88.8985,
-          "y_mm": 58.365
+          "y_mm": 63.365
         }
       ]
     },
@@ -315,12 +345,12 @@
         {
           "layer": "F.Cu",
           "x_mm": 95.825,
-          "y_mm": 59.635
+          "y_mm": 64.635
         },
         {
           "layer": "F.Cu",
           "x_mm": 94.1015,
-          "y_mm": 59.635
+          "y_mm": 64.635
         }
       ]
     },
@@ -336,17 +366,17 @@
         {
           "layer": "F.Cu",
           "x_mm": 94.1015,
-          "y_mm": 58.365
+          "y_mm": 63.365
         },
         {
           "layer": "F.Cu",
           "x_mm": 95.26,
-          "y_mm": 58.365
+          "y_mm": 63.365
         },
         {
           "layer": "F.Cu",
           "x_mm": 95.825,
-          "y_mm": 57.8
+          "y_mm": 62.8
         }
       ]
     },
@@ -362,22 +392,22 @@
         {
           "layer": "F.Cu",
           "x_mm": 101.0,
-          "y_mm": 111.12
+          "y_mm": 106.12
         },
         {
           "layer": "F.Cu",
           "x_mm": 105.025,
-          "y_mm": 111.12
+          "y_mm": 106.12
         },
         {
           "layer": "F.Cu",
           "x_mm": 105.025,
-          "y_mm": 117.275
+          "y_mm": 112.275
         },
         {
           "layer": "F.Cu",
           "x_mm": 103.8,
-          "y_mm": 118.5
+          "y_mm": 113.5
         }
       ]
     },
@@ -393,12 +423,12 @@
         {
           "layer": "F.Cu",
           "x_mm": 101.0,
-          "y_mm": 111.12
+          "y_mm": 106.12
         },
         {
           "layer": "F.Cu",
           "x_mm": 105.025,
-          "y_mm": 111.12
+          "y_mm": 106.12
         }
       ]
     },
@@ -414,17 +444,17 @@
         {
           "layer": "F.Cu",
           "x_mm": 103.8,
-          "y_mm": 118.5
+          "y_mm": 113.5
         },
         {
           "layer": "F.Cu",
           "x_mm": 103.8,
-          "y_mm": 127.7
+          "y_mm": 122.7
         },
         {
           "layer": "F.Cu",
           "x_mm": 102.5,
-          "y_mm": 129.0
+          "y_mm": 124.0
         }
       ]
     },
@@ -440,22 +470,22 @@
         {
           "layer": "F.Cu",
           "x_mm": 88.0,
-          "y_mm": 46.85
+          "y_mm": 51.85
         },
         {
           "layer": "F.Cu",
           "x_mm": 88.0,
-          "y_mm": 48.5
+          "y_mm": 53.5
         },
         {
           "layer": "F.Cu",
           "x_mm": 93.925,
-          "y_mm": 48.5
+          "y_mm": 53.5
         },
         {
           "layer": "F.Cu",
           "x_mm": 95.425,
-          "y_mm": 47.0
+          "y_mm": 52.0
         }
       ]
     },
@@ -471,17 +501,17 @@
         {
           "layer": "F.Cu",
           "x_mm": 100.575,
-          "y_mm": 47.0
+          "y_mm": 52.0
         },
         {
           "layer": "F.Cu",
           "x_mm": 104.8,
-          "y_mm": 47.0
+          "y_mm": 52.0
         },
         {
           "layer": "F.Cu",
           "x_mm": 106.8,
-          "y_mm": 49.0
+          "y_mm": 54.0
         }
       ]
     },
@@ -497,40 +527,40 @@
         {
           "layer": "F.Cu",
           "x_mm": 101.0,
-          "y_mm": 111.12
+          "y_mm": 106.12
         },
         {
           "layer": "F.Cu",
           "x_mm": 97.025,
-          "y_mm": 111.12
+          "y_mm": 106.12
         },
         {
           "layer": "F.Cu",
           "x_mm": 93.8,
-          "y_mm": 114.345
+          "y_mm": 109.345
         },
         {
           "layer": "F.Cu",
           "x_mm": 93.8,
-          "y_mm": 118.5
+          "y_mm": 113.5
         }
       ]
     }
   ],
   "track_length_totals_by_net_and_layer_mm": {
     "/+5V_ISO / F.Cu": 41.4475,
-    "/CLAMP / F.Cu": 9.1036,
-    "/GND_ISO / F.Cu": 2.8087,
+    "/CLAMP / F.Cu": 13.6036,
+    "/GND_ISO / F.Cu": 3.6938,
     "/INTVCC / F.Cu": 1.6918,
     "/RFB / F.Cu": 1.7235,
     "/RREF / F.Cu": 8.9728,
     "/SEC_A / F.Cu": 1.84,
-    "/SEC_A / In2.Cu": 7.7226,
-    "/SNUB / F.Cu": 1.5875,
-    "/SW / F.Cu": 16.5774,
+    "/SEC_A / In2.Cu": 8.5941,
+    "/SNUB / F.Cu": 3.0,
+    "/SW / F.Cu": 17.9558,
     "/TC / F.Cu": 1.77,
     "/UVLO / F.Cu": 8.4501,
-    "/VIN / F.Cu": 23.0644,
+    "/VIN / F.Cu": 34.3494,
     "/VIN / In3.Cu": 36.7528,
     "/VIN_DAMP / F.Cu": 7.0534,
     "/VIN_FUSED / F.Cu": 4.796,
@@ -539,31 +569,39 @@
   "secondary_escape_note": "SEC_A escapes on In2.Cu to two parallel vias immediately above the rectifier anode pads. Pad/plane spreading is excluded from centerline metrics.",
   "return_planes": [
     {
-      "net": "/PGND",
-      "layer": "F.Cu",
-      "filled_area_mm2": 648.506
-    },
-    {
       "net": "/GND_ISO",
       "layer": "F.Cu",
-      "filled_area_mm2": 602.78
+      "filled_area_mm2": 596.869
+    },
+    {
+      "net": "/PGND",
+      "layer": "F.Cu",
+      "filled_area_mm2": 595.266
     },
     {
       "net": "/PGND",
       "layer": "B.Cu",
-      "filled_area_mm2": 842.554
+      "filled_area_mm2": 819.35
     },
     {
       "net": "/GND_ISO",
       "layer": "B.Cu",
-      "filled_area_mm2": 711.544
+      "filled_area_mm2": 705.307
     }
   ],
   "U1_exposed_pad_ground_vias": [
     {
       "position_mm": [
         92.3,
-        59.55
+        63.45
+      ],
+      "diameter_mm": 0.6,
+      "drill_mm": 0.3
+    },
+    {
+      "position_mm": [
+        90.7,
+        63.45
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3
@@ -571,7 +609,7 @@
     {
       "position_mm": [
         92.3,
-        58.45
+        64.55
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3
@@ -579,15 +617,7 @@
     {
       "position_mm": [
         90.7,
-        59.55
-      ],
-      "diameter_mm": 0.6,
-      "drill_mm": 0.3
-    },
-    {
-      "position_mm": [
-        90.7,
-        58.45
+        64.55
       ],
       "diameter_mm": 0.6,
       "drill_mm": 0.3

@@ -104,10 +104,10 @@
   "source_SHA256": {
     "parts.json": "be0f59a7d40339318f0cf5f275487e24df64afeee5fc8a456b6ff3b1b1afbb90",
     "circuit.json": "a97189bd721ff2796c9aa27c0b79ed963b475a4c2b74d3c3392dc4de2bfc7dc5",
-    "evidence/schematic-netlist.xml": "ab1e5face1e965a8b13f6c02c345653f9f0afdf3ef368ca5537495b946f53469",
+    "evidence/schematic-netlist.xml": "767a2d0b9178d116ed19cd6bb387d59abbc858eceb4d9a05f67f433b48a3c881",
     "evidence/electrical-sizing.json": "ff0144f5bda7c6c9b65453603c0f4ddc957811662cec70254fd6a972134ff5ef",
-    "evidence/operating-points.csv": "042b8ea9cbca86d0b7f5544b932121d10a9408742b74cdc2206d3c62c3253b73",
-    "evidence/winding-model.json": "e70851f71f56718a215dc344f91a530139281c544bc396c860bcce70b33bb4e0",
+    "evidence/operating-points.csv": "544d3183b2b72d27e6d16238e36696244110b4981e56d7f782d6c5272c935c5f",
+    "evidence/winding-model.json": "396c052d7906a29d0e07a8da72408b0e9db5541ac99519a2c903f6aa3ed3fa88",
     "scripts/audit-snubber.py": "ea8e35fa17a0e6841e844b774909959e804d86a2aa3c90eab2664bdfd018595d"
   }
 }
