@@ -1,0 +1,9 @@
+{
+  "revision": "A9-development",
+  "minimum_finished_copper_gap_mm": 0.2,
+  "generator_spacing_mm": 0.25,
+  "winding_width_mm": 0.6,
+  "primary_terminal_radial_offset_mm": 0.1,
+  "reason": "Generator spacing is nominal pitch minus width, not the minimum perpendicular copper gap at sloped rectangular-spiral corners. A8 measured about 0.191 mm with a 0.20 mm spacing setting. A9 adds spacing margin and moves the two outer primary terminals outward to preserve clearance on the opposite winding layer.",
+  "reference": "COMMON-ISSUES.md"
+}

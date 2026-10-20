@@ -25,16 +25,19 @@ class WindingClearance(unittest.TestCase):
     def test_corrected_board_and_intentional_terminal_contacts_pass(self):
         self.assertFalse(check.inspect(self.board)['violations'])
 
-    def test_original_width_short_is_rejected(self):
+    def test_wide_landing_short_is_rejected(self):
         track = self.approaches()[0]
-        track.SetWidth(pcb.FromMM(1.2))
+        track.SetWidth(pcb.FromMM(1.6))
         self.assertTrue(check.inspect(self.board)['violations'])
 
     def test_nonshorting_but_insufficient_clearance_is_rejected(self):
-        # 0.8 mm does not overlap, but leaves only about 0.125 mm clearance.
+        # Adapt to the current terminal position: retain a positive 0.10 mm
+        # gap at its end cap, below the required 0.20 mm.
+        winding=next(g for g in self.t1.GraphicalItems() if isinstance(g,pcb.PCB_SHAPE) and g.GetLayer()==pcb.F_Cu)
+        distance=pcb.ToMM(winding.GetEffectiveShape().Distance(self.pad.GetPosition()))
         for track in self.approaches():
             original = track.GetWidth()
-            track.SetWidth(pcb.FromMM(.8))
+            track.SetWidth(pcb.FromMM(2*(distance-.10)))
             self.assertTrue(check.inspect(self.board)['violations'])
             track.SetWidth(original)
 

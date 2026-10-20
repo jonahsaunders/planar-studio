@@ -4,6 +4,8 @@ The Transformer workspace combines a winding layout, a sinusoidal circuit and
 explicit engineering estimates. Old saved designs keep their previous family,
 DC-loss and supplied-leakage behavior until their settings are changed.
 
+Before integrating generated copper, read [common PCB issues](common-pcb-issues.md). Net-tie DRC does not prove winding topology, and nominal turn spacing must be checked against actual copper. The flyback example records both failures and the independent A9 checks.
+
 ## Project workflow additions
 
 1. **Nominal and experimental conditions.** New designs start linked to the

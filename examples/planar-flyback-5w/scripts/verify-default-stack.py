@@ -1,4 +1,4 @@
-"""Check the A4 default-stack handoff and retained winding against published A3."""
+"""Check the default stack, with A9's separately bounded winding-spacing update."""
 import hashlib,json,os,subprocess
 from pathlib import Path
 import pcbnew as pcb
@@ -27,7 +27,8 @@ for data in [stack['winding_centers_relative_top_center_mm'],list(map(float,cfg[
 assert model['manufacturingStack']==stack
 old_cfg=old('planar-studio/T1-config.json')
 changed={k for k in cfg.keys()|old_cfg.keys() if cfg.get(k)!=old_cfg.get(k)}
-assert changed=={'layerPositions','dielectricEr'},('Unexpected winding change',changed)
+assert changed=={'layerPositions','dielectricEr','traceS','terminalOffsets'},('Unexpected winding change',changed)
+assert cfg['traceS']==.25 and cfg['terminalOffsets']=={'P:0':.1,'P:2':.1}
 assert cfg['dielectricEr']==stack['winding_model_dielectric_er']==4.4
 before_circuit=old('circuit.json');after_circuit=read('circuit.json')
 for data in [before_circuit,after_circuit]:
@@ -37,20 +38,22 @@ for data in [before_circuit,after_circuit]:
         if part['ref']=='R1':
             for key in ['mpn','mfr','lcsc','source','purpose']:part.pop(key,None)
 assert before_circuit==after_circuit,'Unexpected circuit change beyond reviewed R1/R6/R7 updates'
-# A8 containment preserves the winding, components and stack; only two external SW necks change.
+# A9 containment independently bounds the turn spacing and terminal moves.
 before_art=old('planar-studio/T1-artwork.json');after_art=read('planar-studio/T1-artwork.json')
 before_art['meta'].pop('stack');after_art['meta'].pop('stack')
-assert before_art==after_art,'Two-dimensional winding/core-slot artwork changed'
+for key in before_art.keys()-{'tracks','pads','vias','ports','outline','labels'}:
+    assert before_art[key]==after_art[key],('Unexpected artwork metadata change',key)
+assert before_art['outline'][1:]==after_art['outline'][1:],'Core-slot artwork changed'
 before=old('evidence/winding-model.json')
 assert model['magnetizingInductance_H']==before['magnetizingInductance_H']
-assert abs(model['analysis']['R1']/before['analysis']['R1']-1)<.001
-assert model['analysis']['R2']==before['analysis']['R2']
+assert abs(model['analysis']['R1']/before['analysis']['R1']-1)<.01
+assert abs(model['analysis']['R2']/before['analysis']['R2']-1)<.01
 board=pcb.LoadBoard(str(R/'kicad/PS-FLYBACK-5W.kicad_pcb'))
-assert board.GetTitleBlock().GetRevision()=='A8-development'
+assert board.GetTitleBlock().GetRevision()=='A9-development'
 assert abs(pcb.ToMM(board.GetDesignSettings().GetBoardThickness())-total)<1e-6
-report={'revision':'A8-development','baseline_commit':baseline,
+report={'revision':'A9-development','baseline_commit':baseline,
  'ordering':{'layers':6,'nominal_thickness_mm':1.6,'outer_copper_oz':1,'inner_copper_oz':1,'specify_stackup':False,'impedance_control':False},
- 'unchanged_electrical_topology_and_2D_winding_artwork':True, 'R6_procurement_rating_and_footprint_updated':True, 'R7_preload_updated_in_A6':True, 'R1_procurement_updated_in_A7':True,
+ 'unchanged_electrical_topology_and_core_slots':True, 'winding_spacing_and_terminals_updated_in_A9':True, 'R6_procurement_rating_and_footprint_updated':True, 'R7_preload_updated_in_A6':True, 'R1_procurement_updated_in_A7':True,
  'changed_winding_parameters':sorted(changed),'reference_stack_total_mm':total,'reference_winding_centers_mm':winding_z,
  'old':{k:before['analysis'][k] for k in ['R1','R2','leakage','capacitance']},
  'new':{k:model['analysis'][k] for k in ['R1','R2','leakage','capacitance']},

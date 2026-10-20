@@ -1,4 +1,4 @@
-"""Render the actual A7/A8 F.Cu polygons at the repaired SW landing."""
+"""Render the original A7 and current F.Cu at the repaired SW landing."""
 from pathlib import Path
 import subprocess
 import tempfile
@@ -52,14 +52,19 @@ with tempfile.TemporaryDirectory() as temp:
     path = Path(temp)/'baseline.kicad_pcb'
     path.write_bytes(subprocess.check_output(['git', 'show', f'{BASE}:examples/planar-flyback-5w/kicad/PS-FLYBACK-5W.kicad_pcb'], cwd=ROOT))
     before = render(pcb.LoadBoard(str(path)))
-after = render(pcb.LoadBoard(str(ROOT/'kicad/PS-FLYBACK-5W.kicad_pcb')))
+current=pcb.LoadBoard(str(ROOT/'kicad/PS-FLYBACK-5W.kicad_pcb'))
+after = render(current)
+t1=next(f for f in current.GetFootprints() if f.GetReference()=='T1')
+pad=next(p for p in t1.Pads() if p.GetNumber()=='2')
+winding=next(g for g in t1.GraphicalItems() if isinstance(g,pcb.PCB_SHAPE) and g.GetLayer()==pcb.F_Cu)
+landing_gap=pcb.ToMM(winding.GetEffectiveShape().Distance(pad.GetPosition()))-.3
 out = Image.new('RGB', (1330, 830), 'white')
 draw = ImageDraw.Draw(out)
 draw.text((30, 20), 'SW landing: copper bridge removed', fill='#172331', font=font(30))
 for x, panel, title, caption in [(25, before, 'A7 — original', '1.2 mm approach overlaps winding by about 0.075 mm'),
-                                  (675, after, 'A8 — corrected', '0.6 mm landing; about 0.225 mm copper clearance')]:
+                                  (675, after, 'A9 — corrected', f'0.6 mm landing; about {landing_gap:.3f} mm end-cap gap')]:
     draw.text((x, 72), title, fill='#172331', font=font(25))
     out.paste(panel, (x, 116))
     draw.text((x, 783), caption, fill='#38475a', font=font(18))
 out.save(ROOT/'evidence/audit/sw-landing-before-after.png')
-print('Saved A7/A8 native-copper comparison.')
+print('Saved A7/A9 native-copper comparison.')

@@ -41,7 +41,10 @@
   "searchResults": null,
   "prototypeName": "",
   "windingNets": {},
-  "terminalOffsets": {},
+  "terminalOffsets": {
+    "P:0": 0.1,
+    "P:2": 0.1
+  },
   "placementRotation": 0,
   "placementGrid": 0.5,
   "leakageModel": "geometry",
@@ -145,7 +148,7 @@
   "secondaryTurns": 2,
   "dOuter": 13.6,
   "traceW": 0.6,
-  "traceS": 0.2,
+  "traceS": 0.25,
   "boardT": 1.6,
   "copperOz": 0.857142857142857,
   "tempC": 60,

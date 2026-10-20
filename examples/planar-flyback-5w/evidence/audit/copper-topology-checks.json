@@ -1,0 +1,314 @@
+{
+  "board_sha256": "2221610ae6b8befe986ba66ce190908d62deeb62cf8a2df79d7cffe30bcdacfb",
+  "net_ties": [
+    {
+      "ref": "T1"
+    }
+  ],
+  "zone_outline_normalizations": [
+    [
+      "zone0",
+      "F.Cu",
+      "Ring Self-intersection[86 123.881943]",
+      6.821210263296962e-13
+    ],
+    [
+      "zone1",
+      "F.Cu",
+      "Ring Self-intersection[99.0995 50.125327]",
+      1.1368683772161603e-13
+    ],
+    [
+      "zone2",
+      "B.Cu",
+      "Ring Self-intersection[98.366336 122.775327]",
+      4.547473508864641e-13
+    ],
+    [
+      "zone3",
+      "B.Cu",
+      "Ring Self-intersection[101 44.881943]",
+      3.410605131648481e-13
+    ]
+  ],
+  "copper_graphics": 4,
+  "physical_connected_pad_net_groups": [
+    [
+      "/+5V_ISO"
+    ],
+    [
+      "/GND_ISO",
+      "/SEC_A"
+    ],
+    [
+      "/SW",
+      "/VIN",
+      "unconnected-(T1-P_MID-Pad5)"
+    ],
+    [
+      "/TC"
+    ],
+    [
+      "/RREF"
+    ],
+    [
+      "/PGND"
+    ],
+    [
+      "/VIN_FUSED"
+    ],
+    [
+      "/INTVCC"
+    ],
+    [
+      "/SNUB"
+    ],
+    [
+      "/VIN_DAMP"
+    ],
+    [
+      "/CLAMP"
+    ],
+    [
+      "/RFB"
+    ],
+    [
+      "/UVLO"
+    ],
+    [
+      "/VIN_RAW"
+    ]
+  ],
+  "unexpected_net_merges": [],
+  "missing_pad_contacts": [],
+  "split_nets": {},
+  "layers": {
+    "F.Cu": {
+      "segments": 276,
+      "length_mm": 144.8163035793179,
+      "winding_components": 1,
+      "winding_holes": 0,
+      "nonlocal_turn_gap_min_mm": 0.23978209922494786,
+      "closest_segments": [
+        130,
+        256
+      ],
+      "closest_centerline_points": [
+        [
+          105.19560244834825,
+          73.45403540335275
+        ],
+        [
+          105.20625,
+          74.29375000000002
+        ]
+      ],
+      "turn_gap_below_0_198_mm": [],
+      "centerline_stroke_boundary_deviation_mm": 0.0009270394786644128,
+      "saved_polygon_local_gap_mm": 0.23978191264664686,
+      "saved_polygon_gap_endpoints": [
+        [
+          105.19917494847911,
+          73.75401535962575
+        ],
+        [
+          105.202215,
+          73.993778
+        ]
+      ]
+    },
+    "B.Cu": {
+      "segments": 276,
+      "length_mm": 144.81624114853489,
+      "winding_components": 1,
+      "winding_holes": 0,
+      "nonlocal_turn_gap_min_mm": 0.23978209922494798,
+      "closest_segments": [
+        18,
+        145
+      ],
+      "closest_centerline_points": [
+        [
+          94.79375,
+          74.29375000000002
+        ],
+        [
+          94.80439755165175,
+          73.45403540335275
+        ]
+      ],
+      "turn_gap_below_0_198_mm": [],
+      "centerline_stroke_boundary_deviation_mm": 0.0009263224261995064,
+      "saved_polygon_local_gap_mm": 0.2397819196133708,
+      "saved_polygon_gap_endpoints": [
+        [
+          94.80082504579977,
+          73.75401535258592
+        ],
+        [
+          94.797785,
+          73.993778
+        ]
+      ]
+    },
+    "In1.Cu": {
+      "segments": 274,
+      "length_mm": 143.9015847742035,
+      "winding_components": 1,
+      "winding_holes": 0,
+      "nonlocal_turn_gap_min_mm": 0.23978209922494786,
+      "closest_segments": [
+        122,
+        248
+      ],
+      "closest_centerline_points": [
+        [
+          94.80439755165175,
+          96.54596459664725
+        ],
+        [
+          94.79375,
+          95.70624999999998
+        ]
+      ],
+      "turn_gap_below_0_198_mm": [],
+      "centerline_stroke_boundary_deviation_mm": 0.0009265016893633262,
+      "saved_polygon_local_gap_mm": 0.23978191961337075,
+      "saved_polygon_gap_endpoints": [
+        [
+          94.80082504579977,
+          96.24598464741408
+        ],
+        [
+          94.797785,
+          96.006222
+        ]
+      ]
+    },
+    "In4.Cu": {
+      "segments": 274,
+      "length_mm": 143.9015847742035,
+      "winding_components": 1,
+      "winding_holes": 0,
+      "nonlocal_turn_gap_min_mm": 0.23978209922494786,
+      "closest_segments": [
+        122,
+        248
+      ],
+      "closest_centerline_points": [
+        [
+          94.80439755165175,
+          96.54596459664725
+        ],
+        [
+          94.79375,
+          95.70624999999998
+        ]
+      ],
+      "turn_gap_below_0_198_mm": [],
+      "centerline_stroke_boundary_deviation_mm": 0.0009265016893633262,
+      "saved_polygon_local_gap_mm": 0.23978191961337075,
+      "saved_polygon_gap_endpoints": [
+        [
+          94.80082504579977,
+          96.24598464741408
+        ],
+        [
+          94.797785,
+          96.006222
+        ]
+      ]
+    }
+  },
+  "cut_tests": {
+    "F.Cu": {
+      "tested": 259,
+      "terminal_zone_skipped": 4,
+      "invalid_corner_cuts": [
+        15,
+        17,
+        128,
+        129,
+        160,
+        161,
+        192,
+        193,
+        224,
+        225,
+        256,
+        257,
+        272
+      ],
+      "bypasses": []
+    },
+    "B.Cu": {
+      "tested": 259,
+      "terminal_zone_skipped": 4,
+      "invalid_corner_cuts": [
+        3,
+        18,
+        19,
+        50,
+        51,
+        82,
+        83,
+        114,
+        115,
+        146,
+        147,
+        258,
+        260
+      ],
+      "bypasses": []
+    },
+    "In1.Cu": {
+      "tested": 251,
+      "terminal_zone_skipped": 6,
+      "invalid_corner_cuts": [
+        6,
+        7,
+        9,
+        120,
+        121,
+        152,
+        153,
+        184,
+        185,
+        216,
+        217,
+        248,
+        249,
+        264,
+        266,
+        267,
+        268
+      ],
+      "bypasses": []
+    },
+    "In4.Cu": {
+      "tested": 251,
+      "terminal_zone_skipped": 6,
+      "invalid_corner_cuts": [
+        6,
+        7,
+        9,
+        120,
+        121,
+        152,
+        153,
+        184,
+        185,
+        216,
+        217,
+        248,
+        249,
+        264,
+        266,
+        267,
+        268
+      ],
+      "bypasses": []
+    }
+  },
+  "scope": "Physical copper connectivity with all six layers and plated barrels; nonlocal winding segment spacing; one virtual cut per eligible centerline segment. Other secondary winding removed for each parallel-branch cut test. Does not model component conduction, dielectric manufacture, thermal or magnetic performance."
+}
