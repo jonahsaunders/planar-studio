@@ -117,13 +117,22 @@ set('Grid pitch',20);await new Promise(r=>setTimeout(r,220));await solved();
 const {state}=await import('../web/js/bridge.js');
 let placements=0;api.place=async()=>{placements++;return {};};
 state.hasBoard=true;state.context={nets:[]};
+state.standalone=false;
+api.snapshot=async()=>({
+  name:'Motor fixture', revision:'motor-fixture', nets:[],
+  text:'(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal) (37 "F.SilkS" user) (39 "F.Mask" user) (38 "B.Mask" user))'
+    + ' (gr_rect (start -200 -200) (end 200 200) (layer "Edge.Cuts") (stroke (width 0.1))))',
+});
 for(const family of ['planar','stepper']) {
   await choose('Motor family',family);
   const btn=document.querySelector('#btn-place');btn.disabled=false;btn.click();
-  await until(()=>/Create these nets in KiCad/.test(document.querySelector('#toasts').textContent));
+  const review=()=>document.querySelector('[aria-label="Review motor placement"]');
+  await until(()=>/Create or map the .* net in KiCad/.test(review()?.textContent || ''));
+  assert.equal([...review().querySelectorAll('button')].find(b=>b.textContent==='Place reviewed motor').disabled,true);
   assert.equal(placements,0,'missing independent nets must prevent placement');
+  button('Close');
 }
-state.hasBoard=false;state.context=null;
+state.hasBoard=false;state.context=null;state.standalone=true;
 await choose('Motor family','rotary');
 assert.equal(document.querySelector('select[aria-label="Coil shape"]').value,'polygon');
 assert.equal(document.querySelector('select[aria-label="Terminal breakout"]').value,'none');

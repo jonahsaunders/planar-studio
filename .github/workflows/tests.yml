@@ -44,26 +44,32 @@ jobs:
   live-kicad:
     name: KiCad ${{ matrix.major }} installer
     runs-on: ubuntu-24.04
+    container: ${{ matrix.image }}
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        major: [9, 10]
+        include:
+          - major: 9
+            image: debian:trixie-slim
+          - major: 10
+            image: debian:forky-slim
     steps:
+      - name: Install KiCad and test dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get -o Acquire::Retries=3 update
+          apt-get -o Acquire::Retries=3 install --yes --no-install-recommends ca-certificates git kicad python3-venv xvfb xauth
+          kicad-cli version
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
-      - name: Install KiCad and test dependencies
-        env:
-          KICAD_MAJOR: ${{ matrix.major }}
+      - name: Install the plugin dependencies
         run: |
-          sudo add-apt-repository --yes --no-update "ppa:kicad/kicad-${KICAD_MAJOR}.0-releases"
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends kicad xvfb xauth
-          kicad-cli version
           python3 -m venv "$RUNNER_TEMP/planar-python"
           "$RUNNER_TEMP/planar-python/bin/python" -m pip install -r requirements.txt
       - name: Build and exercise the installer with PCB Editor
