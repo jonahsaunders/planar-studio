@@ -202,6 +202,14 @@ class PlacementTests(unittest.TestCase):
             self.replace()
         self.board.begin_commit.assert_not_called()
 
+    def test_legacy_board_serialization_confirms_technical_layers(self):
+        self.board.get_enabled_layers.side_effect = AttributeError()
+        self.board.get_as_string.return_value = '(kicad_pcb\n (layers\n  (0 "F.Cu" signal)\n' \
+            '  (31 "B.Cu" signal)\n  (37 "F.SilkS" user "Front legend")\n )\n)'
+        self.params["placement"]["texts"] = [{"x": 1, "y": 1, "value": "Coil"}]
+        self.board.create_items.return_value = [SimpleNamespace(id="new-via"), SimpleNamespace(id="new-text")]
+        self.assertEqual(self.replace()["created"], 2)
+
     def test_placement_rejects_changes_after_review(self):
         state = {"name": "demo", "text": "before", "nets": []}
         self.app.link.board_snapshot = lambda: state

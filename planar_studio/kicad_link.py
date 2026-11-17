@@ -24,6 +24,7 @@ from __future__ import annotations
 import math
 import os
 import platform
+import re
 import sys
 import threading
 import time
@@ -673,9 +674,21 @@ def _layer_name(layer: Any) -> Optional[str]:
 
 
 def _board_layer_names(board: Any, stackup: Any = None) -> set:
-    """Read enabled layers from this document. Older hosts expose only a stack."""
+    """Read enabled layers from this document, including on older KiCad 9 hosts."""
     try:
         return {_layer_name(layer) for layer in board.get_enabled_layers()} - {None, "Unknown"}
+    except Exception:
+        pass
+    # Older KiCad versions may omit enabled flags from the stack-up response.
+    # Their live serialization contains the enabled layer table in the header.
+    try:
+        text = board.get_as_string()
+        table = re.search(
+            r'(?m)^[ \t]*\(layers[ \t]*\r?\n((?:[ \t]*\(\d+[^\r\n]*\r?\n)+)[ \t]*\)',
+            text[:65_536],
+        )
+        if table:
+            return set(re.findall(r'\(\d+[ \t]+"([^"\r\n]+)"', table[1]))
     except Exception:
         pass
     names = set()
