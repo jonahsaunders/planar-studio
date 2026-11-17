@@ -84,7 +84,7 @@ def plugin_rpc(process):
     def rpc(method, params=None, error=None):
         request = Request(address + "/api", data=json.dumps({"method": method, "params": params or {}}).encode(),
                           headers={"Content-Type": "application/json", "X-Planar-Token": token})
-        with urlopen(request, timeout=20) as response:
+        with urlopen(request, timeout=115 if method == "board.drc" else 20) as response:
             payload = json.load(response)
         if error:
             assert not payload["ok"] and payload["kind"] == error, payload
@@ -109,6 +109,19 @@ def check_placement(editor, board, rpc):
     context = rpc("board.context")
     assert [layer["name"] for layer in context["copperLayers"]] == ["F.Cu", "B.Cu"]
     assert Path(context["boardId"]).is_absolute() and Path(context["boardId"]).name == board.name
+    assert not contents()
+    snapshot = rpc("board.snapshot", {"designId": "Preview"})
+    preview = {"designId": "Preview", "name": "Preview", "tracks": [
+        {"layer": "F.Cu", "pts": [[-2, 5], [-2, 10]], "net": None},
+    ]}
+    rpc("board.drc", {"expectedSnapshot": "old", "placement": preview}, error="stale-board")
+    comparison = rpc("board.drc", {"expectedSnapshot": snapshot["revision"], "placement": preview})
+    assert comparison["newCount"] > 0 and comparison["rulesRevision"], comparison
+    assert not contents()
+    rules = Path(context["boardId"]).with_suffix(".kicad_dru")
+    rules.write_text("(version 1)\n", encoding="utf-8")
+    rpc("board.place", {"expectedSnapshot": snapshot["revision"], "expectedRules": comparison["rulesRevision"],
+                       "placement": preview}, error="stale-board")
     assert not contents()
     place("Absent layer", 5, layer="In1.Cu", error="boardedit")
     assert not contents()

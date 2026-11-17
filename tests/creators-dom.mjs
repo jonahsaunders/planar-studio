@@ -29,12 +29,21 @@ await solved();
 const bridge = await import('../web/js/bridge.js');
 const placementSnapshot = bridge.api.snapshot;
 const placeBoard = bridge.api.place;
+const checkRules = bridge.api.checkPlacementRules;
 const boardText = '(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal) (37 "F.SilkS" user) (39 "F.Mask" user))'
-  + ' (gr_rect (start -120 -120) (end 120 120) (layer "Edge.Cuts") (stroke (width 0.1))))';
+  + ' (net 1 "L1") (gr_rect (start -120 -120) (end 120 120) (layer "Edge.Cuts") (stroke (width 0.1))))';
 bridge.state.hasBoard = true;
 bridge.state.standalone = false;
 bridge.api.snapshot = async () => ({ name: 'Placement fixture', text: boardText, revision: 'reviewed', excludedIds: ['previous'] });
 let approved;
+let ruleErrors = 1;
+bridge.api.checkPlacementRules = async (payload, revision) => {
+  assert.equal(revision, 'reviewed');
+  assert.ok(payload.tracks.every(track => track.net === 'L1'));
+  return { newCount: ruleErrors, newErrorCount: ruleErrors, blockingErrorCount: ruleErrors, baselineCount: 2,
+    findings: ruleErrors ? [{ severity: 'error', description: 'Custom clearance' }] : [],
+    projectSettings: true, refilledZones: true, rulesRevision: 'rules-v1' };
+};
 bridge.api.place = async (payload, options) => {
   approved = { payload, options };
   return { created: 2, replaced: 1 };
@@ -43,12 +52,26 @@ document.querySelector('#btn-place').disabled = false;
 document.querySelector('#btn-place').click();
 await until(() => document.querySelector('[aria-label="Review inductor placement"]')?.textContent.includes('1 items to remove'));
 assert.equal(approved, undefined);
+const placeReview = [...document.querySelectorAll('button')].find(b => b.textContent === 'Place reviewed inductor');
+assert.equal(placeReview.disabled, true);
+const netSelect = document.querySelector('[data-conductor-net]');
+netSelect.value = 'L1';
+netSelect.dispatchEvent(new w.Event('change', { bubbles: true }));
+assert.equal(placeReview.disabled, false);
+button('Check KiCad rules');
+await until(() => document.querySelector('.placement-drc').textContent.includes('Custom clearance'));
+assert.equal(placeReview.disabled, true);
+ruleErrors = 0;
+button('Check KiCad rules');
+await until(() => !placeReview.disabled);
 button('Place reviewed inductor');
 await until(() => approved);
 assert.equal(approved.options.expectedSnapshot, 'reviewed');
+assert.equal(approved.options.expectedRules, 'rules-v1');
 assert.ok(approved.payload.tracks.length);
 bridge.api.snapshot = placementSnapshot;
 bridge.api.place = placeBoard;
+bridge.api.checkPlacementRules = checkRules;
 bridge.state.hasBoard = false;
 bridge.state.standalone = true;
 // A browser quota failure must keep the edit dirty, and a retry must reopen it.

@@ -157,6 +157,8 @@ export const api = {
   quit: () => call('app.quit'),
   context: () => call('board.context'),
   snapshot: (designId) => call('board.snapshot', { designId }),
+  checkPlacementRules: (placement, expectedSnapshot) =>
+    call('board.drc', { placement, expectedSnapshot }, { timeout: 110000 }),
   place: (placement, opt = {}) => call('board.place', { placement, ...opt }, { timeout: 120000 }),
   unplace: (designId) => call('board.unplace', { designId }),
   selectPlacement: (designId) => call('board.select', { designId }),

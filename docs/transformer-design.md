@@ -70,7 +70,7 @@ Searches and repairs are bounded explorations, not global optimization or proof
 over continuous operating ranges. Terminal edits are radial, not a general
 manual router. Actual KiCad DRC, large-signal validation and assembly inspection
 remain separate. See the [GUI audit](transformer-gui-audit.md) for interface
-changes, Apple guideline references and accessibility test limits.
+changes and accessibility test limits.
 
 ## Guided workspace and reversible editing
 

@@ -59,6 +59,15 @@ has no finite impedance value. A two-port's S11-derived impedance assumes port 2
 is terminated in the reference impedance. Measurements should be de-embedded to
 the modeled terminals; the app does not remove fixtures or renormalize ports.
 
+For each inductor or filter sweep, expand **Measurement details** to record the
+prototype, fixture, reference plane and date. Each import saves its own input
+configuration and predicted curve with the sweep. Use **Saved measurement** to
+switch records and **Restore tested design** to return to the saved inputs.
+The fit is marked out of date after its measurement or design inputs change.
+To import an [impedance test board](../examples/inductor-coupons/README.md)
+measurement, select the completed coupon JSON and its sweep together. The
+importer uses the geometry for the specified coupon and board revision.
+
 Overlays work for standalone inductors and all filter families. Bounded fitting
 supports coil dielectric constant/added capacitance and distributed-filter
 dielectric constant/loss tangent, with either parameter independently selectable.
@@ -157,6 +166,19 @@ field solve.
 clearance findings, and confirm the reviewed placement. Gray copper shows
 previously generated items that will be replaced. The plugin rechecks the
 live snapshot and replacement IDs before editing the board.
+
+Use **Map destination nets** to match the generated conductor groups to live
+KiCad nets. Missing named nets must be mapped or explicitly left unassigned
+before placing. The two edge-coupled filter feeds have separate assignments
+and the intervening resonators float. The reference plane needs a board net.
+
+**Check KiCad rules** compares the open board and the proposed replacement with
+the installed KiCad checker. The tool uses temporary board copies and any
+adjacent saved project settings and custom rules. The review lists introduced
+findings with their locations and blocks placement for new rule errors other
+than unrouted connections. Save the board and its rule files before checking.
+KiCad 10 refills zones in the copies. KiCad 9 uses the current fills.
+Refill zones and run the final DRC in KiCad after placement and routing.
 
 The winding check flags an existing same-net copper shape that touches two
 separated sections of a generated winding path. For series inductors it also

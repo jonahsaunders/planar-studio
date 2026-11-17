@@ -141,7 +141,8 @@ export function layoutEdgeCoupled(design, ctx) {
     const xEnd = i === n + 1 ? X[n] + S[n].length : X[i] + S[i].length;
     const w = i === 0 ? S[0].w : i === n + 1 ? S[n].w : (S[i - 1].w + S[i].w) / 2;
     const role = (i === 0 || i === n + 1) ? 'feed-coupled' : 'resonator';
-    A.tracks.push(track(L, w, run(xStart, Y[i], xEnd, Y[i]), { role, index: i }));
+    const net = i === 0 ? `${ctx.net}_IN` : i === n + 1 ? `${ctx.net}_OUT` : null;
+    A.tracks.push(track(L, w, run(xStart, Y[i], xEnd, Y[i]), { role, index: i, net }));
     if (role === 'resonator') {
       A.labels.push(label((xStart + xEnd) / 2, Y[i] + w / 2 + 0.5, `R${i}`, { size: 0.7 }));
     }
@@ -150,20 +151,20 @@ export function layoutEdgeCoupled(design, ctx) {
   // Feed lines: in at the left end of conductor 0, out at the right end of the
   // last conductor.
   const inX = X[0], inY = Y[0];
-  A.tracks.push(track(L, feedW, run(inX - ctx.feedLength, inY, inX, inY), { role: 'feed' }));
-  A.ports.push({ x: inX - ctx.feedLength, y: inY, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(inX - ctx.feedLength, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
+  const inputNet = `${ctx.net}_IN`, outputNet = `${ctx.net}_OUT`;
+  A.tracks.push(track(L, feedW, run(inX - ctx.feedLength, inY, inX, inY), { role: 'feed', net: inputNet }));
+  A.ports.push({ x: inX - ctx.feedLength, y: inY, name: 'P1', angle: Math.PI, net: inputNet });
+  A.pads.push(pad(inX - ctx.feedLength, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port', net: inputNet }));
 
   const outX = X[n] + S[n].length, outY = Y[n + 1];
-  A.tracks.push(track(L, feedW, run(outX, outY, outX + ctx.feedLength, outY), { role: 'feed' }));
-  A.ports.push({ x: outX + ctx.feedLength, y: outY, name: 'P2', angle: 0 });
-  A.pads.push(pad(outX + ctx.feedLength, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
+  A.tracks.push(track(L, feedW, run(outX, outY, outX + ctx.feedLength, outY), { role: 'feed', net: outputNet }));
+  A.ports.push({ x: outX + ctx.feedLength, y: outY, name: 'P2', angle: 0, net: outputNet });
+  A.pads.push(pad(outX + ctx.feedLength, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port', net: outputNet }));
 
   for (let k = 0; k < S.length; k++) {
     A.labels.push(label(X[k] + S[k].length / 2, (Y[k] + Y[k + 1]) / 2, `${S[k].s.toFixed(2)}`, { size: 0.55, layer: 'F.SilkS' }));
   }
 
-  defaultNet(A, ctx.net);
   A.notes.push({
     level: 'info',
     text: 'Parallel-coupled synthesis is first-order in the fractional bandwidth. Expect the built '

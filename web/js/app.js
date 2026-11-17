@@ -14,11 +14,13 @@
 
 import * as bridge from './bridge.js';
 import { Panel, el, icon, ICONS, tile, specTable, noteList, num } from './ui/controls.js';
+import { mountModal } from './ui/modal-focus.js';
 import { Viewport } from './ui/canvas.js';
 import { LineChart, legendFor } from './ui/charts.js';
 import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { DesignHistory, checkpoint } from './engine/design-history.js';
 import { reviewBoardPlacement } from './engine/boardcheck.js';
+import { mapPlacementNets } from './engine/placement-nets.js';
 import { windingSetup } from './engine/winding-stack.js';
 import { openPlacementReview } from './ui/transformer-review.js';
 import { transformerDossier, placementArtwork, transformerPreflight } from './engine/transformer-handoff.js';
@@ -212,6 +214,7 @@ const api = {
     if (runCompute(false)) openPlacementReview(api, app.ws, makePlacementReview);
   },
   readPlacementSnapshot: id => bridge.api.snapshot(id),
+  checkPlacementRules: (placement, revision) => bridge.api.checkPlacementRules(placement, revision),
   placeReviewed: review => placeIntoBoard(review),
   result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
   solveDesign: board => current().compute(cfg(), environment(board)),
@@ -372,7 +375,8 @@ function renderSide(res) {
       noteList(notes)));
   }
 
-  const chartSpecs = withMeasurements(ws.charts(cfg(), res), cfg(), app.ws);
+  const effective = app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), bridge.state.context) : cfg();
+  const chartSpecs = withMeasurements(ws.charts(cfg(), res), cfg(), app.ws, effective);
   if (chartSpecs.length) {
     const sec = el('div', { class: 'side-section' }, el('h3', { text: 'Response' }));
     for (const c of chartSpecs) {
@@ -434,6 +438,22 @@ function showDesignTools(tab = 'optimize') {
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
     analysisConfig: () => app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), bridge.state.context) : cfg(),
+    defaults: () => current().defaults(),
+    solveMeasurement: configuration => current().compute(configuration, { name: app.names[app.ws] }),
+    restoreMeasurement(configuration) {
+      const evidence = { measurement: cfg().measurement, activeMeasurementId: cfg().activeMeasurementId,
+        measurementRecords: cfg().measurementRecords, tools: cfg().tools,
+        placementOrigin: cfg().placementOrigin, placementRotation: cfg().placementRotation,
+        placementGrid: cfg().placementGrid, placementNets: cfg().placementNets };
+      const restored = { ...current().defaults(), ...configuration, ...evidence, measurementFit: null };
+      for (const key of Object.keys(cfg())) delete cfg()[key];
+      Object.assign(cfg(), restored);
+      record('Restore tested design');
+      app.dirtyWorkspaces.add(app.ws);
+      app.fitPending = true;
+      renderRail();
+      runCompute(false);
+    },
     designId: api.designId,
     dirty: () => { app.dirtyWorkspaces.add(app.ws); },
     apply(patch) {
@@ -450,17 +470,36 @@ function makePlacementReview(config, result, snapshot) {
   if (kind === 'transformer') {
     return transformerPreflight(config, result, snapshot.text, { name: snapshot.name, nets: snapshot.nets }, excluded);
   }
-  const requireNets = kind === 'antenna' || (kind === 'motor' && ['stepper', 'planar'].includes(result.family));
   const boardSettings = config.tools?.board;
-  const art = placementArtwork(config, result.art);
+  const distributed = kind === 'filter' && DISTRIBUTED_FILTERS.includes(config.family);
+  const scope = snapshot.boardId || snapshot.name;
+  const saved = config.placementNets?.[scope] || {};
+  const { art, groups, floating, referenceNet } = mapPlacementNets(
+    placementArtwork(config, result.art), saved, distributed ? 'GND' : null, boardSettings?.groundNet || 'GND',
+  );
   const seriesWinding = kind === 'inductor' && art.meta.kind === 'coil' && config.connection === 'series';
-  return reviewBoardPlacement(art, config, snapshot.text, excluded, {
-    kind, requireNets, nets: snapshot.nets,
+  const checked = reviewBoardPlacement(art, config, snapshot.text, excluded, {
+    kind, requireNets: true, nets: snapshot.nets,
     seriesWinding, previousPlacement: seriesWinding ? snapshot.previousPlacement : null,
-    distributed: kind === 'filter' && DISTRIBUTED_FILTERS.includes(config.family),
-    groundNet: boardSettings?.groundNet,
+    distributed, groundNet: referenceNet || boardSettings?.groundNet,
     signalLayer: result.rfStack?.signal, groundLayer: result.rfStack?.reference ?? boardSettings?.groundLayer,
   });
+  if (distributed && !checked.nets.includes(referenceNet)) {
+    checked.issues.push({ type: 'net', message: 'Map the reference plane to an existing KiCad net.' });
+    checked.ready = false;
+  }
+  if (distributed && referenceNet && groups.some(group => !group.reference && group.net === referenceNet)) {
+    checked.issues.push({ type: 'net', message: 'Assign the RF signal and reference plane to different KiCad nets.' });
+    checked.ready = false;
+  }
+  if (config.family === 'edgeCoupled' || kind === 'motor') {
+    const assigned = groups.filter(group => group.net && !group.reference).map(group => group.net);
+    if (new Set(assigned).size !== assigned.length) {
+      checked.issues.push({ type: 'net', message: 'Assign different destination nets to the separate conductor groups.' });
+      checked.ready = false;
+    }
+  }
+  return { ...checked, netGroups: groups, floating };
 }
 
 async function placeIntoBoard(review = null) {
@@ -493,9 +532,9 @@ async function placeIntoBoard(review = null) {
     }, {
       replace: true,
       expectedSnapshot: review.revision,
+      expectedRules: review.rulesRevision,
       windingTerminals: review.windingTerminals,
       select: true,
-      net: netNameFor(),
       kind: app.ws,
       summary: current().status(cfg(), res).summary,
     });
@@ -630,23 +669,19 @@ function openExport() {
 }
 
 function modal(title, body, buttons) {
-  const previous=document.activeElement;
   const scrim = el('div', { class: 'scrim' });
   const footer = el('footer');
-  const box = el('div', { class: 'modal',role:'dialog','aria-modal':'true','aria-label':title },
-    el('header', {}, el('h2', { text: title })),
+  const heading = el('h2', { text: title, tabindex: -1 });
+  const box = el('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': title },
+    el('header', {}, heading),
     el('div', { class: 'body' }, body),
     footer);
-  const close = () => {scrim.remove();document.removeEventListener('keydown',keys);if(previous?.isConnected)previous.focus();};
-  const keys=e=>{if(e.key==='Escape'){e.preventDefault();close();return;}if(e.key!=='Tab')return;const controls=[...box.querySelectorAll('button,input,select,textarea,a[href]')].filter(n=>!n.disabled&&!n.hidden),first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}};
   for (const b of buttons || []) {
     footer.append(el('button', { type:'button',class: `btn ${b.variant || ''}`, text: b.label, onClick: () => b.onClick(close) }));
   }
   scrim.append(box);
+  const close = mountModal(scrim, box, { initial: heading });
   scrim.addEventListener('pointerdown', (e) => { if (e.target === scrim) close(); });
-  document.addEventListener('keydown',keys);
-  document.body.append(scrim);
-  box.querySelector('button,input,select,textarea,a[href]')?.focus();
   return { close, box };
 }
 
@@ -902,7 +937,7 @@ function wireChrome() {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (document.querySelector('.tools-scrim')) return;
+    if (e.defaultPrevented || document.querySelector('[aria-modal="true"]')) return;
     if (e.target.matches('input, select, textarea')) return;
     if(app.ws==='transformer'&&(e.ctrlKey||e.metaKey)&&['z','y'].includes(e.key.toLowerCase())){e.preventDefault();restoreHistory(e.key.toLowerCase()==='y'||e.shiftKey?'redo':'undo');return;}
     if (e.key === 'f' || e.key === 'F') { if (app.result) app.view.fit(app.result.bounds); }

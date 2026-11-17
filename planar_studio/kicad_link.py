@@ -364,9 +364,8 @@ class KiCadLink:
     def resolve_net(self, name: Optional[str]) -> Any:
         """Return the board's Net object for `name`, or None.
 
-        The API has no way to create a net, so an unknown name yields None and
-        the copper is placed netless -- which is what KiCad itself does for
-        manually drawn track on an unassigned net.
+        The API has no way to create a net. Callers distinguish an explicitly
+        unassigned item from a requested net that could not be resolved.
         """
         if not name:
             return None
@@ -390,15 +389,16 @@ class KiCadLink:
         items: List[Any] = []
         skipped: List[str] = []
 
-        net = self.resolve_net(net_name)
         net_cache: Dict[str, Any] = {}
 
         def net_for(spec: Dict[str, Any]) -> Any:
-            nm = spec.get("net")
+            nm = spec.get("net", net_name)
             if not nm:
-                return net
+                return None
             if nm not in net_cache:
                 net_cache[nm] = self.resolve_net(nm)
+                if net_cache[nm] is None:
+                    raise BoardEditError(f"KiCad net {nm!r} is unavailable. Remap it before placing copper.")
             return net_cache[nm]
 
         ox, oy = placement.origin

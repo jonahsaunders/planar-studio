@@ -34,6 +34,10 @@ class SurfacePads(unittest.TestCase):
             {'x': 1, 'y': 2, 'w': 2, 'h': 3, 'shape': 'rect', 'number': '1', 'net': 'T1_PRI', 'layer': 'F.Cu'},
             {'x': 3, 'y': 4, 'w': 1, 'h': 1, 'shape': 'circle', 'number': '3', 'net': 'T1_SEC', 'layer': 'B.Cu'}]})
         self.assertEqual(placement.item_count(), 2)
+        with self.assertRaisesRegex(k.BoardEditError, "T1_SEC"):
+            link.place(placement, net_name='COIL')
+        self.assertFalse(hasattr(board, 'items'))
+        placement.pads[1]['net'] = None
         link.place(placement, net_name='COIL')
         self.assertEqual(len(board.items), 1)
         fp = board.items[0]
@@ -46,7 +50,7 @@ class SurfacePads(unittest.TestCase):
         self.assertIn(BoardLayer.BL_B_Cu, pads[1].padstack.layers)
         self.assertNotIn(BoardLayer.BL_F_Cu, pads[1].padstack.layers)
         self.assertEqual(pads[0].net.name, 'T1_PRI')
-        self.assertNotEqual(pads[1].net.name, 'COIL', 'Unknown secondary must never fall back to primary net')
+        self.assertEqual(pads[1].net.name, '', 'An explicit no-net pad must stay unassigned')
         self.assertGreater(len(fp.proto.SerializeToString()), 0)
 
     def test_routed_transformer_layers_vias_and_nets(self):

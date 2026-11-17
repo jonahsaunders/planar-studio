@@ -2,10 +2,12 @@
    Workers are terminated on Cancel, tab change, or close. Settings and imported
    measurements live in the normal design JSON; board snapshots stay transient. */
 import { el, eng, num, specTable } from './controls.js';
+import { mountModal } from './modal-focus.js';
 import { LineChart, legendFor } from './charts.js';
 import { Viewport } from './canvas.js';
 import { artwork, track, bounds } from '../engine/artwork.js';
 import { parseMeasurement, measurementValues, interpolate } from '../engine/measurements.js';
+import { makeMeasurementRecord, measurementConfiguration, measurementSignature, hasStaleFit, readCouponMeasurement } from '../engine/measurement-records.js';
 import { DISTRIBUTED, plain } from '../engine/filtertune.js';
 import { windingPolys, transformPolys, rotorDesign } from '../engine/magnetics.js';
 import * as bridge from '../bridge.js';
@@ -15,17 +17,16 @@ const button = (text, fn, primary = false) => el('button', { class: `btn${primar
 const note = (text) => el('p', { class: 'hint', text });
 
 export function openDesignTools(host, initial = 'optimize') {
-  const focusBefore = document.activeElement;
   const scrim = el('div', { class: 'scrim tools-scrim' });
-  const title = el('h2', { id: 'tools-title', text: 'Design tools' });
+  const title = el('h2', { id: 'tools-title', text: 'Design tools', tabindex: -1 });
   const body = el('div', { class: 'tools-content' });
   const nav = el('nav', { class: 'tools-tabs', 'aria-label': 'Design tools' });
   const status = el('div', { class: 'tools-status', role: 'status', 'aria-live': 'polite', text: 'Choose a study.' });
   const cancel = button('Cancel calculation', () => stop('Calculation canceled.')); cancel.hidden = true;
   const dialog = el('div', { class: 'modal tools-modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'tools-title', tabindex: '-1' },
-    el('header', {}, title, el('span', { class: 'spacer' }), button('Close', close)), nav, body,
+    el('header', {}, title, el('span', { class: 'spacer' }), button('Close', () => close())), nav, body,
     el('footer', {}, status, cancel));
-  scrim.append(dialog); document.body.append(scrim);
+  scrim.append(dialog);
   let active = initial, worker = null, job = 0, disposed = false, cleanups = [], boardText = '', excluded = [], boardSource = '';
   const config = () => host.config();
   const analysisConfig = () => host.analysisConfig?.() || config();
@@ -47,20 +48,11 @@ export function openDesignTools(host, initial = 'optimize') {
       return true;
     });
   }
-  function close() {
-    if (disposed) return;
-    disposed = true; stop(); clearViews(); document.removeEventListener('keydown', onKey); scrim.remove(); focusBefore?.focus();
-  }
-  function onKey(e) {
-    if (e.key === 'Escape') { e.stopPropagation(); close(); }
-    if (e.key === 'Tab') {
-      const nodes = [...dialog.querySelectorAll('button,input,select,textarea,[tabindex="0"]')].filter((n) => !n.disabled && n.getClientRects().length);
-      const first = nodes[0], last = nodes.at(-1);
-      if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) { e.preventDefault(); last?.focus(); }
-      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
-    }
-  }
-  document.addEventListener('keydown', onKey);
+  const close = mountModal(scrim, dialog, { initial: title, onClose: () => {
+    disposed = true;
+    stop();
+    clearViews();
+  } });
   scrim.addEventListener('pointerdown', (e) => { if (e.target === scrim) close(); });
   function changed() {
     host.dirty();
@@ -70,8 +62,9 @@ export function openDesignTools(host, initial = 'optimize') {
   function field(parent, state, key, label, min, max, step = 'any', type = 'number') {
     const input = el('input', { type, value: state[key], min, max, step, 'aria-label': label });
     input.addEventListener('change', () => {
-      const value = type === 'number' || type === 'range' ? Number(input.value) : input.value;
-      if (type !== 'text' && (!input.value || !Number.isFinite(value) || (min != null && value < min) || (max != null && value > max))) {
+      const numeric = type === 'number' || type === 'range';
+      const value = numeric ? Number(input.value) : input.value;
+      if (numeric && (!input.value || !Number.isFinite(value) || (min != null && value < min) || (max != null && value > max))) {
         input.value = state[key]; status.textContent = `${label}: enter a value${min != null ? ` ≥ ${min}` : ''}${max != null ? ` and ≤ ${max}` : ''}.`; return;
       }
       state[key] = value; changed();
@@ -187,25 +180,96 @@ export function openDesignTools(host, initial = 'optimize') {
   }
   function measurements() {
     if (kind() === 'motor') { body.append(note('Measurement overlays compare a standalone coil or filter. Motor phase impedance includes the phase interconnect.'), button('Open inductor', () => { close(); host.switch('inductor', active); })); return; }
-    body.append(note('Import Touchstone 1.x .s1p/.s2p (RI, MA, or DB), or CSV with Frequency (Hz), Z (ohm), R/X, S21 (dB), or S11 (dB). Data stays local and is saved with the design. Match the measurement reference plane and fixture to the simulated terminals.'));
-    const file = el('input', { type: 'file', accept: '.s1p,.s2p,.csv,.tsv', 'aria-label': 'Measurement file' });
-    const drop = el('label', { class: 'tools-drop', tabindex: '0' }, el('span', { text: 'Choose or drop a measurement file' }), file); body.append(drop);
-    async function load(file) {
-      if (!file) return;
+    const recordMode = ['inductor', 'filter'].includes(kind());
+    body.append(note('Import Touchstone 1.x or a CSV with frequency and impedance or scattering data. To import a coupon record, select its JSON and sweep together.'));
+    const conditions = settings('measurementConditions', { prototype: '', fixture: '', referencePlane: '', measuredOn: '' });
+    if (recordMode) {
+      const metadata = el('div', { class: 'tools-form' });
+      for (const [key, label] of [['prototype', 'Prototype'], ['fixture', 'Fixture or calibration'], ['referencePlane', 'Measurement reference plane']]) {
+        field(metadata, conditions, key, label, null, null, 'any', 'text');
+      }
+      field(metadata, conditions, 'measuredOn', 'Measurement date', null, null, undefined, 'date');
+      body.append(el('details', { class: 'measurement-details' }, el('summary', { text: 'Measurement details' }), metadata));
+    }
+    const file = el('input', { type: 'file', multiple: true, accept: '.s1p,.s2p,.csv,.tsv,.json', 'aria-label': 'Measurement file' });
+    const drop = el('label', { class: 'tools-drop' }, el('span', { text: 'Choose or drop measurement files' }), file); body.append(drop);
+    async function load(files) {
+      if (!files?.length) return;
+      const ws = kind(), destination = host.designId?.();
+      const inputConfig = measurementConfiguration(analysisConfig());
+      const inputConditions = { ...conditions };
       try {
-        const measurement = parseMeasurement(await file.text(), file.name); host.apply({ measurement, measurementFit: null }); render('measurements'); status.textContent = `${measurement.rows.length} measurement points imported.`;
+        const manifest = [...files].find(f => /\.json$/i.test(f.name));
+        const sweep = [...files].find(f => f !== manifest);
+        if (!sweep || files.length !== (manifest ? 2 : 1)) throw new Error('Choose one sweep, or a coupon JSON and its sweep.');
+        const raw = await sweep.text();
+        if (manifest && ws !== 'inductor') throw new Error('Open the Inductor workspace to import a coupon record.');
+        const entry = manifest
+          ? readCouponMeasurement(JSON.parse(await manifest.text()), raw, sweep.name, host.defaults?.() || inputConfig)
+          : { data: parseMeasurement(raw, sweep.name), configuration: inputConfig, conditions: inputConditions };
+        if (disposed || destination !== host.designId?.() || ws !== kind()) return;
+        if (recordMode) {
+          const result = host.solveMeasurement?.(entry.configuration) || host.result();
+          const baseline = ws === 'filter' && result?.response ? { x: result.response.freqs, y: result.response.s21db }
+            : result?.sweep ? { x: result.sweep.map(p => p.f), y: result.sweep.map(p => p.Z) } : null;
+          const record = makeMeasurementRecord(ws, entry.configuration, entry.data, entry.conditions, baseline);
+          const records = [...(config().measurementRecords || [])];
+          if (!records.length && config().measurement) records.push(makeMeasurementRecord(ws, null, config().measurement, {}));
+          records.push(record);
+          host.apply({ measurementRecords: records, activeMeasurementId: record.id, measurement: record.data });
+        } else host.apply({ measurement: entry.data, measurementFit: null });
+        render('measurements');
+        body.querySelector('[aria-label="Saved measurement"]')?.focus();
+        status.textContent = `${entry.data.rows.length} measurement points imported.`;
       } catch (e) { status.textContent = e.message; }
     }
-    file.addEventListener('change', () => load(file.files[0]));
-    drop.addEventListener('dragover', (e) => e.preventDefault()); drop.addEventListener('drop', (e) => { e.preventDefault(); load(e.dataTransfer.files[0]); });
+    file.addEventListener('change', () => load(file.files));
+    drop.addEventListener('dragover', (e) => e.preventDefault()); drop.addEventListener('drop', (e) => { e.preventDefault(); load(e.dataTransfer.files); });
+    const records = config().measurementRecords || [];
+    const activeRecord = records.find(record => record.id === config().activeMeasurementId);
+    function selectRecord(record, nextRecords = records) {
+      host.apply({ measurementRecords: nextRecords, activeMeasurementId: record?.id ?? null,
+        measurement: record?.data ?? null });
+      render('measurements');
+      body.querySelector('[aria-label="Saved measurement"]')?.focus();
+    }
+    if (records.length) {
+      const chooser = el('select', { 'aria-label': 'Saved measurement' }, records.map(record => el('option', {
+        value: record.id, text: [record.conditions.prototype, record.data.name].filter(Boolean).join(' · '),
+      })));
+      chooser.value = activeRecord?.id || '';
+      chooser.addEventListener('change', () => selectRecord(records.find(record => record.id === chooser.value)));
+      body.append(el('label', { class: 'tools-field' }, 'Saved measurement', chooser));
+    }
+    if (hasStaleFit(config(), analysisConfig())) body.append(note('The measurement fit is out of date for the current design.'));
     const data = config().measurement;
     if (!data) return;
     const metric = kind() === 'filter' ? 's21db' : 'Z', r = host.result();
     const x = kind() === 'filter' ? r?.response?.freqs : r?.sweep?.map((p) => p.f);
     const y = kind() === 'filter' ? r?.response?.s21db : r?.sweep?.map((p) => p.Z);
-    body.append(el('h3', { text: `${data.name} · ${data.rows.length} points` }), button('Remove measurement', () => { host.apply({ measurement: null, measurementFit: null }); render(active); }));
+    body.append(el('h3', { text: `${data.name} · ${data.rows.length} points` }), button('Remove measurement', () => {
+      const remaining = records.filter(record => record.id !== activeRecord?.id);
+      selectRecord(remaining.at(-1), remaining);
+    }));
+    if (activeRecord) {
+      const { prototype, fixture, referencePlane, measuredOn, role, instrument, stackup } = activeRecord.conditions;
+      const details = [['Prototype', prototype], ['Fixture or calibration', fixture], ['Reference plane', referencePlane],
+        ['Measurement date', measuredOn], ['Coupon role', role], ['Instrument', instrument], ['Stackup', stackup]].filter(([, value]) => value);
+      if (details.length) body.append(specTable(details));
+      if (!activeRecord.configuration) body.append(note('This earlier import has no recorded test configuration.'));
+      else if (activeRecord.signature !== measurementSignature(analysisConfig())) body.append(note('The current design differs from the tested configuration.'));
+      if (activeRecord.configuration && host.restoreMeasurement) body.append(button('Restore tested design', () => {
+        host.restoreMeasurement(activeRecord.configuration);
+        render('measurements');
+        body.querySelector('[aria-label="Saved measurement"]')?.focus();
+        status.textContent = 'Tested configuration restored.';
+      }));
+    }
     if (x && y) {
-      chart(body, x, [{ name: 'Simulated', values: y }, { name: 'Measured', values: measurementValues(data, metric, x), dash: [4, 3] }], metric === 'Z' ? '|Z| Ω' : 'S21 dB', true, 'Measured versus simulated');
+      const series = [{ name: 'Current design', values: y }, { name: 'Measured', values: measurementValues(data, metric, x), dash: [4, 3] }];
+      const baseline = activeRecord?.baseline;
+      if (baseline) series.push({ name: 'Tested design baseline', values: x.map(f => interpolate(baseline.x, baseline.y, f)), dash: [2, 4] });
+      chart(body, x, series, metric === 'Z' ? '|Z| Ω' : 'S21 dB', true, 'Measured versus simulated');
       if (kind() === 'filter' && data.rows.some((p) => p.s11db != null)) chart(body, x, [{ name: 'Simulated S11', values: r.response.s11db }, { name: 'Measured S11', values: measurementValues(data, 's11db', x), dash: [4, 3] }], 'S11 dB');
       if (!measurementValues(data, metric, x).some(Number.isFinite)) body.append(note(`No ${metric} data overlaps this sweep. Adjust the frequency range or import a matching measurement.`));
     }
@@ -216,6 +280,8 @@ export function openDesignTools(host, initial = 'optimize') {
     select(f, s, 'fitA', `Fit ${fields[0][1]}`, [['yes', 'Yes'], ['no', 'Keep fixed']]); field(f, s, 'aMin', `${fields[0][1]} minimum`, 1); field(f, s, 'aMax', `${fields[0][1]} maximum`, 1);
     select(f, s, 'fitB', `Fit ${fields[1][1]}`, [['yes', 'Yes'], ['no', 'Keep fixed']]); field(f, s, 'bMin', `${fields[1][1]} minimum`, 0); field(f, s, 'bMax', `${fields[1][1]} maximum`, 0);
     const out = output(); runButton('Fit measurement', () => {
+      const inputSignature = measurementSignature(analysisConfig());
+      const recordId = config().activeMeasurementId ?? null;
       const chosen = [];
       if (s.fitA === 'yes') chosen.push({ key: fields[0][0], min: s.aMin, max: s.aMax });
       if (s.fitB === 'yes') chosen.push({ key: fields[1][0], min: s.bMin, max: s.bMax });
@@ -225,9 +291,14 @@ export function openDesignTools(host, initial = 'optimize') {
         out.append(specTable([['RMS residual before → after', `${num(Math.sqrt(fit.originalLoss), 4)} → ${num(Math.sqrt(fit.loss), 4)} ${metric === 'Z' ? '(log magnitude)' : 'dB'}`], ...chosen.map((p) => [p.key, String(fit.config[p.key])])]));
         if (fit.boundary.length) out.append(note(`Fit reached a bound: ${fit.boundary.join(', ')}. Inspect residuals before applying.`));
         out.append(button('Apply fitted parameters', () => {
+          if (inputSignature !== measurementSignature(analysisConfig()) || recordId !== (config().activeMeasurementId ?? null)) {
+            status.textContent = 'The design or measurement changed. Run the fit again.';
+            return;
+          }
           const patch = Object.fromEntries(chosen.map((p) => [p.key, fit.config[p.key]]));
           if (kind() === 'filter') patch.fixedDesign = plain(host.result().nominal);
-          host.apply({ ...patch, measurementFit: { original: fit.original, loss: fit.loss, fields: chosen } }); status.textContent = 'Fitted parameters applied; original curve retained.';
+          const signature = measurementSignature({ ...analysisConfig(), ...patch });
+          host.apply({ ...patch, measurementFit: { recordId, signature, original: fit.original, loss: fit.loss, fields: chosen } }); status.textContent = 'Fitted parameters applied; original curve retained.';
         })); exportReport(out, 'measurement-fit', fit);
       });
     });
@@ -410,11 +481,11 @@ export function openDesignTools(host, initial = 'optimize') {
     try { renderers[id](); } catch (e) { status.textContent = e.message; }
   }
   for (const [id, label] of TABS) { const b = button(label, () => render(id)); b.dataset.tool = id; nav.append(b); }
-  render(initial); dialog.focus();
+  render(initial);
 }
 
 /** Add measurements to the normal response plots, retaining a fitted baseline. */
-export function withMeasurements(charts, cfg, kind) {
+export function withMeasurements(charts, cfg, kind, effective = cfg) {
   if (!cfg.measurement) return charts;
   for (const c of charts) {
     const metric = kind === 'filter' && c.id === 'compare' ? 's21db' : kind === 'inductor' && c.id === 'z' ? 'Z' : null;
@@ -422,7 +493,7 @@ export function withMeasurements(charts, cfg, kind) {
     const values = measurementValues(cfg.measurement, metric, c.spec.x.values);
     if (values.some(Number.isFinite)) c.spec.series.push({ name: 'Measured', values, dash: [3, 3], color: '#a784ef' });
     const original = cfg.measurementFit?.original;
-    if (original) c.spec.series.push({ name: 'Before fit', values: c.spec.x.values.map((f) => interpolate(original.x, original.y, f)), dash: [6, 4], color: '#d6a53d' });
+    if (original) c.spec.series.push({ name: hasStaleFit(cfg, effective) ? 'Before fit (out of date)' : 'Before fit', values: c.spec.x.values.map((f) => interpolate(original.x, original.y, f)), dash: [6, 4], color: '#d6a53d' });
   }
   return charts;
 }

@@ -6,22 +6,18 @@ import { artwork, label, merge, rect, transform } from '../../web/js/engine/artw
 import { exportKicadPcb } from '../../web/js/engine/exporters.js';
 import { compute, defaults } from '../../web/js/ws/inductor.js';
 import { sweep } from '../../web/js/engine/coil.js';
+import { COUPONS, COUPON_BOARD_SHA, couponConfiguration } from '../../web/js/engine/measurement-records.js';
 
 const read = name => readFileSync(new URL(name, import.meta.url), 'utf8');
 export const definition = JSON.parse(read('coupons.json'));
+assert.deepEqual(definition, COUPONS);
 export const sha256 = input => createHash('sha256').update(input).digest('hex');
 
 export function solveCoupon(id) {
   const coupon = definition.coupons[id];
   if (!coupon) throw new Error('Choose coupon A or B.');
-  const { traceW, traceS, turns, center, role } = coupon;
-  const config = {
-    ...defaults(), shape: 'polygon', sides: 4, layers: 1,
-    dOuter: (28 - traceW) / Math.cos(Math.PI / 4), fillet: 1,
-    traceW, traceS, turns, padDrill: 0, padSize: 1.6, cExtra: 0,
-    boardT: definition.boardThicknessMm, epsR: definition.relativePermittivity,
-    copperOz: definition.copperOunces, tolerance: 0.004,
-  };
+  const { turns, center, role } = coupon;
+  const config = couponConfiguration(id, defaults());
   const result = compute(config, { name: `Coupon ${id}`, net: `COIL_${id}` });
   assert.equal(result.coil.spiral.turnsUsed, turns, `Coupon ${id} turn count`);
   assert.ok(result.analysis.drc.clearanceOK && result.analysis.squareCapModel, `Coupon ${id} geometry`);
@@ -56,6 +52,7 @@ if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) 
   if (process.argv.includes('--check')) {
     assert.equal(read(file).replaceAll('\r\n', '\n'), pcb, `Regenerate ${file}`);
     assert.equal(JSON.parse(read('predictions.json')).boardSHA256, boardSHA256, 'The frozen prediction must match the board.');
+    assert.equal(COUPON_BOARD_SHA, boardSHA256, 'The app importer must recognize the checked-in board.');
   } else {
     writeFileSync(new URL(file, import.meta.url), pcb);
     if (process.argv.includes('--write-baseline')) {

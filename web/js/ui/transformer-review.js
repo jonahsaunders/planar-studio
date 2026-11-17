@@ -1,4 +1,5 @@
 import { el, eng, num, specTable } from './controls.js';
+import { mountModal } from './modal-focus.js';
 import { LineChart, legendFor } from './charts.js';
 import { Viewport } from './canvas.js';
 import { bounds } from '../engine/artwork.js';
@@ -16,14 +17,13 @@ export function dialog(title,api) {
     host.dispose=close;api.overviewHost.hidden=true;host.hidden=false;
     host.append(el('h2',{text:title,tabindex:-1}),body,footer);footer.append(button('Back to overview',close));host.firstChild.focus();return {body,footer,close,cleanups};
   }
-  const previous=document.activeElement,body=el('div',{class:'transformer-review-body'}),footer=el('footer'),cleanups=[];
-  const node=el('div',{class:'scrim tools-scrim'},el('section',{class:'modal transformer-review',role:'dialog','aria-modal':'true','aria-label':title},el('header',{},el('h2',{text:title})),body,footer));
-  const close=()=>{cleanups.forEach(fn=>fn());document.removeEventListener('keydown',keys);node.remove();previous?.focus();};
-  const keys=e=>{if(e.key==='Escape'){e.preventDefault();close();}if(e.key==='Tab'){
-    const focus=[...node.querySelectorAll('button,input,select,a[href]')].filter(n=>!n.disabled&&!n.hidden),first=focus[0],last=focus.at(-1);
-    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
-  }};
-  document.addEventListener('keydown',keys);footer.append(button('Close',close));document.body.append(node);footer.firstChild.focus();
+  const body = el('div', { class: 'transformer-review-body' }), footer = el('footer'), cleanups = [];
+  const heading = el('h2', { text: title, tabindex: -1 });
+  const box = el('section', { class: 'modal transformer-review', role: 'dialog', 'aria-modal': 'true', 'aria-label': title },
+    el('header', {}, heading), body, footer);
+  const node = el('div', { class: 'scrim tools-scrim' }, box);
+  footer.append(button('Close', () => close()));
+  const close = mountModal(node, box, { initial: heading, onClose: () => cleanups.forEach(fn => fn()) });
   return {body,footer,close,cleanups};
 }
 export function jobs(d,api) {
@@ -133,20 +133,64 @@ export function openPlacementReview(api, kind, makeReview) {
   const pose = el('div', { class: 'transformer-placement-pose' });
   const canvas = el('canvas', { 'aria-label': 'Destination board and placement findings' });
   const wrap = el('div', { class: 'transformer-board-preview' }, canvas);
+  const rulesStatus = el('p', { class: 'hint', role: 'status' });
+  const rulesResult = el('div', { class: 'placement-drc' });
   const designId = api.designId();
   const origin = [...(api.config().placementOrigin || [0, 0])];
-  let snapshot, review, view, fitted = false, request = 0;
+  let snapshot, review, view, fitted = false, request = 0, checking = false;
   const place = button(`Place reviewed ${kind}`, () => {
-    if (!review?.ready || !review.revision) return;
+    if (!review?.ready || !review.revision || checking || review.nativeErrors) return;
     d.close();
     api.placeReviewed(review);
   });
+  place.classList.add('primary');
   place.disabled = true;
-  d.footer.prepend(place);
+  d.footer.append(place);
+  const rules = button('Check KiCad rules', async () => {
+    if (!review?.ready || !review.revision || checking) return;
+    const checked = review;
+    checking = true;
+    rules.disabled = place.disabled = true;
+    rulesStatus.textContent = 'Checking KiCad rules on a copy of the board…';
+    rulesResult.replaceChildren();
+    try {
+      const report = await api.checkPlacementRules({
+        name: api.designName(), designId, origin: checked.origin, ...checked.payload,
+      }, checked.revision);
+      if (review !== checked || !d.body.isConnected) return;
+      checked.nativeErrors = report.blockingErrorCount;
+      checked.rulesRevision = report.rulesRevision;
+      rulesStatus.textContent = `${report.newCount} new findings · ${report.newErrorCount} new errors · ${report.baselineCount} on the original board`;
+      if (!report.projectSettings) rulesResult.append(hint('No saved project settings were found. KiCad used its default settings.'));
+      if (!report.refilledZones) rulesResult.append(hint('This checker used the existing zone fills. Refill and verify in KiCad after placement.'));
+      if (report.blockingErrorCount) rulesResult.append(hint('Resolve the new rule violations before placing.'));
+      if (report.newErrorCount > report.blockingErrorCount) rulesResult.append(hint('Ratsnest connections can be routed after placement.'));
+      if (report.newCount > report.findings.length) rulesResult.append(hint(`Showing the first ${report.findings.length} findings.`));
+      if (report.findings.length) rulesResult.append(el('ul', {}, report.findings.map(item =>
+        el('li', { text: [item.severity === 'error' ? 'Error' : 'Warning', item.description || item.type,
+          ...item.items?.slice(0, 2).map(ref => ref.pos ? `${num(ref.pos.x, 2)}, ${num(ref.pos.y, 2)} mm` : ref.description) || []].join(' · ') }))));
+    } catch (error) {
+      if (review === checked) {
+        rulesStatus.textContent = error.message;
+        if (error.kind === 'stale-board') checked.ready = false;
+      }
+    } finally {
+      checking = false;
+      updateActions();
+    }
+  });
+  rules.disabled = true;
+
+  function updateActions() {
+    rules.disabled = checking || !review?.ready || !review.revision;
+    place.disabled = rules.disabled || !!review?.nativeErrors;
+  }
 
   function inspect() {
-    place.disabled = true;
+    place.disabled = rules.disabled = true;
     review = null;
+    rulesStatus.textContent = '';
+    rulesResult.replaceChildren();
     if (!snapshot || !d.body.isConnected) return;
     if (api.designId() !== designId) {
       status.textContent = 'The active design changed. Open a new placement review.';
@@ -176,7 +220,7 @@ export function openPlacementReview(api, kind, makeReview) {
         details.append(el('h3', { text: 'Terminal placement' }),
           specTable(review.terminals.map(q => [`${q.name} · ${q.net}`, `${num(q.x, 3)}, ${num(q.y, 3)} mm`])), hint(review.scope));
         mapNets(result);
-      }
+      } else mapConductorGroups();
       view ||= new Viewport(canvas, { onHandleDrag: (_, x, y) => updateOrigin([x, -y]) });
       view.setArtwork(review.preview, [
         ['Board', '#526276'], ['Edge', '#c7d2dd'], ['Design', '#ee9c48'],
@@ -194,11 +238,40 @@ export function openPlacementReview(api, kind, makeReview) {
         findings.append(row);
       }
       review.warnings.filter(w => !w?.point).forEach(w => findings.append(hint(typeof w === 'string' ? w : w.message)));
-      place.disabled = !review.ready || !review.revision;
+      updateActions();
     } catch (err) {
       review = null;
       status.textContent = err.message;
     }
+  }
+
+  function mapConductorGroups() {
+    const focused = document.activeElement?.dataset?.conductorNet;
+    mapping.replaceChildren();
+    if (review.netGroups?.length) {
+      const fields = el('div', { class: 'transformer-placement-pose placement-net-fields' });
+      for (const group of review.netGroups) {
+        const title = group.reference ? `${group.name} reference plane` : group.name;
+        const select = el('select', { 'aria-label': `${title} destination net`, dataset: { conductorNet: group.name } });
+        if (!group.reference) select.append(el('option', { value: '', text: 'Leave unassigned' }));
+        const selected = group.net || '';
+        if (selected && !review.nets.includes(selected)) {
+          select.append(el('option', { value: selected, text: `${selected} (missing)`, disabled: true }));
+        }
+        select.append(...review.nets.map(net => el('option', { value: net, text: net })));
+        select.value = selected;
+        select.addEventListener('change', () => {
+          const scope = snapshot.boardId || snapshot.name;
+          const maps = api.config().placementNets || {};
+          api.set('placementNets', { ...maps, [scope]: { ...maps[scope], [group.name]: select.value || null } });
+          inspect();
+        });
+        fields.append(el('label', {}, title, select));
+      }
+      mapping.append(el('h3', { text: 'Map destination nets' }), fields);
+      if (focused) [...fields.querySelectorAll('select')].find(n => n.dataset.conductorNet === focused)?.focus();
+    }
+    if (review.floating) mapping.append(hint(`${review.floating} generated copper features are intentionally unassigned.`));
   }
 
   function mapNets(result) {
@@ -221,8 +294,11 @@ export function openPlacementReview(api, kind, makeReview) {
   const refresh = button('Read live KiCad board', async () => {
     const id = ++request;
     refresh.disabled = true;
-    place.disabled = true;
+    place.disabled = rules.disabled = true;
     snapshot = null;
+    review = null;
+    rulesStatus.textContent = '';
+    rulesResult.replaceChildren();
     status.textContent = 'Reading the open board…';
     try {
       const loaded = await api.readPlacementSnapshot(designId);
@@ -239,8 +315,12 @@ export function openPlacementReview(api, kind, makeReview) {
     const selected = file.files[0];
     if (!selected) return;
     const id = ++request;
-    place.disabled = true;
+    place.disabled = rules.disabled = true;
     snapshot = null;
+    review = null;
+    rulesStatus.textContent = '';
+    rulesResult.replaceChildren();
+    status.textContent = 'Reading the board file…';
     try {
       const text = await selected.text();
       if (id !== request || !d.body.isConnected) return;
@@ -271,8 +351,8 @@ export function openPlacementReview(api, kind, makeReview) {
     if (value < 0.01 || value > 10) { status.textContent = 'Grid must be between 0.01 and 10 mm.'; return; }
     api.set('placementGrid', value); inspect();
   }));
-  d.body.append(hint('Set the origin and review clearance, winding contacts and replacement items. Use a live board snapshot to place, or open a board file for a preview. Run KiCad DRC after placement.'),
-    pose, refresh, file, status, mapping, details, wrap, findings);
+  d.body.append(hint('Set the origin and review clearance, contacts and replacement items. Read the live board to place the design and check KiCad rules, or open a board file to preview it.'),
+    pose, refresh, file, status, mapping, details, rules, rulesStatus, rulesResult, wrap, findings);
   d.cleanups.push(() => view?.destroy());
   if (api.canRefreshBoard()) refresh.click();
 }

@@ -1,8 +1,6 @@
 # Transformer GUI audit — 1.6 development
 
-This audit applies Apple's Human Interface Guidelines to Planar Studio's
-cross-platform browser/webview interface. It does not claim native AppKit
-conformance or Apple certification.
+This audit covers Planar Studio's cross-platform browser and webview interface.
 
 | Audit area | Finding | Implemented change |
 | --- | --- | --- |
@@ -14,11 +12,11 @@ conformance or Apple certification.
 | Color and chart access | Curves and candidate colors alone could not convey exact outcomes. | Text status and margins, named legends, keyboard-focusable candidate points, exact-value candidate cards, and expandable data tables for study/comparison/measurement curves. |
 | Adaptation and motion | Fixed sidebars squeezed smaller windows. | Work-area cards reflow to one column; narrow windows stack navigation; reduced-motion and increased-contrast preferences are respected. |
 
-Apple references: [Layout](https://developer.apple.com/design/human-interface-guidelines/layout),
-[Modality](https://developer.apple.com/design/human-interface-guidelines/modality),
-[Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility),
-[Buttons](https://developer.apple.com/design/human-interface-guidelines/buttons), and
-[Color](https://developer.apple.com/design/human-interface-guidelines/color).
+The shared dialog behavior now moves focus to the dialog heading, makes the
+background inert, contains Tab navigation and returns focus to the opener.
+Workspace shortcuts pause while dialogs are open. Shared buttons, selects and
+file controls use a 28-pixel target height. Compact study dialogs keep their
+navigation and close action visible while the study itself scrolls.
 
 ## Validation and limits
 
@@ -32,15 +30,11 @@ prototype comparison, calibration selection, invalid terminal recovery and
 worker cleanup. Browser checks cover rendered layout, theme contrast and narrow
 working areas; screenshots accompany the development package.
 
-Measured theme-token contrast for secondary text against the darkest/lightest
-raised control surface is 5.87:1 (dark) and 6.10:1 (light). Primary-action text
+Measured theme-token contrast for muted text against the raised control
+surface is 5.07:1 (dark) and 5.18:1 (light). Primary-action text
 contrast is 6.64:1 (dark) and 5.49:1 (light). These exceed the 4.5:1 ordinary-text
-threshold described by Apple's accessibility guidance. This is a check of the
-chosen text/surface pairs, not a claim that every rendered pixel was audited.
+threshold for ordinary text. The measurements cover the listed text and surface pairs.
 
 The browser accessibility tree and keyboard behavior were inspected on Windows.
-VoiceOver, native macOS webview behavior, switch control and screen-reader
-announcements on physical Apple hardware have not been tested. This remains a
-desktop engineering interface, with horizontally scrollable tables where the
-data requires it. Live placement was kept disconnected from a real PCB during
-testing; board-file previews and isolated RPC regression tests cover that path.
+Native webview, screen-reader and switch-control behavior remain unverified.
+Board-file previews and isolated RPC regression tests cover placement review.

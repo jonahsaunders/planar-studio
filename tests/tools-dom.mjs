@@ -31,11 +31,16 @@ globalThis.Worker = class {
 const { openDesignTools } = await import('../web/js/ui/design-tools.js');
 const ind = await import('../web/js/ws/inductor.js'), filter = await import('../web/js/ws/filter.js'), motor = await import('../web/js/ws/motor.js');
 const { parseMeasurement } = await import('../web/js/engine/measurements.js');
+const { COUPON_BOARD_SHA, hasStaleFit } = await import('../web/js/engine/measurement-records.js');
 const { responseOf } = await import('../web/js/engine/studies.js');
 let kind = 'inductor', cfg, result, dirty = 0;
 const workspaces = { inductor: ind, filter, motor };
 function reset(k) { kind = k; cfg = workspaces[k].defaults(); cfg.turns = k === 'motor' ? 4 : 3; if (k === 'filter') { cfg.family = 'hairpin'; cfg.order = 3; cfg.band = 'bandpass'; } result = workspaces[k].compute(cfg, {}); }
-const host = { kind: () => kind, config: () => cfg, result: () => result, name: () => 'Test', designId: () => 'test', dirty: () => { dirty++; }, apply: (patch) => { Object.assign(cfg, patch); result = workspaces[kind].compute(cfg, {}); }, switch: (k, tab) => { reset(k); openDesignTools(host, tab); } };
+const host = { kind: () => kind, config: () => cfg, defaults: () => workspaces[kind].defaults(),
+  result: () => result, solveMeasurement: c => workspaces[kind].compute(c, {}),
+  name: () => 'Test', designId: () => 'test', dirty: () => { dirty++; },
+  apply: (patch) => { Object.assign(cfg, patch); result = workspaces[kind].compute(cfg, {}); },
+  switch: (k, tab) => { reset(k); openDesignTools(host, tab); } };
 const text = () => document.querySelector('.tools-modal')?.textContent || '';
 const status = () => document.querySelector('.tools-status')?.textContent || '';
 const byText = (s) => [...document.querySelectorAll('button')].find((b) => b.textContent === s);
@@ -77,6 +82,28 @@ try {
     Object.defineProperty(input, 'files', { value: [new w.File(['not a measurement'], 'bad.csv')] });
     input.dispatchEvent(new w.Event('change')); await until(() => /CSV needs/.test(status()), 'malformed import'); assert.equal(cfg.measurement.name, 'lab.csv');
   });
+  await check('Coupon import retains the earlier sweep and binds the published geometry', async () => {
+    const original = cfg.measurementRecords[0];
+    const manifest = { coupon: 'B', boardSHA256: COUPON_BOARD_SHA, sampleId: 'B-01', measuredOn: '2026-01-02',
+      instrument: 'VNA', calibration: 'One-port SOL', referencePlane: 'Probe tips', stackup: 'FR-4', impedanceFile: 'b.csv' };
+    click('Optimize');
+    click('Measurements');
+    const input = document.querySelector('[aria-label="Measurement file"]');
+    Object.defineProperty(input, 'files', { value: [
+      new w.File([JSON.stringify(manifest)], 'b.json'),
+      new w.File(['Frequency (Hz),R (ohm),X (ohm)\n1000,1,0.01\n1000000,2,14\n100000000,5,-36'], 'b.csv'),
+    ] });
+    input.dispatchEvent(new w.Event('change'));
+    await until(() => cfg.measurementRecords.length === 2, 'coupon import');
+    const coupon = cfg.measurementRecords[1];
+    assert.equal(coupon.configuration.turns, 9);
+    assert.equal(coupon.configuration.traceW, 0.4);
+    assert.equal(coupon.conditions.role, 'held-out');
+    assert.ok(coupon.baseline.x.length);
+    assert.match(text(), /Probe tips/);
+    set('Saved measurement', original.id);
+    assert.equal(cfg.measurement.name, 'lab.csv');
+  });
   await check('Board import performs geometric checks and applies placement origin', async () => {
     click('Board checks'); set('Placement X (KiCad mm)', 25);
     const input = document.querySelector('[aria-label="Board file"]');
@@ -97,6 +124,10 @@ try {
     const actual = responseOf('filter', cfg, null, { er: 5 }); cfg.measurement = { name: 'synthetic.s2p', z0: 50, rows: actual.x.map((f, i) => ({ f, s21db: actual.y[i] })) };
     click('Measurements'); set('Fit Loss tangent', 'no'); await calculate('Fit measurement');
     const before = result.design.resonators[0].armLen; click('Apply fitted parameters'); assert.ok(cfg.measurementFit); assert.ok(cfg.fixedDesign); near(result.design.resonators[0].armLen, before);
+    assert.equal(hasStaleFit(cfg), false);
+    host.apply({ tuning: { ...cfg.tuning, lengthScale: 1.1 } });
+    click('Tolerances'); click('Measurements');
+    assert.match(text(), /fit is out of date/);
   });
   click('Close'); reset('motor'); openDesignTools(host, 'rotor');
   await check('Rotor preview and external field update motor results', () => {

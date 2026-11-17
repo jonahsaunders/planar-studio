@@ -31,6 +31,7 @@ import {
 import { defaultContext, layoutFilter } from '../web/js/engine/filtergeom.js';
 import { buildArtwork } from '../web/js/engine/coilgeom.js';
 import { bounds, toKicad } from '../web/js/engine/artwork.js';
+import { mapPlacementNets } from '../web/js/engine/placement-nets.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf } from '../web/js/engine/exporters.js';
 
 const TAU = Math.PI * 2;
@@ -486,6 +487,14 @@ section('Filter layouts produce placeable copper');
     assert(`${name.padEnd(14)} lays out`, finite && hasPorts && b.w > 0 && b.w < 2000,
       `${b.w.toFixed(1)}×${b.h.toFixed(1)} mm, ${art.tracks.length} tracks, ${art.vias.length} vias`);
   }
+  const layout = layoutFilter(designs['edge-coupled'], ctx);
+  const { art, groups, referenceNet } = mapPlacementNets(layout, { RF_IN: 'J1', RF_OUT: 'J2' }, 'GND', 'RF_GND');
+  const shapeNets = new Set([...art.tracks, ...art.pads].map(item => item.net));
+  assert('edge-coupled feeds stay separate and resonators float',
+    shapeNets.size === 3 && shapeNets.has('J1') && shapeNets.has('J2') && shapeNets.has(null)
+    && art.tracks.filter(item => item.role === 'resonator').every(item => item.net === null)
+    && layout.ports[0].net === 'RF_IN' && layout.ports[1].net === 'RF_OUT'
+    && groups.length === 3 && referenceNet === 'RF_GND');
 }
 
 section('Solver timing at the interactive cap');

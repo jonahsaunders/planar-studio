@@ -19,6 +19,7 @@ from typing import Any, Dict, List, Optional
 
 from .kicad_link import BoardEditError, KiCadLink, LinkError, Placement
 from . import library
+from .drc import compare_placement, current_rules_revision
 from .server import Api, RpcError, UiServer
 from .store import Store, UNSPECIFIED
 from .window import Shell, report
@@ -174,6 +175,18 @@ class Application:
             ctx.pop("selectionIds", None)
             return ctx
 
+        @api.method("board.drc")
+        @_require_link
+        def _drc(params: Dict[str, Any]) -> Dict[str, Any]:
+            placement = Placement.from_payload(params.get("placement") or {})
+            if not placement.item_count():
+                raise RpcError("Nothing to check.", kind="empty")
+            with placement_lock:
+                snapshot, _ = reviewed_snapshot(placement.design_id)
+                if params.get("expectedSnapshot") != snapshot["revision"]:
+                    raise RpcError("The board changed. Read it again before checking DRC.", kind="stale-board")
+            return compare_placement(snapshot, placement)
+
         @api.method("board.place")
         @_require_link
         def _place(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -189,6 +202,10 @@ class Application:
                     snapshot, previous = reviewed_snapshot(design_id)
                     if expected != snapshot["revision"]:
                         raise RpcError("The board or previous placement changed. Review the updated destination.",
+                                       kind="stale-board")
+                    rules_revision = params.get("expectedRules")
+                    if rules_revision and current_rules_revision(snapshot) != rules_revision:
+                        raise RpcError("The saved KiCad rules changed. Review the placement and rerun the check.",
                                        kind="stale-board")
                     board = board_key(snapshot)
                     ids = snapshot["excludedIds"] if params.get("replace") else []
