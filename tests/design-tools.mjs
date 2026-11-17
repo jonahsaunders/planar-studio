@@ -9,9 +9,32 @@ import { tuneDistributed } from '../web/js/engine/filtertune.js';
 import { optimizeCoil, toleranceStudy, fitMeasurement, responseOf, maskScore, tuneToMask } from '../web/js/engine/studies.js';
 import { parseBoard, checkPlacement, reviewBoardPlacement, segmentDistance, arcPoints } from '../web/js/engine/boardcheck.js';
 import { artwork, pad, track, toKicad } from '../web/js/engine/artwork.js';
+import { captureFabricationStack, fabricationDefaults, fabricationPatch, fabricationFindings } from '../web/js/engine/fabrication.js';
 
 let count = 0;
 function check(name, fn) { fn(); count++; console.log(`  ok ${name}`); }
+check('A captured fabrication stack constrains generation and optimizer bounds', () => {
+  const stack = captureFabricationStack({ copperLayers: [
+    { name: 'F.Cu', centerHeightMm: 0.02, thicknessMm: 0.04 },
+    { name: 'B.Cu', centerHeightMm: 1.18, thicknessMm: 0.04 },
+  ] });
+  const profile = { ...fabricationDefaults, name: 'Two-layer process', stack,
+    boardT: 1.2, rfHeight: 1.12, minTrace: 0.45, minGap: 0.3, minDrill: 0.4, etch: 0.03 };
+  const cfg = { ...defaultsCoil(), traceW: 0.2, traceS: 0.1, layers: 4 };
+  const patched = { ...cfg, ...fabricationPatch(cfg, 'inductor', profile) };
+  assert.deepEqual([patched.traceW, patched.traceS, patched.layers, patched.viaDrill], [0.45, 0.3, 2, 0.4]);
+  assert.equal(patched.tools.tolerance.etch, 0.03);
+  assert.throws(() => optimizeCoil(patched, { targetL: 1e-6, maxWidth: 50, maxHeight: 50,
+    frequency: 1e6, minWidth: 0.2, maxTrace: 0.3, minGap: 0.2, maxGap: 0.4 }), /profile minimums/);
+  const filter = defaultsFilter();
+  const process = { ...filter, ...fabricationPatch(filter, 'filter', profile), family: 'hairpin', band: 'bandpass' };
+  const modeled = computeFilter(process, { board: { copperLayers: stack, fabricationName: profile.name } });
+  assert.equal(modeled.rfStack.h, 1.12);
+  assert.match(modeled.rfStack.source, /Two-layer process/);
+  const art = artwork();
+  art.tracks.push(track('In1.Cu', 0.2, [[0, 0], [10, 0]]));
+  assert.equal(fabricationFindings(art, profile).length, 2);
+});
 const near = (x, y, relative = 0.01) => assert.ok(Math.abs(x - y) <= Math.max(1e-15, Math.abs(y) * relative), `${x} ≠ ${y}`);
 check('Touchstone DB units, port ordering, reference impedance', () => {
   const m = parseMeasurement('# MHz S DB R 75\n1 -20 0 -3 90 -3 -90 -20 0\n2 -10 0 -6 0 -6 0 -10 0', 'vna.s2p');

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {defaults,compute} from '../web/js/ws/inductor.js';
 import {checkObstacleCopper,segmentDistance} from '../web/js/engine/obstacles.js';
+import {boardObstaclePatch,boardObstacleSource} from '../web/js/engine/board-obstacles.js';
+import {parseBoard,reviewBoardPlacement} from '../web/js/engine/boardcheck.js';
 import {toKicad} from '../web/js/engine/artwork.js';
 import {exportKicadPcb,exportKicadMod,exportSvg,exportDxf} from '../web/js/engine/exporters.js';
 const base={...defaults(),obstacleEnabled:true,turns:5};
@@ -32,4 +34,30 @@ assert.throws(()=>checkObstacleCopper(reference.coil,{...base,obstacles:[{shape:
 for(const change of [{layers:4,connection:'series'},{turns:1.5},{areaClearance:-1},{obstacles:[{shape:'circle',x:0,y:0,radius:100}]},{obstacleSeedAuto:false,obstacleSeedX:100,obstacleSeedY:100}])assert.throws(()=>compute({...base,...change},{},{quick:true}));
 const notched=compute({...base,obstacles:cases[2]},{},{quick:true});
 assert.ok(notched.coil.bbox.x1-notched.coil.bbox.x0>40,'uses remaining board width around the connector');
+const boardText = `(kicad_pcb
+  (layers (0 "F.Cu" signal) (31 "B.Cu" signal))
+  (gr_poly (pts (xy 90 60) (xy 152 60) (xy 152 101) (xy 142 101) (xy 142 107) (xy 90 107)) (layer "Edge.Cuts"))
+  (gr_rect (start 134 64) (end 141 70) (layer "Edge.Cuts"))
+  (footprint "H1" (at 105 67) (pad "" np_thru_hole circle (at 0 0) (size 3 3) (drill 3) (layers "*.Cu" "*.Mask")))
+  (zone (name "Connector clearance") (layers "F.Cu" "B.Cu") (keepout (tracks not_allowed))
+    (polygon (pts (xy 90 88) (xy 100 88) (xy 100 96) (xy 90 96)))))`;
+const source = boardObstacleSource(boardText, 'fixture.kicad_pcb');
+assert.equal(source.islands.length, 1);
+assert.equal(source.keepouts.length, 1, 'A keepout on two layers has one preview choice');
+const imported = boardObstaclePatch(source, 0, true, [0]);
+assert.deepEqual(imported.placementOrigin, [121, 83.5]);
+assert.equal(imported.obstacleBoard.cutouts.length, 1);
+assert.deepEqual(imported.obstacleBoard.drills.map(d => [d.x, d.y, d.radius]), [[-16, 16.5, 1.5]]);
+const configured = { ...base, ...imported, layers: 1, turns: 3 };
+const layout = compute(configured, {}, { quick: true });
+assert.ok(checkObstacleCopper(layout.coil, configured));
+assert.equal(parseBoard(exportKicadPcb(layout.art)).loops.length, 2);
+const placed = reviewBoardPlacement(layout.art, configured, boardText, []);
+assert.equal(placed.issues.filter(issue => ['edge', 'outside', 'keepout', 'drill'].includes(issue.type)).length, 0);
+const surface = compute({ ...configured, layers: 2, padDrill: 0 }, {}, { quick: true });
+assert.deepEqual(surface.art.pads.map(p => [p.layer, p.drill]), [['F.Cu', 0], ['B.Cu', 0]]);
+const outlineOnly = boardObstaclePatch(source, 0, false, []);
+assert.equal(outlineOnly.obstacleBoard.drills.length + outlineOnly.obstacleBoard.keepouts.length, 0);
+assert.equal(outlineOnly.obstacleBoard.cutouts.length, 1);
+assert.throws(() => boardObstacleSource('(kicad_pcb (gr_line (start 1 1) (end 2 2) (layer "Edge.Cuts")))', 'open.kicad_pcb'), /Close the board outline/);
 console.log(`${total} obstacle layouts passed; hole/rectangle/polygon clearance, split pockets, continuity, additive stacking, exports and persistence verified.`);

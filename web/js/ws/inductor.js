@@ -64,7 +64,7 @@ export function defaults() {
 export function rail(panel, app) {
   panel.group({key:'obstacle-mode',title:'Design around obstacles',fields:[
     {key:'obstacleEnabled',type:'check',label:'Generate in remaining board area',hint:'Uses the marked board area and obstacles instead of a standard coil shape.'},
-    ...[['areaWidth','Board-area width',5,500],['areaHeight','Board-area height',5,500],['areaClearance','Obstacle / edge clearance',0,20]].map(([key,label,min,max])=>({key,type:'number',label,min,max,step:0.1,unit:'mm',when:c=>c.obstacleEnabled})),
+    ...[['areaWidth','Board-area width',5,500],['areaHeight','Board-area height',5,500],['areaClearance','Obstacle / edge clearance',0,20]].map(([key,label,min,max])=>({key,type:'number',label,min,max,step:0.1,unit:'mm',when:c=>c.obstacleEnabled&&(key==='areaClearance'||!c.obstacleBoard)})),
     {key:'obstacleTurns',type:'custom',when:c=>c.obstacleEnabled,build:p=>{
       const input=el('input',{type:'number',min:1,max:60,step:1,'aria-label':'Requested contour turns'});
       input.addEventListener('change',()=>{if(input.value!=='')app.set('turns',Number(input.value));});

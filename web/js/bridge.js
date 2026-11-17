@@ -165,8 +165,13 @@ export const api = {
   writeLibrary: (name, text) => call('library.write', { name, text }),
   listLibrary: () => call('library.list'),
   saveFile: (name, text) => call('file.save', { name, text }, { timeout: 60000 }),
-  getPrefs: () => call('prefs.get'),
-  setPrefs: (prefs) => call('prefs.set', { prefs }),
+  getPrefs: async () => STANDALONE ? JSON.parse(localStorage.getItem('planar.prefs') || '{}') : call('prefs.get'),
+  setPrefs: async (prefs) => {
+    if (!STANDALONE) return call('prefs.set', { prefs });
+    const updated = { ...await api.getPrefs(), ...prefs };
+    localStorage.setItem('planar.prefs', JSON.stringify(updated));
+    return updated;
+  },
   async listDesigns() {
     if (!STANDALONE) return call('designs.list');
     const designs = [];

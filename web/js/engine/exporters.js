@@ -132,6 +132,7 @@ export function exportKicadPcb(A, opt = {}) {
   const netIndex = new Map();
   const allNets = new Set();
   [...art.tracks, ...art.arcs, ...art.vias, ...art.pads].forEach((o) => { if (o.net) allNets.add(o.net); });
+  if (opt.referencePlane) allNets.add('GND');
   for (const n of Array.from(allNets).sort()) { netNames.push(`"${n}"`); netIndex.set(n, netNames.length - 1); }
   netNames.forEach((n, i) => L.push(`  (net ${i} ${n})`));
   const netOf = (o) => (o.net && netIndex.has(o.net) ? netIndex.get(o.net) : 0);
@@ -175,6 +176,13 @@ export function exportKicadPcb(A, opt = {}) {
   for (const t of art.labels) {
     L.push(`  (gr_text "${String(t.text).replace(/"/g, "'")}" (at ${f3(t.x)} ${f3(-t.y)}) (layer "${t.layer}") `
       + `(effects (font (size ${f3(t.size)} ${f3(t.size)}) (thickness ${f3(t.size * 0.15)}))))`);
+  }
+  if (opt.referencePlane) {
+    const { layer, polygon, clearance } = opt.referencePlane;
+    const vertices = polygon.slice(0, -1).map(([x, y]) => `(xy ${f3(x)} ${f3(-y)})`).join(' ');
+    L.push(`  (zone (net ${netIndex.get('GND')}) (net_name "GND") (layer "${layer}") (hatch edge 0.5)`
+      + ` (connect_pads (clearance ${f3(clearance)})) (min_thickness 0.1)`
+      + ` (fill yes (thermal_gap 0.3) (thermal_bridge_width 0.3) (island_removal_mode 1)) (polygon (pts ${vertices})))`);
   }
   L.push(`)`);
   return L.join('\n') + '\n';

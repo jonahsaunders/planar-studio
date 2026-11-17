@@ -11,6 +11,24 @@ Study results can be exported separately as JSON. Board snapshots are transient;
 they are not included in saved designs. Exported board-study reports include the
 preview geometry, so treat those as board design files when sharing them.
 
+## Fabrication profiles
+
+Open **Designs → Fabrication profiles…** to save a nominal stackup, minimum
+track width, gap and drill, and the expected fabrication variations. **Capture
+KiCad copper stack** can copy physical layer positions and foil thicknesses
+from an open board. Enter the nominal stack yourself when physical data is
+unavailable.
+
+**Apply to design** copies the profile into the active design. Minimum
+dimensions constrain geometry inputs and the inductor search. The tolerance
+study starts with the saved variation ranges, which can be changed for an
+individual study. Placement checks the generated track widths, drills and
+copper-layer availability, as well as clearance to existing board features.
+
+Profile edits in the library take effect on a design when reapplied. Clearing
+an active profile releases its limits and keeps the entered dimensions. Use the
+fabricator's specific rules and final KiCad DRC to verify the complete board.
+
 ## Optimizer
 
 In **Inductor → Design tools → Optimize**, enter a target inductance and maximum
@@ -144,6 +162,24 @@ edge-coupled approximation. Bend/tap discontinuities, nonadjacent coupling, and
 out-of-band spurious behavior require full-wave verification. The original
 prototype remains available for comparison.
 
+### Hairpin simulation fixtures
+
+In **Filter tuning → Full-wave simulation fixtures**, export a ZIP of the
+current hairpin geometry. It includes an isolated fixture for every resonator,
+a fixture for every adjacent pair, and both tapped-feed fixtures. The manifest
+supplies copper paths, pads, reference-plane geometry, launch clearances,
+port locations and the modeled signal-to-reference dielectric and copper
+thicknesses. Refill the reference zones to view the planes in KiCad.
+
+Solve the isolated resonators and pairs with an external eigenmode solver.
+Use the tapped fixtures with the specified ports to extract external Q. Fill
+in the resonant frequencies, adjacent coupling magnitudes and external Q in
+the provided JSON template. Optional unloaded Q values override the model's
+estimated resonator loss. Import the completed JSON to see a second response
+curve with the extracted values. A geometry or stack change invalidates the
+report. The comparison remains a narrowband network assembled from fixture
+results.
+
 ## Magnetic field
 
 Compute an XY slice at a chosen height above the upper copper plane. Select
@@ -223,6 +259,16 @@ polygons can produce conservative warnings. Importing a file checks that file,
 not subsequent unsaved editor changes. At most 200 findings are displayed.
 
 ## Rotor
+
+For a balanced three-phase rotary motor, **Continuous speed and torque** plots
+the envelope for a DC bus voltage, modulation strategy, driver peak phase
+current, ambient and winding temperature limits, and winding-to-ambient thermal
+resistance. Enter a requested speed and torque to see which limit applies.
+The phase-voltage model includes winding resistance, synchronous reactance
+and back-EMF. Copper loss uses resistance at the winding temperature limit.
+Use measured thermal resistance for the assembled and cooled motor.
+Field weakening, inverter drop and speed-dependent losses are outside this
+estimate.
 
 The PCB motor's pole-pair count determines the alternating N/S magnet count.
 Set cylindrical magnet diameter/thickness, pitch radius, remanence Br, air gap,

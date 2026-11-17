@@ -8,6 +8,7 @@ import { hairpinCoupling } from '../web/js/engine/hairpin-model.js';
 import { tuneDistributed } from '../web/js/engine/filtertune.js';
 import { reviewBoardPlacement, segmentDistance } from '../web/js/engine/boardcheck.js';
 import { exportKicadPcb, exportSvg } from '../web/js/engine/exporters.js';
+import { extractedHairpin, hairpinFixtures } from '../web/js/engine/hairpin-fixtures.js';
 
 const cfg = { ...defaults(), family: 'hairpin', band: 'bandpass', points: 801, spanDecades: 0.15 };
 const sub = { h: cfg.subH, er: cfg.subEr, t: cfg.subT, tanD: cfg.tanD, minGap: cfg.minGap };
@@ -88,6 +89,34 @@ for (const order of [1, 2, 3, 4, 5, 10, 12]) {
 }
 
 const base = compute(cfg, {});
+check('Simulation fixtures preserve reused copper, ports and stack, with geometry-bound extraction', () => {
+  const { manifest, report, files } = hairpinFixtures(base, 'Hairpin fixture test');
+  const expected = cfg.order * 2 + 1;
+  assert.equal(manifest.fixtures.length, expected);
+  assert.equal(manifest.stack.dielectricMm, base.rfStack.h);
+  const input = manifest.fixtures.find(f => f.id === 'input-feed');
+  assert.deepEqual(input.copper.pads, [base.art.pads[0]]);
+  assert.equal(input.ports[0].x, base.art.ports[0].x);
+  assert.equal(input.referencePlane.antipads.length, 1);
+  const pair = manifest.fixtures.find(f => f.id === 'pair-1-2');
+  assert.deepEqual(pair.copper.tracks, base.art.tracks.filter(track => [0, 1].includes(track.index))
+    .map(track => ({ ...track, net: null })));
+  assert.match(files[input.file], /\(zone .*\(layer "B.Cu"\)/);
+  assert.throws(() => extractedHairpin(base, report), /valid extracted frequency/);
+  base.design.elements.filter(item => item.type === 'LC-parallel').forEach((tank, i) => {
+    report.resonators[`resonator-${i + 1}`].resonanceHz = 1.03 / (2 * Math.PI * Math.sqrt(tank.L * tank.C));
+  });
+  base.design.kCouple.forEach((value, i) => { report.pairs[`pair-${i+1}-${i+2}`].coupling = Math.abs(value); });
+  report.feeds['input-feed'].externalQ = base.design.Qe1;
+  report.feeds['output-feed'].externalQ = base.design.Qen;
+  const compared = compute({ ...cfg, hairpinExtraction: report }, {});
+  assert.ok(compared.extractedResponse);
+  assert.deepEqual(compared.response.s21db, base.response.s21db);
+  assert.ok(compared.extractedResponse.metrics.centreF > compared.response.metrics.centreF);
+  const stale = compute({ ...cfg, hairpinExtraction: report, tuning: { lengthScale: 1.01 } }, {});
+  assert.match(stale.extractionError, /different hairpin geometry/);
+  assert.equal(stale.extractedResponse, undefined);
+});
 check('Moving a tap changes the placed feed, external Q and S21', () => {
   const fixed = clone(base.nominal);
   fixed.tap.length *= 1.6;

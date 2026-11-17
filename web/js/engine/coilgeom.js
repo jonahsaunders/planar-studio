@@ -59,6 +59,7 @@ export function coilArtwork(cfg, coil, opt = {}) {
   coil.terminals.forEach((t, i) => {
     A.pads.push(pad(t[0], t[1], {
       w: cfg.padSize, drill: cfg.padDrill, number: String(i + 1), net, role: 'terminal',
+      ...(!cfg.padDrill && coil.terminalLayers ? { layer: names[coil.terminalLayers[i]] } : {}),
     }));
   });
   return A;
@@ -114,7 +115,8 @@ export function buildArtwork(cfg, coil, opt = {}) {
 
 /** Disc outline, including the routing collar; stators also have a bore. */
 export function outlineFor(cfg, coil, margin = 2, art = null) {
-  if (coil.obstacleRegions) return [{layer: 'Edge.Cuts', pts: [...coil.obstacleRegions.board, coil.obstacleRegions.board[0]]}];
+  if (coil.obstacleRegions) return [coil.obstacleRegions.board, ...coil.obstacleRegions.cutouts]
+    .map(path => ({ layer: 'Edge.Cuts', pts: [...path, path[0]] }));
   const out = [];
   const R = Math.max(coil.outerR, art?.meta.routingOuterRadius || 0) + margin;
   if ((cfg.shape === 'wedge' || cfg.motorGeometry) && cfg.arrayEnabled) {

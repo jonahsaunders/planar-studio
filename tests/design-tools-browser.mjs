@@ -1,7 +1,7 @@
 /* Real browser/CSP gate. Requires npm install and npx playwright install chromium.
    Uses only local fixtures and a disposable plugin state directory. */
 import { chromium, expect } from 'playwright/test';
-import { spawn } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -97,6 +97,10 @@ try {
   await page.getByRole('tab', { name: 'PCB motor', exact: true }).click();
   await page.getByRole('button', { name: 'Design tools', exact: true }).click();
   await expect(page.getByText('Rotor poles', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Continuous torque versus speed (rpm)' })).toBeVisible();
+  await set('Requested speed (rpm)', 50000);
+  await expect(dialog.getByRole('cell', { name: 'Bus voltage', exact: true })).toBeVisible();
+  await expect(page.getByText('Outside estimated limits', { exact: true })).toBeVisible();
   await set('Measured / external-solver peak Bgap (T)', 0.6);
   await page.getByRole('button', { name: 'Apply external field to motor' }).click();
   await page.getByRole('button', { name: 'Close', exact: true }).click();
@@ -105,9 +109,66 @@ try {
   await page.getByRole('button', { name: 'Use hairpin filter' }).click();
   await calculate('Tune to response mask');
   await page.getByRole('button', { name: 'Apply tuning', exact: true }).click();
+  await page.getByText('Full-wave simulation fixtures', { exact: true }).click();
+  await page.getByRole('button', { name: 'Export hairpin fixtures' }).click();
+  await expect(page.getByRole('status', { name: '' }).filter({ hasText: 'Hairpin fixtures exported.' })).toBeVisible();
+  const zip = path.join(stateDir, 'exports', 'hairpin-fixtures.zip');
+  const read = entry => JSON.parse(execFileSync(python, ['-c',
+    'import sys, zipfile; sys.stdout.buffer.write(zipfile.ZipFile(sys.argv[1]).read(sys.argv[2]))', zip, entry]));
+  const report = read('extraction.template.json');
+  const manifest = read('fixtures.json');
+  for (const values of Object.values(report.resonators)) values.resonanceHz = manifest.centerFrequencyHz * 1.01;
+  for (const values of Object.values(report.pairs)) values.coupling = 0.04;
+  for (const values of Object.values(report.feeds)) values.externalQ = 15;
+  await page.getByLabel('Hairpin extraction JSON').setInputFiles({ name: 'extraction.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(report)) });
+  await expect(page.getByRole('heading', { name: 'Passband comparison' })).toBeVisible();
   await page.screenshot({ path: path.join(root, 'dist', 'design-tools-browser.png') });
+  await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+
+  page.on('dialog', prompt => prompt.accept());
+  const starters = [
+    ['Square impedance coupon', 'inductor'], ['Two-layer air-core transformer', 'transformer'],
+    ['Three-phase rotary stator', 'motor'], ['Three-resonator hairpin filter', 'filter'],
+    ['13.56 MHz NFC loop', 'antenna'],
+  ];
+  for (const [name, kind] of [...starters.slice(1), starters[0]]) {
+    await page.getByRole('button', { name: 'Starter projects', exact: true }).click();
+    await expect(page.locator('.starter-projects button')).toHaveCount(5);
+    await page.getByRole('dialog', { name: 'Starter projects' }).getByRole('button', { name: new RegExp(name) }).click();
+    await expect(page.locator('#app')).toHaveAttribute('data-workspace', kind);
+    await expect(page.getByLabel('Design name')).toHaveValue(name);
+    await expect(page.locator('[data-key="starter"] summary')).toHaveText(name);
+    await expect(page.locator('#st-algo')).not.toHaveText('geometry failed');
+  }
+  await page.locator('[data-key="designs"] > summary').click();
+  await page.getByRole('button', { name: 'Fabrication profiles…' }).click();
+  await set('Fabrication profile name', 'Workshop two-layer');
+  await set('Minimum track width (mm)', 0.8);
+  await set('Etch width variation ± (mm)', 0.04);
+  await page.getByRole('button', { name: 'Save profile', exact: true }).click();
+  await expect(page.getByLabel('Saved fabrication profile').locator('option', { hasText: 'Workshop two-layer' })).toHaveCount(1);
+  await page.getByRole('button', { name: 'Apply to design', exact: true }).click();
+  await expect(page.getByText('Applied Workshop two-layer to this design.')).toBeVisible();
+  await page.getByRole('dialog', { name: 'Fabrication profiles' }).getByRole('button', { name: 'Close' }).click();
+  await expect(page.getByLabel('Track width', { exact: true })).toHaveValue('0.800');
+  await page.getByRole('button', { name: 'Design tools', exact: true }).click();
+  await expect(page.getByLabel('Minimum trace width (mm)')).toHaveValue('0.8');
+  await page.getByRole('button', { name: 'Tolerances', exact: true }).click();
+  await expect(page.getByLabel('Etch width ± (mm)')).toHaveValue('0.04');
+  await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+
+  await page.getByRole('checkbox', { name: 'Generate in remaining board area' }).check();
+  await page.getByLabel('Winding layout board file').setInputFiles({
+    name: 'notched-board.kicad_pcb', mimeType: 'text/plain',
+    buffer: Buffer.from('(kicad_pcb (gr_poly (pts (xy 100 50) (xy 180 50) (xy 180 98) (xy 168 98) (xy 168 105) (xy 100 105)) (layer "Edge.Cuts")) (gr_rect (start 160 55) (end 167 61) (layer "Edge.Cuts")))'),
+  });
+  await expect(page.getByText('1 cutouts · 0 drilled pads · 0 keepouts')).toBeVisible();
+  await page.getByRole('button', { name: 'Use board constraints' }).click();
+  await expect(page.getByText('Board constraints from notched-board.kicad_pcb')).toBeVisible();
+  await expect(page.locator('#st-algo')).not.toHaveText('geometry failed');
   if (errors.length) throw new Error(errors.join('\n'));
-  console.log('All eight browser tool flows passed with no console errors.');
+  console.log('Design tools, motor envelope, hairpin fixtures, starter projects, fabrication profiles and board constraints passed in the browser.');
 } finally {
   await browser?.close(); proc.kill(); fs.rmSync(stateDir, { recursive: true, force: true });
 }

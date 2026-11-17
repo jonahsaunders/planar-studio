@@ -64,6 +64,10 @@ footprints, SVG, DXF, JSON and specification sheets. The **Design tools** panel
 adds constrained searches, measurement overlays, tolerance studies and board
 checks; see the [tools guide](docs/design-tools.md).
 
+Open **Starter projects** for an editable coil, transformer, rotary stator,
+hairpin filter, or NFC loop. Each opens in its workspace with a target,
+parameters to try, and the model's expected starting result.
+
 The [inductor test board](examples/inductor-coupons/README.md) includes two
 generated square coils, exact geometry, predictions and a procedure for
 comparing measured impedance at the probe pads.

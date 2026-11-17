@@ -21,6 +21,7 @@ import {
 import { microstrip, microstripWidth } from '../engine/microstrip.js';
 import { defaultContext, layoutFilter } from '../engine/filtergeom.js';
 import { tuneDistributed, tuningHandles, DISTRIBUTED } from '../engine/filtertune.js';
+import { extractedHairpin } from '../engine/hairpin-fixtures.js';
 import { bounds } from '../engine/artwork.js';
 import { layerNames } from '../engine/coil.js';
 import { el, eng, num } from '../ui/controls.js';
@@ -117,7 +118,7 @@ export function resolveRfStack(cfg, board) {
   if (!['F.Cu', 'B.Cu'].includes(signal) || !layerNames(32).includes(reference) || signal === reference) {
     throw new Error('Choose an outer signal layer and a different copper layer for the reference plane.');
   }
-  const fallback = { signal, reference, h: cfg.subH, t: cfg.subT, source: 'Entered values' };
+  const fallback = { signal, reference, h: cfg.subH, t: cfg.subT, referenceT: cfg.subReferenceT || cfg.subT, source: 'Entered values' };
   if (cfg.rfStackSource !== 'board') return fallback;
   const a = board?.copperLayers?.find(l => l.name === signal);
   const b = board?.copperLayers?.find(l => l.name === reference);
@@ -128,13 +129,15 @@ export function resolveRfStack(cfg, board) {
   if (h <= 0 || a.thicknessMm <= 0 || b.thicknessMm <= 0) {
     return { ...fallback, source: 'Entered values · physical layer data unavailable' };
   }
-  return { signal, reference, h: Number(h.toFixed(6)), t: a.thicknessMm, source: 'KiCad physical stack' };
+  return { signal, reference, h: Number(h.toFixed(6)), t: a.thicknessMm, referenceT: b.thicknessMm,
+    source: board.fabricationName ? `Fabrication profile · ${board.fabricationName}` : 'KiCad physical stack' };
 }
 
 export function filterStudyConfig(cfg, board) {
   if (!isDistributed(cfg)) return cfg;
   const stack = resolveRfStack(cfg, board);
-  return { ...cfg, rfStackSource: 'manual', subH: stack.h, subT: stack.t };
+  return { ...cfg, rfStackSource: 'manual', subH: stack.h, subT: stack.t,
+    ...(cfg.subReferenceT == null && stack.referenceT === stack.t ? {} : { subReferenceT: stack.referenceT }) };
 }
 
 function referenceLayerControl(panel, app) {
@@ -432,6 +435,11 @@ export function compute(cfg, env, opt = {}) {
 
   const built = realisedNetwork(design, art) || design;
   res.response = respond(built, { ...common, z0: design.Z0, zLoad: design.zLoad });
+  if (cfg.hairpinExtraction && design.kind === 'hairpin') {
+    try {
+      res.extractedResponse = respond(extractedHairpin(res, cfg.hairpinExtraction), { ...common, z0: design.Z0, zLoad: design.zLoad });
+    } catch (error) { res.extractionError = error.message; }
+  }
   res.ideal = respond(design, { ...common, z0: design.Z0, zLoad: design.zLoad, lossless: true });
 
   // For a distributed filter, the useful comparison is the lumped prototype
@@ -805,6 +813,7 @@ export function charts(cfg, res) {
         series: [
           { name: cfg.family === 'hairpin' ? 'Estimated' : 'Built', values: r.s21db, unit: 'dB', format: (v) => `${v.toFixed(2)} dB` },
           { name: res.prototype ? 'Prototype' : 'Lossless', values: reference.s21db, unit: 'dB', dash: [4, 3], format: (v) => `${v.toFixed(2)} dB` },
+          ...(res.extractedResponse ? [{ name: 'With EM extraction', values: res.extractedResponse.s21db, unit: 'dB', dash: [2, 3] }] : []),
         ],
         markers: markersFor(cfg, res),
       },

@@ -6,6 +6,27 @@ import { defaults as inductorDefaults } from '../web/js/ws/inductor.js';
 import { buildCoil, analyse } from '../web/js/engine/coil.js';
 import { instances, buildArtwork } from '../web/js/engine/coilgeom.js';
 import { exportKicadPcb, exportKicadMod, exportSvg, exportDxf } from '../web/js/engine/exporters.js';
+import { motorEnvelope } from '../web/js/engine/motor-envelope.js';
+
+{
+  const c = defaults(), { motor } = compute(c, {});
+  const input = { vdc: 24, current: 1, ambient: 25, maxTemperature: 100, thermalResistance: 1,
+    speed: 0, targetTorque: motor.Kt * 0.5, modulation: 'spaceVector' };
+  const baseline = motorEnvelope(motor, c, input);
+  assert.equal(baseline.point.limit, 'Driver current');
+  assert.equal(baseline.point.torque, motor.Kt);
+  assert.ok(baseline.point.feasible);
+  assert.ok(motorEnvelope(motor, c, { ...input, thermalResistance: 100 }).thermalCurrent < 1);
+  const hot = motorEnvelope(motor, c, { ...input, thermalResistance: 100 });
+  assert.equal(hot.point.limit, 'Winding temperature');
+  assert.ok(hot.point.torque < baseline.point.torque);
+  const fast = motorEnvelope(motor, c, { ...input, speed: baseline.noLoadRpm + 100 });
+  assert.equal(fast.point.limit, 'Bus voltage');
+  assert.equal(fast.point.torque, 0);
+  assert.equal(fast.point.feasible, false);
+  assert.ok(baseline.curve.every((q, i, list) => !i || q.torque <= list[i - 1].torque));
+  assert.throws(() => motorEnvelope(motor, { ...c, phases: 2 }, input), /balanced three-phase/);
+}
 
 import { interconnectGroups } from './helpers/motor-connectivity.mjs';
 function expectedGroups(cfg) {

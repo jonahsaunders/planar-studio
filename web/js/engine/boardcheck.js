@@ -59,7 +59,14 @@ export function parseBoard(text, excludedIds = []) {
         out.copper.push({ ...base, width: number(item, 'width'), pts: pts.map(point) });
       } else if (kind === 'pad' || kind === 'via') {
         const p = point(xy(item, 'at'));
-        const size = one(item, 'size').slice(1).map(Number), drill = one(item, 'drill').slice(1).filter((x) => /^\d/.test(x)).map(Number);
+        const size = one(item, 'size').slice(1).map(Number);
+        const drillSpec = one(item, 'drill');
+        const drill = drillSpec.slice(1).filter(x => typeof x === 'string' && Number(x) > 0).map(Number);
+        if (drill.length) {
+          // A centered bounding circle also covers oval and offset drills.
+          const offset = xy(drillSpec, 'offset');
+          out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 + Math.hypot(...offset) });
+        }
         const radius = kind === 'via' ? size[0] / 2 : (item[3] === 'circle' ? size[0] : Math.hypot(...size)) / 2;
         if (!Number.isFinite(radius)) { out.warnings.push(`Unsupported pad ${id}.`); continue; }
         const plated = kind === 'via' || item[2] !== 'np_thru_hole';
@@ -70,7 +77,6 @@ export function parseBoard(text, excludedIds = []) {
           out.copper.push({ ...base, owner: pose.owner, layer: layers.includes('*.Cu') || kind === 'via' ? '*.Cu' : layers[0],
             layers: span, pts: [p, p], width: radius * 2, approxPad: kind === 'pad' && item[3] !== 'circle' });
         }
-        if (drill.length && Math.max(...drill) > 0) out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 });
       } else if (kind === 'zone') {
         const zoneLayers = layers.length ? layers : [layer], keepout = one(item, 'keepout');
         const polygons = all(item, keepout.length ? 'polygon' : 'filled_polygon');
@@ -79,7 +85,9 @@ export function parseBoard(text, excludedIds = []) {
           const polygon = all(one(poly, 'pts'), 'xy').map((p) => point([Number(p[1]), Number(p[2])]));
           const polyLayers = one(poly, 'layer')[1] ? [one(poly, 'layer')[1]] : zoneLayers;
           for (const l of polyLayers) {
-            if (polygon.length >= 3) (keepout.length ? out.keepouts : out.copper).push({ ...base, layer: l, polygon });
+            if (polygon.length >= 3) (keepout.length ? out.keepouts : out.copper).push({
+              ...base, layer: l, polygon, name: one(item, 'name')[1],
+            });
           }
         }
       } else if (/^(gr|fp)_/.test(kind)) {
@@ -90,7 +98,10 @@ export function parseBoard(text, excludedIds = []) {
         else if (shape === 'circle') {
           const c = xy(item, 'center'), r = distance(c, xy(item, 'end')), n = Math.max(32, Math.ceil(2 * Math.PI * r / 0.2));
           pts = Array.from({ length: Math.min(10000, n) + 1 }, (_, i) => [c[0] + r * Math.cos(i * 2 * Math.PI / Math.min(10000, n)), c[1] + r * Math.sin(i * 2 * Math.PI / Math.min(10000, n))]);
-        } else if (shape === 'poly') pts = all(one(item, 'pts'), 'xy').map((p) => [Number(p[1]), Number(p[2])]);
+        } else if (shape === 'poly') {
+          pts = all(one(item, 'pts'), 'xy').map((p) => [Number(p[1]), Number(p[2])]);
+          if (pts.length && distance(pts[0], pts.at(-1)) > 0.01) pts.push(pts[0]);
+        }
         if (!pts) { if (layer === 'Edge.Cuts' || copperLayer(layer)) out.warnings.push(`Unsupported ${kind} on ${layer}.`); continue; }
         pts = pts.map(point);
         if (layer === 'Edge.Cuts') out.edges.push(pts);

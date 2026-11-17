@@ -28,7 +28,8 @@ export function resolveStack(c, board, count) {
     const reference = board.copperLayers[0].centerHeightMm;
     z = layers.map(name => board.copperLayers.find(l => l.name === name).centerHeightMm - reference);
     if (z.some((v, i) => v < 0 || v > c.boardT || (i && v-z[i-1] < c.copperOz*OZ_MM))) throw new Error('Imported copper center heights are inconsistent with the board thickness.');
-    return { layers, z, fullLayers, assumedZ: false, source: 'KiCad physical stack' };
+    return { layers, z, fullLayers, assumedZ: false,
+      source: board.fabricationName ? `Fabrication profile · ${board.fabricationName}` : 'KiCad physical stack' };
   } else {
     z = layers.map(n => fullLayers.indexOf(n) / (fullLayers.length - 1) * c.boardT);
     if (z.some((v, i) => !Number.isFinite(v) || v < 0 || (i > 0 && v - z[i - 1] < c.copperOz * OZ_MM + 0.01))) throw new Error('Layer separation is too small for the selected copper thickness.');

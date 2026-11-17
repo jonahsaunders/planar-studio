@@ -10,6 +10,9 @@ import { parseMeasurement, measurementValues, interpolate } from '../engine/meas
 import { makeMeasurementRecord, measurementConfiguration, measurementSignature, hasStaleFit, readCouponMeasurement } from '../engine/measurement-records.js';
 import { DISTRIBUTED, plain } from '../engine/filtertune.js';
 import { windingPolys, transformPolys, rotorDesign } from '../engine/magnetics.js';
+import { motorEnvelope } from '../engine/motor-envelope.js';
+import { extractedHairpin, hairpinFixtures } from '../engine/hairpin-fixtures.js';
+import { zipTextFiles } from '../engine/zip-text.js';
 import * as bridge from '../bridge.js';
 
 const TABS = [['optimize', 'Optimize'], ['measurements', 'Measurements'], ['coupling', 'Coupled coils'], ['tolerance', 'Tolerances'], ['tune', 'Filter tuning'], ['field', 'Magnetic field'], ['board', 'Board checks'], ['rotor', 'Rotor']];
@@ -149,11 +152,15 @@ export function openDesignTools(host, initial = 'optimize') {
     if(config().obstacleEnabled){body.append(note('Use Design around obstacles in the main parameter rail to size this winding. The diameter optimizer does not support constrained contours.'));return;}
     body.append(note('Search whole turns and diameter across three trace widths, three gaps, and your chosen layer counts. Candidates must fit including terminals, meet the inductance tolerance, and stay below self-resonance. This bounded search does not guarantee a global optimum.'));
     const c = config(), s = settings('optimize', { target: host.result()?.analysis?.L * 1e6 || 10, maxWidth: 30, maxHeight: 30, frequency: c.freq, minWidth: 0.2, maxTrace: 0.6, minGap: 0.15, maxGap: 0.35, layerList: `${c.layers}`, errorPct: 3, srfMargin: 3 });
+    const trackFloor = c.fabricationProfile?.minTrace || 0.02, gapFloor = c.fabricationProfile?.minGap || 0.02;
+    s.minWidth = Math.max(s.minWidth, trackFloor); s.maxTrace = Math.max(s.maxTrace, s.minWidth);
+    s.minGap = Math.max(s.minGap, gapFloor); s.maxGap = Math.max(s.maxGap, s.minGap);
+    if (c.fabricationProfile) body.append(note(`Fabrication limits from ${c.fabricationProfile.name} apply to the search.`));
     const f = form();
     field(f, s, 'target', 'Target inductance (µH)', 0.0001); field(f, s, 'frequency', 'Operating frequency (Hz)', 1);
     field(f, s, 'maxWidth', 'Maximum width (mm)', 1); field(f, s, 'maxHeight', 'Maximum height (mm)', 1);
-    field(f, s, 'minWidth', 'Minimum trace width (mm)', 0.02); field(f, s, 'maxTrace', 'Maximum trace width (mm)', 0.02);
-    field(f, s, 'minGap', 'Minimum gap (mm)', 0.02); field(f, s, 'maxGap', 'Maximum gap (mm)', 0.02);
+    field(f, s, 'minWidth', 'Minimum trace width (mm)', trackFloor); field(f, s, 'maxTrace', 'Maximum trace width (mm)', trackFloor);
+    field(f, s, 'minGap', 'Minimum gap (mm)', gapFloor); field(f, s, 'maxGap', 'Maximum gap (mm)', gapFloor);
     field(f, s, 'layerList', 'Layer counts, comma separated', null, null, 'any', 'text');
     field(f, s, 'errorPct', 'Inductance tolerance (%)', 0.1, 30); field(f, s, 'srfMargin', 'Minimum SRF / operating frequency', 1);
     const out = output();
@@ -334,6 +341,7 @@ export function openDesignTools(host, initial = 'optimize') {
     if (kind() === 'filter' && !requireDistributed()) return;
     body.append(note('Independent uniform variations within ± limits, with a repeatable seed. Etch is total width change: centerlines stay fixed and gaps change oppositely. The curves show pointwise 5th–95th percentiles; yield is conditional on these tolerances and the model. Invalid samples count as failures.'));
     const s = settings('tolerance', { samples: 50, seed: 42, etch: 0.025, thickness: 5, copper: 10, er: 5, target: host.result()?.analysis?.L * 1e6 || 10, errorPct: 10, minQ: 1 });
+    if (config().fabricationProfile) body.append(note(`Tolerance starting values come from ${config().fabricationProfile.name}.`));
     const f = form(); field(f, s, 'samples', 'Samples', 2, 500, 1); field(f, s, 'seed', 'Random seed', 1, 4294967295, 1);
     field(f, s, 'etch', 'Etch width ± (mm)', 0, 1); field(f, s, 'thickness', 'Dielectric thickness ± (%)', 0, 99); field(f, s, 'copper', 'Copper thickness ± (%)', 0, 99); field(f, s, 'er', 'Dielectric εr ± (%)', 0, 99);
     if (kind() === 'filter') maskEditor(body, s);
@@ -346,6 +354,7 @@ export function openDesignTools(host, initial = 'optimize') {
   }
   function tune() {
     if (!requireDistributed()) return;
+    if (config().family === 'hairpin') hairpinHandoff();
     body.append(note('Drag section/resonator ends and gaps on the main canvas. These edits change the generated copper and the response. Automatic tuning searches global length and gap scales from 0.5× to 1.5×; individual handle edits remain in place. It may find no feasible mask.'));
     const s = settings('tune', {}); maskEditor(body, s);
     body.append(button('Return to canvas handles', close), button('Reset geometry tuning', () => { host.apply({ tuning: {}, fixedDesign: null }); status.textContent = 'Original synthesis restored.'; }));
@@ -354,6 +363,62 @@ export function openDesignTools(host, initial = 'optimize') {
       chart(out, r.curve.x, [{ name: 'Before', values: r.original.y }, { name: 'Tuned', values: r.curve.y }], 'S21 dB');
       out.append(specTable([['Length scale', num(r.config.tuning.lengthScale || 1, 4)], ['Gap scale', num(r.config.tuning.gapScale || 1, 4)]]), button('Apply tuning', () => { host.apply({ tuning: r.config.tuning }); status.textContent = 'Tuned geometry applied.'; })); exportReport(out, 'filter-tuning', r);
     }));
+  }
+  function hairpinHandoff() {
+    const section = el('details', {}, el('summary', { text: 'Full-wave simulation fixtures' }));
+    const input = el('input', { type: 'file', accept: '.json,application/json', 'aria-label': 'Hairpin extraction JSON' });
+    section.append(note('Export isolated resonators, adjacent pairs and tapped feeds from the current copper. Solve the fixtures externally, enter the extracted values in the included template, then open the completed JSON here.'),
+      button('Export hairpin fixtures', async () => {
+        try {
+          const { files } = hairpinFixtures(host.result(), host.name());
+          await bridge.saveBytes('hairpin-fixtures.zip', zipTextFiles(files));
+          status.textContent = 'Hairpin fixtures exported.';
+        } catch (error) { status.textContent = error.message; }
+      }),
+      el('label', { class: 'tools-field' }, 'Open extraction report', input));
+    body.append(section);
+
+    const review = host.result();
+    if (review.extractionError) {
+      section.open = true;
+      section.append(note(review.extractionError));
+    } else if (review.extractedResponse) {
+      section.open = true;
+      const baseline = review.response, extracted = review.extractedResponse;
+      const before = baseline.metrics, after = extracted.metrics, { f1, f2 } = config();
+      const width = f2 - f1;
+      const start = Math.min(before.peakF, after.peakF, f1) - width;
+      const end = Math.max(before.peakF, after.peakF, f2) + width;
+      const inWindow = frequency => frequency >= start && frequency <= end;
+      const windowIndices = baseline.freqs.flatMap((frequency, i) => inWindow(frequency) ? [i] : []);
+      const indices = windowIndices.length >= 5 ? windowIndices : baseline.freqs.map((_, i) => i);
+      chart(section, indices.map(i => baseline.freqs[i]), [
+        { name: 'Geometry estimate', values: indices.map(i => baseline.s21db[i]) },
+        { name: 'With EM extraction', values: indices.map(i => extracted.s21db[i]), dash: [4, 3] },
+      ], 'S21 dB', true, 'Passband comparison');
+      section.append(specTable([
+        ['Centre frequency, before → after', `${before.centreF ? eng(before.centreF, 'Hz') : '—'} → ${after.centreF ? eng(after.centreF, 'Hz') : '—'}`],
+        ['Insertion loss, before → after', `${num(before.insertionLoss, 2)} → ${num(after.insertionLoss, 2)} dB`],
+      ]));
+    }
+    if (config().hairpinExtraction) section.append(button('Remove extraction', () => {
+      host.apply({ hairpinExtraction: null });
+      render('tune');
+    }));
+    input.addEventListener('change', async () => {
+      const selected = input.files[0];
+      const id = host.designId?.();
+      if (!selected) return;
+      try {
+        const contents = await selected.text();
+        if (disposed || !input.isConnected || id !== host.designId?.()) return;
+        const report = JSON.parse(contents);
+        extractedHairpin(host.result(), report);
+        host.apply({ hairpinExtraction: report });
+        render('tune');
+        status.textContent = 'Extraction applied to the comparison curve.';
+      } catch (error) { status.textContent = error.message; }
+    });
   }
   function fieldTool() {
     if(kind()==='motor' && ['stepper','linear','planar'].includes(config().motorFamily)) { body.append(note('This field-slice tool assumes a rotary polyphase ring. Use the selected family’s force/torque charts and drive preview; export its geometry for a full magnetic field solve.')); return; }
@@ -466,7 +531,52 @@ export function openDesignTools(host, initial = 'optimize') {
     f.addEventListener('change', draw); draw();
     const external = el('div', { class: 'tools-form' }); body.append(external);
     field(external, s, 'externalB', 'Measured / external-solver peak Bgap (T)', 0.001, 2);
-    body.append(button('Apply external field to motor', () => { host.apply({ bGap: s.externalB }); status.textContent = 'Motor performance recomputed from external Bgap.'; }));
+    body.append(button('Apply external field to motor', () => {
+      host.apply({ bGap: s.externalB });
+      redrawEnvelope();
+      status.textContent = 'Motor performance recomputed from external Bgap.';
+    }));
+    const redrawEnvelope = driveEnvelope();
+  }
+  function driveEnvelope() {
+    const c = config();
+    body.append(el('h3', { text: 'Continuous speed and torque' }),
+      note('Balanced three-phase wye estimate using winding resistance at the temperature limit. Enter the winding-to-ambient thermal resistance for your cooling setup. The model assumes sinusoidal current and excludes field weakening, speed-dependent losses and inverter voltage drop.'));
+    const s = settings('driveEnvelope', { vdc: c.vdc, current: c.current, ambient: 25, maxTemperature: 100,
+      thermalResistance: 25, speed: c.rpm, targetTorque: Math.max(0, host.result()?.motor?.torque || 0), modulation: 'spaceVector' });
+    const f = form();
+    for (const [key, label, min, max] of [['vdc', 'DC bus voltage (V)', 0.1, 1000], ['current', 'Driver peak phase current (A)', 0.001, 1000],
+      ['ambient', 'Ambient temperature (°C)', -50, 150], ['maxTemperature', 'Winding temperature limit (°C)', -40, 250],
+      ['thermalResistance', 'Winding-to-ambient thermal resistance (°C/W)', 0.001, 10000],
+      ['speed', 'Requested speed (rpm)', 0, 300000], ['targetTorque', 'Requested torque (N·m)', 0, 1000]]) {
+      field(f, s, key, label, min, max);
+    }
+    select(f, s, 'modulation', 'Inverter modulation', [['spaceVector', 'Space-vector PWM'], ['sine', 'Sinusoidal PWM']]);
+    const out = output();
+    const draw = () => {
+      out.replaceChildren();
+      pruneViews();
+      try {
+        const result = motorEnvelope(host.result().motor, c, s);
+        chart(out, result.curve.map(row => row.rpm), [
+          { name: 'Continuous torque', values: result.curve.map(row => row.torque) },
+          { name: 'Driver current ceiling', values: result.curve.map(() => result.driverTorque), dash: [4, 4] },
+          { name: 'Winding temperature ceiling', values: result.curve.map(() => result.thermalTorque), dash: [2, 4] },
+        ], 'N·m', false, 'Continuous torque versus speed (rpm)');
+        out.append(specTable([
+          ['Requested operating point', result.point.feasible ? 'Within estimated limits' : 'Outside estimated limits'],
+          ['Limit at requested speed', result.point.limit],
+          ['Available torque', eng(result.point.torque, 'N·m')],
+          ['Peak current at requested torque', eng(result.point.requestedCurrent, 'A')],
+          ['Copper loss at requested torque', eng(result.point.copperLoss, 'W')],
+          ['Voltage-limited no-load speed', `${num(result.noLoadRpm, 0)} rpm`],
+        ]));
+        exportReport(out, 'motor-envelope', { assumptions: { ...s }, ...result });
+      } catch (error) { out.append(note(error.message)); }
+    };
+    f.addEventListener('change', draw);
+    draw();
+    return draw;
   }
   const renderers = { optimize, measurements, coupling, tolerance, tune, field: fieldTool, board, rotor };
   function render(id) {

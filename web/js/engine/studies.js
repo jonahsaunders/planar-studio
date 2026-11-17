@@ -14,9 +14,15 @@ const unique = (xs) => [...new Set(xs)];
 export function optimizeCoil(cfg, opt, progress = () => {}) {
   if(cfg.obstacleEnabled)throw new Error('Use the obstacle editor to size this winding; the diameter optimizer does not support constrained contours.');
   for (const key of ['targetL', 'maxWidth', 'maxHeight', 'frequency', 'minWidth', 'maxTrace', 'minGap', 'maxGap']) positive(opt[key], key);
+  const fabrication = cfg.fabricationProfile;
+  if (fabrication) {
+    opt = { ...opt, minWidth: Math.max(opt.minWidth, fabrication.minTrace), minGap: Math.max(opt.minGap, fabrication.minGap) };
+    if (opt.minWidth > opt.maxTrace || opt.minGap > opt.maxGap) throw new Error('The search bounds are below the fabrication profile minimums.');
+  }
   if (opt.minWidth > opt.maxTrace || opt.minGap > opt.maxGap) throw new Error('Minimum exceeds maximum.');
   const layers = unique(opt.layers.map(Number));
-  if (!layers.length || layers.some((n) => !Number.isInteger(n) || n < 1 || n > 16)) throw new Error('Choose copper layers from 1 through 16.');
+  const layerLimit = Math.min(fabrication?.layers || 16, 16);
+  if (!layers.length || layers.some((n) => !Number.isInteger(n) || n < 1 || n > layerLimit)) throw new Error(`Choose copper layers from 1 through ${layerLimit}.`);
   const trials = [];
   for (const layersN of layers) for (const w of unique(linspace(opt.minWidth, opt.maxTrace, 3))) for (const s of unique(linspace(opt.minGap, opt.maxGap, 3))) trials.push({ layers: layersN, traceW: w, traceS: s });
   const candidates = [];

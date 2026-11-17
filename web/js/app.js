@@ -15,12 +15,15 @@
 import * as bridge from './bridge.js';
 import { Panel, el, icon, ICONS, tile, specTable, noteList, num } from './ui/controls.js';
 import { mountModal } from './ui/modal-focus.js';
+import { fabricationEditor } from './ui/fabrication.js';
 import { Viewport } from './ui/canvas.js';
 import { LineChart, legendFor } from './ui/charts.js';
 import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { DesignHistory, checkpoint } from './engine/design-history.js';
 import { reviewBoardPlacement } from './engine/boardcheck.js';
 import { mapPlacementNets } from './engine/placement-nets.js';
+import { enforceFabrication, fabricationFindings, fabricationPatch } from './engine/fabrication.js';
+import { starterProjects } from './engine/starter-projects.js';
 import { windingSetup } from './engine/winding-stack.js';
 import { openPlacementReview } from './ui/transformer-review.js';
 import { transformerDossier, placementArtwork, transformerPreflight } from './engine/transformer-handoff.js';
@@ -128,7 +131,14 @@ function scheduleFull(delay = 130) {
   fullTimer = setTimeout(() => runCompute(false), delay);
 }
 
-function environment(board = bridge.state.context) {
+function designBoard() {
+  const profile = cfg().fabricationProfile;
+  return profile?.stack ? {
+    copperLayers: profile.stack, layerCount: profile.stack.length, fabricationName: profile.name,
+  } : bridge.state.context;
+}
+
+function environment(board = designBoard()) {
   // Preview and file export can use the design stack. Placement always checks
   // the actual destination, including edits made since the last board refresh.
   const useDesignStack = board?.layerCount === 0
@@ -156,6 +166,7 @@ function runCompute(quick) {
   const t0 = performance.now();
   let res;
   try {
+    enforceFabrication(cfg(), cfg().fabricationProfile);
     res = ws.compute(cfg(), environment(), { quick });
   } catch (err) {
     app.result = null;
@@ -233,7 +244,7 @@ const api = {
     app.view.draw();
     document.querySelectorAll('[data-transformer-layer]').forEach(n=>{n.dataset.selected=String(n.dataset.transformerLayer===layer);});
   },
-  boardContext: () => bridge.state.context,
+  boardContext: designBoard,
   canRefreshBoard: () => !bridge.state.standalone,
   async refreshBoard() {
     try {
@@ -284,6 +295,7 @@ const api = {
 function reconcile(key, value) {
   const ws = current();
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
+  enforceFabrication(cfg(), cfg().fabricationProfile);
   if ((key === 'family' && ['antenna', 'transformer'].includes(app.ws)) || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
 }
 
@@ -300,6 +312,11 @@ function renderRail() {
     scheduleQuick();
   });
   app.panel.clear();
+  const starter = starterProjects.find(entry => entry.kind === cfg().starterProject);
+  if (starter) app.panel.group({
+    key: 'starter', title: starter.name, open: true,
+    fields: [starter.target, starter.edit, starter.expected].map(text => ({ type: 'note', text })),
+  });
   current().rail(app.panel, api);
 
   // Every workspace gets the same design library at the bottom.
@@ -317,6 +334,7 @@ function renderRail() {
           { label: 'Import…', hint: 'Load a design JSON exported from here', onClick: importDesignJson },
         ],
       },
+      { type: 'row', buttons: [{ label: 'Fabrication profiles…', onClick: openFabrication }] },
       { type: 'note', text: 'Saved designs live with the plugin, not with the board, so they follow you between projects.' },
     ],
   });
@@ -368,14 +386,15 @@ function renderSide(res) {
   }
 
   if(preview && app.ws!=='transformer')host.append(preview);
-  const notes = ws.notes(cfg(), res);
+  const notes = [...ws.notes(cfg(), res),
+    ...fabricationFindings(res.art, cfg().fabricationProfile).map(text => ({ level: 'warn', text }))];
   if (notes.length) {
     host.append(el('div', { class: 'side-section' },
       el('h3', { text: 'Notes' }),
       noteList(notes)));
   }
 
-  const effective = app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), bridge.state.context) : cfg();
+  const effective = app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), designBoard()) : cfg();
   const chartSpecs = withMeasurements(ws.charts(cfg(), res), cfg(), app.ws, effective);
   if (chartSpecs.length) {
     const sec = el('div', { class: 'side-section' }, el('h3', { text: 'Response' }));
@@ -437,7 +456,7 @@ function showDesignTools(tab = 'optimize') {
   if (!runCompute(false)) return;
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
-    analysisConfig: () => app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), bridge.state.context) : cfg(),
+    analysisConfig: () => app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), designBoard()) : cfg(),
     defaults: () => current().defaults(),
     solveMeasurement: configuration => current().compute(configuration, { name: app.names[app.ws] }),
     restoreMeasurement(configuration) {
@@ -468,7 +487,9 @@ function makePlacementReview(config, result, snapshot) {
   const kind = app.ws;
   const excluded = snapshot.excludedIds || [];
   if (kind === 'transformer') {
-    return transformerPreflight(config, result, snapshot.text, { name: snapshot.name, nets: snapshot.nets }, excluded);
+    const review = transformerPreflight(config, result, snapshot.text, { name: snapshot.name, nets: snapshot.nets }, excluded);
+    appendFabricationFindings(review, result.art, config.fabricationProfile);
+    return review;
   }
   const boardSettings = config.tools?.board;
   const distributed = kind === 'filter' && DISTRIBUTED_FILTERS.includes(config.family);
@@ -482,6 +503,7 @@ function makePlacementReview(config, result, snapshot) {
     kind, requireNets: true, nets: snapshot.nets,
     seriesWinding, previousPlacement: seriesWinding ? snapshot.previousPlacement : null,
     distributed, groundNet: referenceNet || boardSettings?.groundNet,
+    ...(config.fabricationProfile ? { clearance: Math.max(config.traceS || config.clearance || 0.2, config.fabricationProfile.minGap) } : {}),
     signalLayer: result.rfStack?.signal, groundLayer: result.rfStack?.reference ?? boardSettings?.groundLayer,
   });
   if (distributed && !checked.nets.includes(referenceNet)) {
@@ -499,7 +521,15 @@ function makePlacementReview(config, result, snapshot) {
       checked.ready = false;
     }
   }
+  appendFabricationFindings(checked, art, config.fabricationProfile);
   return { ...checked, netGroups: groups, floating };
+}
+
+function appendFabricationFindings(review, art, profile) {
+  const findings = fabricationFindings(art, profile);
+  if (!findings.length) return;
+  review.issues.push(...findings.map(message => ({ type: 'fabrication', message })));
+  review.ready = false;
 }
 
 async function placeIntoBoard(review = null) {
@@ -688,6 +718,48 @@ function modal(title, body, buttons) {
 /* -------------------------------------------------------- design library */
 
 let pendingSave = Promise.resolve();
+function openFabrication() {
+  const controls = fabricationEditor(cfg().fabricationProfile, profile => {
+    let patch = { fabricationProfile: null };
+    if (profile) patch = fabricationPatch(cfg(), app.ws, profile);
+    else if (app.ws === 'filter' && cfg().fabricationProfile?.stack) {
+      const model = wsFilter.filterStudyConfig(cfg(), designBoard());
+      patch = { ...patch, rfStackSource: 'manual', subH: model.subH, subT: model.subT, subReferenceT: model.subReferenceT };
+    }
+    api.setMany(patch);
+  });
+  modal('Fabrication profiles', controls, [{ label: 'Close', onClick: close => close() }]);
+}
+
+function openStarterProjects() {
+  const list = el('div', { class: 'export-grid starter-projects' });
+  for (const starter of starterProjects) {
+    const row = el('button', { type: 'button', class: 'export-card' },
+      el('span', { class: 't', text: starter.name }),
+      el('span', { class: 'd', text: starter.target }));
+    row.addEventListener('click', () => {
+      const { kind, name } = starter;
+      if (app.dirtyWorkspaces.has(kind) && !window.confirm(`Replace the unsaved ${WORKSPACES[kind].title} design with an editable copy of this starter?`)) return;
+      close();
+      app.ws = kind;
+      app.configs[kind] = { ...starter.setup(WORKSPACES[kind].defaults()), starterProject: kind };
+      app.names[kind] = name;
+      app.designIds[kind] = newDesignId();
+      app.dirtyWorkspaces.add(kind);
+      histories.delete(kind);
+      app.view.windingSelection = null;
+      if (kind === 'transformer') transformerStep = 'requirements';
+      $('design-name').value = name;
+      document.querySelectorAll('.tab').forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.ws === kind)));
+      renderRail();
+      app.fitPending = true;
+      runCompute(false);
+    });
+    list.append(row);
+  }
+  const { close } = modal('Starter projects', list, [{ label: 'Close', onClick: close => close() }]);
+}
+
 function saveDesign() {
   const kind = app.ws, name = app.names[kind], id = app.designIds[kind];
   const snapshot = JSON.stringify(cfg());
@@ -862,12 +934,13 @@ function renderLink(st) {
 function adoptBoard(ctx) {
   const notes = [];
   for (const key of Object.keys(app.configs)) {
+    if (app.configs[key].fabricationProfile) continue;
     const { applied, cfg: next } = applyBoardContext(app.configs[key], ctx);
     Object.assign(app.configs[key], next);
     histories.get(key)?.record(app.configs[key],'Refresh board stackup');
     if (key === app.ws && applied.length) notes.push(...applied);
   }
-  if (ctx.epsR > 1.2) {
+  if (ctx.epsR > 1.2 && !app.configs.transformer.fabricationProfile) {
     app.configs.transformer.dielectricEr = Number(ctx.epsR.toFixed(3));
   }
 
@@ -900,6 +973,7 @@ function wireChrome() {
   $('btn-library').addEventListener('click', writeLibrary);
   $('btn-export').addEventListener('click', openExport);
   $('btn-tools').addEventListener('click', () => showDesignTools(app.ws === 'filter' ? 'tune' : app.ws === 'motor' ? 'rotor' : 'optimize'));
+  $('btn-starters').addEventListener('click', openStarterProjects);
   $('link-pill').addEventListener('click', () => {
     bridge.reconnect();
     toast('Re-checking the KiCad connection…', 'info', { ms: 2500 });

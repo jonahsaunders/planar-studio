@@ -517,7 +517,7 @@ table.spec .dim { color: var(--text-mute); }
 }
 
 /* Five workspace tabs stay reachable on laptop-sized windows. */
-@media (max-width: 1350px) {
+@media (max-width: 1450px) {
   :root { --bar-h: 88px; }
   .topbar { flex-wrap: wrap; align-content: center; gap: 6px 10px; }
   .topbar .tabs { order: 2; flex-basis: 100%; justify-content: center; }

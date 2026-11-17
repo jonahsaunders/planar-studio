@@ -9,7 +9,24 @@ const ints = path => path.map(([x, y]) => ({ X: Math.round(x * SCALE), Y: Math.r
 const area = p => Clipper.Clipper.Area(ints(p));
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const rectangle = (x, y, w, h) => [[x-w/2,y-h/2],[x+w/2,y-h/2],[x+w/2,y+h/2],[x-w/2,y+h/2]];
-export function obstacleDefaults() { return { obstacleEnabled: false, areaWidth: 60, areaHeight: 45, areaClearance: 0.5, obstacles: [], obstacleSeedX: 0, obstacleSeedY: 0, obstacleSeedAuto: true }; }
+const circle = (x, y, r) => Array.from({ length: 64 }, (_, j) => {
+  const angle = 2 * Math.PI * j / 64;
+  const radius = r / Math.cos(Math.PI / 64);
+  return [x + radius * Math.cos(angle), y + radius * Math.sin(angle)];
+});
+function boardPolygon(points) {
+  if (!Array.isArray(points) || points.length < 3 || points.length > 10000 ||
+      !points.every(p => Array.isArray(p) && p.length === 2 && p.every(Number.isFinite))) {
+    throw new Error('The imported outline or keepout has invalid vertices.');
+  }
+  const signed = area(points);
+  if (Math.abs(signed) < EPS ** 2 ||
+      Clipper.Clipper.SimplifyPolygon(ints(points), Clipper.PolyFillType.pftNonZero).length !== 1) {
+    throw new Error('The imported outline or keepout crosses itself or has no area.');
+  }
+  return signed < 0 ? [...points].reverse() : points;
+}
+export function obstacleDefaults() { return { obstacleEnabled: false, areaWidth: 60, areaHeight: 45, areaClearance: 0.5, obstacles: [], obstacleBoard: null, obstacleSeedX: 0, obstacleSeedY: 0, obstacleSeedAuto: true }; }
 
 export function obstacleRegions(cfg) {
   if (![cfg.areaWidth, cfg.areaHeight].every(v => Number.isFinite(v) && v >= 5 && v <= 500)
@@ -21,7 +38,7 @@ export function obstacleRegions(cfg) {
     if (o.shape === 'circle') {
       if (!(Number.isFinite(o.radius) && o.radius > 0 && o.radius <= 500)) throw new Error(`Obstacle ${i+1} needs a positive radius.`);
       // Circumscribe the true circle so chords cannot eat into its clearance.
-      polygon = Array.from({ length: 64 }, (_, j) => { const a=2*Math.PI*j/64, r=o.radius/Math.cos(Math.PI/64);return [o.x+r*Math.cos(a),o.y+r*Math.sin(a)]; });
+      polygon = circle(o.x, o.y, o.radius);
     } else if (o.shape === 'rect') {
       if (![o.width,o.height].every(v=>Number.isFinite(v)&&v>0&&v<=1000)) throw new Error(`Obstacle ${i+1} needs positive width and height.`);
       polygon = rectangle(o.x,o.y,o.width,o.height);
@@ -37,7 +54,16 @@ export function obstacleRegions(cfg) {
     if (area(polygon) < 0) polygon.reverse();
     return { ...o, name: String(o.name || `Region ${i+1}`), polygon };
   });
-  return { board: rectangle(0,0,cfg.areaWidth,cfg.areaHeight), obstacles };
+  const source = cfg.obstacleBoard;
+  if (!source) return { board: rectangle(0,0,cfg.areaWidth,cfg.areaHeight), cutouts: [], obstacles };
+  const cutouts = source.cutouts.map(boardPolygon);
+  const imported = [
+    ...cutouts.map((polygon, i) => ({ name: `Board cutout ${i + 1}`, polygon })),
+    ...source.drills.map(({ name, x, y, radius }) => ({ name, kind: 'hole', polygon: circle(x, y, radius) })),
+    ...source.keepouts.map(({ name, polygon }) => ({ name, polygon: boardPolygon(polygon) })),
+  ];
+  if (imported.length > 300) throw new Error('Import at most 300 board constraints at a time.');
+  return { board: boardPolygon(source.outline), cutouts, obstacles: [...obstacles, ...imported] };
 }
 
 function offset(paths, delta) {
@@ -66,7 +92,7 @@ function boundaryDistance(a,b,poly) { let d=Infinity; for(let i=0;i<poly.length;
 /* Validate complete copper, including its width, pad/via disks and nonlocal
    self-approaches. Local neighbours along one continuous track are exempt. */
 export function checkObstacleCopper(coil,cfg,regions=obstacleRegions(cfg)) {
-  const {board,obstacles}=regions,clear=cfg.areaClearance;
+  const {board,obstacles}=regions,clear=cfg.areaClearance + (cfg.obstacleBoard ? 0.025 : 0);
   const segments=[];
   for(const l of [...coil.layers,...coil.links,...coil.leads]) {
     let length=0;const layer=l.index??l.layer;
@@ -138,24 +164,31 @@ function assemble(cfg,contours,seed,angle,regions,pitch) {
   const vias=cfg.layers>1?(series?[{x:seed[0],y:seed[1],from:0,to:1,kind:'inner'}]:[]):[];
   const terminals=[world(padA),series&&cfg.layers===2?world(padB):seed.slice()];
   // Through-hole terminal pads stitch parallel layers at both ends.
+  const terminalLayers = [0, series ? cfg.layers - 1 : 0];
   const lenTotal=layers.reduce((sum,l)=>sum+polyLength(l.pts,false),0),all=layers.flatMap(l=>l.pts),box=bboxOf(all);
   const outerR=Math.max(...all.map(p=>Math.hypot(...p))),innerR=Math.max(cfg.viaPad,Math.min(box.w,box.h)/2-contours.length*pitch);
   const coil={spiral:{path:layers[0].pts,base:contours[0],turnsUsed:contours.length,maxTurns:contours.length,minClearance:cfg.traceS,algorithm:{name:'Obstacle-aware contour spiral',note:'Nested offsets of the available board area with checked connections.'}},
-    layers,vias,links:[],leads:[],names,pitch,zPitch:cfg.layers>1?cfg.boardT/(cfg.layers-1):cfg.boardT,enclosed:!(series&&cfg.layers===2),terminals,
+    layers,vias,links:[],leads:[],names,pitch,zPitch:cfg.layers>1?cfg.boardT/(cfg.layers-1):cfg.boardT,enclosed:!(series&&cfg.layers===2),terminals,terminalLayers,
     lenPerLayer:lenTotal/cfg.layers,lenTotal,linkLen:0,leadLen:0,bbox:box,outerR,innerR,dOutFlat:Math.min(box.w,box.h),dInFlat:Math.max(0,Math.min(box.w,box.h)-2*contours.length*pitch),obstacleRegions:regions,obstacleSeed:seed};
   checkObstacleCopper(coil,cfg,regions);return coil;
 }
 
 let cachedKey = null, cachedCoil = null;
 export function buildObstacleCoil(cfg) {
-  const key=JSON.stringify(Object.fromEntries(['areaWidth','areaHeight','areaClearance','obstacles','obstacleSeedAuto','obstacleSeedX','obstacleSeedY','layers','connection','turns','traceW','traceS','boardT','padSize','padDrill','viaPad','viaDrill','layerNames'].map(k=>[k,cfg[k]])));
+  const key=JSON.stringify(Object.fromEntries(['areaWidth','areaHeight','areaClearance','obstacles','obstacleBoard','obstacleSeedAuto','obstacleSeedX','obstacleSeedY','layers','connection','turns','traceW','traceS','boardT','padSize','padDrill','viaPad','viaDrill','layerNames'].map(k=>[k,cfg[k]])));
   if(cachedKey===key)return structuredClone(cachedCoil);
   const regions=obstacleRegions(cfg);
   if(!Number.isInteger(cfg.layers)||cfg.layers<1||cfg.layers>16||!['series','parallel'].includes(cfg.connection)||cfg.connection==='series'&&cfg.layers>2)throw new Error('Obstacle windings support one layer, two series layers, or up to sixteen parallel layers.');
   if(!Number.isInteger(cfg.turns)||cfg.turns<1||cfg.turns>60)throw new Error('Obstacle windings need 1–60 whole turns.');
-  if(![cfg.traceW,cfg.traceS,cfg.boardT,cfg.padSize,cfg.padDrill,cfg.viaPad,cfg.viaDrill].every(v=>Number.isFinite(v)&&v>0)||cfg.padSize<=cfg.padDrill||cfg.viaPad<=cfg.viaDrill)throw new Error('Use positive copper dimensions and pads larger than their drills.');
+  if(![cfg.traceW,cfg.traceS,cfg.boardT,cfg.padSize,cfg.viaPad,cfg.viaDrill].every(v=>Number.isFinite(v)&&v>0)
+    ||!Number.isFinite(cfg.padDrill)||cfg.padDrill<0||cfg.padSize<=cfg.padDrill||cfg.viaPad<=cfg.viaDrill) {
+    throw new Error('Use positive copper dimensions and pads larger than their drills.');
+  }
+  if (cfg.layers > 1 && cfg.connection === 'parallel' && !cfg.padDrill) {
+    throw new Error('Use drilled terminal pads to join the parallel winding layers.');
+  }
   const pitch=(cfg.traceW+cfg.traceS+EPS*2)*1.2;
-  const safe=cfg.areaClearance+cfg.traceW/2+EPS*2;
+  const safe=cfg.areaClearance+cfg.traceW/2+EPS*2+(cfg.obstacleBoard ? 0.025 : 0);
   const shapes=regions.obstacles.map(o=>o.polygon);
   const layers=[];
   for(let k=0;k<cfg.turns;k++) {

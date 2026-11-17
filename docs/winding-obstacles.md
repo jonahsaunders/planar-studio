@@ -67,6 +67,20 @@ board-area width, height, clearance and requested whole contour turns.
 Coordinates use millimetres relative to the design origin, with +Y up. The
 existing placement-origin setting positions the resulting design in KiCad.
 
+Choose **Read live board for winding** or open a `.kicad_pcb` file to reuse its
+closed outline and cutouts. Review the selected board island, drilled pads and
+rule areas in the preview. Then click **Use board constraints** to set the
+placement origin to that island's bounding-box centre. You can deselect rule
+areas or exclude drilled pads before applying the preview. Imported exclusions
+apply to every copper layer. Add manual regions and enter the clearance needed
+for screw heads, washers or component bodies.
+
+Imported constraints are saved with the design. Reread the board after changing
+its outline or keepouts. Arc outlines are sampled and padded with a 0.025 mm
+allowance. The standalone board export preserves the selected outline and
+cutouts. Recreate drill features and rule areas in the destination KiCad board
+as needed.
+
 Use **Mark mounting hole**, **Mark connector** or **Mark forbidden region**,
 then drag in the small board editor. A mounting hole is a circle; the other two
 create rectangles. Drag an existing region to move it. **Add hole**, **Add
@@ -101,7 +115,8 @@ opposite inward spiral in reverse, preserving additive electrical circulation
 without mirroring the asymmetric obstacles.
 
 Supported stacks are one layer, two layers in series, or up to sixteen parallel
-layers with through-hole terminals. Series stacks above two layers are rejected.
+layers. Single-layer and series designs accept surface pads. Multilayer
+parallel windings use through-hole terminals to join the layers.
 One-layer and parallel designs expose an inner terminal that requires external
 routing or an insulated breakout. Current sharing between parallel layers is
 assumed equal. All obstacles apply to every copper layer.
@@ -111,8 +126,7 @@ or export. Adjust constraints in the board editor, move the winding center, or
 reduce turns. These checks complement final KiCad DRC; they do not implement
 all fabrication/netclass rules. Copper simplification is disabled for obstacle
 artwork across the placement and export paths so a simplified chord cannot
-cut through a forbidden area. Board exports use the entered rectangular outline;
-marked holes are not emitted as board cutouts.
+cut through a forbidden area.
 
 Numerical inductance and DC resistance use the generated paths. Standard-shape
 Mohan/Wheeler cross-checks are suppressed. AC loss, capacitance and temperature

@@ -1,31 +1,121 @@
 import { el } from './controls.js';
 import { obstacleRegions } from '../engine/obstacles.js';
+import { boardObstacleSource, boardObstaclePatch } from '../engine/board-obstacles.js';
+
+const action = (text, onClick) => el('button', { type: 'button', class: 'btn small', text, onClick });
+
+function outlinePreview(regions, width, height) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', `${-width / 2 - 2} ${-height / 2 - 2} ${width + 4} ${height + 4}`);
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', 'Board obstacle editor');
+  svg.classList.add('obstacle-map');
+  for (const [index, shape] of [{ polygon: regions.board, name: 'Board outline' }, ...regions.obstacles].entries()) {
+    const node = document.createElementNS(svg.namespaceURI, 'polygon');
+    node.setAttribute('points', shape.polygon.map(([x, y]) => `${x},${-y}`).join(' '));
+    node.setAttribute('fill', !index ? 'var(--bg)' : shape.kind === 'hole' ? '#b68048' : '#bb5573');
+    node.setAttribute('fill-opacity', index ? 0.35 : 1);
+    node.setAttribute('stroke', index ? '#ce6986' : '#8a929e');
+    node.setAttribute('stroke-width', '0.25');
+    if (index) node.dataset.region = index - 1;
+    const title = document.createElementNS(svg.namespaceURI, 'title');
+    title.textContent = shape.name;
+    node.append(title);
+    svg.append(node);
+  }
+  return svg;
+}
+
+function boardImporter(panel, api) {
+  const target = el('div', { class: 'tools-mask' });
+  const status = el('p', { class: 'hint', role: 'status' });
+  const controls = el('div', { class: 'winding-actions' });
+  const file = el('input', { type: 'file', accept: '.kicad_pcb', 'aria-label': 'Winding layout board file' });
+  const output = el('div', { class: 'tools-mask' });
+  let request = 0;
+  async function read(load) {
+    const pending = ++request;
+    const designId = api.designId?.();
+    output.replaceChildren();
+    status.textContent = 'Reading board outline and obstacles…';
+    try {
+      const { text, name, excludedIds } = await load();
+      if (pending !== request || designId !== api.designId?.() || !target.isConnected) return;
+      preview(boardObstacleSource(text, name, excludedIds));
+      status.textContent = name;
+    } catch (error) {
+      if (pending === request) status.textContent = error.message;
+    }
+  }
+  function preview(source) {
+    const outline = el('select', { 'aria-label': 'Board island' }, source.islands.map((_, i) =>
+      el('option', { value: i, text: `Board island ${i + 1}` })));
+    const holes = el('input', { type: 'checkbox', checked: true });
+    const keepouts = el('fieldset', {}, el('legend', { text: 'Copper keepouts' }));
+    const choices = source.keepouts.map((entry, i) => {
+      const check = el('input', { type: 'checkbox', checked: true });
+      keepouts.append(el('label', {}, check, entry.name || `Keepout ${i + 1}`));
+      return check;
+    });
+    const drawing = el('div');
+    const summary = el('p', { class: 'hint' });
+    let patch = null;
+    const apply = action('Use board constraints', () => {
+      api.setMany(patch);
+      output.replaceChildren();
+      status.textContent = `Imported constraints from ${source.name}.`;
+    });
+    function redraw() {
+      try {
+        patch = boardObstaclePatch(source, Number(outline.value), holes.checked, choices.flatMap((c, i) => c.checked ? [i] : []));
+        const regions = obstacleRegions({ ...panel.state, ...patch });
+        drawing.replaceChildren(outlinePreview(regions, patch.areaWidth, patch.areaHeight));
+        const { cutouts, drills, keepouts } = patch.obstacleBoard;
+        summary.textContent = `${cutouts.length} cutouts · ${drills.length} drilled pads · ${keepouts.length} keepouts`;
+        apply.disabled = false;
+      } catch (error) {
+        summary.textContent = error.message;
+        drawing.replaceChildren();
+        apply.disabled = true;
+      }
+    }
+    output.append(el('label', {}, 'Board island', outline), el('label', {}, holes, 'Avoid drilled pads'), summary, drawing, apply);
+    if (choices.length) output.insertBefore(keepouts, summary);
+    outline.addEventListener('change', redraw);
+    holes.addEventListener('change', redraw);
+    keepouts.addEventListener('change', redraw);
+    redraw();
+  }
+  const live = action('Read live board for winding', () => read(() => api.readPlacementSnapshot(api.designId())));
+  file.addEventListener('change', () => {
+    const selected = file.files[0];
+    if (selected) read(async () => ({ name: selected.name, text: await selected.text() }));
+    file.value = '';
+  });
+  controls.append(live, file);
+  target.append(controls, status, output);
+  return { target, live };
+}
 
 export function obstacleEditor(panel, api) {
   const node=el('div',{class:'obstacle-editor'});let signature='',mode=null;
+  const imported = boardImporter(panel, api);
   const save=obstacles=>api.set('obstacles',obstacles);
   function sync() {
-    const c=panel.state,next=JSON.stringify([c.areaWidth,c.areaHeight,c.obstacles,c.areaClearance]);
+    imported.live.disabled = !api.canRefreshBoard?.();
+    const c=panel.state,next=JSON.stringify([c.areaWidth,c.areaHeight,c.obstacles,c.areaClearance,c.obstacleBoard]);
     if(signature===next)return;signature=next;node.replaceChildren();
     const status=el('p',{class:'hint',role:'status',text:'Choose a region, then drag on the board to mark it. Drag an existing region to move it. Coordinates are relative to the design origin; +Y is up.'});
     const actions=el('div',{class:'winding-actions'});
     for(const [key,text]of [['hole','Mark mounting hole'],['connector','Mark connector'],['forbidden','Mark forbidden region']]) {
       const b=el('button',{type:'button',class:'btn small',text});b.addEventListener('click',()=>{mode=key;status.textContent=`Drag to mark ${key==='hole'?'a mounting-hole circle':key==='connector'?'a connector rectangle':'a forbidden rectangle'}. A click uses a default size.`;});actions.append(b);
     }
-    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.setAttribute('viewBox',`${-c.areaWidth/2-2} ${-c.areaHeight/2-2} ${c.areaWidth+4} ${c.areaHeight+4}`);
-    svg.setAttribute('role','img');svg.setAttribute('aria-label','Board obstacle editor');svg.classList.add('obstacle-map');
-    const draw=(tag,attrs)=>{const n=document.createElementNS(svg.namespaceURI,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));svg.append(n);return n;};
-    draw('rect',{x:-c.areaWidth/2,y:-c.areaHeight/2,width:c.areaWidth,height:c.areaHeight,fill:'var(--bg)',stroke:'#8a929e','stroke-width':0.2});
     let regions;
     try {regions=obstacleRegions(c);}catch(e){status.textContent=e.message;}
-    for(const [i,o]of (regions?.obstacles||[]).entries()) {
-      const p=draw('polygon',{points:o.polygon.map(([x,y])=>`${x},${-y}`).join(' '),fill:o.kind==='hole'?'#b68048':'#bb5573','fill-opacity':0.35,stroke:'#ce6986','stroke-width':0.25,'data-region':i});
-      const title=document.createElementNS(svg.namespaceURI,'title');title.textContent=o.name;p.append(title);
-    }
+    const svg = regions ? outlinePreview(regions, c.areaWidth, c.areaHeight) : document.createElement('div');
     const point=e=>{const r=svg.getBoundingClientRect(),scale=Math.min(r.width/(c.areaWidth+4),r.height/(c.areaHeight+4));return [(e.clientX-r.left-r.width/2)/scale,-(e.clientY-r.top-r.height/2)/scale];};
     let drag=null;
-    svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;const index=e.target.getAttribute('data-region');if(!mode&&index===null)return;drag={start:point(e),index:mode?null:Number(index),mode};svg.setPointerCapture?.(e.pointerId);});
+    svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;const index=e.target.getAttribute('data-region');if(!mode&&(index===null||Number(index)>=c.obstacles.length))return;drag={start:point(e),index:mode?null:Number(index),mode};svg.setPointerCapture?.(e.pointerId);});
     svg.addEventListener('pointerup',e=>{
       if(!drag)return;const end=point(e),d=drag;drag=null;
       const obstacles=structuredClone(c.obstacles||[]);
@@ -38,6 +128,9 @@ export function obstacleEditor(panel, api) {
       obstacles.forEach(o=>{o.x=Number(o.x.toFixed(2));o.y=Number(o.y.toFixed(2));});mode=null;save(obstacles);
     });
     svg.addEventListener('pointercancel',()=>{drag=null;});
+    node.append(imported.target);
+    if (c.obstacleBoard) node.append(el('p', { class: 'hint', text: `Board constraints from ${c.obstacleBoard.name}` }),
+      action('Return to a rectangular area', () => api.set('obstacleBoard', null)));
     node.append(actions,status,svg);
     const add=(text,region)=>{const b=el('button',{class:'btn small',type:'button',text});b.addEventListener('click',()=>save([...(c.obstacles||[]),region]));return b;};
     node.append(el('div',{class:'winding-actions'},
