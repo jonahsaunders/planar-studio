@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import queue
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -62,7 +63,12 @@ def wait_for_board(path, major, socket_dir, process):
         assert editor.get_version().major == major
         return editor, board, socket
 
-    return await_result(connect)
+    try:
+        return await_result(connect)
+    except RuntimeError:
+        if os.environ.get("DISPLAY") and shutil.which("xwininfo"):
+            subprocess.run(["xwininfo", "-root", "-tree"], check=False, timeout=5)
+        raise
 
 
 def plugin_rpc(process):
@@ -134,11 +140,14 @@ def main():
         config.mkdir(parents=True)
         (config / "kicad_common.json").write_text(json.dumps({
             "api": {"enable_server": True, "interpreter_path": sys.executable},
-            "system": {"first_run_shown": True},
+            "do_not_show_again": {"data_collection_prompt": True, "update_check_prompt": True},
+            "graphics": {"canvas_type": 2},
         }))
+        (config / "kicad.json").write_text('{"system":{"first_run_shown":true}}')
         (config / "pcbnew.json").write_text("{}")
         (config / "fp-lib-table").write_text("(fp_lib_table (version 7))")
         (config / "sym-lib-table").write_text("(sym_lib_table (version 7))")
+        (config / "design-block-lib-table").write_text("(design_block_lib_table (version 7))")
         temp = root / "tmp"
         temp.mkdir()
         socket_dir = (Path("/tmp") if sys.platform == "darwin" else temp) / "kicad"
