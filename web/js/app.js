@@ -622,12 +622,14 @@ function exportOptions() {
     ...(app.ws==='transformer'?[{title:'Transformer build package (.zip)',desc:'Coordinated copper, stack and connections, terminals, core parts and analysis dossier.',file:`${name}-build.zip`,binary:true,make:()=>zipTextFiles(transformerDossier(cfg(),res,name).files)}]:[]),
     {
       title: 'KiCad footprint (.kicad_mod)',
+      disabledReason: res.art.meta.routingError,
       desc: 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
       file: `${name}.kicad_mod`,
       make: () => exportKicadMod(res.art, { name, tolerance: tol, description: current().status(cfg(), res).summary }),
     },
     {
       title: 'KiCad board (.kicad_pcb)',
+      disabledReason: res.art.meta.routingError,
       desc: `Real tracks, vias and nets — ${est.segments.toLocaleString()} segments, about ${(est.approxBytes / 1024).toFixed(0)} kB. Open it, or File → Append Board.`,
       file: `${name}.kicad_pcb`,
       make: () => exportKicadPcb(res.art, { tolerance: tol, boardThickness: cfg().boardT }),
@@ -686,9 +688,9 @@ function openExport() {
   if (!opts.length) return;
   const grid = el('div', { class: 'export-grid' });
   for (const o of opts) {
-    const card = el('button', { class: 'export-card', type: 'button' },
+    const card = el('button', { class: 'export-card', type: 'button', disabled: Boolean(o.disabledReason) },
       el('span', { class: 't', text: o.title }),
-      el('span', { class: 'd', text: o.desc }));
+      el('span', { class: 'd', text: o.disabledReason || o.desc }));
     card.addEventListener('click', async () => {
       const saved = await (o.binary?bridge.saveBytes:bridge.saveFile)(o.file, o.make(), o.mime);
       toast(saved.local ? `Downloaded ${o.file}.` : `Wrote ${o.file}.`, 'ok', { path: saved.path });

@@ -133,11 +133,29 @@ async function main() {
 
     // ---- exports ------------------------------------------------------
     await page.click('.tab[data-ws="inductor"]');
-    await page.waitForTimeout(700);
+    await page.locator('.shape[data-value="circle"]').click();
+    await setRange(page, 'Copper layers', 4);
     await page.locator('#btn-export').click();
     const exportsOk = await page.getByRole('dialog', { name: 'Export' }).locator('.export-card').count();
     await page.keyboard.press('Escape');
     record('export sheet offers every format', exportsOk >= 6, `${exportsOk} formats`);
+    const designName = await page.locator('#design-name').inputValue();
+    for (const [title, extension] of [['KiCad board', 'kicad_pcb'], ['KiCad footprint', 'kicad_mod']]) {
+      await page.locator('#btn-export').click();
+      await page.getByRole('dialog', { name: 'Export' }).getByRole('button', { name: new RegExp(title) }).click();
+      const filename = `${designName}.${extension}`;
+      await page.waitForFunction(name => document.querySelector('#toasts').textContent.includes(`Wrote ${name}`), filename);
+      const exported = fs.readFileSync(path.join(state, 'exports', filename), 'utf8');
+      record(`four-layer series spiral exports as ${title}`,
+        ['In1.Cu', 'In2.Cu', 'B.Cu'].every(layer => exported.includes(`(layer "${layer}")`)));
+    }
+    await setRange(page, 'Turns per layer', 1);
+    await setRange(page, 'Outer diameter', 3);
+    await page.locator('#btn-export').click();
+    const exportDialog = page.getByRole('dialog', { name: 'Export' });
+    record('cramped stack explains why KiCad export is blocked',
+      await exportDialog.getByRole('button', { name: /KiCad board.*No clear breakout/ }).isDisabled());
+    await page.keyboard.press('Escape');
 
     // ---- theme --------------------------------------------------------
     const before = await page.getAttribute('html', 'data-theme');

@@ -143,6 +143,7 @@ export function merge(dst, src) {
   dst.ports.push(...src.ports);
   dst.notes.push(...src.notes);
   if (src.meta.routingError) dst.meta.routingError ||= src.meta.routingError;
+  if (src.meta.exactPaths) dst.meta.exactPaths = true;
   return dst;
 }
 

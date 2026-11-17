@@ -13,6 +13,7 @@ import { buildObstacleCoil } from './obstacles.js';
 import { windingPhasors } from './winding-design.js';
 import { ellipticRatio } from './microstrip.js';
 import { phaseVoltageFromBus } from './motor-envelope.js';
+import { routeSeriesLayers } from './series-routing.js';
 
 export const MU0      = 4e-7 * Math.PI;      // H/m
 export const EPS0     = 8.8541878128e-12;    // F/m
@@ -483,8 +484,7 @@ export function buildCoil(cfg) {
     customPoly: cfg.customPoly, dir: 1,
   };
   const spiral = generateSpiral(g);
-  // Series stacking mirrors alternate layers about X, so both ends of the
-  // spiral are pulled onto that axis and every via lands on a shared point.
+  // Snap near-axis ends to the mirror seam used by the two-layer transition.
   {
     const P = spiral.path, last = P.length - 1;
     if (last > 2 && Math.abs(P[0][1]) < pitch) P[0] = [P[0][0], 0];
@@ -584,7 +584,7 @@ export function buildCoil(cfg) {
     dInFlat = Math.max(0, dOutFlat - 2 * pitch * spiral.turnsUsed);
   }
 
-  return {
+  const coil = {
     spiral, layers, vias, links, leads, names, pitch, zPitch, enclosed,
     terminals: [start, end],
     lenPerLayer, linkLen, leadLen,
@@ -592,6 +592,25 @@ export function buildCoil(cfg) {
     bbox: bboxOf(spiral.path),
     outerR: Math.max(rMax, leadR), innerR: rMin, dOutFlat, dInFlat,
   };
+  if (series && nL > 2) {
+    const routing = routeSeriesLayers(layers, cfg);
+    if (routing) {
+      routing.paths.forEach((pts, i) => { layers[i].pts = pts; });
+      coil.vias = routing.vias;
+      coil.terminals = routing.terminals;
+      coil.enclosed = nL % 2 === 1;
+      coil.links = [];
+      coil.leads = [];
+      coil.linkLen = 0;
+      coil.leadLen = 0;
+      coil.lenTotal = layers.reduce((sum, layer) => sum + polyLength(layer.pts, false), 0);
+      coil.outerR = layers.reduce((r, layer) => layer.pts.reduce((r, [x, y]) => Math.max(r, Math.hypot(x, y)), r), rMax);
+      coil.exactPaths = true;
+    } else {
+      coil.routingError = 'No clear breakout fits this series stack. Increase the winding opening or diameter, reduce turns or layer count, or use smaller pads and vias.';
+    }
+  }
+  return coil;
 }
 
 /* Fit a conventional spiral into one stator slot before rotating instances.
@@ -927,7 +946,10 @@ export function analyse(cfg, coil, opts = {}) {
 
   /* ---- resistance ---- */
   const Rlayer = rho * lenLayer / cuArea;
-  const viaR = viaResistance(cfg) * coil.vias.length;
+  const barrelFraction = series
+    ? coil.vias.reduce((sum, v) => sum + Math.abs(coil.layers[v.to].z - coil.layers[v.from].z) / cfg.boardT, 0)
+    : coil.vias.length;
+  const viaR = viaResistance(cfg) * barrelFraction;
   const Rdc = series
     ? rho * lenTotal / cuArea + viaR
     : Rlayer / nL + viaR;

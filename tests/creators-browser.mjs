@@ -131,10 +131,14 @@ try {
   await page.waitForTimeout(220); await solved();
   assert.equal(await page.getByLabel('Winding assignment, front to back', { exact: true }).inputValue(), 'P,S,P,S');
   await page.screenshot({ path: path.join(root, 'dist', 'transformer-loaded-stack.png') });
-  // Mock only the board-context response; keep the real page/RPC transport.
+  // Keep the polled connection and the simulated board stack in agreement.
+  let boardContext = { layerCount: 2, thickness: 1.6, warnings: [] };
   await page.route('**/api', async route => {
     const request = route.request().postDataJSON();
-    if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: { layerCount: 2, thickness: 1.6, warnings: [] } } });
+    if (request.method === 'kicad.status') {
+      return route.fulfill({ json: { ok: true, result: { connected: true, hasBoard: true } } });
+    }
+    if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: boardContext } });
     return route.continue();
   });
   const assistant = page.locator('[data-key="layer-assistant"]');
@@ -142,17 +146,11 @@ try {
     await assistant.locator('summary').click();
   }
   await page.getByRole('button', { name: 'Refresh board settings', exact: true }).click();
-  await solved();
-  assert.match(await page.locator('.layer-assistant').textContent(), /Board has 2/);
-  await page.unroute('**/api');
-  await page.route('**/api', async route => {
-    const request = route.request().postDataJSON();
-    if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: { layerCount: 4, thickness: 1.8, warnings: [] } } });
-    return route.continue();
-  });
+  await page.waitForFunction(() => document.querySelector('.layer-assistant')?.textContent.includes('Board has 2'));
+  boardContext = { layerCount: 4, thickness: 1.8, warnings: [] };
   await page.getByRole('button', { name: 'Refresh board settings', exact: true }).click();
-  await page.waitForTimeout(220); await solved();
-  assert.match(await page.locator('.layer-assistant').textContent(), /Board has 4/);
+  await page.waitForFunction(() => document.querySelector('.layer-assistant')?.textContent.includes('Board has 4'));
+  await solved();
   assert.equal(Number(await page.getByLabel('Winding separation', { exact: true }).inputValue()), 1.8);
   await showDesigns();
   const [chooser] = await Promise.all([

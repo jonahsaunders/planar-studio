@@ -471,6 +471,7 @@ export function coilGeom(ctx, targetL, opt = {}) {
 
   // Quarter turn clockwise brings the terminal pair to the bottom.
   const A = artwork({ name: 'spiral', kind: 'component' });
+  if (coil.exactPaths) A.meta.exactPaths = true;
   const ang = -Math.PI / 2;
   const rot = (p) => [p[0] * Math.cos(ang) - p[1] * Math.sin(ang), p[0] * Math.sin(ang) + p[1] * Math.cos(ang)];
 
@@ -490,8 +491,10 @@ export function coilGeom(ctx, targetL, opt = {}) {
 
   const termA = rot(coil.terminals[0]);
   const termB = rot(coil.terminals[1]);
-  if (!opt.surfaceTerminals && (coil.enclosed || coil.layers.length > 2)) {
-    A.meta.routingError = 'This filter winding needs two copper layers to bring both terminals out without crossing or bypassing turns. Set coil layers to two before KiCad placement or export.';
+  if (coil.routingError) {
+    A.meta.routingError = coil.routingError;
+  } else if (!opt.surfaceTerminals && coil.enclosed) {
+    A.meta.routingError = 'This filter winding needs an even layer count to bring both terminals out to the signal layer. Use an even number of coil layers before KiCad placement or export.';
   } else if (coil.layers.at(-1).name !== ctx.signalLayer) {
     // Both ladder routes are on the signal layer. Bring the fanned-out
     // return terminal back up at its lead end, beyond the winding.
@@ -618,7 +621,9 @@ export function layoutLumped(design, ctx) {
       const dx = x + built.span / 2;
       merge(A, transform(built.art, { dx, dy: built.dy || 0 }));
       const aX = dx + built.portA[0], aY = built.portA[1] + (built.dy || 0);
-      A.tracks.push(track(L, ctx.traceW, lroute(dx, 0, aX, aY, true), { role: 'route', net: netIn }));
+      // Reach a multilayer coil from above its terminal. A horizontal leg
+      // across the terminal row would touch an intervening transition via.
+      A.tracks.push(track(L, ctx.traceW, lroute(dx, 0, aX, aY, !built.art.meta.exactPaths), { role: 'route', net: netIn }));
       built.groundPoints.forEach((gp) => {
         placed.push({ ground: [dx + gp[0], gp[1] + (built.dy || 0)] });
       });
@@ -803,7 +808,7 @@ function buildShunt(el, ctx, warn, netIn) {
     merge(A, transform(flipped, { dx: 0, dy: dyL }));
     const a = [-gl.portA[0], -gl.portA[1] + dyL];
     const b = [-gl.portB[0], -gl.portB[1] + dyL];
-    A.tracks.push(track(L, ctx.traceW, lroute(gc.portB[0], gc.portB[1] + dyC, a[0], a[1], true), { role: 'link' }));
+    A.tracks.push(track(L, ctx.traceW, lroute(gc.portB[0], gc.portB[1] + dyC, a[0], a[1], !gl.coil.exactPaths), { role: 'link' }));
     const side = -boundsCopper(gl.art).x1 - Math.max(ctx.clearance * 2, 0.5);
     A.tracks.push(track(L, ctx.traceW, [b, [side, b[1]], [side, dyL - gl.radius - 0.4]], { role: 'coil-return' }));
     groundPoints.push([side, dyL - gl.radius - 0.4]);

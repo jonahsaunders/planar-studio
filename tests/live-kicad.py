@@ -107,7 +107,7 @@ def check_placement(editor, board, rpc):
         }}, error=error)
 
     context = rpc("board.context")
-    assert [layer["name"] for layer in context["copperLayers"]] == ["F.Cu", "B.Cu"]
+    assert [layer["name"] for layer in context["copperLayers"]] == ["F.Cu", "In1.Cu", "In2.Cu", "B.Cu"]
     assert Path(context["boardId"]).is_absolute() and Path(context["boardId"]).name == board.name
     assert not contents()
     snapshot = rpc("board.snapshot", {"designId": "Preview"})
@@ -123,7 +123,7 @@ def check_placement(editor, board, rpc):
     rpc("board.place", {"expectedSnapshot": snapshot["revision"], "expectedRules": comparison["rulesRevision"],
                        "placement": preview}, error="stale-board")
     assert not contents()
-    place("Absent layer", 5, layer="In1.Cu", error="boardedit")
+    place("Absent layer", 5, layer="In3.Cu", error="boardedit")
     assert not contents()
     untouched = set(place("Other", 5)["ids"])
     original = set(place("Coil", 10)["ids"])
@@ -140,6 +140,19 @@ def check_placement(editor, board, rpc):
     editor.run_action("common.Interactive.redo")
     await_result(lambda: visible(new), timeout=10)
     print("Packaged plugin placed, replaced, undid and redid copper and labels.", flush=True)
+
+
+def check_series_placement(board, rpc, payload):
+    payload.update(designId="Series stack", name="Series stack")
+    snapshot = rpc("board.snapshot", {"designId": payload["designId"]})
+    placed = rpc("board.place", {"expectedSnapshot": snapshot["revision"], "placement": payload})
+    ids = set(placed["ids"])
+    tracks = [item for item in board.get_tracks() if item.id.value in ids]
+    vias = [item for item in board.get_vias() if item.id.value in ids]
+    assert len(tracks) == sum(len(track["pts"]) - 1 for track in payload["tracks"])
+    assert len(vias) == 5
+    assert len({track.layer for track in tracks}) == 4
+    print("Packaged plugin placed the four-layer series spiral and its five isolated barrels.", flush=True)
 
 
 def main():
@@ -177,14 +190,18 @@ def main():
         fixture = root / f"placement-{root.name}.kicad_pcb"
         exported = root / f"export-{root.name}.kicad_pcb"
         filter_fixture = root / f"filter-{root.name}.kicad_pcb"
+        series_fixture = root / f"series-{root.name}.kicad_pcb"
+        series_payload = root / "series-placement.json"
         subprocess.run(["node", str(ROOT / "tests" / "live-board-fixtures.mjs"),
-                        str(fixture), str(exported), str(filter_fixture)],
+                        str(fixture), str(exported), str(filter_fixture), str(series_fixture), str(series_payload)],
                        check=True, cwd=ROOT)
         with running([args.pcbnew, str(fixture)], env) as process:
             editor, board, socket = wait_for_board(fixture, args.major, socket_dir, process)
             with running([sys.executable, str(entry), "--print-url"], {**env, "KICAD_API_SOCKET": socket},
                          stdout=subprocess.PIPE, text=True) as plugin:
-                check_placement(editor, board, plugin_rpc(plugin))
+                rpc = plugin_rpc(plugin)
+                check_placement(editor, board, rpc)
+                check_series_placement(board, rpc, json.loads(series_payload.read_text(encoding="utf-8")))
         with running([args.pcbnew, str(exported)], env) as process:
             _, reopened, _ = wait_for_board(exported, args.major, socket_dir, process)
             assert len(reopened.get_tracks()) > 10, "Exported coil copper missing"
@@ -192,14 +209,15 @@ def main():
             print("KiCad reopened the exported board and read its tracks and vias.", flush=True)
         cli_name = "kicad-cli.exe" if os.name == "nt" else "kicad-cli"
         cli = os.environ.get("PLANAR_STUDIO_KICAD_CLI") or shutil.which(cli_name) or str(Path(args.pcbnew).with_name(cli_name))
-        report_file = root / "filter-drc.json"
-        check = subprocess.run([cli, "pcb", "drc", "--format", "json", "--severity-error",
-                                "--exit-code-violations", "--output", str(report_file), str(filter_fixture)],
-                               env=env, timeout=50, capture_output=True, text=True)
-        assert report_file.is_file(), check.stderr or check.stdout
-        report = json.loads(report_file.read_text(encoding="utf-8"))
-        assert check.returncode == 0 and not report.get("unconnected_items"), report
-        print("KiCad found no errors or unrouted connections in the exported plate filter.", flush=True)
+        for board_file in [filter_fixture, series_fixture]:
+            report_file = board_file.with_suffix(".json")
+            check = subprocess.run([cli, "pcb", "drc", "--format", "json", "--severity-error",
+                                    "--exit-code-violations", "--output", str(report_file), str(board_file)],
+                                   env=env, timeout=50, capture_output=True, text=True)
+            assert report_file.is_file(), check.stderr or check.stdout
+            report = json.loads(report_file.read_text(encoding="utf-8"))
+            assert check.returncode == 0 and not report.get("unconnected_items"), report
+            print(f"KiCad found no errors or unrouted connections in {board_file.name}.", flush=True)
 
 
 if __name__ == "__main__":

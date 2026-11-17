@@ -107,9 +107,8 @@ match the artwork.
 - Coil overlap, insufficient terminal spacing, unbalanced phase counts and
   impossible dimensions are reported. The layout checks are not a replacement
   for KiCad DRC or inspection of the fabricated board.
-- The existing multilayer coil engine/export path does not provide an isolated
-  blind/buried-via topology for automatically connecting more than two series
-  layers. This change does not claim to solve that limitation.
+- Individual series coils above two layers use separate through-via breakouts.
+  Each breakout must fit within its coil slot before export.
 - The motor winding designer supports repeating, automatic, and custom phase,
   polarity, and branch assignments for rotary and dual-rotor stators. See the
   [winding and obstacle guide](winding-obstacles.md). Saved older designs retain

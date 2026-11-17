@@ -36,9 +36,8 @@ export function instances(cfg) {
  */
 export function coilArtwork(cfg, coil, opt = {}) {
   const A = artwork({ name: opt.name || 'coil', kind: 'coil' });
-  if (cfg.connection === 'series' && coil.layers.length > 2) {
-    A.meta.routingError = 'This series stack reuses through-via positions across layers and would bypass turns. Use two series layers or parallel layers for KiCad placement and export.';
-  }
+  if (coil.routingError) A.meta.routingError = coil.routingError;
+  if (coil.exactPaths) A.meta.exactPaths = true;
   const names = coil.names || layerNames(cfg.layers);
   const net = opt.net || 'COIL';
 
@@ -84,6 +83,16 @@ export function buildArtwork(cfg, coil, opt = {}) {
   for (const it of inst) {
     const netName = bus?.meta.routed ? (opt.net || 'COIL') : arrayed ? `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}` : (opt.net || 'COIL');
     const one = coilArtwork(cfg, coil, { net: netName, name: `${opt.name || 'coil'}-${it.index}` });
+    if (arrayed && coil.exactPaths && it.index === 0) {
+      // Both sides of each slot reserve half the gap to the next coil.
+      const half = Math.PI / inst.length;
+      const fits = ([x, y], radius) => x * Math.sin(half) - Math.abs(y) * Math.cos(half) >= radius + cfg.traceS / 2 + 0.01;
+      if (one.tracks.some(t => t.pts.some(p => !fits(p, t.width / 2))) ||
+          one.vias.some(v => !fits([v.x, v.y], v.diameter / 2)) ||
+          one.pads.some(p => !fits([p.x, p.y], p.w / 2))) {
+        one.meta.routingError = 'The series breakout does not fit between adjacent coils. Increase the slot spacing, or use fewer layers or smaller pads and vias.';
+      }
+    }
     if (it.polarity < 0) {
       for (const t of one.tracks) t.pts = t.pts.map(([x, y]) => [x, -y]);
       for (const p of [...one.vias, ...one.pads]) p.y = -p.y;

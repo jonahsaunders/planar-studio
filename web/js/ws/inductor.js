@@ -300,7 +300,7 @@ export function spec(cfg, res) {
         ['AC resistance', eng(a.Rac, 'Ω', 4)],
         ['Dowell factor', num(a.Fr, 3)],
         ['Skin depth', `${num(a.delta * 1e3, 1)} µm`],
-        ['Via resistance (total)', eng(a.viaR * (res.coil.vias.length || 0), 'Ω', 3)],
+        ['Via resistance (total)', eng(a.viaR, 'Ω', 3)],
         ['Interlayer capacitance', eng(a.Cinter, 'F', 3)],
         ['Turn-to-turn capacitance', eng(a.Cturn, 'F', 3)],
         ['Total capacitance', eng(a.Ctot, 'F', 3)],

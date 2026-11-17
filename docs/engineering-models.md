@@ -81,10 +81,12 @@ geometry differences. [Reproducible benchmark](../examples/measured-inductor/REA
 ## Geometry and circuit conventions
 
 - **Series layers:** alternate spiral layers are mirrored about the X axis so
-  their fields add. The ordinary coil generator shares transition points on
-  the +X ray. Series stacks above two layers remain available for analysis.
-  Their shared through-via locations would bypass turns in copper, so KiCad
-  placement and export are unavailable for those stacks.
+  their fields add. Above two layers, separate through-vias in the winding
+  opening and beyond the outer edge join adjacent sections. The generator
+  checks the full barrel against the copper on every layer and preserves the
+  checked paths in KiCad placement and export. If the breakout cannot fit,
+  the analysis remains available and KiCad output reports the clearance
+  problem. Resistance uses the barrel span carrying current between layers.
 - **Inverse coil sizing:** fractional turns change terminal and via placement,
   which can make inductance nonmonotonic. The solver searches whole turns, then
   adjusts diameter.

@@ -472,7 +472,8 @@ table.spec .dim { color: var(--text-mute); }
   background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius-sm);
   display: grid; gap: 3px;
 }
-.export-card:hover { border-color: var(--accent-line); background: var(--raised); }
+.export-card:enabled:hover { border-color: var(--accent-line); background: var(--raised); }
+.export-card:disabled { cursor: not-allowed; }
 .export-card .t { font-weight: 580; font-size: 12.5px; }
 .export-card .d { font-size: 11px; color: var(--text-mute); line-height: 1.4; }
 
