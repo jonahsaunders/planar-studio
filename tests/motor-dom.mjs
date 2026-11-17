@@ -1,4 +1,5 @@
 /* Whole application DOM/events with real engines; canvas/layout are stubbed. */
+import { savedDesign } from './helpers/saved-design.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const { Window } = await import(process.env.PLANAR_DOM_MODULE || 'happy-dom');
@@ -38,8 +39,8 @@ assert.match(document.querySelector('#side').textContent, /neutral N stays inter
 await choose('Terminal breakout', 'none');
 assert.match(document.querySelector('#side').textContent, /no grouped terminal pads or breakout tails/);
 set('Terminal position', -45); await new Promise(r => setTimeout(r, 220)); await solved();
-button('Save'); await until(() => localStorage.getItem('planar.design.motor:m1'));
-const saved = JSON.parse(localStorage.getItem('planar.design.motor:m1'));
+button('Save'); await until(() => savedDesign('motor'));
+const saved = savedDesign('motor');
 assert.equal(saved.config.shape, 'polygon');
 assert.equal(saved.config.sides, 4);
 assert.equal(saved.config.terminalAngle, -45);
@@ -57,7 +58,7 @@ assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close
 set('Terminal position', 20); await new Promise(r => setTimeout(r, 220)); await solved();
 await choose('Terminal breakout', 'phase-neutral');
 const { api } = await import('../web/js/bridge.js');
-api.listDesigns = async () => ({ designs: [{ id: 'motor:m1', name: 'M1', kind: 'motor', saved: 0 }] });
+api.listDesigns = async () => ({ designs: [saved] });
 api.loadDesign = async () => saved;
 button('Open…'); await until(() => document.querySelector('.export-card .t'));
 document.querySelector('.export-card').click(); await new Promise(r => setTimeout(r, 220)); await solved();
@@ -88,8 +89,8 @@ for(const [family,label,param,value]of [
   assert.equal(visible('Coil shape'),family==='stepper'||family==='dual-rotor');
   assert.equal(visible('Terminal breakout'),family!=='planar');
   set(param,value);await new Promise(r=>setTimeout(r,220));await solved();
-  button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.motor:m1')).config.motorFamily===family);
-  const snapshot=JSON.parse(localStorage.getItem('planar.design.motor:m1'));
+  button('Save');await until(()=>savedDesign('motor').config.motorFamily===family);
+  const snapshot=savedDesign('motor');
   assert.equal(snapshot.config.motorFamily,family);
   assert.equal(snapshot.config.terminalBreakout,'none');
   await choose('Motor family','rotary');

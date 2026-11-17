@@ -153,7 +153,8 @@ export function openPlacementReview(api, kind, makeReview) {
       return;
     }
     try {
-      const result = api.solveDesign();
+      const board = kind === 'filter' ? { copperLayers: snapshot.copperLayers || [] } : undefined;
+      const result = api.solveDesign(board);
       review = {
         ...makeReview(api.config(), result, snapshot), revision: snapshot.revision,
         designId, signature: JSON.stringify(api.config()),
@@ -168,6 +169,7 @@ export function openPlacementReview(api, kind, makeReview) {
         ['Replacement preview', `${review.replacement.removed} items to remove · ${review.replacement.added} primitives to add`],
       ];
       if (transformer) rows.push(['Core cutouts', `${review.cutouts.results.filter(q => q.found).length}/${review.cutouts.results.length} found`]);
+      if (result.rfStack) rows.push(['RF reference', `${result.rfStack.signal} to ${result.rfStack.reference} · ${num(result.rfStack.h, 4)} mm · ${result.rfStack.source}`]);
       details.replaceChildren(specTable(rows));
       if (review.replacement.removed) details.append(hint('Gray copper will be replaced, including edits to previously generated items.'));
       if (transformer) {
@@ -183,7 +185,7 @@ export function openPlacementReview(api, kind, makeReview) {
       if (!fitted) { view.fit(bounds(review.preview)); fitted = true; }
       view.setHandles([{ id: 'origin', x: origin[0], y: -origin[1], hint: 'Move origin', cursor: 'move' }]);
       findings.replaceChildren();
-      for (const issue of review.issues) {
+      for (const issue of [...review.issues, ...review.warnings.filter(w => w?.point)]) {
         const row = button(issue.message, () => {
           const [x, y] = issue.point;
           view.fit({ x0: x - 3, x1: x + 3, y0: y - 3, y1: y + 3, w: 6, h: 6 });
@@ -191,7 +193,7 @@ export function openPlacementReview(api, kind, makeReview) {
         row.disabled = !issue.point;
         findings.append(row);
       }
-      review.warnings.forEach(w => findings.append(hint(typeof w === 'string' ? w : w.message)));
+      review.warnings.filter(w => !w?.point).forEach(w => findings.append(hint(typeof w === 'string' ? w : w.message)));
       place.disabled = !review.ready || !review.revision;
     } catch (err) {
       review = null;

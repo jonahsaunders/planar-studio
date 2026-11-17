@@ -28,6 +28,7 @@ import re
 import sys
 import threading
 import time
+import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -169,6 +170,7 @@ class KiCadLink:
         self._lock = threading.RLock()
         self._last_error = ""
         self._last_attempt = 0.0
+        self._unsaved_board_scope = uuid.uuid4().hex
 
     # ---------------------------------------------------------------- connect
 
@@ -243,6 +245,19 @@ class KiCadLink:
 
     # ---------------------------------------------------------------- context
 
+    def _board_identity(self, board: Any) -> Dict[str, str]:
+        name = str(getattr(board, "name", "") or "")
+        project = getattr(getattr(board, "document", None), "project", None)
+        directory = getattr(project, "path", "")
+        path = name if os.path.isabs(name) else ""
+        if not path and name and isinstance(directory, str) and os.path.isabs(directory):
+            path = os.path.join(directory, name)
+        if path and os.path.isfile(path):
+            board_id = os.path.normcase(os.path.realpath(path))
+        else:
+            board_id = f"unsaved:{self._unsaved_board_scope}:{name}"
+        return {"name": name, "boardId": board_id}
+
     def board_context(self) -> Dict[str, Any]:
         """Everything the design side wants to know about the open board.
 
@@ -252,7 +267,7 @@ class KiCadLink:
         """
         board = self._board()
         ctx: Dict[str, Any] = {
-            "name": str(getattr(board, "name", "") or ""),
+            **self._board_identity(board),
             "copperLayers": [],
             "layerCount": 0,
             "thickness": None,
@@ -332,7 +347,12 @@ class KiCadLink:
                 raise LinkError("This KiCad API cannot serialize the board. Import a saved .kicad_pcb in Board checks instead.") from exc
             if not isinstance(text, str) or len(text) > 40_000_000:
                 raise LinkError("The board snapshot is unavailable or exceeds 40 MB.")
-            result = {"name": str(getattr(board, "name", "") or ""), "text": text, "source": "live"}
+            result = {**self._board_identity(board), "text": text, "source": "live"}
+            try:
+                copper, _, _ = _read_stackup(board.get_stackup())
+                result["copperLayers"] = copper
+            except Exception:
+                pass
             try:
                 result["nets"] = sorted({net.name for net in board.get_nets() if net.name})
             except Exception:
@@ -751,13 +771,14 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
             if isinstance(raw, (int, float)) and raw:
                 thickness = to_mm(int(raw))
                 break
-        if not thickness:
-            heights_known = False
         if thickness:
             total += thickness
 
         name = _layer_name(getattr(entry, "layer", None)) or str(getattr(entry, "name", "") or "")
-        typ = str(getattr(entry, "type", "") or "")
+        kind = getattr(entry, "type", None)
+        is_dielectric = kind == 2 or "diel" in str(kind).lower()  # BSLT_DIELECTRIC
+        if not thickness and (name.endswith(".Cu") or is_dielectric):
+            heights_known = False
 
         if name and name.endswith(".Cu"):
             copper.append(
@@ -789,7 +810,7 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
             raw = getattr(sub, "material", None)
             if isinstance(raw, str) and raw:
                 material = raw
-        if eps or (typ and "diel" in typ.lower()):
+        if is_dielectric or eps:
             dielectrics.append(
                 {
                     "name": name or material or "dielectric",

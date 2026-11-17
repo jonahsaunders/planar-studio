@@ -105,38 +105,57 @@ class Application:
 
         # ---- board --------------------------------------------------------
 
-        def live_placements(records):
+        def board_key(context):
+            return context.get("boardId") or context["name"]
+
+        def owned_placements(board, design_id=None):
+            records = self.store.placement_records(design_id)
             if not records:
                 return []
             board_ids = self.link.placement_item_ids()
-            return [live for record in records
-                    if (live := self.store.live_revision(record, board_ids))]
+            matches = {}
+            for record in records:
+                live = self.store.live_revision(record, board_ids)
+                if live:
+                    matches.setdefault(record["designId"], []).append((live, record))
+            owned = []
+            for candidates in matches.values():
+                same_board = [pair for pair in candidates if pair[1]["board"] == board]
+                if same_board:
+                    owned.append(same_board[0])
+                elif len({frozenset(live["ids"]) for live, _ in candidates}) == 1:
+                    # A moved or copied board retains item UUIDs. Its next
+                    # placement gets an independent history under its own path.
+                    owned.append(max(candidates, key=lambda pair: pair[0]["placed"] or 0))
+            return owned
 
-        def placement_ids(design_id, board):
-            record = self.store.get_placement(design_id, board)
-            revisions = live_placements([record]) if record else []
-            return revisions[0]["ids"] if revisions else []
+        def placement_for(design_id, board):
+            matches = owned_placements(board, design_id) if design_id else []
+            return matches[0] if matches else (None, None)
 
         def reviewed_snapshot(design_id):
             result = self.link.board_snapshot()
-            excluded = placement_ids(design_id, result["name"])
-            identity = json.dumps([result["name"], sorted(excluded), result.get("nets")])
+            live, record = placement_for(design_id, board_key(result))
+            excluded = live["ids"] if live else []
+            identity = json.dumps([board_key(result), sorted(excluded), result.get("nets"),
+                                   result.get("copperLayers"), live])
             digest = hashlib.sha256(identity.encode("utf-8"))
             digest.update(result["text"].encode("utf-8"))
-            return {**result, "excludedIds": excluded, "revision": digest.hexdigest()}
+            return {**result, "excludedIds": excluded, "previousPlacement": live,
+                    "revision": digest.hexdigest()}, record
 
         @api.method("board.snapshot")
         @_require_link
         def _snapshot(params: Dict[str, Any]) -> Dict[str, Any]:
             with placement_lock:
-                return reviewed_snapshot(str(params.get("designId") or ""))
+                snapshot, _ = reviewed_snapshot(str(params.get("designId") or ""))
+                return snapshot
 
         @api.method("board.context")
         @_require_link
         def _context(_params: Dict[str, Any]) -> Dict[str, Any]:
             ctx = self.link.board_context()
-            board = ctx.get("name") or ""
-            placements = live_placements(self.store.placements_for_board(board))
+            placements = [live for live, _ in owned_placements(board_key(ctx))]
             ctx["placements"] = [
                 {
                     "designId": p["designId"],
@@ -167,15 +186,16 @@ class Application:
             with placement_lock:
                 expected = params.get("expectedSnapshot")
                 if expected is not None:
-                    snapshot = reviewed_snapshot(design_id)
+                    snapshot, previous = reviewed_snapshot(design_id)
                     if expected != snapshot["revision"]:
                         raise RpcError("The board or previous placement changed. Review the updated destination.",
                                        kind="stale-board")
-                    board = snapshot["name"]
+                    board = board_key(snapshot)
                     ids = snapshot["excludedIds"] if params.get("replace") else []
                 else:
-                    board = str(self.link.board_context().get("name") or "")
-                    ids = placement_ids(design_id, board) if params.get("replace") else []
+                    board = board_key(self.link.board_context())
+                    live, previous = placement_for(design_id, board) if params.get("replace") else (None, None)
+                    ids = live["ids"] if live else []
 
                 def remember(created):
                     meta = {
@@ -183,7 +203,9 @@ class Application:
                         "kind": params.get("kind", ""),
                         "summary": params.get("summary", ""),
                     }
-                    self.store.record_placement(design_id, board, created, meta)
+                    if params.get("windingTerminals"):
+                        meta["windingTerminals"] = params["windingTerminals"]
+                    self.store.record_placement(design_id, board, created, meta, previous)
 
                 result = self.link.place(
                     placement, net_name=params.get("net"), replace_ids=ids, remember=remember,
@@ -200,16 +222,16 @@ class Application:
         def _unplace(params: Dict[str, Any]) -> Dict[str, Any]:
             design_id = str(params.get("designId") or "")
             with placement_lock:
-                board = str(self.link.board_context().get("name") or "")
+                live, _ = placement_for(design_id, board_key(self.link.board_context()))
                 # KiCad Undo can restore these IDs after an unplace.
-                return self.link.remove_ids(placement_ids(design_id, board))
+                return self.link.remove_ids(live["ids"] if live else [])
 
         @api.method("board.select")
         @_require_link
         def _select(params: Dict[str, Any]) -> Dict[str, Any]:
             design_id = str(params.get("designId") or "")
-            board = str(self.link.board_context().get("name") or "")
-            ids = placement_ids(design_id, board)
+            live, _ = placement_for(design_id, board_key(self.link.board_context()))
+            ids = live["ids"] if live else []
             self.link.select(ids)
             return {"selected": len(ids)}
 

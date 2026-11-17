@@ -106,7 +106,9 @@ def check_placement(editor, board, rpc):
             "vias": [{"x": x, "y": 10}], "texts": [{"x": x, "y": 12, "value": name}],
         }}, error=error)
 
-    assert [layer["name"] for layer in rpc("board.context")["copperLayers"]] == ["F.Cu", "B.Cu"]
+    context = rpc("board.context")
+    assert [layer["name"] for layer in context["copperLayers"]] == ["F.Cu", "B.Cu"]
+    assert Path(context["boardId"]).is_absolute() and Path(context["boardId"]).name == board.name
     assert not contents()
     place("Absent layer", 5, layer="In1.Cu", error="boardedit")
     assert not contents()

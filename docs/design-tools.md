@@ -159,9 +159,14 @@ previously generated items that will be replaced. The plugin rechecks the
 live snapshot and replacement IDs before editing the board.
 
 The winding check flags an existing same-net copper shape that touches two
-separated sections of the same generated winding path. A single contact is
-allowed. Run KiCad DRC and inspect the full winding current path, including
-connections made through multiple board items.
+separated sections of a generated winding path. For series inductors it also
+follows connected tracks, arcs, circular pads and plated vias across their
+actual layer spans. This catches routes that contact the winding at two points
+through several board items. A saved placement made with this version records
+its terminal positions so the review can highlight a break in its generated
+copper before replacement. This continuity check uses the recorded copper.
+Parallel branches, filled-zone connectivity and complex pad shapes still
+require inspection in KiCad.
 
 Read a live KiCad board via `board.snapshot` or import a `.kicad_pcb` file. The
 live snapshot includes unsaved board state and never saves the board. If that
@@ -169,11 +174,19 @@ API is unavailable on the installed KiCad/kicad-python version, use a saved file
 Previously placed items belonging to the active design are excluded from a live
 snapshot check because Place will replace them.
 
+Renaming a saved design preserves its link to placed copper. **Save a copy…**
+and JSON import create separate designs. Board placement history is scoped to
+the saved PCB path. If a board is moved or copied, the plugin can recover
+ownership when the live KiCad item IDs uniquely match an existing placement.
+Replacing the winding on a copy keeps a separate history for the copy.
+
 Enter origin coordinates in **KiCad coordinates (+Y down)** and a uniform
 clearance. The preview checks other-net copper, keepouts, drills, board edges,
 outline cutouts, and ground copper overlapping winding traces. Distributed
 filters additionally check for a continuous filled polygon on the selected
-reference layer beneath signal traces. **Use this placement origin** connects
+reference layer beneath signal traces. The filter's Substrate settings
+select the same reference layer for synthesis and placement.
+**Use this placement origin** connects
 the preview to the main Place action.
 
 The parser handles straight/arc tracks, vias, footprint transforms, pads,

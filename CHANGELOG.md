@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Preserve design and placement identity across renames and project copies.
+  Save a copy creates a separate design without taking over existing copper.
+- Trace connected tracks and via spans during series-inductor placement
+  review. Flag bypass routes and locate breaks in previously placed windings.
+- Choose a signal layer and reference plane for distributed filters. Use the
+  measured separation in the KiCad stack for synthesis, studies and review.
+
 - Review live placement in every workspace, with a preview of prior items,
   same-net winding bypass checks and a final board-state check before edits.
 - Test the packaged plugin against KiCad 9 and 10 and attach the tested ZIP.

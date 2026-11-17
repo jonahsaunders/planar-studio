@@ -1,4 +1,5 @@
 /* Whole application DOM/events with real engines; canvas/layout are stubbed. */
+import { savedDesign } from './helpers/saved-design.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { Worker as NodeWorker } from 'node:worker_threads';
@@ -63,18 +64,30 @@ try {
   globalThis.localStorage = storage;
 }
 button('Save');
-await until(() => localStorage.getItem('planar.design.inductor:l1'));
+await until(() => savedDesign('inductor'));
 assert.equal(wouldWarnOnClose(), false);
 set('Turns per layer', 12);
 button('Open…');
 await until(() => document.querySelector('.scrim .export-card'));
 document.querySelector('.scrim .export-card').click();
 await until(() => Number(document.querySelector('[aria-label="Turns per layer"]').value) === 9);
+const designName = document.querySelector('#design-name');
+designName.value = 'Renamed winding';
+designName.dispatchEvent(new w.Event('input', { bubbles: true }));
+button('Save');
+await until(() => savedDesign('inductor', 'Renamed winding'));
+assert.equal(savedDesign('inductor', 'Renamed winding').id, approved.payload.designId);
+button('Save a copy…');
+set('Copy name', 'Winding variation');
+button('Save copy');
+await until(() => savedDesign('inductor', 'Winding variation'));
+assert.notEqual(savedDesign('inductor', 'Winding variation').id, approved.payload.designId);
+assert.ok(savedDesign('inductor', 'Renamed winding'));
 for (const [kind, field, value] of [['antenna', 'Length tuning', 1.1], ['transformer', 'Primary turns', 7]]) {
   document.querySelector(`[data-ws="${kind}"]`).click(); await solved();
   set(field, value); await new Promise(r => setTimeout(r, 200)); await solved();
-  button('Save'); await until(() => localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
-  const saved = JSON.parse(localStorage.getItem(`planar.design.${kind}:${kind === 'antenna' ? 'ant1' : 't1'}`));
+  button('Save'); await until(() => savedDesign(kind));
+  const saved = savedDesign(kind);
   assert.equal(saved.config[kind === 'antenna' ? 'lengthScale' : 'primaryTurns'], value);
   document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, kind==='transformer'?7:6); button('Close');
   document.querySelector('#btn-tools').click();
@@ -95,13 +108,29 @@ const choose = async (label, value) => {
   if(['Transformer type','Catalog core assembly'].includes(label)) { const apply=[...document.querySelectorAll('button')].find(b=>b.textContent==='Apply preset');if(apply)apply.click(); }
   await new Promise(r => setTimeout(r, 220)); await solved();
 };
+bridge.state.context = { layerCount: 4, copperLayers: [
+  { name: 'F.Cu', centerHeightMm: 0.0175, thicknessMm: 0.035 },
+  { name: 'In1.Cu', centerHeightMm: 0.224, thicknessMm: 0.018 },
+  { name: 'In2.Cu', centerHeightMm: 1.169, thicknessMm: 0.018 },
+  { name: 'B.Cu', centerHeightMm: 1.5825, thicknessMm: 0.035 },
+] };
+document.querySelector('[data-ws="filter"]').click();
+await choose('Family', 'hairpin');
+await choose('Reference plane layer', 'In1.Cu');
+assert.match(document.querySelector('#side').textContent, /F\.Cu to In1\.Cu · KiCad physical stack/);
+assert.match(document.querySelector('#side').textContent, /0\.1800 mm/);
+await choose('RF stack source', 'manual');
+assert.match(document.querySelector('#side').textContent, /Entered values/);
+bridge.state.context = null;
+document.querySelector('[data-ws="antenna"]').click();
+await solved();
 for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
   await choose('Antenna type', family);
   assert.equal(document.querySelector('[data-key="nfc"]').hidden, family !== 'nfc');
   assert.equal(document.querySelector('[data-key="array"]').hidden, family !== 'patch-array');
   assert.equal(document.querySelector('[data-key="directional"]').hidden, !['vivaldi', 'yagi', 'lpda', 'bowtie'].includes(family));
   button('Save');
-  await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.family === family);
+  await until(() => savedDesign('antenna').config.family === family);
   assert.ok(!/undefined|NaN/.test(document.querySelector('#side').textContent));
   if (family === 'nfc') {
     const before = Number(document.querySelector('[aria-label="Loop outer diameter"]').value);
@@ -112,7 +141,7 @@ for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded
   if (field) {
     set(field[0], field[1]); await new Promise(r => setTimeout(r, 220)); await solved();
     button('Save');
-    await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config[field[2]] === field[1]);
+    await until(() => savedDesign('antenna').config[field[2]] === field[1]);
     document.querySelector('#btn-export').click(); assert.equal(document.querySelectorAll('.export-card').length, 6); button('Close');
   }
 }
@@ -122,15 +151,15 @@ await new Promise(r => setTimeout(r, 220)); await solved();
 assert.match(document.querySelector('#side').textContent, /1024/);
 assert.match(document.querySelector('#side').textContent, /Overall board W × H/);
 button('Save');
-await until(() => JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayCols === 32);
-assert.equal(JSON.parse(localStorage.getItem('planar.design.antenna:ant1')).config.arrayRows, 32);
+await until(() => savedDesign('antenna').config.arrayCols === 32);
+assert.equal(savedDesign('antenna').config.arrayRows, 32);
 document.querySelector('[data-ws="transformer"]').click(); await solved();
 button('3 Windings');
 for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
   await choose('Transformer type', family);
   assert.equal(document.querySelector('[data-key="core"]').hidden, family !== 'ferrite');
   button('Save');
-  await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.family === family);
+  await until(() => savedDesign('transformer').config.family === family);
   if (family === 'center-tapped') assert.match(document.querySelector('#side').textContent, /S_CT/);
   if (family === 'ferrite') {
     await choose('Core material', 'N87');
@@ -154,8 +183,8 @@ const winding = document.querySelector('[aria-label="Winding on section 2"]');
 winding.value = 'S'; winding.dispatchEvent(new w.Event('change', { bubbles: true }));
 await new Promise(r => setTimeout(r, 220)); await solved();
 button('Save');
-await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.stackPlan === 'P,S,S,S');
-const savedLoad = JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config;
+await until(() => savedDesign('transformer').config.stackPlan === 'P,S,S,S');
+const savedLoad = savedDesign('transformer').config;
 assert.equal(savedLoad.driveMode, 'voltage'); assert.equal(savedLoad.loadR, 25);
 document.querySelector('[aria-label="Move winding 1 down"]').click();
 await new Promise(r => setTimeout(r, 220)); await solved();
@@ -195,8 +224,8 @@ assert.equal(Number(document.querySelector('[aria-label="Winding separation"]').
 // Regression: adopting context must retain the config object bound to Panel.
 set('Primary turns', 8); await new Promise(r => setTimeout(r, 220)); await solved();
 button('Save');
-await until(() => JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.primaryTurns === 8);
-assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.boardT, 2);
+await until(() => savedDesign('transformer').config.primaryTurns === 8);
+assert.equal(savedDesign('transformer').config.boardT, 2);
 bridge.api.context = async () => { throw new Error('No PCB open'); };
 button('Refresh board settings'); await until(() => document.querySelector('.layer-assistant').textContent.includes('No PCB open'));
 assert.equal([...document.querySelectorAll('button')].find(b => b.textContent === 'Refresh board settings').disabled, false);
@@ -226,8 +255,8 @@ await choose('Catalog core assembly','eelp32');
 assert.match(document.querySelector('.core-assembly').textContent,/B66457G0000X187/);
 assert.equal(Number(document.querySelector('[aria-label="Outer diameter"]').value),22);
 assert.ok(document.querySelector('.transformer-preview svg'));
-button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.corePreset==='eelp32');
-assert.equal(JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.candidates.length,1);
+button('Save');await until(()=>savedDesign('transformer').config.corePreset==='eelp32');
+assert.equal(savedDesign('transformer').config.candidates.length,1);
 button('Remove candidate');await new Promise(r=>setTimeout(r,220));await solved();
 assert.equal(document.querySelectorAll('.transformer-comparisons .transformer-candidate').length,0);
 // Guided workflow, reversible edits, review-before-apply and real study workers.
@@ -256,8 +285,8 @@ button('Check named conditions');button('Run study');await until(()=>liveWorkers
 button('Measure and calibrate');set('Fixture and reference plane','Terminals');set('Prototype identifier','Prototype B');const againKind=document.querySelector('[aria-label="Measurement test"]');againKind.value='loaded';againKind.dispatchEvent(new w.Event('change'));const againFile=document.querySelector('[aria-label="Transformer measurement file"]');Object.defineProperty(againFile,'files',{value:[{name:'loaded-b.csv',size:100,text:async()=> 'Frequency (Hz),Gain_dB\n80000,-7\n120000,-7'}]});againFile.dispatchEvent(new w.Event('change'));await until(()=>document.querySelectorAll('.transformer-review-body .transformer-test').length===2);
 for(const c of document.querySelectorAll('.transformer-review-body .transformer-test input[type="checkbox"]')){c.checked=true;c.dispatchEvent(new w.Event('change'));}button('Compare selected prototypes');await until(()=>liveWorkers===0);assert.match(document.querySelector('.transformer-review-body').textContent,/Prototype comparison/);button('Fit AL and leakage from open / short tests');assert.match(document.querySelector('.transformer-embedded footer').textContent,/Choose the exact/);button('Back to overview');
 button('3 Windings');set('P:0 terminal offset (mm)',.5);await new Promise(r=>setTimeout(r,220));await solved();assert.equal(Number(document.querySelector('[aria-label="P:0 terminal offset (mm)"]').value),.5);set('P:0 terminal offset (mm)',4);assert.match(document.querySelector('[data-key="terminals"]').textContent,/0 and 3/);assert.equal(Number(document.querySelector('[aria-label="P:0 terminal offset (mm)"]').value),.5);
-button('4 Verify');assert.match(document.querySelector('.transformer-ledger').textContent,/Outdated/);button('Save');await until(()=>JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config.transformerTests.length===2);
-const projectSaved=JSON.parse(localStorage.getItem('planar.design.transformer:t1')).config;assert.ok(projectSaved.studies.length>=3);assert.equal(projectSaved.scenarios[0].name,'Bench condition');
+button('4 Verify');assert.match(document.querySelector('.transformer-ledger').textContent,/Outdated/);button('Save');await until(()=>savedDesign('transformer').config.transformerTests.length===2);
+const projectSaved=savedDesign('transformer').config;assert.ok(projectSaved.studies.length>=3);assert.equal(projectSaved.scenarios[0].name,'Bench condition');
 console.log('Project DOM flows passed: linked overrides, named cases, keyboard tabs, saved reports and plots, repeated prototype imports, matched calibration selection and rejected terminal edits.');
 console.log('Guided workflow, undo/redo, preset preview, checkpoints, comparison, operating envelope, tolerances, worker cleanup, measurement overlays and placement review passed.');
 console.log('Whole-app creator DOM flows passed, including composed transformers, parallel windings, charts, selection, candidate restore and catalog persistence. Canvas/layout not tested.');

@@ -113,6 +113,21 @@ cascade.
 
 ## Filter synthesis and response
 
+For distributed microstrip filters, choose an outer signal layer and the
+copper layer carrying its reference plane. In **KiCad physical stack** mode,
+the app subtracts half of each foil thickness from the distance between their
+centers to obtain the dielectric height. It uses the signal layer's copper
+thickness and the design's entered permittivity and loss tangent. On an
+incomplete or unavailable stack, the controls show the entered height and
+copper thickness as the fallback. Older saved filters retain their entered
+values until the stack source changes.
+
+The same layer pair drives synthesis, the response studies, and the
+placement check for reference-plane coverage. In a four-layer board with
+0.18 mm between `F.Cu` and `In1.Cu`, select `In1.Cu` for a hairpin routed
+over that plane. The layer choice is also represented in an exported PCB's
+layer table. Create and fill the reference plane in KiCad.
+
 The filter workspace synthesizes a network, generates copper, then calculates
 a response from that geometry. The geometry calculation includes estimated
 inductance, Q and capacitor parasitics. It is plotted alongside the ideal

@@ -39,6 +39,7 @@ export function parseBoard(text, excludedIds = []) {
   const out = { name: 'Board snapshot', copper: [], keepouts: [], edges: [], holes: [], warnings: [], source: 'file',
     layers: one(root, 'layers').filter(Array.isArray).map(entry => entry[1]), nets: new Set(nets.values()) };
   const copperLayer = (name) => /\.Cu$/.test(name || '');
+  const stack = out.layers.filter(copperLayer);
   let seq = 0;
   function walk(items, pose = { x: 0, y: 0, a: 0 }) {
     const point = ([x, y]) => { const c = Math.cos(pose.a), s = Math.sin(pose.a); return [pose.x + x * c - y * s, -(pose.y + x * s + y * c)]; };
@@ -52,7 +53,7 @@ export function parseBoard(text, excludedIds = []) {
       const base = { id, layer, net, kind };
       if (kind === 'footprint' || kind === 'module') {
         const [x, y] = xy(item, 'at');
-        walk(item, { x, y, a: -number(item, 'at', 3) * Math.PI / 180 });
+        walk(item, { x, y, a: -number(item, 'at', 3) * Math.PI / 180, owner: id });
       } else if (kind === 'segment' || kind === 'arc') {
         const pts = kind === 'arc' ? arcPoints(xy(item, 'start'), xy(item, 'mid'), xy(item, 'end')) : [xy(item, 'start'), xy(item, 'end')];
         out.copper.push({ ...base, width: number(item, 'width'), pts: pts.map(point) });
@@ -61,7 +62,14 @@ export function parseBoard(text, excludedIds = []) {
         const size = one(item, 'size').slice(1).map(Number), drill = one(item, 'drill').slice(1).filter((x) => /^\d/.test(x)).map(Number);
         const radius = kind === 'via' ? size[0] / 2 : (item[3] === 'circle' ? size[0] : Math.hypot(...size)) / 2;
         if (!Number.isFinite(radius)) { out.warnings.push(`Unsupported pad ${id}.`); continue; }
-        if (kind === 'via' || layers.some(copperLayer)) out.copper.push({ ...base, layer: layers.includes('*.Cu') || kind === 'via' ? '*.Cu' : layers[0], layers, pts: [p, p], width: radius * 2 });
+        const plated = kind === 'via' || item[2] !== 'np_thru_hole';
+        if (plated && (kind === 'via' || layers.some(copperLayer))) {
+          const first = stack.indexOf(layers[0]), last = stack.indexOf(layers[1]);
+          const span = kind === 'via' && first >= 0 && last >= 0
+            ? stack.slice(Math.min(first, last), Math.max(first, last) + 1) : layers.filter(copperLayer);
+          out.copper.push({ ...base, owner: pose.owner, layer: layers.includes('*.Cu') || kind === 'via' ? '*.Cu' : layers[0],
+            layers: span, pts: [p, p], width: radius * 2, approxPad: kind === 'pad' && item[3] !== 'circle' });
+        }
         if (drill.length && Math.max(...drill) > 0) out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 });
       } else if (kind === 'zone') {
         const zoneLayers = layers.length ? layers : [layer], keepout = one(item, 'keepout');
@@ -143,6 +151,120 @@ function hits(a, b, radius, o) {
 }
 const sameLayer = (a, b) => a === b || a === '*.Cu' || b === '*.Cu';
 
+// Connectivity uses known via spans and supported copper shapes. Keep the
+// broader conservative geometry in the separate clearance check.
+function layersOf(item) {
+  return item.layers?.length ? item.layers : [item.layer];
+}
+
+function shareCopperLayer(a, b) {
+  return layersOf(a).some(x => layersOf(b).some(y => sameLayer(x, y)));
+}
+
+function routedGroups(items) {
+  const entries = items.filter(o => o.pts && !o.approxPad && ['segment', 'arc', 'via', 'pad'].includes(o.kind))
+    .map(item => {
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      const r = (item.width || 0) / 2;
+      for (const [x, y] of item.pts) {
+        x0 = Math.min(x0, x - r); x1 = Math.max(x1, x + r);
+        y0 = Math.min(y0, y - r); y1 = Math.max(y1, y + r);
+      }
+      return { item, x0, x1, y0, y1 };
+    }).sort((a, b) => a.x0 - b.x0);
+  const parent = entries.map((_, i) => i);
+  function root(i) {
+    while (i !== parent[i]) { parent[i] = parent[parent[i]]; i = parent[i]; }
+    return i;
+  }
+  for (let i = 0; i < entries.length; i++) {
+    const a = entries[i];
+    for (let j = i + 1; j < entries.length && entries[j].x0 <= a.x1 + 1e-6; j++) {
+      const b = entries[j];
+      if (a.y0 > b.y1 + 1e-6 || b.y0 > a.y1 + 1e-6 || !shareCopperLayer(a.item, b.item)) continue;
+      if (a.item.pts.slice(1).some((q, k) => hits(a.item.pts[k], q, a.item.width / 2 + 1e-6, b.item))) {
+        parent[root(j)] = root(i);
+      }
+    }
+  }
+  const groups = new Map();
+  entries.forEach(({ item }, i) => {
+    const key = root(i);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(item);
+  });
+  return [...groups.values()];
+}
+
+function windingBypasses(art, board, origin, add) {
+  const windings = art.tracks.filter(t => t.role === 'winding');
+  const net = windings[0]?.net;
+  if (!net) return;
+  const groups = routedGroups(board.copper.filter(o => o.net === net));
+  if (!groups.length) return;
+  const memberships = new Map(groups.flatMap(group => group.map(item => [item, group])));
+  const candidates = [...memberships.keys()];
+  const lastContact = new Map();
+  let along = 0;
+  const move = ([x, y]) => [x + origin[0], y - origin[1]];
+  const lead = index => art.tracks.find(t => t.role === 'lead' && t.terminal === index);
+  const start = lead(0), end = lead(1);
+  const path = windings.flatMap(winding => [
+    ...art.tracks.filter(t => t.role === 'transition' && t.layerIndex === winding.layerIndex), winding,
+  ]);
+  if (start) path.unshift({ ...start, pts: start.pts.slice().reverse() });
+  if (end) path.push(end);
+  const terminals = art.pads.filter(p => p.role === 'terminal');
+  const contact = (group, at, until, point, margin) => {
+    if (at - (lastContact.get(group) ?? at) > margin) {
+      add(group.length > 1 ? 'winding-bypass-route' : 'winding-bypass', group[0], point,
+        `Connected copper on ${net} bridges separated winding sections. Inspect the route at this contact.`);
+    }
+    lastContact.set(group, until);
+  };
+  const terminalContact = (pad, endOfPath) => {
+    if (!pad) return;
+    const point = move([pad.x, pad.y]), radius = pad.w / 2;
+    for (const item of candidates) {
+      if (!shareCopperLayer({ layer: pad.drill ? '*.Cu' : pad.layer }, item) || !hits(point, point, radius, item)) continue;
+      contact(memberships.get(item), endOfPath ? along - radius : 0, along + radius, point, pad.w);
+    }
+  };
+  terminalContact(terminals[0], false);
+  for (const { pts, width, layer } of path) {
+    for (let i = 1; i < pts.length; i++) {
+      const a = move(pts[i - 1]), b = move(pts[i]), end = along + distance(a, b);
+      for (const item of candidates) {
+        if (!shareCopperLayer({ layer }, item) || !hits(a, b, width / 2, item)) continue;
+        contact(memberships.get(item), along, end, a, width);
+      }
+      along = end;
+    }
+  }
+  terminalContact(terminals[1], true);
+}
+
+function windingContinuity(items, previous) {
+  const terminals = previous?.meta?.windingTerminals;
+  if (terminals?.length !== 2 || !terminals.every(t => Array.isArray(t.point) &&
+    t.point.length === 2 && t.point.every(Number.isFinite))) return [];
+  const owned = new Set(previous.ids);
+  const groups = routedGroups(items.filter(o => owned.has(o.id) || owned.has(o.owner)));
+  const touching = (item, { point, layer }) =>
+    shareCopperLayer(item, { layer }) && hits(point, point, 1e-6, item);
+  if (groups.some(group => terminals.every(t => group.some(item => touching(item, t))))) return [];
+  const missing = terminals.find(t => !groups.some(group => group.some(item => touching(item, t))));
+  if (missing) return [{ type: 'winding-terminal', point: missing.point,
+    message: 'A recorded winding terminal has moved or is missing. Inspect the existing copper before replacing it.' }];
+  const reached = groups.find(group => group.some(item => touching(item, terminals[0]))) || [];
+  const breakPoint = reached.filter(item => item.kind === 'segment' || item.kind === 'arc')
+    .flatMap(item => [item.pts[0], item.pts.at(-1)].filter(p =>
+      !reached.some(other => other !== item && shareCopperLayer(other, item) && hits(p, p, 1e-6, other))))
+    .find(p => distance(p, terminals[0].point) > 1e-6);
+  return [{ type: 'winding-open', point: breakPoint || terminals[1].point,
+    message: 'The existing generated winding path is open between its terminals. Replacement will restore the generated copper.' }];
+}
+
 export function checkPlacement(art, board, opt = {}) {
   const clearance = opt.clearance ?? 0.2, origin = opt.origin || [0, 0];
   if (!Number.isFinite(clearance) || clearance < 0 || !origin.every(Number.isFinite)) throw new Error('Invalid clearance or placement origin.');
@@ -173,7 +295,7 @@ export function checkPlacement(art, board, opt = {}) {
         }
       }
       if (opt.kind !== 'filter' && t.role === 'winding') for (const o of planes) if (!sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('ground-overlap', o, a, 'Ground copper overlaps the winding projection; inductance and loss models exclude its effect.');
-      if (opt.distributed && t.layer === art.tracks[0]?.layer && t.net !== (opt.groundNet || 'GND')) {
+      if (opt.distributed && t.layer === (opt.signalLayer ?? art.tracks[0]?.layer) && t.net !== (opt.groundNet || 'GND')) {
         const groundLayer = opt.groundLayer || 'B.Cu';
         const covered = planes.filter((o) => o.layer === groundLayer).some((o) => inside(a, o.polygon) && inside(b, o.polygon) && !edgesOf(o.polygon).some(([c, d]) => segmentDistance(a, b, c, d) < radius));
         if (!covered) add('reference-ground', { id: 'ground' }, a, `Continuous reference ground on ${groundLayer} was not confirmed beneath the signal.`);
@@ -181,6 +303,7 @@ export function checkPlacement(art, board, opt = {}) {
       along += distance(a, b);
     }
   }
+  if (opt.seriesWinding) windingBypasses(art, board, origin, add);
   return { findings: opt.allFindings ? findings : findings.slice(0, 200), total: findings.length, warnings: board.warnings,
     preview: boardArtwork(board, art, origin, findings), origin, clearance };
 }
@@ -215,6 +338,7 @@ export function reviewBoardPlacement(art, config, text, excluded, options = {}) 
   const payload = toKicad(prepared);
   const copper = [...payload.tracks, ...payload.arcs, ...payload.pads];
   const layers = new Set([...copper, ...payload.texts].map(p => p.layer));
+  if (options.distributed && options.groundLayer) layers.add(options.groundLayer);
   if (payload.vias.length) for (const name of ['F.Cu', 'B.Cu']) layers.add(name);
   if (payload.pads.length) layers.add('F.Cu');
   for (const pad of payload.pads.filter(p => p.mask !== false)) layers.add(pad.layer.replace('.Cu', '.Mask'));
@@ -228,16 +352,24 @@ export function reviewBoardPlacement(art, config, text, excluded, options = {}) 
     if (!nets.includes(net)) issues.push({ type: 'net', net, message: `Create or map the ${net} net in KiCad.` });
   }
   const removed = new Set(excluded);
-  const previous = removed.size ? parseBoard(text).copper.filter(item => removed.has(item.id)) : [];
+  const previous = removed.size ? parseBoard(text).copper.filter(item => removed.has(item.id) || removed.has(item.owner)) : [];
   for (const item of previous) {
     const pts = item.pts || [...item.polygon, item.polygon[0]];
     checked.preview.tracks.push(track('Previous placement', item.width || 0.2, pts));
   }
   const added = payload.tracks.reduce((n, t) => n + t.pts.length - 1, 0)
     + payload.arcs.length + payload.vias.length + payload.pads.length + payload.texts.length;
+  const windingTerminals = options.seriesWinding ? art.pads.filter(p => p.role === 'terminal').map(p => ({
+    point: [p.x + origin[0], p.y - origin[1]], layer: p.drill ? '*.Cu' : p.layer,
+  })) : [];
+  const continuity = windingContinuity(previous, options.previousPlacement);
+  for (const { point: [x, y] } of continuity) {
+    checked.preview.pads.push({ x, y, w: 0.8, h: 0.8, shape: 'circle', layer: 'Conflict', drill: 0 });
+  }
   return {
     ...checked, board, payload, issues: issues.slice(0, 200), requiredNets, layers: board.layers, nets,
-    warnings: [...checked.warnings, ...checked.findings.filter(f => !issues.includes(f))],
+    windingTerminals: windingTerminals.length === 2 ? windingTerminals : null,
+    warnings: [...checked.warnings, ...checked.findings.filter(f => !issues.includes(f)), ...continuity],
     replacement: { removed: removed.size, added, previousCopper: previous.length },
     ready: issues.length === 0,
   };

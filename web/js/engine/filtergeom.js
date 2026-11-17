@@ -87,7 +87,7 @@ export function layoutStepped(design, ctx) {
 
   A.tracks.push(track(L, feedW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed' }));
   A.ports.push({ x, y: 0, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
+  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
   x += ctx.feedLength;
 
   design.sections.forEach((s, i) => {
@@ -99,7 +99,7 @@ export function layoutStepped(design, ctx) {
   A.tracks.push(track(L, feedW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed' }));
   x += ctx.feedLength;
   A.ports.push({ x, y: 0, name: 'P2', angle: 0 });
-  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
+  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
 
   defaultNet(A, ctx.net);
   A.notes.push({
@@ -152,12 +152,12 @@ export function layoutEdgeCoupled(design, ctx) {
   const inX = X[0], inY = Y[0];
   A.tracks.push(track(L, feedW, run(inX - ctx.feedLength, inY, inX, inY), { role: 'feed' }));
   A.ports.push({ x: inX - ctx.feedLength, y: inY, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(inX - ctx.feedLength, inY, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
+  A.pads.push(pad(inX - ctx.feedLength, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
 
   const outX = X[n] + S[n].length, outY = Y[n + 1];
   A.tracks.push(track(L, feedW, run(outX, outY, outX + ctx.feedLength, outY), { role: 'feed' }));
   A.ports.push({ x: outX + ctx.feedLength, y: outY, name: 'P2', angle: 0 });
-  A.pads.push(pad(outX + ctx.feedLength, outY, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
+  A.pads.push(pad(outX + ctx.feedLength, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
 
   for (let k = 0; k < S.length; k++) {
     A.labels.push(label(X[k] + S[k].length / 2, (Y[k] + Y[k + 1]) / 2, `${S[k].s.toFixed(2)}`, { size: 0.55, layer: 'F.SilkS' }));
@@ -215,11 +215,11 @@ export function layoutHairpin(design, ctx) {
 
   A.tracks.push(track(L, design.feed.w, run(xIn - ctx.feedLength, inTap.y, xIn, inTap.y), { role: 'feed' }));
   A.ports.push({ x: xIn - ctx.feedLength, y: inTap.y, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(xIn - ctx.feedLength, inTap.y, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
+  A.pads.push(pad(xIn - ctx.feedLength, inTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
 
   A.tracks.push(track(L, design.feed.w, run(xOut, outTap.y, xOut + ctx.feedLength, outTap.y), { role: 'feed' }));
   A.ports.push({ x: xOut + ctx.feedLength, y: outTap.y, name: 'P2', angle: 0 });
-  A.pads.push(pad(xOut + ctx.feedLength, outTap.y, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
+  A.pads.push(pad(xOut + ctx.feedLength, outTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
 
   defaultNet(A, ctx.net);
   A.notes.push({
@@ -292,12 +292,12 @@ export function layoutInterdigital(design, ctx) {
   const inY = Math.min(tapLen, R[0].length || len), outY = R.length % 2 === 0 ? Math.max(0, (R.at(-1).length || len) - tapLen) : Math.min(tapLen, R.at(-1).length || len);
   A.tracks.push(track(L, design.feed.w, run(centres[0] - ctx.feedLength - 1, inY, centres[0], inY), { role: 'feed' }));
   A.ports.push({ x: centres[0] - ctx.feedLength - 1, y: inY, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port' }));
+  A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
 
   const lastX = centres[centres.length - 1];
   A.tracks.push(track(L, design.feed.w, run(lastX, outY, lastX + ctx.feedLength + 1, outY), { role: 'feed' }));
   A.ports.push({ x: lastX + ctx.feedLength + 1, y: outY, name: 'P2', angle: 0 });
-  A.pads.push(pad(lastX + ctx.feedLength + 1, outY, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port' }));
+  A.pads.push(pad(lastX + ctx.feedLength + 1, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
 
   A.tracks.filter((t) => !t.net).forEach((t) => { t.net = ctx.net; });
   A.vias.filter((v) => !v.net).forEach((v) => { v.net = ctx.gndNet; });

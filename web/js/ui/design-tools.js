@@ -28,6 +28,7 @@ export function openDesignTools(host, initial = 'optimize') {
   scrim.append(dialog); document.body.append(scrim);
   let active = initial, worker = null, job = 0, disposed = false, cleanups = [], boardText = '', excluded = [], boardSource = '';
   const config = () => host.config();
+  const analysisConfig = () => host.analysisConfig?.() || config();
   const kind = () => host.kind();
   const settings = (id, defaults) => {
     config().tools ||= {};
@@ -199,7 +200,7 @@ export function openDesignTools(host, initial = 'optimize') {
     drop.addEventListener('dragover', (e) => e.preventDefault()); drop.addEventListener('drop', (e) => { e.preventDefault(); load(e.dataTransfer.files[0]); });
     const data = config().measurement;
     if (!data) return;
-    const c = config(), metric = kind() === 'filter' ? 's21db' : 'Z', r = host.result();
+    const metric = kind() === 'filter' ? 's21db' : 'Z', r = host.result();
     const x = kind() === 'filter' ? r?.response?.freqs : r?.sweep?.map((p) => p.f);
     const y = kind() === 'filter' ? r?.response?.s21db : r?.sweep?.map((p) => p.Z);
     body.append(el('h3', { text: `${data.name} · ${data.rows.length} points` }), button('Remove measurement', () => { host.apply({ measurement: null, measurementFit: null }); render(active); }));
@@ -208,7 +209,7 @@ export function openDesignTools(host, initial = 'optimize') {
       if (kind() === 'filter' && data.rows.some((p) => p.s11db != null)) chart(body, x, [{ name: 'Simulated S11', values: r.response.s11db }, { name: 'Measured S11', values: measurementValues(data, 's11db', x), dash: [4, 3] }], 'S11 dB');
       if (!measurementValues(data, metric, x).some(Number.isFinite)) body.append(note(`No ${metric} data overlaps this sweep. Adjust the frequency range or import a matching measurement.`));
     }
-    if (kind() === 'filter' && !DISTRIBUTED.includes(c.family)) { body.append(note('Parameter fitting currently supports coils and distributed filters. The imported overlay works for all filter families.')); return; }
+    if (kind() === 'filter' && !DISTRIBUTED.includes(config().family)) { body.append(note('Parameter fitting currently supports coils and distributed filters. The imported overlay works for all filter families.')); return; }
     body.append(el('h3', { text: 'Fit selected parameters' }), note('Bounded least-squares fit. A fitted material value can also absorb fixture or model error; it is not a unique material measurement. The original prediction is retained.'));
     const s = settings('fit', { aMin: 2, aMax: 7, bMin: 0, bMax: kind() === 'filter' ? 0.08 : 100, fitA: 'yes', fitB: 'yes' }), f = form();
     const fields = kind() === 'filter' ? [['subEr', 'Dielectric εr'], ['tanD', 'Loss tangent']] : [['epsR', 'Dielectric εr'], ['cExtra', 'Added capacitance (pF)']];
@@ -218,7 +219,7 @@ export function openDesignTools(host, initial = 'optimize') {
       const chosen = [];
       if (s.fitA === 'yes') chosen.push({ key: fields[0][0], min: s.aMin, max: s.aMax });
       if (s.fitB === 'yes') chosen.push({ key: fields[1][0], min: s.bMin, max: s.bMax });
-      run('fit', { kind: kind(), cfg: c, data, opt: { fields: chosen } }, (fit) => {
+      run('fit', { kind: kind(), cfg: analysisConfig(), data, opt: { fields: chosen } }, (fit) => {
         out.replaceChildren();
         chart(out, fit.curve.x, [{ name: 'Original', values: fit.original.y }, { name: 'Fitted', values: fit.curve.y }, { name: 'Measured', values: measurementValues(data, metric, fit.curve.x), dash: [3, 3] }], metric === 'Z' ? '|Z| Ω' : 'S21 dB');
         out.append(specTable([['RMS residual before → after', `${num(Math.sqrt(fit.originalLoss), 4)} → ${num(Math.sqrt(fit.loss), 4)} ${metric === 'Z' ? '(log magnitude)' : 'dB'}`], ...chosen.map((p) => [p.key, String(fit.config[p.key])])]));
@@ -261,12 +262,12 @@ export function openDesignTools(host, initial = 'optimize') {
     if (kind() === 'motor') { body.append(note('Tolerance studies operate on one winding or a distributed filter.'), button('Open inductor', () => { close(); host.switch('inductor', active); })); return; }
     if (kind() === 'filter' && !requireDistributed()) return;
     body.append(note('Independent uniform variations within ± limits, with a repeatable seed. Etch is total width change: centerlines stay fixed and gaps change oppositely. The curves show pointwise 5th–95th percentiles; yield is conditional on these tolerances and the model. Invalid samples count as failures.'));
-    const c = config(), s = settings('tolerance', { samples: 50, seed: 42, etch: 0.025, thickness: 5, copper: 10, er: 5, target: host.result()?.analysis?.L * 1e6 || 10, errorPct: 10, minQ: 1 });
+    const s = settings('tolerance', { samples: 50, seed: 42, etch: 0.025, thickness: 5, copper: 10, er: 5, target: host.result()?.analysis?.L * 1e6 || 10, errorPct: 10, minQ: 1 });
     const f = form(); field(f, s, 'samples', 'Samples', 2, 500, 1); field(f, s, 'seed', 'Random seed', 1, 4294967295, 1);
     field(f, s, 'etch', 'Etch width ± (mm)', 0, 1); field(f, s, 'thickness', 'Dielectric thickness ± (%)', 0, 99); field(f, s, 'copper', 'Copper thickness ± (%)', 0, 99); field(f, s, 'er', 'Dielectric εr ± (%)', 0, 99);
     if (kind() === 'filter') maskEditor(body, s);
     else { field(f, s, 'target', 'Target inductance (µH)', 0.0001); field(f, s, 'errorPct', 'Allowed inductance error (%)', 0.1, 99); field(f, s, 'minQ', 'Minimum Q at operating frequency', 0); }
-    const out = output(); runButton('Run tolerance study', () => run('tolerance', { kind: kind(), cfg: c, opt: { ...s, targetL: s.target * 1e-6, ranges: { etch: s.etch, thickness: s.thickness, copper: s.copper, er: s.er } } }, (r) => {
+    const out = output(); runButton('Run tolerance study', () => run('tolerance', { kind: kind(), cfg: analysisConfig(), opt: { ...s, targetL: s.target * 1e-6, ranges: { etch: s.etch, thickness: s.thickness, copper: s.copper, er: s.er } } }, (r) => {
       out.replaceChildren(el('h3', { text: `${num(r.yield * 100, 1)}% estimated yield · ${r.passed}/${r.samples} pass` }), note(`${r.invalid} invalid samples. Seed ${r.seed}. Finite-sample estimate; increase the sample count to assess stability.`));
       chart(out, r.nominal.x, [{ name: 'Nominal', values: r.nominal.y }, { name: '5th percentile', values: r.low, dash: [4, 3] }, { name: '95th percentile', values: r.high, dash: [4, 3] }], kind() === 'filter' ? 'S21 dB' : '|Z| Ω');
       out.append(el('h3', { text: 'Sensitivity ranking' }), note(kind() === 'filter' ? 'RMS response change (dB) from the negative to positive tolerance bound, one parameter at a time.' : 'Inductance change (%) from the negative to positive tolerance bound, one parameter at a time.'), specTable(r.sensitivity.map((p) => [p.key, p.impact == null ? 'Invalid endpoint geometry' : num(p.impact, 3)]))); exportReport(out, 'tolerance', r);
@@ -275,9 +276,9 @@ export function openDesignTools(host, initial = 'optimize') {
   function tune() {
     if (!requireDistributed()) return;
     body.append(note('Drag section/resonator ends and gaps on the main canvas. These edits change the generated copper and the response. Automatic tuning searches global length and gap scales from 0.5× to 1.5×; individual handle edits remain in place. It may find no feasible mask.'));
-    const c = config(), s = settings('tune', {}); maskEditor(body, s);
+    const s = settings('tune', {}); maskEditor(body, s);
     body.append(button('Return to canvas handles', close), button('Reset geometry tuning', () => { host.apply({ tuning: {}, fixedDesign: null }); status.textContent = 'Original synthesis restored.'; }));
-    const out = output(); runButton('Tune to response mask', () => run('tune', { cfg: c, opt: s }, (r) => {
+    const out = output(); runButton('Tune to response mask', () => run('tune', { cfg: analysisConfig(), opt: s }, (r) => {
       out.replaceChildren(el('h3', { text: r.passes ? 'Response mask met in this model' : 'Best result still misses the mask' }), note(`Mask penalty ${num(r.originalLoss, 4)} → ${num(r.loss, 4)} dB².`));
       chart(out, r.curve.x, [{ name: 'Before', values: r.original.y }, { name: 'Tuned', values: r.curve.y }], 'S21 dB');
       out.append(specTable([['Length scale', num(r.config.tuning.lengthScale || 1, 4)], ['Gap scale', num(r.config.tuning.gapScale || 1, 4)]]), button('Apply tuning', () => { host.apply({ tuning: r.config.tuning }); status.textContent = 'Tuned geometry applied.'; })); exportReport(out, 'filter-tuning', r);
@@ -339,12 +340,15 @@ export function openDesignTools(host, initial = 'optimize') {
     body.append(note('Read the live board or import .kicad_pcb. Preview conflicts with copper, keepouts, drills, and edges, plus ground overlap and missing reference planes. Pads use conservative bounding circles. Run KiCad DRC after placement for authoritative netclass and shape checks.'));
     const s = settings('board', { x: config().placementOrigin?.[0] || 0, y: config().placementOrigin?.[1] || 0, clearance: 0.2, groundNet: 'GND', groundLayer: 'B.Cu' }), f = form();
     field(f, s, 'x', 'Placement X (KiCad mm)', -10000, 10000); field(f, s, 'y', 'Placement Y (KiCad mm)', -10000, 10000); field(f, s, 'clearance', 'Clearance (mm)', 0, 10);
-    field(f, s, 'groundNet', 'Ground net', null, null, 'any', 'text'); field(f, s, 'groundLayer', 'Reference copper layer', null, null, 'any', 'text');
+    field(f, s, 'groundNet', 'Ground net', null, null, 'any', 'text');
+    if (!host.result()?.rfStack) field(f, s, 'groundLayer', 'Reference copper layer', null, null, 'any', 'text');
     const input = el('input', { type: 'file', accept: '.kicad_pcb', 'aria-label': 'Board file' }); body.append(input);
     const out = output();
     function inspect() {
       if (!boardText) { status.textContent = 'Read a live board or import a board file first.'; return; }
-      run('board', { art: host.result().art, text: boardText, excluded, opt: { kind: kind(), distributed: kind() === 'filter' && DISTRIBUTED.includes(config().family), origin: [s.x, s.y], clearance: s.clearance, groundNet: s.groundNet, groundLayer: s.groundLayer } }, (r) => {
+      const result = host.result(), stack = result.rfStack;
+      const seriesWinding = kind() === 'inductor' && result.art.meta.kind === 'coil' && config().connection === 'series';
+      run('board', { art: result.art, text: boardText, excluded, opt: { kind: kind(), distributed: !!stack, seriesWinding, origin: [s.x, s.y], clearance: s.clearance, groundNet: s.groundNet, signalLayer: stack?.signal, groundLayer: stack?.reference ?? s.groundLayer } }, (r) => {
         out.replaceChildren(el('h3', { text: `${r.total} findings · ${boardSource}` }));
         view(out, r.preview, [['Board', '#526276'], ['Edge', '#c7d2dd'], ['Design', '#ee9c48'], ['Conflict', '#fb4d66']]);
         for (const warning of r.warnings) out.append(note(warning));

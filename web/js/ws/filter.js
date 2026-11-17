@@ -22,7 +22,8 @@ import { microstrip, microstripWidth } from '../engine/microstrip.js';
 import { defaultContext, layoutFilter } from '../engine/filtergeom.js';
 import { tuneDistributed, tuningHandles, DISTRIBUTED } from '../engine/filtertune.js';
 import { bounds } from '../engine/artwork.js';
-import { eng, num } from '../ui/controls.js';
+import { layerNames } from '../engine/coil.js';
+import { el, eng, num } from '../ui/controls.js';
 import { chooseLayers, colourFor, fmtHz } from './common.js';
 
 export const id = 'filter';
@@ -76,6 +77,7 @@ export function defaults() {
 
     // Substrate
     subH: 1.6, subEr: 4.4, subT: 0.035, tanD: 0.02,
+    rfStackSource: 'board', rfSignalLayer: 'F.Cu', rfReferenceLayer: '',
     minGap: 0.15, minTrace: 0.15,
 
     // Distributed
@@ -108,6 +110,53 @@ export function defaults() {
 
 const isBandpass = (c) => ['bandpass', 'bandstop'].includes(c.band) || ['edgeCoupled', 'hairpin', 'interdigital'].includes(c.family);
 const isDistributed = (c) => ['stepped', 'edgeCoupled', 'hairpin', 'interdigital'].includes(c.family);
+
+export function resolveRfStack(cfg, board) {
+  const signal = cfg.rfSignalLayer || 'F.Cu';
+  const reference = cfg.rfReferenceLayer || (signal === 'F.Cu' ? 'B.Cu' : 'F.Cu');
+  if (!['F.Cu', 'B.Cu'].includes(signal) || !layerNames(32).includes(reference) || signal === reference) {
+    throw new Error('Choose an outer signal layer and a different copper layer for the reference plane.');
+  }
+  const fallback = { signal, reference, h: cfg.subH, t: cfg.subT, source: 'Entered values' };
+  if (cfg.rfStackSource !== 'board') return fallback;
+  const a = board?.copperLayers?.find(l => l.name === signal);
+  const b = board?.copperLayers?.find(l => l.name === reference);
+  if (!a || !b || ![a.centerHeightMm, b.centerHeightMm, a.thicknessMm, b.thicknessMm].every(Number.isFinite)) {
+    return { ...fallback, source: 'Entered values · physical layer data unavailable' };
+  }
+  const h = Math.abs(a.centerHeightMm - b.centerHeightMm) - (a.thicknessMm + b.thicknessMm) / 2;
+  if (h <= 0 || a.thicknessMm <= 0 || b.thicknessMm <= 0) {
+    return { ...fallback, source: 'Entered values · physical layer data unavailable' };
+  }
+  return { signal, reference, h: Number(h.toFixed(6)), t: a.thicknessMm, source: 'KiCad physical stack' };
+}
+
+export function filterStudyConfig(cfg, board) {
+  if (!isDistributed(cfg)) return cfg;
+  const stack = resolveRfStack(cfg, board);
+  return { ...cfg, rfStackSource: 'manual', subH: stack.h, subT: stack.t };
+}
+
+function referenceLayerControl(panel, app) {
+  const selection = el('select', { 'aria-label': 'Reference plane layer' });
+  const status = el('div', { class: 'hint', role: 'status' });
+  const node = el('label', { class: 'field' }, 'Reference plane layer', selection, status);
+  selection.addEventListener('change', () => panel.commit('rfReferenceLayer', selection.value));
+  return { node, set() {
+    const cfg = panel.state, board = app.boardContext();
+    const names = board?.copperLayers?.length ? board.copperLayers.map(l => l.name) : layerNames(32);
+    const outer = cfg.rfSignalLayer || 'F.Cu', chosen = cfg.rfReferenceLayer || '';
+    const available = names.filter(name => name !== outer);
+    selection.replaceChildren(el('option', { value: '', text: 'Opposite outer layer' }),
+      ...available.map(name => el('option', { value: name, text: name })));
+    if (chosen && !available.includes(chosen)) selection.append(el('option', { value: chosen, text: `${chosen} (unavailable)`, disabled: true }));
+    selection.value = chosen;
+    try {
+      const stack = resolveRfStack(cfg, board);
+      status.textContent = `${stack.signal} to ${stack.reference} · ${num(stack.h, 4)} mm · ${stack.source}`;
+    } catch (error) { status.textContent = error.message; }
+  } };
+}
 
 export function rail(panel, app) {
   panel.group({
@@ -198,10 +247,15 @@ export function rail(panel, app) {
     key: 'substrate',
     title: 'Substrate',
     fields: [
+      { key: 'rfStackSource', type: 'select', label: 'RF stack source', when: isDistributed,
+        options: [{ value: 'board', label: 'KiCad physical stack' }, { value: 'manual', label: 'Entered values' }] },
+      { key: 'rfSignalLayer', type: 'select', label: 'Signal copper layer', when: isDistributed,
+        options: ['F.Cu', 'B.Cu'].map(value => ({ value, label: value })) },
+      { key: '_rfReferenceLayer', type: 'custom', when: isDistributed, build: p => referenceLayerControl(p, app) },
       {
         key: 'subH', type: 'range', label: 'Height to ground', unit: 'mm',
         min: 0.05, max: 3.2, step: 0.01, hardMin: 0.02,
-        hint: 'Dielectric between the signal layer and its reference plane. Read from the board stack-up when there is one.',
+        hint: 'Used in manual mode or when KiCad lacks the physical layer thicknesses.',
       },
       { key: 'subEr', type: 'range', label: 'Dielectric εr', min: 2.1, max: 10.5, step: 0.05 },
       { key: 'tanD', type: 'range', label: 'Loss tangent', min: 0.0002, max: 0.03, step: 0.0002, decimals: 4 },
@@ -338,6 +392,8 @@ function realisedNetwork(design, art) {
 }
 
 export function compute(cfg, env, opt = {}) {
+  const rfStack = isDistributed(cfg) ? resolveRfStack(cfg, env.board) : null;
+  if (rfStack) cfg = { ...cfg, subH: rfStack.h, subT: rfStack.t };
   const layers = chooseLayers({ layers: Math.max(2, cfg.coilLayers) }, env.board);
   const nominal = opt.fixedDesign || (cfg.fixedDesign?.kind === cfg.family ? cfg.fixedDesign : null) || synth(cfg);
   const design = DISTRIBUTED.includes(cfg.family)
@@ -345,8 +401,8 @@ export function compute(cfg, env, opt = {}) {
   const ctx = defaultContext({
     ...substrateOf(cfg),
     layers,
-    signalLayer: layers[0],
-    groundLayer: layers[layers.length - 1],
+    signalLayer: rfStack?.signal ?? layers[0],
+    groundLayer: rfStack?.reference ?? layers[layers.length - 1],
     net: env.net || 'RF',
     gndNet: 'GND',
     traceW: cfg.traceW,
@@ -363,7 +419,8 @@ export function compute(cfg, env, opt = {}) {
   });
 
   const art = layoutFilter(design, ctx);
-  const res = { design, nominal, art, ctx, layers, bounds: bounds(art) };
+  if (rfStack) art.meta.boardLayers = [rfStack.signal, rfStack.reference];
+  const res = { design, nominal, art, ctx, rfStack, layers, bounds: bounds(art) };
   if (opt.quick) return res;
 
   const [f0, f1] = sweepRange(cfg, design);
@@ -413,6 +470,8 @@ const FAMILY_RANGE = {
 };
 
 export function reconcile(cfg, key) {
+  if (key === 'rfSignalLayer' && cfg.rfSignalLayer === cfg.rfReferenceLayer) cfg.rfReferenceLayer = '';
+  if (key === 'rfSignalLayer' || key === 'rfReferenceLayer') cfg.fixedDesign = null;
   if (['family', 'order', 'response', 'band', 'fc', 'f1', 'f2', 'ripple', 'z0', 'zRes', 'zHigh', 'zLow', 'seriesFirst'].includes(key)) {
     cfg.tuning = {};
     cfg.fixedDesign = null;
@@ -579,12 +638,14 @@ export function spec(cfg, res) {
   }
 
   // Substrate facts, for whichever family is showing.
-  const ms = microstrip(microstripWidth(cfg.z0, cfg.subH, cfg.subEr, { t: cfg.subT, f: res.design.f0 || cfg.fc }),
-    cfg.subH, cfg.subEr, { t: cfg.subT, f: res.design.f0 || cfg.fc, tanD: cfg.tanD });
+  const { h, er, t, tanD } = res.ctx;
+  const ms = microstrip(microstripWidth(cfg.z0, h, er, { t, f: res.design.f0 || cfg.fc }),
+    h, er, { t, f: res.design.f0 || cfg.fc, tanD });
   sections.push({
     title: 'Substrate',
     rows: [
-      ['Height to ground', `${num(cfg.subH, 3)} mm`],
+      ['Height to ground', `${num(h, 4)} mm`],
+      ...(res.rfStack ? [['Reference plane', `${res.rfStack.signal} to ${res.rfStack.reference} · ${res.rfStack.source}`]] : []),
       ['εr / tan δ', `${num(cfg.subEr, 2)} / ${num(cfg.tanD, 4)}`],
       [`${cfg.z0} Ω line width`, `${num(ms.w, 3)} mm`],
       ['Effective εr', num(ms.epsEff, 3)],

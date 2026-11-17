@@ -7,8 +7,8 @@ import { defaults as defaultsCoil } from '../web/js/ws/inductor.js';
 import { defaults as defaultsFilter, compute as computeFilter, synth } from '../web/js/ws/filter.js';
 import { tuneDistributed } from '../web/js/engine/filtertune.js';
 import { optimizeCoil, toleranceStudy, fitMeasurement, responseOf, maskScore, tuneToMask } from '../web/js/engine/studies.js';
-import { parseBoard, checkPlacement, segmentDistance, arcPoints } from '../web/js/engine/boardcheck.js';
-import { artwork, track, toKicad } from '../web/js/engine/artwork.js';
+import { parseBoard, checkPlacement, reviewBoardPlacement, segmentDistance, arcPoints } from '../web/js/engine/boardcheck.js';
+import { artwork, pad, track, toKicad } from '../web/js/engine/artwork.js';
 
 let count = 0;
 function check(name, fn) { fn(); count++; console.log(`  ok ${name}`); }
@@ -143,5 +143,40 @@ check('Same-net copper can bypass separated turns but a single contact is allowe
     (segment (start 2 0) (end 2 ${end}) (width 0.3) (layer "F.Cu") (net "COIL") (uuid bypass)))`);
   assert.ok(checkPlacement(art, destination(-3)).findings.some(f => f.type === 'winding-bypass'));
   assert.ok(!checkPlacement(art, destination(0.5)).findings.some(f => f.type === 'winding-bypass'));
+});
+check('A connected back-layer route bypasses the winding through two vias', () => {
+  const art = artwork();
+  art.tracks.push(track('F.Cu', 0.3, [[0, 0], [8, 0], [8, 3], [0, 3]], { net: 'COIL', role: 'winding' }));
+  const board = trackLayer => parseBoard(`(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal))
+    (via (at 2 0) (size 0.6) (drill 0.3) (layers "F.Cu" "B.Cu") (net "COIL") (uuid via-a))
+    (segment (start 2 0) (end 2 -3) (width 0.3) (layer "${trackLayer}") (net "COIL") (uuid return))
+    (via (at 2 -3) (size 0.6) (drill 0.3) (layers "F.Cu" "B.Cu") (net "COIL") (uuid via-b)))`);
+  assert.ok(checkPlacement(art, board('B.Cu'), { seriesWinding: true }).findings.some(f => f.type === 'winding-bypass-route'));
+  assert.ok(!checkPlacement(art, board('In1.Cu'), { seriesWinding: true }).findings.some(f => f.type === 'winding-bypass-route'));
+});
+check('Flyback A7 landing regression: the 1.2 mm terminal route clips the turn, the 0.6 mm neck clears it', () => {
+  // Reduced A7 geometry: 0.6 mm winding and 0.075 mm overlap at a 1.2 mm landing.
+  const art = artwork();
+  art.tracks.push(track('F.Cu', 0.6, [[0, 0], [8, 0], [8, 0.825], [2, 0.825]], { net: 'SW', role: 'winding' }));
+  art.pads.push(pad(0, 0, { w: 0.5, role: 'terminal', net: 'SW' }));
+  art.pads.push(pad(2, 0.825, { w: 0.5, role: 'terminal', net: 'SW' }));
+  const findings = width => checkPlacement(art, parseBoard(`(kicad_pcb
+    (segment (start 2 -0.825) (end 0 -0.825) (width ${width}) (layer "F.Cu") (net "SW") (uuid landing)))`),
+    { seriesWinding: true }).findings;
+  assert.ok(findings(1.2).some(f => f.type === 'winding-bypass'));
+  assert.ok(!findings(0.6).some(f => f.type === 'winding-bypass'));
+});
+check('An edited winding warns at the break and the intact winding does not', () => {
+  const art = artwork();
+  const ids = ['one', 'two', 'three'];
+  const previousPlacement = { ids, meta: { windingTerminals: [
+    { point: [0, 0], layer: 'F.Cu' }, { point: [10, 0], layer: 'F.Cu' },
+  ] } };
+  const segment = (a, b, id) => `(segment (start ${a} 0) (end ${b} 0) (width 0.3) (layer "F.Cu") (uuid ${id}))`;
+  const review = middle => reviewBoardPlacement(art, {}, `(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal))
+    ${segment(0, 3, ids[0])} ${middle ? segment(3, 7, ids[1]) : ''} ${segment(7, 10, ids[2])})`, ids, { previousPlacement });
+  assert.ok(!review(true).warnings.some(w => w.type === 'winding-open'));
+  assert.deepEqual(review(false).warnings.find(w => w.type === 'winding-open').point.map(v => v || 0), [3, 0]);
+  assert.equal(review(false).ready, true, 'a warning must permit replacing the broken placement');
 });
 console.log(`\n${count} design-tool checks passed`);

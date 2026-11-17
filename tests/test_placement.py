@@ -1,6 +1,7 @@
 """Exercise the board RPCs with real IPC items and a controlled KiCad commit."""
 import tempfile
 import unittest
+from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, call, patch
 
@@ -221,3 +222,43 @@ class PlacementTests(unittest.TestCase):
         self.assertEqual(error.exception.kind, "stale-board")
         self.board.begin_commit.assert_not_called()
         self.assertEqual(self.persisted_ids(), self.old_ids)
+
+    def test_same_filename_projects_and_board_copy_have_separate_histories(self):
+        origin = str(Path(self.app.store.dir, "first", "demo.kicad_pcb"))
+        other = str(Path(self.app.store.dir, "second", "demo.kicad_pcb"))
+        copy = str(Path(self.app.store.dir, "third", "demo.kicad_pcb"))
+        info = {"name": "demo.kicad_pcb", "boardId": origin}
+        self.app.link.board_context = lambda: {**info}
+        self.app.link.board_snapshot = lambda: {**info, "text": "fixture"}
+        self.app.store.record_placement("L1", origin, ["original"])
+        self.app.store.record_placement("L1", other, ["other"])
+        self.board.get_text.return_value = []
+        self.board.get_vias.return_value = [SimpleNamespace(id="original")]
+
+        def snapshot():
+            return self.app.api.call("board.snapshot", {"designId": "L1"})
+
+        approval = snapshot()
+        info["boardId"] = other
+        self.board.get_vias.return_value = [SimpleNamespace(id="other")]
+        self.assertEqual(snapshot()["excludedIds"], ["other"])
+        self.params["expectedSnapshot"] = approval["revision"]
+        with self.assertRaises(RpcError):
+            self.replace()
+
+        info["boardId"] = copy
+        self.board.get_vias.return_value = [SimpleNamespace(id="original")]
+        approval = snapshot()
+        self.assertEqual(approval["excludedIds"], ["original"])
+        self.params["expectedSnapshot"] = approval["revision"]
+        self.assertEqual(self.replace()["replaced"], 1)
+        self.assertEqual(self.app.store.get_placement("L1", origin)["ids"], ["original"])
+        self.assertEqual(self.app.store.get_placement("L1", other)["ids"], ["other"])
+        self.assertEqual(self.app.store.get_placement("L1", copy)["ids"], ["new-via"])
+        self.assertEqual(snapshot()["excludedIds"], ["original"], "copied board Undo should recover its inherited revision")
+
+    def test_recovers_legacy_record_by_live_item_id_after_board_rename(self):
+        board = {"name": "renamed.kicad_pcb", "boardId": "project/renamed.kicad_pcb"}
+        self.app.link.board_snapshot = lambda: {**board, "text": "fixture"}
+        snapshot = self.app.api.call("board.snapshot", {"designId": "L1"})
+        self.assertEqual(snapshot["excludedIds"], ["old-via", "old-label"])

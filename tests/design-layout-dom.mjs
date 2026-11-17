@@ -1,4 +1,5 @@
 /* Whole application DOM/events with real engines; canvas/layout are stubbed. */
+import { savedDesign } from './helpers/saved-design.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const { Window } = await import(process.env.PLANAR_DOM_MODULE || 'happy-dom');
@@ -26,8 +27,8 @@ set('Pole pairs',7);await delay();await solved();
 assert.ok(document.querySelector('svg[aria-label="Coil contributions and resultant phase phasors"]'));
 await choose('Coil 1 polarity','-1');assert.equal(document.querySelector('select[aria-label="Winding assignments"]').value,'custom');
 set('Coil 1 branch',2);await delay();await solved();
-button('Save');await until(()=>localStorage.getItem('planar.design.motor:m1'));
-const motor=JSON.parse(localStorage.getItem('planar.design.motor:m1'));assert.equal(motor.config.windingSchedule[0].polarity,-1);assert.equal(motor.config.windingSchedule[0].branch,2);
+button('Save');await until(()=>savedDesign('motor'));
+const motor=savedDesign('motor');assert.equal(motor.config.windingSchedule[0].polarity,-1);assert.equal(motor.config.windingSchedule[0].branch,2);
 button('Reset to automatic');await delay();await solved();
 const bridge=await import('../web/js/bridge.js');bridge.api.listDesigns=async()=>({designs:[{id:'motor:m1',name:'M1',kind:'motor'}]});bridge.api.loadDesign=async()=>motor;
 button('Open…');await until(()=>document.querySelector('.export-card .t'));document.querySelector('.export-card').click();await delay();await solved();
@@ -42,15 +43,15 @@ set('Requested contour turns',5);await delay();await solved();
 button('Add connector');await delay();await solved();set('Region 1 X (mm)',22);await delay();await solved();
 button('Add hole');await delay();await solved();
 set('Region 2 Radius (mm)',2.5);await delay();await solved();
-button('Save');await until(()=>localStorage.getItem('planar.design.inductor:l1'));
-const saved=JSON.parse(localStorage.getItem('planar.design.inductor:l1'));assert.equal(saved.config.obstacleEnabled,true);assert.equal(saved.config.obstacles.length,2);assert.equal(saved.config.obstacles[1].radius,2.5);assert.equal(saved.config.turns,5);
+button('Save');await until(()=>savedDesign('inductor'));
+const saved=savedDesign('inductor');assert.equal(saved.config.obstacleEnabled,true);assert.equal(saved.config.obstacles.length,2);assert.equal(saved.config.obstacles[1].radius,2.5);assert.equal(saved.config.turns,5);
 // Pointer marking uses +Y-up coordinates and persists the exact region.
 button('Mark forbidden region');const svg=document.querySelector('svg[aria-label="Board obstacle editor"]');
 svg.dispatchEvent(new w.MouseEvent('pointerdown',{button:0,clientX:100,clientY:100,bubbles:true}));svg.dispatchEvent(new w.MouseEvent('pointerup',{button:0,clientX:130,clientY:140,bubbles:true}));await delay();
 assert.ok(document.querySelector('input[aria-label="Region 3 X (mm)"]'));
 document.querySelector('[aria-label="Remove region 3"]').click();await delay();await solved();
 // Imported configuration restores all constraints, and exports remain available.
-bridge.api.listDesigns=async()=>({designs:[{id:'inductor:l1',name:'L1',kind:'inductor'}]});bridge.api.loadDesign=async()=>saved;
+bridge.api.listDesigns=async()=>({designs:[saved]});bridge.api.loadDesign=async()=>saved;
 document.querySelector('[aria-label="Remove region 1"]').click();await delay();await solved();
 button('Open…');await until(()=>document.querySelector('.export-card .t'));document.querySelector('.export-card').click();await delay();await solved();
 assert.equal(document.querySelector('input[aria-label="Region 2 Radius (mm)"]').value,'2.5');

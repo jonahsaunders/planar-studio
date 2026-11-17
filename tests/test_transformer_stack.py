@@ -20,3 +20,10 @@ class TransformerStack(unittest.TestCase):
         stack = NS(layers=[self.entry("F.Cu", 35000), self.entry("unknown core", 0, "dielectric"), self.entry("B.Cu", 35000)])
         copper, _, _ = _read_stackup(stack)
         self.assertTrue(all("centerHeightMm" not in q for q in copper))
+
+    def test_optional_zero_thickness_silkscreen_does_not_hide_copper_heights(self):
+        stack = NS(layers=[self.entry("F.SilkS", 0, 3), self.entry("F.Cu", 35000),
+                           self.entry("prepreg", 100000, 2), self.entry("B.Cu", 35000)])
+        copper, dielectrics, _ = _read_stackup(stack)
+        self.assertEqual([q["centerHeightMm"] for q in copper], [.0175, .1525])
+        self.assertEqual(len(dielectrics), 1)

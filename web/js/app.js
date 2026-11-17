@@ -23,7 +23,7 @@ import { windingSetup } from './engine/winding-stack.js';
 import { openPlacementReview } from './ui/transformer-review.js';
 import { transformerDossier, placementArtwork, transformerPreflight } from './engine/transformer-handoff.js';
 import { zipTextFiles } from './engine/zip-text.js';
-import { applyBoardContext, designId } from './ws/common.js';
+import { applyBoardContext } from './ws/common.js';
 import { boundsCopper } from './engine/artwork.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, exportSpec, estimate } from './engine/exporters.js';
 
@@ -35,6 +35,7 @@ import * as wsTransformer from './ws/transformer.js';
 import { DISTRIBUTED as DISTRIBUTED_FILTERS } from './engine/filtertune.js';
 
 const WORKSPACES = { inductor: wsInductor, motor: wsMotor, filter: wsFilter, antenna: wsAntenna, transformer: wsTransformer };
+const newDesignId = () => crypto.randomUUID();
 
 /* ------------------------------------------------------------------ state */
 
@@ -48,6 +49,7 @@ const app = {
     transformer: wsTransformer.defaults(),
   },
   names: { inductor: 'L1', motor: 'M1', filter: 'FL1', antenna: 'ANT1', transformer: 'T1' },
+  designIds: Object.fromEntries(Object.keys(WORKSPACES).map(kind => [kind, newDesignId()])),
   result: null,
   panel: null,
   view: null,
@@ -124,8 +126,7 @@ function scheduleFull(delay = 130) {
   fullTimer = setTimeout(() => runCompute(false), delay);
 }
 
-function environment() {
-  const board = bridge.state.context;
+function environment(board = bridge.state.context) {
   // Preview and file export can use the design stack. Placement always checks
   // the actual destination, including edits made since the last board refresh.
   const useDesignStack = board?.layerCount === 0
@@ -203,7 +204,7 @@ const api = {
   tryGeometryPatch(patch) {try {current().compute({...cfg(),...patch},environment(),{quick:true});api.setMany(patch);return null;}catch(error){return error.message;}},
   undo: () => restoreHistory('undo'), redo: () => restoreHistory('redo'),
   historyState: () => history(),
-  designId: () => designId(app.ws,app.names[app.ws]),
+  designId: () => app.designIds[app.ws],
   openExport,
   saveFile: bridge.saveFile,
   reviewPlacement() {
@@ -213,7 +214,7 @@ const api = {
   readPlacementSnapshot: id => bridge.api.snapshot(id),
   placeReviewed: review => placeIntoBoard(review),
   result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
-  solveDesign: () => current().compute(cfg(),environment()),
+  solveDesign: board => current().compute(cfg(), environment(board)),
   designName: () => app.names[app.ws],
   applyDesign(values,label='Apply design',makeCheckpoint=true) {
     history();
@@ -308,6 +309,7 @@ function renderRail() {
         type: 'row',
         buttons: [
           { label: 'Save', onClick: saveDesign },
+          { label: 'Save a copy…', onClick: saveDesignCopy },
           { label: 'Open…', onClick: openDesignPicker },
           { label: 'Import…', hint: 'Load a design JSON exported from here', onClick: importDesignJson },
         ],
@@ -431,7 +433,8 @@ function showDesignTools(tab = 'optimize') {
   if (!runCompute(false)) return;
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
-    designId: () => designId(app.ws, app.names[app.ws]),
+    analysisConfig: () => app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), bridge.state.context) : cfg(),
+    designId: api.designId,
     dirty: () => { app.dirtyWorkspaces.add(app.ws); },
     apply(patch) {
       Object.assign(cfg(), patch); app.dirtyWorkspaces.add(app.ws);
@@ -449,10 +452,14 @@ function makePlacementReview(config, result, snapshot) {
   }
   const requireNets = kind === 'antenna' || (kind === 'motor' && ['stepper', 'planar'].includes(result.family));
   const boardSettings = config.tools?.board;
-  return reviewBoardPlacement(placementArtwork(config, result.art), config, snapshot.text, excluded, {
+  const art = placementArtwork(config, result.art);
+  const seriesWinding = kind === 'inductor' && art.meta.kind === 'coil' && config.connection === 'series';
+  return reviewBoardPlacement(art, config, snapshot.text, excluded, {
     kind, requireNets, nets: snapshot.nets,
+    seriesWinding, previousPlacement: seriesWinding ? snapshot.previousPlacement : null,
     distributed: kind === 'filter' && DISTRIBUTED_FILTERS.includes(config.family),
-    groundNet: boardSettings?.groundNet, groundLayer: boardSettings?.groundLayer,
+    groundNet: boardSettings?.groundNet,
+    signalLayer: result.rfStack?.signal, groundLayer: result.rfStack?.reference ?? boardSettings?.groundLayer,
   });
 }
 
@@ -486,6 +493,7 @@ async function placeIntoBoard(review = null) {
     }, {
       replace: true,
       expectedSnapshot: review.revision,
+      windingTerminals: review.windingTerminals,
       select: true,
       net: netNameFor(),
       kind: app.ws,
@@ -646,22 +654,50 @@ function modal(title, body, buttons) {
 
 let pendingSave = Promise.resolve();
 function saveDesign() {
-  const kind = app.ws, name = app.names[kind], id = designId(kind, name);
+  const kind = app.ws, name = app.names[kind], id = app.designIds[kind];
   const snapshot = JSON.stringify(cfg());
   app.dirtyWorkspaces.add(kind);
   pendingSave = pendingSave.then(async () => {
     try {
       await bridge.api.saveDesign(id, name, kind, JSON.parse(snapshot));
-      if (app.names[kind] === name && JSON.stringify(app.configs[kind]) === snapshot) {
+      if (app.designIds[kind] === id && app.names[kind] === name && JSON.stringify(app.configs[kind]) === snapshot) {
         app.dirtyWorkspaces.delete(kind);
       }
       toast(bridge.STANDALONE ? `Saved “${name}” in this browser.` : `Saved “${name}”.`, 'ok');
     } catch (err) {
-      app.dirtyWorkspaces.add(kind);
+      if (app.designIds[kind] === id) app.dirtyWorkspaces.add(kind);
       toast(`Could not save “${name}”. ${err.message}`, 'error', { sticky: true });
     }
   });
   return pendingSave;
+}
+
+function saveDesignCopy() {
+  const kind = app.ws, source = app.designIds[kind];
+  const input = el('input', { type: 'text', 'aria-label': 'Copy name', value: `${app.names[kind]} copy` });
+  modal('Save a copy', input, [
+    { label: 'Save copy', variant: 'primary', onClick: close => {
+      const name = input.value.trim();
+      if (!name) { input.focus(); return; }
+      const id = newDesignId(), snapshot = JSON.stringify(app.configs[kind]);
+      close();
+      pendingSave = pendingSave.then(async () => {
+        try {
+          await bridge.api.saveDesign(id, name, kind, JSON.parse(snapshot));
+          if (app.designIds[kind] === source && JSON.stringify(app.configs[kind]) === snapshot) {
+            app.designIds[kind] = id;
+            app.names[kind] = name;
+            app.dirtyWorkspaces.delete(kind);
+            if (app.ws === kind) { $('design-name').value = name; scheduleQuick(); }
+          }
+          toast(`Saved copy “${name}”.`, 'ok');
+        } catch (err) {
+          toast(`Could not save copy “${name}”. ${err.message}`, 'error', { sticky: true });
+        }
+      });
+    } },
+    { label: 'Cancel', onClick: close => close() },
+  ]);
 }
 
 /* Read back a design JSON export. The exported file carries the whole config,
@@ -681,8 +717,10 @@ function importDesignJson() {
       app.ws = kind;
       app.configs[kind] = { ...WORKSPACES[kind].defaults(), ...data.config };
       if(kind==='transformer'&&data.config.operatingLinked===undefined)app.configs[kind].operatingLinked=false;
+      if (kind === 'filter' && data.config.rfStackSource === undefined) app.configs[kind].rfStackSource = 'manual';
       histories.delete(kind);
       app.names[kind] = data.name || app.names[kind];
+      app.designIds[kind] = newDesignId();
       app.dirtyWorkspaces.add(kind);
       $('design-name').value = app.names[kind];
       document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === kind)));
@@ -721,8 +759,10 @@ async function openDesignPicker() {
         app.ws = entry.kind && WORKSPACES[entry.kind] ? entry.kind : app.ws;
         app.configs[app.ws] = { ...WORKSPACES[app.ws].defaults(), ...entry.config };
         if(app.ws==='transformer'&&entry.config.operatingLinked===undefined)app.configs[app.ws].operatingLinked=false;
+        if (app.ws === 'filter' && entry.config.rfStackSource === undefined) cfg().rfStackSource = 'manual';
         histories.delete(app.ws);
         app.names[app.ws] = entry.name;
+        app.designIds[app.ws] = d.id;
         app.dirtyWorkspaces.delete(app.ws);
         $('design-name').value = entry.name;
         document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === app.ws)));
@@ -742,6 +782,7 @@ async function openDesignPicker() {
 
 /* ------------------------------------------------------------ link state */
 
+let filterStackSignature;
 function renderLink(st) {
   const pill = $('link-pill');
   const text = $('link-text');
@@ -767,6 +808,14 @@ function renderLink(st) {
 
   // Update board-aware controls without replacing partially typed field values.
   for (const key of ['_layerAssistant', '_windingEditor']) app.panel?.fields.get(key)?.set?.();
+  const stackSignature = JSON.stringify(st.context?.copperLayers);
+  if (stackSignature !== filterStackSignature) {
+    filterStackSignature = stackSignature;
+    if (app.ws === 'filter') {
+      app.panel?.fields.get('_rfReferenceLayer')?.set();
+      scheduleQuick();
+    }
+  }
 
   // First time a board appears, adopt its stack-up.
   if (st.hasBoard && st.context && !app.boardApplied) {
@@ -783,18 +832,9 @@ function adoptBoard(ctx) {
     histories.get(key)?.record(app.configs[key],'Refresh board stackup');
     if (key === app.ws && applied.length) notes.push(...applied);
   }
-  // The filter workspace measures to the reference plane, not through the board.
-  if (ctx.thickness > 0.05) {
-    const f = app.configs.filter;
-    const layerCount = Math.max(2, ctx.layerCount || 2);
-    f.subH = Number((ctx.thickness / (layerCount - 1)).toFixed(4));
-    f.boardT = Number(ctx.thickness.toFixed(4));
-  }
   if (ctx.epsR > 1.2) {
-    app.configs.filter.subEr = Number(ctx.epsR.toFixed(3));
     app.configs.transformer.dielectricEr = Number(ctx.epsR.toFixed(3));
   }
-  if (ctx.copperThicknessMm > 0.005) app.configs.filter.subT = Number(ctx.copperThicknessMm.toFixed(4));
 
   app.panel.sync();
   scheduleQuick();

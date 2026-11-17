@@ -67,12 +67,6 @@ export function applyBoardContext(cfg, ctx) {
   return { applied, cfg: next };
 }
 
-/** A stable id for a design, so a placement can be found and replaced later. */
-export function designId(kind, name) {
-  const slug = String(name || 'design').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return `${kind}:${slug || 'design'}`;
-}
-
 /* Shared process/substrate fields, used by every workspace so the same board
    facts are edited in the same place whatever you are designing. */
 export const substrateFields = (over = {}) => [

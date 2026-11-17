@@ -147,8 +147,8 @@ class Store:
         if expected is UNSPECIFIED:
             expected = self._seen.get(design_id)
         if expected != _revision(entry):
-            raise DesignConflict("This design changed in another session. Reopen the latest copy, "
-                                 "or change the name to save your edits separately.")
+            raise DesignConflict("This design changed in another session. Reopen the latest version "
+                                 "or use Save a copy to keep your edits separately.")
 
     def save_design(self, design_id: str, name: str, kind: str, config: Dict[str, Any],
                     expected_revision=UNSPECIFIED) -> str:
@@ -181,15 +181,22 @@ class Store:
     # ---------------------------------------------------------- placements
 
     def record_placement(
-        self, design_id: str, board: str, ids: List[str], meta: Optional[Dict[str, Any]] = None
+        self, design_id: str, board: str, ids: List[str], meta: Optional[Dict[str, Any]] = None,
+        inherited: Optional[Dict[str, Any]] = None,
     ) -> None:
         with self._edit() as data:
             key = f"{board}::{design_id}"
             previous = data["placements"].get(key)
             history = []
-            if previous:
-                history = [{k: previous[k] for k in ("ids", "placed", "meta") if k in previous},
-                           *previous.get("history", [])]
+            seen = set()
+            for source in (previous, inherited):
+                if source is None:
+                    continue
+                for record in (source, *source.get("history", [])):
+                    identity = frozenset(record["ids"])
+                    if identity not in seen:
+                        seen.add(identity)
+                        history.append({k: record[k] for k in ("ids", "placed", "meta") if k in record})
             entry = {
                 "designId": design_id,
                 "board": board,
@@ -207,6 +214,11 @@ class Store:
     def placements_for_board(self, board: str) -> List[Dict[str, Any]]:
         with self._lock:
             return [p for p in self._read_state()["placements"].values() if p["board"] == board]
+
+    def placement_records(self, design_id: Optional[str] = None) -> List[Dict[str, Any]]:
+        with self._lock:
+            records = self._read_state()["placements"].values()
+            return [p for p in records if design_id is None or p["designId"] == design_id]
 
     @staticmethod
     def live_revision(entry: Dict[str, Any], board_ids: set) -> Optional[Dict[str, Any]]:

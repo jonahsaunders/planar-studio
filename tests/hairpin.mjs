@@ -1,12 +1,12 @@
 /* Independent copper-path, tap-loading and response-sensitivity regressions.
  * These are model/software checks, not full-wave validation of the hardware. */
 import assert from 'node:assert/strict';
-import { defaults, compute, synth, spec, charts, handles } from '../web/js/ws/filter.js';
+import { defaults, compute, synth, spec, charts, handles, filterStudyConfig } from '../web/js/ws/filter.js';
 import { hairpin, respond } from '../web/js/engine/filter.js';
 import { coupledMicrostrip } from '../web/js/engine/microstrip.js';
 import { hairpinCoupling } from '../web/js/engine/hairpin-model.js';
 import { tuneDistributed } from '../web/js/engine/filtertune.js';
-import { segmentDistance } from '../web/js/engine/boardcheck.js';
+import { reviewBoardPlacement, segmentDistance } from '../web/js/engine/boardcheck.js';
 import { exportKicadPcb, exportSvg } from '../web/js/engine/exporters.js';
 
 const cfg = { ...defaults(), family: 'hairpin', band: 'bandpass', points: 801, spanDecades: 0.15 };
@@ -17,6 +17,36 @@ const pathLength = (pts) => pts.slice(1).reduce((sum, p, i) => sum + Math.hypot(
 const difference = (a, b) => Math.max(...a.response.s21db.map((v, i) => Math.abs(v - b.response.s21db[i])));
 let count = 0;
 function check(name, fn) { fn(); count++; console.log(`  ok ${name}`); }
+
+check('An asymmetric four-layer stack drives hairpin synthesis, export and reference coverage', () => {
+  const board = { copperLayers: [
+    { name: 'F.Cu', centerHeightMm: 0.0175, thicknessMm: 0.035 },
+    { name: 'In1.Cu', centerHeightMm: 0.224, thicknessMm: 0.018 },
+    { name: 'In2.Cu', centerHeightMm: 1.169, thicknessMm: 0.018 },
+    { name: 'B.Cu', centerHeightMm: 1.5825, thicknessMm: 0.035 },
+  ] };
+  const config = { ...cfg, rfReferenceLayer: 'In1.Cu' };
+  const result = compute(config, { board });
+  near(result.rfStack.h, 0.18);
+  near(result.ctx.h, filterStudyConfig(config, board).subH);
+  const manual = compute({ ...config, rfStackSource: 'manual' }, { board });
+  assert.notEqual(result.design.feed.w, manual.design.feed.w);
+  assert.equal(compute(config, {}).ctx.h, config.subH);
+  assert.match(exportKicadPcb(result.art), /"In1.Cu" signal/);
+  const options = { distributed: true, signalLayer: result.rfStack.signal, groundLayer: result.rfStack.reference };
+  const destination = layer => `(kicad_pcb
+    (layers (0 "F.Cu" signal) (1 "In1.Cu" signal) (2 "In2.Cu" signal) (31 "B.Cu" signal) (37 "F.SilkS" user) (39 "F.Mask" user))
+    (gr_rect (start -500 -500) (end 500 500) (layer "Edge.Cuts"))
+    (zone (net "GND") (layer "${layer}") (filled_polygon (layer "${layer}") (pts (xy -200 -200) (xy 200 -200) (xy 200 200) (xy -200 200)))))`;
+  assert.ok(reviewBoardPlacement(result.art, config, destination('B.Cu'), [], options)
+    .issues.some(i => i.type === 'reference-ground'));
+  assert.ok(!reviewBoardPlacement(result.art, config, destination('In1.Cu'), [], options)
+    .issues.some(i => i.type === 'reference-ground'));
+  const back = compute({ ...cfg, rfSignalLayer: 'B.Cu', rfReferenceLayer: 'In2.Cu', padDrill: 0 }, { board });
+  near(back.ctx.h, 0.387);
+  assert.ok(back.art.tracks.every(t => t.layer === 'B.Cu'));
+  assert.ok(back.art.pads.every(p => p.layer === 'B.Cu'));
+});
 
 for (const order of [1, 2, 3, 4, 5, 10, 12]) {
   check(`Order ${order}: copper length, resonance, tap loading, isolation and exports`, () => {
