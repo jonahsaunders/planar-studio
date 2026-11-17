@@ -18,14 +18,26 @@ import os
 import tempfile
 import threading
 import time
-from contextlib import suppress
+import uuid
+from contextlib import contextmanager, suppress
 from typing import Any, Dict, List, Optional
 
 SCHEMA = 1
+UNSPECIFIED = object()
 
 
 class StoreError(OSError):
     """The requested state change could not be written to disk."""
+
+
+class DesignConflict(StoreError):
+    """Another editor has changed the design since this client opened it."""
+
+
+def _revision(entry):
+    if entry is None:
+        return None
+    return entry.get("revision") or f"legacy-{entry.get('saved', 0)}"
 
 
 def default_dir() -> str:
@@ -47,54 +59,78 @@ class Store:
         self.dir = directory or default_dir()
         self.path = os.path.join(self.dir, "state.json")
         self._lock = threading.RLock()
-        self._data: Dict[str, Any] = {
-            "schema": SCHEMA,
-            "prefs": {},
-            "designs": {},
-            "placements": {},
-        }
-        self._load()
+        self._seen: Dict[str, str] = {}
 
     # ------------------------------------------------------------------ i/o
 
-    def _load(self) -> None:
+    def _read_state(self) -> Dict[str, Any]:
         try:
             with open(self.path, "r", encoding="utf-8") as fh:
                 data = json.load(fh)
-            if isinstance(data, dict) and data.get("schema") == SCHEMA:
-                self._data.update(
-                    {k: data.get(k, v) for k, v in self._data.items() if k != "schema"}
-                )
-        except (OSError, ValueError):
-            pass
+            if not isinstance(data, dict) or data.get("schema") != SCHEMA:
+                raise ValueError("unrecognized state schema")
+            for section in ("prefs", "designs", "placements"):
+                if not isinstance(data.setdefault(section, {}), dict):
+                    raise ValueError(f"invalid {section} section")
+            return data
+        except FileNotFoundError:
+            return {"schema": SCHEMA, "prefs": {}, "designs": {}, "placements": {}}
+        except (OSError, ValueError) as exc:
+            raise StoreError(f"Could not read {self.path}: {exc}") from exc
 
-    def _write_section(self, section: str, values: Dict[str, Any]) -> None:
-        data = {**self._data, section: values}
+    @contextmanager
+    def _edit(self):
+        # Lock a stable sidecar: replacing state.json changes its file identity.
+        with self._lock:
+            try:
+                os.makedirs(self.dir, exist_ok=True)
+                with open(self.path + ".lock", "a+b") as lock:
+                    if os.name == "nt":
+                        import msvcrt
+                        lock.seek(0)
+                        msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
+                    else:
+                        import fcntl
+                        fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+                    # Closing the handle releases the lock, including on exceptions.
+                    data = self._read_state()
+                    yield data
+                    self._write(data)
+            except StoreError:
+                raise
+            except OSError as exc:
+                raise StoreError(f"Could not save Planar Studio data to {self.path}: {exc}") from exc
+
+    def _write(self, data: Dict[str, Any]) -> None:
         tmp = None
         try:
-            os.makedirs(self.dir, exist_ok=True)
             fd, tmp = tempfile.mkstemp(dir=self.dir, suffix=".tmp")
             with os.fdopen(fd, "w", encoding="utf-8") as fh:
-                json.dump(data, fh, indent=1, sort_keys=True)
-            os.replace(tmp, self.path)
-        except OSError as exc:
-            raise StoreError(f"Could not save Planar Studio data to {self.path}: {exc}") from exc
+                json.dump(data, fh, indent=1)
+            # A Windows reader can briefly hold the destination without delete sharing.
+            for attempt in range(6):
+                try:
+                    os.replace(tmp, self.path)
+                    break
+                except PermissionError as exc:
+                    if getattr(exc, "winerror", None) not in (5, 32) or attempt == 5:
+                        raise
+                    time.sleep(0.02 * (attempt + 1))
         finally:
             if tmp:
                 with suppress(OSError):
                     os.unlink(tmp)
-        self._data = data
 
     # -------------------------------------------------------------- prefs
 
     def get_prefs(self) -> Dict[str, Any]:
         with self._lock:
-            return dict(self._data["prefs"])
+            return self._read_state()["prefs"]
 
     def set_prefs(self, prefs: Dict[str, Any]) -> Dict[str, Any]:
-        with self._lock:
-            self._write_section("prefs", {**self._data["prefs"], **(prefs or {})})
-            return dict(self._data["prefs"])
+        with self._edit() as data:
+            data["prefs"].update(prefs or {})
+            return data["prefs"]
 
     # ------------------------------------------------------------- designs
 
@@ -102,43 +138,54 @@ class Store:
         with self._lock:
             out = [
                 {"id": k, "name": v.get("name", k), "saved": v.get("saved", 0), "kind": v.get("kind", "")}
-                for k, v in self._data["designs"].items()
+                for k, v in self._read_state()["designs"].items()
             ]
         out.sort(key=lambda d: d.get("saved", 0), reverse=True)
         return out
 
-    def save_design(self, design_id: str, name: str, kind: str, config: Dict[str, Any]) -> None:
+    def _check_revision(self, design_id, entry, expected):
+        if expected is UNSPECIFIED:
+            expected = self._seen.get(design_id)
+        if expected != _revision(entry):
+            raise DesignConflict("This design changed in another session. Reopen the latest copy, "
+                                 "or change the name to save your edits separately.")
+
+    def save_design(self, design_id: str, name: str, kind: str, config: Dict[str, Any],
+                    expected_revision=UNSPECIFIED) -> str:
         with self._lock:
-            entry = {
-                "name": name,
-                "kind": kind,
-                "config": config,
-                "saved": time.time(),
-            }
-            self._write_section("designs", {**self._data["designs"], design_id: entry})
+            with self._edit() as data:
+                self._check_revision(design_id, data["designs"].get(design_id), expected_revision)
+                revision = uuid.uuid4().hex
+                data["designs"][design_id] = {"name": name, "kind": kind, "config": config,
+                                             "saved": time.time(), "revision": revision}
+            self._seen[design_id] = revision
+            return revision
 
     def load_design(self, design_id: str) -> Optional[Dict[str, Any]]:
         with self._lock:
-            entry = self._data["designs"].get(design_id)
-            return dict(entry) if entry else None
+            entry = self._read_state()["designs"].get(design_id)
+            if entry is None:
+                self._seen.pop(design_id, None)
+                return None
+            entry["revision"] = self._seen[design_id] = _revision(entry)
+            return entry
 
-    def delete_design(self, design_id: str) -> bool:
+    def delete_design(self, design_id: str, expected_revision=UNSPECIFIED) -> bool:
         with self._lock:
-            if design_id not in self._data["designs"]:
-                return False
-            designs = self._data["designs"].copy()
-            del designs[design_id]
-            self._write_section("designs", designs)
-            return True
+            with self._edit() as data:
+                self._check_revision(design_id, data["designs"].get(design_id), expected_revision)
+                deleted = data["designs"].pop(design_id, None) is not None
+            self._seen.pop(design_id, None)
+            return deleted
 
     # ---------------------------------------------------------- placements
 
     def record_placement(
         self, design_id: str, board: str, ids: List[str], meta: Optional[Dict[str, Any]] = None
     ) -> None:
-        with self._lock:
+        with self._edit() as data:
             key = f"{board}::{design_id}"
-            previous = self._data["placements"].get(key)
+            previous = data["placements"].get(key)
             history = []
             if previous:
                 history = [{k: previous[k] for k in ("ids", "placed", "meta") if k in previous},
@@ -151,15 +198,15 @@ class Store:
                 "meta": meta or {},
                 "history": history,
             }
-            self._write_section("placements", {**self._data["placements"], key: entry})
+            data["placements"][key] = entry
 
     def get_placement(self, design_id: str, board: str) -> Optional[Dict[str, Any]]:
         with self._lock:
-            return self._data["placements"].get(f"{board}::{design_id}")
+            return self._read_state()["placements"].get(f"{board}::{design_id}")
 
     def placements_for_board(self, board: str) -> List[Dict[str, Any]]:
         with self._lock:
-            return [p for p in self._data["placements"].values() if p["board"] == board]
+            return [p for p in self._read_state()["placements"].values() if p["board"] == board]
 
     @staticmethod
     def live_revision(entry: Dict[str, Any], board_ids: set) -> Optional[Dict[str, Any]]:

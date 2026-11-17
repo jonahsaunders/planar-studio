@@ -27,7 +27,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Dict, Optional, Tuple
 from urllib.parse import parse_qs, unquote, urlparse
 
-from .store import StoreError
+from .store import DesignConflict, StoreError
 
 Handler = Callable[[Dict[str, Any]], Any]
 
@@ -58,6 +58,8 @@ class Api:
             raise RpcError(f"unknown method {name!r}", kind="badmethod")
         try:
             return fn(params or {})
+        except DesignConflict as exc:
+            raise RpcError(str(exc), kind="conflict") from exc
         except StoreError as exc:
             raise RpcError(str(exc), kind="io") from exc
 

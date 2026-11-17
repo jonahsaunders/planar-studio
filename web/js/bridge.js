@@ -145,6 +145,7 @@ export async function reconnect() {
    ----------------------------------------------------------------------- */
 
 const designPrefix = 'planar.design.';
+const designRevisions = new Map();
 function browserDesign(id) {
   const text = localStorage.getItem(designPrefix + id);
   if (!text) throw new RpcError('This saved design is missing.', 'notfound');
@@ -176,15 +177,28 @@ export const api = {
     return { designs: designs.sort((a, b) => b.saved - a.saved) };
   },
   async saveDesign(id, name, kind, config) {
-    if (!STANDALONE) return call('designs.save', { id, name, kind, config });
+    if (!STANDALONE) {
+      const result = await call('designs.save', {
+        id, name, kind, config, expectedRevision: designRevisions.get(id) ?? null,
+      });
+      designRevisions.set(id, result.revision);
+      return result;
+    }
     localStorage.setItem(designPrefix + id, JSON.stringify({ name, kind, config, saved: Date.now() / 1000 }));
     return { saved: true };
   },
   async loadDesign(id) {
-    return STANDALONE ? browserDesign(id) : call('designs.load', { id });
+    if (STANDALONE) return browserDesign(id);
+    const result = await call('designs.load', { id });
+    designRevisions.set(id, result.revision);
+    return result;
   },
   async deleteDesign(id) {
-    if (!STANDALONE) return call('designs.delete', { id });
+    if (!STANDALONE) {
+      const result = await call('designs.delete', { id, expectedRevision: designRevisions.get(id) ?? null });
+      designRevisions.delete(id);
+      return result;
+    }
     const key = designPrefix + id, deleted = localStorage.getItem(key) !== null;
     localStorage.removeItem(key);
     return { deleted };

@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional
 from .kicad_link import BoardEditError, KiCadLink, LinkError, Placement
 from . import library
 from .server import Api, RpcError, UiServer
-from .store import Store
+from .store import Store, UNSPECIFIED
 from .window import Shell, report
 
 from . import __version__ as VERSION
@@ -279,13 +279,14 @@ class Application:
             design_id = str(params.get("id") or "")
             if not design_id:
                 raise RpcError("a design needs an id", kind="badparam")
-            self.store.save_design(
+            revision = self.store.save_design(
                 design_id,
                 str(params.get("name") or design_id),
                 str(params.get("kind") or ""),
                 params.get("config") or {},
+                params.get("expectedRevision", UNSPECIFIED),
             )
-            return {"saved": design_id}
+            return {"saved": design_id, "revision": revision}
 
         @api.method("designs.load")
         def _designs_load(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -296,7 +297,8 @@ class Application:
 
         @api.method("designs.delete")
         def _designs_delete(params: Dict[str, Any]) -> Dict[str, Any]:
-            return {"deleted": self.store.delete_design(str(params.get("id") or ""))}
+            return {"deleted": self.store.delete_design(str(params.get("id") or ""),
+                                                       params.get("expectedRevision", UNSPECIFIED))}
 
     # ------------------------------------------------------------- shutdown
 
