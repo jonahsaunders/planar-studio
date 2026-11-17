@@ -264,6 +264,7 @@ class KiCadLink:
         }
 
         # --- stack-up ------------------------------------------------------
+        stackup = None
         try:
             stackup = board.get_stackup()
             copper, dielectrics, total = _read_stackup(stackup)
@@ -283,19 +284,16 @@ class KiCadLink:
         except Exception as exc:
             ctx["warnings"].append(f"stack-up unavailable ({type(exc).__name__})")
 
-        # Fall back to the layer set actually present on the board when the
-        # stack-up read did not produce one.
-        if not ctx["copperLayers"]:
-            try:
-                names = []
-                for layer in _iter_copper_layers():
-                    nm = _layer_name(layer)
-                    if nm:
-                        names.append({"name": nm, "index": len(names), "thicknessMm": None})
-                ctx["copperLayers"] = names
-                ctx["layerCount"] = len(names)
-            except Exception:
-                pass
+        enabled = _board_layer_names(board, stackup)
+        details = {c["name"]: c for c in ctx["copperLayers"]}
+        copper = [name for name in COPPER_ORDER if name in enabled]
+        ctx["copperLayers"] = [
+            {**details.get(name, {"name": name, "thicknessMm": None}), "index": index}
+            for index, name in enumerate(copper)
+        ]
+        ctx["layerCount"] = len(copper)
+        if not copper:
+            ctx["warnings"].append("Copper layers are unknown. Design and file export remain available.")
 
         # --- nets ----------------------------------------------------------
         try:
@@ -486,6 +484,24 @@ class KiCadLink:
             raise BoardEditError(f"Could not place {placement.name}: {reason}.")
 
         victims = self._placement_items(board, replace_ids)
+        layers = _board_layer_names(board)
+        required = set()
+        for spec in placement.tracks + placement.arcs + placement.pads:
+            name = spec.get("layer")
+            if name not in COPPER_ORDER:
+                raise BoardEditError(f"Invalid or unknown layer for copper: {name!r}.")
+            required.add(name)
+        for spec in placement.pads:
+            required.add("F.Cu")  # Generated footprint's anchor layer.
+            if spec.get("mask", True):
+                required.add("F.Mask" if spec["layer"] == "F.Cu" else "B.Mask")
+        if placement.vias:
+            required.update(("F.Cu", "B.Cu"))  # Through vias.
+        required.update(spec.get("layer") or "F.SilkS" for spec in placement.texts)
+        missing = required - layers
+        if missing:
+            raise BoardEditError("KiCad could not confirm these destination layers: "
+                                 + ", ".join(sorted(missing)) + ". Check the board stack or export a file.")
         action = "replace" if victims else "place"
         with self._commit(board, f"Planar Studio: {action} {placement.name}"):
             created = board.create_items(items)
@@ -651,13 +667,28 @@ def _layer_name(layer: Any) -> Optional[str]:
     return None
 
 
-def _iter_copper_layers() -> Iterable[Any]:
+def _board_layer_names(board: Any, stackup: Any = None) -> set:
+    """Read enabled layers from this document. Older hosts expose only a stack."""
     try:
-        from kipy.util.board_layer import iter_copper_layers  # type: ignore
-
-        return list(iter_copper_layers())
+        return {_layer_name(layer) for layer in board.get_enabled_layers()} - {None, "Unknown"}
     except Exception:
-        return []
+        pass
+    names = set()
+    try:
+        stack = stackup if stackup is not None else board.get_stackup()
+        for entry in _stack_layers(stack):
+            if getattr(entry, "enabled", True):
+                names.add(_layer_name(getattr(entry, "layer", None)) or getattr(entry, "name", ""))
+    except Exception:
+        pass
+    if not names.intersection(COPPER_ORDER):
+        try:
+            count = board.get_copper_layer_count()
+            if isinstance(count, int) and 2 <= count <= len(COPPER_ORDER) and count % 2 == 0:
+                names.update(COPPER_ORDER[:count - 1] + ["B.Cu"])
+        except Exception:
+            pass
+    return names - {None, "", "Unknown"}
 
 
 def _kiid(item: Any) -> str:
@@ -673,6 +704,17 @@ def _kiid(item: Any) -> str:
     return ""
 
 
+def _stack_layers(stackup: Any) -> list:
+    for attr in ("layers", "layer", "stackup_layers"):
+        items = getattr(stackup, attr, None)
+        if items is not None:
+            try:
+                return list(items)
+            except TypeError:
+                continue
+    return []
+
+
 def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], float]:
     """Pull copper layers, dielectrics and total thickness out of a stack-up.
 
@@ -684,19 +726,7 @@ def _read_stackup(stackup: Any) -> Tuple[List[Dict[str, Any]], List[Dict[str, An
     total = 0.0
     heights_known = True
 
-    layers = None
-    for attr in ("layers", "layer", "stackup_layers"):
-        cand = getattr(stackup, attr, None)
-        if cand is not None:
-            try:
-                layers = list(cand)
-                break
-            except TypeError:
-                continue
-    if layers is None:
-        return copper, dielectrics, total
-
-    for entry in layers:
+    for entry in _stack_layers(stackup):
         thickness = None
         for attr in ("thickness", "thickness_nm"):
             raw = getattr(entry, attr, None)

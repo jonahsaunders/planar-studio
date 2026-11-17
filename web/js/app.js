@@ -19,6 +19,7 @@ import { LineChart, legendFor } from './ui/charts.js';
 import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { DesignHistory, checkpoint } from './engine/design-history.js';
 import { modelSignature } from './engine/transformer-workflow.js';
+import { windingSetup } from './engine/winding-stack.js';
 import { openTransformerPreflight } from './ui/transformer-review.js';
 import { transformerDossier, placementArtwork } from './engine/transformer-handoff.js';
 import { zipTextFiles } from './engine/zip-text.js';
@@ -123,8 +124,13 @@ function scheduleFull(delay = 130) {
 }
 
 function environment() {
+  const board = bridge.state.context;
+  // Preview and file export can use the design stack. Placement always checks
+  // the actual destination, including edits made since the last board refresh.
+  const useDesignStack = board?.layerCount === 0
+    || (app.ws === 'transformer' && windingSetup(cfg(), board).insufficient);
   return {
-    board: bridge.state.context,
+    board: useDesignStack ? null : board,
     name: app.names[app.ws],
     net: netNameFor(),
   };

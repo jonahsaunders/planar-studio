@@ -20,6 +20,7 @@ class PlacementTests(unittest.TestCase):
         self.old_via = SimpleNamespace(id="old-via")
         self.old_label = SimpleNamespace(id="old-label")
         self.board = Mock()
+        self.board.get_enabled_layers.return_value = [k._resolve_layer(n) for n in ("F.Cu", "B.Cu")]
         self.board.begin_commit.return_value = "commit"
         self.board.get_tracks.return_value = [SimpleNamespace(id="unrelated")]
         self.board.get_vias.return_value = [self.old_via]
@@ -152,3 +153,51 @@ class PlacementTests(unittest.TestCase):
         self.board.drop_commit.assert_called_once_with("commit")
         self.board.push_commit.assert_not_called()
         self.assertEqual(self.persisted_ids(), self.old_ids)
+
+    def test_live_layer_check_rejects_a_changed_stack_before_any_edit(self):
+        self.board.get_stackup.side_effect = RuntimeError("unavailable")
+        self.board.get_enabled_layers.return_value += [k._resolve_layer(n) for n in ("In1.Cu", "In2.Cu")]
+        context = k.KiCadLink.board_context(self.app.link)
+        self.assertEqual([c["name"] for c in context["copperLayers"]], k.COPPER_ORDER[:3] + ["B.Cu"])
+        self.board.get_enabled_layers.return_value = [k._resolve_layer(n) for n in ("F.Cu", "B.Cu")]
+        self.params["placement"]["tracks"] = [{"layer": "In1.Cu", "pts": [[0, 0], [1, 1]]}]
+        with self.assertRaisesRegex(RpcError, "In1.Cu"):
+            self.replace()
+        self.board.begin_commit.assert_not_called()
+        self.board.remove_items.assert_not_called()
+
+    def test_count_only_and_unknown_board_layers(self):
+        self.board.get_enabled_layers.side_effect = RuntimeError("unavailable")
+        self.board.get_stackup.side_effect = RuntimeError("unavailable")
+        self.board.get_copper_layer_count.return_value = 2
+        context = k.KiCadLink.board_context(self.app.link)
+        self.assertEqual([c["name"] for c in context["copperLayers"]], ["F.Cu", "B.Cu"])
+        self.params["placement"]["texts"] = [{"x": 0, "y": 1, "value": "L1"}]
+        with self.assertRaisesRegex(RpcError, "F.SilkS"):
+            self.replace()
+        del self.params["placement"]["texts"]
+        self.board.get_copper_layer_count.side_effect = RuntimeError("disconnected")
+        self.assertEqual(k.KiCadLink.board_context(self.app.link)["layerCount"], 0)
+        with self.assertRaisesRegex(RpcError, "destination layers"):
+            self.replace()
+        self.board.begin_commit.assert_not_called()
+
+    def test_disabled_pad_mask_and_legacy_stackup(self):
+        self.board.get_enabled_layers.side_effect = AttributeError()
+        self.board.get_stackup.return_value = SimpleNamespace(layers=[
+            SimpleNamespace(layer=k._resolve_layer(n), enabled=True) for n in ("F.Cu", "B.Cu")
+        ])
+        self.params["placement"]["pads"] = [{"layer": "B.Cu", "x": 0, "y": 0, "w": 1, "h": 1}]
+        with self.assertRaisesRegex(RpcError, "B.Mask"):
+            self.replace()
+        self.board.begin_commit.assert_not_called()
+        del self.params["placement"]["pads"]
+        self.assertEqual(self.replace()["created"], 1)
+
+    def test_empty_enabled_layer_set_takes_precedence_over_the_stack(self):
+        self.board.get_enabled_layers.return_value = []
+        self.board.get_copper_layer_count.return_value = 4
+        self.assertEqual(k.KiCadLink.board_context(self.app.link)["copperLayers"], [])
+        with self.assertRaisesRegex(RpcError, "destination layers"):
+            self.replace()
+        self.board.begin_commit.assert_not_called()

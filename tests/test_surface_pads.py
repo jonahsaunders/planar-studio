@@ -7,6 +7,9 @@ from planar_studio import kicad_link as k
 
 
 class RecordingBoard:
+    def get_enabled_layers(self):
+        return [k._resolve_layer(name) for name in k.COPPER_ORDER + ["F.Mask", "B.Mask", "F.SilkS"]]
+
     def begin_commit(self): return 'commit'
     def push_commit(self, *args): pass
 

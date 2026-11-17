@@ -18,12 +18,13 @@ export function layerAssistant(panel, api) {
   });
   node.append(status, help, refresh, result);
   function sync() {
-    const s = windingSetup(panel.state, api.boardContext());
-    status.textContent = s.available == null ? `This design needs a ${s.required}-layer board. No board settings loaded.`
+    const board = api.boardContext();
+    const s = windingSetup(panel.state, board);
+    status.textContent = s.available == null ? `This design needs a ${s.required}-layer board. ${board ? 'KiCad could not confirm the enabled layers.' : 'No board settings loaded.'}`
       : `Requires ${s.required} copper layers · Board has ${s.available}${s.insufficient ? ' · Setup needed' : ' · Layer count ready'}`;
     node.dataset.state = s.insufficient ? 'warn' : 'info';
     help.textContent = s.insufficient || s.available == null
-      ? `In KiCad PCB Editor: File → Board Setup… → Board Stackup → Physical Stackup. Set Copper layers to ${s.required} or more (an even number), click OK, then refresh here. This does not change the board automatically.`
+      ? `Preview and file export use the design stack. For placement, open File → Board Setup… → Board Stackup → Physical Stackup in KiCad. Set Copper layers to ${s.required} or more (an even number), click OK, then refresh here.`
       : 'The layer count fits. Assignments and copper spacing are checked when generating geometry. Refresh after changing the KiCad stack-up.';
     refresh.disabled = busy || !api.canRefreshBoard();
   }
@@ -39,11 +40,12 @@ export function windingEditor(panel, api) {
     const next = JSON.stringify([c.family,c.windingTopology,c.magneticModel,c.windingOptions,c.primaryTurns,c.secondaryTurns,c.secondary2Turns,c.secondary3Turns,c.traceW,c.stackPlan,c.copperLayers,c.layerPositions,c.boardT,c.copperOz,board?.copperLayers,board?.layerCount]);
     if (next === signature) return;
     signature = next; node.replaceChildren();
-    const { plan, required, insufficient } = windingSetup(c, board);
+    const { plan, required } = windingSetup(c, board);
     let mapping, error;
     try { mapping = resolveStack(c, board, plan.length); }
     catch (e) { error = e.message; try { mapping = resolveStack({ ...c, copperLayers: '', layerPositions: '' }, null, plan.length); } catch { /* malformed raw input remains editable */ } }
-    const available = !insufficient && board?.copperLayers?.length ? board.copperLayers.map(l => l.name) : layerNames(Math.min(32, !insufficient && board?.layerCount ? board.layerCount : required));
+    const available = board?.copperLayers?.map(l => l.name)
+      ?? (board && !board.layerCount ? [] : layerNames(Math.min(32, board?.layerCount || required)));
     const mode=transformerMode(c);
     node.append(el('p', { class: 'hint', text: 'Front → back. Select a section to highlight its copper, connected vias and polarity. ↑/↓ swap windings while physical layers stay fixed.' }));
     for(const name of [...new Set(plan)].filter(n=>['P','S','S2','S3'].includes(n))) {
@@ -65,6 +67,9 @@ export function windingEditor(panel, api) {
       winding.value = name;
       winding.addEventListener('change', () => { const p = [...plan]; p[i] = winding.value; change({ stackPlan: p.join(',') }); });
       const layer = el('select', { 'aria-label': `Copper layer for section ${i + 1}` });
+      if (layers[i] && !available.includes(layers[i])) {
+        layer.append(el('option', { value: layers[i], text: `${layers[i]} (unavailable on board)`, disabled: true }));
+      }
       for (const n of available) layer.append(el('option', { value: n, text: n }));
       layer.value = layers[i] || '';
       layer.addEventListener('change', () => { const p = [...layers]; p[i] = layer.value; change({ copperLayers: p.join(','), layerPositions: '' }); });
