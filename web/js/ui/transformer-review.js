@@ -2,7 +2,6 @@ import { el, eng, num, specTable } from './controls.js';
 import { LineChart, legendFor } from './charts.js';
 import { Viewport } from './canvas.js';
 import { bounds } from '../engine/artwork.js';
-import { transformerPreflight } from '../engine/transformer-handoff.js';
 import { modelSignature } from '../engine/transformer-workflow.js';
 import { importTransformerTest } from '../engine/transformer-measurements.js';
 import { saveStudy, studyStatus, physicsSignature, recordId, designSnapshot } from '../engine/transformer-project.js';
@@ -126,25 +125,152 @@ export function openMeasurements(api) {
   d.body.append(hint('Measurements append to the prototype history. Each retains the tested design, fixture and temperature. Calibration changes AL and leakage only; alternative fits stay available.'),el('label',{},'Prototype identifier',prototype),kind,guide,el('label',{},'Fixture and reference plane',fixture),scalar('Measured copper temperature (°C)',conditions.temperature,v=>conditions.temperature=v),file,list,compare,el('h3',{text:'Choose a matched calibration pair'}),...pair,calibrate,alternatives,output);render();
 }
 
-export function openTransformerPreflight(api,result) {
-  const d=dialog('Review transformer placement',api),status=el('p',{role:'status',class:'hint'}),details=el('div'),findings=el('div'),canvas=el('canvas',{'aria-label':'Destination board and placement findings'}),wrap=el('div',{class:'transformer-board-preview'},canvas);
-  let text='',source='',boardName='',excluded=[],live=false,review=null,view=null;const origin=[...(api.config().placementOrigin||[0,0])],mapping=el('div'),pose=el('div',{class:'transformer-placement-pose'});
-  const place=button('Place reviewed transformer',()=>{if(!review?.ready||!live)return;const approved={...review,boardText:text};d.close();api.placeReviewed(approved);});place.disabled=true;d.footer.prepend(place);
-  const inspect=()=>{try{
-    result=api.solveDesign?.()||result;
-    review=transformerPreflight(api.config(),result,text,{...api.boardContext(),name:source},excluded);review.boardText=text;review.boardName=boardName;review.designName=api.designName();
-    status.textContent=`${source} · ${review.ready?'Supported checks passed':`${review.issues.length} findings; ${review.warnings.length} warnings`}`;
-    details.replaceChildren(specTable([['Origin (KiCad mm)',origin.join(', ')],['Rotation (clockwise)',`${api.config().placementRotation||0}°`],['Destination layers',review.layers.join(', ')],['Required nets',review.requiredNets.join(', ')],['Core cutouts',`${review.cutouts.results.filter(q=>q.found).length}/${review.cutouts.results.length} found`],['Replacement preview',`${review.replacement.removed} previously generated items will be removed. ${review.replacement.added} new copper primitives will be sent.`]]),review.replacement.removed?hint('Previous generated copper appears in gray. Edits made in KiCad to those generated items will be replaced; unrelated board items remain.'):null,el('h3',{text:'Terminal placement'}),specTable(review.terminals.map(q=>[`${q.name} · ${q.net}`,`${num(q.x,3)}, ${num(q.y,3)} mm`])),hint(review.scope));
-    if(!view)view=new Viewport(canvas,{onHandleDrag:(h,x,y)=>{const g=api.config().placementGrid||.5;origin[0]=Math.round(x/g)*g;origin[1]=Math.round(-y/g)*g;api.set('placementOrigin',[...origin]);inspect();syncPose();}});
-    view.setArtwork(review.preview,[...new Set([...review.preview.tracks,...review.preview.outline].map(q=>q.layer))].map((layer,i)=>[layer,layer==='Previous placement'?'#8e98a6':['#e99158','#5dabdf','#b69beb','#7cc5a1'][i%4]]));if(!view._placementFit){view.fit(bounds(review.preview));view._placementFit=true;}view.setHandles([{id:'origin',x:origin[0],y:-origin[1],hint:'Move transformer origin; snaps to grid',cursor:'move'}]);findings.replaceChildren();
-    mapping.replaceChildren(el('h3',{text:'Map winding nets'}));for(const name of [...new Set(result.art.ports.map(p=>p.winding||p.name[0]))]){const current=result.art.ports.find(p=>(p.winding||p.name[0])===name)?.net,select=el('select',{'aria-label':`${name} destination net`},[...new Set([current,...review.nets.filter(Boolean)])].map(net=>el('option',{value:net,text:net})));select.value=current;select.addEventListener('change',()=>{const error=api.tryGeometryPatch({windingNets:{...api.config().windingNets,[name]:select.value}});if(error){status.textContent=error;select.value=current;return;}inspect();});mapping.append(el('label',{},`${name} winding`,select));}
-    for(const q of review.issues){const row=button(q.message,()=>{if(q.point)view.fit({x0:q.point[0]-3,x1:q.point[0]+3,y0:q.point[1]-3,y1:q.point[1]+3,w:6,h:6});});row.disabled=!q.point;findings.append(row);}
-    review.warnings.forEach(q=>findings.append(hint(typeof q==='string'?q:q.message)));place.disabled=!review.ready||!live;
-  }catch(error){review=null;place.disabled=true;status.textContent=error.message;}};
-  const refresh=button('Read live KiCad board',async()=>{refresh.disabled=true;try{const bridge=await import('../bridge.js');const snapshot=await bridge.call('board.snapshot',{designId:api.designId()});text=snapshot.text;excluded=snapshot.excludedIds||[];boardName=snapshot.name||'';source=boardName||'Live KiCad board';live=true;if(d.body.isConnected)inspect();}catch(error){status.textContent=error.message;}finally{refresh.disabled=!api.canRefreshBoard();}});refresh.disabled=!api.canRefreshBoard();
-  const file=el('input',{type:'file',accept:'.kicad_pcb','aria-label':'Destination KiCad board file'});file.addEventListener('change',async()=>{const f=file.files[0];if(!f)return;const loaded=await f.text();if(!d.body.isConnected)return;text=loaded;source=f.name;excluded=[];live=false;if(view)view._placementFit=false;inspect();});
-  const syncPose=()=>pose.querySelectorAll('input[data-axis]').forEach(i=>i.value=origin[Number(i.dataset.axis)]);
-  ['X','Y'].forEach((name,i)=>{const control=scalar(`Placement origin ${name} (mm)`,origin[i],v=>{const g=api.config().placementGrid||.5;origin[i]=Math.round(v/g)*g;api.set('placementOrigin',[...origin]);syncPose();if(text)inspect();});control.querySelector('input').dataset.axis=i;pose.append(control);});
-  pose.append(scalar('Clockwise rotation (degrees)',api.config().placementRotation||0,v=>{api.set('placementRotation',((v%360)+360)%360);if(text)inspect();}),scalar('Placement snap grid (mm)',api.config().placementGrid||.5,v=>{if(v<.01||v>10){status.textContent='Grid must be between 0.01 and 10 mm.';return;}api.set('placementGrid',v);}));
-  d.body.append(hint('Drag the origin handle or enter coordinates. Rotation and net mappings are checked immediately against the loaded board. File checks are previews; direct placement requires a fresh live snapshot.'),pose,refresh,file,status,mapping,details,wrap,findings);d.cleanups.push(()=>view?.destroy());if(api.canRefreshBoard())refresh.click();
+export function openPlacementReview(api, kind, makeReview) {
+  const transformer = kind === 'transformer';
+  const d = dialog(`Review ${kind} placement`, transformer ? api : null);
+  const status = el('p', { role: 'status', class: 'hint' });
+  const details = el('div'), findings = el('div'), mapping = el('div');
+  const pose = el('div', { class: 'transformer-placement-pose' });
+  const canvas = el('canvas', { 'aria-label': 'Destination board and placement findings' });
+  const wrap = el('div', { class: 'transformer-board-preview' }, canvas);
+  const designId = api.designId();
+  const origin = [...(api.config().placementOrigin || [0, 0])];
+  let snapshot, review, view, fitted = false, request = 0;
+  const place = button(`Place reviewed ${kind}`, () => {
+    if (!review?.ready || !review.revision) return;
+    d.close();
+    api.placeReviewed(review);
+  });
+  place.disabled = true;
+  d.footer.prepend(place);
+
+  function inspect() {
+    place.disabled = true;
+    review = null;
+    if (!snapshot || !d.body.isConnected) return;
+    if (api.designId() !== designId) {
+      status.textContent = 'The active design changed. Open a new placement review.';
+      return;
+    }
+    try {
+      const result = api.solveDesign();
+      review = {
+        ...makeReview(api.config(), result, snapshot), revision: snapshot.revision,
+        designId, signature: JSON.stringify(api.config()),
+      };
+      const count = review.issues.length;
+      status.textContent = `${snapshot.name || 'Live KiCad board'} · ${count ? `${count} findings` : 'Supported checks passed'} · ${review.warnings.length} warnings`;
+      const rows = [
+        ['Origin (KiCad mm)', origin.join(', ')],
+        ['Rotation (clockwise)', `${api.config().placementRotation || 0}°`],
+        ['Destination copper layers', review.layers.filter(l => l.endsWith('.Cu')).join(', ')],
+        ['Design nets', review.requiredNets.join(', ')],
+        ['Replacement preview', `${review.replacement.removed} items to remove · ${review.replacement.added} primitives to add`],
+      ];
+      if (transformer) rows.push(['Core cutouts', `${review.cutouts.results.filter(q => q.found).length}/${review.cutouts.results.length} found`]);
+      details.replaceChildren(specTable(rows));
+      if (review.replacement.removed) details.append(hint('Gray copper will be replaced, including edits to previously generated items.'));
+      if (transformer) {
+        details.append(el('h3', { text: 'Terminal placement' }),
+          specTable(review.terminals.map(q => [`${q.name} · ${q.net}`, `${num(q.x, 3)}, ${num(q.y, 3)} mm`])), hint(review.scope));
+        mapNets(result);
+      }
+      view ||= new Viewport(canvas, { onHandleDrag: (_, x, y) => updateOrigin([x, -y]) });
+      view.setArtwork(review.preview, [
+        ['Board', '#526276'], ['Edge', '#c7d2dd'], ['Design', '#ee9c48'],
+        ['Previous placement', '#8e98a6'], ['Conflict', '#fb4d66'],
+      ]);
+      if (!fitted) { view.fit(bounds(review.preview)); fitted = true; }
+      view.setHandles([{ id: 'origin', x: origin[0], y: -origin[1], hint: 'Move origin', cursor: 'move' }]);
+      findings.replaceChildren();
+      for (const issue of review.issues) {
+        const row = button(issue.message, () => {
+          const [x, y] = issue.point;
+          view.fit({ x0: x - 3, x1: x + 3, y0: y - 3, y1: y + 3, w: 6, h: 6 });
+        });
+        row.disabled = !issue.point;
+        findings.append(row);
+      }
+      review.warnings.forEach(w => findings.append(hint(typeof w === 'string' ? w : w.message)));
+      place.disabled = !review.ready || !review.revision;
+    } catch (err) {
+      review = null;
+      status.textContent = err.message;
+    }
+  }
+
+  function mapNets(result) {
+    mapping.replaceChildren(el('h3', { text: 'Map winding nets' }));
+    const ports = result.art.ports, winding = p => p.winding || p.name[0];
+    for (const name of new Set(ports.map(winding))) {
+      const current = ports.find(p => winding(p) === name).net;
+      const select = el('select', { 'aria-label': `${name} destination net` },
+        [...new Set([current, ...review.nets])].map(net => el('option', { value: net, text: net })));
+      select.value = current;
+      select.addEventListener('change', () => {
+        const error = api.tryGeometryPatch({ windingNets: { ...api.config().windingNets, [name]: select.value } });
+        if (error) { status.textContent = error; select.value = current; }
+        else inspect();
+      });
+      mapping.append(el('label', {}, `${name} winding`, select));
+    }
+  }
+
+  const refresh = button('Read live KiCad board', async () => {
+    const id = ++request;
+    refresh.disabled = true;
+    place.disabled = true;
+    snapshot = null;
+    status.textContent = 'Reading the open board…';
+    try {
+      const loaded = await api.readPlacementSnapshot(designId);
+      if (id === request && d.body.isConnected) { snapshot = loaded; fitted = false; inspect(); }
+    } catch (err) {
+      if (id === request) status.textContent = err.message;
+    } finally {
+      refresh.disabled = !api.canRefreshBoard();
+    }
+  });
+  refresh.disabled = !api.canRefreshBoard();
+  const file = el('input', { type: 'file', accept: '.kicad_pcb', 'aria-label': 'Destination KiCad board file' });
+  file.addEventListener('change', async () => {
+    const selected = file.files[0];
+    if (!selected) return;
+    const id = ++request;
+    place.disabled = true;
+    snapshot = null;
+    try {
+      const text = await selected.text();
+      if (id !== request || !d.body.isConnected) return;
+      snapshot = { text, name: selected.name };
+      fitted = false;
+      inspect();
+    } catch (err) {
+      if (id === request) status.textContent = err.message;
+    }
+  });
+  function updateOrigin(next) {
+    const grid = api.config().placementGrid || 0.5;
+    next.forEach((value, i) => { origin[i] = Math.round(value / grid) * grid; });
+    api.set('placementOrigin', [...origin]);
+    pose.querySelectorAll('[data-axis]').forEach(input => { input.value = origin[Number(input.dataset.axis)]; });
+    inspect();
+  }
+  ['X', 'Y'].forEach((axis, i) => {
+    const control = scalar(`Placement origin ${axis} (mm)`, origin[i], value => {
+      const next = [...origin]; next[i] = value; updateOrigin(next);
+    });
+    control.querySelector('input').dataset.axis = i;
+    pose.append(control);
+  });
+  pose.append(scalar('Clockwise rotation (degrees)', api.config().placementRotation || 0, value => {
+    api.set('placementRotation', ((value % 360) + 360) % 360); inspect();
+  }), scalar('Placement snap grid (mm)', api.config().placementGrid || 0.5, value => {
+    if (value < 0.01 || value > 10) { status.textContent = 'Grid must be between 0.01 and 10 mm.'; return; }
+    api.set('placementGrid', value); inspect();
+  }));
+  d.body.append(hint('Set the origin and review clearance, winding contacts and replacement items. Use a live board snapshot to place, or open a board file for a preview. Run KiCad DRC after placement.'),
+    pose, refresh, file, status, mapping, details, wrap, findings);
+  d.cleanups.push(() => view?.destroy());
+  if (api.canRefreshBoard()) refresh.click();
 }

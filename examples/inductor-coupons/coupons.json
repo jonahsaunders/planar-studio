@@ -1,0 +1,9 @@
+{
+  "boardThicknessMm": 1.6,
+  "relativePermittivity": 4.4,
+  "copperOunces": 1,
+  "coupons": {
+    "A": { "role": "development", "center": [23, 22], "turns": 6, "traceW": 0.75, "traceS": 0.70 },
+    "B": { "role": "held-out", "center": [71, 22], "turns": 9, "traceW": 0.40, "traceS": 0.45 }
+  }
+}

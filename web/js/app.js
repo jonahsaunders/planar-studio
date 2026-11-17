@@ -18,13 +18,13 @@ import { Viewport } from './ui/canvas.js';
 import { LineChart, legendFor } from './ui/charts.js';
 import { openDesignTools, withMeasurements } from './ui/design-tools.js';
 import { DesignHistory, checkpoint } from './engine/design-history.js';
-import { modelSignature } from './engine/transformer-workflow.js';
+import { reviewBoardPlacement } from './engine/boardcheck.js';
 import { windingSetup } from './engine/winding-stack.js';
-import { openTransformerPreflight } from './ui/transformer-review.js';
-import { transformerDossier, placementArtwork } from './engine/transformer-handoff.js';
+import { openPlacementReview } from './ui/transformer-review.js';
+import { transformerDossier, placementArtwork, transformerPreflight } from './engine/transformer-handoff.js';
 import { zipTextFiles } from './engine/zip-text.js';
 import { applyBoardContext, designId } from './ws/common.js';
-import { toKicad, boundsCopper } from './engine/artwork.js';
+import { boundsCopper } from './engine/artwork.js';
 import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, exportSpec, estimate } from './engine/exporters.js';
 
 import * as wsInductor from './ws/inductor.js';
@@ -32,6 +32,7 @@ import * as wsMotor from './ws/motor.js';
 import * as wsFilter from './ws/filter.js';
 import * as wsAntenna from './ws/antenna.js';
 import * as wsTransformer from './ws/transformer.js';
+import { DISTRIBUTED as DISTRIBUTED_FILTERS } from './engine/filtertune.js';
 
 const WORKSPACES = { inductor: wsInductor, motor: wsMotor, filter: wsFilter, antenna: wsAntenna, transformer: wsTransformer };
 
@@ -205,7 +206,11 @@ const api = {
   designId: () => designId(app.ws,app.names[app.ws]),
   openExport,
   saveFile: bridge.saveFile,
-  reviewPlacement: () => {if(app.ws==='transformer'&&!['verify','export'].includes(transformerStep))api.navigateTransformer('export');if(runCompute(false))openTransformerPreflight(api,app.result);},
+  reviewPlacement() {
+    if (app.ws === 'transformer' && !['verify', 'export'].includes(transformerStep)) api.navigateTransformer('export');
+    if (runCompute(false)) openPlacementReview(api, app.ws, makePlacementReview);
+  },
+  readPlacementSnapshot: id => bridge.api.snapshot(id),
   placeReviewed: review => placeIntoBoard(review),
   result: () => app.result?.configSignature===JSON.stringify(cfg()) ? app.result : null,
   solveDesign: () => current().compute(cfg(),environment()),
@@ -436,32 +441,32 @@ function showDesignTools(tab = 'optimize') {
   }, tab);
 }
 
-async function placeIntoBoard(review=null) {
-  if (!runCompute(false)) return;
-  const res = app.result;
-  if (!res) return;
-  if(app.ws==='transformer') {
-    if(!review?.ready||review.signature!==modelSignature(cfg())||review.designName!==api.designName()){api.reviewPlacement();return;}
-    try {
-      const latest=await bridge.call('board.snapshot',{designId:api.designId()});
-      if(app.ws!=='transformer'){toast('Workspace changed; placement canceled.','info');return;}
-      if(review.signature!==modelSignature(cfg())||review.designName!==api.designName()){toast('Design changed. Review the updated placement.','warn');api.reviewPlacement();return;}
-      if(latest.text!==review.boardText||(latest.name||'')!==review.boardName){toast('Board changed. Review the updated destination.','warn');openTransformerPreflight(api,res);return;}
-    } catch(error){toast(error.message,'error');return;}
+function makePlacementReview(config, result, snapshot) {
+  const kind = app.ws;
+  const excluded = snapshot.excludedIds || [];
+  if (kind === 'transformer') {
+    return transformerPreflight(config, result, snapshot.text, { name: snapshot.name, nets: snapshot.nets }, excluded);
   }
+  const requireNets = kind === 'antenna' || (kind === 'motor' && ['stepper', 'planar'].includes(result.family));
+  const boardSettings = config.tools?.board;
+  return reviewBoardPlacement(placementArtwork(config, result.art), config, snapshot.text, excluded, {
+    kind, requireNets, nets: snapshot.nets,
+    distributed: kind === 'filter' && DISTRIBUTED_FILTERS.includes(config.family),
+    groundNet: boardSettings?.groundNet, groundLayer: boardSettings?.groundLayer,
+  });
+}
+
+async function placeIntoBoard(review = null) {
   if (!bridge.state.hasBoard) {
     toast('No board is open in KiCad. Open a PCB and try again.', 'warn');
     return;
   }
-  const existingNets = app.ws==='transformer'&&review ? review.nets : bridge.state.context?.nets || [];
-  if (['antenna', 'transformer'].includes(app.ws) || (app.ws === 'motor' && ['stepper','planar'].includes(res.family))) {
-    const required = [...new Set([...res.art.tracks, ...res.art.pads].map(p => p.net).filter(Boolean))];
-    const missing = required.filter(n => !existingNets.includes(n));
-    if (missing.length) {
-      toast(`Create these nets in KiCad before placing: ${missing.join(', ')}. You can also export a KiCad board with the nets included.`, 'warn');
-      return;
-    }
+  if (!review?.ready || review.designId !== api.designId() || review.signature !== JSON.stringify(cfg())) {
+    api.reviewPlacement();
+    return;
   }
+  if (!runCompute(false)) return;
+  const res = app.result;
   const est = estimate(res.art, cfg().tolerance);
   if (est.segments > 25000) {
     const ok = window.confirm(
@@ -470,21 +475,17 @@ async function placeIntoBoard(review=null) {
     if (!ok) return;
   }
 
-  const payload = toKicad(app.ws==='transformer'?placementArtwork(cfg(),res.art):res.art, { tolerance: cfg().tolerance });
-  const did = designId(app.ws, app.names[app.ws]);
-  // Resolve ownership on the live board; KiCad Undo can change it between polls.
-  const replace = app.ws === 'transformer' && review ? review.replacement.removed > 0 : true;
-
   const btn = $('btn-place');
   btn.disabled = true;
   try {
     const out = await bridge.api.place({
       name: app.names[app.ws],
-      designId: did,
-      origin: cfg().placementOrigin || [0, 0],
-      ...payload,
+      designId: review.designId,
+      origin: review.origin,
+      ...review.payload,
     }, {
-      replace,
+      replace: true,
+      expectedSnapshot: review.revision,
       select: true,
       net: netNameFor(),
       kind: app.ws,
@@ -499,6 +500,7 @@ async function placeIntoBoard(review=null) {
     bridge.reconnect();
   } catch (err) {
     if (err.kind === 'nolink') toast(`KiCad is not reachable: ${err.message}`, 'error');
+    else if (err.kind === 'stale-board') { toast(err.message, 'warn'); api.reviewPlacement(); }
     else toast(err.message, 'error', { sticky: err.kind === 'exception' });
   } finally {
     btn.disabled = false;

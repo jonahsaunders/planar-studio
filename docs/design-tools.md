@@ -153,6 +153,16 @@ field solve.
 
 ## Board checks
 
+**Place** opens a review in every workspace. Choose the origin, inspect the
+clearance findings, and confirm the reviewed placement. Gray copper shows
+previously generated items that will be replaced. The plugin rechecks the
+live snapshot and replacement IDs before editing the board.
+
+The winding check flags an existing same-net copper shape that touches two
+separated sections of the same generated winding path. A single contact is
+allowed. Run KiCad DRC and inspect the full winding current path, including
+connections made through multiple board items.
+
 Read a live KiCad board via `board.snapshot` or import a `.kicad_pcb` file. The
 live snapshot includes unsaved board state and never saves the board. If that
 API is unavailable on the installed KiCad/kicad-python version, use a saved file.

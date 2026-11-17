@@ -201,3 +201,15 @@ class PlacementTests(unittest.TestCase):
         with self.assertRaisesRegex(RpcError, "destination layers"):
             self.replace()
         self.board.begin_commit.assert_not_called()
+
+    def test_placement_rejects_changes_after_review(self):
+        state = {"name": "demo", "text": "before", "nets": []}
+        self.app.link.board_snapshot = lambda: state
+        review = self.app.api.call("board.snapshot", {"designId": "L1"})
+        self.params["expectedSnapshot"] = review["revision"]
+        state["text"] = "after"
+        with self.assertRaises(RpcError) as error:
+            self.replace()
+        self.assertEqual(error.exception.kind, "stale-board")
+        self.board.begin_commit.assert_not_called()
+        self.assertEqual(self.persisted_ids(), self.old_ids)

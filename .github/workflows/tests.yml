@@ -33,9 +33,49 @@ jobs:
           npm test
           node examples/measured-inductor/compare.mjs
           node examples/measured-inductor/resonance.mjs
+          node examples/inductor-coupons/generate.mjs --check
       - name: Test workspace interactions
         run: |
           npm run test:dom
           npm run test:creators:dom
           npm run test:design-layout:dom
           npm run test:motor:dom
+
+  live-kicad:
+    name: KiCad ${{ matrix.major }} installer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        major: [9, 10]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Install KiCad and test dependencies
+        env:
+          KICAD_MAJOR: ${{ matrix.major }}
+        run: |
+          sudo add-apt-repository --yes --no-update "ppa:kicad/kicad-${KICAD_MAJOR}.0-releases"
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad xvfb xauth
+          kicad-cli version
+          python3 -m venv "$RUNNER_TEMP/planar-python"
+          "$RUNNER_TEMP/planar-python/bin/python" -m pip install -r requirements.txt
+      - name: Build and exercise the installer with PCB Editor
+        env:
+          KICAD_MAJOR: ${{ matrix.major }}
+        run: |
+          python3 scripts/build_package.py --output dist/planar-studio-experimental.zip
+          xvfb-run -a "$RUNNER_TEMP/planar-python/bin/python" tests/live-kicad.py dist/planar-studio-experimental.zip --major "$KICAD_MAJOR"
+          cp examples/inductor-coupons/inductor-coupons.kicad_pcb "$RUNNER_TEMP/"
+          kicad-cli pcb drc --severity-error --exit-code-violations --output "$RUNNER_TEMP/coupon-drc.rpt" "$RUNNER_TEMP/inductor-coupons.kicad_pcb" || { cat "$RUNNER_TEMP/coupon-drc.rpt"; exit 1; }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: planar-studio-kicad-${{ matrix.major }}-${{ github.sha }}
+          path: dist/planar-studio-experimental.zip
+          if-no-files-found: error

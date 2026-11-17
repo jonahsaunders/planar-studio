@@ -1,0 +1,41 @@
+{
+  "boardSHA256": "91519936c748e795dc0844d2524060a7ee0703b903bb9f9057e16fc1df8bcabf",
+  "coupons": {
+    "A": {
+      "role": "development",
+      "turns": 6,
+      "terminalsKiCadMm": [
+        [
+          44.378,
+          23.15
+        ],
+        [
+          29.965,
+          22
+        ]
+      ],
+      "inductance_H": 8.831182565e-7,
+      "resistanceAt1MHz_ohm": 0.2954646845,
+      "reactanceAt1MHz_ohm": 5.549311369,
+      "selfResonance_Hz": 103585306.6
+    },
+    "B": {
+      "role": "held-out",
+      "turns": 9,
+      "terminalsKiCadMm": [
+        [
+          92.382,
+          23.025
+        ],
+        [
+          79.697,
+          22
+        ]
+      ],
+      "inductance_H": 0.000002337578212,
+      "resistanceAt1MHz_ohm": 0.8925472749,
+      "reactanceAt1MHz_ohm": 14.69135334,
+      "selfResonance_Hz": 61135356.84
+    }
+  }
+}

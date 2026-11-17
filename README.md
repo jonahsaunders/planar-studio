@@ -64,6 +64,10 @@ footprints, SVG, DXF, JSON and specification sheets. The **Design tools** panel
 adds constrained searches, measurement overlays, tolerance studies and board
 checks; see the [tools guide](docs/design-tools.md).
 
+The [inductor test board](examples/inductor-coupons/README.md) includes two
+generated square coils, exact geometry, predictions and a procedure for
+comparing measured impedance at the probe pads.
+
 ## Install
 
 The **1.6.0 development release** supports KiCad **9.0.1 or newer** on Windows,

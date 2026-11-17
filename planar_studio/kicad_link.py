@@ -331,7 +331,12 @@ class KiCadLink:
                 raise LinkError("This KiCad API cannot serialize the board. Import a saved .kicad_pcb in Board checks instead.") from exc
             if not isinstance(text, str) or len(text) > 40_000_000:
                 raise LinkError("The board snapshot is unavailable or exceeds 40 MB.")
-            return {"name": str(getattr(board, "name", "") or ""), "text": text, "source": "live"}
+            result = {"name": str(getattr(board, "name", "") or ""), "text": text, "source": "live"}
+            try:
+                result["nets"] = sorted({net.name for net in board.get_nets() if net.name})
+            except Exception:
+                pass  # The preview can still read nets from the serialized board.
+            return result
 
     # ------------------------------------------------------------------ nets
 

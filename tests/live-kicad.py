@@ -1,0 +1,170 @@
+"""Launch the packaged plugin against disposable boards in a real PCB Editor."""
+
+import argparse
+from contextlib import contextmanager
+import json
+import os
+from pathlib import Path
+import queue
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+from urllib.parse import parse_qs, urlsplit
+from urllib.request import Request, urlopen
+from zipfile import ZipFile
+
+from kipy import KiCad
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+@contextmanager
+def running(args, env, **kwargs):
+    process = subprocess.Popen(args, env=env, **kwargs)
+    try:
+        yield process
+    finally:
+        if process.poll() is None:
+            process.terminate()
+            try:
+                process.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=10)
+
+
+def await_result(fn, timeout=45):
+    deadline = time.monotonic() + timeout
+    while time.monotonic() < deadline:
+        try:
+            return fn()
+        except Exception as exc:
+            error = exc
+            time.sleep(0.25)
+    raise RuntimeError(f"Timed out waiting for KiCad: {error}") from error
+
+
+def wait_for_board(path, major, socket_dir, process):
+    sockets = [socket_dir / f"api-{process.pid}.sock", socket_dir / "api.sock"]
+
+    def connect():
+        assert process.poll() is None, f"PCB Editor exited with status {process.returncode}"
+        socket = next((f"ipc://{candidate}" for candidate in sockets if candidate.exists()), None)
+        if socket is None and os.name == "nt":
+            socket = f"ipc://{sockets[-1]}"
+        assert socket, f"No IPC socket appeared in {socket_dir}"
+        editor = KiCad(client_name="Planar Studio installer test", timeout_ms=1500, socket_path=socket)
+        board = editor.get_board()
+        assert Path(board.name).name == path.name, f"Unexpected open document: {board.name}"
+        assert editor.get_version().major == major
+        return editor, board, socket
+
+    return await_result(connect)
+
+
+def plugin_rpc(process):
+    lines = queue.Queue()
+    threading.Thread(target=lambda: lines.put(process.stdout.readline()), daemon=True).start()
+    endpoint = urlsplit(lines.get(timeout=25).strip())
+    assert endpoint.scheme == "http" and endpoint.hostname in ("127.0.0.1", "localhost")
+    token = parse_qs(endpoint.query)["t"][0]
+    address = f"{endpoint.scheme}://{endpoint.netloc}"
+    with urlopen(address + "/?" + endpoint.query, timeout=10) as page:
+        assert b"Planar Studio" in page.read()
+
+    def rpc(method, params=None, error=None):
+        request = Request(address + "/api", data=json.dumps({"method": method, "params": params or {}}).encode(),
+                          headers={"Content-Type": "application/json", "X-Planar-Token": token})
+        with urlopen(request, timeout=20) as response:
+            payload = json.load(response)
+        if error:
+            assert not payload["ok"] and payload["kind"] == error, payload
+            return
+        assert payload["ok"], payload
+        return payload["result"]
+
+    return rpc
+
+
+def check_placement(editor, board, rpc):
+    def contents():
+        return {item.id.value for read in (board.get_tracks, board.get_vias, board.get_text) for item in read()}
+
+    def place(name, x, layer="F.Cu", error=None):
+        snapshot = rpc("board.snapshot", {"designId": name})
+        return rpc("board.place", {"replace": True, "expectedSnapshot": snapshot["revision"], "placement": {
+            "name": name, "designId": name, "tracks": [{"layer": layer, "pts": [[x, 5], [x, 10]]}],
+            "vias": [{"x": x, "y": 10}], "texts": [{"x": x, "y": 12, "value": name}],
+        }}, error=error)
+
+    assert [layer["name"] for layer in rpc("board.context")["copperLayers"]] == ["F.Cu", "B.Cu"]
+    assert not contents()
+    place("Absent layer", 5, layer="In1.Cu", error="boardedit")
+    assert not contents()
+    untouched = set(place("Other", 5)["ids"])
+    original = set(place("Coil", 10)["ids"])
+    replacement = place("Coil", 15)
+    new = set(replacement["ids"])
+    assert replacement["replaced"] == 3 and contents() == untouched | new
+
+    def visible(ids):
+        assert contents() == untouched | ids
+        assert set(rpc("board.snapshot", {"designId": "Coil"})["excludedIds"]) == ids
+
+    editor.run_action("common.Interactive.undo")
+    await_result(lambda: visible(original), timeout=10)
+    editor.run_action("common.Interactive.redo")
+    await_result(lambda: visible(new), timeout=10)
+    print("Packaged plugin placed, replaced, undid and redid copper and labels.", flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("installer", type=Path)
+    parser.add_argument("--pcbnew", default="pcbnew")
+    parser.add_argument("--major", type=int, required=True)
+    parser.add_argument("--scratch", type=Path)
+    args = parser.parse_args()
+    with tempfile.TemporaryDirectory(prefix="planar-kicad-", dir=args.scratch, ignore_cleanup_errors=True) as tmp:
+        root = Path(tmp).resolve()
+        config = root / "config" / f"{args.major}.0"
+        config.mkdir(parents=True)
+        (config / "kicad_common.json").write_text(json.dumps({
+            "api": {"enable_server": True, "interpreter_path": sys.executable},
+            "system": {"first_run_shown": True},
+        }))
+        (config / "pcbnew.json").write_text("{}")
+        (config / "fp-lib-table").write_text("(fp_lib_table (version 7))")
+        (config / "sym-lib-table").write_text("(sym_lib_table (version 7))")
+        temp = root / "tmp"
+        temp.mkdir()
+        socket_dir = (Path("/tmp") if sys.platform == "darwin" else temp) / "kicad"
+        env = {**os.environ, "KICAD_CONFIG_HOME": str(config.parent), "TMP": str(temp), "TEMP": str(temp), "TMPDIR": str(temp),
+               "KICAD_DOCUMENTS_HOME": str(root / "documents"), "KICAD_CACHE_HOME": str(root / "cache"),
+               "PLANAR_STUDIO_HOME": str(root / "store"), "LIBGL_ALWAYS_SOFTWARE": "1"}
+        env.pop("KICAD_API_TOKEN", None)
+        env.pop("KICAD_API_SOCKET", None)
+        with ZipFile(args.installer) as installer:
+            installer.extractall(root / "installer")
+        entry = root / "installer" / "plugins" / "ipc_entry.py"
+        fixture = root / f"placement-{root.name}.kicad_pcb"
+        exported = root / f"export-{root.name}.kicad_pcb"
+        subprocess.run(["node", str(ROOT / "tests" / "live-board-fixtures.mjs"), str(fixture), str(exported)],
+                       check=True, cwd=ROOT)
+        with running([args.pcbnew, str(fixture)], env) as process:
+            editor, board, socket = wait_for_board(fixture, args.major, socket_dir, process)
+            with running([sys.executable, str(entry), "--print-url"], {**env, "KICAD_API_SOCKET": socket},
+                         stdout=subprocess.PIPE, text=True) as plugin:
+                check_placement(editor, board, plugin_rpc(plugin))
+        with running([args.pcbnew, str(exported)], env) as process:
+            _, reopened, _ = wait_for_board(exported, args.major, socket_dir, process)
+            assert len(reopened.get_tracks()) > 10, "Exported coil copper missing"
+            assert reopened.get_vias(), "Exported coil terminal vias missing"
+            print("KiCad reopened the exported board and read its tracks and vias.", flush=True)
+
+
+if __name__ == "__main__":
+    main()

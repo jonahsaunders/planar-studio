@@ -136,4 +136,12 @@ check('Board checks detect crossing copper, board edges and placement origin', (
 check('Arc sampling preserves semicircle midpoint and endpoints', () => {
   const p = arcPoints([1, 0], [0, 1], [-1, 0]); near(p[0][0], 1); near(p.at(-1)[0], -1); assert.ok(p.some((x) => x[1] > 0.99));
 });
+check('Same-net copper can bypass separated turns but a single contact is allowed', () => {
+  const art = artwork();
+  art.tracks.push(track('F.Cu', 0.3, [[0, 0], [8, 0], [8, 3], [0, 3]], { net: 'COIL', role: 'winding' }));
+  const destination = end => parseBoard(`(kicad_pcb
+    (segment (start 2 0) (end 2 ${end}) (width 0.3) (layer "F.Cu") (net "COIL") (uuid bypass)))`);
+  assert.ok(checkPlacement(art, destination(-3)).findings.some(f => f.type === 'winding-bypass'));
+  assert.ok(!checkPlacement(art, destination(0.5)).findings.some(f => f.type === 'winding-bypass'));
+});
 console.log(`\n${count} design-tool checks passed`);

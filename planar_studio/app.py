@@ -9,6 +9,8 @@ list of things the page is allowed to make the plugin do.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import sys
 import threading
@@ -115,12 +117,19 @@ class Application:
             revisions = live_placements([record]) if record else []
             return revisions[0]["ids"] if revisions else []
 
+        def reviewed_snapshot(design_id):
+            result = self.link.board_snapshot()
+            excluded = placement_ids(design_id, result["name"])
+            identity = json.dumps([result["name"], sorted(excluded), result.get("nets")])
+            digest = hashlib.sha256(identity.encode("utf-8"))
+            digest.update(result["text"].encode("utf-8"))
+            return {**result, "excludedIds": excluded, "revision": digest.hexdigest()}
+
         @api.method("board.snapshot")
         @_require_link
         def _snapshot(params: Dict[str, Any]) -> Dict[str, Any]:
-            result = self.link.board_snapshot()
-            result["excludedIds"] = placement_ids(str(params.get("designId") or ""), result["name"])
-            return result
+            with placement_lock:
+                return reviewed_snapshot(str(params.get("designId") or ""))
 
         @api.method("board.context")
         @_require_link
@@ -156,8 +165,17 @@ class Application:
 
             design_id = placement.design_id or f"anon-{int(time.time())}"
             with placement_lock:
-                board = str(self.link.board_context().get("name") or "")
-                ids = placement_ids(design_id, board) if params.get("replace") else []
+                expected = params.get("expectedSnapshot")
+                if expected is not None:
+                    snapshot = reviewed_snapshot(design_id)
+                    if expected != snapshot["revision"]:
+                        raise RpcError("The board or previous placement changed. Review the updated destination.",
+                                       kind="stale-board")
+                    board = snapshot["name"]
+                    ids = snapshot["excludedIds"] if params.get("replace") else []
+                else:
+                    board = str(self.link.board_context().get("name") or "")
+                    ids = placement_ids(design_id, board) if params.get("replace") else []
 
                 def remember(created):
                     meta = {

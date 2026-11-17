@@ -25,6 +25,31 @@ const solved = () => until(() => document.querySelector('#side .tile') && !docum
 const button = (text) => { const b = [...document.querySelectorAll('button')].find(n => n.textContent === text); assert.ok(b, `button ${text}`); b.click(); };
 const set = (name, value) => { const input = document.querySelector(`input[aria-label="${name}"]`); assert.ok(input, name); input.value = String(value); input.dispatchEvent(new w.Event('change', { bubbles: true })); };
 await solved();
+const bridge = await import('../web/js/bridge.js');
+const placementSnapshot = bridge.api.snapshot;
+const placeBoard = bridge.api.place;
+const boardText = '(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal) (37 "F.SilkS" user) (39 "F.Mask" user))'
+  + ' (gr_rect (start -120 -120) (end 120 120) (layer "Edge.Cuts") (stroke (width 0.1))))';
+bridge.state.hasBoard = true;
+bridge.state.standalone = false;
+bridge.api.snapshot = async () => ({ name: 'Placement fixture', text: boardText, revision: 'reviewed', excludedIds: ['previous'] });
+let approved;
+bridge.api.place = async (payload, options) => {
+  approved = { payload, options };
+  return { created: 2, replaced: 1 };
+};
+document.querySelector('#btn-place').disabled = false;
+document.querySelector('#btn-place').click();
+await until(() => document.querySelector('[aria-label="Review inductor placement"]')?.textContent.includes('1 items to remove'));
+assert.equal(approved, undefined);
+button('Place reviewed inductor');
+await until(() => approved);
+assert.equal(approved.options.expectedSnapshot, 'reviewed');
+assert.ok(approved.payload.tracks.length);
+bridge.api.snapshot = placementSnapshot;
+bridge.api.place = placeBoard;
+bridge.state.hasBoard = false;
+bridge.state.standalone = true;
 // A browser quota failure must keep the edit dirty, and a retry must reopen it.
 const storage = globalThis.localStorage;
 const wouldWarnOnClose = () => !w.dispatchEvent(new w.Event('beforeunload', { cancelable: true }));
@@ -146,7 +171,6 @@ assert.match(document.querySelector('[aria-label="Copper center heights (optiona
 button('Use automatic spacing');
 await new Promise(r => setTimeout(r, 220)); await solved();
 assert.equal(document.querySelector('[aria-label="Copper center heights (optional, mm)"]').value, '');
-const bridge = await import('../web/js/bridge.js');
 bridge.state.standalone = false;
 bridge.state.context = { layerCount: 2, thickness: 1.6 };
 set('Outer diameter', 41);

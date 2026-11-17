@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Review live placement in every workspace, with a preview of prior items,
+  same-net winding bypass checks and a final board-state check before edits.
+- Test the packaged plugin against KiCad 9 and 10 and attach the tested ZIP.
+- Add a reproducible two-coil impedance test board and a held-out comparison
+  workflow for physical measurements.
+
 - Preserve independent changes from simultaneous KiCad sessions and report a
   conflict when two editors save the same design revision.
 - Read the open board's enabled layers and check every destination again

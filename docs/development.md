@@ -57,6 +57,14 @@ npm run test:ui
 See [package.json](../package.json) for the full set of checks. Numerical and
 software tests do not establish hardware performance.
 
+The experimental checks also build the PCM archive and launch its packaged
+entry point against disposable boards in PCB Editor on KiCad 9 and 10. They
+verify replacement, Undo, Redo and opening a board produced by the exporter.
+The successful jobs attach the tested archive to the GitHub run. To run the
+same test locally, install KiCad and the Python requirements, then pass the
+path to the built ZIP to `tests/live-kicad.py` with `--major 9` or
+`--major 10`. Use `--pcbnew` if PCB Editor is off your executable path.
+
 ## Screenshots
 
 ```sh

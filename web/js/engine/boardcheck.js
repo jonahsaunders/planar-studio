@@ -1,7 +1,7 @@
 /* Read-only KiCad board geometry. +Y is converted to maths convention here.
    This is a conservative placement preview, not a replacement for KiCad DRC.
    Pads use enclosing circles; arcs are sampled at <= 0.025 mm sagitta. */
-import { artwork, track } from './artwork.js';
+import { artwork, decimate, track, toKicad } from './artwork.js';
 
 export function sexpr(text) {
   if (text.length > 40e6) throw new Error('Board exceeds 40 MB. Use a smaller board snapshot.');
@@ -36,7 +36,8 @@ export function arcPoints(a, m, b) {
 
 export function parseBoard(text, excludedIds = []) {
   const root = sexpr(text), excluded = new Set(excludedIds), nets = new Map(all(root, 'net').map((n) => [n[1], n[2]]));
-  const out = { name: 'Board snapshot', copper: [], keepouts: [], edges: [], holes: [], warnings: [], source: 'file' };
+  const out = { name: 'Board snapshot', copper: [], keepouts: [], edges: [], holes: [], warnings: [], source: 'file',
+    layers: one(root, 'layers').filter(Array.isArray).map(entry => entry[1]), nets: new Set(nets.values()) };
   const copperLayer = (name) => /\.Cu$/.test(name || '');
   let seq = 0;
   function walk(items, pose = { x: 0, y: 0, a: 0 }) {
@@ -45,7 +46,9 @@ export function parseBoard(text, excludedIds = []) {
       const kind = item[0], id = one(item, 'uuid')[1] || one(item, 'tstamp')[1] || `item-${seq++}`;
       if (excluded.has(id)) continue;
       const layer = one(item, 'layer')[1], layers = one(item, 'layers').slice(1);
-      const netItem = one(item, 'net'), net = netItem[2] || nets.get(netItem[1]) || null;
+      const netItem = one(item, 'net'), net = netItem[2] || nets.get(netItem[1])
+        || (netItem.length === 2 && !/^\d+$/.test(netItem[1]) ? netItem[1] : null);
+      if (net) out.nets.add(net);
       const base = { id, layer, net, kind };
       if (kind === 'footprint' || kind === 'module') {
         const [x, y] = xy(item, 'at');
@@ -95,6 +98,7 @@ export function parseBoard(text, excludedIds = []) {
   out.loops = stitchEdges(out.edges);
   if (!out.loops.length) out.warnings.push('No closed board outline found; outside-board checks are unavailable.');
   if (out.edges.some((e) => !out.loops.some((l) => l.some((p) => distance(p, e[0]) < 0.01)))) out.warnings.push('Some board edges are open or unsupported.');
+  out.nets = [...out.nets].filter(Boolean).sort();
   return out;
 }
 
@@ -147,21 +151,37 @@ export function checkPlacement(art, board, opt = {}) {
   const p = ([x, y]) => [x + origin[0], y - origin[1]];
   const conductors = [...art.tracks, ...art.arcs.map((a) => ({ ...a, pts: arcPoints(a.start, a.mid, a.end) })), ...art.vias.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.diameter, layer: '*.Cu', net: v.net })), ...art.pads.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.shape === 'circle' ? v.w : Math.hypot(v.w, v.h), layer: v.drill ? '*.Cu' : v.layer, net: v.net }))];
   const planes = board.copper.filter((o) => o.polygon && o.net === (opt.groundNet || 'GND'));
-  for (const t of conductors) for (let i = 1; i < t.pts.length; i++) {
-    const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + clearance + 0.025;
-    if (board.loops.length && [a, b].some((q) => board.loops.filter((l) => inside(q, l)).length % 2 !== 1)) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
-    if (board.edges.some((e) => e.slice(1).some((q, j) => segmentDistance(a, b, e[j], q) < radius))) add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
-    for (const o of board.holes) if (pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
-    for (const o of board.keepouts) if (sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('keepout', o, a, 'Copper enters a keepout.');
-    for (const o of board.copper) if (sameLayer(t.layer, o.layer) && !(t.net && t.net === o.net) && hits(a, b, radius, o)) add('copper', o, a, `Clearance conflict with ${o.net || 'unassigned copper'} on ${o.layer}.`);
-    if (opt.kind !== 'filter' && t.role === 'winding') for (const o of planes) if (!sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('ground-overlap', o, a, 'Ground copper overlaps the winding projection; inductance and loss models exclude its effect.');
-    if (opt.distributed && t.layer === art.tracks[0]?.layer && t.net !== (opt.groundNet || 'GND')) {
-      const groundLayer = opt.groundLayer || 'B.Cu';
-      const covered = planes.filter((o) => o.layer === groundLayer).some((o) => inside(a, o.polygon) && inside(b, o.polygon) && !edgesOf(o.polygon).some(([c, d]) => segmentDistance(a, b, c, d) < radius));
-      if (!covered) add('reference-ground', { id: 'ground' }, a, `Continuous reference ground on ${groundLayer} was not confirmed beneath the signal.`);
+  for (const t of conductors) {
+    const contactEnd = new Map();
+    let along = 0;
+    for (let i = 1; i < t.pts.length; i++) {
+      const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + clearance + 0.025;
+      if (board.loops.length && [a, b].some((q) => board.loops.filter((l) => inside(q, l)).length % 2 !== 1)) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
+      if (board.edges.some((e) => e.slice(1).some((q, j) => segmentDistance(a, b, e[j], q) < radius))) add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
+      for (const o of board.holes) if (pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
+      for (const o of board.keepouts) if (sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('keepout', o, a, 'Copper enters a keepout.');
+      for (const o of board.copper) {
+        if (!sameLayer(t.layer, o.layer)) continue;
+        if (t.net && t.net === o.net) {
+          if (t.role !== 'winding' || !hits(a, b, t.width / 2, o)) continue;
+          if (along - (contactEnd.get(o) ?? along) > t.width) {
+            add('winding-bypass', o, a, `Copper on ${t.net} touches separated sections of the winding on ${t.layer} and may bypass turns.`);
+          }
+          contactEnd.set(o, along + distance(a, b));
+        } else if (hits(a, b, radius, o)) {
+          add('copper', o, a, `Clearance conflict with ${o.net || 'unassigned copper'} on ${o.layer}.`);
+        }
+      }
+      if (opt.kind !== 'filter' && t.role === 'winding') for (const o of planes) if (!sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('ground-overlap', o, a, 'Ground copper overlaps the winding projection; inductance and loss models exclude its effect.');
+      if (opt.distributed && t.layer === art.tracks[0]?.layer && t.net !== (opt.groundNet || 'GND')) {
+        const groundLayer = opt.groundLayer || 'B.Cu';
+        const covered = planes.filter((o) => o.layer === groundLayer).some((o) => inside(a, o.polygon) && inside(b, o.polygon) && !edgesOf(o.polygon).some(([c, d]) => segmentDistance(a, b, c, d) < radius));
+        if (!covered) add('reference-ground', { id: 'ground' }, a, `Continuous reference ground on ${groundLayer} was not confirmed beneath the signal.`);
+      }
+      along += distance(a, b);
     }
   }
-  return { findings: findings.slice(0, 200), total: findings.length, warnings: board.warnings,
+  return { findings: opt.allFindings ? findings : findings.slice(0, 200), total: findings.length, warnings: board.warnings,
     preview: boardArtwork(board, art, origin, findings), origin, clearance };
 }
 
@@ -172,7 +192,53 @@ function boardArtwork(board, design, origin, findings) {
     if (pts) A.tracks.push(track('Board', o.width || 0.12, pts));
   }
   for (const e of board.edges) A.tracks.push(track('Edge', 0.2, e));
-  for (const t of design.tracks) A.tracks.push({ ...t, layer: 'Design', pts: t.pts.map(([x, y]) => [x + origin[0], y - origin[1]]) });
+  const move = ([x, y]) => [x + origin[0], y - origin[1]];
+  for (const t of design.tracks) A.tracks.push({ ...t, layer: 'Design', pts: t.pts.map(move) });
+  for (const a of design.arcs) A.tracks.push(track('Design', a.width, arcPoints(a.start, a.mid, a.end).map(move)));
+  for (const pad of [...design.pads, ...design.vias]) {
+    const [x, y] = move([pad.x, pad.y]);
+    A.pads.push({ ...pad, x, y, w: pad.w ?? pad.diameter, h: pad.h ?? pad.diameter,
+      shape: pad.shape || 'circle', layer: 'Design', drill: 0 });
+  }
   for (const f of findings.slice(0, 200)) A.pads.push({ x: f.point[0], y: f.point[1], w: 0.8, h: 0.8, shape: 'circle', layer: 'Conflict', drill: 0 });
   return A;
+}
+
+export function reviewBoardPlacement(art, config, text, excluded, options = {}) {
+  const tolerance = art.meta.exactPaths ? 0 : config.tolerance;
+  const prepared = tolerance > 0 ? {
+    ...art, tracks: art.tracks.map(t => ({ ...t, pts: decimate(t.pts, tolerance) })),
+  } : art;
+  const board = parseBoard(text, excluded);
+  const origin = config.placementOrigin || [0, 0];
+  const checked = checkPlacement(prepared, board, { origin, clearance: config.traceS, ...options, allFindings: true });
+  const payload = toKicad(prepared);
+  const copper = [...payload.tracks, ...payload.arcs, ...payload.pads];
+  const layers = new Set([...copper, ...payload.texts].map(p => p.layer));
+  if (payload.vias.length) for (const name of ['F.Cu', 'B.Cu']) layers.add(name);
+  if (payload.pads.length) layers.add('F.Cu');
+  for (const pad of payload.pads.filter(p => p.mask !== false)) layers.add(pad.layer.replace('.Cu', '.Mask'));
+  const requiredNets = [...new Set([...copper, ...payload.vias].map(p => p.net).filter(Boolean))];
+  const nets = options.nets ?? board.nets;
+  const issues = checked.findings.filter(f => options.kind === 'transformer' || f.type !== 'ground-overlap');
+  for (const layer of layers) {
+    if (!board.layers.includes(layer)) issues.push({ type: 'layer', layer, message: `Destination lacks ${layer}.` });
+  }
+  if (options.requireNets) for (const net of requiredNets) {
+    if (!nets.includes(net)) issues.push({ type: 'net', net, message: `Create or map the ${net} net in KiCad.` });
+  }
+  const removed = new Set(excluded);
+  const previous = removed.size ? parseBoard(text).copper.filter(item => removed.has(item.id)) : [];
+  for (const item of previous) {
+    const pts = item.pts || [...item.polygon, item.polygon[0]];
+    checked.preview.tracks.push(track('Previous placement', item.width || 0.2, pts));
+  }
+  const added = payload.tracks.reduce((n, t) => n + t.pts.length - 1, 0)
+    + payload.arcs.length + payload.vias.length + payload.pads.length + payload.texts.length;
+  return {
+    ...checked, board, payload, issues: issues.slice(0, 200), requiredNets, layers: board.layers, nets,
+    warnings: [...checked.warnings, ...checked.findings.filter(f => !issues.includes(f))],
+    replacement: { removed: removed.size, added, previousCopper: previous.length },
+    ready: issues.length === 0,
+  };
 }
