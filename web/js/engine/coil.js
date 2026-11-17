@@ -11,6 +11,7 @@
 
 import { buildObstacleCoil } from './obstacles.js';
 import { windingPhasors } from './winding-design.js';
+import { ellipticRatio } from './microstrip.js';
 
 export const MU0      = 4e-7 * Math.PI;      // H/m
 export const EPS0     = 8.8541878128e-12;    // F/m
@@ -839,6 +840,20 @@ export function ipcRise(I, wMM, tMM, external) {
    6.  TOP-LEVEL ANALYSIS
    ------------------------------------------------------------------------ */
 
+// Olivo et al., ISMICT 2011, eqs. 2–6 and 8: two coplanar strips with air
+// above a finite dielectric. Dimensions use mm except the winding length (m).
+function squareSpiralCapacitance(w, s, t, h, er, length, turns) {
+  const edgeExtension = t / (2 * Math.PI) * (1 + Math.log(8 * Math.PI * w / t));
+  const gap = s - 2 * edgeExtension;
+  if (!(gap > 0 && h > 0 && er >= 1)) return null;
+  const span = gap + 2 * w;
+  const kAir = gap / span;
+  const kBoard = Math.tanh(Math.PI * gap / (4 * h)) / Math.tanh(Math.PI * span / (4 * h));
+  const air = ellipticRatio(Math.sqrt(1 - kAir * kAir));
+  const board = ellipticRatio(Math.sqrt(Math.max(0, 1 - kBoard * kBoard)));
+  return EPS0 * (air + 0.5 * (er - 1) * board) * length / turns;
+}
+
 export function analyse(cfg, coil, opts = {}) {
   const nL = cfg.layers;
   const series = cfg.connection === 'series';
@@ -933,7 +948,10 @@ export function analyse(cfg, coil, opts = {}) {
   }
   const epsEff = (1 + epsR) / 2;
   const Ctt = EPS0 * epsEff * ((tCu / s) + (2 / Math.PI) * Math.log(1 + 2 * w / s)) * lenLayer;
-  const Cturn = turns > 1 ? Ctt / (turns * turns) * (turns - 1) : 0;
+  const squareCap = nL === 1 && cfg.shape === 'polygon' && cfg.sides === 4 && turns >= 3
+    && !coil.obstacleRegions && !cfg.motorGeometry && !cfg.arrayEnabled
+    ? squareSpiralCapacitance(w, s, tCu, cfg.boardT, epsR, lenLayer, turns) : null;
+  const Cturn = squareCap ?? (turns > 1 ? Ctt / (turns * turns) * (turns - 1) : 0);
   const Ctot = Math.max(1e-15, Cinter + Cturn + cfg.cExtra * 1e-12);
   const srf = 1 / (TAU * Math.sqrt(Math.max(Lnum, 1e-15) * Ctot));
 
@@ -969,7 +987,7 @@ export function analyse(cfg, coil, opts = {}) {
     lenLayer, lenTotal, cuVol, cuMass, cuArea, fill,
     L: Lnum, Lsingle, Lcs, Lwh, k: kCouple,
     Rdc, Rac, Fr, viaR,
-    Cinter, Cturn, Ctot, srf, Q, Leff,
+    Cinter, Cturn, Ctot, squareCapModel: squareCap !== null, srf, Q, Leff,
     I10, I20, I40, rise, Ploss, Iop,
     dOutEff: dOutEff * 1e3, dInEff: dInEff * 1e3,
     drc, segments: cap,

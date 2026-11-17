@@ -49,7 +49,7 @@ values side by side wherever a closed form exists.
 | Closed-form cross-check | Mohan current-sheet and modified Wheeler, where the shape has coefficients |
 | AC resistance | Dowell, with porosity correction `η = w/(w+s)` |
 | Interlayer capacitance | Plate capacitance with the 1/3 energy factor for a series stack |
-| Turn-to-turn capacitance | Coplanar strips on substrate, scaled by `(n−1)/n²` |
+| Turn-to-turn capacitance | Single-layer square spirals use finite-substrate coplanar strips. Other windings use the fringing estimate scaled by `(n−1)/n²`. |
 | Current rating | IPC-2221, `I = k·ΔT^0.44·A^0.725`, `k` = 0.048 external / 0.024 internal |
 | Motor | Sinusoidal PMSM: `Kt = 1.5·p·λ`, `λ = N·kw·Φ`, `Φ = (2/π)·B·A_pole` |
 | Microstrip | Hammerstad–Jensen with thickness correction; Getsinger dispersion |
@@ -62,6 +62,21 @@ Airgap flux density is an input, not a magnetostatic solve — feed it from your
 magnet grade and gap. IPC-2221 assumes still air and an isolated conductor; a
 coil packed against its neighbours runs hotter than the single-trace figure, and
 a stator has no still air around it at all.
+
+### Square-spiral self-resonance
+
+For single square spirals with at least three generated turns, the model uses
+a copper-thickness correction and two elliptic-integral ratios for air above
+a finite dielectric. It multiplies capacitance per metre by the generated
+winding length divided by the turn count. The ordinary fringing estimate
+applies when the corrected gap closes, and for arrays, motors and obstacle
+windings. Added terminal capacitance is included before calculating resonance.
+The model assumes bare copper on a uniform substrate. Nearby planes, solder
+mask and the measurement fixture can change the result. [Olivo et al., equations 2–8](https://si2.epfl.ch/demichel/publications/archive/2011/ISMICT_2011_Jacopo_%28Antenna_Design%29.pdf)
+
+Predicted self-resonance exceeded measurement by 70.6%, 21.4% and 2.2% on
+three published reconstructions. These observed errors include inductance and
+geometry differences. [Reproducible benchmark](../examples/measured-inductor/README.md)
 
 ## Geometry and circuit conventions
 

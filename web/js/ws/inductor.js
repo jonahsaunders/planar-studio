@@ -257,7 +257,7 @@ export function tiles(cfg, res) {
     { k: 'Q', v: num(a.Q, 1), sub: `at ${fmtHz(cfg.freq)}Hz` },
     { k: 'R dc', v: eng(a.Rdc, 'Ω', 3) },
     { k: 'R ac', v: eng(a.Rac, 'Ω', 3), sub: `Fr ${a.Fr.toFixed(2)}` },
-    { k: 'Self-resonance', v: eng(a.srf, 'Hz', 3), tone: srfTone, sub: `C ${eng(a.Ctot, 'F', 3)}` },
+    { k: 'Estimated self-resonance', v: eng(a.srf, 'Hz', 3), tone: srfTone, sub: `C ${eng(a.Ctot, 'F', 3)}` },
     { k: 'ΔT at I', v: `${num(a.rise, 1)} K`, tone: riseTone, sub: `${a.Iop} A, ${eng(a.Ploss, 'W', 3)}` },
     ...(drc && !drc.clearanceOK ? [{ k: 'Clearance', v: `${num(drc.minClearance, 3)} mm`, tone: 'bad', sub: `below ${cfg.traceS} mm`, wide: true }] : []),
   ];
@@ -348,7 +348,9 @@ export function notes(cfg, res) {
     out.push({
       level: 'warn',
       text: `Self-resonance is at ${eng(a.srf, 'Hz', 3)}, only ${(a.srf / cfg.freq).toFixed(1)}× the operating frequency. `
-        + 'The effective inductance is already well above the low-frequency value.',
+        + (a.squareCapModel
+          ? 'The estimate was 2% to 71% high on three published square spirals. Measure your board before operating near resonance.'
+          : 'Check the impedance curve and measure your board before operating near resonance.'),
     });
   }
   if (a.rise > 40) {

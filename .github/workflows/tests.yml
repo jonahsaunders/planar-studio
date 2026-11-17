@@ -32,6 +32,7 @@ jobs:
           "$PYTHON" -c "from planar_studio.kicad_link import HAVE_KIPY, KIPY_IMPORT_ERROR; assert HAVE_KIPY, KIPY_IMPORT_ERROR"
           npm test
           node examples/measured-inductor/compare.mjs
+          node examples/measured-inductor/resonance.mjs
       - name: Test workspace interactions
         run: |
           npm run test:dom

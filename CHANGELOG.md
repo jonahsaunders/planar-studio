@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Preserve independent changes from simultaneous KiCad sessions and report a
+  conflict when two editors save the same design revision.
+- Read the open board's enabled layers and check every destination again
+  before placing or replacing copper, pads, vias or labels.
+- Improve single-layer square-spiral capacitance and report observed
+  self-resonance errors against three published coils.
+
 - Track restored placement IDs across KiCad Undo, Redo and plugin restarts.
   Report failed library saves, retain unsaved edits and support reopening
   designs saved in a standalone browser.

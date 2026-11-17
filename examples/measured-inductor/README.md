@@ -13,12 +13,29 @@ terminal routing. [Original paper, Tables I–II and Figure 3(b)](https://si2.ep
 | --- | ---: | ---: | ---: |
 | Inductance | 1.53 µH | 1.336 µH | −12.7% |
 | Resistance at 1 MHz | 0.56 Ω | 0.326 Ω | −41.7% |
-| Reactance at 1 MHz | 9.76 Ω | 8.395 Ω | −14.0% |
-| Self-resonance | 70.4 MHz | 123.68 MHz | +75.7% |
+| Reactance at 1 MHz | 9.76 Ω | 8.396 Ω | −14.0% |
+| Self-resonance | 70.4 MHz | 85.48 MHz | +21.4% |
 
-The largest discrepancy is self-resonance. This reconstruction substantially
-underestimates terminal loss at 1 MHz and increasingly underestimates reactance
-as frequency rises. No model parameters were fitted to the measurements.
+The reconstruction underestimates TxB terminal resistance at 1 MHz. At 49 MHz
+it predicts 613 Ω of reactance against approximately 904 Ω in the published plot.
+
+## Self-resonance across three coils
+
+The finite-substrate coplanar-strip model uses published equations and the
+generated winding length. No coefficients were fitted. We checked TxA and TxB
+during implementation and then evaluated the fixed equations on TxC from the
+same study. The comparison includes error in the generated geometry and inductance.
+
+| Coil | Measured MHz | Previous MHz | Updated MHz | Updated error | Published / predicted capacitance (pF) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| TxA | 112.2 | 310.20 | 191.38 | +70.6% | 3.42 / 1.614 |
+| TxB | 70.4 | 123.68 | 85.48 | +21.4% | 3.34 / 2.594 |
+| TxC (held out) | 32.6 | 45.28 | 33.31 | +2.2% | 2.52 / 2.537 |
+
+The generator fits 4.5 of the five published turns for TxA. It reproduces the
+turn counts for TxB (8) and TxC (29). All three resonance estimates run high.
+Use a board measurement to establish the operating margin near resonance.
+Run `node examples/measured-inductor/resonance.mjs` to reproduce the table.
 
 ## Reproduce the comparison
 
