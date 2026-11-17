@@ -142,7 +142,12 @@ export function merge(dst, src) {
   dst.outline.push(...src.outline);
   dst.ports.push(...src.ports);
   dst.notes.push(...src.notes);
+  if (src.meta.routingError) dst.meta.routingError ||= src.meta.routingError;
   return dst;
+}
+
+export function assertRoutable(art) {
+  if (art.meta.routingError) throw new Error(art.meta.routingError);
 }
 
 /** Set the net name on every primitive that does not already have one. */
@@ -263,6 +268,7 @@ export function simplify(A, tol) {
  * board coordinates.
  */
 export function toKicad(A, opt = {}) {
+  assertRoutable(A);
   const tol = A.meta.exactPaths ? 0 : opt.tolerance || 0;
   const dx = opt.dx || 0, dy = opt.dy || 0;
   const P = (p) => [p[0] + dx, -p[1] + dy];

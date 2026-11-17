@@ -60,25 +60,27 @@ export function parseBoard(text, excludedIds = []) {
       } else if (kind === 'pad' || kind === 'via') {
         const p = point(xy(item, 'at'));
         const size = one(item, 'size').slice(1).map(Number);
+        const first = stack.indexOf(layers[0]), last = stack.indexOf(layers[1]);
+        const viaSpan = kind === 'via' && first >= 0 && last >= 0
+          ? stack.slice(Math.min(first, last), Math.max(first, last) + 1) : null;
         const drillSpec = one(item, 'drill');
         const drill = drillSpec.slice(1).filter(x => typeof x === 'string' && Number(x) > 0).map(Number);
         if (drill.length) {
           // A centered bounding circle also covers oval and offset drills.
           const offset = xy(drillSpec, 'offset');
-          out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 + Math.hypot(...offset) });
+          out.holes.push({ ...base, point: p, radius: Math.max(...drill) / 2 + Math.hypot(...offset),
+            layer: '*.Cu', layers: viaSpan });
         }
         const radius = kind === 'via' ? size[0] / 2 : (item[3] === 'circle' ? size[0] : Math.hypot(...size)) / 2;
         if (!Number.isFinite(radius)) { out.warnings.push(`Unsupported pad ${id}.`); continue; }
         const plated = kind === 'via' || item[2] !== 'np_thru_hole';
         if (plated && (kind === 'via' || layers.some(copperLayer))) {
-          const first = stack.indexOf(layers[0]), last = stack.indexOf(layers[1]);
-          const span = kind === 'via' && first >= 0 && last >= 0
-            ? stack.slice(Math.min(first, last), Math.max(first, last) + 1) : layers.filter(copperLayer);
           out.copper.push({ ...base, owner: pose.owner, layer: layers.includes('*.Cu') || kind === 'via' ? '*.Cu' : layers[0],
-            layers: span, pts: [p, p], width: radius * 2, approxPad: kind === 'pad' && item[3] !== 'circle' });
+            layers: viaSpan || layers.filter(copperLayer), pts: [p, p], width: radius * 2, approxPad: kind === 'pad' && item[3] !== 'circle' });
         }
       } else if (kind === 'zone') {
         const zoneLayers = layers.length ? layers : [layer], keepout = one(item, 'keepout');
+        const restricted = ['tracks', 'vias', 'pads'].filter(type => one(keepout, type)[1] === 'not_allowed');
         const polygons = all(item, keepout.length ? 'polygon' : 'filled_polygon');
         if (!keepout.length && !polygons.length) out.warnings.push(`Unfilled zone ${id}: refill zones in KiCad to check copper coverage.`);
         for (const poly of polygons) {
@@ -86,7 +88,7 @@ export function parseBoard(text, excludedIds = []) {
           const polyLayers = one(poly, 'layer')[1] ? [one(poly, 'layer')[1]] : zoneLayers;
           for (const l of polyLayers) {
             if (polygon.length >= 3) (keepout.length ? out.keepouts : out.copper).push({
-              ...base, layer: l, polygon, name: one(item, 'name')[1],
+              ...base, layer: l, polygon, name: one(item, 'name')[1], ...(keepout.length ? { restricted } : {}),
             });
           }
         }
@@ -102,7 +104,10 @@ export function parseBoard(text, excludedIds = []) {
           pts = all(one(item, 'pts'), 'xy').map((p) => [Number(p[1]), Number(p[2])]);
           if (pts.length && distance(pts[0], pts.at(-1)) > 0.01) pts.push(pts[0]);
         }
-        if (!pts) { if (layer === 'Edge.Cuts' || copperLayer(layer)) out.warnings.push(`Unsupported ${kind} on ${layer}.`); continue; }
+        if (!pts || pts.length < 2 || pts.some(p => !p.every(Number.isFinite))) {
+          if (layer === 'Edge.Cuts' || copperLayer(layer)) out.warnings.push(`Unsupported ${kind} on ${layer}.`);
+          continue;
+        }
         pts = pts.map(point);
         if (layer === 'Edge.Cuts') out.edges.push(pts);
         else if (copperLayer(layer)) {
@@ -114,15 +119,17 @@ export function parseBoard(text, excludedIds = []) {
     }
   }
   walk(root);
-  out.loops = stitchEdges(out.edges);
+  const { loops, open } = stitchEdges(out.edges);
+  out.loops = loops;
   if (!out.loops.length) out.warnings.push('No closed board outline found; outside-board checks are unavailable.');
-  if (out.edges.some((e) => !out.loops.some((l) => l.some((p) => distance(p, e[0]) < 0.01)))) out.warnings.push('Some board edges are open or unsupported.');
+  if (open) out.warnings.push('Some board edges are open or unsupported.');
   out.nets = [...out.nets].filter(Boolean).sort();
   return out;
 }
 
 function stitchEdges(edges) {
   const remaining = edges.map((e) => e.slice()), loops = [];
+  let open = false;
   while (remaining.length) {
     const path = remaining.shift();
     while (distance(path[0], path.at(-1)) > 0.01) {
@@ -133,8 +140,9 @@ function stitchEdges(edges) {
       path.push(...next.slice(1));
     }
     if (path.length >= 4 && distance(path[0], path.at(-1)) <= 0.01) loops.push(path);
+    else open = true;
   }
-  return loops;
+  return { loops, open };
 }
 
 export function inside(p, polygon) {
@@ -162,8 +170,7 @@ function hits(a, b, radius, o) {
 }
 const sameLayer = (a, b) => a === b || a === '*.Cu' || b === '*.Cu';
 
-// Connectivity uses known via spans and supported copper shapes. Keep the
-// broader conservative geometry in the separate clearance check.
+// Fall back to the wildcard for vias whose span could not be read.
 function layersOf(item) {
   return item.layers?.length ? item.layers : [item.layer];
 }
@@ -282,7 +289,14 @@ export function checkPlacement(art, board, opt = {}) {
   const findings = [], seen = new Set();
   const add = (type, o, point, message) => { const key = `${type}:${o.id}`; if (!seen.has(key)) { seen.add(key); findings.push({ type, id: o.id, point, message }); } };
   const p = ([x, y]) => [x + origin[0], y - origin[1]];
-  const conductors = [...art.tracks, ...art.arcs.map((a) => ({ ...a, pts: arcPoints(a.start, a.mid, a.end) })), ...art.vias.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.diameter, layer: '*.Cu', net: v.net })), ...art.pads.map((v) => ({ pts: [[v.x, v.y], [v.x, v.y]], width: v.shape === 'circle' ? v.w : Math.hypot(v.w, v.h), layer: v.drill ? '*.Cu' : v.layer, net: v.net }))];
+  const conductors = [
+    ...art.tracks, ...art.arcs.map(a => ({ ...a, pts: arcPoints(a.start, a.mid, a.end) })),
+    ...art.vias.map(v => ({ ...v, pts: [[v.x, v.y], [v.x, v.y]], width: v.diameter, layer: '*.Cu', item: 'vias' })),
+    ...art.pads.map(v => ({
+      ...v, pts: [[v.x, v.y], [v.x, v.y]], width: v.shape === 'circle' ? v.w : Math.hypot(v.w, v.h),
+      layer: v.drill ? '*.Cu' : v.layer, item: v.drill ? 'vias' : 'pads',
+    })),
+  ];
   const planes = board.copper.filter((o) => o.polygon && o.net === (opt.groundNet || 'GND'));
   for (const t of conductors) {
     const contactEnd = new Map();
@@ -291,10 +305,14 @@ export function checkPlacement(art, board, opt = {}) {
       const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + clearance + 0.025;
       if (board.loops.length && [a, b].some((q) => board.loops.filter((l) => inside(q, l)).length % 2 !== 1)) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
       if (board.edges.some((e) => e.slice(1).some((q, j) => segmentDistance(a, b, e[j], q) < radius))) add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
-      for (const o of board.holes) if (pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
-      for (const o of board.keepouts) if (sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('keepout', o, a, 'Copper enters a keepout.');
+      for (const o of board.holes) if (shareCopperLayer(t, o) && pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
+      for (const o of board.keepouts) {
+        if (sameLayer(t.layer, o.layer) && (o.restricted?.includes(t.item || 'tracks') ?? true) && hits(a, b, radius, o)) {
+          add('keepout', o, a, 'Copper enters a keepout.');
+        }
+      }
       for (const o of board.copper) {
-        if (!sameLayer(t.layer, o.layer)) continue;
+        if (!shareCopperLayer(t, o)) continue;
         if (t.net && t.net === o.net) {
           if (t.role !== 'winding' || !hits(a, b, t.width / 2, o)) continue;
           if (along - (contactEnd.get(o) ?? along) > t.width) {
@@ -306,7 +324,8 @@ export function checkPlacement(art, board, opt = {}) {
         }
       }
       if (opt.kind !== 'filter' && t.role === 'winding') for (const o of planes) if (!sameLayer(t.layer, o.layer) && hits(a, b, radius, o)) add('ground-overlap', o, a, 'Ground copper overlaps the winding projection; inductance and loss models exclude its effect.');
-      if (opt.distributed && t.layer === (opt.signalLayer ?? art.tracks[0]?.layer) && t.net !== (opt.groundNet || 'GND')) {
+      if (opt.distributed && t.layer === (opt.signalLayer ?? art.tracks[0]?.layer)
+          && (t.net !== (opt.groundNet || 'GND') || t.referenceSignal)) {
         const groundLayer = opt.groundLayer || 'B.Cu';
         const covered = planes.filter((o) => o.layer === groundLayer).some((o) => inside(a, o.polygon) && inside(b, o.polygon) && !edgesOf(o.polygon).some(([c, d]) => segmentDistance(a, b, c, d) < radius));
         if (!covered) add('reference-ground', { id: 'ground' }, a, `Continuous reference ground on ${groundLayer} was not confirmed beneath the signal.`);

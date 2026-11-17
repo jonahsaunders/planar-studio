@@ -205,8 +205,10 @@ live snapshot and replacement IDs before editing the board.
 
 Use **Map destination nets** to match the generated conductor groups to live
 KiCad nets. Missing named nets must be mapped or explicitly left unassigned
-before placing. The two edge-coupled filter feeds have separate assignments
-and the intervening resonators float. The reference plane needs a board net.
+before placing. The edge-coupled and multi-resonator hairpin feeds have
+separate assignments, with floating resonators between them. Interdigital
+taps are DC-connected to the ground rails. Use an external DC block where
+the circuit requires isolation. The reference plane needs a board net.
 
 **Check KiCad rules** compares the open board and the proposed replacement with
 the installed KiCad checker. The tool uses temporary board copies and any
@@ -239,8 +241,9 @@ ownership when the live KiCad item IDs uniquely match an existing placement.
 Replacing the winding on a copy keeps a separate history for the copy.
 
 Enter origin coordinates in **KiCad coordinates (+Y down)** and a uniform
-clearance. The preview checks other-net copper, keepouts, drills, board edges,
-outline cutouts, and ground copper overlapping winding traces. Distributed
+clearance. The preview checks other-net copper, drills within the proposed
+copper's layer span, applicable track/via/pad keepouts, board edges, outline
+cutouts, and ground copper overlapping winding traces. Distributed
 filters additionally check for a continuous filled polygon on the selected
 reference layer beneath signal traces. The filter's Substrate settings
 select the same reference layer for synthesis and placement.

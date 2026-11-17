@@ -186,6 +186,8 @@ export function layoutHairpin(design, ctx) {
   const L = ctx.signalLayer;
   const R = design.resonators;
   if (!R || !R.length) return A;
+  const inputNet = R.length === 1 ? ctx.net : `${ctx.net}_IN`;
+  const outputNet = R.length === 1 ? ctx.net : `${ctx.net}_OUT`;
 
   let x = 0;
   const centres = [];
@@ -195,11 +197,12 @@ export function layoutHairpin(design, ctx) {
     centres.push(xc);
 
     const xa = xc - half, xb = xc + half;
+    const net = i === 0 ? inputNet : i === R.length - 1 ? outputNet : null;
     // Reflect alternating U's so adjacent-arm electric/magnetic coupling adds.
-    A.tracks.push(track(L, r.w, run(xa, 0, xa, r.armLen), { role: 'hairpin-arm', index: i }));
-    A.tracks.push(track(L, r.w, run(xb, 0, xb, r.armLen), { role: 'hairpin-arm', index: i }));
+    A.tracks.push(track(L, r.w, run(xa, 0, xa, r.armLen), { role: 'hairpin-arm', index: i, net }));
+    A.tracks.push(track(L, r.w, run(xb, 0, xb, r.armLen), { role: 'hairpin-arm', index: i, net }));
     const bend = r.flipped ? uBend(xa, xb, 0).map(([x, y]) => [x, -y]) : uBend(xa, xb, r.armLen);
-    A.tracks.push(track(L, r.w, bend, { role: 'hairpin-bend', index: i }));
+    A.tracks.push(track(L, r.w, bend, { role: 'hairpin-bend', index: i, net }));
     A.labels.push(label(xc, r.flipped ? r.armLen + 1.2 : -1.2, `R${i + 1}`, { size: 0.7 }));
 
     // Physical edge-to-edge gap to the next resonator.
@@ -214,15 +217,14 @@ export function layoutHairpin(design, ctx) {
   const xIn = centres[0] - (first.armGap + first.w) / 2;
   const xOut = centres[centres.length - 1] + (last.armGap + last.w) / 2;
 
-  A.tracks.push(track(L, design.feed.w, run(xIn - ctx.feedLength, inTap.y, xIn, inTap.y), { role: 'feed' }));
-  A.ports.push({ x: xIn - ctx.feedLength, y: inTap.y, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(xIn - ctx.feedLength, inTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
+  A.tracks.push(track(L, design.feed.w, run(xIn - ctx.feedLength, inTap.y, xIn, inTap.y), { role: 'feed', net: inputNet }));
+  A.ports.push({ x: xIn - ctx.feedLength, y: inTap.y, name: 'P1', angle: Math.PI, net: inputNet });
+  A.pads.push(pad(xIn - ctx.feedLength, inTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port', net: inputNet }));
 
-  A.tracks.push(track(L, design.feed.w, run(xOut, outTap.y, xOut + ctx.feedLength, outTap.y), { role: 'feed' }));
-  A.ports.push({ x: xOut + ctx.feedLength, y: outTap.y, name: 'P2', angle: 0 });
-  A.pads.push(pad(xOut + ctx.feedLength, outTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
+  A.tracks.push(track(L, design.feed.w, run(xOut, outTap.y, xOut + ctx.feedLength, outTap.y), { role: 'feed', net: outputNet }));
+  A.ports.push({ x: xOut + ctx.feedLength, y: outTap.y, name: 'P2', angle: 0, net: outputNet });
+  A.pads.push(pad(xOut + ctx.feedLength, outTap.y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port', net: outputNet }));
 
-  defaultNet(A, ctx.net);
   A.notes.push({
     level: 'info',
     text: `Tap distances from the resonator midpoint: ${inTap.distance.toFixed(2)} / ${outTap.distance.toFixed(2)} mm; `
@@ -252,7 +254,7 @@ export function layoutInterdigital(design, ctx) {
     const xc = x + r.w / 2;
     centres.push(xc);
     const rlen = r.length || len;
-    A.tracks.push(track(L, r.w, run(xc, 0, xc, rlen), { role: 'resonator', index: i }));
+    A.tracks.push(track(L, r.w, run(xc, 0, xc, rlen), { role: 'resonator', index: i, referenceSignal: true }));
 
     // Grounded end alternates so adjacent resonators couple through their
     // open ends -- that is what makes the structure interdigital rather than
@@ -291,22 +293,21 @@ export function layoutInterdigital(design, ctx) {
   // Tapped feeds on the first and last resonators.
   const tapLen = clamp(design.tap ? design.tap.length : len * 0.25, 0.5, len - 0.5);
   const inY = Math.min(tapLen, R[0].length || len), outY = R.length % 2 === 0 ? Math.max(0, (R.at(-1).length || len) - tapLen) : Math.min(tapLen, R.at(-1).length || len);
-  A.tracks.push(track(L, design.feed.w, run(centres[0] - ctx.feedLength - 1, inY, centres[0], inY), { role: 'feed' }));
-  A.ports.push({ x: centres[0] - ctx.feedLength - 1, y: inY, name: 'P1', angle: Math.PI });
+  A.tracks.push(track(L, design.feed.w, run(centres[0] - ctx.feedLength - 1, inY, centres[0], inY), { role: 'feed', referenceSignal: true }));
+  A.ports.push({ x: centres[0] - ctx.feedLength - 1, y: inY, name: 'P1', angle: Math.PI, net: ctx.gndNet });
   A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
 
   const lastX = centres[centres.length - 1];
-  A.tracks.push(track(L, design.feed.w, run(lastX, outY, lastX + ctx.feedLength + 1, outY), { role: 'feed' }));
-  A.ports.push({ x: lastX + ctx.feedLength + 1, y: outY, name: 'P2', angle: 0 });
+  A.tracks.push(track(L, design.feed.w, run(lastX, outY, lastX + ctx.feedLength + 1, outY), { role: 'feed', referenceSignal: true }));
+  A.ports.push({ x: lastX + ctx.feedLength + 1, y: outY, name: 'P2', angle: 0, net: ctx.gndNet });
   A.pads.push(pad(lastX + ctx.feedLength + 1, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
 
-  A.tracks.filter((t) => !t.net).forEach((t) => { t.net = ctx.net; });
-  A.vias.filter((v) => !v.net).forEach((v) => { v.net = ctx.gndNet; });
-  A.pads.filter((p) => !p.net).forEach((p) => { p.net = ctx.net; });
+  defaultNet(A, ctx.gndNet);
 
   A.notes.push({
     level: 'warn',
-    text: 'Every resonator needs a low-inductance path to ground. A single 0.3 mm via adds roughly '
+    text: 'Both taps are DC-connected to ground. Add DC blocks when the external circuit requires DC isolation. '
+      + 'Every resonator needs a low-inductance path to ground. A single 0.3 mm via adds roughly '
       + '0.5 nH, which pulls f₀ down by a percent or two — use two or three vias per resonator end.',
   });
   return A;
@@ -406,16 +407,20 @@ export function plateGeom(ctx, targetC, opt = {}) {
   const layerB = opt.layerB || ctx.layers[1] || 'B.Cu';
   const hDiel = opt.h != null ? opt.h : (ctx.layers.length > 1 ? ctx.boardT / (ctx.layers.length - 1) : ctx.boardT);
   const areaMM2 = plateAreaFor(targetC, hDiel, ctx.er);
-  const side = Math.sqrt(Math.max(areaMM2, 0.01));
+  // A short round-ended track is legal copper on inner and outer layers.
+  // Size both plates by its actual copper area, not its bounding rectangle.
+  const area = Math.max(areaMM2, 0.01);
+  const height = Math.sqrt(area / (Math.PI / 4 + 0.15));
+  const width = height * 1.15;
 
   const A = artwork({ name: 'plate-cap', kind: 'component' });
-  A.tracks.push(fillRect(layerA, -side / 2, -side / 2, side / 2, side / 2, { role: 'plate-a' }));
-  A.tracks.push(fillRect(layerB, -side / 2, -side / 2, side / 2, side / 2, { role: 'plate-b' }));
+  A.tracks.push(fillRect(layerA, -width / 2, -height / 2, width / 2, height / 2, { role: 'plate-a' }));
+  A.tracks.push(fillRect(layerB, -width / 2, -height / 2, width / 2, height / 2, { role: 'plate-b' }));
 
-  const model = { C: targetC, area: side * side, side, h: hDiel };
+  const model = { C: targetC * area / areaMM2, area, h: hDiel };
   return {
-    art: A, width: side, height: side,
-    portA: [0, side / 2], portB: [0, -side / 2],
+    art: A, width, height,
+    portA: [0, height / 2], portB: [0, -height / 2],
     layerA, layerB, model, kind: 'plate',
   };
 }
@@ -457,6 +462,7 @@ export function coilGeom(ctx, targetL, opt = {}) {
   const sol = solveCoilForL(base, targetL, {
     dMax: dOuter,
     dMin: opt.minDiameter || dOuter * 0.3,
+    maxTurns: opt.maxTurns,
     segmentCap: 1200,
   });
   const cfg = sol.cfg || base;
@@ -484,6 +490,13 @@ export function coilGeom(ctx, targetL, opt = {}) {
 
   const termA = rot(coil.terminals[0]);
   const termB = rot(coil.terminals[1]);
+  if (!opt.surfaceTerminals && (coil.enclosed || coil.layers.length > 2)) {
+    A.meta.routingError = 'This filter winding needs two copper layers to bring both terminals out without crossing or bypassing turns. Set coil layers to two before KiCad placement or export.';
+  } else if (coil.layers.at(-1).name !== ctx.signalLayer) {
+    // Both ladder routes are on the signal layer. Bring the fanned-out
+    // return terminal back up at its lead end, beyond the winding.
+    A.vias.push(via(termB[0], termB[1], { drill: ctx.viaDrill, diameter: ctx.viaPad, role: 'coil-return-via' }));
+  }
   // After the rotation the first terminal is the left one. If the geometry
   // came out the other way round (an odd layer count leaves the second end
   // buried), swap so the caller can always trust left/right.
@@ -502,14 +515,20 @@ export function coilGeom(ctx, targetL, opt = {}) {
 
 // Give every capacitor two accessible signal-layer ports. The second plate
 // must escape on its own layer before a via brings it up outside the plates.
-function layoutCap(ctx, value) {
-  if (ctx.capStyle !== 'plate' || ctx.layers.length < 2) return interdigitalGeom(ctx, value);
-  const g = plateGeom(ctx, value, { layerA: ctx.signalLayer });
+function layoutCap(ctx, value, netA, netB) {
+  if (ctx.capStyle !== 'plate' || ctx.layers.length < 2) {
+    const g = interdigitalGeom(ctx, value);
+    g.art.tracks.forEach(t => { t.net = t.role.endsWith('-a') ? netA : netB; });
+    return g;
+  }
+  const layerB = ctx.layers.find(layer => layer !== ctx.signalLayer);
+  const g = plateGeom(ctx, value, { layerA: ctx.signalLayer, layerB });
+  g.art.tracks.forEach(t => { t.net = t.role === 'plate-a' ? netA : netB; });
   const escape = Math.max(ctx.viaPad / 2, ctx.traceW / 2) + ctx.clearance;
   const a = [0, g.portA[1] + escape], b = [0, g.portB[1] - escape];
-  g.art.tracks.push(track(g.layerA, ctx.traceW, [g.portA, a], { role: 'plate-lead-a' }));
-  g.art.tracks.push(track(g.layerB, ctx.traceW, [g.portB, b], { role: 'plate-lead-b' }));
-  g.art.vias.push(via(b[0], b[1], { drill: ctx.viaDrill, diameter: ctx.viaPad, role: 'plate-escape' }));
+  g.art.tracks.push(track(g.layerA, ctx.traceW, [g.portA, a], { role: 'plate-lead-a', net: netA }));
+  g.art.tracks.push(track(g.layerB, ctx.traceW, [g.portB, b], { role: 'plate-lead-b', net: netB }));
+  g.art.vias.push(via(b[0], b[1], { drill: ctx.viaDrill, diameter: ctx.viaPad, role: 'plate-escape', net: netB }));
   return { ...g, portA: a, portB: b, height: a[1] - b[1] };
 }
 
@@ -539,59 +558,84 @@ function fitElement(built, ctx) {
    on one layer.
    ----------------------------------------------------------------------- */
 
+function ladderNets(elements, ctx) {
+  // Etched inductors are continuous at DC. Only a series capacitor separates
+  // spine nodes. An inductive shunt ties its entire spine node to the rail.
+  const grounded = new Set();
+  let cursor = 0;
+  const nodes = elements.map(el => {
+    const input = cursor;
+    if (el.kind === 'series' && ['C', 'LC-series'].includes(el.type)) cursor++;
+    if (el.kind === 'shunt' && ['L', 'LC-parallel'].includes(el.type)) grounded.add(input);
+    return [input, cursor];
+  });
+  const name = index => {
+    if (grounded.has(index)) return ctx.gndNet;
+    if (!cursor) return ctx.net;
+    if (index === 0) return `${ctx.net}_IN`;
+    if (index === cursor) return `${ctx.net}_OUT`;
+    return `${ctx.net}_${index}`;
+  };
+  return { input: name(0), sections: nodes.map(pair => pair.map(name)) };
+}
+
 export function layoutLumped(design, ctx) {
   const A = artwork({ name: 'lc-ladder', kind: 'filter', topology: design.kind || 'lumped' });
   const L = ctx.signalLayer;
   const gap = Math.max(ctx.clearance * 3, 0.8);
   const placed = [];
+  const assignment = ladderNets(design.elements, ctx);
 
   let x = 0;
-  A.ports.push({ x, y: 0, name: 'P1', angle: Math.PI });
-  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, number: '1', role: 'port', net: ctx.net }));
-  A.tracks.push(track(L, ctx.traceW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed', net: ctx.net }));
+  let spine = assignment.input;
+  A.ports.push({ x, y: 0, name: 'P1', angle: Math.PI, net: spine });
+  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port', net: spine }));
+  A.tracks.push(track(L, ctx.traceW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed', net: spine }));
   x += ctx.feedLength;
 
   let maxUp = 0, maxDown = 0;
   const warn = [];
 
-  for (const el of design.elements) {
+  for (const [i, el] of design.elements.entries()) {
+    const [netIn, netOut] = assignment.sections[i];
     if (el.kind === 'series') {
-      const built = fitElement(buildSeries(el, ctx, warn), ctx);
+      const built = fitElement(buildSeries(el, ctx, warn, netIn, netOut), ctx);
       const span = built.span;
       // Enter the element from the left node, leave from the right node.
       const dx = x + span / 2;
       merge(A, transform(built.art, { dx, dy: built.dy || 0 }));
       const aX = dx + built.portA[0], aY = built.portA[1] + (built.dy || 0);
       const bX = dx + built.portB[0], bY = built.portB[1] + (built.dy || 0);
-      A.tracks.push(track(L, ctx.traceW, lroute(x, 0, aX, aY, false), { role: 'route', net: ctx.net }));
-      A.tracks.push(track(L, ctx.traceW, lroute(bX, bY, x + span, 0, true), { role: 'route', net: ctx.net }));
+      A.tracks.push(track(L, ctx.traceW, lroute(x, 0, aX, aY, false), { role: 'route', net: netIn }));
+      A.tracks.push(track(L, ctx.traceW, lroute(bX, bY, x + span, 0, true), { role: 'route', net: netOut }));
       maxUp = Math.max(maxUp, built.up || 0);
       maxDown = Math.max(maxDown, built.down || 0);
       placed.push({ el, x: dx, ...built });
       x += span;
     } else {
-      const built = fitElement(buildShunt(el, ctx, warn), ctx);
+      const built = fitElement(buildShunt(el, ctx, warn, netIn), ctx);
       // Shunt elements hang below the spine at a single node.
       const dx = x + built.span / 2;
       merge(A, transform(built.art, { dx, dy: built.dy || 0 }));
       const aX = dx + built.portA[0], aY = built.portA[1] + (built.dy || 0);
-      A.tracks.push(track(L, ctx.traceW, lroute(dx, 0, aX, aY, true), { role: 'route', net: ctx.net }));
+      A.tracks.push(track(L, ctx.traceW, lroute(dx, 0, aX, aY, true), { role: 'route', net: netIn }));
       built.groundPoints.forEach((gp) => {
         placed.push({ ground: [dx + gp[0], gp[1] + (built.dy || 0)] });
       });
-      A.tracks.push(track(L, ctx.traceW, run(x, 0, x + built.span, 0), { role: 'spine', net: ctx.net }));
+      A.tracks.push(track(L, ctx.traceW, run(x, 0, x + built.span, 0), { role: 'spine', net: netIn }));
       maxDown = Math.max(maxDown, built.down || 0);
       placed.push({ el, x: dx, ...built });
       x += built.span;
     }
+    spine = netOut;
     x += gap;
-    A.tracks.push(track(L, ctx.traceW, run(x - gap, 0, x, 0), { role: 'spine', net: ctx.net }));
+    A.tracks.push(track(L, ctx.traceW, run(x - gap, 0, x, 0), { role: 'spine', net: spine }));
   }
 
-  A.tracks.push(track(L, ctx.traceW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed', net: ctx.net }));
+  A.tracks.push(track(L, ctx.traceW, run(x, 0, x + ctx.feedLength, 0), { role: 'feed', net: spine }));
   x += ctx.feedLength;
-  A.ports.push({ x, y: 0, name: 'P2', angle: 0 });
-  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, number: '2', role: 'port', net: ctx.net }));
+  A.ports.push({ x, y: 0, name: 'P2', angle: 0, net: spine });
+  A.pads.push(pad(x, 0, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port', net: spine }));
 
   // Ground rail below everything that reaches downward.
   const grounds = placed.filter((p) => p.ground).map((p) => p.ground);
@@ -608,8 +652,6 @@ export function layoutLumped(design, ctx) {
     maxDown = Math.max(maxDown, -railY);
   }
 
-  A.tracks.filter((t) => !t.net).forEach((t) => { t.net = ctx.net; });
-  A.vias.filter((v) => !v.net).forEach((v) => { v.net = ctx.net; });
   warn.forEach((w) => A.notes.push({ level: 'warn', text: w }));
   A.notes.push({
     level: 'info',
@@ -623,7 +665,7 @@ export function layoutLumped(design, ctx) {
 }
 
 /* One series arm of a ladder, as a self-contained artwork centred on x = 0. */
-function buildSeries(el, ctx, warn) {
+function buildSeries(el, ctx, warn, netIn, netOut) {
   const parts = [];
   if (el.type === 'L') parts.push({ kind: 'L', value: el.L });
   else if (el.type === 'C') parts.push({ kind: 'C', value: el.C });
@@ -644,12 +686,13 @@ function buildSeries(el, ctx, warn) {
     const p = chain[i];
     if (p.kind === 'L') {
       const g = coilGeom(ctx, p.value, { freq: ctx.designF || 1e8 });
+      defaultNet(g.art, netIn);
       // Coil sits above the spine; its terminals point down.
       const dy = -boundsCopper(g.art).y0 + Math.max(ctx.clearance * 2, 0.6);
       merge(A, transform(g.art, { dx: cursor + g.radius, dy }));
       const a = [cursor + g.radius + g.portA[0], g.portA[1] + dy];
       const b = [cursor + g.radius + g.portB[0], g.portB[1] + dy];
-      if (!portA) portA = a; else A.tracks.push(track(L, ctx.traceW, [portB, a], { role: 'link' }));
+      if (!portA) portA = a; else A.tracks.push(track(L, ctx.traceW, [portB, a], { role: 'link', net: netIn }));
       portB = b;
       up = Math.max(up, dy + g.radius);
       cursor += g.radius * 2 + inner;
@@ -657,7 +700,7 @@ function buildSeries(el, ctx, warn) {
       if (g.solve && g.solve.saturated) warn.push(`A ${(p.value * 1e9).toFixed(1)} nH series inductor does not fit in a ${ctx.coilDiameter} mm spiral — widen the coil budget.`);
       if (g.enclosed) warn.push('The spiral came out with an odd layer count, so one terminal is enclosed by its own turns. Use an even layer count.');
     } else {
-      const g = layoutCap(ctx, p.value);
+      const g = layoutCap(ctx, p.value, netIn, netOut);
       // Series capacitor: rotate a quarter turn so the two combs face left
       // and right instead of up and down.
       const rotated = transform(g.art, { angle: Math.PI / 2 });
@@ -666,7 +709,7 @@ function buildSeries(el, ctx, warn) {
       const a = [cursor + halfW - g.portA[1], 0];
       const b = [cursor + halfW - g.portB[1], 0];
       const left = a[0] <= b[0] ? a : b, right = a[0] <= b[0] ? b : a;
-      if (!portA) portA = left; else A.tracks.push(track(L, ctx.traceW, [portB, left], { role: 'link' }));
+      if (!portA) portA = left; else A.tracks.push(track(L, ctx.traceW, [portB, left], { role: 'link', net: netIn }));
       portB = right;
       up = Math.max(up, g.width / 2);
       down = Math.max(down, g.width / 2);
@@ -681,7 +724,7 @@ function buildSeries(el, ctx, warn) {
   // A parallel capacitor bridges the same two nodes, below the spine.
   const par = parts.find((p) => p.kind === 'Cpar');
   if (par && portA && portB) {
-    const g = layoutCap(ctx, par.value);
+    const g = layoutCap(ctx, par.value, netIn, netOut);
     const rotated = transform(g.art, { angle: Math.PI / 2 });
     const mid = (portA[0] + portB[0]) / 2;
     const dy = -(g.width / 2 + Math.max(ctx.clearance * 2, 0.7));
@@ -689,8 +732,8 @@ function buildSeries(el, ctx, warn) {
     const a = [mid - g.portA[1], dy];
     const b = [mid - g.portB[1], dy];
     // Approach each electrode from above, outside the capacitor body.
-    A.tracks.push(track(L, ctx.traceW, [portA, [portA[0], 0], [a[0], 0], a], { role: 'par-link' }));
-    A.tracks.push(track(L, ctx.traceW, [b, [b[0], 0], [portB[0], 0], portB], { role: 'par-link' }));
+    A.tracks.push(track(L, ctx.traceW, [portA, [portA[0], 0], [a[0], 0], a], { role: 'par-link', net: netIn }));
+    A.tracks.push(track(L, ctx.traceW, [b, [b[0], 0], [portB[0], 0], portB], { role: 'par-link', net: netOut }));
     down = Math.max(down, -dy + g.width / 2);
     realised.Cpar = g.model.C; target.Cpar = par.value;
   }
@@ -708,7 +751,7 @@ function buildSeries(el, ctx, warn) {
 }
 
 /* One shunt arm: node at the top, ground at the bottom. */
-function buildShunt(el, ctx, warn) {
+function buildShunt(el, ctx, warn, netIn) {
   const A = artwork({ kind: 'element' });
   const L = ctx.signalLayer;
   const inner = Math.max(ctx.clearance * 3, 0.8);
@@ -717,7 +760,7 @@ function buildShunt(el, ctx, warn) {
   let portA = [0, 0];
   const groundPoints = [];
 
-  const makeCap = value => layoutCap(ctx, value);
+  const makeCap = value => layoutCap(ctx, value, netIn, ctx.gndNet);
 
   if (el.type === 'C') {
     const g = makeCap(el.C);
@@ -797,6 +840,7 @@ function buildShunt(el, ctx, warn) {
     realised.C = gc.model.C; realised.L = gl.analysis.L; realised.qL = gl.analysis.Q; target.C = el.C; target.L = el.L;
   }
 
+  defaultNet(A, ctx.gndNet);
   const shift = -0;
   return { art: A, portA, groundPoints, span, down, realised, target, dy: shift };
 }
@@ -813,37 +857,50 @@ function buildShunt(el, ctx, warn) {
 export function layoutCMChoke(design, ctx) {
   const A = artwork({ name: 'cm-choke', kind: 'filter', topology: 'cm' });
   const perWinding = design.Lwinding || 10e-6;
+  const layers = ['F.Cu', 'B.Cu'];
+  const traceW = Math.max(ctx.minTrace, ctx.traceW);
+  const traceS = Math.max(ctx.minTrace, ctx.clearance);
+  const requiredRadius = ctx.padSize / 2 + traceW / 2 + ctx.clearance;
+  const maxTurns = Math.max(1, Math.floor((ctx.coilDiameter / 2 - requiredRadius) / (traceW + traceS)));
+  let r = 0;
+  for (const [index, layer] of layers.entries()) {
+    const g = coilGeom({ ...ctx, signalLayer: layer, layers: [layer], coilLayers: 1 }, perWinding, {
+      shape: 'circle', layers: 1, freq: 1e6, surfaceTerminals: true,
+      maxTurns, minDiameter: 2 * (requiredRadius + traceW + traceS),
+    });
+    const net = `${ctx.net}_${index + 1}`;
+    defaultNet(g.art, net);
+    merge(A, g.art);
+    r = Math.max(r, g.radius);
+    const outer = g.art.tracks.find(t => t.role === 'coil-lead').pts.at(-1);
+    const inner = g.art.tracks.find(t => t.role === 'coil').pts.at(-1);
+    if (g.coil.innerR < requiredRadius) {
+      A.meta.routingError = 'The common-mode winding needs more room for its surface terminal. Increase the coil diameter or reduce the pad size.';
+    }
+    A.tracks.push(track(layer, traceW, [inner, [0, 0]], { role: 'feed', net }));
+    for (const [terminal, [x, y]] of [outer, [0, 0]].entries()) {
+      A.ports.push({ x, y, name: `L${index + 1}-${terminal ? 'out' : 'in'}`, net, layer, angle: terminal ? 0 : Math.PI });
+      A.pads.push(pad(x, y, { w: ctx.padSize, number: String(index * 2 + terminal + 1), layer, net, role: 'port' }));
+    }
+    if (!index && g.solve.saturated) {
+      A.notes.push({ level: 'warn', text: `The winding fits ${(g.analysis.L * 1e6).toFixed(3)} µH in the available area. Increase the coil diameter to approach the requested inductance.` });
+    }
+    if (!index) {
+      A.meta.windingInductance = g.analysis.L;
+      A.meta.placed = [{
+        kind: 'series', type: 'L', target: { L: design.Lcm },
+        realised: { L: g.analysis.L * (1 + design.coupling), qL: g.analysis.Q },
+      }];
+    }
+  }
 
-  const layers = ctx.layers.length >= 2 ? ctx.layers : ['F.Cu', 'B.Cu'];
-  const w1 = coilGeom({ ...ctx, coilLayers: 1, layers: [layers[0]] }, perWinding, { layers: 1, freq: 1e6 });
-  const w2 = coilGeom({ ...ctx, coilLayers: 1, layers: [layers[1]] }, perWinding, { layers: 1, freq: 1e6 });
-
-  merge(A, w1.art);
-  merge(A, w2.art);
-
-  // Line 1 enters left and leaves right on the top layer; line 2 mirrors it
-  // on the layer below. Same winding sense, so common-mode flux adds.
-  const r = Math.max(w1.radius, w2.radius);
-  const feed = ctx.feedLength;
-  A.tracks.push(track(layers[0], ctx.traceW, run(w1.portA[0] - feed, w1.portA[1], w1.portA[0], w1.portA[1]), { role: 'feed', net: `${ctx.net}_1` }));
-  A.tracks.push(track(layers[0], ctx.traceW, run(w1.portB[0], w1.portB[1], w1.portB[0] + feed, w1.portB[1]), { role: 'feed', net: `${ctx.net}_1` }));
-  A.tracks.push(track(layers[1], ctx.traceW, run(w2.portA[0] - feed, w2.portA[1] - 0, w2.portA[0], w2.portA[1]), { role: 'feed', net: `${ctx.net}_2` }));
-  A.tracks.push(track(layers[1], ctx.traceW, run(w2.portB[0], w2.portB[1], w2.portB[0] + feed, w2.portB[1]), { role: 'feed', net: `${ctx.net}_2` }));
-
-  A.ports.push({ x: w1.portA[0] - feed, y: w1.portA[1], name: 'L1-in', angle: Math.PI });
-  A.ports.push({ x: w1.portB[0] + feed, y: w1.portB[1], name: 'L1-out', angle: 0 });
-  A.ports.push({ x: w2.portA[0] - feed, y: w2.portA[1], name: 'L2-in', angle: Math.PI });
-  A.ports.push({ x: w2.portB[0] + feed, y: w2.portB[1], name: 'L2-out', angle: 0 });
-
-  A.pads.push(pad(w1.portA[0] - feed, w1.portA[1] + 0, { w: ctx.padSize, drill: ctx.padDrill, number: '1', layer: layers[0] }));
-  A.pads.push(pad(w1.portB[0] + feed, w1.portB[1] + 0, { w: ctx.padSize, drill: ctx.padDrill, number: '2', layer: layers[0] }));
-
-  A.labels.push(label(0, r + 1.5, `CM choke  L=${(design.Lcm * 1e6).toFixed(1)} µH  DM=${(design.Ldm * 1e6).toFixed(2)} µH`, { size: 0.8 }));
+  const actualL = A.meta.windingInductance;
+  A.labels.push(label(0, r + 1.5, `CM choke  L=${(actualL * (1 + design.coupling) * 1e6).toFixed(2)} µH`, { size: 0.8 }));
   A.notes.push({
     level: 'info',
-    text: `Coupling is set by the prepreg between ${layers[0]} and ${layers[1]}. Thinner is better: `
-      + 'the leakage L(1−k) is what appears differentially and what saturates first.',
+    text: 'The two windings end at separate surface pads on opposite faces. Use a separately routed breakout if the circuit needs edge connections.',
   });
+  if (design.yCap > 0) A.notes.push({ level: 'info', text: 'The Y capacitor in the response is an external component.' });
   A.notes.push({
     level: 'warn',
     text: 'Both windings carry the full line current. Check the trace width against the IPC rating on '

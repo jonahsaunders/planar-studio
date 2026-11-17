@@ -36,6 +36,23 @@ check('A captured fabrication stack constrains generation and optimizer bounds',
   assert.equal(fabricationFindings(art, profile).length, 2);
 });
 const near = (x, y, relative = 0.01) => assert.ok(Math.abs(x - y) <= Math.max(1e-15, Math.abs(y) * relative), `${x} ≠ ${y}`);
+check('Ignore pour-only keepouts and buried holes outside the proposed copper layer', () => {
+  const text = `(kicad_pcb
+    (layers (0 "F.Cu" signal) (1 "In1.Cu" signal) (2 "In2.Cu" signal) (31 "B.Cu" signal))
+    (gr_rect (start 0 0) (end 50 40) (layer "Edge.Cuts"))
+    (via blind (at 12 12) (size 0.6) (drill 0.3) (layers "In1.Cu" "In2.Cu"))
+    (zone (layer "F.Cu") (keepout (tracks allowed) (vias not_allowed) (pads allowed) (copperpour not_allowed))
+      (polygon (pts (xy 8 8) (xy 20 8) (xy 20 20) (xy 8 20)))))`;
+  const board = parseBoard(text);
+  const art = artwork();
+  art.tracks.push(track('F.Cu', 0.3, [[9, -12], [16, -12]]));
+  assert.deepEqual(checkPlacement(art, board).findings, []);
+  art.tracks[0].layer = 'In1.Cu';
+  assert.ok(checkPlacement(art, board).findings.some(item => item.type === 'hole'));
+  art.tracks = [];
+  art.vias.push({ x: 17, y: -14, diameter: 0.6, drill: 0.3 });
+  assert.ok(checkPlacement(art, board).findings.some(item => item.type === 'keepout'));
+});
 check('Touchstone DB units, port ordering, reference impedance', () => {
   const m = parseMeasurement('# MHz S DB R 75\n1 -20 0 -3 90 -3 -90 -20 0\n2 -10 0 -6 0 -6 0 -10 0', 'vna.s2p');
   assert.equal(m.z0, 75); assert.equal(m.rows[0].f, 1e6); near(m.rows[0].s21db, -3, 1e-9);

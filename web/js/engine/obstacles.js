@@ -164,11 +164,10 @@ function assemble(cfg,contours,seed,angle,regions,pitch) {
   const vias=cfg.layers>1?(series?[{x:seed[0],y:seed[1],from:0,to:1,kind:'inner'}]:[]):[];
   const terminals=[world(padA),series&&cfg.layers===2?world(padB):seed.slice()];
   // Through-hole terminal pads stitch parallel layers at both ends.
-  const terminalLayers = [0, series ? cfg.layers - 1 : 0];
   const lenTotal=layers.reduce((sum,l)=>sum+polyLength(l.pts,false),0),all=layers.flatMap(l=>l.pts),box=bboxOf(all);
   const outerR=Math.max(...all.map(p=>Math.hypot(...p))),innerR=Math.max(cfg.viaPad,Math.min(box.w,box.h)/2-contours.length*pitch);
   const coil={spiral:{path:layers[0].pts,base:contours[0],turnsUsed:contours.length,maxTurns:contours.length,minClearance:cfg.traceS,algorithm:{name:'Obstacle-aware contour spiral',note:'Nested offsets of the available board area with checked connections.'}},
-    layers,vias,links:[],leads:[],names,pitch,zPitch:cfg.layers>1?cfg.boardT/(cfg.layers-1):cfg.boardT,enclosed:!(series&&cfg.layers===2),terminals,terminalLayers,
+    layers,vias,links:[],leads:[],names,pitch,zPitch:cfg.layers>1?cfg.boardT/(cfg.layers-1):cfg.boardT,enclosed:!(series&&cfg.layers===2),terminals,
     lenPerLayer:lenTotal/cfg.layers,lenTotal,linkLen:0,leadLen:0,bbox:box,outerR,innerR,dOutFlat:Math.min(box.w,box.h),dInFlat:Math.max(0,Math.min(box.w,box.h)-2*contours.length*pitch),obstacleRegions:regions,obstacleSeed:seed};
   checkObstacleCopper(coil,cfg,regions);return coil;
 }

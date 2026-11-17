@@ -2,7 +2,7 @@
    Run: node tests/lumped-layout.mjs (no third-party packages required). */
 import assert from 'node:assert/strict';
 import { defaults, compute } from '../web/js/ws/filter.js';
-import { defaultContext, interdigitalGeom } from '../web/js/engine/filtergeom.js';
+import { defaultContext, interdigitalGeom, plateGeom } from '../web/js/engine/filtergeom.js';
 import { segmentDistance } from '../web/js/engine/boardcheck.js';
 import { toKicad, boundsCopper } from '../web/js/engine/artwork.js';
 import { exportKicadPcb } from '../web/js/engine/exporters.js';
@@ -104,5 +104,32 @@ check('KiCad placement payload preserves the checked geometry and adds no crossi
   const pcb = exportKicadPcb(art, { name: 'layout-regression', tolerance: 0 });
   assert.match(pcb, /\(kicad_pcb/);
   assert.match(pcb, /\(segment/);
+});
+check('Layered plates have real exported copper and the model uses its physical area', () => {
+  const { art, model } = plateGeom(defaultContext(), 10e-12);
+  assert.equal((exportKicadPcb(art).match(/\(segment /g) || []).length, 2);
+  assert.ok(art.tracks.every(t => !samePoint(...t.pts)));
+  const { pts: [a, b], width } = art.tracks[0];
+  const area = Math.PI * width ** 2 / 4 + width * Math.hypot(b[0] - a[0], b[1] - a[1]);
+  assert.ok(Math.abs(model.area - area) < 1e-8);
+});
+check('Lumped coils connect back to the route layer and shunt capacitor electrodes keep separate nets', () => {
+  const { art } = compute(defaults(), {}, { quick: true });
+  const left = art.tracks.filter(item => item.role === 'idc-spine-a');
+  const right = art.tracks.filter(item => item.role === 'idc-spine-b');
+  assert.ok(left.length && left.every(t => t.net === 'RF'));
+  assert.ok(right.length && right.every(t => t.net === 'GND'));
+  const ends = art.tracks.filter(t => t.role === 'coil-lead' && t.layer === 'B.Cu');
+  assert.ok(ends.length);
+  for (const end of ends) assert.ok(art.vias.some(v => v.role === 'coil-return-via'
+    && v.net === end.net && samePoint([v.x, v.y], end.pts.at(-1))));
+});
+check('Common-mode choke has four isolated layer-specific terminals and uses realized inductance', () => {
+  const result = compute({ ...defaults(), family: 'emi', emiTopology: 'cm' }, {});
+  assert.equal(result.art.vias.length, 0);
+  assert.deepEqual(result.art.pads.map(p => [p.layer, p.net, p.drill]),
+    [['F.Cu', 'RF_1', 0], ['F.Cu', 'RF_1', 0], ['B.Cu', 'RF_2', 0], ['B.Cu', 'RF_2', 0]]);
+  assert.equal(result.art.meta.placed[0].realised.L, result.art.meta.windingInductance * (1 + result.design.coupling));
+  assert.match(exportKicadPcb(result.art), /\(pad "4" smd/);
 });
 console.log(`\n${checks} lumped-layout checks passed`);

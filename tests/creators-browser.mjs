@@ -9,7 +9,8 @@ import { fileURLToPath } from 'node:url';
 const { chromium } = await import(process.env.PLANAR_PLAYWRIGHT_MODULE || 'playwright');
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const stateDir = fs.mkdtempSync(path.join(os.tmpdir(), 'planar-creators-'));
-const proc = spawn('python3', ['ipc_entry.py', '--print-url'], { cwd: root, env: { ...process.env, PLANAR_STUDIO_HOME: stateDir } });
+const python = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+const proc = spawn(python, ['ipc_entry.py', '--print-url'], { cwd: root, env: { ...process.env, PLANAR_STUDIO_HOME: stateDir } });
 let browser;
 try {
   const url = await new Promise((resolve, reject) => {
@@ -19,25 +20,40 @@ try {
   });
   browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
+  page.setDefaultTimeout(8000);
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   const solved = () => page.waitForFunction(() => !document.querySelector('#st-solve').textContent.includes('solving') && document.querySelector('#side .tile'));
-  const set = async (label, value) => { const field = page.getByLabel(label, { exact: true }); await field.fill(String(value)); await field.press('Tab'); };
+  const control = async label => {
+    const field = page.getByLabel(label, { exact: true });
+    if (!await field.isVisible()) {
+      const summary = field.locator('xpath=ancestor::details[not(@open)][1]/summary');
+      if (await summary.isVisible()) await summary.click();
+    }
+    return field;
+  };
+  const set = async (label, value) => { const field = await control(label); await field.fill(String(value)); await field.press('Tab'); };
+  const showDesigns = async () => {
+    if (!await page.getByRole('button', { name: 'Save', exact: true }).isVisible()) {
+      await page.locator('[data-key="designs"] > summary').click();
+    }
+  };
   await page.goto(url); await solved();
   assert.equal(await page.getByRole('tab').count(), 5);
   for (const name of ['Antenna', 'Transformer']) {
     await page.getByRole('tab', { name, exact: true }).click(); await solved();
+    if (name === 'Transformer') await page.locator('#transformer-tab-windings').click();
     assert.match(await page.locator('#side').textContent(), name === 'Antenna' ? /Estimated resonance/ : /Coupling k/);
     await set(name === 'Antenna' ? 'Length tuning' : 'Primary turns', name === 'Antenna' ? 1.1 : 7); await solved();
     await page.locator('#btn-export').click();
-    assert.equal(await page.locator('.export-card').count(), 6);
+    assert.equal(await page.locator('.export-card').count(), name === 'Transformer' ? 7 : 6);
     await page.locator('.export-card').filter({ hasText: 'KiCad board' }).click();
     const filename = name === 'Antenna' ? 'ANT1' : 'T1';
     await page.waitForFunction(n => document.querySelector('#toasts').textContent.includes(`Wrote ${n}.kicad_pcb`), filename);
     const pcb = fs.readFileSync(path.join(stateDir, 'exports', `${filename}.kicad_pcb`), 'utf8');
     assert.match(pcb, /smd/); assert.ok(!pcb.includes('(via '));
-    await page.getByText('Designs', { exact: true }).click();
+    await showDesigns();
     await page.getByRole('button', { name: 'Save', exact: true }).click();
     await page.waitForFunction(n => document.querySelector('#toasts').textContent.includes(`Saved “${n}”`), filename);
     await page.locator('#btn-tools').click();
@@ -61,10 +77,13 @@ try {
   assert.equal(Number(await page.getByLabel('Length tuning', { exact: true }).inputValue()), 1.1);
   // New families run through real selectors and the backend save/export path.
   const choose = async (name, value) => {
-    await page.getByLabel(name, { exact: true }).selectOption(value);
+    await (await control(name)).selectOption(value);
+    const apply = page.getByRole('button', { name: 'Apply preset', exact: true });
+    if (name === 'Transformer type' && await apply.isVisible()) await apply.click();
     await page.waitForTimeout(220); await solved();
   };
   const saveAndExport = async (kind, family) => {
+    await showDesigns();
     await page.getByRole('button', { name: 'Save', exact: true }).click();
     await page.locator('#btn-export').click();
     await page.locator('.export-card').filter({ hasText: 'Design JSON' }).click();
@@ -77,7 +96,7 @@ try {
     assert.equal(JSON.parse(fs.readFileSync(target, 'utf8')).config.family, family);
     await page.screenshot({ path: path.join(root, 'dist', `${kind}-${family}.png`) });
   };
-  await page.getByText('Designs', { exact: true }).click();
+  await showDesigns();
   for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
     await choose('Antenna type', family);
     assert.ok(!/undefined|NaN/.test(await page.locator('#side').textContent()));
@@ -89,7 +108,8 @@ try {
     await saveAndExport('antenna', family);
   }
   await page.getByRole('tab', { name: 'Transformer', exact: true }).click(); await solved();
-  await page.getByText('Designs', { exact: true }).click();
+  await page.locator('#transformer-tab-windings').click();
+  await showDesigns();
   for (const family of ['multilayer', 'center-tapped', 'multi-secondary', 'interleaved', 'ferrite']) {
     await choose('Transformer type', family);
     if (family === 'center-tapped') assert.match(await page.locator('#side').textContent(), /S_CT/);
@@ -101,8 +121,10 @@ try {
     await saveAndExport('transformer', family);
   }
   await choose('Transformer type', 'multilayer');
+  await page.locator('#transformer-tab-requirements').click();
   await choose('Drive model', 'voltage');
   await set('S load resistance', 25); await page.waitForTimeout(220); await solved();
+  await page.locator('#transformer-tab-windings').click();
   assert.match(await page.locator('#side').textContent(), /Loaded primary current/);
   assert.equal(await page.locator('.winding-row').count(), 4);
   await page.getByLabel('Move winding 2 down', { exact: true }).click();
@@ -115,8 +137,12 @@ try {
     if (request.method === 'board.context') return route.fulfill({ json: { ok: true, result: { layerCount: 2, thickness: 1.6, warnings: [] } } });
     return route.continue();
   });
+  const assistant = page.locator('[data-key="layer-assistant"]');
+  if (await assistant.count() && !(await assistant.evaluate(el => el.open))) {
+    await assistant.locator('summary').click();
+  }
   await page.getByRole('button', { name: 'Refresh board settings', exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('#st-algo').textContent === 'geometry failed');
+  await solved();
   assert.match(await page.locator('.layer-assistant').textContent(), /Board has 2/);
   await page.unroute('**/api');
   await page.route('**/api', async route => {
@@ -128,6 +154,15 @@ try {
   await page.waitForTimeout(220); await solved();
   assert.match(await page.locator('.layer-assistant').textContent(), /Board has 4/);
   assert.equal(Number(await page.getByLabel('Winding separation', { exact: true }).inputValue()), 1.8);
+  await showDesigns();
+  const [chooser] = await Promise.all([
+    page.waitForEvent('filechooser'),
+    page.getByRole('button', { name: 'Import…', exact: true }).click(),
+  ]);
+  await chooser.setFiles({ name: 'invalid.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify({ kind: 'toString', config: {} })) });
+  await page.waitForFunction(() => document.querySelector('#toasts').textContent.includes('Unknown design workspace'));
+  assert.equal(await page.locator('#app').getAttribute('data-workspace'), 'transformer');
   await page.setViewportSize({ width: 1100, height: 800 });
   assert.ok(await page.locator('#btn-place').evaluate(e => e.getBoundingClientRect().right <= innerWidth), 'Toolbar must fit at 1100px');
   assert.deepEqual(errors, []);

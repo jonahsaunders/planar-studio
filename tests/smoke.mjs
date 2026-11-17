@@ -12,12 +12,14 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import fs from 'node:fs';
+import os from 'node:os';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
-function startServer() {
+function startServer(state) {
   return new Promise((resolve, reject) => {
-    const proc = spawn('python3', ['ipc_entry.py', '--print-url'], { cwd: ROOT });
+    const python = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+    const proc = spawn(python, ['ipc_entry.py', '--print-url'], { cwd: ROOT, env: { ...process.env, PLANAR_STUDIO_HOME: state } });
     let buf = '';
     const timer = setTimeout(() => reject(new Error('server did not print a URL')), 12000);
     proc.stdout.on('data', (d) => {
@@ -37,7 +39,8 @@ const record = (name, ok, detail = '') => {
 };
 
 async function main() {
-  const { proc, url } = await startServer();
+  const state = fs.mkdtempSync(path.join(os.tmpdir(), 'planar-smoke-'));
+  const { proc, url } = await startServer(state);
   const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM || undefined });
   const page = await browser.newPage({ viewport: { width: 1500, height: 950 } });
 
@@ -131,14 +134,9 @@ async function main() {
     // ---- exports ------------------------------------------------------
     await page.click('.tab[data-ws="inductor"]');
     await page.waitForTimeout(700);
-    const exportsOk = await page.evaluate(async () => {
-      const btn = document.getElementById('btn-export');
-      btn.click();
-      await new Promise((r) => setTimeout(r, 120));
-      const cards = document.querySelectorAll('.export-card').length;
-      document.querySelector('.scrim')?.remove();
-      return cards;
-    });
+    await page.locator('#btn-export').click();
+    const exportsOk = await page.getByRole('dialog', { name: 'Export' }).locator('.export-card').count();
+    await page.keyboard.press('Escape');
     record('export sheet offers every format', exportsOk >= 6, `${exportsOk} formats`);
 
     // ---- theme --------------------------------------------------------
@@ -163,6 +161,7 @@ async function main() {
   } finally {
     await browser.close();
     proc.kill();
+    fs.rmSync(state, { recursive: true, force: true });
   }
 
   const failed = results.filter((r) => !r.ok);

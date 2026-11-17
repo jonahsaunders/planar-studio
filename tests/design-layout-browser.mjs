@@ -8,7 +8,8 @@ import {fileURLToPath} from 'node:url';
 const root=fileURLToPath(new URL('..',import.meta.url)),dist=path.join(root,'dist');
 fs.mkdirSync(dist,{recursive:true});
 const state=fs.mkdtempSync(path.join(dist,'.design-layout-'));
-const server=spawn('python3',['ipc_entry.py','--print-url'],{cwd:root,env:{...process.env,PLANAR_STUDIO_HOME:state}});
+const python=process.env.PYTHON||(process.platform==='win32'?'python':'python3');
+const server=spawn(python,['ipc_entry.py','--print-url'],{cwd:root,env:{...process.env,PLANAR_STUDIO_HOME:state}});
 let browser;
 try {
  const url=await new Promise((resolve,reject)=>{
@@ -40,6 +41,7 @@ try {
  await page.mouse.move(box.x+box.width*0.3,box.y+box.height*0.3);await page.mouse.down();await page.mouse.move(box.x+box.width*0.4,box.y+box.height*0.4);await page.mouse.up();
  await page.getByLabel('Region 3 X (mm)',{exact:true}).waitFor();
  await page.getByLabel('Remove region 3',{exact:true}).click();await settled();
+ await page.locator('[data-key="designs"] > summary').click();
  await page.getByRole('button',{name:'Save',exact:true}).click();
  await page.locator('#t-fit').click();await page.screenshot({path:path.join(dist,'obstacle-winding.png')});
  await page.locator('#btn-export').click();assert.equal(await page.locator('.export-card').count(),6);

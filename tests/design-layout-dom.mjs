@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 const { Window } = await import(process.env.PLANAR_DOM_MODULE || 'happy-dom');
 const w = new Window({ url: 'http://localhost/', settings: { disableCSSFileLoading: true, disableJavaScriptFileLoading: true } });
+w.confirm = () => true;
 for (const key of ['window', 'document', 'HTMLElement', 'HTMLCanvasElement', 'Event', 'KeyboardEvent', 'MouseEvent', 'File', 'Blob', 'ResizeObserver', 'localStorage']) globalThis[key] = key === 'window' ? w : w[key];
 globalThis.getComputedStyle = w.getComputedStyle.bind(w);
 globalThis.requestAnimationFrame = w.requestAnimationFrame.bind(w);

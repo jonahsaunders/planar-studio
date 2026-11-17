@@ -176,7 +176,9 @@ def main():
         entry = root / "installer" / "plugins" / "ipc_entry.py"
         fixture = root / f"placement-{root.name}.kicad_pcb"
         exported = root / f"export-{root.name}.kicad_pcb"
-        subprocess.run(["node", str(ROOT / "tests" / "live-board-fixtures.mjs"), str(fixture), str(exported)],
+        filter_fixture = root / f"filter-{root.name}.kicad_pcb"
+        subprocess.run(["node", str(ROOT / "tests" / "live-board-fixtures.mjs"),
+                        str(fixture), str(exported), str(filter_fixture)],
                        check=True, cwd=ROOT)
         with running([args.pcbnew, str(fixture)], env) as process:
             editor, board, socket = wait_for_board(fixture, args.major, socket_dir, process)
@@ -188,6 +190,16 @@ def main():
             assert len(reopened.get_tracks()) > 10, "Exported coil copper missing"
             assert reopened.get_vias(), "Exported coil terminal vias missing"
             print("KiCad reopened the exported board and read its tracks and vias.", flush=True)
+        cli_name = "kicad-cli.exe" if os.name == "nt" else "kicad-cli"
+        cli = os.environ.get("PLANAR_STUDIO_KICAD_CLI") or shutil.which(cli_name) or str(Path(args.pcbnew).with_name(cli_name))
+        report_file = root / "filter-drc.json"
+        check = subprocess.run([cli, "pcb", "drc", "--format", "json", "--severity-error",
+                                "--exit-code-violations", "--output", str(report_file), str(filter_fixture)],
+                               env=env, timeout=50, capture_output=True, text=True)
+        assert report_file.is_file(), check.stderr or check.stdout
+        report = json.loads(report_file.read_text(encoding="utf-8"))
+        assert check.returncode == 0 and not report.get("unconnected_items"), report
+        print("KiCad found no errors or unrouted connections in the exported plate filter.", flush=True)
 
 
 if __name__ == "__main__":

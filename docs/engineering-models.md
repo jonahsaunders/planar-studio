@@ -81,8 +81,10 @@ geometry differences. [Reproducible benchmark](../examples/measured-inductor/REA
 ## Geometry and circuit conventions
 
 - **Series layers:** alternate spiral layers are mirrored about the X axis so
-  their fields add. Reversing traversal alone would reverse circulation. The
-  generators share transition points on the +X ray.
+  their fields add. The ordinary coil generator shares transition points on
+  the +X ray. Series stacks above two layers remain available for analysis.
+  Their shared through-via locations would bypass turns in copper, so KiCad
+  placement and export are unavailable for those stacks.
 - **Inverse coil sizing:** fractional turns change terminal and via placement,
   which can make inductance nonmonotonic. The solver searches whole turns, then
   adjusts diameter.
@@ -132,6 +134,12 @@ The filter workspace synthesizes a network, generates copper, then calculates
 a response from that geometry. The geometry calculation includes estimated
 inductance, Q and capacitor parasitics. It is plotted alongside the ideal
 prototype so the effects of realizing the network in copper are visible.
+Lumped-filter nets follow DC continuity through etched inductors and remain
+separate across capacitors. The round-ended tracks used as parallel plates
+are sized by their copper area. The common-mode layout has two isolated
+surface terminals per winding and uses the realized coil inductance with
+the entered coupling estimate. Any Y capacitance represents a separate
+external component.
 Both curves are model predictions, not hardware measurements.
 
 ![A lumped LC low-pass in the light theme](screenshot-filter-light.png)

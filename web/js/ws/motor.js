@@ -207,7 +207,7 @@ export function spec(cfg, res) {
     },
     {
       title: `Torque–speed at ${cfg.vdc} V`,
-      note: 'Straight-line model: no field weakening, no inverter drop, no iron or windage loss.',
+      note: `Ideal voltage-only line with ${m.modulation === 'spaceVector' ? 'space-vector PWM' : 'sinusoidal PWM'}. Driver current, winding temperature and reactance can limit actual torque.`,
       rows: [
         ['No-load speed', `${num(m.noLoad, 0)} rpm`],
         ['Stall torque', `${num(m.stall * 1000, 1)} mN·m`],
@@ -285,8 +285,8 @@ export function charts(cfg, res) {
     ...dualChart,
     {
       id: 'torque',
-      title: `Torque and power at ${cfg.vdc} V`,
-      note: 'Two quantities, two charts — a second y-axis would let the crossing be placed anywhere.',
+      title: `Ideal voltage-limited torque at ${cfg.vdc} V`,
+      note: 'Use Design tools → Rotor for a continuous operating envelope with driver and winding limits.',
       spec: {
         x: { values: rpm, label: 'rpm', format: (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v.toFixed(0)) },
         y: { label: 'mN·m', format: (v) => v.toFixed(0) },

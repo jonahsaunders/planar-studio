@@ -36,6 +36,9 @@ export function instances(cfg) {
  */
 export function coilArtwork(cfg, coil, opt = {}) {
   const A = artwork({ name: opt.name || 'coil', kind: 'coil' });
+  if (cfg.connection === 'series' && coil.layers.length > 2) {
+    A.meta.routingError = 'This series stack reuses through-via positions across layers and would bypass turns. Use two series layers or parallel layers for KiCad placement and export.';
+  }
   const names = coil.names || layerNames(cfg.layers);
   const net = opt.net || 'COIL';
 
@@ -59,7 +62,7 @@ export function coilArtwork(cfg, coil, opt = {}) {
   coil.terminals.forEach((t, i) => {
     A.pads.push(pad(t[0], t[1], {
       w: cfg.padSize, drill: cfg.padDrill, number: String(i + 1), net, role: 'terminal',
-      ...(!cfg.padDrill && coil.terminalLayers ? { layer: names[coil.terminalLayers[i]] } : {}),
+      ...(!cfg.padDrill && cfg.connection === 'series' && i === 1 ? { layer: names.at(-1) } : {}),
     }));
   });
   return A;

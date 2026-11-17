@@ -13,7 +13,7 @@
    happens.
    ========================================================================= */
 
-import { bounds, decimate, copperLength, copperArea, segmentCount } from './artwork.js';
+import { assertRoutable, bounds, decimate, copperLength, copperArea, segmentCount } from './artwork.js';
 
 const f3 = (v) => {
   const x = Math.abs(v) < 5e-7 ? 0 : v;
@@ -53,6 +53,7 @@ export function usedLayers(A) {
    ----------------------------------------------------------------------- */
 
 export function exportKicadMod(A, opt = {}) {
+  assertRoutable(A);
   const art = prepared(A, opt.tolerance);
   const name = opt.name || art.meta.name || 'planar';
   const b = bounds(art);
@@ -106,6 +107,7 @@ export function exportKicadMod(A, opt = {}) {
    ----------------------------------------------------------------------- */
 
 export function exportKicadPcb(A, opt = {}) {
+  assertRoutable(A);
   const art = prepared(A, opt.tolerance);
   // A PCB needs a complete, even copper stack, including unused inner layers.
   // Sparse transformer assignments must retain their actual KiCad layer IDs.

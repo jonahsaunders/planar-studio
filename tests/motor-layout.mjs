@@ -13,6 +13,7 @@ import { motorEnvelope } from '../web/js/engine/motor-envelope.js';
   const input = { vdc: 24, current: 1, ambient: 25, maxTemperature: 100, thermalResistance: 1,
     speed: 0, targetTorque: motor.Kt * 0.5, modulation: 'spaceVector' };
   const baseline = motorEnvelope(motor, c, input);
+  assert.ok(Math.abs(baseline.noLoadRpm - motor.noLoad) < 1e-9);
   assert.equal(baseline.point.limit, 'Driver current');
   assert.equal(baseline.point.torque, motor.Kt);
   assert.ok(baseline.point.feasible);

@@ -1,6 +1,9 @@
 const rpmToRadians = 2 * Math.PI / 60;
 const copperTempFactor = temperature => 1 + 0.00393 * (temperature - 20);
 
+export const phaseVoltageFromBus = (busVoltage, modulation) =>
+  busVoltage * (modulation === 'spaceVector' ? 1 / Math.sqrt(3) : 0.5);
+
 /** Steady-state, sinusoidal, three-phase wye operation with zero d-axis current. */
 export function motorEnvelope(motor, config, input) {
   const { Kt, KeMech, Rphase, Lphase } = motor;
@@ -15,7 +18,7 @@ export function motorEnvelope(motor, config, input) {
       !['spaceVector', 'sine'].includes(modulation)) {
     throw new Error('Enter valid driver limits and a winding temperature limit above ambient.');
   }
-  const phaseVoltage = vdc * (modulation === 'spaceVector' ? 1 / Math.sqrt(3) : 0.5);
+  const phaseVoltage = phaseVoltageFromBus(vdc, modulation);
   const resistance = Rphase * copperTempFactor(maxTemperature) / copperTempFactor(config.tempC);
   const heatPerAmpSquared = 1.5 * resistance;
   const thermalCurrent = Math.sqrt((maxTemperature - ambient) / (thermalResistance * heatPerAmpSquared));

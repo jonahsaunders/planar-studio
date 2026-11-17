@@ -14,7 +14,7 @@ export function boardObstacleSource(text, name, excluded = []) {
   const loops = board.loops.map(loop => loop.slice(0, -1)).sort((a, b) => polygonArea(b) - polygonArea(a));
   const parents = loops.map((loop, i) => loops.findLastIndex((outer, j) => j < i && inside(loop[0], outer)));
   const depth = i => parents[i] < 0 ? 0 : 1 + depth(parents[i]);
-  const keepouts = [...new Map(board.keepouts.map(k => [JSON.stringify([k.id, k.polygon]), k])).values()];
+  const keepouts = [...new Map(board.keepouts.filter(k => k.restricted.length).map(k => [JSON.stringify([k.id, k.polygon]), k])).values()];
   return {
     name, holes: board.holes.filter(hole => hole.kind === 'pad'),
     keepouts, islands: loops.flatMap((outline, i) => depth(i) % 2 ? [] : [{

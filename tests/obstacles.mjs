@@ -60,4 +60,15 @@ const outlineOnly = boardObstaclePatch(source, 0, false, []);
 assert.equal(outlineOnly.obstacleBoard.drills.length + outlineOnly.obstacleBoard.keepouts.length, 0);
 assert.equal(outlineOnly.obstacleBoard.cutouts.length, 1);
 assert.throws(() => boardObstacleSource('(kicad_pcb (gr_line (start 1 1) (end 2 2) (layer "Edge.Cuts")))', 'open.kicad_pcb'), /Close the board outline/);
+assert.throws(() => boardObstacleSource('(kicad_pcb (gr_rect (start 0 0) (end 40 40) (layer "Edge.Cuts"))'
+  + ' (gr_line (start 0 0) (end 5 5) (layer "Edge.Cuts")))', 'spur.kicad_pcb'), /Close the board outline/);
+const stack = { ...defaults(), layers: 4, connection: 'series' };
+const series = compute(stack, {}, { quick: true }).art;
+assert.throws(() => toKicad(series), /would bypass turns/);
+assert.throws(() => exportKicadPcb(series), /would bypass turns/);
+assert.throws(() => exportKicadMod(series), /would bypass turns/);
+assert.match(exportSvg(series), /<svg/);
+assert.match(exportKicadPcb(compute({ ...stack, connection: 'parallel' }, {}, { quick: true }).art), /\(via /);
+const dry = compute({ ...defaults(), padDrill: 0 }, {}, { quick: true }).art;
+assert.equal(dry.pads.at(-1).layer, 'B.Cu', 'Two-layer series surface return must be on the winding end layer');
 console.log(`${total} obstacle layouts passed; hole/rectangle/polygon clearance, split pockets, continuity, additive stacking, exports and persistence verified.`);

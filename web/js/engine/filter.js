@@ -922,6 +922,14 @@ export function reviewDesign(design, sub, opt = {}) {
       if (s.s != null && s.s < minG) push('error', `Section ${(s.index ?? 0) + 1} gap is ${s.s.toFixed(3)} mm, under the ${minG} mm minimum.`);
     }
   }
+  if (design.kind === 'interdigital') {
+    design.resonators.forEach((r, i) => {
+      if (r.w < minW) push('error', `Resonator ${i + 1} trace is below the ${minW} mm minimum.`);
+    });
+    design.gaps.forEach((gap, i) => {
+      if (gap.s < minG) push('error', `Resonator ${i + 1}–${i + 2} gap is below the ${minG} mm minimum.`);
+    });
+  }
   if (design.totalLength && opt.maxLength && design.totalLength > opt.maxLength) {
     push('warn', `Total length ${design.totalLength.toFixed(1)} mm exceeds the ${opt.maxLength} mm budget.`);
   }

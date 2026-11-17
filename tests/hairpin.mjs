@@ -89,6 +89,20 @@ for (const order of [1, 2, 3, 4, 5, 10, 12]) {
 }
 
 const base = compute(cfg, {});
+check('Tapped resonators and pad nets follow their physical DC connection', () => {
+  assert.deepEqual(base.art.pads.map(p => p.net), ['RF_IN', 'RF_OUT']);
+  assert.ok(base.art.tracks.filter(t => t.index > 0 && t.index < cfg.order - 1).every(t => t.net === null));
+  assert.equal(new Set(compute({ ...cfg, order: 1 }, {}, { quick: true }).art.pads.map(p => p.net)).size, 1);
+  const grounded = compute({ ...cfg, family: 'interdigital' }, {}, { quick: true }).art;
+  assert.ok([...grounded.tracks, ...grounded.vias, ...grounded.pads].every(item => item.net === 'GND'));
+  assert.ok(grounded.tracks.filter(t => t.role === 'resonator').every(track => track.referenceSignal));
+});
+check('A saved fabrication limit catches tuned copper below the minimum gap', () => {
+  const profile = { minGap: cfg.minGap, minTrace: cfg.minTrace, name: 'RF process' };
+  const tuned = compute({ ...cfg, fabricationProfile: profile, tuning: { gapScale: 0.01 } }, {}, { quick: true });
+  assert.match(tuned.art.meta.routingError, /gap is below/);
+  assert.throws(() => exportKicadPcb(tuned.art), /gap is below/);
+});
 check('Simulation fixtures preserve reused copper, ports and stack, with geometry-bound extraction', () => {
   const { manifest, report, files } = hairpinFixtures(base, 'Hairpin fixture test');
   const expected = cfg.order * 2 + 1;

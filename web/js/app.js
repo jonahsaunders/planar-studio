@@ -388,6 +388,7 @@ function renderSide(res) {
   if(preview && app.ws!=='transformer')host.append(preview);
   const notes = [...ws.notes(cfg(), res),
     ...fabricationFindings(res.art, cfg().fabricationProfile).map(text => ({ level: 'warn', text }))];
+  if (res.art.meta.routingError) notes.unshift({ level: 'error', text: res.art.meta.routingError });
   if (notes.length) {
     host.append(el('div', { class: 'side-section' },
       el('h3', { text: 'Notes' }),
@@ -510,12 +511,8 @@ function makePlacementReview(config, result, snapshot) {
     checked.issues.push({ type: 'net', message: 'Map the reference plane to an existing KiCad net.' });
     checked.ready = false;
   }
-  if (distributed && referenceNet && groups.some(group => !group.reference && group.net === referenceNet)) {
-    checked.issues.push({ type: 'net', message: 'Assign the RF signal and reference plane to different KiCad nets.' });
-    checked.ready = false;
-  }
-  if (config.family === 'edgeCoupled' || kind === 'motor') {
-    const assigned = groups.filter(group => group.net && !group.reference).map(group => group.net);
+  if (kind === 'filter' || kind === 'motor') {
+    const assigned = groups.filter(group => group.net).map(group => group.net);
     if (new Set(assigned).size !== assigned.length) {
       checked.issues.push({ type: 'net', message: 'Assign different destination nets to the separate conductor groups.' });
       checked.ready = false;
@@ -588,6 +585,10 @@ async function writeLibrary() {
   if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
+  if (res.art.meta.routingError) {
+    toast(res.art.meta.routingError, 'warn');
+    return;
+  }
   const name = app.names[app.ws];
   const text = exportKicadMod(res.art, {
     name,
@@ -718,6 +719,44 @@ function modal(title, body, buttons) {
 /* -------------------------------------------------------- design library */
 
 let pendingSave = Promise.resolve();
+
+function prepareDesign(entry, fallback) {
+  if (!entry?.config || typeof entry.config !== 'object' || Array.isArray(entry.config)) {
+    throw new Error('Expected a design configuration object.');
+  }
+  const kind = entry.kind || fallback;
+  if (!Object.hasOwn(WORKSPACES, kind)) throw new Error('Unknown design workspace.');
+  const config = { ...WORKSPACES[kind].defaults(), ...entry.config };
+  if (kind === 'transformer' && entry.config.operatingLinked === undefined) config.operatingLinked = false;
+  if (kind === 'filter' && entry.config.rfStackSource === undefined) config.rfStackSource = 'manual';
+  const name = typeof entry.name === 'string' && entry.name.trim() ? entry.name : app.names[kind];
+  return { kind, name, config };
+}
+
+function canReplaceDesign(kind) {
+  return !app.dirtyWorkspaces.has(kind) ||
+    window.confirm(`Replace unsaved changes in the ${WORKSPACES[kind].title} workspace?`);
+}
+
+function activateDesign({ kind, name, config }, id, saved) {
+  app.ws = kind;
+  app.configs[kind] = config;
+  app.names[kind] = name;
+  app.designIds[kind] = id;
+  if (saved) app.dirtyWorkspaces.delete(kind);
+  else app.dirtyWorkspaces.add(kind);
+  histories.delete(kind);
+  app.view.windingSelection = null;
+  if (kind === 'transformer') transformerStep = 'requirements';
+  $('design-name').value = name;
+  document.querySelectorAll('.tab').forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.ws === kind)));
+  app.charts.forEach(chart => chart.destroy());
+  app.charts.clear();
+  renderRail();
+  app.fitPending = true;
+  runCompute(false);
+}
+
 function openFabrication() {
   const controls = fabricationEditor(cfg().fabricationProfile, profile => {
     let patch = { fabricationProfile: null };
@@ -739,21 +778,10 @@ function openStarterProjects() {
       el('span', { class: 'd', text: starter.target }));
     row.addEventListener('click', () => {
       const { kind, name } = starter;
-      if (app.dirtyWorkspaces.has(kind) && !window.confirm(`Replace the unsaved ${WORKSPACES[kind].title} design with an editable copy of this starter?`)) return;
+      if (!canReplaceDesign(kind)) return;
       close();
-      app.ws = kind;
-      app.configs[kind] = { ...starter.setup(WORKSPACES[kind].defaults()), starterProject: kind };
-      app.names[kind] = name;
-      app.designIds[kind] = newDesignId();
-      app.dirtyWorkspaces.add(kind);
-      histories.delete(kind);
-      app.view.windingSelection = null;
-      if (kind === 'transformer') transformerStep = 'requirements';
-      $('design-name').value = name;
-      document.querySelectorAll('.tab').forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.ws === kind)));
-      renderRail();
-      app.fitPending = true;
-      runCompute(false);
+      activateDesign({ kind, name, config: { ...starter.setup(WORKSPACES[kind].defaults()), starterProject: kind } },
+        newDesignId(), false);
     });
     list.append(row);
   }
@@ -811,6 +839,7 @@ function saveDesignCopy() {
    so this is the round trip that makes the JSON export worth having -- and the
    way a design travels between two people who are not sharing a plugin store. */
 function importDesignJson() {
+  const fallback = app.ws;
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = '.json,application/json';
@@ -818,24 +847,10 @@ function importDesignJson() {
     const file = input.files && input.files[0];
     if (!file) return;
     try {
-      const data = JSON.parse(await file.text());
-      const kind = WORKSPACES[data.kind] ? data.kind : app.ws;
-      if (!data.config || typeof data.config !== 'object') throw new Error('no config in that file');
-      app.ws = kind;
-      app.configs[kind] = { ...WORKSPACES[kind].defaults(), ...data.config };
-      if(kind==='transformer'&&data.config.operatingLinked===undefined)app.configs[kind].operatingLinked=false;
-      if (kind === 'filter' && data.config.rfStackSource === undefined) app.configs[kind].rfStackSource = 'manual';
-      histories.delete(kind);
-      app.names[kind] = data.name || app.names[kind];
-      app.designIds[kind] = newDesignId();
-      app.dirtyWorkspaces.add(kind);
-      $('design-name').value = app.names[kind];
-      document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === kind)));
-      app.charts.clear();
-      renderRail();
-      app.fitPending = true;
-      runCompute(true);
-      toast(`Imported “${app.names[kind]}” into the ${WORKSPACES[kind].title} workspace.`, 'ok');
+      const entry = prepareDesign(JSON.parse(await file.text()), fallback);
+      if (!canReplaceDesign(entry.kind)) return;
+      activateDesign(entry, newDesignId(), false);
+      toast(`Imported “${entry.name}” into the ${WORKSPACES[entry.kind].title} workspace.`, 'ok');
     } catch (err) {
       toast(`That file is not a Planar Studio design: ${err.message}`, 'error');
     }
@@ -856,31 +871,28 @@ async function openDesignPicker() {
     return;
   }
   const list = el('div', { style: 'display:flex; flex-direction:column; gap:6px' });
+  const fallback = app.ws;
+  let loading = false;
   for (const d of designs) {
     const row = el('button', { class: 'export-card', type: 'button' },
       el('span', { class: 't', text: d.name }),
       el('span', { class: 'd', text: d.saved ? `${d.kind} · ${new Date(d.saved * 1000).toLocaleString()}` : d.kind }));
     row.addEventListener('click', async () => {
+      if (loading) return;
+      loading = row.disabled = true;
       try {
-        const entry = await bridge.api.loadDesign(d.id);
-        app.ws = entry.kind && WORKSPACES[entry.kind] ? entry.kind : app.ws;
-        app.configs[app.ws] = { ...WORKSPACES[app.ws].defaults(), ...entry.config };
-        if(app.ws==='transformer'&&entry.config.operatingLinked===undefined)app.configs[app.ws].operatingLinked=false;
-        if (app.ws === 'filter' && entry.config.rfStackSource === undefined) cfg().rfStackSource = 'manual';
-        histories.delete(app.ws);
-        app.names[app.ws] = entry.name;
-        app.designIds[app.ws] = d.id;
-        app.dirtyWorkspaces.delete(app.ws);
-        $('design-name').value = entry.name;
-        document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === app.ws)));
-        renderRail();
-        app.fitPending = true;
-        runCompute(true);
+        const loaded = await bridge.api.loadDesign(d.id);
+        if (!row.isConnected) return;
+        const entry = prepareDesign(loaded, d.kind || fallback);
+        if (!canReplaceDesign(entry.kind)) return;
+        close();
+        activateDesign(entry, d.id, true);
         toast(`Opened “${entry.name}”.`, 'ok');
       } catch (err) {
         toast(err.message, 'error');
+      } finally {
+        loading = row.disabled = false;
       }
-      close();
     });
     list.append(row);
   }

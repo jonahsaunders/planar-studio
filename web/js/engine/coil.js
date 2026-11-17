@@ -12,6 +12,7 @@
 import { buildObstacleCoil } from './obstacles.js';
 import { windingPhasors } from './winding-design.js';
 import { ellipticRatio } from './microstrip.js';
+import { phaseVoltageFromBus } from './motor-envelope.js';
 
 export const MU0      = 4e-7 * Math.PI;      // H/m
 export const EPS0     = 8.8541878128e-12;    // F/m
@@ -1170,14 +1171,15 @@ export function motorAnalysis(cfg, coil, a) {
   const tauE = Lphase / Math.max(Rphase, 1e-9);
 
   // torque-speed at a supply voltage
-  const Vdc = cfg.vdc;
-  const noLoad = KeMech > 0 ? (Vdc / Math.SQRT2) / KeMech * 60 / TAU : 0;
-  const stall = KeMech > 0 ? Kt * (Vdc / Math.SQRT2) / Rphase : 0;
+  const modulation = phases === 3 ? 'spaceVector' : 'sine';
+  const phaseVoltage = phaseVoltageFromBus(cfg.vdc, modulation);
+  const noLoad = KeMech > 0 ? phaseVoltage / KeMech * 60 / TAU : 0;
+  const stall = KeMech > 0 ? Kt * phaseVoltage / Rphase : 0;
 
   return {
     p, phases, coilsTotal, coilsPerPhase, winding, kp, driveFactor, kw, alpha: alpha * 180 / Math.PI,
     Apole, flux, Nseries, lambda, Kt, KeMech, Kv, Rphase, Lphase,
-    torque, Pcu, km, fElec, Pmech, eff, Vbemf, tauE, noLoad, stall,
+    torque, Pcu, km, fElec, Pmech, eff, Vbemf, tauE, noLoad, stall, modulation,
     srfMargin: a.srf / Math.max(fElec, 1e-9),
     rOa: rOa * 1e3, rIa: rIa * 1e3,
   };

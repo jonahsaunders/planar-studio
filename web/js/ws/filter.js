@@ -423,7 +423,10 @@ export function compute(cfg, env, opt = {}) {
 
   const art = layoutFilter(design, ctx);
   if (rfStack) art.meta.boardLayers = [rfStack.signal, rfStack.reference];
-  const res = { design, nominal, art, ctx, rfStack, layers, bounds: bounds(art) };
+  const review = reviewDesign(design, substrateOf(cfg), { minTrace: cfg.minTrace });
+  const processError = cfg.fabricationProfile && review.find(item => item.level === 'error');
+  if (processError) art.meta.routingError ||= processError.text;
+  const res = { design, nominal, art, ctx, rfStack, layers, bounds: bounds(art), review };
   if (opt.quick) return res;
 
   const [f0, f1] = sweepRange(cfg, design);
@@ -451,7 +454,6 @@ export function compute(cfg, env, opt = {}) {
     res.prototype = respond(proto, { ...common, qL: 0, qC: 0 });
   }
 
-  res.review = reviewDesign(design, substrateOf(cfg), { minTrace: cfg.minTrace });
   return res;
 }
 
@@ -625,9 +627,10 @@ export function spec(cfg, res) {
       title: 'Common-mode choke',
       note: d.note,
       rows: [
-        ['Per-winding inductance', eng(d.Lwinding, 'H', 3)],
-        ['Common-mode inductance', eng(d.Lcm, 'H', 3)],
-        ['Differential-mode (leakage)', eng(d.Ldm, 'H', 3)],
+        ['Requested per-winding inductance', eng(d.Lwinding, 'H', 3)],
+        ['Estimated per-winding copper inductance', eng(res.art.meta.windingInductance, 'H', 3)],
+        ['Estimated common-mode inductance', eng(res.art.meta.windingInductance * (1 + d.coupling), 'H', 3)],
+        ['Estimated differential-mode inductance', eng(res.art.meta.windingInductance * (1 - d.coupling), 'H', 3)],
         ['Coupling k', num(d.coupling, 3)],
         d.yCap ? ['Y capacitance', eng(d.yCap, 'F', 3)] : null,
         d.fc ? ['Corner with Y caps', eng(d.fc, 'Hz', 3)] : null,
