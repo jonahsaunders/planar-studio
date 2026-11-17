@@ -1,5 +1,8 @@
 # Planar Studio examples
 
+- [Measured square-spiral inductor](measured-inductor/README.md) compares an
+  editable eight-turn winding against published network-analyzer measurements.
+
 - [5 W planar flyback converter](planar-flyback-5w/README.md): 18–36 V DC input,
   isolated 5 V / 1 A output, integral six-layer PCB windings, editable KiCad 10
   project, calculations, manufacturing schedules and validation evidence.

@@ -29,7 +29,7 @@ import threading
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
 
 # --------------------------------------------------------------------------
 # Optional import. Absence is a supported state, not an error.
@@ -358,7 +358,8 @@ class KiCadLink:
     # ----------------------------------------------------------------- place
 
     def place(
-        self, placement: Placement, net_name: Optional[str] = None, replace_ids: Sequence[str] = ()
+        self, placement: Placement, net_name: Optional[str] = None, replace_ids: Sequence[str] = (),
+        remember: Optional[Callable[[List[str]], None]] = None,
     ) -> Dict[str, Any]:
         """Create the new placement and retire its predecessor in one undo step."""
         board = self._board()
@@ -493,24 +494,30 @@ class KiCadLink:
                 raise ValueError("KiCad did not confirm a unique ID for every new item")
             if victims:
                 board.remove_items(victims)
+            # Persist ownership while KiCad can still roll back a disk failure.
+            # If push fails, only revisions actually present on the board resolve.
+            if remember:
+                remember(ids)
         return {"created": len(ids), "ids": ids, "skipped": skipped, "replaced": len(victims)}
 
     # ---------------------------------------------------------------- delete
 
     @staticmethod
-    def _placement_items(board: Any, ids: Sequence[str]) -> List[Any]:
-        if not ids:
-            return []
-        wanted = set(ids)
+    def _placeable_board_items(board: Any) -> Iterable[Any]:
         try:
-            return [
-                item
-                for read in (board.get_tracks, board.get_vias, board.get_footprints, board.get_text)
-                for item in read()
-                if _kiid(item) in wanted
-            ]
+            for read in (board.get_tracks, board.get_vias, board.get_footprints, board.get_text):
+                yield from read()
         except Exception as exc:
             raise BoardEditError(f"Could not read the previous placement: {exc}") from exc
+
+    def placement_item_ids(self) -> set:
+        return {_kiid(item) for item in self._placeable_board_items(self._board())}
+
+    def _placement_items(self, board: Any, ids: Sequence[str]) -> List[Any]:
+        wanted = set(ids)
+        if not wanted:
+            return []
+        return [item for item in self._placeable_board_items(board) if _kiid(item) in wanted]
 
     @staticmethod
     @contextmanager

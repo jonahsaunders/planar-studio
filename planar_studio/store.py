@@ -18,9 +18,14 @@ import os
 import tempfile
 import threading
 import time
+from contextlib import suppress
 from typing import Any, Dict, List, Optional
 
 SCHEMA = 1
+
+
+class StoreError(OSError):
+    """The requested state change could not be written to disk."""
 
 
 def default_dir() -> str:
@@ -63,15 +68,22 @@ class Store:
         except (OSError, ValueError):
             pass
 
-    def _flush(self) -> None:
+    def _write_section(self, section: str, values: Dict[str, Any]) -> None:
+        data = {**self._data, section: values}
+        tmp = None
         try:
             os.makedirs(self.dir, exist_ok=True)
             fd, tmp = tempfile.mkstemp(dir=self.dir, suffix=".tmp")
             with os.fdopen(fd, "w", encoding="utf-8") as fh:
-                json.dump(self._data, fh, indent=1, sort_keys=True)
+                json.dump(data, fh, indent=1, sort_keys=True)
             os.replace(tmp, self.path)
-        except OSError:
-            pass
+        except OSError as exc:
+            raise StoreError(f"Could not save Planar Studio data to {self.path}: {exc}") from exc
+        finally:
+            if tmp:
+                with suppress(OSError):
+                    os.unlink(tmp)
+        self._data = data
 
     # -------------------------------------------------------------- prefs
 
@@ -81,8 +93,7 @@ class Store:
 
     def set_prefs(self, prefs: Dict[str, Any]) -> Dict[str, Any]:
         with self._lock:
-            self._data["prefs"].update(prefs or {})
-            self._flush()
+            self._write_section("prefs", {**self._data["prefs"], **(prefs or {})})
             return dict(self._data["prefs"])
 
     # ------------------------------------------------------------- designs
@@ -98,13 +109,13 @@ class Store:
 
     def save_design(self, design_id: str, name: str, kind: str, config: Dict[str, Any]) -> None:
         with self._lock:
-            self._data["designs"][design_id] = {
+            entry = {
                 "name": name,
                 "kind": kind,
                 "config": config,
                 "saved": time.time(),
             }
-            self._flush()
+            self._write_section("designs", {**self._data["designs"], design_id: entry})
 
     def load_design(self, design_id: str) -> Optional[Dict[str, Any]]:
         with self._lock:
@@ -113,10 +124,12 @@ class Store:
 
     def delete_design(self, design_id: str) -> bool:
         with self._lock:
-            existed = self._data["designs"].pop(design_id, None) is not None
-            if existed:
-                self._flush()
-            return existed
+            if design_id not in self._data["designs"]:
+                return False
+            designs = self._data["designs"].copy()
+            del designs[design_id]
+            self._write_section("designs", designs)
+            return True
 
     # ---------------------------------------------------------- placements
 
@@ -125,37 +138,35 @@ class Store:
     ) -> None:
         with self._lock:
             key = f"{board}::{design_id}"
-            self._data["placements"][key] = {
+            previous = self._data["placements"].get(key)
+            history = []
+            if previous:
+                history = [{k: previous[k] for k in ("ids", "placed", "meta") if k in previous},
+                           *previous.get("history", [])]
+            entry = {
                 "designId": design_id,
                 "board": board,
                 "ids": ids,
                 "placed": time.time(),
                 "meta": meta or {},
+                "history": history,
             }
-            self._flush()
+            self._write_section("placements", {**self._data["placements"], key: entry})
 
     def get_placement(self, design_id: str, board: str) -> Optional[Dict[str, Any]]:
         with self._lock:
             return self._data["placements"].get(f"{board}::{design_id}")
 
     def placements_for_board(self, board: str) -> List[Dict[str, Any]]:
-        prefix = f"{board}::"
         with self._lock:
-            return [v for k, v in self._data["placements"].items() if k.startswith(prefix)]
+            return [p for p in self._data["placements"].values() if p["board"] == board]
 
-    def forget_placement(self, design_id: str, board: str) -> None:
-        with self._lock:
-            if self._data["placements"].pop(f"{board}::{design_id}", None) is not None:
-                self._flush()
-
-    def find_by_ids(self, board: str, ids: List[str]) -> Optional[Dict[str, Any]]:
-        """Which recorded placement do these selected board items belong to?"""
-        wanted = set(i for i in ids if i)
-        if not wanted:
-            return None
-        best, best_hits = None, 0
-        for entry in self.placements_for_board(board):
-            hits = len(wanted & set(entry.get("ids", [])))
-            if hits > best_hits:
-                best, best_hits = entry, hits
-        return best
+    @staticmethod
+    def live_revision(entry: Dict[str, Any], board_ids: set) -> Optional[Dict[str, Any]]:
+        """Undo can restore an older revision, including after plugin restart."""
+        for revision in (entry, *entry.get("history", [])):
+            ids = [item for item in revision["ids"] if item in board_ids]
+            if ids:
+                return {"designId": entry["designId"], "ids": ids,
+                        "placed": revision.get("placed"), "meta": revision.get("meta", {})}
+        return None

@@ -41,6 +41,11 @@ class PlacementTests(unittest.TestCase):
     def persisted_ids(self):
         return Store(self.app.store.dir).get_placement("L1", "demo")["ids"]
 
+    def restored_ids(self):
+        store = Store(self.app.store.dir)
+        entry = store.get_placement("L1", "demo")
+        return store.live_revision(entry, {"old-label", "old-via"})["ids"]
+
     def test_replacement_is_one_undo_step_and_removes_only_recorded_items(self):
         out = self.replace()
         self.assertEqual(out["created"], 1)
@@ -63,7 +68,7 @@ class PlacementTests(unittest.TestCase):
                 with self.assertRaises(RpcError) as error:
                     self.replace()
                 self.assertEqual(error.exception.kind, "boardedit")
-                self.assertEqual(self.persisted_ids(), self.old_ids)
+                self.assertEqual(self.restored_ids(), ["old-via", "old-label"])
                 if method == "begin_commit":
                     self.board.create_items.assert_not_called()
                     self.board.drop_commit.assert_not_called()
@@ -95,7 +100,8 @@ class PlacementTests(unittest.TestCase):
         self.board.drop_commit.side_effect = RuntimeError("disconnected")
         with self.assertRaisesRegex(RpcError, "Check the board before retrying"):
             self.replace()
-        self.assertEqual(self.persisted_ids(), self.old_ids)
+        self.assertEqual(self.restored_ids(), ["old-via", "old-label"])
+        self.assertEqual(self.persisted_ids(), ["new-via"])
 
     def test_fresh_placement_does_not_scan_or_remove_old_items(self):
         self.params["placement"]["designId"] = "L2"
@@ -113,4 +119,36 @@ class PlacementTests(unittest.TestCase):
         self.board.push_commit.side_effect = None
         out = self.app.api.call("board.unplace", {"designId": "L1"})
         self.assertEqual(out["removed"], 2)
-        self.assertIsNone(Store(self.app.store.dir).get_placement("L1", "demo"))
+        self.board.get_vias.return_value = []
+        self.board.get_text.return_value = []
+        self.assertEqual(self.app.api.call("board.context", {})["placements"], [])
+        self.board.get_vias.return_value = [self.old_via]
+        self.assertEqual(self.app.api.call("board.context", {})["placements"][0]["count"], 1)
+
+    def test_undo_redo_and_replace_after_restart_use_the_live_revision(self):
+        self.replace()
+        self.app.store = Store(self.app.store.dir)
+        self.app.link.board_snapshot = lambda: {"name": "demo", "text": "board"}
+        self.app.link.board_context = lambda: {"name": "demo", "selectionIds": ["old-via"]}
+        for live_vias, labels, expected in [
+            ([self.old_via], [self.old_label], ["old-via", "old-label"]),
+            ([SimpleNamespace(id="new-via")], [], ["new-via"]),
+            ([self.old_via], [], ["old-via"]),
+        ]:
+            self.board.get_vias.return_value = live_vias
+            self.board.get_text.return_value = labels
+            self.assertEqual(self.app.api.call("board.snapshot", {"designId": "L1"})["excludedIds"], expected)
+            context = self.app.api.call("board.context", {})
+            self.assertEqual(context["placements"][0]["count"], len(expected))
+            self.assertEqual(context["selectedDesign"], "L1" if "old-via" in expected else None)
+        self.board.create_items.return_value = [SimpleNamespace(id="third-via")]
+        self.assertEqual(self.replace()["replaced"], 1)
+        self.board.remove_items.assert_called_with([self.old_via])
+
+    def test_registry_write_failure_rolls_back_the_board(self):
+        with patch("planar_studio.store.os.replace", side_effect=OSError("disk full")):
+            with self.assertRaisesRegex(RpcError, "disk full"):
+                self.replace()
+        self.board.drop_commit.assert_called_once_with("commit")
+        self.board.push_commit.assert_not_called()
+        self.assertEqual(self.persisted_ids(), self.old_ids)

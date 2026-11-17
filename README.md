@@ -154,6 +154,7 @@ sensing range, crosstalk and supplier assembly acceptance remain unverified.
 
 ## Guides
 
+- [Measured inductor benchmark](examples/measured-inductor/README.md) — editable geometry, published impedance measurements and model error.
 - [Design tools](docs/design-tools.md) — optimization, measurements, tolerances and board checks.
 - [Layer setup and loaded transformers](docs/stack-load-antennas.md) — board layers, winding stacks and source/load models.
 - [Directional antennas](docs/directional-antennas.md) — Vivaldi, Yagi, log-periodic and bow-tie layouts.

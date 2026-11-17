@@ -1001,7 +1001,7 @@ export function sweep(cfg, a, f0, f1, n) {
     const Zi = (zi * (1 - wf * wf * a.L * a.Ctot) - R * R * yc) / den;
     const mag = Math.hypot(Zr, Zi);
     const Qv = Zr > 0 ? Zi / Zr : 0;
-    out.push({ f, R, Fr, Z: mag, Q: Qv, Ls: zi / wf });
+    out.push({ f, R, Fr, Z: mag, zRe: Zr, zIm: Zi, Q: Qv, Ls: zi / wf });
   }
   return out;
 }

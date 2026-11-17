@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Track restored placement IDs across KiCad Undo, Redo and plugin restarts.
+  Report failed library saves, retain unsaved edits and support reopening
+  designs saved in a standalone browser.
+- Add an editable square-spiral benchmark against published TxB impedance
+  measurements, with a reproducible comparison and model error.
 - Replace a placed design in a single KiCad undo step, including its board
   labels. If KiCad rejects the edit, keep the previous placement record so
   the replacement can be retried.

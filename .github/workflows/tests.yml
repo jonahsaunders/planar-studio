@@ -1,8 +1,10 @@
 name: Test Planar Studio
 
 on:
+  push:
+    branches: [experimental]
   pull_request:
-    branches: [main]
+    branches: [main, experimental]
   workflow_dispatch:
 
 permissions:
@@ -29,6 +31,7 @@ jobs:
         run: |
           "$PYTHON" -c "from planar_studio.kicad_link import HAVE_KIPY, KIPY_IMPORT_ERROR; assert HAVE_KIPY, KIPY_IMPORT_ERROR"
           npm test
+          node examples/measured-inductor/compare.mjs
       - name: Test workspace interactions
         run: |
           npm run test:dom

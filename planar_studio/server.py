@@ -27,6 +27,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Dict, Optional, Tuple
 from urllib.parse import parse_qs, unquote, urlparse
 
+from .store import StoreError
+
 Handler = Callable[[Dict[str, Any]], Any]
 
 
@@ -54,7 +56,10 @@ class Api:
         fn = self._methods.get(name)
         if fn is None:
             raise RpcError(f"unknown method {name!r}", kind="badmethod")
-        return fn(params or {})
+        try:
+            return fn(params or {})
+        except StoreError as exc:
+            raise RpcError(str(exc), kind="io") from exc
 
     def names(self) -> list:
         return sorted(self._methods)

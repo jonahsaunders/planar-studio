@@ -51,7 +51,7 @@ const app = {
   view: null,
   charts: new Map(),
   boardApplied: false,
-  dirty: false,
+  dirtyWorkspaces: new Set(),
 };
 
 const $ = (id) => document.getElementById(id);
@@ -64,7 +64,7 @@ function record(label='Edit settings') { history().record(cfg(),label); }
 function restoreHistory(direction) {
   const state=history()[direction]();if(!state)return;
   Object.keys(cfg()).forEach(k=>delete cfg()[k]);Object.assign(cfg(),state);
-  app.dirty=true;app.fitPending=true;renderRail();scheduleQuick();
+  app.dirtyWorkspaces.add(app.ws);app.fitPending=true;renderRail();scheduleQuick();
 }
 
 /* ------------------------------------------------------------------ theme */
@@ -209,7 +209,7 @@ const api = {
     const saved=app.ws==='transformer'&&makeCheckpoint ? [...(cfg().checkpoints||[]),checkpoint(cfg(),label)].slice(-5) : cfg().checkpoints;
     Object.assign(cfg(),values);
     if(app.ws==='transformer')cfg().checkpoints=saved;
-    record(label);app.dirty=true; app.fitPending=true;
+    record(label);app.dirtyWorkspaces.add(app.ws); app.fitPending=true;
     renderRail();scheduleQuick();
   },
   focusWinding(layer) {
@@ -236,7 +236,7 @@ const api = {
     Object.assign(cfg(), values);
     for (const [key, value] of Object.entries(values)) reconcile(key, value);
     record();
-    app.dirty = true;
+    app.dirtyWorkspaces.add(app.ws);
     app.panel.sync();
     scheduleQuick();
   },
@@ -246,7 +246,7 @@ const api = {
     cfg()[key] = value;
     reconcile(key, value);
     record();
-    app.dirty = true;
+    app.dirtyWorkspaces.add(app.ws);
     app.panel.sync();
     scheduleQuick();
   },
@@ -280,7 +280,7 @@ function renderRail() {
   app.panel = new Panel($('rail'), cfg(), (key, value) => {
     reconcile(key, value);
     record();
-    app.dirty = true;
+    app.dirtyWorkspaces.add(app.ws);
     app.panel.sync();
     scheduleQuick();
   });
@@ -421,9 +421,9 @@ function showDesignTools(tab = 'optimize') {
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
     designId: () => designId(app.ws, app.names[app.ws]),
-    dirty: () => { app.dirty = true; },
+    dirty: () => { app.dirtyWorkspaces.add(app.ws); },
     apply(patch) {
-      Object.assign(cfg(), patch); app.dirty = true;
+      Object.assign(cfg(), patch); app.dirtyWorkspaces.add(app.ws);
       renderRail(); runCompute(false);
     },
     switch(kind, tool) { switchWorkspace(kind); showDesignTools(tool); },
@@ -466,8 +466,8 @@ async function placeIntoBoard(review=null) {
 
   const payload = toKicad(app.ws==='transformer'?placementArtwork(cfg(),res.art):res.art, { tolerance: cfg().tolerance });
   const did = designId(app.ws, app.names[app.ws]);
-  const known = (bridge.state.context && bridge.state.context.placements) || [];
-  const replace = app.ws==='transformer'&&review ? review.replacement.removed>0 : known.some((p) => p.designId === did);
+  // Resolve ownership on the live board; KiCad Undo can change it between polls.
+  const replace = app.ws === 'transformer' && review ? review.replacement.removed > 0 : true;
 
   const btn = $('btn-place');
   btn.disabled = true;
@@ -636,18 +636,24 @@ function modal(title, body, buttons) {
 
 /* -------------------------------------------------------- design library */
 
-async function saveDesign() {
-  const id = designId(app.ws, app.names[app.ws]);
-  try {
-    await bridge.api.saveDesign(id, app.names[app.ws], app.ws, cfg());
-    app.dirty = false;
-    toast(`Saved “${app.names[app.ws]}”.`, 'ok');
-  } catch (err) {
-    if (err.kind === 'standalone') {
-      try { localStorage.setItem(`planar.design.${id}`, JSON.stringify({ name: app.names[app.ws], kind: app.ws, config: cfg() })); } catch { /* ignore */ }
-      toast('Saved in this browser only — the plugin is not running.', 'warn');
-    } else toast(err.message, 'error');
-  }
+let pendingSave = Promise.resolve();
+function saveDesign() {
+  const kind = app.ws, name = app.names[kind], id = designId(kind, name);
+  const snapshot = JSON.stringify(cfg());
+  app.dirtyWorkspaces.add(kind);
+  pendingSave = pendingSave.then(async () => {
+    try {
+      await bridge.api.saveDesign(id, name, kind, JSON.parse(snapshot));
+      if (app.names[kind] === name && JSON.stringify(app.configs[kind]) === snapshot) {
+        app.dirtyWorkspaces.delete(kind);
+      }
+      toast(bridge.STANDALONE ? `Saved “${name}” in this browser.` : `Saved “${name}”.`, 'ok');
+    } catch (err) {
+      app.dirtyWorkspaces.add(kind);
+      toast(`Could not save “${name}”. ${err.message}`, 'error', { sticky: true });
+    }
+  });
+  return pendingSave;
 }
 
 /* Read back a design JSON export. The exported file carries the whole config,
@@ -669,6 +675,7 @@ function importDesignJson() {
       if(kind==='transformer'&&data.config.operatingLinked===undefined)app.configs[kind].operatingLinked=false;
       histories.delete(kind);
       app.names[kind] = data.name || app.names[kind];
+      app.dirtyWorkspaces.add(kind);
       $('design-name').value = app.names[kind];
       document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === kind)));
       app.charts.clear();
@@ -687,8 +694,9 @@ async function openDesignPicker() {
   let designs = [];
   try {
     designs = (await bridge.api.listDesigns()).designs || [];
-  } catch {
-    designs = [];
+  } catch (err) {
+    toast(`Could not read the design library. ${err.message}`, 'error');
+    return;
   }
   if (!designs.length) {
     toast('No saved designs yet.', 'info');
@@ -698,7 +706,7 @@ async function openDesignPicker() {
   for (const d of designs) {
     const row = el('button', { class: 'export-card', type: 'button' },
       el('span', { class: 't', text: d.name }),
-      el('span', { class: 'd', text: `${d.kind} · ${new Date(d.saved * 1000).toLocaleString()}` }));
+      el('span', { class: 'd', text: d.saved ? `${d.kind} · ${new Date(d.saved * 1000).toLocaleString()}` : d.kind }));
     row.addEventListener('click', async () => {
       try {
         const entry = await bridge.api.loadDesign(d.id);
@@ -707,6 +715,7 @@ async function openDesignPicker() {
         if(app.ws==='transformer'&&entry.config.operatingLinked===undefined)app.configs[app.ws].operatingLinked=false;
         histories.delete(app.ws);
         app.names[app.ws] = entry.name;
+        app.dirtyWorkspaces.delete(app.ws);
         $('design-name').value = entry.name;
         document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.ws === app.ws)));
         renderRail();
@@ -798,6 +807,7 @@ function wireChrome() {
 
   $('design-name').addEventListener('input', (e) => {
     app.names[app.ws] = e.target.value || 'design';
+    app.dirtyWorkspaces.add(app.ws);
   });
 
   $('btn-theme').addEventListener('click', () => {
@@ -861,7 +871,7 @@ function wireChrome() {
   });
 
   window.addEventListener('beforeunload', (e) => {
-    if (!app.dirty) return;
+    if (!app.dirtyWorkspaces.size) return;
     e.preventDefault();
     e.returnValue = '';
   });

@@ -144,6 +144,13 @@ export async function reconnect() {
    Convenience wrappers
    ----------------------------------------------------------------------- */
 
+const designPrefix = 'planar.design.';
+function browserDesign(id) {
+  const text = localStorage.getItem(designPrefix + id);
+  if (!text) throw new RpcError('This saved design is missing.', 'notfound');
+  return JSON.parse(text);
+}
+
 export const api = {
   info: () => call('app.info'),
   quit: () => call('app.quit'),
@@ -156,10 +163,32 @@ export const api = {
   saveFile: (name, text) => call('file.save', { name, text }, { timeout: 60000 }),
   getPrefs: () => call('prefs.get'),
   setPrefs: (prefs) => call('prefs.set', { prefs }),
-  listDesigns: () => call('designs.list'),
-  saveDesign: (id, name, kind, config) => call('designs.save', { id, name, kind, config }),
-  loadDesign: (id) => call('designs.load', { id }),
-  deleteDesign: (id) => call('designs.delete', { id }),
+  async listDesigns() {
+    if (!STANDALONE) return call('designs.list');
+    const designs = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key?.startsWith(designPrefix)) continue;
+      const id = key.slice(designPrefix.length);
+      const { name, kind, saved = 0 } = browserDesign(id);
+      designs.push({ id, name, kind, saved });
+    }
+    return { designs: designs.sort((a, b) => b.saved - a.saved) };
+  },
+  async saveDesign(id, name, kind, config) {
+    if (!STANDALONE) return call('designs.save', { id, name, kind, config });
+    localStorage.setItem(designPrefix + id, JSON.stringify({ name, kind, config, saved: Date.now() / 1000 }));
+    return { saved: true };
+  },
+  async loadDesign(id) {
+    return STANDALONE ? browserDesign(id) : call('designs.load', { id });
+  },
+  async deleteDesign(id) {
+    if (!STANDALONE) return call('designs.delete', { id });
+    const key = designPrefix + id, deleted = localStorage.getItem(key) !== null;
+    localStorage.removeItem(key);
+    return { deleted };
+  },
 };
 
 /* --------------------------------------------------------------------------

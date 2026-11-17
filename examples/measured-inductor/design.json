@@ -1,0 +1,22 @@
+{
+  "tool": "planar-studio",
+  "kind": "inductor",
+  "name": "Olivo TxB reconstruction",
+  "config": {
+    "shape": "polygon",
+    "sides": 4,
+    "fillet": 2,
+    "turns": 8,
+    "dOuter": 52.32590181,
+    "traceW": 1,
+    "traceS": 1,
+    "layers": 1,
+    "boardT": 1.2,
+    "epsR": 4.4,
+    "copperOz": 1.0057471264,
+    "freq": 1000000,
+    "tempC": 25,
+    "ppt": 128,
+    "cExtra": 0
+  }
+}

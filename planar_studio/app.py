@@ -103,12 +103,23 @@ class Application:
 
         # ---- board --------------------------------------------------------
 
+        def live_placements(records):
+            if not records:
+                return []
+            board_ids = self.link.placement_item_ids()
+            return [live for record in records
+                    if (live := self.store.live_revision(record, board_ids))]
+
+        def placement_ids(design_id, board):
+            record = self.store.get_placement(design_id, board)
+            revisions = live_placements([record]) if record else []
+            return revisions[0]["ids"] if revisions else []
+
         @api.method("board.snapshot")
         @_require_link
         def _snapshot(params: Dict[str, Any]) -> Dict[str, Any]:
             result = self.link.board_snapshot()
-            previous = self.store.get_placement(str(params.get("designId") or ""), result["name"])
-            result["excludedIds"] = previous.get("ids", []) if previous else []
+            result["excludedIds"] = placement_ids(str(params.get("designId") or ""), result["name"])
             return result
 
         @api.method("board.context")
@@ -116,6 +127,7 @@ class Application:
         def _context(_params: Dict[str, Any]) -> Dict[str, Any]:
             ctx = self.link.board_context()
             board = ctx.get("name") or ""
+            placements = live_placements(self.store.placements_for_board(board))
             ctx["placements"] = [
                 {
                     "designId": p["designId"],
@@ -123,10 +135,12 @@ class Application:
                     "placed": p.get("placed"),
                     "meta": p.get("meta", {}),
                 }
-                for p in self.store.placements_for_board(board)
+                for p in placements
             ]
-            hit = self.store.find_by_ids(board, ctx.get("selectionIds") or [])
-            ctx["selectedDesign"] = hit["designId"] if hit else None
+            selected = set(ctx.get("selectionIds") or [])
+            hits = [(len(selected.intersection(p["ids"])), p["designId"]) for p in placements] if selected else []
+            count, design = max(hits, default=(0, None))
+            ctx["selectedDesign"] = design if count else None
             # The id list is only useful to us; sending thousands of UUIDs to
             # the page on every poll is pure weight.
             ctx.pop("selectionIds", None)
@@ -143,18 +157,18 @@ class Application:
             design_id = placement.design_id or f"anon-{int(time.time())}"
             with placement_lock:
                 board = str(self.link.board_context().get("name") or "")
-                previous = self.store.get_placement(design_id, board) if params.get("replace") else None
-                result = self.link.place(
-                    placement, net_name=params.get("net"),
-                    replace_ids=previous["ids"] if previous else (),
-                )
-                self.store.record_placement(
-                    design_id, board, result["ids"],
-                    meta={
+                ids = placement_ids(design_id, board) if params.get("replace") else []
+
+                def remember(created):
+                    meta = {
                         "name": placement.name,
                         "kind": params.get("kind", ""),
                         "summary": params.get("summary", ""),
-                    },
+                    }
+                    self.store.record_placement(design_id, board, created, meta)
+
+                result = self.link.place(
+                    placement, net_name=params.get("net"), replace_ids=ids, remember=remember,
                 )
                 if params.get("select"):
                     self.link.select(result["ids"])
@@ -169,20 +183,15 @@ class Application:
             design_id = str(params.get("designId") or "")
             with placement_lock:
                 board = str(self.link.board_context().get("name") or "")
-                previous = self.store.get_placement(design_id, board)
-                if not previous:
-                    return {"removed": 0}
-                out = self.link.remove_ids(previous.get("ids", []))
-                self.store.forget_placement(design_id, board)
-                return out
+                # KiCad Undo can restore these IDs after an unplace.
+                return self.link.remove_ids(placement_ids(design_id, board))
 
         @api.method("board.select")
         @_require_link
         def _select(params: Dict[str, Any]) -> Dict[str, Any]:
             design_id = str(params.get("designId") or "")
             board = str(self.link.board_context().get("name") or "")
-            previous = self.store.get_placement(design_id, board)
-            ids = previous.get("ids", []) if previous else []
+            ids = placement_ids(design_id, board)
             self.link.select(ids)
             return {"selected": len(ids)}
 

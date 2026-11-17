@@ -25,6 +25,26 @@ const solved = () => until(() => document.querySelector('#side .tile') && !docum
 const button = (text) => { const b = [...document.querySelectorAll('button')].find(n => n.textContent === text); assert.ok(b, `button ${text}`); b.click(); };
 const set = (name, value) => { const input = document.querySelector(`input[aria-label="${name}"]`); assert.ok(input, name); input.value = String(value); input.dispatchEvent(new w.Event('change', { bubbles: true })); };
 await solved();
+// A browser quota failure must keep the edit dirty, and a retry must reopen it.
+const storage = globalThis.localStorage;
+const wouldWarnOnClose = () => !w.dispatchEvent(new w.Event('beforeunload', { cancelable: true }));
+set('Turns per layer', 9);
+try {
+  globalThis.localStorage = { setItem() { throw new Error('Browser storage quota exceeded'); } };
+  button('Save');
+  await until(() => document.getElementById('toasts').textContent.includes('Browser storage quota exceeded'));
+  assert.ok(wouldWarnOnClose());
+} finally {
+  globalThis.localStorage = storage;
+}
+button('Save');
+await until(() => localStorage.getItem('planar.design.inductor:l1'));
+assert.equal(wouldWarnOnClose(), false);
+set('Turns per layer', 12);
+button('Open…');
+await until(() => document.querySelector('.scrim .export-card'));
+document.querySelector('.scrim .export-card').click();
+await until(() => Number(document.querySelector('[aria-label="Turns per layer"]').value) === 9);
 for (const [kind, field, value] of [['antenna', 'Length tuning', 1.1], ['transformer', 'Primary turns', 7]]) {
   document.querySelector(`[data-ws="${kind}"]`).click(); await solved();
   set(field, value); await new Promise(r => setTimeout(r, 200)); await solved();
