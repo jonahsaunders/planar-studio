@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Replace a placed design in a single KiCad undo step, including its board
+  labels. If KiCad rejects the edit, keep the previous placement record so
+  the replacement can be retried.
 - Correct hairpin semicircular-bend length and tapped-feed reference points.
   Use alternating U resonators, independent input/output taps, and absolute
   geometry-based narrowband coupling estimates. Report unreachable geometry

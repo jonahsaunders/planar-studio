@@ -1,0 +1,37 @@
+name: Test Planar Studio
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Install test dependencies
+        run: |
+          npm ci --ignore-scripts
+          python3 -m venv "$RUNNER_TEMP/planar-python"
+          "$RUNNER_TEMP/planar-python/bin/python" -m pip install -r requirements.txt
+          echo "PYTHON=$RUNNER_TEMP/planar-python/bin/python" >> "$GITHUB_ENV"
+      - name: Test the engines and KiCad integration
+        run: |
+          "$PYTHON" -c "from planar_studio.kicad_link import HAVE_KIPY, KIPY_IMPORT_ERROR; assert HAVE_KIPY, KIPY_IMPORT_ERROR"
+          npm test
+      - name: Test workspace interactions
+        run: |
+          npm run test:dom
+          npm run test:creators:dom
+          npm run test:design-layout:dom
+          npm run test:motor:dom

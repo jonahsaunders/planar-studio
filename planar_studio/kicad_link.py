@@ -27,6 +27,7 @@ import platform
 import sys
 import threading
 import time
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
@@ -69,6 +70,10 @@ COPPER_ORDER: List[str] = (
 
 class LinkError(RuntimeError):
     """A request needed KiCad and KiCad was not reachable."""
+
+
+class BoardEditError(RuntimeError):
+    """KiCad could not apply a requested board edit."""
 
 
 @dataclass
@@ -352,8 +357,10 @@ class KiCadLink:
 
     # ----------------------------------------------------------------- place
 
-    def place(self, placement: Placement, net_name: Optional[str] = None) -> Dict[str, Any]:
-        """Create every item in one commit. All of it lands, or none of it."""
+    def place(
+        self, placement: Placement, net_name: Optional[str] = None, replace_ids: Sequence[str] = ()
+    ) -> Dict[str, Any]:
+        """Create the new placement and retire its predecessor in one undo step."""
         board = self._board()
         items: List[Any] = []
         skipped: List[str] = []
@@ -436,11 +443,11 @@ class KiCadLink:
             for spec in placement.pads:
                 layer = _resolve_layer(spec.get("layer"))
                 if layer not in (BoardLayer.BL_F_Cu, BoardLayer.BL_B_Cu):
-                    raise LinkError("Surface pads require F.Cu or B.Cu.")
+                    raise BoardEditError("Surface pads require F.Cu or B.Cu.")
                 w, h = float(spec["w"]), float(spec["h"])
                 x, y = float(spec["x"]), float(spec["y"])
                 if not all(math.isfinite(v) for v in (w, h, x, y)) or min(w, h) <= 0:
-                    raise LinkError("Invalid surface pad dimensions.")
+                    raise BoardEditError("Invalid surface pad dimensions.")
                 p = Pad()
                 p.pad_type = PadType.PT_SMD
                 p.number = str(spec.get("number", ""))
@@ -463,6 +470,7 @@ class KiCadLink:
         for spec in placement.texts:
             layer = _resolve_layer(spec.get("layer") or "F.SilkS")
             if layer is None:
+                skipped.append(f"unknown text layer {spec.get('layer')!r}")
                 continue
             t = BoardText()  # type: ignore[name-defined]
             t.position = Vector2.from_xy(  # type: ignore[name-defined]
@@ -472,75 +480,64 @@ class KiCadLink:
             t.layer = layer
             items.append(t)
 
-        if not items:
-            return {"created": 0, "ids": [], "skipped": skipped}
+        if not items or (replace_ids and skipped):
+            reason = skipped[0] if skipped else "no drawable items"
+            raise BoardEditError(f"Could not place {placement.name}: {reason}.")
 
-        commit = None
-        try:
-            commit = board.begin_commit()
-        except Exception:
-            commit = None
-
-        try:
+        victims = self._placement_items(board, replace_ids)
+        action = "replace" if victims else "place"
+        with self._commit(board, f"Planar Studio: {action} {placement.name}"):
             created = board.create_items(items)
-        except Exception as exc:
-            if commit is not None:
-                try:
-                    board.drop_commit(commit)
-                except Exception:
-                    pass
-            raise LinkError(f"KiCad rejected the placement: {type(exc).__name__}: {exc}") from exc
-
-        if commit is not None:
-            try:
-                board.push_commit(commit, f"Planar Studio: place {placement.name}")
-            except Exception:
-                pass
-
-        ids = [_kiid(c) for c in (created or [])]
-        return {"created": len(created or []), "ids": [i for i in ids if i], "skipped": skipped}
+            ids = [_kiid(item) for item in created]
+            if len(ids) != len(items) or not all(ids) or len(set(ids)) != len(ids):
+                raise ValueError("KiCad did not confirm a unique ID for every new item")
+            if victims:
+                board.remove_items(victims)
+        return {"created": len(ids), "ids": ids, "skipped": skipped, "replaced": len(victims)}
 
     # ---------------------------------------------------------------- delete
 
-    def remove_ids(self, ids: Sequence[str]) -> Dict[str, Any]:
-        board = self._board()
+    @staticmethod
+    def _placement_items(board: Any, ids: Sequence[str]) -> List[Any]:
         if not ids:
-            return {"removed": 0}
+            return []
         wanted = set(ids)
-        victims = []
         try:
-            for item in board.get_tracks():
-                if _kiid(item) in wanted:
-                    victims.append(item)
-            for item in board.get_vias():
-                if _kiid(item) in wanted:
-                    victims.append(item)
-            for item in board.get_footprints():
-                if _kiid(item) in wanted:
-                    victims.append(item)
+            return [
+                item
+                for read in (board.get_tracks, board.get_vias, board.get_footprints, board.get_text)
+                for item in read()
+                if _kiid(item) in wanted
+            ]
         except Exception as exc:
-            raise LinkError(f"could not enumerate board items: {exc}") from exc
-        if not victims:
-            return {"removed": 0}
-        commit = None
+            raise BoardEditError(f"Could not read the previous placement: {exc}") from exc
+
+    @staticmethod
+    @contextmanager
+    def _commit(board: Any, message: str):
         try:
             commit = board.begin_commit()
-        except Exception:
-            commit = None
-        try:
-            board.remove_items(victims)
         except Exception as exc:
-            if commit is not None:
-                try:
-                    board.drop_commit(commit)
-                except Exception:
-                    pass
-            raise LinkError(f"could not remove items: {exc}") from exc
-        if commit is not None:
+            raise BoardEditError(f"Could not start the KiCad edit: {exc}") from exc
+        try:
+            yield
+            board.push_commit(commit, message)
+        except Exception as exc:
             try:
-                board.push_commit(commit, "Planar Studio: remove placement")
-            except Exception:
-                pass
+                board.drop_commit(commit)
+            except Exception as rollback_error:
+                raise BoardEditError(
+                    "KiCad could not confirm the edit or its rollback. Check the board before retrying. "
+                    f"Edit: {exc}. Rollback: {rollback_error}"
+                ) from exc
+            raise BoardEditError(f"KiCad canceled the edit: {exc}") from exc
+
+    def remove_ids(self, ids: Sequence[str]) -> Dict[str, Any]:
+        board = self._board()
+        victims = self._placement_items(board, ids)
+        if victims:
+            with self._commit(board, "Planar Studio: remove placement"):
+                board.remove_items(victims)
         return {"removed": len(victims)}
 
     # --------------------------------------------------------------- project
@@ -581,9 +578,8 @@ class KiCadLink:
             return
         if not ids:
             return
-        wanted = set(ids)
         try:
-            hits = [i for i in list(board.get_tracks()) + list(board.get_vias()) + list(board.get_footprints()) if _kiid(i) in wanted]
+            hits = self._placement_items(board, ids)
             if hits:
                 board.add_to_selection(hits)
         except Exception:
@@ -616,6 +612,8 @@ def _resolve_layer(name: Optional[str]) -> Any:
         from kipy.util.board_layer import layer_from_canonical_name  # type: ignore
 
         value = layer_from_canonical_name(name)
+        if value == BoardLayer.BL_UNKNOWN:
+            value = None
     except Exception:
         value = None
     if value is None:

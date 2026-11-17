@@ -15,7 +15,7 @@ import threading
 import time
 from typing import Any, Dict, List, Optional
 
-from .kicad_link import KiCadLink, LinkError, Placement
+from .kicad_link import BoardEditError, KiCadLink, LinkError, Placement
 from . import library
 from .server import Api, RpcError, UiServer
 from .store import Store
@@ -34,6 +34,8 @@ def _require_link(fn):
             return fn(*args, **kwargs)
         except LinkError as exc:
             raise RpcError(str(exc), kind="nolink") from exc
+        except BoardEditError as exc:
+            raise RpcError(str(exc), kind="boardedit") from exc
 
     return wrapper
 
@@ -68,6 +70,8 @@ class Application:
 
     def _register(self) -> None:
         api = self.api
+        # Two HTTP requests must not replace the same recorded IDs concurrently.
+        placement_lock = threading.Lock()
 
         # ---- status -------------------------------------------------------
 
@@ -136,35 +140,26 @@ class Application:
             if placement.item_count() == 0:
                 raise RpcError("nothing to place", kind="empty")
 
-            board = str(self.link.board_context().get("name") or "")
             design_id = placement.design_id or f"anon-{int(time.time())}"
-
-            replaced = 0
-            if params.get("replace"):
-                previous = self.store.get_placement(design_id, board)
-                if previous:
-                    try:
-                        replaced = self.link.remove_ids(previous.get("ids", [])).get("removed", 0)
-                    except LinkError:
-                        replaced = 0
-                    self.store.forget_placement(design_id, board)
-
-            result = self.link.place(placement, net_name=params.get("net"))
-            self.store.record_placement(
-                design_id,
-                board,
-                result.get("ids", []),
-                meta={
-                    "name": placement.name,
-                    "kind": params.get("kind", ""),
-                    "summary": params.get("summary", ""),
-                },
-            )
-            if params.get("select"):
-                self.link.select(result.get("ids", []))
-            if params.get("refill"):
-                self.link.refill_zones()
-            result["replaced"] = replaced
+            with placement_lock:
+                board = str(self.link.board_context().get("name") or "")
+                previous = self.store.get_placement(design_id, board) if params.get("replace") else None
+                result = self.link.place(
+                    placement, net_name=params.get("net"),
+                    replace_ids=previous["ids"] if previous else (),
+                )
+                self.store.record_placement(
+                    design_id, board, result["ids"],
+                    meta={
+                        "name": placement.name,
+                        "kind": params.get("kind", ""),
+                        "summary": params.get("summary", ""),
+                    },
+                )
+                if params.get("select"):
+                    self.link.select(result["ids"])
+                if params.get("refill"):
+                    self.link.refill_zones()
             result["designId"] = design_id
             return result
 
@@ -172,13 +167,14 @@ class Application:
         @_require_link
         def _unplace(params: Dict[str, Any]) -> Dict[str, Any]:
             design_id = str(params.get("designId") or "")
-            board = str(self.link.board_context().get("name") or "")
-            previous = self.store.get_placement(design_id, board)
-            if not previous:
-                return {"removed": 0}
-            out = self.link.remove_ids(previous.get("ids", []))
-            self.store.forget_placement(design_id, board)
-            return out
+            with placement_lock:
+                board = str(self.link.board_context().get("name") or "")
+                previous = self.store.get_placement(design_id, board)
+                if not previous:
+                    return {"removed": 0}
+                out = self.link.remove_ids(previous.get("ids", []))
+                self.store.forget_placement(design_id, board)
+                return out
 
         @api.method("board.select")
         @_require_link

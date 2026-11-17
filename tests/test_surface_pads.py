@@ -5,15 +5,23 @@ from pathlib import Path
 import subprocess
 from planar_studio import kicad_link as k
 
+
+class RecordingBoard:
+    def begin_commit(self): return 'commit'
+    def push_commit(self, *args): pass
+
+    def create_items(self, items):
+        self.items = items
+        for index, item in enumerate(items):
+            item.id.value = f'item-{index}'
+        return items
+
+
 @unittest.skipUnless(k.HAVE_KIPY, 'Install requirements.txt to test IPC pad objects')
 class SurfacePads(unittest.TestCase):
     def test_surface_pad_layers_nets_and_origin(self):
         from kipy.board_types import FootprintInstance, Net, PadType, BoardLayer
-        class Board:
-            def begin_commit(self): return 'commit'
-            def push_commit(self, *args): pass
-            def create_items(self, items): self.items = items; return items
-        board = Board()
+        board = RecordingBoard()
         link = k.KiCadLink()
         link._board = lambda: board
         primary = Net(); primary.name = 'T1_PRI'
@@ -50,11 +58,7 @@ class SurfacePads(unittest.TestCase):
             console.log(JSON.stringify({name:'T1', ...toKicad(result.art, {tolerance:0.004})}));
         """
         payload = json.loads(subprocess.check_output(['node', '--input-type=module', '-e', script], cwd=root))
-        class Board:
-            def begin_commit(self): return 'commit'
-            def push_commit(self, *args): pass
-            def create_items(self, items): self.items = items; return items
-        board = Board()
+        board = RecordingBoard()
         link = k.KiCadLink()
         link._board = lambda: board
         nets = {}
