@@ -58,9 +58,11 @@ export function buildAntenna(input, env = {}, opt = {}) {
     if (slotW >= W - 2 * c.insetGap) throw new Error('Inset slot is wider than the patch. Reduce feed width or inset gap.');
     const net = env.net || 'RF', A = r.art;
     A.pads = A.pads.filter(p => p.role !== 'patch');
-    // Exact union of three rectangles: no ground/signal bridge across the slot.
+    // Give the side pieces copper overlap with the body. Their seams sit
+    // inside the body, so the inset and the outer patch dimensions stay put.
     const sideW = (W - slotW) / 2;
-    for (const s of [-1, 1]) A.pads.push(pad(s * (slotW + sideW) / 2, -L / 2 + depth / 2, { w: sideW, h: depth, shape: 'rect', number: '1', net, role: 'patch' }));
+    const sideH = depth + Math.min(0.05, (L - depth) / 2);
+    for (const s of [-1, 1]) A.pads.push(pad(s * (slotW + sideW) / 2, -L / 2 + sideH / 2, { w: sideW, h: sideH, shape: 'rect', number: '1', net, role: 'patch' }));
     A.pads.push(pad(0, depth / 2, { w: W, h: L - depth, shape: 'rect', number: '1', net, role: 'patch' }));
     A.tracks[0].pts[1][1] = -L / 2 + depth + feedW / 2;
     r.analysis.insetDepth = depth;

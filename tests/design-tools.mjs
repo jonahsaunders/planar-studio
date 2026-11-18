@@ -173,6 +173,18 @@ check('Board checks detect crossing copper, board edges and placement origin', (
   const noGround = { ...b, copper: b.copper.filter((p) => !p.polygon) };
   assert.ok(checkPlacement(a, noGround, { kind: 'filter', distributed: true }).findings.some((f) => f.type === 'reference-ground'));
 });
+check('Rectangular surface pads use their actual board-edge and cutout clearance', () => {
+  const art = artwork();
+  art.pads.push(pad(0, 0, { w: 40, h: 4, layer: 'B.Cu', shape: 'rect' }));
+  const outline = cutout => parseBoard(`(kicad_pcb
+    (gr_rect (start -24 -4) (end 24 4) (layer "Edge.Cuts"))
+    ${cutout ? '(gr_rect (start 8 -1) (end 10 1) (layer "Edge.Cuts"))' : ''})`);
+  const findings = (origin, cutout = false) => checkPlacement(art, outline(cutout), { origin }).findings;
+  assert.deepEqual(findings([0, 0]), []);
+  assert.ok(findings([0, 1.9]).some(f => f.id === 'outline-clearance'));
+  assert.ok(findings([0, 2.1]).some(f => f.id === 'outline'));
+  assert.ok(findings([0, 0], true).some(f => f.id === 'outline-clearance'), 'The pad covers an entire cutout');
+});
 check('Arc sampling preserves semicircle midpoint and endpoints', () => {
   const p = arcPoints([1, 0], [0, 1], [-1, 0]); near(p[0][0], 1); near(p.at(-1)[0], -1); assert.ok(p.some((x) => x[1] > 0.99));
 });

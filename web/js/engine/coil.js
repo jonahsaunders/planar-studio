@@ -9,11 +9,11 @@
    Geometry is carried in millimetres. Physics converts to SI at the boundary.
    ========================================================================= */
 
-import { buildObstacleCoil } from './obstacles.js';
+import { buildObstacleCoil, offsetContours } from './obstacles.js';
 import { windingPhasors } from './winding-design.js';
 import { ellipticRatio } from './microstrip.js';
 import { phaseVoltageFromBus } from './motor-envelope.js';
-import { routeSeriesLayers } from './series-routing.js';
+import { hasNonlocalContact, routeSeriesLayers } from './series-routing.js';
 
 export const MU0      = 4e-7 * Math.PI;      // H/m
 export const EPS0     = 8.8541878128e-12;    // F/m
@@ -159,8 +159,8 @@ export const ALGORITHMS = {
   racetrack: { name: 'Stadium offset',          note: 'Rounded rectangle whose width, height and corner radius are offset continuously with the turn parameter.' },
   log:       { name: 'Logarithmic',             note: 'r(θ) = r₀·e^(−bθ). Equiangular: clearance grows outward, so the inner turns set the DRC limit.' },
   wedge:     { name: 'Sector offset',           note: 'Trapezoidal stator coil. At radius r the flank rotates by asin(d/r), keeping perpendicular clearance p between turns.' },
-  super:     { name: 'Superformula + miter',    note: 'Gielis superformula seeds the contour; a clamped miter offset walks it inward once per turn.' },
-  custom:    { name: 'Contour miter offset',    note: 'Arbitrary user contour, uniformly resampled, then walked inward by a clamped miter offset per turn.' },
+  super:     { name: 'Superformula contour',   note: 'Successive insets of the Gielis contour form a spiral with checked turn clearance.' },
+  custom:    { name: 'Custom contour spiral',  note: 'Successive insets follow the supplied contour with checked turn clearance.' },
 };
 
 /* All generators return { path:[[x,y],..] outer→inner, base:[[x,y],..] contour,
@@ -395,7 +395,7 @@ export function superContour(g, n = 512) {
 }
 
 /* Generic contour → spiral by continuous clamped miter offset. */
-function genOffsetSpiral(base0, g) {
+function legacyOffsetSpiral(base0, g) {
   const { turns, pitch, ppt } = g;
   const M = clamp(Math.round(ppt * 1.5), 128, 720);
   const base = startOnPlusX(resampleClosed(base0, M));
@@ -416,6 +416,82 @@ function genOffsetSpiral(base0, g) {
     path[i] = [a[0] + (b[0] - a[0]) * fr, a[1] + (b[1] - a[1]) * fr];
   }
   return { path, base, maxTurns, minClearance: pitch, turnsUsed: useTurns };
+}
+
+// Split at the actual intersection with the mirror axis without moving any
+// contour vertices. Every turn then starts at the same angular position.
+function sampleContour(points, samples) {
+  const loop = signedArea(points) > 0 ? points : points.slice().reverse();
+  let seam = null;
+  for (const [i, a] of loop.entries()) {
+    const b = loop[(i + 1) % loop.length];
+    if ((a[1] > 0) === (b[1] > 0)) continue;
+    const x = a[0] + (b[0] - a[0]) * (-a[1] / (b[1] - a[1]));
+    if (!seam || x > seam.x) seam = { x, next: i + 1 };
+  }
+  return seam ? resampleClosed([[seam.x, 0], ...loop.slice(seam.next), ...loop.slice(0, seam.next)], samples) : null;
+}
+
+function genOffsetSpiral(outline, g) {
+  const samples = Math.max(16, Math.round(g.ppt));
+  const requested = Math.max(1, Math.round(g.turns));
+  const base = sampleContour(outline, samples);
+  const gap = g.pitch + 0.006;
+  let best = null;
+  if (base) {
+    const boundary = signedArea(outline) > 0 ? outline : outline.slice().reverse();
+    const box = bboxOf(boundary);
+    for (const factor of [1.08, 1.2, 1.35]) {
+      const step = g.pitch * factor;
+      const limit = Math.min(Math.max(60, requested), Math.floor(Math.min(box.w, box.h) / (2 * step)));
+      const path = [];
+      let previous = base, maxTurns = 0, terminal = null;
+      for (let n = 1; n <= limit; n++) {
+        const insets = offsetContours([boundary], -step * n);
+        if (insets.length !== 1) break;
+        const next = sampleContour(insets[0], samples);
+        if (!next) break;
+        if (n <= requested) {
+          for (const [i, [x, y]] of previous.entries()) {
+            const f = i / samples;
+            path.push([x + f * (next[i][0] - x), y + f * (next[i][1] - y)]);
+          }
+          terminal = next[0];
+        }
+        maxTurns = n;
+        previous = next;
+      }
+      if (!terminal) continue;
+      path.push(terminal);
+      const proposed = Math.min(maxTurns, requested);
+      let turnsUsed = proposed;
+      if (hasNonlocalContact(path, gap)) {
+        // Each shorter candidate is an exact prefix of this path.
+        let lower = 0, upper = proposed;
+        while (upper - lower > 1) {
+          const n = Math.floor((lower + upper) / 2);
+          if (hasNonlocalContact(path.slice(0, n * samples + 1), gap)) upper = n;
+          else lower = n;
+        }
+        turnsUsed = maxTurns = lower;
+      }
+      if (turnsUsed > (best?.turnsUsed || 0)) {
+        best = { path: path.slice(0, turnsUsed * samples + 1), base,
+          turnsUsed, maxTurns, minClearance: g.pitch, exactPaths: true };
+      }
+      if (turnsUsed === requested) return best;
+    }
+  }
+  if (best) return best;
+
+  // Retain analysis for older custom contours when no inset spiral fits.
+  // Only a clearance-checked path may be sent to KiCad.
+  const legacy = legacyOffsetSpiral(outline, g);
+  if (legacy.path.every(p => p.every(Number.isFinite)) && !hasNonlocalContact(legacy.path, gap)) {
+    return { ...legacy, exactPaths: true };
+  }
+  return { ...legacy, minClearance: 0,
+    routingError: 'Contour turns lack copper clearance. Increase diameter, reduce turns, or simplify the contour before placing or exporting in KiCad.' };
 }
 
 /* Rotate a closed contour so index 0 sits on the +X ray. Every generator
@@ -484,8 +560,8 @@ export function buildCoil(cfg) {
     customPoly: cfg.customPoly, dir: 1,
   };
   const spiral = generateSpiral(g);
-  // Snap near-axis ends to the mirror seam used by the two-layer transition.
-  {
+  // Legacy transitions use a mirror seam. Keep checked paths intact.
+  if (!spiral.exactPaths) {
     const P = spiral.path, last = P.length - 1;
     if (last > 2 && Math.abs(P[0][1]) < pitch) P[0] = [P[0][0], 0];
     if (last > 2 && Math.abs(P[last][1]) < pitch) P[last] = [P[last][0], 0];
@@ -591,23 +667,35 @@ export function buildCoil(cfg) {
     lenTotal: lenPerLayer * nL + linkLen + leadLen,
     bbox: bboxOf(spiral.path),
     outerR: Math.max(rMax, leadR), innerR: rMin, dOutFlat, dInFlat,
+    exactPaths: spiral.exactPaths, routingError: spiral.routingError,
   };
-  if (series && nL > 2) {
-    const routing = routeSeriesLayers(layers, cfg);
+  if ((spiral.exactPaths || series && nL > 2) && !coil.routingError) {
+    const routingConfig = !series && nL > 1 && !cfg.padDrill
+      ? { ...cfg, padSize: Math.max(cfg.padSize, cfg.viaPad) } : cfg;
+    const routing = routeSeriesLayers(series ? layers : layers.slice(0, 1), routingConfig);
     if (routing) {
-      routing.paths.forEach((pts, i) => { layers[i].pts = pts; });
-      coil.vias = routing.vias;
+      layers.forEach((layer, i) => { layer.pts = routing.paths[series ? i : 0]; });
+      if (series) {
+        coil.vias = routing.vias;
+      } else {
+        // A drilled terminal already joins the parallel layers. With
+        // surface terminals the via provides the only through connection.
+        coil.vias = nL > 1 && !cfg.padDrill ? routing.terminals.map(([x, y], i) =>
+          ({ x, y, from: 0, to: nL - 1, kind: i ? 'inner' : 'outer', stitch: true })) : [];
+      }
       coil.terminals = routing.terminals;
-      coil.enclosed = nL % 2 === 1;
+      coil.enclosed = !series || nL % 2 === 1;
       coil.links = [];
       coil.leads = [];
       coil.linkLen = 0;
       coil.leadLen = 0;
       coil.lenTotal = layers.reduce((sum, layer) => sum + polyLength(layer.pts, false), 0);
+      if (!series) coil.lenPerLayer = coil.lenTotal / nL;
       coil.outerR = layers.reduce((r, layer) => layer.pts.reduce((r, [x, y]) => Math.max(r, Math.hypot(x, y)), r), rMax);
       coil.exactPaths = true;
     } else {
-      coil.routingError = 'No clear breakout fits this series stack. Increase the winding opening or diameter, reduce turns or layer count, or use smaller pads and vias.';
+      const design = series && nL > 2 ? 'this series stack' : 'this contour winding';
+      coil.routingError = `No clear breakout fits ${design}. Increase the winding opening or diameter, reduce turns or layer count, or use smaller pads and vias.`;
     }
   }
   return coil;

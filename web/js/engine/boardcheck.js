@@ -298,13 +298,27 @@ export function checkPlacement(art, board, opt = {}) {
     })),
   ];
   const planes = board.copper.filter((o) => o.polygon && o.net === (opt.groundNet || 'GND'));
+  const outside = points => board.loops.length &&
+    points.some(q => board.loops.filter(l => inside(q, l)).length % 2 !== 1);
+  const boardEdges = board.edges.flatMap(e => e.slice(1).map((q, j) => [e[j], q]));
+  const edgeMargin = clearance + 0.025;
   for (const t of conductors) {
+    // A generated rectangular SMD pad is axis-aligned on the board. Its
+    // enclosing circle can extend far beyond the copper at a board edge.
+    const padOutline = t.item === 'pads' && t.shape === 'rect' ? {
+      polygon: [
+        [t.x - t.w / 2, t.y - t.h / 2], [t.x + t.w / 2, t.y - t.h / 2],
+        [t.x + t.w / 2, t.y + t.h / 2], [t.x - t.w / 2, t.y + t.h / 2],
+      ].map(p),
+    } : null;
     const contactEnd = new Map();
     let along = 0;
     for (let i = 1; i < t.pts.length; i++) {
-      const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + clearance + 0.025;
-      if (board.loops.length && [a, b].some((q) => board.loops.filter((l) => inside(q, l)).length % 2 !== 1)) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
-      if (board.edges.some((e) => e.slice(1).some((q, j) => segmentDistance(a, b, e[j], q) < radius))) add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
+      const a = p(t.pts[i - 1]), b = p(t.pts[i]), radius = t.width / 2 + edgeMargin;
+      if (outside(padOutline?.polygon ?? [a, b])) add('edge', { id: 'outline' }, a, 'Copper extends outside the board or into an outline cutout.');
+      if (boardEdges.some(([c, d]) => padOutline ? hits(c, d, edgeMargin, padOutline) : segmentDistance(a, b, c, d) < radius)) {
+        add('edge', { id: 'outline-clearance' }, a, 'Copper is too close to a board edge.');
+      }
       for (const o of board.holes) if (shareCopperLayer(t, o) && pointDistance(o.point, a, b) < radius + o.radius) add('hole', o, o.point, 'Copper conflicts with a drill or mounting hole.');
       for (const o of board.keepouts) {
         if (sameLayer(t.layer, o.layer) && (o.restricted?.includes(t.item || 'tracks') ?? true) && hits(a, b, radius, o)) {

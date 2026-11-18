@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { artwork, rect, toKicad } from '../web/js/engine/artwork.js';
-import { parseBoard, reviewBoardPlacement } from '../web/js/engine/boardcheck.js';
+import { parseBoard, reviewBoardPlacement, segmentDistance } from '../web/js/engine/boardcheck.js';
 import { polyLength, viaResistance } from '../web/js/engine/coil.js';
 import { exportKicadMod, exportKicadPcb, exportSvg } from '../web/js/engine/exporters.js';
 import { pointSegment } from '../web/js/engine/obstacles.js';
@@ -18,6 +18,8 @@ const cases = [
   { layers: 6, shape: 'log' },
   { layers: 6, shape: 'racetrack' },
   { layers: 6, shape: 'wedge', dOuter: 60, dInner: 28 },
+  ...['super', 'custom'].flatMap(shape => [1, 2, 4].map(layers => ({ shape, layers }))),
+  { shape: 'custom', layers: 2, customPoly: [[-12, -8], [12, -8], [12, 8], [-12, 8]] },
 ];
 
 for (const spec of cases) {
@@ -33,6 +35,21 @@ for (const spec of cases) {
   const board = parseBoard(pcb);
   const holes = board.copper.filter(item => item.kind === 'via' || item.kind === 'pad');
   const traces = board.copper.filter(item => item.kind === 'segment');
+  if (spec.shape === 'super' || spec.shape === 'custom') {
+    assert.equal(coil.spiral.turnsUsed, config.turns, 'The requested turns still fit');
+    for (const layer of layers) {
+      const path = traces.filter(t => t.layer === layer);
+      let end = 0;
+      const start = path.map(t => { const from = end; end += polyLength(t.pts, false); return from; });
+      for (const [i, a] of path.entries()) {
+        for (let j = i + 2; j < path.length; j++) {
+          if (start[j] - start[i + 1] <= 2 * (config.traceW + config.traceS)) continue;
+          assert.ok(segmentDistance(...a.pts, ...path[j].pts) >= config.traceW + config.traceS - 0.004,
+            `${spec.shape} ${layer} has insufficient clearance between separate sections`);
+        }
+      }
+    }
+  }
   assert.equal(holes.length, config.layers + 1);
   assert.equal(new Set(holes.map(h => h.pts[0].join(','))).size, holes.length);
   for (const [index, hole] of holes.entries()) {
@@ -73,6 +90,15 @@ assert.throws(() => exportKicadPcb(cramped), /No clear breakout/);
 assert.throws(() => exportKicadMod(cramped), /No clear breakout/);
 assert.match(exportSvg(cramped), /<svg/);
 assert.match(exportKicadPcb(compute({ ...config, connection: 'parallel' }, {}, { quick: true }).art), /\(via /);
+const badContour = compute({ ...base, shape: 'super', layers: 1, dOuter: 2 }, {}, { quick: true }).art;
+assert.throws(() => toKicad(badContour), /Contour turns lack copper clearance/);
+assert.throws(() => exportKicadPcb(badContour), /Contour turns lack copper clearance/);
+assert.throws(() => exportKicadMod(badContour), /Contour turns lack copper clearance/);
+for (const padDrill of [0, base.padDrill]) {
+  const parallel = compute({ ...base, shape: 'super', layers: 2, connection: 'parallel', padDrill }, {}, { quick: true }).art;
+  assert.equal(toKicad(parallel).vias.length, 2, 'Two through connections join the parallel layers');
+  assert.deepEqual(parallel.tracks[0].pts, parallel.tracks[1].pts);
+}
 
 const motor = computeMotor({ ...motorDefaults(), layers: 4, busEnabled: false }, {}, { quick: true });
 assert.equal(toKicad(motor.art).vias.length, motor.instances * 5);

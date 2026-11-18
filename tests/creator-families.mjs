@@ -43,9 +43,15 @@ check('Inset feed preserves two side gaps and matching estimate follows depth', 
   const c = ac('inset-patch'), a = antenna.compute(c), b = antenna.compute({ ...c, insetFraction: 0.4 });
   assert.ok(b.analysis.inputResistance < a.analysis.inputResistance);
   near(a.analysis.inputResistance, c.edgeResistance * Math.cos(Math.PI * c.insetFraction) ** 2);
-  const side = a.art.pads.filter(p => p.role === 'patch' && p.h === a.analysis.insetDepth);
+  const patch = a.art.pads.filter(p => p.role === 'patch');
+  const body = patch.find(p => p.x === 0);
+  const side = patch.filter(p => p.x !== 0);
   assert.equal(side.length, 2);
-  for (const p of side) near(Math.abs(p.x) - p.w / 2 - a.analysis.feedW / 2, c.insetGap);
+  for (const p of side) {
+    near(Math.abs(p.x) - p.w / 2 - a.analysis.feedW / 2, c.insetGap);
+    near(p.y - p.h / 2, -a.analysis.L / 2);
+    assert.ok(p.y + p.h / 2 - (body.y - body.h / 2) > 0.01, 'Side copper must overlap the patch body');
+  }
   assert.equal(toKicad(a.art).vias.length, 0);
 });
 check('Dipole symmetry, isolated feeds and folded DC connectivity', () => {

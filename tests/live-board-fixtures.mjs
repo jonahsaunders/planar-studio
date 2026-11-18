@@ -3,8 +3,9 @@ import { artwork, boundsCopper, rect, toKicad, transform } from '../web/js/engin
 import { exportKicadPcb } from '../web/js/engine/exporters.js';
 import { defaults, compute } from '../web/js/ws/inductor.js';
 import { defaults as filterDefaults, compute as computeFilter } from '../web/js/ws/filter.js';
+import { defaults as antennaDefaults, compute as computeAntenna } from '../web/js/ws/antenna.js';
 
-const [fixture, exported, filterFixture, seriesFixture, seriesPayload] = process.argv.slice(2);
+const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture] = process.argv.slice(2);
 const board = artwork();
 board.meta.boardLayers = ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu'];
 board.outline = [{ layer: 'Edge.Cuts', pts: rect(0, -50, 50, 0) }];
@@ -23,3 +24,6 @@ writeFileSync(filterFixture, exportKicadPcb(filter));
 const series = compute({ ...defaults(), layers: 4, turns: 4, ppt: 64 }, { name: 'Series stack' }, { quick: true }).art;
 writeFileSync(seriesFixture, exportKicadPcb(series));
 writeFileSync(seriesPayload, JSON.stringify(toKicad(series, { dx: 29, dy: 29 })));
+
+const antenna = computeAntenna({ ...antennaDefaults(), family: 'inset-patch' }, {}, { quick: true });
+writeFileSync(insetFixture, exportKicadPcb(antenna.art));

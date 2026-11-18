@@ -251,10 +251,11 @@ select the same reference layer for synthesis and placement.
 the preview to the main Place action.
 
 The parser handles straight/arc tracks, vias, footprint transforms, pads,
-filled zones, common graphic primitives, and closed board outlines. Pads and
-oval drills use conservative enclosing circles; copper arcs are approximated
-with a 0.025 mm sagitta target. Unsupported shapes and unfilled zones produce
-warnings. Checks use conservative margins and do not claim a KiCad DRC pass.
+filled zones, common graphic primitives, and closed board outlines. Board-edge
+checks use the actual outline of generated rectangular surface pads. Other pad
+and oval drill checks use conservative enclosing circles. Copper arcs are
+approximated with a 0.025 mm sagitta target. Unsupported shapes and unfilled zones
+produce warnings. Checks use conservative margins and do not claim a KiCad DRC pass.
 Custom pad shapes, per-netclass rules, complex multilayer padstacks, footprint
 courtyards, and electrical effects of nearby metal are not fully modeled. Ground
 coverage requires one continuous filled polygon for each trace segment; joined

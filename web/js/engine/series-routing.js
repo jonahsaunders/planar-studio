@@ -21,9 +21,8 @@ function near(a, b, c, d, gap) {
   return segmentDistance(a, b, c, d) < gap;
 }
 
-function hasTurnBypass(winding, width) {
-  const gap = width + exportMargin;
-  const sorted = winding.map(s => ({ ...s, left: Math.min(s.a[0], s.b[0]), right: Math.max(s.a[0], s.b[0]) }))
+export function hasNonlocalContact(path, gap) {
+  const sorted = segments(path).map(s => ({ ...s, left: Math.min(s.a[0], s.b[0]), right: Math.max(s.a[0], s.b[0]) }))
     .sort((a, b) => a.left - b.left);
   for (const [i, a] of sorted.entries()) {
     for (let j = i + 1; j < sorted.length && sorted[j].left < a.right + gap; j++) {
@@ -91,9 +90,9 @@ export function routeSeriesLayers(layers, cfg) {
   if (!(cfg.viaPad > cfg.viaDrill && cfg.viaDrill > 0 && cfg.padSize > cfg.padDrill && cfg.padDrill >= 0)) return null;
   const count = layers.length;
   const centerX = cfg.shape === 'wedge' ? (cfg.dOuter + cfg.dInner) / 4 : 0;
-  const forward = layers[0].pts, mirrored = layers[1].pts;
-  const windings = [segments(forward), segments(mirrored)];
-  if (hasTurnBypass(windings[0], cfg.traceW)) return null;
+  const forward = layers[0].pts;
+  const windings = layers.slice(0, 2).map(layer => segments(layer.pts));
+  if (hasNonlocalContact(forward, cfg.traceW + exportMargin)) return null;
   const maxX = forward.reduce((x, p) => Math.max(x, p[0]), -Infinity);
   const outerEscape = maxX + cfg.traceW / 2 + cfg.traceS + exportMargin;
   const nodes = Array.from({ length: count + 1 }, (_, i) => {

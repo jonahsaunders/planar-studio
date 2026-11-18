@@ -192,8 +192,10 @@ def main():
         filter_fixture = root / f"filter-{root.name}.kicad_pcb"
         series_fixture = root / f"series-{root.name}.kicad_pcb"
         series_payload = root / "series-placement.json"
+        inset_fixture = root / f"inset-{root.name}.kicad_pcb"
         subprocess.run(["node", str(ROOT / "tests" / "live-board-fixtures.mjs"),
-                        str(fixture), str(exported), str(filter_fixture), str(series_fixture), str(series_payload)],
+                        str(fixture), str(exported), str(filter_fixture), str(series_fixture), str(series_payload),
+                        str(inset_fixture)],
                        check=True, cwd=ROOT)
         with running([args.pcbnew, str(fixture)], env) as process:
             editor, board, socket = wait_for_board(fixture, args.major, socket_dir, process)
@@ -209,7 +211,7 @@ def main():
             print("KiCad reopened the exported board and read its tracks and vias.", flush=True)
         cli_name = "kicad-cli.exe" if os.name == "nt" else "kicad-cli"
         cli = os.environ.get("PLANAR_STUDIO_KICAD_CLI") or shutil.which(cli_name) or str(Path(args.pcbnew).with_name(cli_name))
-        for board_file in [filter_fixture, series_fixture]:
+        for board_file in [filter_fixture, series_fixture, inset_fixture]:
             report_file = board_file.with_suffix(".json")
             check = subprocess.run([cli, "pcb", "drc", "--format", "json", "--severity-error",
                                     "--exit-code-violations", "--output", str(report_file), str(board_file)],

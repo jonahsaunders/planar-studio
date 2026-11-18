@@ -87,6 +87,10 @@ geometry differences. [Reproducible benchmark](../examples/measured-inductor/REA
   checked paths in KiCad placement and export. If the breakout cannot fit,
   the analysis remains available and KiCad output reports the clearance
   problem. Resistance uses the barrel span carrying current between layers.
+- **Superformula and custom contours:** successive inward offsets form a spiral.
+  The generator checks clearances between turns and around the terminal breakouts.
+  The generated turn count can be lower when the inward offsets no longer fit.
+  KiCad placement and export preserve the checked centreline.
 - **Inverse coil sizing:** fractional turns change terminal and via placement,
   which can make inductance nonmonotonic. The solver searches whole turns, then
   adjusts diameter.

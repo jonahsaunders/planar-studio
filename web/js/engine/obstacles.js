@@ -66,7 +66,7 @@ export function obstacleRegions(cfg) {
   return { board: boardPolygon(source.outline), cutouts, obstacles: [...obstacles, ...imported] };
 }
 
-function offset(paths, delta) {
+export function offsetContours(paths, delta) {
   if (!paths.length) return [];
   const co = new Clipper.ClipperOffset(2, EPS*SCALE);
   co.AddPaths(paths.map(ints), Clipper.JoinType.jtRound, Clipper.EndType.etClosedPolygon);
@@ -191,9 +191,9 @@ export function buildObstacleCoil(cfg) {
   const shapes=regions.obstacles.map(o=>o.polygon);
   const layers=[];
   for(let k=0;k<cfg.turns;k++) {
-    const board=offset([regions.board],-(safe+cfg.padSize*1.6+cfg.traceS+cfg.traceW+k*pitch));
+    const board=offsetContours([regions.board],-(safe+cfg.padSize*1.6+cfg.traceS+cfg.traceW+k*pitch));
     if(!board.length)break;
-    const free=difference(board,offset(shapes,safe+k*pitch));
+    const free=difference(board,offsetContours(shapes,safe+k*pitch));
     const outer=free.filter(p=>area(p)>0);if(!outer.length)break;layers.push({outer,holes:free.filter(p=>area(p)<0)});
   }
   if(!layers.length)throw new Error('No winding fits in the remaining board area. Enlarge it or reduce obstacle clearance.');
