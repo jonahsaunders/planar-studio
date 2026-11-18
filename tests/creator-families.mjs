@@ -39,6 +39,91 @@ for (const family of Object.keys(ANTENNA_FAMILIES)) check(`${family}: finite geo
   assert.ok(r.capabilities.length && r.notes.length && antenna.tiles(c, r).length);
   exportRoundtrip(antenna, c, r);
 });
+check('Monopole ends the back ground at the start of the quarter-wave radiator', () => {
+  const c = ac('monopole', { armScale: 1 }), r = antenna.compute(c);
+  const radiator = r.art.tracks.find(t => t.role === 'radiator');
+  const ground = r.art.pads.find(p => p.role === 'ground');
+  assert.equal(ground.layer, 'B.Cu');
+  near(ground.y + ground.h / 2, 0);
+  near(radiator.pts.at(-1)[1] + radiator.width / 2, r.analysis.length);
+  near(r.analysis.resonance, c.freq);
+  assert.deepEqual(r.art.ports.map(p => p.net), ['RF', 'GND']);
+  assert.equal(r.art.vias.length, 0);
+  assert.throws(() => antenna.compute({ ...c, groundLength: 5 }), /ground plane must cover/);
+});
+check('Full-wave loop has a real feed gap and one continuous conductor', () => {
+  const c = ac('full-wave-loop', { armScale: 1 }), r = antenna.compute(c);
+  const [a, b] = r.art.pads;
+  assert.equal(a.net, b.net);
+  assert.deepEqual(r.layers, ['F.Cu']);
+  near(Math.hypot(a.x - b.x, a.y - b.y) - (a.w + b.w) / 2, c.feedGap);
+  near(r.analysis.resonance, c.freq, 0.0002);
+  assert.deepEqual(r.art.tracks[0].pts[0], [a.x, a.y]);
+  assert.deepEqual(r.art.tracks[0].pts.at(-1), [b.x, b.y]);
+  assert.throws(() => antenna.compute({ ...c, freq: 30e9, feedGap: 10 }), /too small/);
+});
+check('Corner cuts mirror diagonally and overlap the adjoining patch copper', () => {
+  const c = ac('truncated-patch'), r = antenna.compute(c);
+  const pads = r.art.pads.filter(p => p.role === 'patch-corner');
+  const other = antenna.compute({ ...c, cpDiagonal: 'descending' }).art.pads.filter(p => p.role === 'patch-corner');
+  near(r.analysis.resonance, c.freq);
+  near(r.analysis.cut / r.analysis.side, c.cpCornerCut);
+  const steps = r.analysis.steps;
+  assert.equal(pads.length, 2 * steps);
+  assert.ok(r.analysis.step <= c.cpProfileStep);
+  const body = r.art.pads.find(p => p.role === 'patch-body');
+  for (const [i, p] of pads.entries()) {
+    near(p.x, -other[i].x);
+    near(p.y, other[i].y);
+    near(p.w, other[i].w);
+    const neighbour = i % steps ? pads[i - 1] : body;
+    assert.ok(Math.abs(p.y - neighbour.y) < (p.h + neighbour.h) / 2, 'No disconnected edge-to-edge seams');
+  }
+});
+check('Two-arm spiral mirrors its winding direction and preserves clearance in placement', () => {
+  const c = ac('archimedean-spiral'), r = antenna.compute(c);
+  const mirror = antenna.compute({ ...c, spiralDirection: 'cw' });
+  const [a, b] = r.art.tracks;
+  assert.notEqual(a.net, b.net);
+  assert.deepEqual([a.net, b.net], ['RF_P', 'RF_N']);
+  near(Math.hypot(...a.pts.at(-1)), r.analysis.outer);
+  near(Math.hypot(...a.pts[0]), r.analysis.inner);
+  a.pts.forEach(([x, y], i) => {
+    near(x, mirror.art.tracks[0].pts[i][0]);
+    near(y, -mirror.art.tracks[0].pts[i][1]);
+    near(x, -b.pts[i][0], 1e-5);
+    near(y, -b.pts[i][1], 1e-5);
+  });
+  const [pa, pb] = toKicad(r.art, { tolerance: 5 }).tracks;
+  for (let i = 1; i < pa.pts.length; i++) for (let j = 1; j < pb.pts.length; j++) {
+    assert.ok(segmentDistance(pa.pts[i - 1], pa.pts[i], pb.pts[j - 1], pb.pts[j]) >= c.traceW + c.spiralClearance);
+  }
+  assert.throws(() => antenna.compute({ ...c, spiralOuterScale: 1.05, spiralTurns: 8 }), /arm clearance/);
+});
+check('SIW preserves empty slot apertures, alternating offsets and the plated short', () => {
+  const c = ac('siw-slot-array', { freq: 10e9, boardT: 0.508, siwSlots: 5 });
+  const { art, analysis: a } = antenna.compute(c);
+  near(a.cutoff, c.freq * c.siwCutoffRatio);
+  near(a.spacing, a.guidedWavelength / 2);
+  near(a.backshort, a.guidedWavelength / 4);
+  assert.equal(a.slots.length, c.siwSlots);
+  const front = art.pads.filter(p => p.layer === 'F.Cu' && p.role.startsWith('siw-'));
+  for (const [i, slot] of a.slots.entries()) {
+    near(slot.y, (i + 1) * a.spacing);
+    near(slot.x, (i % 2 ? -1 : 1) * a.offset);
+    for (const p of front) {
+      assert.ok(Math.abs(p.x - slot.x) >= (p.w + a.slotWidth) / 2 - 1e-7 ||
+        Math.abs(p.y - slot.y) >= (p.h + a.slotLength) / 2 - 1e-7, 'The radiating slot contains no front copper');
+    }
+  }
+  assert.equal(new Set(art.vias.map(v => `${v.x},${v.y}`)).size, art.vias.length);
+  assert.equal(toKicad(art).vias.length, art.vias.length);
+  assert.ok(a.wallPitch <= c.siwViaPitch + 1e-9 && a.shortPitch <= c.siwViaPitch + 1e-9);
+  near(Math.max(...art.vias.map(v => v.y)) - a.slots.at(-1).y, a.backshort);
+  assert.deepEqual([...new Set([...art.tracks, ...art.pads, ...art.vias].map(item => item.net))], ['GND']);
+  assert.throws(() => antenna.compute({ ...c, siwViaPitch: 3 }), /via annular ring/);
+  assert.throws(() => antenna.compute({ ...c, siwSlotWidth: 10 }), /slots or feed do not fit/);
+});
 check('Inset feed preserves two side gaps and matching estimate follows depth', () => {
   const c = ac('inset-patch'), a = antenna.compute(c), b = antenna.compute({ ...c, insetFraction: 0.4 });
   assert.ok(b.analysis.inputResistance < a.analysis.inputResistance);

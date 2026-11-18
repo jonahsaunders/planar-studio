@@ -1,6 +1,7 @@
 /* Parametric antenna layouts. Each family declares its actual model scope. */
 import { buildRoundOrSlot } from './round-slot-antennas.js';
 import { buildDirectional, DIRECTIONAL_FAMILIES, directionalDefaults } from './directional-antennas.js';
+import { buildPlanarAntenna, PLANAR_ANTENNA_FAMILIES, planarAntennaDefaults } from './planar-antenna-families.js';
 import { buildPatch } from './patch-antenna.js';
 import { artwork, pad, track, run, rect, bounds, label, transform, merge } from './artwork.js';
 import { buildCoil, toFilaments, inductanceOf, discretisationCorrection, OZ_MM, RHO_CU20 } from './coil.js';
@@ -12,10 +13,12 @@ export const ANTENNA_FAMILIES = {
   'circular-patch': 'Circular patch', slot: 'Microstrip-fed slot',
   nfc: 'NFC loop', 'patch-array': 'Patch array',
   vivaldi: 'Vivaldi tapered slot', yagi: 'Printed Yagi', lpda: 'Printed log-periodic', bowtie: 'Bow-tie dipole',
+  ...PLANAR_ANTENNA_FAMILIES,
 };
 export const MAX_ARRAY_DIMENSION = 32;
 export const antennaExtras = () => ({
   ...directionalDefaults(),
+  ...planarAntennaDefaults(),
   radiusScale: 1, slotScale: 1, slotWidth: 1.5, slotStub: 5,
   family: 'patch', insetFraction: 0.32, insetGap: 0.4, edgeResistance: 300,
   traceW: 0.8, feedGap: 1, armScale: 0.95, foldSpacing: 3, groundWidth: 45,
@@ -45,6 +48,7 @@ export function buildAntenna(input, env = {}, opt = {}) {
   range(c, 'boardT', 0.05, 10); range(c, 'epsR', 1.01, 20);
   range(c, 'copperOz', 0.25, 4); range(c, 'margin', 0.1, 100);
   if (DIRECTIONAL_FAMILIES.includes(c.family)) return buildDirectional(c, env);
+  if (Object.hasOwn(PLANAR_ANTENNA_FAMILIES, c.family)) return buildPlanarAntenna(c, env);
   if (['circular-patch', 'slot'].includes(c.family)) return buildRoundOrSlot(c, env);
   if (c.family === 'nfc') return nfc(c, env, opt);
   if (['dipole', 'folded-dipole', 'ifa', 'mifa'].includes(c.family)) return wireAntenna(c, env);

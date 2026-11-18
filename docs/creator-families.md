@@ -23,6 +23,11 @@ families refits the canvas and shows the relevant controls.
 | Meandered inverted-F | Folded radiator with selectable run count and pitch | First-order quarter-wave path length |
 | NFC loop | Circular or square loop, turns, diameter, width/gap, two surface terminals | Numerical free-space inductance, DC resistance at 20 °C, ideal unloaded tuning capacitance |
 | Patch array | 1–32 rows and columns (up to 1,024 elements), wavelength-based spacing, individual ports or a connected feed tree | Patch-element estimate, overall board dimensions and ideal normalized X/Y array-factor cuts |
+| Printed quarter-wave monopole | Straight front radiator with adjustable back ground ending at the feed junction | Quarter-wave starting length and microstrip feed width |
+| Full-wave printed loop | Single circular trace with an adjustable balanced feed gap | Length-based resonance reference from the open copper path |
+| Corner-truncated CP patch | Square patch with adjustable cuts on opposite corners and a front microstrip feed | Untrimmed square resonance reference, cut dimensions and feed width |
+| Two-arm Archimedean spiral | Isolated center-fed arms, adjustable turns, radii, direction and spacing | Target active-region radius and the checked physical trace layout |
+| SIW slot array | Alternating front slots, back plate, plated side fences and short, and a tapered microstrip launch | TE₁₀ cutoff, guide wavelength, and starting slot spacing |
 
 Four additional families—Vivaldi tapered slot, printed Yagi, printed
 log-periodic and bow-tie—are described in the [directional antenna
@@ -35,6 +40,12 @@ guide](directional-antennas.md), including their feed and profile controls.
   feed or appropriate balun externally.
 - A folded dipole is DC-connected around the fold. Both feed pads therefore
   share `RF`; they still represent a balanced RF port.
+- The full-wave printed loop also has one DC-connected `RF` conductor. The
+  Archimedean spiral has separate `RF_P` and `RF_N` arms. Use a balanced feed or
+  an external balun for either layout, and add DC isolation where needed.
+- The SIW launch and guide are electrically continuous with both ground plates.
+  The layout uses one `GND` net. Provide a DC block for a source that cannot
+  drive a DC short. Keep the front slots and intermediate layers clear of pours.
 - An inverted-F's short, radiator and RF tap are intentionally DC-connected to
   `GND`. Connect a radio through an external series matching/DC-block component
   to the tap. Assigning RF and GND to the same continuous copper would create a
@@ -52,6 +63,37 @@ represent several isolated schematic nets; integrate with suitable net ties
 where needed and review connectivity in KiCad.
 
 ### Antenna models
+
+The quarter-wave monopole and full-wave loop use the exposed-trace effective
+permittivity `(1 + εr) / 2`. The monopole dimensions separate the radiator from the
+microstrip feed. The loop sizing accounts for copper removed at the feed gap.
+Neither estimate includes finite ground, feed loading or enclosure effects.
+[Nordic monopole design note](https://infocenter.nordicsemi.com/pdf/nwp_008.pdf)
+
+The corner-truncated square patch uses the square cavity starting dimension
+with a fringing correction. The corner ratio sets the actual cut leg length.
+Copper uses overlapping
+rectangular steps, with the edge step controlling geometric resolution.
+Changing diagonals mirrors the cuts. The number shown is the untrimmed
+reference resonance. The tool does not solve mode separation or axial ratio.
+[JPL corner-truncated patch study](https://tmo.jpl.nasa.gov/progress_report/42-116/116p.pdf)
+
+The two-arm Archimedean spiral uses linear radial growth with azimuth and a
+half-turn offset between arms.
+The approximate active region has a circumference of one effective
+wavelength. The generator verifies copper clearance along both exported arms.
+The model omits the balun, matching network, backing cavity and axial ratio.
+[Archimedean spiral study](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/tje2.12254)
+
+The substrate-integrated waveguide (SIW) slot array uses a TE₁₀ equivalent
+rectangular guide with the via-fence
+correction `a_eff = a − d² / (0.95 p)`. The layout places the slots half a guide
+wavelength apart and the last slot a quarter guide wavelength from the short.
+The nominal slot length is a tunable half-wave starting point using the exposed-trace
+permittivity assumption. The launch and slots need EM tuning for impedance
+match, aperture illumination, and radiation pattern.
+[Equivalent-width model](https://doi.org/10.1109/LMWC.2002.803188) ·
+[Resonant slot array](https://onlinelibrary.wiley.com/doi/10.1155/2016/4031029)
 
 Inset resistance is `Rin = Redge cos²(π d/L)`, where `Redge` is an input and `d`
 is physical inset depth. Slot/feed loading and reactance are not modeled. This

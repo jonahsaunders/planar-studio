@@ -6,11 +6,16 @@ export const defaults = () => ({ ...antennaExtras(), freq: 2.45e9, boardT: 1.6, 
 const patch = c => ['patch', 'inset-patch', 'patch-array'].includes(c.family || 'patch');
 const isNfc = c => c.family === 'nfc';
 const isIfa = c => ['ifa', 'mifa'].includes(c.family);
+const isMonopole = c => c.family === 'monopole';
+const isFullWaveLoop = c => c.family === 'full-wave-loop';
+const isTruncatedPatch = c => c.family === 'truncated-patch';
+const isSpiral = c => c.family === 'archimedean-spiral';
+const isSiw = c => c.family === 'siw-slot-array';
 const wire = c => ['dipole', 'folded-dipole', 'ifa', 'mifa'].includes(c.family);
 const directional = c => ['vivaldi', 'yagi', 'lpda', 'bowtie'].includes(c.family);
-const scaledArms = c => wire(c) || ['yagi', 'lpda', 'bowtie'].includes(c.family);
-const balancedGap = c => wire(c) || ['yagi', 'bowtie'].includes(c.family);
-const lineFed = c => patch(c) || ['circular-patch', 'slot', 'vivaldi'].includes(c.family);
+const scaledArms = c => wire(c) || ['yagi', 'lpda', 'bowtie', 'monopole', 'full-wave-loop'].includes(c.family);
+const balancedGap = c => wire(c) || ['yagi', 'bowtie', 'full-wave-loop'].includes(c.family);
+const lineFed = c => patch(c) || ['circular-patch', 'slot', 'vivaldi', 'monopole', 'truncated-patch', 'siw-slot-array'].includes(c.family);
 const options = o => Object.entries(o).map(([value, label]) => ({ value, label }));
 export function reconcile(c, key, value) {
   if (key !== 'family') return;
@@ -30,19 +35,46 @@ export function rail(panel, api) {
     { key: 'slotScale', type: 'range', label: 'Slot length tuning', min: 0.5, max: 1.5, step: 0.005, when: c => c.family === 'slot' },
     { key: 'slotWidth', type: 'range', label: 'Slot width', unit: 'mm', min: 0.2, max: 10, step: 0.1, when: c => c.family === 'slot' },
     { key: 'slotStub', type: 'range', label: 'Open stub beyond slot', unit: 'mm', min: 0.1, max: 30, step: 0.1, when: c => c.family === 'slot' },
-    { key: 'lengthScale', type: 'range', label: 'Length tuning', min: 0.5, max: 1.5, step: 0.005, when: patch },
+    { key: 'lengthScale', type: 'range', label: 'Length tuning', min: 0.5, max: 1.5, step: 0.005, when: c => patch(c) || isTruncatedPatch(c) },
     { key: 'widthScale', type: 'range', label: 'Width tuning', min: 0.5, max: 1.5, step: 0.005, when: patch },
     { key: 'insetFraction', type: 'range', label: 'Inset depth / patch length', min: 0.01, max: 0.45, step: 0.005, when: c => c.family === 'inset-patch' },
     { key: 'insetGap', type: 'range', label: 'Inset side gap', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => c.family === 'inset-patch' },
     { key: 'edgeResistance', type: 'number', label: 'Assumed edge resistance', unit: 'Ω', when: c => c.family === 'inset-patch', hint: 'Supply from an edge-feed model or measurement; used only in the cosine-squared estimate.' },
     { key: 'armScale', type: 'range', label: 'Electrical-length scale', min: 0.5, max: 1.5, step: 0.01, when: scaledArms },
-    { key: 'traceW', type: 'range', label: 'Radiator trace width', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => scaledArms(c) || isNfc(c) },
+    { key: 'traceW', type: 'range', label: 'Radiator trace width', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => scaledArms(c) || isNfc(c) || isSpiral(c) },
     { key: 'feedGap', type: 'range', label: 'Feed gap', unit: 'mm', min: 0.1, max: 5, step: 0.1, when: balancedGap },
     { key: 'foldSpacing', type: 'range', label: 'Fold spacing', unit: 'mm', min: 1, max: 20, step: 0.1, when: c => c.family === 'folded-dipole' },
     { key: 'antennaHeight', type: 'range', label: 'Radiator height above ground edge', unit: 'mm', min: 1, max: 30, step: 0.1, when: isIfa },
     { key: 'feedOffset', type: 'range', label: 'Feed distance from short', unit: 'mm', min: 1, max: 20, step: 0.1, when: isIfa },
     { key: 'meanderRuns', type: 'range', label: 'Meander runs', min: 3, max: 15, step: 1, when: c => c.family === 'mifa' },
     { key: 'meanderPitch', type: 'range', label: 'Meander pitch', unit: 'mm', min: 1, max: 10, step: 0.1, when: c => c.family === 'mifa' },
+  ] });
+  panel.group({ key: 'cp-corners', title: 'Patch corner cuts', when: isTruncatedPatch, fields: [
+    { key: 'cpCornerCut', type: 'range', label: 'Corner cut / square side', min: 0.02, max: 0.28, step: 0.005,
+      hint: 'Leg length of each corner cut, divided by the patch side.' },
+    { key: 'cpDiagonal', type: 'select', label: 'Trimmed corners', options: options({ ascending: 'Bottom left and top right', descending: 'Bottom right and top left' }) },
+    { key: 'cpProfileStep', type: 'range', label: 'Corner copper edge step', unit: 'mm', min: 0.01, max: 1, step: 0.01 },
+  ] });
+  panel.group({ key: 'spiral', title: 'Spiral arms', when: isSpiral, fields: [
+    { key: 'spiralTurns', type: 'range', label: 'Turns per arm', min: 1, max: 8, step: 0.25 },
+    { key: 'spiralInnerRadius', type: 'number', label: 'Inner radius', unit: 'mm', min: 0.15, max: 30, step: 0.05 },
+    { key: 'spiralOuterScale', type: 'range', label: 'Outer radius / active radius', min: 1.05, max: 3, step: 0.01 },
+    { key: 'spiralClearance', type: 'number', label: 'Minimum copper gap', unit: 'mm', min: 0.1, max: 5, step: 0.05 },
+    { key: 'spiralDirection', type: 'select', label: 'Winding direction', options: options({ ccw: 'Counterclockwise', cw: 'Clockwise' }) },
+  ] });
+  panel.group({ key: 'siw-slots', title: 'Waveguide and slots', when: isSiw, fields: [
+    { key: 'siwSlots', type: 'range', label: 'Slot count', min: 1, max: 16, step: 1 },
+    { key: 'siwCutoffRatio', type: 'range', label: 'Cutoff / target frequency', min: 0.55, max: 0.9, step: 0.01 },
+    { key: 'siwSlotScale', type: 'range', label: 'Slot length tuning', min: 0.65, max: 1.35, step: 0.01 },
+    { key: 'siwSlotWidth', type: 'number', label: 'SIW slot width', unit: 'mm', min: 0.15, max: 10, step: 0.05 },
+    { key: 'siwSlotOffset', type: 'range', label: 'Slot offset / guide width', min: 0.03, max: 0.35, step: 0.01 },
+  ] });
+  panel.group({ key: 'siw-fence', title: 'Via fence and launch', when: isSiw, fields: [
+    { key: 'siwViaDiameter', type: 'number', label: 'Via pad diameter', unit: 'mm', min: 0.35, max: 4, step: 0.05 },
+    { key: 'siwViaDrill', type: 'number', label: 'Via drill diameter', unit: 'mm', min: 0.2, max: 3, step: 0.05 },
+    { key: 'siwViaPitch', type: 'number', label: 'Maximum via pitch', unit: 'mm', min: 0.4, max: 8, step: 0.05 },
+    { key: 'siwTaperLength', type: 'range', label: 'Taper length / dielectric wavelength', min: 0.1, max: 0.75, step: 0.01 },
+    { key: 'siwTaperWidth', type: 'range', label: 'Taper end width / guide width', min: 0.2, max: 0.85, step: 0.01 },
   ] });
   panel.group({ key: 'directional', title: 'Antenna shape and feed', when: directional, open: true, fields: [
     { key: 'bowtieAngle', type: 'range', label: 'Bow-tie flare angle', unit: '°', min: 10, max: 120, step: 1, when: c => c.family === 'bowtie' },
@@ -88,8 +120,8 @@ export function rail(panel, api) {
   panel.group({ key: 'feed', title: 'Feed and ground', fields: [
     { key: 'feedZ', type: 'range', label: 'Feed line impedance', unit: 'Ω', min: 20, max: 150, step: 1, when: lineFed },
     { key: 'feedLength', type: 'range', label: 'Feed length', unit: 'mm', min: 1, max: 100, step: 0.1, when: c => (lineFed(c) && c.family !== 'vivaldi') || c.family === 'lpda' },
-    { key: 'groundWidth', type: 'range', label: 'Ground width', unit: 'mm', min: 5, max: 150, step: 0.5, when: isIfa },
-    { key: 'groundLength', type: 'range', label: 'Ground length', unit: 'mm', min: 5, max: 150, step: 0.5, when: isIfa },
+    { key: 'groundWidth', type: 'range', label: 'Ground width', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) },
+    { key: 'groundLength', type: 'range', label: 'Ground length', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) },
     { key: 'margin', type: 'range', label: 'Ground / clearance margin', unit: 'mm', min: 1, max: 30, step: 0.1 },
   ] });
   panel.group({ key: 'substrate', title: 'Substrate', fields: [
@@ -112,6 +144,32 @@ export function charts(c, r) {
 }
 export function tiles(c, r) {
   const a = r.analysis; if (!a) return [];
+  const mm = (k, value, digits = 2) => ({ k, v: `${num(value, digits)} mm` });
+  if (isMonopole(c)) return [
+    mm('Radiator length', a.length), mm('Feed width', a.feedW, 3),
+    { k: 'Ground W × L', v: `${num(a.groundWidth, 2)} × ${num(a.groundLength, 2)} mm` },
+    { k: 'Length-based resonance', v: eng(a.resonance, 'Hz', 4) },
+  ];
+  if (isFullWaveLoop(c)) return [
+    mm('Loop diameter', 2 * a.radius), mm('Copper path length', a.length), mm('Feed gap', a.gap),
+    { k: 'Length-based resonance', v: eng(a.resonance, 'Hz', 4) },
+  ];
+  if (isTruncatedPatch(c)) return [
+    mm('Patch side', a.side), mm('Corner cut length', a.cut), mm('Feed width', a.feedW, 3),
+    { k: 'Untrimmed square resonance', v: eng(a.resonance, 'Hz', 4) },
+  ];
+  if (isSpiral(c)) return [
+    mm('Outer diameter', 2 * a.outer), mm('Target active radius', a.active), mm('Length per arm', a.armLength),
+    mm('Required copper gap', a.gap, 3),
+  ];
+  if (isSiw(c)) return [
+    mm('Guide width between via rows', a.width), mm('Guide wavelength', a.guidedWavelength),
+    { k: 'Estimated TE₁₀ cutoff', v: eng(a.cutoff, 'Hz', 4) },
+    { k: 'Slots', v: String(a.slots.length), sub: `${num(a.slotLength, 2)} × ${num(a.slotWidth, 2)} mm` },
+    mm('Slot spacing', a.spacing), mm('Backshort distance', a.backshort),
+    { k: 'Fence vias', v: String(a.vias), sub: `${num(a.wallPitch, 3)} mm side-wall pitch` },
+    mm('Feed width', a.feedW, 3), mm('Launch taper length', a.taperLength),
+  ];
   if (directional(c)) {
     const out = [{ k: 'Overall board W × H', v: `${num(a.boardWidth, 2)} × ${num(a.boardHeight, 2)}`, sub: 'mm' }];
     if (c.family === 'vivaldi') out.push({ k: 'Taper length × aperture', v: `${num(a.taperLength, 2)} × ${num(a.aperture, 2)}`, sub: 'mm' }, { k: 'Throat width', v: `${num(a.throat, 2)} mm` }, { k: 'Feed width', v: `${num(a.feedW, 3)} mm` }, { k: 'Aperture / free-space wavelength', v: num(a.apertureWavelengths, 3) });

@@ -93,8 +93,10 @@ try {
     // The toast can survive a previous export; poll the actual output revision.
     const deadline = Date.now() + 5000;
     while ((!fs.existsSync(target) || JSON.parse(fs.readFileSync(target, 'utf8')).config.family !== family) && Date.now() < deadline) await page.waitForTimeout(20);
-    assert.equal(JSON.parse(fs.readFileSync(target, 'utf8')).config.family, family);
+    const config = JSON.parse(fs.readFileSync(target, 'utf8')).config;
+    assert.equal(config.family, family);
     await page.screenshot({ path: path.join(root, 'dist', `${kind}-${family}.png`) });
+    return config;
   };
   await showDesigns();
   for (const family of ['circular-patch', 'slot', 'inset-patch', 'dipole', 'folded-dipole', 'ifa', 'mifa', 'nfc', 'vivaldi', 'yagi', 'lpda', 'bowtie', 'patch-array']) {
@@ -106,6 +108,22 @@ try {
     }
     if (family === 'patch-array') assert.equal(await page.locator('#side canvas').count(), 1);
     await saveAndExport('antenna', family);
+  }
+  for (const [family, field, value, key, readout] of [
+    ['monopole', 'Ground length', 35, 'groundLength', 'Radiator length'],
+    ['full-wave-loop', 'Feed gap', 1.3, 'feedGap', 'Copper path length'],
+    ['truncated-patch', 'Corner cut / square side', 0.12, 'cpCornerCut', 'Untrimmed square resonance'],
+    ['archimedean-spiral', 'Turns per arm', 2, 'spiralTurns', 'Target active radius'],
+    ['siw-slot-array', 'Slot count', 5, 'siwSlots', 'Fence vias'],
+  ]) {
+    await choose('Antenna type', family);
+    await set(field, value);
+    if (family === 'truncated-patch') await set('Corner copper edge step', 0.15);
+    await solved();
+    assert.ok((await page.locator('#side').textContent()).includes(readout));
+    const config = await saveAndExport('antenna', family);
+    assert.equal(config[key], value);
+    if (family === 'truncated-patch') assert.equal(config.cpProfileStep, 0.15);
   }
   await page.getByRole('tab', { name: 'Transformer', exact: true }).click(); await solved();
   await page.locator('#transformer-tab-windings').click();

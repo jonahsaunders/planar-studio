@@ -1,11 +1,13 @@
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { artwork, boundsCopper, rect, toKicad, transform } from '../web/js/engine/artwork.js';
 import { exportKicadPcb } from '../web/js/engine/exporters.js';
 import { defaults, compute } from '../web/js/ws/inductor.js';
 import { defaults as filterDefaults, compute as computeFilter } from '../web/js/ws/filter.js';
 import { defaults as antennaDefaults, compute as computeAntenna } from '../web/js/ws/antenna.js';
+import { PLANAR_ANTENNA_FAMILIES } from '../web/js/engine/planar-antenna-families.js';
 
-const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture] = process.argv.slice(2);
+const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture, antennaFixtures] = process.argv.slice(2);
 const board = artwork();
 board.meta.boardLayers = ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu'];
 board.outline = [{ layer: 'Edge.Cuts', pts: rect(0, -50, 50, 0) }];
@@ -27,3 +29,10 @@ writeFileSync(seriesPayload, JSON.stringify(toKicad(series, { dx: 29, dy: 29 }))
 
 const antenna = computeAntenna({ ...antennaDefaults(), family: 'inset-patch' }, {}, { quick: true });
 writeFileSync(insetFixture, exportKicadPcb(antenna.art));
+
+mkdirSync(antennaFixtures);
+for (const family of Object.keys(PLANAR_ANTENNA_FAMILIES)) {
+  const config = { ...antennaDefaults(), family };
+  const { art } = computeAntenna(config, { name: family }, { quick: true });
+  writeFileSync(join(antennaFixtures, `${family}.kicad_pcb`), exportKicadPcb(art, { tolerance: config.tolerance }));
+}
