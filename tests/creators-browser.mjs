@@ -121,6 +121,10 @@ try {
     if (family === 'truncated-patch') await set('Corner copper edge step', 0.15);
     await solved();
     assert.ok((await page.locator('#side').textContent()).includes(readout));
+    assert.ok(await page.locator('#side table.spec').evaluate(table =>
+      table.getBoundingClientRect().right <= table.closest('#side').getBoundingClientRect().right &&
+      [...table.rows].every(row => row.cells[1].scrollWidth <= row.cells[1].clientWidth)),
+      `${family} specification should fit inside the sidebar`);
     const config = await saveAndExport('antenna', family);
     assert.equal(config[key], value);
     if (family === 'truncated-patch') assert.equal(config.cpProfileStep, 0.15);

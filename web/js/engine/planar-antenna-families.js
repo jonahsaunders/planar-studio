@@ -71,7 +71,8 @@ function buildMonopole(art, c, env) {
   );
   terminal(art, [0, -c.feedLength], feedW, '1', net, 'Microstrip RF feed');
   plate(art, [-groundWidth / 2, -groundLength, groundWidth / 2, 0], 'GND', '2', 'ground', 'B.Cu');
-  port(art, 0, -c.feedLength, 'GND', 'Back ground', 'B.Cu');
+  const groundPoint = groundLength * (c.feedLength > groundLength / 2 ? 0.2 : 0.8);
+  port(art, 0, -groundPoint, 'GND', 'Back ground', 'B.Cu');
   const margin = c.margin / 2;
   art.outline.push({ layer: 'Dwgs.User', pts: rect(-width / 2 - margin, 0, width / 2 + margin, length + margin) });
   return {
@@ -105,8 +106,8 @@ function buildLoop(art, c, env) {
   const net = env.net || 'RF';
   const length = polyLength(points, false);
   art.tracks.push(track('F.Cu', width, points, { net, role: 'loop' }));
-  terminal(art, points[0], width, '1', net, 'Balanced +');
-  terminal(art, points.at(-1), width, '2', net, 'Balanced −');
+  terminal(art, points[0], width, '1', net, 'RF+');
+  terminal(art, points.at(-1), width, '2', net, 'RF−');
   art.meta.exactPaths = true;
   return {
     model: 'Full-wave loop perimeter estimate',
@@ -154,7 +155,7 @@ function buildTruncatedPatch(art, c, env) {
   art.tracks.push(track('F.Cu', feedW, run(0, feedY, 0, -half + feedW / 2), { net, role: 'feed' }));
   terminal(art, [0, feedY], feedW, '1', net, 'Microstrip RF feed');
   plate(art, [-groundHalf, feedY - feedW / 2 - c.margin, groundHalf, groundHalf], 'GND', '2', 'ground', 'B.Cu');
-  port(art, 0, feedY, 'GND', 'Back ground', 'B.Cu');
+  port(art, 0, -half, 'GND', 'Back ground', 'B.Cu');
   return {
     model: 'Square patch cavity reference with two corner trims',
     analysis: { side, cut, steps, step, feedW, resonance: cavity(side) },
@@ -201,7 +202,7 @@ function buildSpiral(art, c) {
   for (const [i, points] of arms.entries()) {
     const net = i ? 'RF_N' : 'RF_P';
     art.tracks.push(track('F.Cu', width, points, { net, role: 'spiral-arm' }));
-    terminal(art, points[0], width, String(i + 1), net, i ? 'Balanced −' : 'Balanced +');
+    terminal(art, points[0], width, String(i + 1), net, i ? 'RF−' : 'RF+');
   }
   art.meta.exactPaths = true;
   return {
@@ -272,7 +273,7 @@ function buildSiw(art, c, env) {
   }
   art.tracks.push(track('F.Cu', feedW, run(0, feedY, 0, -taperLength), { net, role: 'feed' }));
   terminal(art, [0, feedY], feedW, '1', net, 'Microstrip launch (DC short)');
-  port(art, 0, feedY, net, 'Back ground', 'B.Cu');
+  port(art, 0, 0, net, 'Back ground', 'B.Cu');
   for (let i = 0; i <= wallIntervals; i++) for (const s of [-1, 1]) {
     art.vias.push(via(s * width / 2, shortY * i / wallIntervals, { diameter, drill, net, role: 'siw-wall' }));
   }

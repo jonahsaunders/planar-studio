@@ -373,6 +373,9 @@ table.spec td:first-child { color: var(--text-dim); padding-right: 10px; }
 table.spec td:last-child { text-align: right; font-family: var(--mono); white-space: nowrap; }
 table.spec tr.sep td { border-top: 1px solid var(--line-soft); padding-top: 8px; }
 table.spec .dim { color: var(--text-mute); }
+#app[data-workspace="antenna"] #side table.spec { table-layout: fixed; }
+#app[data-workspace="antenna"] #side table.spec td:first-child { width: 40%; }
+#app[data-workspace="antenna"] #side table.spec td:last-child { white-space: normal; overflow-wrap: anywhere; }
 
 .chart { width: 100%; display: block; border-radius: var(--radius-sm); background: var(--panel-2); border: 1px solid var(--line-soft); }
 .chart-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 11px; color: var(--text-mute); margin-top: 6px; }
