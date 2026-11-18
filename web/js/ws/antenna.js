@@ -1,9 +1,11 @@
 import { buildAntenna, ANTENNA_FAMILIES, MAX_ARRAY_DIMENSION, antennaExtras, sizeNfcLoop } from '../engine/antenna.js';
+import { EXTENDED_ANTENNAS } from '../engine/extended-antenna-families.js';
 import { eng, num } from '../ui/controls.js';
 import { colourFor, fmtHz } from './common.js';
 export const id = 'antenna', title = 'Antenna';
 export const defaults = () => ({ ...antennaExtras(), freq: 2.45e9, boardT: 1.6, epsR: 4.4, copperOz: 1, feedZ: 50, feedLength: 10, lengthScale: 1, widthScale: 1, margin: 5, tolerance: 0.004 });
-const patch = c => ['patch', 'inset-patch', 'patch-array'].includes(c.family || 'patch');
+const extended = c => Object.hasOwn(EXTENDED_ANTENNAS, c.family) ? EXTENDED_ANTENNAS[c.family] : null;
+const patch = c => ['patch', 'inset-patch', 'patch-array'].includes(c.family || 'patch') || extended(c)?.patch;
 const isNfc = c => c.family === 'nfc';
 const isIfa = c => ['ifa', 'mifa'].includes(c.family);
 const isMonopole = c => c.family === 'monopole';
@@ -14,8 +16,8 @@ const isSiw = c => c.family === 'siw-slot-array';
 const wire = c => ['dipole', 'folded-dipole', 'ifa', 'mifa'].includes(c.family);
 const directional = c => ['vivaldi', 'yagi', 'lpda', 'bowtie'].includes(c.family);
 const scaledArms = c => wire(c) || ['yagi', 'lpda', 'bowtie', 'monopole', 'full-wave-loop'].includes(c.family);
-const balancedGap = c => wire(c) || ['yagi', 'bowtie', 'full-wave-loop'].includes(c.family);
-const lineFed = c => patch(c) || ['circular-patch', 'slot', 'vivaldi', 'monopole', 'truncated-patch', 'siw-slot-array'].includes(c.family);
+const balancedGap = c => wire(c) || extended(c)?.gap || ['yagi', 'bowtie', 'full-wave-loop'].includes(c.family);
+const lineFed = c => patch(c) || extended(c)?.feed || ['circular-patch', 'slot', 'vivaldi', 'monopole', 'truncated-patch', 'siw-slot-array'].includes(c.family);
 const options = o => Object.entries(o).map(([value, label]) => ({ value, label }));
 export function reconcile(c, key, value) {
   if (key !== 'family') return;
@@ -41,7 +43,7 @@ export function rail(panel, api) {
     { key: 'insetGap', type: 'range', label: 'Inset side gap', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => c.family === 'inset-patch' },
     { key: 'edgeResistance', type: 'number', label: 'Assumed edge resistance', unit: 'Ω', when: c => c.family === 'inset-patch', hint: 'Supply from an edge-feed model or measurement; used only in the cosine-squared estimate.' },
     { key: 'armScale', type: 'range', label: 'Electrical-length scale', min: 0.5, max: 1.5, step: 0.01, when: scaledArms },
-    { key: 'traceW', type: 'range', label: 'Radiator trace width', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => scaledArms(c) || isNfc(c) || isSpiral(c) },
+    { key: 'traceW', type: 'range', label: 'Radiator trace width', unit: 'mm', min: 0.1, max: 3, step: 0.05, when: c => scaledArms(c) || isNfc(c) || isSpiral(c) || extended(c)?.trace },
     { key: 'feedGap', type: 'range', label: 'Feed gap', unit: 'mm', min: 0.1, max: 5, step: 0.1, when: balancedGap },
     { key: 'foldSpacing', type: 'range', label: 'Fold spacing', unit: 'mm', min: 1, max: 20, step: 0.1, when: c => c.family === 'folded-dipole' },
     { key: 'antennaHeight', type: 'range', label: 'Radiator height above ground edge', unit: 'mm', min: 1, max: 30, step: 0.1, when: isIfa },
@@ -49,6 +51,9 @@ export function rail(panel, api) {
     { key: 'meanderRuns', type: 'range', label: 'Meander runs', min: 3, max: 15, step: 1, when: c => c.family === 'mifa' },
     { key: 'meanderPitch', type: 'range', label: 'Meander pitch', unit: 'mm', min: 1, max: 10, step: 0.1, when: c => c.family === 'mifa' },
   ] });
+  for (const [family, design] of Object.entries(EXTENDED_ANTENNAS)) {
+    panel.group({ key: family, title: 'Antenna dimensions', when: c => c.family === family, fields: design.fields });
+  }
   panel.group({ key: 'cp-corners', title: 'Patch corner cuts', when: isTruncatedPatch, fields: [
     { key: 'cpCornerCut', type: 'range', label: 'Corner cut / square side', min: 0.02, max: 0.28, step: 0.005,
       hint: 'Leg length of each corner cut, divided by the patch side.' },
@@ -119,9 +124,9 @@ export function rail(panel, api) {
   ] });
   panel.group({ key: 'feed', title: 'Feed and ground', fields: [
     { key: 'feedZ', type: 'range', label: 'Feed line impedance', unit: 'Ω', min: 20, max: 150, step: 1, when: lineFed },
-    { key: 'feedLength', type: 'range', label: 'Feed length', unit: 'mm', min: 1, max: 100, step: 0.1, when: c => (lineFed(c) && c.family !== 'vivaldi') || c.family === 'lpda' },
-    { key: 'groundWidth', type: 'range', label: 'Ground width', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) },
-    { key: 'groundLength', type: 'range', label: 'Ground length', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) },
+    { key: 'feedLength', type: 'range', label: 'Feed length', unit: 'mm', min: 1, max: 100, step: 0.1, when: c => (lineFed(c) && c.family !== 'vivaldi') || c.family === 'lpda' || extended(c)?.launch },
+    { key: 'groundWidth', type: 'range', label: 'Ground width', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) || extended(c)?.width },
+    { key: 'groundLength', type: 'range', label: 'Ground length', unit: 'mm', min: 5, max: 150, step: 0.5, when: c => isIfa(c) || isMonopole(c) || extended(c)?.ground },
     { key: 'margin', type: 'range', label: 'Ground / clearance margin', unit: 'mm', min: 1, max: 30, step: 0.1 },
   ] });
   panel.group({ key: 'substrate', title: 'Substrate', fields: [
@@ -145,6 +150,10 @@ export function charts(c, r) {
 export function tiles(c, r) {
   const a = r.analysis; if (!a) return [];
   const mm = (k, value, digits = 2) => ({ k, v: `${num(value, digits)} mm` });
+  const family = extended(c);
+  if (family) return family.metrics.map(([k, key, unit]) => ({
+    k, v: unit === 'Hz' ? eng(a[key], unit, 4) : `${num(a[key], unit === 'mm' ? 2 : 0)}${unit === 'mm' ? ' mm' : unit || ''}`,
+  }));
   if (isMonopole(c)) return [
     mm('Radiator length', a.length), mm('Feed width', a.feedW, 3),
     { k: 'Ground W × L', v: `${num(a.groundWidth, 2)} × ${num(a.groundLength, 2)} mm` },

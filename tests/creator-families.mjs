@@ -124,6 +124,93 @@ check('SIW preserves empty slot apertures, alternating offsets and the plated sh
   assert.throws(() => antenna.compute({ ...c, siwViaPitch: 3 }), /via annular ring/);
   assert.throws(() => antenna.compute({ ...c, siwSlotWidth: 10 }), /slots or feed do not fit/);
 });
+check('CPW rails have the selected gap and share ground through backside stitches', () => {
+  const c = ac('cpw-ellipse', { cpwGap: 0.55 }), { art } = antenna.compute(c);
+  const right = art.pads.find(p => p.role === 'cpw-ground' && p.x > 0);
+  near(right.x - right.w / 2 - c.traceW / 2, c.cpwGap);
+  assert.ok(right.y + right.h / 2 < 0);
+  assert.equal(art.pads.filter(p => p.layer === 'B.Cu' && p.net === 'GND').length, 1);
+  assert.equal(art.vias.length, 4);
+  assert.ok(art.vias.every(v => v.net === 'GND'));
+});
+check('Forked monopole has two independently sized branches on one feed', () => {
+  const c = ac('forked-monopole', { forkRatio: 2 }), r = antenna.compute(c);
+  const branches = r.art.tracks.filter(t => t.role.endsWith('-branch'));
+  const length = t => t.pts.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - t.pts[i][0], p[1] - t.pts[i][1]), 0);
+  assert.deepEqual(branches.map(t => t.net), ['RF', 'RF']);
+  near(length(branches[0]) / length(branches[1]), c.forkRatio);
+  near(r.analysis.highFrequency / r.analysis.lowFrequency, c.forkRatio);
+  assert.throws(() => antenna.compute({ ...c, forkSpread: 25 }), /shorter fork/);
+});
+check('U-slot leaves its two legs and connecting slot clear', () => {
+  const c = ac('u-slot-patch'), { art, analysis: a } = antenna.compute(c);
+  const base = -a.L / 4, leg = (a.span - a.width) / 2;
+  const patchCopper = art.pads.filter(p => p.role === 'u-slot-patch');
+  const occupied = (x, y) => patchCopper.some(p => Math.abs(p.x - x) < p.w / 2 && Math.abs(p.y - y) < p.h / 2);
+  for (const x of [-leg, leg]) assert.equal(occupied(x, base + a.depth / 2), false);
+  assert.equal(occupied(0, base + a.width / 2), false);
+  assert.equal(occupied(0, base + a.depth / 2), true);
+});
+check('Annular patch preserves its open center and isolated back ground', () => {
+  const { art, analysis: a } = antenna.compute(ac('annular-ring-patch'));
+  const front = art.pads.filter(p => p.role === 'annular-patch');
+  assert.ok(front.every(p => Math.hypot(Math.max(0, Math.abs(p.x) - p.w / 2), Math.max(0, Math.abs(p.y) - p.h / 2)) >= a.inner - 1e-8));
+  assert.ok(art.pads.some(p => p.net === 'GND' && p.layer === 'B.Cu'));
+});
+check('Stacked patch preserves four layers, the ground aperture and isolated patches', () => {
+  const c = ac('aperture-stacked-patch'), r = antenna.compute(c, { board: { layerCount: 2 } });
+  assert.deepEqual(r.layers, ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu']);
+  assert.deepEqual(r.art.pads.filter(p => p.role === 'parasitic-patch').map(p => p.net), [null]);
+  assert.ok(r.art.tracks.filter(t => t.layer === 'In1.Cu').every(t => t.net === null));
+  const ground = r.art.tracks.filter(t => t.layer === 'In2.Cu');
+  assert.ok(ground.every(t => t.net === 'GND' && segmentDistance([0, 0], [0, 0], ...t.pts) > t.width / 2));
+  assert.deepEqual([...new Set(r.art.tracks.filter(t => t.role === 'aperture-feed').map(t => t.layer))], ['B.Cu']);
+  near(r.analysis.feedHeight + r.analysis.drivenHeight + r.analysis.upperHeight, c.boardT);
+  assert.throws(() => antenna.compute({ ...c, stackFeedFraction: 0.7, stackDrivenFraction: 0.4 }), /10%/);
+});
+check('Turnstile keeps its orthogonal feed pairs isolated on separate layers', () => {
+  const { art } = antenna.compute(ac('turnstile'));
+  assert.equal(new Set(art.ports.map(p => p.net)).size, 4);
+  assert.ok(art.tracks.filter(t => t.layer === 'F.Cu').every(t => t.pts.every(([, y]) => y === 0)));
+  assert.ok(art.tracks.filter(t => t.layer === 'B.Cu').every(t => t.pts.every(([x]) => x === 0)));
+  assert.equal(art.vias.length, 0);
+});
+check('Sinuous arms rotate by quarter turns and alternate their cell swing', () => {
+  const c = ac('four-arm-sinuous'), { art, analysis } = antenna.compute(c);
+  const [first, next] = art.tracks;
+  assert.equal(new Set(art.ports.map(p => p.net)).size, 4);
+  assert.ok(first.pts[24][1] > 0 && first.pts[72][1] < 0);
+  near(Math.hypot(...first.pts[48]) / analysis.inner, 1 / c.sinuousTau);
+  for (const [i, [x, y]] of first.pts.entries()) {
+    near(next.pts[i][0], -y, 1e-5);
+    near(next.pts[i][1], x, 1e-5);
+  }
+  assert.throws(() => antenna.compute({ ...c, sinuousCells: 12, sinuousWidth: 3 }), /arms do not clear/);
+});
+check('Cavity-backed slot leaves an input opening and keeps its radiation aperture clear', () => {
+  const c = ac('cavity-backed-slot'), { art, analysis: a } = antenna.compute(c);
+  const front = art.pads.filter(p => p.role === 'cavity-top');
+  assert.ok(front.every(p => Math.abs(p.x) >= (p.w + a.slotLength) / 2 - 1e-7 ||
+    Math.abs(p.y - a.length * c.cavitySlotPosition) >= (p.h + a.slotWidth) / 2 - 1e-7));
+  assert.ok(art.vias.filter(v => v.y === 0).every(v => Math.abs(v.x) > a.entrance / 2));
+  assert.ok(art.vias.every(v => v.net === 'GND'));
+  assert.throws(() => antenna.compute({ ...c, cavityPitch: 3 }), /via annular ring/);
+});
+check('Periodic leaky-wave layout has uniform loading and a termination port', () => {
+  const c = ac('microstrip-leaky-wave', { lwaCells: 4 }), r = antenna.compute(c);
+  const stubs = r.art.tracks.filter(t => t.role === 'loading-stub');
+  assert.equal(stubs.length, 4);
+  for (let i = 1; i < stubs.length; i++) near(stubs[i].pts[0][1] - stubs[i - 1].pts[0][1], r.analysis.period);
+  assert.ok(antenna.compute({ ...c, lwaAngle: 30 }).analysis.period > r.analysis.period);
+  assert.ok(r.art.ports.some(p => p.name === 'Load connection'));
+});
+check('Franklin radiator has half-wave sections and alternating half-wave phasing folds', () => {
+  const { art, analysis: a } = antenna.compute(ac('franklin-collinear', { franklinSections: 4 }));
+  const p = art.tracks.find(t => t.role === 'franklin-radiator').pts;
+  near(2 * a.depth + a.foldSpan, a.halfWave);
+  near(p.at(-1)[1], a.count * a.halfWave + (a.count - 1) * a.foldSpan);
+  for (let i = 0; i < a.count - 1; i++) near(p[i * 4 + 2][0], (i % 2 ? -1 : 1) * a.depth);
+});
 check('Inset feed preserves two side gaps and matching estimate follows depth', () => {
   const c = ac('inset-patch'), a = antenna.compute(c), b = antenna.compute({ ...c, insetFraction: 0.4 });
   assert.ok(b.analysis.inputResistance < a.analysis.inputResistance);

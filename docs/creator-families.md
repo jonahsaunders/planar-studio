@@ -28,6 +28,16 @@ families refits the canvas and shows the relevant controls.
 | Corner-truncated CP patch | Square patch with adjustable cuts on opposite corners and a front microstrip feed | Untrimmed square resonance reference, cut dimensions and feed width |
 | Two-arm Archimedean spiral | Isolated center-fed arms, adjustable turns, radii, direction and spacing | Target active-region radius and the checked physical trace layout |
 | SIW slot array | Alternating front slots, back plate, plated side fences and short, and a tapered microstrip launch | TE₁₀ cutoff, guide wavelength, and starting slot spacing |
+| CPW-fed elliptical monopole | Stepped front radiator and grounded coplanar launch with stitched rails | Quarter-wave radiator dimensions |
+| Dual-band forked monopole | Two unequal branches at a shared feed | Independent quarter-wave length and frequency references |
+| U-slot microstrip patch | Continuous front patch with a U-shaped opening | Unslotted cavity reference and physical slot dimensions |
+| Annular-ring microstrip patch | Closed front ring above a back ground plane | Mean-circumference sizing reference |
+| Aperture-coupled stacked patch | Two isolated patches, slotted inner ground, back feed, and ground access vias | Four-layer geometry and dielectric spacing targets |
+| Crossed-dipole turnstile | Orthogonal printed dipoles and two separate balanced feeds | Half-wave starting dimensions |
+| Four-arm planar sinuous antenna | Interleaved logarithmic trace cells and four independent feed terminals | Cell geometry and checked trace clearance |
+| Cavity-backed slot antenna | Single aperture above a plated cavity with a tapered launch | Rectangular-cavity sizing reference and slot dimensions |
+| Periodic microstrip leaky-wave antenna | Repeated open stubs on a continuous line with a termination port | Unloaded-line period reference for the −1 harmonic |
+| Printed Franklin collinear array | End-fed collinear sections joined by alternating folded phasing sections | Half-wave section and fold lengths |
 
 Four additional families—Vivaldi tapered slot, printed Yagi, printed
 log-periodic and bow-tie—are described in the [directional antenna
@@ -46,6 +56,15 @@ guide](directional-antennas.md), including their feed and profile controls.
 - The SIW launch and guide are electrically continuous with both ground plates.
   The layout uses one `GND` net. Provide a DC block for a source that cannot
   drive a DC short. Keep the front slots and intermediate layers clear of pours.
+- The cavity-backed slot launch also shares `GND` at DC. The leaky-wave line’s
+  input and load pads share `RF`. Connect the far end to an external termination.
+- The stacked patch uses F.Cu for the parasitic patch, In1.Cu for the coupled
+  patch, In2.Cu for the slotted ground and B.Cu for the RF feed. Both patches
+  float at DC. Set the physical stack-up to the three spacings in the
+  specification. Keep extra layers clear of the active structure.
+- Use an external quadrature network and balanced feeds for the turnstile.
+  For the sinuous layout, drive opposite arms as balanced pairs and provide
+  any required phase combination externally.
 - An inverted-F's short, radiator and RF tap are intentionally DC-connected to
   `GND`. Connect a radio through an external series matching/DC-block component
   to the tap. Assigning RF and GND to the same continuous copper would create a
@@ -94,6 +113,22 @@ permittivity assumption. The launch and slots need EM tuning for impedance
 match, aperture illumination, and radiation pattern.
 [Equivalent-width model](https://doi.org/10.1109/LMWC.2002.803188) ·
 [Resonant slot array](https://onlinelibrary.wiley.com/doi/10.1155/2016/4031029)
+
+The U-slot and stacked-patch layouts provide reference dimensions for coupled
+resonators. The U-slot retains the unslotted patch frequency reference. The
+stacked-board layout exports all four copper layers and the specification
+reports the three dielectric spacings. Coupled-mode frequencies and matching
+need separate EM analysis. [U-slot mode analysis](https://arxiv.org/abs/1906.00252) ·
+[Stacked patch aperture coupling](https://idus.us.es/server/api/core/bitstreams/4d0d6b74-750e-4825-8dc5-29da4e74acad/content)
+
+The sinuous layout follows the alternating logarithmic cell geometry using
+constant-width traces. The leaky-wave period comes from the unloaded
+microstrip phase constant and a −1 space harmonic. Loading changes the actual
+phase constant and leakage. For the Franklin layout, each folded phasing
+section starts with a half-wavelength centerline path between consecutive
+radiating sections. [Sinuous cell geometry](https://uspto.report/patent/grant/4658262) ·
+[Periodic microstrip modes](https://iris.uniroma1.it/handle/11573/359284) ·
+[Printed Franklin model](https://qmro.qmul.ac.uk/xmlui/bitstream/handle/123456789/46764/JILANI_Syeda_PhD_Final_021018.pdf?isAllowed=y&sequence=1)
 
 Inset resistance is `Rin = Redge cos²(π d/L)`, where `Redge` is an input and `d`
 is physical inset depth. Slot/feed loading and reactance are not modeled. This

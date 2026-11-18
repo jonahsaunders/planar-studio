@@ -1,14 +1,8 @@
-import { arcPts, artwork, bounds, boundsCopper, pad, rect, run, TAU, track, via } from './artwork.js';
-import { segmentDistance } from './boardcheck.js';
-import { polyLength, OZ_MM } from './coil.js';
+import { arcPts, rect, run, TAU, track, via } from './artwork.js';
+import { polyLength } from './coil.js';
 import { choice, range } from './creator-validation.js';
-import { microstripWidth } from './microstrip.js';
 import { hasNonlocalContact } from './series-routing.js';
-
-const C0 = 299792458e3;
-const copperOverlap = 0.02; // Positive copper area at seams, including after export.
-const warn = text => ({ level: 'warn', text });
-const info = text => ({ level: 'info', text });
+import { antennaArt, armSpacingClear, C0, copperOverlap, exposedEr, feedWidth, finishAntenna, info, plate, port, terminal, warn } from './antenna-artwork.js';
 
 export const PLANAR_ANTENNA_FAMILIES = {
   monopole: 'Printed quarter-wave monopole',
@@ -25,32 +19,6 @@ export const planarAntennaDefaults = () => ({
   siwSlotOffset: 0.16, siwViaDiameter: 0.8, siwViaDrill: 0.4, siwViaPitch: 1.4,
   siwTaperLength: 0.3, siwTaperWidth: 0.45,
 });
-
-function plate(art, [x0, y0, x1, y1], net, number, role, layer = 'F.Cu') {
-  art.pads.push(pad((x0 + x1) / 2, (y0 + y1) / 2, {
-    shape: 'rect', w: x1 - x0, h: y1 - y0, net, number, role, layer, mask: false,
-  }));
-}
-
-function port(art, x, y, net, name, layer = 'F.Cu') {
-  art.ports.push({ x, y, net, name, layer });
-}
-
-function terminal(art, [x, y], width, number, net, name) {
-  art.pads.push(pad(x, y, { w: width, number, net, role: 'terminal' }));
-  port(art, x, y, net, name);
-}
-
-function feedWidth(c, env) {
-  if (env.board?.layerCount < 2) throw new Error('This antenna needs front and back copper.');
-  range(c, 'feedZ', 20, 150);
-  range(c, 'feedLength', 1, 200);
-  const w = microstripWidth(c.feedZ, c.boardT, c.epsR, { t: c.copperOz * OZ_MM, f: c.freq });
-  if (w < 0.1) throw new Error('The feed line is below 0.1 mm. Increase the substrate spacing or lower the feed impedance.');
-  return w;
-}
-
-const exposedEr = c => (1 + c.epsR) / 2;
 
 function buildMonopole(art, c, env) {
   const width = range(c, 'traceW', 0.1, 5);
@@ -162,21 +130,6 @@ function buildTruncatedPatch(art, c, env) {
     capabilities: ['Untrimmed square resonance reference', 'Opposite corner cuts', 'Feed-line width'],
     notes: [info('The opposite trims split the two modes of the square patch. Switching the trimmed diagonal mirrors the layout while keeping the same feed edge.'), warn('Tune the corner cuts and feed in an EM model or on the bench. The displayed resonance is for the untrimmed square. Axial ratio and polarization sense are not predicted.')],
   };
-}
-
-function armSpacingClear(arms, distance) {
-  const segments = arms.flatMap((path, arm) => path.slice(1).map((b, i) => {
-    const a = path[i];
-    return { a, b, arm, left: Math.min(a[0], b[0]), right: Math.max(a[0], b[0]), low: Math.min(a[1], b[1]), high: Math.max(a[1], b[1]) };
-  })).sort((a, b) => a.left - b.left);
-  for (const [i, a] of segments.entries()) {
-    for (let j = i + 1; j < segments.length && segments[j].left < a.right + distance; j++) {
-      const b = segments[j];
-      if (a.arm === b.arm || a.high + distance < b.low || b.high + distance < a.low) continue;
-      if (segmentDistance(a.a, a.b, b.a, b.b) < distance) return false;
-    }
-  }
-  return true;
 }
 
 function buildSpiral(art, c) {
@@ -298,15 +251,6 @@ const generators = {
 };
 
 export function buildPlanarAntenna(c, env) {
-  const art = artwork({ name: env.name || 'ANT1', kind: 'antenna', family: c.family });
-  const result = generators[c.family](art, c, env);
-  const { x0, y0, x1, y1 } = boundsCopper(art);
-  art.outline.push({ layer: 'Edge.Cuts', pts: rect(x0 - c.margin, y0 - c.margin, x1 + c.margin, y1 + c.margin) });
-  const layers = [...new Set([...art.tracks, ...art.pads].map(item => item.layer))];
-  if (layers.length > 1 && env.board?.layerCount > 2) {
-    result.notes.push(warn('Use the actual front-to-back dielectric spacing and keep intermediate copper clear under this antenna.'));
-  }
-  result.notes.push(info('These are starting dimensions. Verify the antenna on its actual substrate with electromagnetic analysis or measurements.'));
-  Object.assign(art.meta, { model: result.model, capabilities: result.capabilities });
-  return { art, bounds: bounds(art), layers, ...result };
+  const art = antennaArt(c, env);
+  return finishAntenna(art, c, env, generators[c.family](art, c, env));
 }

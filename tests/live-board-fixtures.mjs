@@ -6,6 +6,7 @@ import { defaults, compute } from '../web/js/ws/inductor.js';
 import { defaults as filterDefaults, compute as computeFilter } from '../web/js/ws/filter.js';
 import { defaults as antennaDefaults, compute as computeAntenna } from '../web/js/ws/antenna.js';
 import { PLANAR_ANTENNA_FAMILIES } from '../web/js/engine/planar-antenna-families.js';
+import { EXTENDED_ANTENNA_NAMES } from '../web/js/engine/extended-antenna-families.js';
 
 const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture, antennaFixtures] = process.argv.slice(2);
 const board = artwork();
@@ -31,7 +32,7 @@ const antenna = computeAntenna({ ...antennaDefaults(), family: 'inset-patch' }, 
 writeFileSync(insetFixture, exportKicadPcb(antenna.art));
 
 mkdirSync(antennaFixtures);
-for (const family of Object.keys(PLANAR_ANTENNA_FAMILIES)) {
+for (const family of Object.keys({ ...PLANAR_ANTENNA_FAMILIES, ...EXTENDED_ANTENNA_NAMES })) {
   const config = { ...antennaDefaults(), family };
   const { art } = computeAntenna(config, { name: family }, { quick: true });
   writeFileSync(join(antennaFixtures, `${family}.kicad_pcb`), exportKicadPcb(art, { tolerance: config.tolerance }));

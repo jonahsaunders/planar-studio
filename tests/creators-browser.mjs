@@ -115,6 +115,16 @@ try {
     ['truncated-patch', 'Corner cut / square side', 0.12, 'cpCornerCut', 'Untrimmed square resonance'],
     ['archimedean-spiral', 'Turns per arm', 2, 'spiralTurns', 'Target active radius'],
     ['siw-slot-array', 'Slot count', 5, 'siwSlots', 'Fence vias'],
+    ['cpw-ellipse', 'Coplanar ground gap', 0.5, 'cpwGap', 'Radiator height'],
+    ['forked-monopole', 'Upper / lower frequency', 1.9, 'forkRatio', 'Upper frequency reference'],
+    ['u-slot-patch', 'U span / patch width', 0.6, 'uSlotSpan', 'Unslotted resonance'],
+    ['annular-ring-patch', 'Inner / outer radius', 0.5, 'ringInnerRatio', 'Circumference reference'],
+    ['aperture-stacked-patch', 'Aperture length / patch side', 0.55, 'stackAperture', 'Patch-to-patch spacing'],
+    ['turnstile', 'Dipole length tuning', 1.05, 'turnstileScale', 'Balanced feed gap'],
+    ['four-arm-sinuous', 'Angular swing', 23, 'sinuousSwing', 'Cells per arm'],
+    ['cavity-backed-slot', 'Slot position / cavity length', 0.7, 'cavitySlotPosition', 'Fence vias'],
+    ['microstrip-leaky-wave', 'Loading cells', 5, 'lwaCells', 'Cell pitch'],
+    ['franklin-collinear', 'Radiating sections', 4, 'franklinSections', 'Fold leg length'],
   ]) {
     await choose('Antenna type', family);
     await set(field, value);
