@@ -9,13 +9,13 @@ KiCad. Planar Studio reads your board's stack, calculates electrical estimates,
 and places the generated copper into the PCB as one undoable operation.
 
 **[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
-· [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
+· [Features on experimental](#features-on-experimental) · [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
 
 [![Five workspaces: inductors, transformers, PCB motors, filters and antennas](docs/feature-overview.svg)](docs/gallery.md)
 
 ## Explore the workspaces
 
-Current application captures. Click a view to open the full-size image.
+Click a workspace capture to open the full-size image.
 
 <table>
 <tr>
@@ -34,7 +34,7 @@ Current application captures. Click a view to open the full-size image.
 <td width="50%" valign="top">
 <h3>PCB motors</h3>
 <a href="docs/screenshot-motor.png"><img src="docs/screenshot-motor.png" alt="Twelve-coil rotary stator with phase phasors and motor estimates" width="100%"></a>
-<p>Explore rotary, stepper, linear, dual-rotor and planar machines.<br><a href="docs/gallery.md#pcb-motors">See all five motor families →</a></p>
+<p>Design rotary, stepper, linear, dual-rotor and planar machines. Size a stator to a target or compare planar construction options.<br><a href="#pcb-motors">Motor capabilities →</a></p>
 </td>
 <td width="50%" valign="top">
 <h3>Filters</h3>
@@ -46,7 +46,7 @@ Current application captures. Click a view to open the full-size image.
 <td width="50%" valign="top">
 <h3>Antennas</h3>
 <a href="docs/screenshot-antenna.png"><img src="docs/screenshot-antenna.png" alt="Patch array with element dimensions and ideal array-factor plot" width="100%"></a>
-<p>Design patches, arrays, directional radiators and NFC loops.<br><a href="docs/gallery.md#antennas">Explore antenna layouts →</a></p>
+<p>Choose from 29 parametric layouts, including patches, arrays, slots, directional radiators and NFC loops.<br><a href="#antennas">Antenna types →</a></p>
 </td>
 <td width="50%" valign="top">
 <h3>Design tools</h3>
@@ -71,6 +71,69 @@ parameters to try, and the model's expected starting result.
 The [inductor test board](examples/inductor-coupons/README.md) includes two
 generated square coils, exact geometry, predictions and a procedure for
 comparing measured impedance at the probe pads.
+
+## Features on experimental
+
+This section describes the `experimental` branch. To try these features in
+KiCad, check out that branch and build its installer. The download above is the
+published v1.6.0 installer. [Build an installer](docs/development.md#build-an-installer)
+
+### PCB motors
+
+Choose a **three-phase rotary motor**, **two-phase PCB stepper**, **linear PCB
+motor**, **dual-rotor axial-flux motor**, or **two-axis planar motor**. Use
+automatic or custom phase, polarity and branch assignments for rotary windings.
+Automatic routing supports two-, four- and six-layer rotary and dual-rotor
+stators. Three-phase windings offer wye, delta and isolated six-terminal
+connections. Estimated copper loss includes phase routing tracks and via barrels.
+[Motor families](docs/motor-families.md) · [Winding connections](docs/motor-coils.md)
+
+**Planar construction** offers six options. The PCB coil grid remains the
+default for existing designs.
+
+| Construction | What you can lay out |
+| --- | --- |
+| PCB coil grid | Independent printed coils with two terminals per cell. |
+| Wire-wound stator tile | Square wire coils, a carrier and a moving magnet plate. |
+| Moving-coil carriage | A moving coil PCB over a fixed checkerboard magnet bed. |
+| Double-sided magnet carriage | A fixed coil PCB between two moving magnet plates with adjustable gaps and alignment. |
+| Crossed linear motors | Separate X and Y PCB winding boards and magnet tracks, or a voice-coil flexure layout. |
+| Sawyer planar stepper | A toothed steel platen and a phased forcer layout, with a nominal step increment. |
+
+Each new construction has an assembly preview. **Export → Motor construction
+package** bundles DXF drawings, an assembly manifest and KiCad files where
+applicable. Sawyer and voice-coil force estimates use entered force-per-amp
+measurements. [Planar construction guide](docs/motor-families.md#construction-options)
+
+#### Motor studies in Design tools
+
+- **Motor sizing** ranks routable windings for a torque and speed target under board-size, fabrication, driver and temperature limits. Open a candidate to edit it.
+- **Field map** imports axial-field CSVs and uses the generated winding paths to estimate back-EMF, torque ripple and sensitivity to air gap.
+- **Motion maps** show stepper torque versus speed, linear thrust over the stroke and which XY positions can reach a requested force within the coil-current limits.
+
+[Motor sizing, field-map and motion guides](docs/design-tools.md#motor-sizing)
+
+### Antennas
+
+Choose **Antenna type** to generate one of 29 layouts with adjustable dimensions,
+a live copper preview and KiCad board and footprint exports.
+
+- **Patches and arrays** include edge-fed, inset-fed, circular, corner-truncated circularly polarized, U-slot, annular-ring and aperture-coupled stacked patches, plus rectangular patch arrays.
+- **Dipoles, monopoles and inverted-Fs** include printed and folded dipoles, bow-tie dipoles, the crossed-dipole turnstile, printed quarter-wave and CPW-fed elliptical monopoles, the dual-band forked monopole, and straight and meandered inverted-Fs.
+- **Loops and spirals** include the NFC loop, full-wave printed loop, two-arm Archimedean spiral and four-arm planar sinuous.
+- **Slot, directional and guided-wave layouts** include the microstrip-fed slot, cavity-backed slot, SIW slot array, Vivaldi tapered slot, printed Yagi, printed log-periodic, periodic microstrip leaky-wave antenna and printed Franklin collinear array.
+
+The readouts provide dimensions and family-specific sizing estimates. Feed
+and ground conventions, stack requirements and external matching or phasing
+are covered in the [antenna family guide](docs/creator-families.md#antenna-families),
+[directional guide](docs/directional-antennas.md) and [circular patch and slot guide](docs/stack-load-antennas.md).
+
+### PCB design and verification
+
+- **Inductors** support multilayer series spirals with separate transition vias, obstacle-aware routing around board cutouts and keepouts, magnetic-field views, and comparison to measured impedance. [Winding layouts](docs/winding-obstacles.md#design-around-obstacles)
+- **Transformers** support editable winding stacks, loaded-secondary models, candidate comparison, operating envelopes, measurement records and coordinated build packages. [Transformer workflow](docs/transformer-design.md)
+- **Filters** cover lumped LC, stepped-impedance, edge-coupled, hairpin, interdigital and EMI networks. Inspect responses with the specified terminations, tune distributed copper against a mask, and export hairpin simulation fixtures. [Filter guide](docs/engineering-models.md#filter-families) · [Filter tuning](docs/design-tools.md#filter-tuning)
+- **Board review** checks destination layers, conductor net mappings and clearances before placing copper. Use fabrication profiles to carry process limits across designs. On a live board, compare native KiCad rule findings before and after the proposed placement. [Fabrication profiles](docs/design-tools.md#fabrication-profiles) · [Board checks](docs/design-tools.md#board-checks)
 
 ## Install
 
@@ -122,21 +185,20 @@ A **48 V nominal to isolated 12 V / 5 A target** using an integrated GaN half
 bridge, silicon synchronous rectifiers and an eight-layer PCB transformer.
 The 64 × 56 mm chamfered board has all electronics on top, removable screw-terminal ports,
 and the flyback example's exposed-substrate M3 hole geometry on a 55 × 47 mm
-pattern. The A10 schematic uses visible local wiring and has no four-way
+pattern. The A14 board uses the A12 schematic, with visible local wiring and no four-way
 connections. The accompanying MIT PER and video studies explain the layout decisions. An 82-reference ratings audit records the corrected parts and outstanding electrical limits.
 
 **Unbuilt engineering prototype.** ERC, DRC, connectivity, assembly-file agreement
 and a portable rebuild pass. Factory DFM, ferrite installation and electrical,
 magnetic and thermal qualification remain open. 60 W is not a measured result.
 
-**Manufacturing audit: do not order the current revision.** The five-board
-review found overlapping same-net component lands, incomplete courtyards,
-GaN stencil/mask and placement-origin issues, and a factory stack mismatch.
-The [audit and cost breakdown](examples/planar-gan-60w/Manufacturing-audit.html)
-record required corrections and unconfirmed turnkey operations.
+**Manufacturing release is on hold.** The A14
+[manufacturing review](examples/planar-gan-60w/Manufacturing-audit.html)
+documents the routing and fabrication checks. Factory handling, ferrite
+installation and turnkey assembly still need confirmation.
 
 [Explore the native KiCad example](examples/planar-gan-60w/README.md)
-· [KiCad package](examples/PS-GAN-60W-A10-KiCad.zip)
+· [A14 KiCad package](examples/PS-GAN-60W-A14-KiCad.zip)
 · [Layout resource review](examples/planar-gan-60w/DEEP-LAYOUT-REVIEW.md)
 · [PER design study](examples/planar-gan-60w/PER-DESIGN-STUDY.md)
 · [Validation record](examples/planar-gan-60w/VALIDATION.md)
