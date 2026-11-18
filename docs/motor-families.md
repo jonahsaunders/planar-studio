@@ -105,6 +105,10 @@ bearings, fixtures and other mechanical parts are not generated as CAD solids.
 
 ## Two-axis planar
 
+Choose **Planar construction** to switch between the original PCB grid and
+five mechanical arrangements. Saved designs without this setting open as a
+**PCB coil grid**. The original grid uses the controls and model below.
+
 Choose a 2–8 by 2–8 grid. Every cell has its own copper net and two terminal
 pads. A 3×3 grid therefore needs nine independently controlled bipolar coil
 drivers, not two or three shared phase outputs. The X and Y current commands
@@ -120,9 +124,46 @@ Truncated grids and arbitrary pole pitches can cross-couple the axes. The
 model predicts in-plane force only: it does not design a Halbach magnet array,
 compute levitation, stabilize height or predict yaw/pitch/roll.
 
+### Construction options
+
+| Setting | Geometry and controls | Construction package |
+| --- | --- | --- |
+| **Wire-wound stator tile** | Stationary square air-core coils under a guided moving magnet plate. Set the tile pitch, square coil width, bare and insulated wire diameters, and turns. The results include wire length and estimated winding resistance and loss. | Coil carrier and magnet carriage DXFs. |
+| **Moving-coil carriage** | A PCB coil array moves over a stationary checkerboard magnet bed. Set the pole counts and pitches, magnet size and the air gap. | PCB board and footprint, plus a magnet bed DXF. |
+| **Double-sided magnet carriage** | A stationary PCB sits between upper and lower moving magnet plates. Set each air gap and face field separately. A lower-plate offset lets you study misalignment. | PCB board and footprint, plus separately labeled upper and lower magnet plate DXFs. |
+| **Crossed linear motors** | Two guided axes at different heights, with independent X and Y coil counts and magnet pitches. The **Voice coils with flexure** option uses measured force constants and optional axis spring rates. | Separate X and Y winding boards, magnet tracks and assembly drawing for the PCB option. The voice-coil option exports actuator and travel envelopes. |
+| **Sawyer planar stepper** | A moving electromagnetic head runs over a two-axis toothed steel platen. Set pitch, tooth land fraction, groove depth, working gap and nominal microstep subdivision. Enter measured thrust per amp to estimate drive force. | Platen groove and phased forcer pole layout DXFs. |
+
+**Export → Motor construction package** includes the individual DXFs and a
+JSON manifest with dimensions, settings and model assumptions. The PCB modes
+with a single board also support direct placement. Open the crossed-stage
+boards individually in KiCad. DXF coordinates are in millimetres. Machining
+and assembly details such as tool radius, fasteners, material, magnet retention,
+and dimensional tolerances depend on the build.
+
+The three checkerboard constructions apply the first spatial harmonic of a
+finite alternating N/S array, with exponential gap decay and tapered edges.
+The face-field amplitude is an input. Use measurement or a field solution
+for the selected magnets, as magnet pocket dimensions alone do not determine
+that amplitude. The model reports planar force and winding loss.
+
+**Design tools → Motion maps** uses each construction’s drive and field.
+In a crossed stage with PCB windings, the current limit applies per phase,
+and the result lists the three phase currents for each axis. The flexure
+option subtracts spring force from voice-coil force. Sawyer force curves use
+ideal quadrature and measured force per amp. The nominal Sawyer increment
+is tooth pitch divided by four and by the microstep subdivision.
+
+Sources for the construction approaches include the
+[wire-wound modular stator prototype](https://dspacemainprd01.lib.uwaterloo.ca/server/api/core/bitstreams/156961a1-9495-4e85-94dd-7208c95fdebb/content),
+[moving-coil planar motor](https://pure.tue.nl/ws/files/1665231/604580.pdf),
+[double-sided guide-supported prototype](https://www.mdpi.com/1424-8220/18/10/3526),
+[voice-coil XY stage](https://researchportal.hw.ac.uk/en/publications/design-fabrication-and-testing-of-a-dual-range-xy-micro-motion-st/),
+and [Sawyer platen and forcer](https://patents.google.com/patent/US7135827B1/en).
+
 ## Geometry, models and exports
 
-The stepper, linear and planar families require **two copper layers** with
+The stepper, linear and PCB planar windings require **two copper layers** with
 **Layer connection: Series**, including manual-interconnection layouts.
 Unsupported layer setups produce an error instead of exporting an ambiguous
 multilayer winding. Coil turns must be whole numbers; turns that cannot fit

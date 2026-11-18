@@ -21,7 +21,10 @@ import { familyDefaults, familyOf, familyLayout, familyAnalysis, dualRotorField,
 import { familyRail, extraTiles, extraSpec, extraCharts, motorPreview } from '../ui/motor-families.js';
 import { windingPreview } from '../ui/winding-design.js';
 import { routedMotorResistance } from '../engine/motor-resistance.js';
+import { buildPlanarConstruction, planarBuildDefaults, planarConstruction } from '../engine/planar-constructions.js';
+import { constructionTiles, constructionSpec, constructionPreview } from '../ui/planar-construction.js';
 export function preview(cfg, res, app) {
+  if (res.construction) return constructionPreview(res);
   const winding = windingPreview(cfg, res);
   const motion = motorPreview(cfg, res, app);
   if (winding && motion) { winding.append(motion); return winding; }
@@ -35,6 +38,7 @@ export function defaults() {
   return {
     ...inductorDefaults(),
     ...familyDefaults(),
+    ...planarBuildDefaults(),
     shape: 'wedge',
     motorGeometry: true,
     arrayEnabled: true,
@@ -80,6 +84,7 @@ export function compute(cfg, env, opt = {}) {
   const family=familyOf(cfg);
   if(!MOTOR_FAMILIES.some(f=>f.value===family))throw new Error('Choose a supported motor family.');
   const layers = chooseLayers(cfg, env.board);
+  if (family === 'planar' && planarConstruction(cfg) !== 'pcb-grid') return buildPlanarConstruction(cfg, layers, env, opt);
   if(['stepper','linear','planar'].includes(family)) {
     const res=familyLayout(cfg,layers,{name:env.name,net:env.net});
     return opt.quick?res:familyAnalysis(res,opt);
@@ -152,6 +157,7 @@ export function handles(cfg, res, app) {
    ----------------------------------------------------------------------- */
 
 export function tiles(cfg, res) {
+  if (res.construction) return constructionTiles(res);
   const special=extraTiles(cfg,res);if(special)return special;
   const m = res.motor, a = res.analysis;
   if (!m || !a) return [];
@@ -169,6 +175,7 @@ export function tiles(cfg, res) {
 }
 
 export function spec(cfg, res) {
+  if (res.construction) return constructionSpec(res);
   const special=extraSpec(cfg,res);if(special)return special;
   cfg=res.modelCfg||cfg;
   const m = res.motor, a = res.analysis;
@@ -234,8 +241,9 @@ export function spec(cfg, res) {
 export function notes(cfg, res) {
   const out = [...(res.art?.notes || [])];
   if(res.familyAnalysis) {
-    if(!res.analysis.drc.turnsOK)out.push({level:'warn',text:`Only ${res.analysis.turns} of ${cfg.turns} requested turns fit. Use Max turns or enlarge the coil.`});
+    if(res.analysis && !res.analysis.drc.turnsOK)out.push({level:'warn',text:`Only ${res.analysis.turns} of ${cfg.turns} requested turns fit. Use Max turns or enlarge the coil.`});
     out.push({level:'info',text:res.familyAnalysis.limits});
+    if (res.construction?.needsCalibration) out.push({ level: 'info', text: 'Enter measured force per amp for each axis to include its motor force in the estimates.' });
     if(res.family==='stepper')out.push({level:'info',text:'Microstep spacing is a command resolution, not guaranteed position accuracy. This air-core model predicts no unpowered holding torque.'});
     if(res.family==='planar'&&res.familyAnalysis.peakCurrent>Math.max(Math.abs(cfg.current),Math.abs(cfg.currentY))+1e-8)out.push({level:'warn',text:'Combining X and Y commands increases some coil currents above either individual command. Size each driver for the reported peak coil current.'});
     return out;
@@ -337,6 +345,9 @@ export function charts(cfg, res) {
 export function status(cfg, res) {
   if(['stepper','linear','planar'].includes(res.family)) {
     const m=res.familyAnalysis;
+    if (res.construction) return { algo: res.construction.title,
+      summary: !m ? 'solving…' : res.construction.needsCalibration ? 'Enter force per amp to estimate drive force'
+        : `Fx ${num(m.fx,4)} N · Fy ${num(m.fy,4)} N` };
     return {algo:`${MOTOR_FAMILIES.find(f=>f.value===res.family).label} · ${res.instances} coils`,summary:!m?'solving…':m.kind==='stepper'?`Step ${num(m.commandStep,3)}° · holding ${num(m.holding*1000,2)} mN·m`:m.kind==='linear'?`Force ${num(m.force,4)} N`:`Fx ${num(m.fx,4)} N · Fy ${num(m.fy,4)} N`};
   }
   const m = res.motor;

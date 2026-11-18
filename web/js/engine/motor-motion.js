@@ -1,3 +1,5 @@
+import { evaluatePlanarDrive } from './planar-constructions.js';
+
 const TAU = 2 * Math.PI;
 const harmonic = ([cos, sin], angle) => cos * Math.cos(angle) + sin * Math.sin(angle);
 const finiteNonnegative = value => Number.isFinite(value) && value >= 0;
@@ -166,12 +168,19 @@ export function planarForceMap(res, settings) {
   const kx = Math.PI / cfg.polePitch, ky = Math.PI / cfg.yPolePitch;
   const size = 13;
   const at = (x, y) => {
+    if (res.construction) {
+      const drive = res.construction.driveAt(x, y);
+      const biasedTarget = target.map((value, i) => value - (drive.bias?.[i] ?? 0));
+      const solved = allocatePlanarForce(drive.generators, biasedTarget, limit);
+      const evaluated = evaluatePlanarDrive(res.construction, [x, y], { currents: solved.currents, drive });
+      return { x, y, ...solved, force: evaluated.force, currents: evaluated.currents, copperLoss: evaluated.copperLoss };
+    }
     const generators = m.xCoefficients.map((c, i) => [harmonic(c, kx * x), harmonic(m.yCoefficients[i], ky * y)]);
     const solved = allocatePlanarForce(generators, target, limit);
     return { x, y, ...solved, copperLoss: res.analysis.Rdc * sum(solved.currents.map(i => i * i)) };
   };
   const positions = Array.from({ length: size }, (_, i) => -cfg.travel / 2 + cfg.travel * i / (size - 1));
   const points = positions.flatMap(y => positions.map(x => at(x, y)));
-  return { size, positions, target, points, selected: at(cfg.moverX, cfg.moverY),
+  return { size, positions, target, points, selected: at(cfg.moverX, cfg.moverY), channelNames: res.construction?.channelNames,
     reachableFraction: points.filter(point => point.reachable).length / points.length };
 }

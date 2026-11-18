@@ -8,6 +8,7 @@ import { defaults as antennaDefaults, compute as computeAntenna } from '../web/j
 import { PLANAR_ANTENNA_FAMILIES } from '../web/js/engine/planar-antenna-families.js';
 import { EXTENDED_ANTENNA_NAMES } from '../web/js/engine/extended-antenna-families.js';
 import { defaults as motorDefaults, compute as computeMotor } from '../web/js/ws/motor.js';
+import { constructionFiles } from '../web/js/engine/planar-constructions.js';
 
 const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture, creatorFixtures] = process.argv.slice(2);
 const board = artwork();
@@ -44,4 +45,11 @@ for (const [layers, motorTopology] of [[4, 'wye'], [6, 'delta'], [6, 'independen
   const { art } = computeMotor(config, { name }, { quick: true });
   if (!art.meta.busRouted || art.meta.routingError) throw new Error(`Could not generate ${name}.`);
   writeFileSync(join(creatorFixtures, `${name}.kicad_pcb`), exportKicadPcb(art));
+}
+for (const planarConstruction of ['moving-coil', 'double-sided', 'crossed']) {
+  const config = { ...motorDefaults(), motorFamily: 'planar', planarConstruction, turns: 4 };
+  const result = computeMotor(config, { name: planarConstruction }, { quick: true });
+  for (const [filename, text] of Object.entries(constructionFiles(result))) {
+    if (filename.endsWith('.kicad_pcb')) writeFileSync(join(creatorFixtures, 'planar-' + planarConstruction + '-' + filename), text);
+  }
 }

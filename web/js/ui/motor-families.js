@@ -2,14 +2,15 @@ import { MOTOR_FAMILIES, familyOf, isTranslation } from '../engine/motorfamilies
 import { substrateFields, processFields } from '../ws/common.js';
 import { el, eng, num } from './controls.js';
 import { windingDesigner } from './winding-design.js';
+import { planar, crossedPcb, magnetBuild, gridBuild, pcbWinding, polePitchInput, measured, planarConstructionRail } from './planar-construction.js';
 const rotational=c=>['rotary','dual-rotor'].includes(familyOf(c));
 const stepper=c=>familyOf(c)==='stepper';
-const planar=c=>familyOf(c)==='planar';
 const linear=c=>familyOf(c)==='linear';
 const shapes=[{value:'circle',label:'Circular spiral'},{value:'racetrack',label:'Racetrack / oval'},{value:'polygon',label:'Polygon'}];
 const range=(key,label,min,max,step=1,unit,when)=>({key,type:'range',label,min,max,step,unit,when});
 export function familyRail(panel,app) {
   panel.group({key:'motor-family',title:'Motor family',fields:[{key:'motorFamily',type:'select',label:'Motor family',options:MOTOR_FAMILIES}]});
+  planarConstructionRail(panel);
   panel.group({key:'stator',title:'Stator ring',when:c=>!isTranslation(c),fields:[
     {key:'shape',type:'select',label:'Coil shape',options:[{value:'wedge',label:'Annular sector'},...shapes]},
     range('dOuter','Outer diameter',10,300,0.5,'mm'),range('dInner','Bore diameter',2,260,0.5,'mm'),
@@ -27,32 +28,33 @@ export function familyRail(panel,app) {
     {key:'stepHint',type:'note',text:'Four coils per pole pair, repeating A+, B+, A−, B−. Full steps energize both phases; microsteps use sine/cosine currents. The preview can animate commands.'},
   ]});
   panel.group({key:'translation',title:'Linear / planar array',when:isTranslation,fields:[
-    {key:'cellShape',type:'select',label:'Cell shape',options:shapes},range('cellDiameter','Coil diameter',3,60,0.5,'mm'),
-    range('linearCoils','Linear coils',3,36,3,null,linear),range('polePitch','Magnet pole pitch X',5,100,0.5,'mm'),
-    range('gridCols','Grid columns',2,8,1,null,planar),range('gridRows','Grid rows',2,8,1,null,planar),
-    range('gridPitch','Grid pitch',5,100,0.5,'mm',planar),range('yPolePitch','Magnet pole pitch Y',5,100,0.5,'mm',planar),
+    {key:'cellShape',type:'select',label:'Cell shape',options:shapes,when:pcbWinding},
+    range('cellDiameter','Coil diameter',3,60,0.5,'mm',pcbWinding),
+    range('linearCoils','Linear coils',3,36,3,null,linear),range('polePitch','Magnet pole pitch X',5,100,0.5,'mm',polePitchInput),
+    range('gridCols','Grid columns',2,8,1,null,gridBuild),range('gridRows','Grid rows',2,8,1,null,gridBuild),
+    range('gridPitch','Grid pitch',5,100,0.5,'mm',gridBuild),range('yPolePitch','Magnet pole pitch Y',5,100,0.5,'mm',c=>gridBuild(c)||crossedPcb(c)||magnetBuild(c)),
     range('travel','Travel stroke',1,200,1,'mm'),range('moverX','Mover X',-100,100,0.5,'mm'),range('moverY','Mover Y',-100,100,0.5,'mm',planar),
     range('driveAngle','Electrical drive angle',0,360,1,'°',linear),
-    {key:'coverageHint',type:'note',text:'The field model assumes the magnet pattern covers the whole coil array throughout the stroke. Required pattern dimensions are reported; finite-carriage edge effects are not modeled.'},
+    {key:'coverageHint',type:'note',when:c=>pcbWinding(c)&&!magnetBuild(c),text:'This field model assumes full magnetic coverage throughout the stroke. Required pattern dimensions are reported.'},
   ]});
-  panel.group({key:'coil-profile',title:'Coil profile',fields:[
+  panel.group({key:'coil-profile',title:'Coil profile',when:pcbWinding,fields:[
     range('sides','Polygon sides',4,12,2,null,c=>(isTranslation(c)?c.cellShape:c.shape)==='polygon'),
     range('aspect','Oval aspect ratio',0.2,1,0.05,null,c=>(isTranslation(c)?c.cellShape:c.shape)==='racetrack'),
   ]});
-  panel.group({key:'routing',title:'Connections',when:c=>!planar(c),fields:[
+  panel.group({key:'routing',title:'Connections',when:c=>!planar(c)||crossedPcb(c),fields:[
     {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!stepper(c)&&(!rotational(c)||c.windingMode!=='custom'),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
-    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',hint:'Rotary stators can route two, four or six series copper layers. Turn off to wire individual coils manually.'},
+    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',when:c=>!planar(c),hint:'Rotary stators can route two, four or six series copper layers. Turn off to wire individual coils manually.'},
     {key:'motorTopology',type:'select',label:'Phase connection',when:c=>rotational(c)&&c.busEnabled,options:[
       {value:'wye',label:'Star (wye)'},{value:'delta',label:'Delta (three phases)'},{value:'independent',label:'Six terminals (isolated phases)'}]},
-    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>c.busEnabled&&(!rotational(c)||(c.motorTopology??'wye')==='wye'),options:[
+    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>!planar(c)&&c.busEnabled&&(!rotational(c)||(c.motorTopology??'wye')==='wye'),options:[
       {value:'phase-neutral',label:'Phase terminals + neutral (if applicable)'},{value:'phases',label:'Phase terminals only'},{value:'none',label:'No grouped terminals'}],
       hint:'Star motors can expose N or keep it internal. A stepper always uses A+/A− and B+/B−, with no neutral. No grouped terminals retains individual coil pads.'},
     range('terminalAngle','Terminal position',-180,180,1,'°',c=>c.busEnabled&&!isTranslation(c)),
   ]});
-  panel.group({key:'winding',title:'Winding',fields:[
+  panel.group({key:'winding',title:'Winding',when:pcbWinding,fields:[
     range('turns','Turns per layer',1,60),range('layers','Copper layers',1,16),
     {key:'connection',type:'seg',label:'Layer connection',options:[{value:'series',label:'Series'},{value:'parallel',label:'Parallel'}]},
-    {key:'maxTurnsAction',type:'row',buttons:[{label:'Max turns',onClick:()=>app.setMaxTurns()}]},
+    {key:'maxTurnsAction',type:'row',when:c=>!crossedPcb(c),buttons:[{label:'Max turns',onClick:()=>app.setMaxTurns()}]},
     ...substrateFields(),
   ]});
   panel.group({key:'dual',title:'Two magnet rotors',when:c=>familyOf(c)==='dual-rotor',fields:[
@@ -62,12 +64,14 @@ export function familyRail(panel,app) {
     {key:'dualHint',type:'note',text:'Zero offset means reinforcing axial fields. Each face is approximated by an isolated cylindrical magnet at the copper midplane; their amplitudes are combined as spatial harmonics.'},
   ]});
   panel.group({key:'machine',title:'Drive and field',fields:[
-    range('bGap','Airgap flux density',0.01,1.4,0.01,'T',c=>familyOf(c)!=='dual-rotor'),
+    range('bGap','Airgap flux density',0,1.4,0.01,'T',c=>familyOf(c)!=='dual-rotor'&&!magnetBuild(c)&&!measured(c)),
+    {key:'faceFieldNote',type:'note',when:magnetBuild,text:'The face harmonic is the estimated or measured field with the probe at the magnet face. The model applies the selected gap at each copper layer.'},
+    range('planarFaceHarmonic','Upper / single face harmonic',0,2,0.01,'T',magnetBuild),
     range('current','Drive current / X command',0,30,0.1,'A'),range('currentY','Y drive current',-30,30,0.1,'A',planar),
     range('vdc','Bus voltage',3,800,1,'V',rotational),range('rpm','Speed',0,40000,50,'rpm',rotational),
-    range('tempC','Winding temperature',-40,155,1,'°C'),
+    range('tempC','Winding temperature',-40,155,1,'°C',c=>!measured(c)),
   ]});
-  panel.group({key:'process',title:'Process',open:false,fields:processFields()});
+  panel.group({key:'process',title:'Process',open:false,when:pcbWinding,fields:processFields()});
 }
 
 export function extraTiles(cfg,res) {
@@ -94,11 +98,17 @@ export function extraSpec(cfg,res) {
 }
 export function extraCharts(cfg,res) {
   const m=res.familyAnalysis;if(!m)return null;
+  if (res.construction?.needsCalibration && !res.cfg.planarForceX && !res.cfg.planarForceY) return [];
   const step=m.kind==='stepper',grid=m.kind==='planar';
   const series=[{name:step?'Rotor torque':grid?'Fx, sweep X':'Mover Fx',values:m.curve.map(p=>p.y*(step?1000:1))}];
   if(grid)series.push({name:'Fy, sweep Y',values:m.curve.map(p=>p.y2)});
-  return [{id:'family-response',title:step?'Torque versus rotor angle':grid?'Axis force sweeps at fixed coil currents':'Force versus mover position at fixed drive',
-    note:step?'Static torque for the selected command. It is not a pull-out torque curve.':'Currents are held at the selected command. Fringing and partial magnet coverage are excluded.',
+  const title = step ? 'Torque versus rotor angle' : !grid ? 'Force versus mover position at fixed drive'
+    : res.construction ? 'Axis force sweeps at fixed command' : 'Axis force sweeps at fixed coil currents';
+  return [{id:'family-response',title,
+    note:res.construction?.details.voice?'Each voice coil holds its current while the spring force changes with position.'
+      :res.construction?.mode==='crossed'?'Each axis holds its current command while its phase currents follow position.'
+      :res.construction?'Phase or coil currents are held at the selected position’s command throughout the sweep.'
+      :step?'Static torque for the selected command. It is not a pull-out torque curve.':'Currents are held at the selected command. Fringing and partial magnet coverage are excluded.',
     spec:{x:{values:m.curve.map(p=>p.x),label:step?'Mechanical degrees':'Position (mm)'},y:{label:step?'mN·m':'N'},series}}];
 }
 

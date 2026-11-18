@@ -34,6 +34,7 @@ import { exportKicadMod, exportKicadPcb, exportSvg, exportDxf, exportJson, expor
 
 import * as wsInductor from './ws/inductor.js';
 import * as wsMotor from './ws/motor.js';
+import { constructionFiles } from './engine/planar-constructions.js';
 import * as wsFilter from './ws/filter.js';
 import * as wsAntenna from './ws/antenna.js';
 import * as wsTransformer from './ws/transformer.js';
@@ -170,6 +171,7 @@ function runCompute(quick) {
     res = ws.compute(cfg(), environment(), { quick });
   } catch (err) {
     app.result = null;
+    syncKiCadActions();
     app.view.setArtwork(null, []);
     app.view.setHandles([]);
     app.charts.forEach(c => c.destroy());
@@ -183,6 +185,7 @@ function runCompute(quick) {
   }
   if (!quick) lastSolveMs = performance.now() - t0;
   app.result = res;
+  syncKiCadActions();
   res.configSignature=JSON.stringify(cfg());
   if(!quick)ws.updateWorkflow?.(cfg(),res);
 
@@ -222,7 +225,10 @@ const api = {
   saveFile: bridge.saveFile,
   reviewPlacement() {
     if (app.ws === 'transformer' && !['verify', 'export'].includes(transformerStep)) api.navigateTransformer('export');
-    if (runCompute(false)) openPlacementReview(api, app.ws, makePlacementReview);
+    if (!runCompute(false)) return;
+    const reason = app.result.art.meta.placementError;
+    if (reason) { toast(reason, 'warn'); return; }
+    openPlacementReview(api, app.ws, makePlacementReview);
   },
   readPlacementSnapshot: id => bridge.api.snapshot(id),
   checkPlacementRules: (placement, revision) => bridge.api.checkPlacementRules(placement, revision),
@@ -298,8 +304,9 @@ function reconcile(key, value) {
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
   enforceFabrication(cfg(), cfg().fabricationProfile);
   const filterLayoutChanged = app.ws === 'filter' && ['family', 'band', 'emiTopology', 'capStyle'].includes(key);
+  const motorLayoutChanged = app.ws === 'motor' && ['motorFamily', 'planarConstruction', 'crossedDrive'].includes(key);
   if (filterLayoutChanged || (key === 'family' && ['antenna', 'transformer'].includes(app.ws))
-    || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
+    || motorLayoutChanged) app.fitPending = true;
 }
 
 function renderRail() {
@@ -591,8 +598,9 @@ async function writeLibrary() {
   if (!runCompute(false)) return;
   const res = app.result;
   if (!res) return;
-  if (res.art.meta.routingError) {
-    toast(res.art.meta.routingError, 'warn');
+  const reason = res.art.meta.routingError || res.art.meta.placementError;
+  if (reason) {
+    toast(reason, 'warn');
     return;
   }
   const name = app.names[app.ws];
@@ -624,25 +632,28 @@ function exportOptions() {
   const name = app.names[app.ws];
   const tol = cfg().tolerance;
   const est = estimate(res.art, tol);
+  const noBoard = res.art.meta.routingError || res.art.meta.placementError;
   return [
     ...(app.ws==='transformer'?[{title:'Transformer build package (.zip)',desc:'Coordinated copper, stack and connections, terminals, core parts and analysis dossier.',file:`${name}-build.zip`,binary:true,make:()=>zipTextFiles(transformerDossier(cfg(),res,name).files)}]:[]),
+    ...(res.construction ? [{ title: 'Motor construction package (.zip)', desc: 'Individual DXF drawings, available winding boards, and assembly dimensions.',
+      file: `${name}-construction.zip`, binary: true, make: () => zipTextFiles(constructionFiles(res)) }] : []),
     {
       title: 'KiCad footprint (.kicad_mod)',
-      disabledReason: res.art.meta.routingError,
+      disabledReason: noBoard,
       desc: 'Copper as footprint graphics and pads, preserving terminal layers. Drop the folder in as a .pretty library.',
       file: `${name}.kicad_mod`,
       make: () => exportKicadMod(res.art, { name, tolerance: tol, description: current().status(cfg(), res).summary }),
     },
     {
       title: 'KiCad board (.kicad_pcb)',
-      disabledReason: res.art.meta.routingError,
+      disabledReason: noBoard,
       desc: `Real tracks, vias and nets — ${est.segments.toLocaleString()} segments, about ${(est.approxBytes / 1024).toFixed(0)} kB. Open it, or File → Append Board.`,
       file: `${name}.kicad_pcb`,
       make: () => exportKicadPcb(res.art, { tolerance: tol, boardThickness: cfg().boardT }),
     },
     {
       title: 'SVG',
-      desc: '1 unit = 1 mm, one group per copper layer, KiCad layer colours.',
+      desc: res.art.meta.placementError ? 'Mechanical drawing in millimetres with separate groups for its features.' : '1 unit = 1 mm, one group per copper layer, KiCad layer colours.',
       file: `${name}.svg`,
       mime: 'image/svg+xml',
       make: () => exportSvg(res.art, { name, tolerance: tol }),
@@ -930,7 +941,7 @@ function renderLink(st) {
     text.textContent = st.boardName || 'board open';
     pill.title = `KiCad ${st.kicadVersion}`;
   }
-  $('btn-place').disabled = !st.hasBoard;
+  syncKiCadActions();
   $('st-board').textContent = st.hasBoard ? (st.boardName || 'board') : (st.connected ? 'no board' : 'offline');
 
   // Update board-aware controls without replacing partially typed field values.
@@ -949,6 +960,14 @@ function renderLink(st) {
     app.boardApplied = true;
     adoptBoard(st.context);
   }
+}
+
+function syncKiCadActions() {
+  const reason = app.result?.art.meta.placementError;
+  $('btn-place').disabled = !bridge.state.hasBoard || !!reason;
+  $('btn-place').title = reason || 'Place this design into the open board';
+  $('btn-library').disabled = !!reason;
+  $('btn-library').title = reason || 'Write a .kicad_mod into the project library';
 }
 
 function adoptBoard(ctx) {

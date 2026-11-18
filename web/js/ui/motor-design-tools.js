@@ -155,13 +155,13 @@ export function motorStudies(api) {
   }
 
   function motionMaps() {
-    const c = config(), family = c.motorFamily ?? 'rotary', model = host.result().familyAnalysis;
+    const c = config(), family = c.motorFamily ?? 'rotary', model = host.result().familyAnalysis, build = host.result().construction;
     const definitions = {
       stepper: [['vdc', 'Stepper DC bus voltage (V)', 0.1, 1000], ['drop', 'H-bridge voltage drop (V)', 0, 50],
         ['current', 'Stepper peak phase current limit (A)', 0, 100], ['rpmMax', 'Maximum sweep speed (rpm)', 1, 300000]],
       linear: [['current', 'Linear peak phase current limit (A)', 0, 100], ['target', 'Thrust target (N)', 0, 1000],
         ['magnetLength', 'Magnet pattern length (mm, 0 for full coverage)', 0, 10000]],
-      planar: [['current', 'Bipolar current limit per coil (A)', 0, 100], ['forceX', 'Target force X (N)', -1000, 1000],
+      planar: [['current', build ? 'Peak current limit per winding (A)' : 'Bipolar current limit per coil (A)', 0, 100], ['forceX', 'Target force X (N)', -1000, 1000],
         ['forceY', 'Target force Y (N)', -1000, 1000]],
     };
     if (!definitions[family] || !model) { body.append(note('Select a stepper, linear or two-axis planar motor to open its performance map.')); return; }
@@ -170,8 +170,10 @@ export function motorStudies(api) {
       linear: 'Current-limited thrust with active commutation along the configured stroke. A finite magnet length applies a sharp field edge. Fringing, speed and the drive voltage are outside the model.',
       planar: 'Solve for a force vector at each X/Y position using the prescribed magnet field and independent bipolar coil drivers. Each cell shows whether the requested force can be reached within the coil-current limit.',
     };
-    body.append(note(descriptions[family]));
-    const s = settings('motorMotion-' + family, family === 'stepper' ? {
+    body.append(note(build ? build.title + ' · ' + build.limits : descriptions[family]));
+    if (build?.needsCalibration) body.append(note('Enter the measured force per amp in the main workspace for each axis you want to evaluate.'));
+    if (build?.needsCalibration && !c.planarForceX && !c.planarForceY) return;
+    const s = settings('motorMotion-' + family + (build ? '-' + build.mode + (build.details.voice ? '-voice' : '') : ''), family === 'stepper' ? {
       vdc: c.vdc, drop: 0, current: c.current, rpmMax: Math.max(100, c.rpm),
     } : family === 'linear' ? { current: c.current, magnetLength: 0, target: Math.abs(model.force) }
       : { current: c.current, forceX: model.fx, forceY: model.fy });
@@ -217,8 +219,8 @@ function drawPlanar(parent, map) {
     ['Position X / Y', num(p.x, 2) + ' / ' + num(p.y, 2) + ' mm'],
     ['Target', p.reachable ? 'Reached' : 'Outside the drive limits'],
     ['Achieved Fx / Fy', p.force.map(fmtForce).join(' / ')],
-    ['Force error', fmtForce(p.error)], ['Winding loss', eng(p.copperLoss, 'W')],
-    ['Coil currents', p.currents.map((value, i) => 'C' + (i + 1) + ' ' + num(value, 3) + ' A').join(' · ')],
+    ['Force error', fmtForce(p.error)], ['Winding loss', p.copperLoss == null ? 'Enter measured resistance' : eng(p.copperLoss, 'W')],
+    ['Coil currents', p.currents.map((value, i) => (map.channelNames?.[i] ?? 'C' + (i + 1)) + ' ' + num(value, 3) + ' A').join(' · ')],
   ]));
   let active = null;
   const choose = (cell, point, focus) => {

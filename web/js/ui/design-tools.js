@@ -475,6 +475,7 @@ export function openDesignTools(host, initial = 'optimize') {
     }));
   }
   function board() {
+    if (host.result()?.art.meta.placementError) { body.append(note(host.result().art.meta.placementError)); return; }
     body.append(note('Read the live board or import .kicad_pcb. Preview conflicts with copper, keepouts, drills, and edges, plus ground overlap and missing reference planes. Pads use conservative bounding circles. Run KiCad DRC after placement for authoritative netclass and shape checks.'));
     const s = settings('board', { x: config().placementOrigin?.[0] || 0, y: config().placementOrigin?.[1] || 0, clearance: 0.2, groundNet: 'GND', groundLayer: 'B.Cu' }), f = form();
     field(f, s, 'x', 'Placement X (KiCad mm)', -10000, 10000); field(f, s, 'y', 'Placement Y (KiCad mm)', -10000, 10000); field(f, s, 'clearance', 'Clearance (mm)', 0, 10);

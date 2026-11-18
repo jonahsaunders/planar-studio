@@ -35,7 +35,7 @@ self.onmessage = ({ data: { task, args } }) => {
       motorSizing: () => optimizeMotor(args.cfg, args.settings, args.env, progress),
       motorFieldMap: () => motorFieldMap(args.cfg, computeMotor(args.cfg, args.env, { quick: true }).art, args.planes, args.settings, progress),
       motorMotion: () => {
-        const layout = computeMotor(args.cfg, args.env);
+        const layout = computeMotor(args.cfg, args.env, { skipCurve: true });
         const study = { stepper: stepperSpeed, linear: linearThrust, planar: planarForceMap }[layout.family];
         if (!study) throw new Error('Choose a stepper, linear or planar motor.');
         return study(layout, args.settings);

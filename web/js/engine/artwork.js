@@ -148,7 +148,8 @@ export function merge(dst, src) {
 }
 
 export function assertRoutable(art) {
-  if (art.meta.routingError) throw new Error(art.meta.routingError);
+  const reason = art.meta.routingError || art.meta.placementError;
+  if (reason) throw new Error(reason);
 }
 
 /** Set the net name on every primitive that does not already have one. */

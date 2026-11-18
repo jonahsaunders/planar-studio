@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Engine and validation suite for the Planar Studio KiCad extension.",
   "scripts": {
-    "test": "node tests/verify.mjs && node tests/series-stack.mjs && node tests/hairpin.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/motor-studies.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/transformer-gap.mjs && node tests/transformer-stock-core.mjs && node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/rpc.mjs && node tests/python-tests.mjs",
+    "test": "node tests/verify.mjs && node tests/series-stack.mjs && node tests/hairpin.mjs && node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/motor-studies.mjs && node tests/planar-constructions.mjs && node tests/winding-design.mjs && node tests/obstacles.mjs && node tests/design-tools.mjs && node tests/lumped-layout.mjs && node tests/creators.mjs && node tests/creator-families.mjs && node tests/directional-antennas.mjs && node tests/loaded-stack-antennas.mjs && node tests/transformer-gap.mjs && node tests/transformer-stock-core.mjs && node tests/transformer-design.mjs && node tests/transformer-workflow.mjs && node tests/transformer-project.mjs && node tests/rpc.mjs && node tests/python-tests.mjs",
     "test:hairpin": "node tests/hairpin.mjs",
     "test:numerics": "node tests/verify.mjs",
     "test:plugin": "node tests/rpc.mjs",
@@ -20,7 +20,7 @@
     "test:creators:browser": "node tests/creators-browser.mjs",
     "test:creators:dom": "node tests/creators-dom.mjs",
     "test:families": "node tests/creator-families.mjs",
-    "test:motor": "node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/motor-studies.mjs",
+    "test:motor": "node tests/motor-layout.mjs && node tests/motor-families.mjs && node tests/motor-studies.mjs && node tests/planar-constructions.mjs",
     "test:motor:dom": "node tests/motor-dom.mjs",
     "shots:motor": "node tests/motor-shots.mjs",
     "test:design-layout": "node tests/winding-design.mjs && node tests/obstacles.mjs",

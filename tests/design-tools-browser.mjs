@@ -132,6 +132,27 @@ try {
   await expect(grid.getByRole('button', { pressed: true })).toBeFocused();
   await expect(dialog.getByText('Coil currents', { exact: true })).toBeVisible();
   await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+  const construction = page.getByLabel('Planar construction', { exact: true });
+  await construction.selectOption('moving-coil');
+  await expect(page.getByRole('img', { name: 'Moving-coil carriage assembly' })).toBeVisible();
+  await page.getByRole('button', { name: 'Design tools', exact: true }).click();
+  await set('Target force X (N)', 0.005);
+  await calculate('Calculate motion map');
+  await expect(grid.getByRole('button')).toHaveCount(169);
+  await dialog.getByRole('button', { name: 'Close', exact: true }).click();
+  await construction.selectOption('crossed');
+  await expect(page.getByRole('img', { name: 'Crossed linear motors assembly' })).toBeVisible();
+  await exportButton.click();
+  await expect(exportDialog.getByRole('button', { name: /KiCad board/ })).toBeDisabled();
+  await exportDialog.getByRole('button', { name: /Motor construction package/ }).click();
+  await expect(page.locator('#toasts').getByText(/^Wrote .+-construction\.zip\./)).toBeVisible();
+  const motorDir = path.join(stateDir, 'exports');
+  const motorZip = path.join(motorDir, fs.readdirSync(motorDir).find(name => name.endsWith('-construction.zip')));
+  const members = JSON.parse(execFileSync(python, ['-c',
+    'import sys, json, zipfile; print(json.dumps(zipfile.ZipFile(sys.argv[1]).namelist()))', motorZip]));
+  expect(members).toEqual(expect.arrayContaining(['X-axis.kicad_pcb', 'Y-axis.kicad_pcb', 'stage-arrangement.dxf']));
+  await construction.selectOption('pcb-grid');
+  await expect(page.getByRole('img', { name: 'planar motor preview' })).toBeVisible();
   await page.getByRole('tab', { name: 'Filter', exact: true }).click();
   await page.getByRole('button', { name: 'Design tools', exact: true }).click();
   await page.getByRole('button', { name: 'Use hairpin filter' }).click();

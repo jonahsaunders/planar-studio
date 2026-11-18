@@ -131,6 +131,42 @@ api.snapshot=async()=>({
   text:'(kicad_pcb (layers (0 "F.Cu" signal) (31 "B.Cu" signal) (37 "F.SilkS" user) (39 "F.Mask" user) (38 "B.Mask" user))'
     + ' (gr_rect (start -200 -200) (end 200 200) (layer "Edge.Cuts") (stroke (width 0.1))))',
 });
+for (const [construction, setting, readout, mechanical] of [
+  ['wire-tile', 'Turns per wire coil', 'Wire per coil with leads', true],
+  ['moving-coil', 'Magnet columns', 'Fixed magnet bed / Coil PCB', false],
+  ['double-sided', 'Lower plate air gap', 'Face-to-face clearance', false],
+  ['crossed', 'X axis coils', 'X magnet track', true],
+  ['sawyer', 'Tooth pitch', 'Nominal full step', true],
+]) {
+  await choose('Planar construction', construction);
+  assert.ok(visible(setting), construction + ' controls');
+  assert.match(document.querySelector('#side').textContent, new RegExp(readout));
+  assert.equal(document.querySelector('#btn-place').disabled, mechanical);
+  assert.equal(document.querySelector('#btn-library').disabled, mechanical);
+  document.querySelector('#btn-export').click();
+  assert.equal(document.querySelectorAll('.export-card').length, 7);
+  const board = [...document.querySelectorAll('.export-card')].find(card => card.textContent.includes('KiCad board'));
+  assert.equal(board.disabled, mechanical);
+  button('Close');
+  if (construction === 'crossed') {
+    await choose('Axis drive', 'voice-coil');
+    assert.ok(visible('X spring rate'));
+    assert.equal(visible('X axis coils'), false);
+    await choose('Axis drive', 'linear-pcb');
+  }
+}
+set('Tooth pitch', 2.4); await new Promise(r => setTimeout(r, 220)); await solved();
+button('Save'); await until(() => savedDesign('motor').config.planarConstruction === 'sawyer');
+const sawyerSnapshot = savedDesign('motor');
+await choose('Planar construction', 'pcb-grid');
+assert.ok(visible('Coil diameter'));
+api.loadDesign = async () => sawyerSnapshot;
+button('Open…'); await until(() => document.querySelector('.export-card .t'));
+document.querySelector('.export-card').click(); await new Promise(r => setTimeout(r, 220)); await solved();
+assert.equal(document.querySelector('select[aria-label="Planar construction"]').value, 'sawyer');
+assert.equal(Number(document.querySelector('input[aria-label="Tooth pitch"]').value), 2.4);
+await choose('Planar construction', 'pcb-grid');
+assert.ok(document.querySelector('svg[aria-label="planar motor preview"]'));
 for(const family of ['planar','stepper']) {
   await choose('Motor family',family);
   const btn=document.querySelector('#btn-place');btn.disabled=false;btn.click();
@@ -144,6 +180,6 @@ state.hasBoard=false;state.context=null;state.standalone=true;
 await choose('Motor family','rotary');
 assert.equal(document.querySelector('select[aria-label="Coil shape"]').value,'polygon');
 assert.equal(document.querySelector('select[aria-label="Terminal breakout"]').value,'none');
-console.log('All motor families: controls, previews, step animation, save/load, exports, legacy settings and invalid-layout recovery passed.');
+console.log('All motor families and planar constructions passed controls, previews, placement gates, save/load and exports.');
 await w.happyDOM.close();
 process.exit(0);
