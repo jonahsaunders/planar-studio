@@ -41,8 +41,10 @@ export function familyRail(panel,app) {
   ]});
   panel.group({key:'routing',title:'Connections',when:c=>!planar(c),fields:[
     {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!stepper(c)&&(!rotational(c)||c.windingMode!=='custom'),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
-    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',hint:'Rotary and linear families use star wiring. The stepper gets two isolated series phase circuits. Turn off to wire individual coils manually.'},
-    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>c.busEnabled,options:[
+    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',hint:'Rotary stators can route two, four or six series copper layers. Turn off to wire individual coils manually.'},
+    {key:'motorTopology',type:'select',label:'Phase connection',when:c=>rotational(c)&&c.busEnabled,options:[
+      {value:'wye',label:'Star (wye)'},{value:'delta',label:'Delta (three phases)'},{value:'independent',label:'Six terminals (isolated phases)'}]},
+    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>c.busEnabled&&(!rotational(c)||(c.motorTopology??'wye')==='wye'),options:[
       {value:'phase-neutral',label:'Phase terminals + neutral (if applicable)'},{value:'phases',label:'Phase terminals only'},{value:'none',label:'No grouped terminals'}],
       hint:'Star motors can expose N or keep it internal. A stepper always uses A+/A− and B+/B−, with no neutral. No grouped terminals retains individual coil pads.'},
     range('terminalAngle','Terminal position',-180,180,1,'°',c=>c.busEnabled&&!isTranslation(c)),
@@ -62,7 +64,7 @@ export function familyRail(panel,app) {
   panel.group({key:'machine',title:'Drive and field',fields:[
     range('bGap','Airgap flux density',0.01,1.4,0.01,'T',c=>familyOf(c)!=='dual-rotor'),
     range('current','Drive current / X command',0,30,0.1,'A'),range('currentY','Y drive current',-30,30,0.1,'A',planar),
-    range('vdc','Bus voltage',3,800,1,'V',rotational),range('rpm','Speed',100,40000,50,'rpm',rotational),
+    range('vdc','Bus voltage',3,800,1,'V',rotational),range('rpm','Speed',0,40000,50,'rpm',rotational),
     range('tempC','Winding temperature',-40,155,1,'°C'),
   ]});
   panel.group({key:'process',title:'Process',open:false,fields:processFields()});

@@ -6,6 +6,10 @@ import { designFromRequirements } from './engine/transformer-studies.js';
 import { compareTransformers, operatingEnvelope, transformerTolerance, assessConditions, transformerRepairs } from './engine/transformer-workflow.js';
 import { buildTransformer } from './engine/transformer.js';
 import { compareTransformerTest, calibrateTransformer, comparePrototypes } from './engine/transformer-measurements.js';
+import { optimizeMotor } from './engine/motor-optimizer.js';
+import { motorFieldMap } from './engine/motor-field-map.js';
+import { stepperSpeed, linearThrust, planarForceMap } from './engine/motor-motion.js';
+import { compute as computeMotor } from './ws/motor.js';
 
 self.onmessage = ({ data: { task, args } }) => {
   const progress = (value) => self.postMessage({ progress: value });
@@ -28,6 +32,14 @@ self.onmessage = ({ data: { task, args } }) => {
       field: () => fieldSlice(args.cfg, args.opt),
       rotor: () => rotorDesign(args.cfg, args.opt),
       board: () => checkPlacement(args.art, parseBoard(args.text, args.excluded || []), args.opt),
+      motorSizing: () => optimizeMotor(args.cfg, args.settings, args.env, progress),
+      motorFieldMap: () => motorFieldMap(args.cfg, computeMotor(args.cfg, args.env, { quick: true }).art, args.planes, args.settings, progress),
+      motorMotion: () => {
+        const layout = computeMotor(args.cfg, args.env);
+        const study = { stepper: stepperSpeed, linear: linearThrust, planar: planarForceMap }[layout.family];
+        if (!study) throw new Error('Choose a stepper, linear or planar motor.');
+        return study(layout, args.settings);
+      },
     };
     if (!jobs[task]) throw new Error('Unknown study.');
     self.postMessage({ result: plain(jobs[task]()) });

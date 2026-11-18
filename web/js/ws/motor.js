@@ -20,6 +20,7 @@ import { defaults as inductorDefaults } from './inductor.js';
 import { familyDefaults, familyOf, familyLayout, familyAnalysis, dualRotorField, MOTOR_FAMILIES } from '../engine/motorfamilies.js';
 import { familyRail, extraTiles, extraSpec, extraCharts, motorPreview } from '../ui/motor-families.js';
 import { windingPreview } from '../ui/winding-design.js';
+import { routedMotorResistance } from '../engine/motor-resistance.js';
 export function preview(cfg, res, app) {
   const winding = windingPreview(cfg, res);
   const motion = motorPreview(cfg, res, app);
@@ -56,6 +57,7 @@ export function defaults() {
     busEnabled: true,
     terminalAngle: -90,
     terminalBreakout: 'phase-neutral',
+    motorTopology: 'wye',
     windingMode: 'repeat', windingSchedule: null,
   };
 }
@@ -103,12 +105,23 @@ export function compute(cfg, env, opt = {}) {
   if (opt.quick) return res;
 
   const a = analyse(full, coil, { segmentCap: opt.segmentCap || 3000 });
-  const m = motorAnalysis(full, coil, a);
+  const circuit = art.meta.busRouted && !art.meta.routingError ? art.meta.motorCircuit : null;
+  const m = motorAnalysis(full, coil, a, routedMotorResistance(full, a, circuit), circuit?.topology);
   res.analysis = a;
   res.motor = m;
   res.curve = motorCurve(m, 64);
   res.sweep = sweep(full, a, Math.max(10, a.srf / 5000), a.srf * 3, 110);
   return res;
+}
+
+export function maxRoutedTurns(cfg, res, env) {
+  const maximum = Math.min(60, Math.floor(res.coil.spiral.maxTurns));
+  if (!['rotary', 'dual-rotor'].includes(res.family) || ![4, 6].includes(cfg.layers)) return maximum;
+  for (let turns = maximum; turns >= 1; turns--) {
+    const { art } = compute({ ...cfg, turns }, env, { quick: true });
+    if (!art.meta.routingError && (!cfg.busEnabled || art.meta.busRouted)) return turns;
+  }
+  return 0;
 }
 
 export function handles(cfg, res, app) {
@@ -166,7 +179,7 @@ export function spec(cfg, res) {
       rows: [
         ...(res.dual ? [['Upper / lower field estimate', `${num(res.dual.top,3)} / ${num(res.dual.bottom,3)} T`], ['Combined field at copper midplane', `${num(res.dual.combined,3)} T`], ['Rotor face spacing', `${num(res.dual.discSpacing,2)} mm`], ['Total stack (excluding rotor back plates)', `${num(res.dual.stackHeight,2)} mm`]] : []),
         ['Coil shape', cfg.shape === 'polygon' ? `${cfg.sides}-sided polygon` : cfg.shape],
-        ['Terminals', res.art.meta.starRouted ? `${res.art.ports.length} grouped terminals; star (wye), ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals (star not routed)'],
+        ['Terminals', res.art.meta.busRouted ? `${res.art.ports.length} grouped terminals; ${{ wye: 'star (wye)', delta: 'delta', independent: 'isolated phase windings' }[m.topology]}, ${cfg.terminalAngle ?? -90}°` : 'Individual coil terminals'],
         ['Coils / phases / pole pairs', `${m.coilsTotal} / ${m.phases} / ${m.p}`],
         ['Coils per phase (mean)', `${num(m.coilsPerPhase, 2)}; ${cfg.windingMode === 'custom' ? 'explicit branches below' : cfg.coilSeries ? 'series' : 'parallel'}`],
         ['Turns per coil', `${a.turns.toFixed(2)} × ${a.nL} layers`],
@@ -197,9 +210,10 @@ export function spec(cfg, res) {
       rows: [
         ['Speed', `${cfg.rpm} rpm`],
         ['Electrical frequency', `${num(m.fElec, 1)} Hz`],
-        ['Back-EMF (peak, line-neutral)', `${num(m.Vbemf, 2)} V`],
+        ['Back-EMF (peak, per winding)', `${num(m.Vbemf, 2)} V`],
         ['Shaft power', eng(m.Pmech, 'W', 3)],
         ['Copper loss', eng(m.Pcu, 'W', 3)],
+        ...(res.art.meta.busRouted ? [['Of which from phase routing', eng(m.routingLoss, 'W', 3)]] : []),
         ['Efficiency (copper only)', `${num(m.eff * 100, 2)} %`],
         ['Electrical time constant', eng(m.tauE, 's', 3)],
         ['SRF margin over f_elec', `${num(m.srfMargin, 0)}×`],
@@ -271,7 +285,7 @@ export function notes(cfg, res) {
   }
   out.push({
     level: 'info',
-    text: 'Torque includes signed coil distribution and pitch factors, using the stronger forward/reverse sequence with balanced sinusoidal currents. Phase values assume identical coils and neglect inter-coil mutual inductance and parallel circulating currents. Efficiency excludes iron, windage and inverter losses.',
+    text: 'Torque uses signed coil distribution, pitch and sinusoidal winding currents. Routed copper loss includes collars and via barrels using a DC network; the model omits inter-coil mutual inductance, induced circulating currents, iron, windage and inverter losses.',
   });
   return out;
 }

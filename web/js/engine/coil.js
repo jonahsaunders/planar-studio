@@ -12,7 +12,7 @@
 import { buildObstacleCoil, offsetContours } from './obstacles.js';
 import { windingPhasors } from './winding-design.js';
 import { ellipticRatio } from './microstrip.js';
-import { phaseVoltageFromBus } from './motor-envelope.js';
+import { windingVoltageFromBus } from './motor-envelope.js';
 import { hasNonlocalContact, routeSeriesLayers } from './series-routing.js';
 
 export const MU0      = 4e-7 * Math.PI;      // H/m
@@ -1236,7 +1236,7 @@ export function solveTurnsForL(cfg, targetL, opts = {}) {
    8.  AXIAL-FLUX MOTOR MODEL
    ------------------------------------------------------------------------ */
 
-export function motorAnalysis(cfg, coil, a) {
+export function motorAnalysis(cfg, coil, a, routed = null, topology = 'wye') {
   const p = Math.max(1, cfg.polePairs);
   const arrayed = cfg.arrayEnabled && (cfg.shape === 'wedge' || cfg.motorGeometry);
   const phases = arrayed ? cfg.phases : 1;
@@ -1265,12 +1265,13 @@ export function motorAnalysis(cfg, coil, a) {
 
   const RphaseCoil = a.Rdc;
   const resistanceFactor = winding ? winding.phases.reduce((s, p) => s + p.resistanceFactor, 0) / phases : (cfg.coilSeries ? coilsPerPhase : 1 / coilsPerPhase);
-  const Rphase = RphaseCoil * resistanceFactor;
+  const Rphase = routed?.phaseEquivalent ?? RphaseCoil * resistanceFactor;
   const Lphase = a.L * resistanceFactor;
 
   const Ipk = cfg.current;
   const torque = Kt * Ipk;
   const Pcu = driveFactor * Ipk * Ipk * Rphase;
+  const routingLoss = (routed?.interconnect ?? 0) * Ipk * Ipk;
   const km = Kt / Math.sqrt(driveFactor * Rphase);                  // N.m per sqrt(W)
   const rpm = cfg.rpm;
   const fElec = p * rpm / 60;
@@ -1282,13 +1283,13 @@ export function motorAnalysis(cfg, coil, a) {
 
   // torque-speed at a supply voltage
   const modulation = phases === 3 ? 'spaceVector' : 'sine';
-  const phaseVoltage = phaseVoltageFromBus(cfg.vdc, modulation);
+  const phaseVoltage = windingVoltageFromBus(cfg.vdc, modulation, topology);
   const noLoad = KeMech > 0 ? phaseVoltage / KeMech * 60 / TAU : 0;
   const stall = KeMech > 0 ? Kt * phaseVoltage / Rphase : 0;
 
   return {
     p, phases, coilsTotal, coilsPerPhase, winding, kp, driveFactor, kw, alpha: alpha * 180 / Math.PI,
-    Apole, flux, Nseries, lambda, Kt, KeMech, Kv, Rphase, Lphase,
+    Apole, flux, Nseries, lambda, Kt, KeMech, Kv, Rphase, Lphase, topology, routingLoss,
     torque, Pcu, km, fElec, Pmech, eff, Vbemf, tauE, noLoad, stall, modulation,
     srfMargin: a.srf / Math.max(fElec, 1e-9),
     rOa: rOa * 1e3, rIa: rIa * 1e3,

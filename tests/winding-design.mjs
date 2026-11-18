@@ -34,7 +34,10 @@ const a=windingPhasors(c),b=windingPhasors(reversed);a.phases.forEach((p,i)=>ass
 const mixed={...defaults(),windingMode:'custom'};
 mixed.windingSchedule=windingSchedule({...mixed,windingMode:'repeat'}).map((s,i)=>({...s,branch:i<6?1:2}));
 const m=compute(mixed,{},{segmentCap:600});assert.equal(m.art.meta.starRouted,true);assert.deepEqual(interconnectGroups(m.art),expected(mixed));
-assert.ok(Math.abs(m.motor.Rphase/m.analysis.Rdc-1)<1e-12);assert.ok(Math.abs(m.motor.Lphase/m.analysis.L-1)<1e-12);
+const unrouted = compute({...mixed,busEnabled:false},{},{segmentCap:600});
+assert.ok(Math.abs(unrouted.motor.Rphase/m.analysis.Rdc-1)<1e-12);
+assert.ok(m.motor.Rphase > unrouted.motor.Rphase && m.motor.routingLoss > 0);
+assert.ok(Math.abs(m.motor.Lphase/m.analysis.L-1)<1e-12);
 const bad=structuredClone(mixed);bad.windingSchedule[0].polarity=-1;
 assert.equal(compute(bad,{},{quick:true}).art.meta.starRouted,false,'incompatible parallel EMFs are not connected');
 assert.ok(compatibleWindings(c).every(s=>s.kw<=1+1e-12&&s.kw>0));

@@ -25,9 +25,10 @@ phase, polarity and branch. Toggle canvas labels to inspect them.
 
 Automatic/custom star routing uses a separate outer lane for each series link,
 plus phase and neutral lanes. The collar can substantially increase the finished
-board diameter. Routing supports exactly two series copper layers with exterior
-terminals and whole turns. Grouped A/B/C/N terminals follow the existing
-breakout controls. Disable automatic interconnection for manual wiring.
+board diameter. Rotary routing supports two, four, or six series copper layers
+with exterior through-hole terminals and whole turns. Grouped terminals
+follow the selected wye, delta, or six-terminal topology. Disable automatic
+interconnection for manual wiring.
 Unequal parallel branch EMFs are reported, and their automatic star connection
 is omitted to avoid circulating-current connections. Individual coil terminals
 remain available, with an error note.
@@ -50,10 +51,11 @@ sequence. Distribution factor multiplies pitch factor, with no artificial
 minimum: complete cancellation gives zero fundamental torque and back-EMF.
 `Kt = (phaseCount / 2) × polePairs × lambda`; the original three-phase case is
 `1.5 × polePairs × lambda`. Resistance/loss readouts use the mean phase resistance.
-These scalar results assume imposed balanced sinusoidal currents and omit
-current-regulator dynamics, torque ripple, parallel circulating current, bus
-loss and inter-coil mutual inductance. Imbalance is reported. The magnetic-field
-study uses the mirrored winding paths and branch current sharing.
+These scalar results assume imposed balanced sinusoidal currents and include
+resistive phase-routing loss. They omit current-regulator dynamics, torque
+ripple, induced circulating current, and inter-coil mutual inductance.
+Imbalance is reported. The magnetic-field study uses the mirrored winding paths
+and branch current sharing.
 
 Saved existing designs keep their geometry and assignments, but performance
 readouts now account for cancellation. This intentionally changes estimates

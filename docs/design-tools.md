@@ -265,11 +265,13 @@ not subsequent unsaved editor changes. At most 200 findings are displayed.
 ## Rotor
 
 For a balanced three-phase rotary motor, **Continuous speed and torque** plots
-the envelope for a DC bus voltage, modulation strategy, driver peak phase
+the envelope for a DC bus voltage, modulation strategy, driver peak line
 current, ambient and winding temperature limits, and winding-to-ambient thermal
 resistance. Enter a requested speed and torque to see which limit applies.
 The phase-voltage model includes winding resistance, synchronous reactance
 and back-EMF. Copper loss uses resistance at the winding temperature limit.
+Wye, delta and isolated six-terminal connections use the voltage and current
+available to each winding.
 Use measured thermal resistance for the assembled and cooled motor.
 Field weakening, inverter drop and speed-dependent losses are outside this
 estimate.
@@ -290,6 +292,55 @@ this isolated-pole estimate into the PMSM model. Enter a measured or externally
 solved peak Bgap and use **Apply external field to motor** to update performance.
 There is no automated FEA solver integration, back-iron model, rotor structural
 analysis, or magnet-temperature/demagnetization model in this version.
+
+## Motor sizing
+
+In **PCB motor → Design tools → Motor sizing**, enter the continuous torque
+at a target RPM, bus voltage, driver current limit, temperature limits, and
+winding-to-ambient thermal resistance. Set the maximum finished diameter
+including phase routing, and bounds for coils, pole pairs, turns, track width
+and spacing.
+
+The search keeps the selected coil shape, bore, field, copper stack and phase
+topology. It samples diameters, turns, widths, slot and pole combinations, and
+series and parallel branches. A shortlist is rechecked with the routed circuit's
+resistive losses. Compare copper loss, voltage and temperature headroom, and
+available torque. **Use this winding** applies the chosen geometry and operating
+point. The search is bounded by its sampling and the assumptions of the
+continuous drive model. Run KiCad DRC on the final placed design.
+
+## Motor field map
+
+Open **Field map** with a rotary or dual-rotor stator. Import a CSV of axial
+field values in the rotor frame with columns `x_mm`, `y_mm`, `bz_t`, and optional
+`gap_mm`. Each gap needs a complete rectangular grid of unique (X, Y) samples.
+Use the combined field for a dual rotor. Center the coordinates on the rotor
+axis and cover the disk traced by the coil copper on both axes. The input is
+saved with the design.
+
+The study interpolates Bz at the coil tracks, leads and layer transitions,
+then evaluates a full mechanical revolution. It reports open-circuit back-EMF
+by winding, mean energized torque, peak-to-peak torque ripple and how they
+change across supplied gap planes. Electrical advance shifts the drive from
+alignment with the stronger fundamental sequence. A single Bz plane applies to
+all layers. The model excludes phase routing collars, external returns, induced
+circulating currents and mechanical losses.
+
+## Motion maps
+
+- **Stepper** plots available synchronized sinusoidal torque and phase current
+  against speed using bridge voltage drop, phase resistance and inductance, and
+  reciprocal back-EMF. The model assumes current regulation and excludes inertia,
+  resonance and pull-out behavior.
+- **Linear** plots current-limited thrust and where it meets the target across
+  the configured stroke. A finite magnet length truncates the sinusoidal field
+  at its edges. The model excludes fringing and speed-dependent drive limits.
+- **Two-axis planar** solves for coil currents within a bipolar per-coil limit
+  across an XY grid. Inspect a cell to see achieved force, error, winding loss
+  and coil currents. For an unreachable target the study reports the closest
+  force vector the drivers can produce in the prescribed field.
+
+Each study exports input settings and results as JSON.
 
 ## Layout correction
 

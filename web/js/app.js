@@ -279,7 +279,8 @@ const api = {
   setMaxTurns() {
     const res = app.result;
     if (!res || !res.coil) return;
-    const max = Math.floor(res.coil.spiral.maxTurns);
+    const max = app.ws === 'motor' ? wsMotor.maxRoutedTurns(cfg(), res, environment()) : Math.floor(res.coil.spiral.maxTurns);
+    if (max < 1 && app.ws === 'motor') { toast('No complete turn fits this winding and phase routing.', 'warn'); return; }
     api.set('turns', Math.max(1, max));
     toast(`Turns set to ${Math.max(1, max)}, the most this geometry holds.`, 'info');
   },
@@ -457,6 +458,7 @@ function showDesignTools(tab = 'optimize') {
   if (!runCompute(false)) return;
   openDesignTools({
     config: cfg, kind: () => app.ws, name: () => app.names[app.ws], result: () => app.result,
+    environment,
     analysisConfig: () => app.ws === 'filter' ? wsFilter.filterStudyConfig(cfg(), designBoard()) : cfg(),
     defaults: () => current().defaults(),
     solveMeasurement: configuration => current().compute(configuration, { name: app.names[app.ws] }),
@@ -477,7 +479,9 @@ function showDesignTools(tab = 'optimize') {
     designId: api.designId,
     dirty: () => { app.dirtyWorkspaces.add(app.ws); },
     apply(patch) {
+      history();
       Object.assign(cfg(), patch); app.dirtyWorkspaces.add(app.ws);
+      record();
       renderRail(); runCompute(false);
     },
     switch(kind, tool) { switchWorkspace(kind); showDesignTools(tool); },
@@ -986,7 +990,10 @@ function wireChrome() {
   $('btn-place').addEventListener('click', placeIntoBoard);
   $('btn-library').addEventListener('click', writeLibrary);
   $('btn-export').addEventListener('click', openExport);
-  $('btn-tools').addEventListener('click', () => showDesignTools(app.ws === 'filter' ? 'tune' : app.ws === 'motor' ? 'rotor' : 'optimize'));
+  $('btn-tools').addEventListener('click', () => {
+    const motorTool = ['stepper', 'linear', 'planar'].includes(cfg().motorFamily) ? 'motionMaps' : 'rotor';
+    showDesignTools(app.ws === 'filter' ? 'tune' : app.ws === 'motor' ? motorTool : 'optimize');
+  });
   $('btn-starters').addEventListener('click', openStarterProjects);
   $('link-pill').addEventListener('click', () => {
     bridge.reconnect();

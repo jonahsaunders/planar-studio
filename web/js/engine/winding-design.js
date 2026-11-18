@@ -63,10 +63,13 @@ export function windingPhasors(cfg) {
   const turns = phases.reduce((s, p) => s + p.effectiveTurns, 0);
   const kd = coherent < 1e-10 ? 0 : coherent / Math.max(turns, 1e-12);
   const magnitudes = phases.map(p => Math.hypot(p.re, p.im));
+  const balanced = phases.every(p => p.branches.length) && Math.max(...magnitudes) - Math.min(...magnitudes) < 0.01 * Math.max(...magnitudes, 1e-12)
+    && phases.every(p => Math.abs(p.resistanceFactor - phases[0].resistanceFactor) < 1e-9);
+  const residual = Math.hypot(phases.reduce((s, p) => s + p.re, 0), phases.reduce((s, p) => s + p.im, 0));
   return { schedule, phases, kd, effectiveTurns: turns / cfg.phases,
     sequence: forward >= reverse ? 1 : -1,
-    balanced: phases.every(p => p.branches.length) && Math.max(...magnitudes) - Math.min(...magnitudes) < 0.01 * Math.max(...magnitudes, 1e-12)
-      && phases.every(p => Math.abs(p.resistanceFactor - phases[0].resistanceFactor) < 1e-9),
+    balanced, deltaCompatible: cfg.phases === 3 && balanced && coherent > 1e-10
+      && residual < 0.01 * Math.max(...magnitudes),
     parallelMismatch: phases.some(p => p.mismatch) };
 }
 

@@ -122,7 +122,7 @@ compute levitation, stabilize height or predict yaw/pitch/roll.
 
 ## Geometry, models and exports
 
-The new stepper, linear and planar families require **two copper layers** with
+The stepper, linear and planar families require **two copper layers** with
 **Layer connection: Series**, including manual-interconnection layouts.
 Unsupported layer setups produce an error instead of exporting an ambiguous
 multilayer winding. Coil turns must be whole numbers; turns that cannot fit
@@ -148,6 +148,11 @@ connected winding circuit uses one KiCad net. Stepper phases use separate
 `<net>_A` and `<net>_B` nets; planar cells use `<net>_C1`, `<net>_C2`, etc.
 Create the required nets before direct placement. The old field-slice and
 single-rotor tools are disabled where their rotary assumptions do not apply.
+
+For operating limits across speed or position, use
+[Design tools → Motion maps](design-tools.md#motion-maps). Rotary and dual-rotor
+stators also support [Motor sizing](design-tools.md#motor-sizing) and imported
+[field maps](design-tools.md#motor-field-map).
 
 ## Validation and references
 

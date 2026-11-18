@@ -103,7 +103,35 @@ try {
   await expect(page.getByText('Outside estimated limits', { exact: true })).toBeVisible();
   await set('Measured / external-solver peak Bgap (T)', 0.6);
   await page.getByRole('button', { name: 'Apply external field to motor' }).click();
+  await page.getByRole('button', { name: 'Motor sizing', exact: true }).click();
+  await set('Target speed (rpm)', 1000);
+  await set('Target torque (N·m)', 0.005);
+  await set('Maximum finished diameter (mm)', 85);
+  await calculate('Find motor designs');
+  await page.getByRole('button', { name: 'Use this winding', exact: true }).first().click();
+  await expect(page.locator('.tools-status')).toContainText('Applied');
+  await page.getByRole('button', { name: 'Field map', exact: true }).click();
+  const motorGrid = ['x_mm,y_mm,bz_t,gap_mm'];
+  for (const gap of [1, 2]) for (const x of [-60, -20, 20, 60]) for (const y of [-60, -20, 20, 60]) {
+    motorGrid.push([x, y, Math.cos(Math.atan2(y, x) * 8) / gap, gap].join(','));
+  }
+  await page.getByLabel('Import motor field map CSV').setInputFiles({
+    name: 'rotor-grid.csv', mimeType: 'text/csv', buffer: Buffer.from(motorGrid.join('\n')),
+  });
+  await calculate('Analyze field map');
+  await expect(dialog.getByRole('heading', { name: 'Torque sensitivity to air gap' })).toBeVisible();
+  await page.getByLabel('Field-map air gap').selectOption('1');
+  await expect(dialog.getByRole('heading', { name: 'Open-circuit winding back-EMF' })).toBeVisible();
   await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await page.getByLabel('Motor family', { exact: true }).selectOption('planar');
+  await page.getByRole('button', { name: 'Design tools', exact: true }).click();
+  await calculate('Calculate motion map');
+  const grid = dialog.getByRole('table', { name: 'Planar force reachability by X and Y position' });
+  await expect(grid.getByRole('button')).toHaveCount(169);
+  await grid.getByRole('button', { pressed: true }).press('ArrowUp');
+  await expect(grid.getByRole('button', { pressed: true })).toBeFocused();
+  await expect(dialog.getByText('Coil currents', { exact: true })).toBeVisible();
+  await dialog.getByRole('button', { name: 'Close', exact: true }).click();
   await page.getByRole('tab', { name: 'Filter', exact: true }).click();
   await page.getByRole('button', { name: 'Design tools', exact: true }).click();
   await page.getByRole('button', { name: 'Use hairpin filter' }).click();
@@ -168,7 +196,7 @@ try {
   await expect(page.getByText('Board constraints from notched-board.kicad_pcb')).toBeVisible();
   await expect(page.locator('#st-algo')).not.toHaveText('geometry failed');
   if (errors.length) throw new Error(errors.join('\n'));
-  console.log('Design tools, motor envelope, hairpin fixtures, starter projects, fabrication profiles and board constraints passed in the browser.');
+  console.log('Design tools, motor sizing, field maps, planar force maps, hairpin fixtures, starter projects and fabrication controls passed in the browser.');
 } finally {
   await browser?.close(); proc.kill(); fs.rmSync(stateDir, { recursive: true, force: true });
 }

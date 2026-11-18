@@ -10,12 +10,14 @@ import { parseMeasurement, measurementValues, interpolate } from '../engine/meas
 import { makeMeasurementRecord, measurementConfiguration, measurementSignature, hasStaleFit, readCouponMeasurement } from '../engine/measurement-records.js';
 import { DISTRIBUTED, plain } from '../engine/filtertune.js';
 import { windingPolys, transformPolys, rotorDesign } from '../engine/magnetics.js';
-import { motorEnvelope } from '../engine/motor-envelope.js';
+import { lineCurrentFactor, motorEnvelope } from '../engine/motor-envelope.js';
+import { motorStudies } from './motor-design-tools.js';
 import { extractedHairpin, hairpinFixtures } from '../engine/hairpin-fixtures.js';
 import { zipTextFiles } from '../engine/zip-text.js';
 import * as bridge from '../bridge.js';
 
 const TABS = [['optimize', 'Optimize'], ['measurements', 'Measurements'], ['coupling', 'Coupled coils'], ['tolerance', 'Tolerances'], ['tune', 'Filter tuning'], ['field', 'Magnetic field'], ['board', 'Board checks'], ['rotor', 'Rotor']];
+const MOTOR_TABS = [['motorSizing', 'Motor sizing'], ['fieldMap', 'Field map'], ['motionMaps', 'Motion maps']];
 const button = (text, fn, primary = false) => el('button', { class: `btn${primary ? ' primary' : ''}`, type: 'button', text, onClick: fn });
 const note = (text) => el('p', { class: 'hint', text });
 
@@ -105,12 +107,12 @@ export function openDesignTools(host, initial = 'optimize') {
       catch (e) { status.textContent = e.message; }
     }));
   }
-  function chart(parent, x, series, label, log = true, heading = '') {
+  function chart(parent, x, series, label, log = true, heading = '', xLabel = log ? 'Hz' : 'x') {
     pruneViews();
     const c = el('canvas', { class: 'chart tools-chart', 'aria-label': heading || label, role: 'img' }), legend = el('div', { class: 'chart-legend' });
     if (heading) parent.append(el('h3', { text: heading }));
     parent.append(c, legend);
-    const plot = new LineChart(c, { x: { values: x, log, label: log ? 'Hz' : 'x' }, y: { label }, series, directLabels: false });
+    const plot = new LineChart(c, { x: { values: x, log, label: xLabel }, y: { label }, series, directLabels: false });
     plot.draw(); legendFor(series, legend);
     const dispose = () => plot.destroy(); dispose.element = c; cleanups.push(dispose); return plot;
   }
@@ -506,8 +508,12 @@ export function openDesignTools(host, initial = 'optimize') {
     }); runButton('Check placement', inspect);
   }
   function rotor() {
-    if(kind()==='motor' && config().motorFamily && config().motorFamily!=='rotary') { body.append(note('This tool designs a single rotary magnet ring. The selected motor family has its own geometry and drive/rotor preview in the main workspace.')); return; }
     if (!requireKind('motor', 'Design a rotor alongside a PCB motor stator. Magnet count follows twice the motor pole-pair count.')) return;
+    if (config().motorFamily === 'dual-rotor') { driveEnvelope(); return; }
+    if (config().motorFamily && config().motorFamily !== 'rotary') {
+      body.append(note('The magnet ring is for rotary stators. Use Motion maps for the selected motor family.'));
+      return;
+    }
     body.append(note('Alternating axial N/S cylindrical magnets. The field estimate is the centerline field of one isolated, uniformly magnetized cylinder in free space. It excludes neighboring magnets, back iron, leakage, and the rotor field fundamental. Use a measured or external-solver peak air-gap field for motor performance.'));
     const c = config(), s = settings('rotor', { radius: (c.dOuter + c.dInner) / 4, diameter: 6, thickness: 3, gap: 1, br: 1.2, angle: 0, externalB: c.bGap });
     const f = form();
@@ -539,19 +545,19 @@ export function openDesignTools(host, initial = 'optimize') {
     const redrawEnvelope = driveEnvelope();
   }
   function driveEnvelope() {
-    const c = config();
+    const c = config(), topology = host.result()?.motor?.topology;
     body.append(el('h3', { text: 'Continuous speed and torque' }),
-      note('Balanced three-phase wye estimate using winding resistance at the temperature limit. Enter the winding-to-ambient thermal resistance for your cooling setup. The model assumes sinusoidal current and excludes field weakening, speed-dependent losses and inverter voltage drop.'));
-    const s = settings('driveEnvelope', { vdc: c.vdc, current: c.current, ambient: 25, maxTemperature: 100,
+      note('Balanced three-phase estimate using winding resistance at the temperature limit. Enter the thermal resistance for your cooling setup. The model assumes sinusoidal winding current and excludes field weakening, speed-dependent losses and inverter voltage drop. Six-terminal mode assumes three independent H-bridges.'));
+    const s = settings('driveEnvelope', { vdc: c.vdc, current: c.current * lineCurrentFactor(topology), ambient: 25, maxTemperature: 100,
       thermalResistance: 25, speed: c.rpm, targetTorque: Math.max(0, host.result()?.motor?.torque || 0), modulation: 'spaceVector' });
     const f = form();
-    for (const [key, label, min, max] of [['vdc', 'DC bus voltage (V)', 0.1, 1000], ['current', 'Driver peak phase current (A)', 0.001, 1000],
+    for (const [key, label, min, max] of [['vdc', 'DC bus voltage (V)', 0.1, 1000], ['current', 'Driver peak line current (A)', 0.001, 1000],
       ['ambient', 'Ambient temperature (°C)', -50, 150], ['maxTemperature', 'Winding temperature limit (°C)', -40, 250],
       ['thermalResistance', 'Winding-to-ambient thermal resistance (°C/W)', 0.001, 10000],
       ['speed', 'Requested speed (rpm)', 0, 300000], ['targetTorque', 'Requested torque (N·m)', 0, 1000]]) {
       field(f, s, key, label, min, max);
     }
-    select(f, s, 'modulation', 'Inverter modulation', [['spaceVector', 'Space-vector PWM'], ['sine', 'Sinusoidal PWM']]);
+    if (topology !== 'independent') select(f, s, 'modulation', 'Inverter modulation', [['spaceVector', 'Space-vector PWM'], ['sine', 'Sinusoidal PWM']]);
     const out = output();
     const draw = () => {
       out.replaceChildren();
@@ -567,7 +573,7 @@ export function openDesignTools(host, initial = 'optimize') {
           ['Requested operating point', result.point.feasible ? 'Within estimated limits' : 'Outside estimated limits'],
           ['Limit at requested speed', result.point.limit],
           ['Available torque', eng(result.point.torque, 'N·m')],
-          ['Peak current at requested torque', eng(result.point.requestedCurrent, 'A')],
+          ['Peak line current at requested torque', eng(result.point.requestedLineCurrent, 'A')],
           ['Copper loss at requested torque', eng(result.point.copperLoss, 'W')],
           ['Voltage-limited no-load speed', `${num(result.noLoadRpm, 0)} rpm`],
         ]));
@@ -578,7 +584,9 @@ export function openDesignTools(host, initial = 'optimize') {
     draw();
     return draw;
   }
-  const renderers = { optimize, measurements, coupling, tolerance, tune, field: fieldTool, board, rotor };
+  const renderers = { optimize, measurements, coupling, tolerance, tune, field: fieldTool, board, rotor,
+    ...motorStudies({ body, config, host, settings, form, field, select, button, runButton, run, output, note, chart, status,
+      exportReport, changed, pruneViews }) };
   function render(id) {
     stop(); clearViews(); body.replaceChildren(); active = id;
     title.textContent = `Design tools · ${host.name()}`;
@@ -590,7 +598,8 @@ export function openDesignTools(host, initial = 'optimize') {
     }
     try { renderers[id](); } catch (e) { status.textContent = e.message; }
   }
-  for (const [id, label] of TABS) { const b = button(label, () => render(id)); b.dataset.tool = id; nav.append(b); }
+  const tabs = kind() === 'motor' ? [...TABS, ...MOTOR_TABS] : TABS;
+  for (const [id, label] of tabs) { const b = button(label, () => render(id)); b.dataset.tool = id; nav.append(b); }
   render(initial);
 }
 

@@ -38,6 +38,7 @@ const workspaces = { inductor: ind, filter, motor };
 function reset(k) { kind = k; cfg = workspaces[k].defaults(); cfg.turns = k === 'motor' ? 4 : 3; if (k === 'filter') { cfg.family = 'hairpin'; cfg.order = 3; cfg.band = 'bandpass'; } result = workspaces[k].compute(cfg, {}); }
 const host = { kind: () => kind, config: () => cfg, defaults: () => workspaces[kind].defaults(),
   result: () => result, solveMeasurement: c => workspaces[kind].compute(c, {}),
+  environment: () => ({}),
   name: () => 'Test', designId: () => 'test', dirty: () => { dirty++; },
   apply: (patch) => { Object.assign(cfg, patch); result = workspaces[kind].compute(cfg, {}); },
   switch: (k, tab) => { reset(k); openDesignTools(host, tab); } };
@@ -136,6 +137,46 @@ try {
   await check('Motor phase animation can start, pause, and dispose', async () => {
     click('Magnetic field'); set('Grid resolution', 9); await calculate('Calculate field slice'); click('Animate phase currents'); click('Pause animation'); click('Close'); assert.equal(liveWorkers, 0);
   });
+  reset('motor'); openDesignTools(host, 'motorSizing');
+  await check('Motor sizing searches and applies a routed candidate', async () => {
+    set('Target speed (rpm)', 1000); set('Target torque (N·m)', 0.005); set('Maximum finished diameter (mm)', 85);
+    await calculate('Find motor designs');
+    assert.ok(document.querySelector('.motor-candidate[open]'));
+    click('Use this winding'); assert.ok(result.art.meta.busRouted);
+    assert.equal(cfg.rpm, 1000); assert.match(status(), /^Applied/);
+  });
+  await check('Motor field CSV persists and produces voltage and torque readouts', async () => {
+    click('Field map');
+    const input = document.querySelector('[aria-label="Import motor field map CSV"]');
+    const lines = ['x_mm,y_mm,bz_t,gap_mm'];
+    for (const gap of [1, 2]) for (const x of [-60, -20, 20, 60]) for (const y of [-60, -20, 20, 60]) {
+      lines.push([x, y, Math.cos(Math.atan2(y, x) * cfg.polePairs) / gap, gap].join(','));
+    }
+    Object.defineProperty(input, 'files', { value: [new w.File([lines.join('\n')], 'rotor.csv')] });
+    input.dispatchEvent(new w.Event('change')); await until(() => /Field map loaded/.test(status()), 'field map import');
+    await calculate('Analyze field map'); assert.match(text(), /Torque sensitivity to air gap/);
+    set('Field-map air gap', '1'); assert.match(text(), /Peak back-EMF by winding/);
+    click('Close'); openDesignTools(host, 'fieldMap');
+    assert.match(text(), /rotor.csv/);
+    assert.equal(JSON.parse(JSON.stringify(cfg)).tools.motorFieldMap.planes.length, 2);
+    click('Remove field map'); assert.equal(byText('Analyze field map').disabled, true);
+    click('Close');
+  });
+  for (const [family, expected] of [['stepper', /Stepper torque versus speed/], ['linear', /Thrust across the stroke/],
+    ['planar', /of sampled positions reach the target/]]) {
+    reset('motor'); host.apply({ motorFamily: family }); openDesignTools(host, 'motionMaps');
+    await check(family + ' motion map renders', async () => {
+      await calculate('Calculate motion map'); assert.match(text(), expected);
+      if (family === 'planar') {
+        const selection = document.querySelector('.motor-force-grid [aria-pressed="true"]');
+        assert.ok(selection);
+        selection.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'ArrowUp' }));
+        assert.notEqual(document.querySelector('.motor-force-grid [aria-pressed="true"]'), selection);
+        assert.match(text(), /Coil currents/);
+      }
+      click('Close');
+    });
+  }
   assert.ok(dirty > 0);
   console.log(`\n${checks} DOM/worker integration checks passed (canvas rendering stubbed)`);
 } finally {

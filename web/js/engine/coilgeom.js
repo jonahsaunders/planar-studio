@@ -10,7 +10,7 @@ import {
   artwork, track, via, pad, label, arcPts, merge, transform, bounds, TAU,
 } from './artwork.js';
 import { layerNames } from './coil.js';
-import { starBus, scheduledBus } from './motorbus.js';
+import { starBus, scheduledBus, phaseNet } from './motorbus.js';
 import { windingSchedule } from './winding-design.js';
 
 export const PHASE_NAMES = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -79,9 +79,12 @@ export function buildArtwork(cfg, coil, opt = {}) {
   const arrayed = inst.length > 1;
   const names = coil.names || layerNames(cfg.layers);
 
-  const bus = arrayed && cfg.busEnabled !== false ? (cfg.windingMode && cfg.windingMode !== 'repeat' ? scheduledBus : starBus)(cfg, coil, inst, names, opt) : null;
+  const topology = cfg.motorTopology ?? 'wye';
+  const scheduled = topology !== 'wye' || (cfg.windingMode && cfg.windingMode !== 'repeat');
+  const bus = arrayed && cfg.busEnabled !== false ? (scheduled ? scheduledBus : starBus)(cfg, coil, inst, names, opt) : null;
   for (const it of inst) {
-    const netName = bus?.meta.routed ? (opt.net || 'COIL') : arrayed ? `${opt.net || 'COIL'}_${PHASE_NAMES[it.phase]}` : (opt.net || 'COIL');
+    const baseNet = opt.net || 'COIL';
+    const netName = arrayed && (!bus?.meta.routed || topology === 'independent') ? phaseNet(baseNet, it.phase) : baseNet;
     const one = coilArtwork(cfg, coil, { net: netName, name: `${opt.name || 'coil'}-${it.index}` });
     if (arrayed && coil.exactPaths && it.index === 0) {
       // Both sides of each slot reserve half the gap to the next coil.
@@ -97,7 +100,7 @@ export function buildArtwork(cfg, coil, opt = {}) {
       for (const t of one.tracks) t.pts = t.pts.map(([x, y]) => [x, -y]);
       for (const p of [...one.vias, ...one.pads]) p.y = -p.y;
     }
-    for (const t of one.tracks) t.phase = it.phase;
+    for (const t of one.tracks) { t.phase = it.phase; if (arrayed) t.coilIndex = it.index; }
     if (arrayed) one.pads.forEach((p, i) => { p.number = `C${it.index + 1}.${i + 1}`; });
     if (arrayed && cfg.windingMode && cfg.windingMode !== 'repeat') one.labels.push(label((cfg.dOuter + cfg.dInner) / 4, 0,
       `C${it.index + 1} ${PHASE_NAMES[it.phase]}${it.polarity < 0 ? '−' : '+'} b${it.branch}`, { size: 0.65 }));
@@ -106,8 +109,11 @@ export function buildArtwork(cfg, coil, opt = {}) {
 
   if (bus) {
     merge(A, bus);
-    A.meta.starRouted = !!bus.meta.routed;
+    A.meta.busRouted = !!bus.meta.routed && !A.meta.routingError;
+    A.meta.starRouted = A.meta.busRouted && topology === 'wye';
     A.meta.routingOuterRadius = bus.meta.outerRadius;
+    if (A.meta.busRouted) A.meta.motorCircuit = bus.meta.circuit;
+    if ((topology !== 'wye' || [4, 6].includes(cfg.layers)) && !bus.meta.routed) A.meta.routingError ||= bus.notes[0]?.text;
   }
 
   if (opt.silk !== false) {

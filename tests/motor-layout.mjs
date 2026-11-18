@@ -125,7 +125,7 @@ for(const sides of [4,6,8,10,12]) {
   assert.ok(r.coil.spiral.turnsUsed<=r.coil.spiral.maxTurns);
   assert.ok(notes(cfg,r).some(n=>/requested turns/.test(n.text)));cases++;
 }
-for(const changes of [{layers:1},{layers:3},{layers:4},{connection:'parallel'},{coilCount:13},{spanDeg:30}]) {
+for(const changes of [{layers:1},{layers:3},{layers:8},{connection:'parallel'},{coilCount:13},{spanDeg:30}]) {
   const cfg={...defaults(),...changes};const r=compute(cfg,{}, {quick:true});
   assert.equal(r.art.meta.starRouted,false);
   assert.equal(r.art.ports.length,0);

@@ -226,7 +226,7 @@ export function familyAnalysis(res,opt={}) {
     const currents=phase.map(v=>c.current*Math.cos(c.driveAngle*Math.PI/180-Math.atan2(v[1],v[0])));
     const total=[0,1].map(j=>phase.reduce((s,v,i)=>s+v[j]*currents[i],0));
     const Rphase=a.Rdc*(c.coilSeries?perPhase:1/perPhase);
-    data={kind:f,currents,force:at(total,k*c.moverX),forceConstant:phase.reduce((s,v)=>s+Math.hypot(...v),0)/3,
+    data={kind:f,currents,phaseCoefficients:phase,force:at(total,k*c.moverX),forceConstant:phase.reduce((s,v)=>s+Math.hypot(...v),0)/3,
       Rphase,Lphase:a.L*(c.coilSeries?perPhase:1/perPhase),Pcu:currents.reduce((s,i)=>s+i*i,0)*Rphase,
       trackLength:(n-1)*2*c.polePitch/3+c.cellDiameter,minimumMagnetLength:(n-1)*2*c.polePitch/3+c.cellDiameter+c.travel,
       curve:Array.from({length:81},(_,i)=>{const x=-c.travel/2+c.travel*i/80;return{x,y:at(total,k*x)};}),limits};
@@ -238,7 +238,7 @@ export function familyAnalysis(res,opt={}) {
     const scaleX=Math.max(1e-15,...cx.map(v=>Math.hypot(...v))),scaleY=Math.max(1e-15,...cy.map(v=>Math.hypot(...v)));
     const currents=gx.map((v,i)=>c.current*v/scaleX+c.currentY*gy[i]/scaleY);
     const fx=gx.reduce((s,v,i)=>s+v*currents[i],0),fy=gy.reduce((s,v,i)=>s+v*currents[i],0);
-    data={kind:f,currents,fx,fy,peakCurrent:Math.max(...currents.map(Math.abs)),Pcu:a.Rdc*currents.reduce((s,i)=>s+i*i,0),
+    data={kind:f,currents,xCoefficients:cx,yCoefficients:cy,fx,fy,peakCurrent:Math.max(...currents.map(Math.abs)),Pcu:a.Rdc*currents.reduce((s,i)=>s+i*i,0),
       minimumMagnetWidth:(c.gridCols-1)*c.gridPitch+c.cellDiameter+c.travel,
       minimumMagnetHeight:(c.gridRows-1)*c.gridPitch+c.cellDiameter+c.travel,
       curve:Array.from({length:61},(_,i)=>{const x=-c.travel/2+c.travel*i/60;return {x,y:cx.reduce((s,v,j)=>s+at(v,kx*x)*currents[j],0),y2:cy.reduce((s,v,j)=>s+at(v,ky*x)*currents[j],0)};}),limits:limits+' X/Y fields are two independent orthogonal harmonics, each with the entered peak B. Current weights follow mover position; force sweeps hold those currents fixed. Truncated grids can cross-couple the axes.'};

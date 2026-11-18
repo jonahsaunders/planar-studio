@@ -448,6 +448,15 @@ table.spec .dim { color: var(--text-mute); }
 .tools-results { display: flex; flex-direction: column; gap: 12px; }
 .tools-results:empty { display: none; }
 .tools-results > .btn { align-self: flex-start; }
+.motor-candidate { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+.motor-candidate summary { cursor: pointer; }
+.motor-candidate > .btn { margin-top: 8px; }
+.motor-force-scroll { overflow: auto; }
+.motor-force-grid { border-spacing: 3px; min-width: 480px; width: 100%; text-align: center; font-size: 12px; }
+.motor-force-grid button { width: 100%; min-height: 28px; border: 1px solid var(--line); border-radius: 4px; cursor: pointer; }
+.motor-force-grid .reachable { background: #225951; color: #fff; }
+.motor-force-grid .unreachable { background: #73463d; color: #fff; }
+.motor-force-grid [aria-pressed="true"] { outline: 2px solid currentColor; outline-offset: -3px; }
 .tools-chart { width: 100%; height: 225px !important; }
 .tools-view { position: relative; width: 100%; height: 330px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .tools-view canvas { display: block; width: 100%; height: 100%; touch-action: none; }

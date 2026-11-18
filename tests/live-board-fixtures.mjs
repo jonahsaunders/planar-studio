@@ -7,8 +7,9 @@ import { defaults as filterDefaults, compute as computeFilter } from '../web/js/
 import { defaults as antennaDefaults, compute as computeAntenna } from '../web/js/ws/antenna.js';
 import { PLANAR_ANTENNA_FAMILIES } from '../web/js/engine/planar-antenna-families.js';
 import { EXTENDED_ANTENNA_NAMES } from '../web/js/engine/extended-antenna-families.js';
+import { defaults as motorDefaults, compute as computeMotor } from '../web/js/ws/motor.js';
 
-const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture, antennaFixtures] = process.argv.slice(2);
+const [fixture, exported, filterFixture, seriesFixture, seriesPayload, insetFixture, creatorFixtures] = process.argv.slice(2);
 const board = artwork();
 board.meta.boardLayers = ['F.Cu', 'In1.Cu', 'In2.Cu', 'B.Cu'];
 board.outline = [{ layer: 'Edge.Cuts', pts: rect(0, -50, 50, 0) }];
@@ -31,9 +32,16 @@ writeFileSync(seriesPayload, JSON.stringify(toKicad(series, { dx: 29, dy: 29 }))
 const antenna = computeAntenna({ ...antennaDefaults(), family: 'inset-patch' }, {}, { quick: true });
 writeFileSync(insetFixture, exportKicadPcb(antenna.art));
 
-mkdirSync(antennaFixtures);
+mkdirSync(creatorFixtures);
 for (const family of Object.keys({ ...PLANAR_ANTENNA_FAMILIES, ...EXTENDED_ANTENNA_NAMES })) {
   const config = { ...antennaDefaults(), family };
   const { art } = computeAntenna(config, { name: family }, { quick: true });
-  writeFileSync(join(antennaFixtures, `${family}.kicad_pcb`), exportKicadPcb(art, { tolerance: config.tolerance }));
+  writeFileSync(join(creatorFixtures, `${family}.kicad_pcb`), exportKicadPcb(art, { tolerance: config.tolerance }));
+}
+for (const [layers, motorTopology] of [[4, 'wye'], [6, 'delta'], [6, 'independent']]) {
+  const name = `motor-${layers}-layer-${motorTopology}`;
+  const config = { ...motorDefaults(), turns: 4, layers, motorTopology };
+  const { art } = computeMotor(config, { name }, { quick: true });
+  if (!art.meta.busRouted || art.meta.routingError) throw new Error(`Could not generate ${name}.`);
+  writeFileSync(join(creatorFixtures, `${name}.kicad_pcb`), exportKicadPcb(art));
 }

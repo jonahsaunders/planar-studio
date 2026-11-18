@@ -16,7 +16,7 @@ Requested turns that do not fit are reported beside the results.
 ## Grouping the connections at the bottom
 
 1. Select **PCB motor** and a **Coil shape**.
-2. Use **two copper layers** with **Layer connection: Series**.
+2. Use **two, four, or six copper layers** with **Layer connection: Series**.
 3. Enable **Automatic phase interconnection**.
 4. Choose **Series** or **Parallel** under **Coils per phase**.
 5. Choose a **Terminal breakout** (see below).
@@ -56,7 +56,20 @@ exposed; it does not convert the winding to delta. See [TI's winding connection
 diagrams](https://www.ti.com/content/dam/videos/external-videos/en-us/4/3816841626001/6067548423001.mp4/subassets/precision_labs_motor_types.pdf)
 and [Microchip's neutral-point explanation](https://onlinedocs.microchip.com/oxy/GUID-78E22D6C-5DFB-43DC-9878-13A171504D6B-en-US-2/GUID-013AE6B0-B028-44BF-9D66-98EE8BF68AE2.html).
 
-The default is now 12 coils, eight pole pairs and two series copper layers.
+Use **Phase connection** for a different rotary or dual-rotor topology.
+
+| Phase connection | Breakout | Circuit |
+| --- | --- | --- |
+| Star (wye) | A/B/C/N, A/B/C, or individual taps | All phase returns meet at N. |
+| Delta | A/B/C | Windings run A–B, B–C, and C–A. The fundamental phase voltages must balance and sum to zero. |
+| Six terminals | A+/A−, B+/B−, C+/C− | Each phase is electrically isolated for external jumpers or independent drivers. |
+
+The workspace current control uses peak **winding** current. The drive envelope
+uses peak **driver line** current. In balanced delta the winding peak is the
+line peak divided by √3. Six-terminal drive estimates assume one bipolar H-bridge
+per winding.
+
+The default is 12 coils, eight pole pairs and two series copper layers.
 Eight pole pairs align the repeated same-phase coils for this simple winding
 schedule. Existing designs retain their saved parameters; missing shape and
 terminal-position settings use the sector and bottom defaults when loaded.
@@ -85,12 +98,13 @@ artwork with the corrected routing rules.
 
 ## KiCad and export behavior
 
-A continuous copper winding is one electrical net in KiCad. Routed star designs
+A continuous copper winding is one electrical net in KiCad. Routed wye and delta designs
 therefore use the selected net name for all connected copper. A/B/C/N are named
 winding taps and labels, not electrically isolated copper nets. Model the
 winding as a component in the schematic; do not assign different copper nets
 directly to joined traces. Create the chosen net in KiCad before placement if
-net assignment is needed.
+net assignment is needed. Six-terminal designs use separate nets with suffixes
+`_A`, `_B`, and `_C`.
 
 KiCad board/footprint, SVG, DXF, JSON and specification exports share the same
 artwork. Shapes, aspect ratio, polygon sides, connection choice and terminal
@@ -99,11 +113,10 @@ match the artwork.
 
 ## Supported geometry and model limits
 
-- Automatic routing supports exactly two series winding layers and whole turns,
-  with both coil terminals accessible outside the winding. It does not silently
-  change saved layer counts or the open board's settings. Other setups show an
-  error and export individual coil terminals without star tracks. Disable star
-  routing when making a design intended for manual interconnection.
+- Automatic routing supports two, four, or six series copper layers, with
+  whole turns and exterior through-hole terminals. If a multilayer breakout
+  runs out of room, use **Max turns** to find the largest turn count that still
+  routes, or enlarge the slot. Disable automatic routing for manual interconnection.
 - Coil overlap, insufficient terminal spacing, unbalanced phase counts and
   impossible dimensions are reported. The layout checks are not a replacement
   for KiCad DRC or inspection of the fabricated board.
@@ -117,8 +130,9 @@ match the artwork.
   torque/back-EMF combine the signed coil distribution with the annular-sector
   flux and pitch approximation. This remains an approximate comparison of
   circular versus sector performance; use field simulation and measurements.
-- Interconnect resistance, interconnect inductance, inter-coil mutual coupling,
-  iron loss, windage and inverter losses are not included in the motor estimates.
+- The resistive network includes phase-track and via-barrel DC loss under
+  imposed sinusoidal drive. Interconnect inductance, inter-coil mutual coupling,
+  induced circulating currents, iron loss, windage and inverter losses are excluded.
 
 ## References reviewed
 
