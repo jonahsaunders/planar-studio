@@ -9,7 +9,7 @@ KiCad. Planar Studio reads your board's stack, calculates electrical estimates,
 and places the generated copper into the PCB as one undoable operation.
 
 **[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
-· [Features on experimental](#features-on-experimental) · [Feature gallery](docs/gallery.md) · [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
+· [Latest features](#latest-features) · [Feature gallery](docs/gallery.md) · [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
 
 [![Five workspaces: inductors, transformers, PCB motors, filters and antennas](docs/feature-overview.svg)](docs/gallery.md)
 
@@ -71,11 +71,11 @@ The [inductor test board](examples/inductor-coupons/README.md) includes two
 generated square coils, exact geometry, predictions and a procedure for
 comparing measured impedance at the probe pads.
 
-## Features on experimental
+## Latest features
 
-This section describes the `experimental` branch. To try these features in
-KiCad, check out that branch and build its installer. The download above is the
-published v1.6.0 installer. [Build an installer](docs/development.md#build-an-installer)
+To try the features below in KiCad, build an installer from the current source.
+The download above is the published v1.6.0 installer.
+[Build an installer](docs/development.md#build-an-installer)
 
 ### PCB motors
 
