@@ -114,6 +114,10 @@ measurements. [Planar construction guide](docs/motor-families.md#construction-op
 - **Loaded move** simulates stepper acceleration and settling under load. It plots requested and actual rotor position and phase currents with the chosen driver limits.
 - **Microstep calibration** imports measured phase torque versus angle, calculates a corrected current table, and exports it as CSV. The loaded-move study can simulate the corrected currents.
 
+| Radial wave winding | Loaded stepper move | Microstep calibration |
+| --- | --- | --- |
+| [![Six-layer radial wave stator in the PCB motor workspace](docs/screenshots/experimental/motor-radial-wave.png)](docs/screenshots/experimental/motor-radial-wave.png) | [![Commanded and actual rotor angle and phase currents during a loaded stepper move](docs/screenshots/experimental/stepper-loaded-move.png)](docs/screenshots/experimental/stepper-loaded-move.png) | [![Microstep angle error and corrected A/B currents using synthetic phase torque data](docs/screenshots/experimental/stepper-microstep-calibration.png)](docs/screenshots/experimental/stepper-microstep-calibration.png) |
+
 [Motor sizing, field-map and motion guides](docs/design-tools.md#motor-sizing)
 
 ### Antennas

@@ -1,0 +1,16 @@
+{
+  "capturedAt": "2026-11-18T16:26:18.851Z",
+  "applicationVersion": "1.6.0",
+  "applicationCommit": "826c6e334f0e2586c73cdd66a2fd0c34d1375525",
+  "viewport": {
+    "width": 1440,
+    "height": 1240,
+    "deviceScaleFactor": 1
+  },
+  "scope": "Real browser application, isolated settings, no live KiCad connection; numerical results are model predictions.",
+  "captures": {
+    "motor-radial-wave.png": "286e6fe9bebb5078b448d610bb107c161cc7914475f8d180e16bf9d9ed4d1fd0",
+    "stepper-loaded-move.png": "49be2daaf7fcce588e592283a894d1d067fcaeffc9b1efbe291978ea4c0e08d7",
+    "stepper-microstep-calibration.png": "cafba71dfbaf6facf8c69b90c2048023ab02c129c3125f255157fc530dd29804"
+  }
+}
