@@ -12,6 +12,8 @@ const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 
 export function stepperSpeed(res, settings) {
   const { phaseCoefficients, Rphase, Lphase } = res.familyAnalysis;
+  if (res.art?.meta.routingError) throw new Error(res.art.meta.routingError);
+  const resistances = res.familyAnalysis.phaseResistance ?? [Rphase, Rphase];
   const { vdc, drop, current, rpmMax } = settings;
   if (![vdc, drop, current, rpmMax].every(finiteNonnegative) || drop >= vdc || !rpmMax) {
     throw new Error('Enter a positive speed range and bus voltage above the bridge voltage drop.');
@@ -23,17 +25,18 @@ export function stepperSpeed(res, settings) {
   return Array.from({ length: 81 }, (_, i) => {
     const rpm = rpmMax * i / 80, omega = rpm * TAU / 60, reactance = omega * res.cfg.stepperPolePairs * Lphase;
     let amps = max ? current : 0, openCircuitVoltage = 0;
-    for (const magnitude of peak) {
+    for (const [phase, magnitude] of peak.entries()) {
+      const resistance = resistances[phase];
       if (magnitude === 0) continue;
       const emf = omega * magnitude;
       openCircuitVoltage = Math.max(openCircuitVoltage, emf);
       const factor = magnitude / max;
       const headroom = (voltage - emf) * (voltage + emf);
-      const real = Rphase * emf;
-      const limit = headroom > 0 ? headroom / (real + Math.hypot(real, Math.sqrt(headroom) * Math.hypot(Rphase, reactance))) : 0;
+      const real = resistance * emf;
+      const limit = headroom > 0 ? headroom / (real + Math.hypot(real, Math.sqrt(headroom) * Math.hypot(resistance, reactance))) : 0;
       amps = Math.min(amps, limit / factor);
     }
-    return { rpm, torque: kt * amps, current: amps, openCircuitVoltage, copperLoss: sum(peak.map(v => max ? (amps * v / max) ** 2 * Rphase / 2 : 0)) };
+    return { rpm, torque: kt * amps, current: amps, openCircuitVoltage, copperLoss: sum(peak.map((v, i) => max ? (amps * v / max) ** 2 * resistances[i] / 2 : 0)) };
   });
 }
 

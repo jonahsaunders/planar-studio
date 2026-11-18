@@ -6,12 +6,22 @@ import { motorFieldMap, parseMotorFieldMap } from '../web/js/engine/motor-field-
 import { allocatePlanarForce, linearThrust, planarForceMap, stepperSpeed } from '../web/js/engine/motor-motion.js';
 import { exportKicadPcb, exportKicadMod } from '../web/js/engine/exporters.js';
 import { interconnectGroups } from './helpers/motor-connectivity.mjs';
+import { toKicad } from '../web/js/engine/artwork.js';
+import { reviewBoardPlacement } from '../web/js/engine/boardcheck.js';
+import { calibrateStepper, parseStepperTorque, stepperCurrentCsv, stepperTorqueModel } from '../web/js/engine/stepper-drive.js';
+import { simulateStepperMove } from '../web/js/engine/stepper-move.js';
 
 const near = (a, b, tolerance = 1e-8) => assert.ok(Math.abs(a - b) <= tolerance, a + ' versus ' + b);
 const cfg = { ...defaults(), turns: 4 };
 const study = { vdc: 24, current: 2, ambient: 25, maxTemperature: 100, thermalResistance: 12,
   speed: 1000, targetTorque: 0.008, modulation: 'spaceVector' };
 const wound = (patch, opt) => compute({ ...cfg, ...patch }, { net: 'MOTOR' }, opt);
+const placement = (res, layers, nets) => {
+  const copper = layers.map((name, i) => '(' + i + ' "' + name + '" signal)').join(' ');
+  const board = '(kicad_pcb (layers ' + copper + ' (37 "F.SilkS" user) (39 "F.Mask" user) (38 "B.Mask" user))'
+    + ' (gr_rect (start -200 -200) (end 200 200) (layer "Edge.Cuts") (stroke (width 0.1))))';
+  return reviewBoardPlacement(res.art, cfg, board, [], { kind: 'motor', requireNets: true, nets });
+};
 
 for (const layers of [4, 6]) for (const coilSeries of [true, false]) {
   const byType = {};
@@ -88,6 +98,86 @@ const tiny = parseMotorFieldMap('x_mm,y_mm,bz_t\n-1,-1,0\n-1,1,0\n1,-1,0\n1,1,0'
 assert.throws(() => motorFieldMap(cfg, art, tiny, { rpm: 1000, current: 1, advance: 0 }), /must cover/);
 
 const stepper = wound({ motorFamily: 'stepper' });
+let previous = stepper.familyAnalysis;
+for (const layers of [4, 6]) {
+  const result = wound({ motorFamily: 'stepper', layers });
+  assert.equal(result.art.meta.interconnected, true);
+  assert.equal(result.art.meta.exactPaths, true);
+  assert.equal(new Set(result.art.tracks.map(track => track.layer)).size, layers);
+  assert.deepEqual(interconnectGroups(result.art), interconnectGroups(stepper.art));
+  const nets = ['MOTOR_A', 'MOTOR_B'];
+  assert.deepEqual([...new Set(toKicad(result.art).tracks.map(track => track.net))].sort(), nets);
+  assert.equal(placement(result, result.layers, nets).ready, true);
+  assert.equal(placement(result, stepper.layers, nets).ready, false);
+  assert.ok(result.familyAnalysis.holding > previous.holding && result.familyAnalysis.Lphase > previous.Lphase);
+  assert.ok(result.familyAnalysis.phaseResistance.every((value, i) => value > previous.phaseResistance[i]));
+  previous = result.familyAnalysis;
+}
+const moveMotor = wound({ motorFamily: 'stepper', microsteps: 8, turns: 9 });
+const move = { distance: 180, speed: 360, acceleration: 1000, inertia: 1e-5, damping: 5e-4,
+  load: 0, current: 1.5, vdc: 24, drop: 0, response: 0.001, observe: 0.5 };
+for (const distance of [180, -180]) {
+  const result = simulateStepperMove(moveMotor, { ...move, distance });
+  near(result.moveTime, 0.86);
+  near(result.points.at(-1).commanded, distance);
+  near(result.points.at(-1).actual, distance, 0.01);
+  assert.ok(result.settlingTime !== null);
+  assert.equal(result.riskTime, null);
+}
+assert.notEqual(simulateStepperMove(moveMotor, { ...move, inertia: 0.001, speed: 3000, acceleration: 50000 }).riskTime, null);
+assert.ok(simulateStepperMove(moveMotor, { ...move, vdc: 2 }).voltageFraction > 0.5);
+assert.throws(() => simulateStepperMove(moveMotor, { ...move, load: 1 }), /cannot hold/);
+assert.throws(() => simulateStepperMove(moveMotor, { ...move, distance: 0.1 }), /rounds to zero/);
+
+const ideal = stepperTorqueModel(moveMotor, null);
+const csv = ['angle_deg,torque_a_nm,torque_b_nm,detent_nm'];
+for (let deg = 0; deg <= 180; deg += 2.5) {
+  const angle = deg * Math.PI / 180, [a, b] = ideal.sample(angle - 0.08);
+  csv.push([deg, 2 * a, 1.6 * b, 0.0001 * Math.sin(8 * angle)].join(','));
+}
+const measurement = JSON.parse(JSON.stringify(parseStepperTorque(csv.join('\n'), moveMotor.cfg, 2)));
+const model = stepperTorqueModel(moveMotor, measurement);
+for (const theta of [-0.1, 0, 1.2]) model.sample(theta).forEach((value, i) => near(value, model.sample(theta + Math.PI)[i]));
+const calibrated = calibrateStepper(moveMotor, measurement, { current: 1.5, load: 0.001 });
+assert.equal(calibrated.reachable, 32);
+assert.equal(calibrated.stable, 32);
+assert.ok(calibrated.maximumError > 1);
+for (const row of calibrated.rows) {
+  const angle = row.target * Math.PI / 180;
+  const torque = theta => {
+    const [a, b, detent] = model.sample(theta);
+    return a * row.corrected[0] + b * row.corrected[1] + detent;
+  };
+  near(torque(angle), 0.001, 1e-12);
+  assert.ok(torque(angle - 0.001) > torque(angle + 0.001));
+  assert.ok(row.corrected.every(i => Math.abs(i) <= 1.5 + 1e-12));
+}
+assert.equal(stepperCurrentCsv(calibrated).trim().split('\n').length, 33);
+assert.equal(calibrateStepper(moveMotor, measurement, { current: 1.5, load: 0.1 }).reachable, 0);
+assert.equal(simulateStepperMove(moveMotor, move, measurement).source, 'Measured phase torque');
+const correctedMove = simulateStepperMove(moveMotor, { ...move, model: 'corrected' }, measurement);
+assert.ok(Math.abs(correctedMove.finalError) < Math.abs(simulateStepperMove(moveMotor, move, measurement).finalError));
+assert.throws(() => calibrateStepper(wound({ motorFamily: 'stepper', layers: 4 }), measurement, { current: 1, load: 0 }), /winding or field changed/);
+assert.throws(() => parseStepperTorque(csv.slice(0, 7).join('\n'), moveMotor.cfg, 2), /eight distinct samples/);
+
+const wave = wound({ rotaryWinding: 'radial-wave', phases: 1, connection: 'parallel', motorTopology: 'wye' });
+assert.equal(wave.layers.length, 6);
+assert.equal(wave.modelCfg.phases, 3);
+assert.deepEqual(interconnectGroups(wave.art), ['A+,A-', 'B+,B-', 'C+,C-']);
+assert.deepEqual([...new Set(toKicad(wave.art).tracks.map(track => track.net))].sort(), ['MOTOR_A', 'MOTOR_B', 'MOTOR_C']);
+assert.equal(placement(wave, wave.layers, ['MOTOR_A', 'MOTOR_B', 'MOTOR_C']).ready, true);
+assert.equal(placement(wave, wave.layers, ['MOTOR_A', 'MOTOR_B']).ready, false);
+assert.ok(wave.wave.phase.every(phase => phase.resistance > 0 && phase.inductance > 0));
+assert.ok(motorEnvelope(wave.motor, wave.modelCfg, study).point.torque > 0);
+for (const exporter of [exportKicadMod, exportKicadPcb]) assert.doesNotMatch(exporter(wave.art), /NaN|Infinity/);
+assert.throws(() => wound({ rotaryWinding: 'radial-wave', dOuter: 26.1 }), /bore/);
+const waveField = motorFieldMap(wave.modelCfg, wave.art, planes, { rpm: 1500, current: cfg.current, advance: 0 });
+// A 2 mm field grid attenuates the fundamental near the 13 mm bore.
+near(waveField[0].meanTorque, wave.motor.torque * 0.5 / cfg.bGap, wave.motor.torque * 0.06);
+near(waveField[0].meanTorque / waveField[1].meanTorque, 2);
+near(waveField[2].meanTorque, 0);
+assert.ok(waveField[0].ripple < waveField[0].meanTorque * 0.015);
+
 const high = stepperSpeed(stepper, { vdc: 24, drop: 1, current: 2, rpmMax: 75000 });
 const low = stepperSpeed(stepper, { vdc: 2, drop: 1, current: 2, rpmMax: 75000 });
 assert.ok(high[0].torque > low[0].torque && high.at(-1).torque === 0);

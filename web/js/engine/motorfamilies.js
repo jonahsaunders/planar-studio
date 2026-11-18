@@ -1,9 +1,10 @@
 /* PCB motor families. Geometry is mm; force/torque are SI. The new force
    models integrate I dl × B over closed winding loops in prescribed sinusoidal
    Bz fields. They are static field models, not finite-magnet or motion solvers. */
-import { buildCoil, analyse, TAU } from './coil.js';
-import { coilArtwork } from './coilgeom.js';
-import { artwork, track, via, pad, label, merge, bounds, arcPts, rect } from './artwork.js';
+import { buildCoil, analyse, TAU, viaResistance, RHO_CU20 } from './coil.js';
+import { coilArtwork, fitsCoilSlot } from './coilgeom.js';
+import { artwork, track, via, pad, label, merge, bounds, arcPts, rect, copperLength } from './artwork.js';
+import { phaseCurrents } from './stepper-drive.js';
 
 export const MOTOR_FAMILIES = [
   {value:'rotary',label:'Three-phase rotary'},
@@ -36,7 +37,6 @@ function closedLoops(coil,it) {
     front-layer escape; every connection has its own back-layer lane. Negative
     stepper coils can therefore swap terminal sides without bypassing a coil. */
 function routeConnections(cfg,A,placed,connections,circular) {
-  if(cfg.layers!==2||cfg.connection!=='series') throw new Error('Family interconnect routing needs two series copper layers. Disable automatic interconnection for manual wiring.');
   const b=bounds(A), lane=Math.max(cfg.padSize,cfg.viaPad,cfg.traceW)+cfg.traceS+0.3;
   const seam=(cfg.terminalAngle??-90)*Math.PI/180;
   const r0=Math.max(cfg.dOuter/2,...A.pads.map(p=>Math.hypot(p.x,p.y)))+lane+cfg.padSize;
@@ -75,7 +75,9 @@ export function familyLayout(input,names,opt={}) {
   const family=familyOf(cfg),stepper=family==='stepper',planar=family==='planar';
   if(!['stepper','linear','planar'].includes(family))throw new Error('Not a translated or stepper family.');
   integer(cfg.layers,1,16,'Copper layers');positive(cfg.traceW,'Track width');positive(cfg.traceS,'Clearance');positive(cfg.turns,'Turns');
-  if(cfg.layers!==2||cfg.connection!=='series') throw new Error('The stepper, linear and planar families currently require two series copper layers for unambiguous winding continuity.');
+  if(!(stepper?[2,4,6].includes(cfg.layers):cfg.layers===2)||cfg.connection!=='series') {
+    throw new Error(stepper?'The stepper needs two, four or six series copper layers.':'The linear and planar families need two series copper layers.');
+  }
   if(!(cfg.padSize>cfg.padDrill&&cfg.padDrill>0&&cfg.viaPad>cfg.viaDrill&&cfg.viaDrill>0))throw new Error('Copper pads must be larger than their positive drill diameters.');
   if(!Number.isFinite(cfg.bGap)||cfg.bGap<0)throw new Error('Peak magnetic field must be finite and nonnegative.');
   integer(cfg.turns,1,1000,'Turns');
@@ -120,11 +122,16 @@ export function familyLayout(input,names,opt={}) {
   const coil=buildCoil(coilCfg);
   if(coil.spiral.maxTurns<1)throw new Error('No complete turn fits this slot.');
   if(!stepper)coil.spiral.maxTurns=Math.min(coil.spiral.maxTurns,Math.floor(((coilCfg.shape==='racetrack'?coilCfg.dOuter/2*cfg.aspect:coilCfg.shape==='polygon'?coilCfg.dOuter/2*Math.cos(Math.PI/cfg.sides):coilCfg.dOuter/2)-cfg.viaPad/2-cfg.traceS-cfg.traceW/2)/(cfg.traceW+cfg.traceS)));
-  const A=artwork({name:opt.name||'M1',kind:'stator',motorFamily:family,interconnected:false});
+  const A=artwork({name:opt.name||'M1',kind:'stator',motorFamily:family,interconnected:false,boardLayers:names});
+  if(coil.exactPaths)A.meta.exactPaths=true;
   const placed=[];
   for(const it of placements) {
     const net=planar?`${opt.net||'COIL'}_C${it.index+1}`:stepper?`${opt.net||'COIL'}_${it.phase?'B':'A'}`:(opt.net||'COIL');
-    const one=placedArtwork(coilArtwork(coilCfg,coil,{net}),it);
+    const one=coilArtwork(coilCfg,coil,{net});
+    if(stepper&&coil.exactPaths&&it.index===0&&!fitsCoilSlot(one,placements.length,cfg.traceS)) {
+      one.meta.routingError='The series breakout exceeds the stepper slot. Reduce pad or via size, increase slot spacing, or use fewer layers.';
+    }
+    placedArtwork(one,it);
     one.pads.forEach((p,i)=>{p.number=`C${it.index+1}.${i+1}`;});
     for(const t of one.tracks){t.phase=it.phase;t.coilIndex=it.index;}
     const ends=one.pads.map(p=>[p.x,p.y]);
@@ -147,7 +154,7 @@ export function familyLayout(input,names,opt={}) {
   }
   const mode=cfg.terminalBreakout??'phase-neutral';
   if(!['phase-neutral','phases','none'].includes(mode))throw new Error('Choose a supported terminal breakout.');
-  if(!planar&&cfg.busEnabled) {
+  if(!planar&&cfg.busEnabled&&!A.meta.routingError) {
     const connections=[],neutral=[];
     const groupCount=stepper?2:3;
     for(let p=0;p<groupCount;p++) {
@@ -207,17 +214,27 @@ export function familyAnalysis(res,opt={}) {
   if(f==='stepper') {
     integer(c.microsteps,1,32,'Microsteps');integer(c.stepIndex,0,1000000,'Step command');
     if(![1,2,4,8,16,32].includes(c.microsteps))throw new Error('Microsteps must be 1, 2, 4, 8, 16 or 32.');
-    const p=c.stepperPolePairs,command=c.stepIndex*Math.PI/(2*c.microsteps)+Math.PI/4;
-    const currents=c.microsteps===1?[Math.sign(Math.cos(command))*c.current,Math.sign(Math.sin(command))*c.current]:[Math.cos(command)*c.current,Math.sin(command)*c.current];
+    const p=c.stepperPolePairs;
+    const currents=phaseCurrents(c.stepIndex,c.microsteps,c.current);
     const coeff=coefficients(res.placed,(x,y,angle)=>c.bGap*Math.cos(p*Math.atan2(y,x)-angle),'torque');
     const phase=[[0,0],[0,0]];
     coeff.forEach((v,i)=>{const g=phase[res.placed[i].phase];g[0]+=v[0];g[1]+=v[1];});
     const total=[0,1].map(k=>phase.reduce((s,v,i)=>s+v[k]*currents[i],0));
     const holding=Math.hypot(...total),equilibrium=(Math.atan2(total[1],total[0])+Math.PI/2)/p;
+    const phaseResistance=phase.map((_,i)=>{
+      const net=res.placed[i].net;
+      const traces=res.art.tracks.filter(t=>t.net===net&&t.role.startsWith('family-'));
+      const vias=res.art.vias.filter(v=>v.net===net&&v.role==='family-drop').length;
+      const coilBarrels=res.art.meta.interconnected?n/2-(c.terminalBreakout==='none'?1:0):0;
+      const barrel=drill=>viaResistance({...c,viaDrill:drill})*a.rho/RHO_CU20;
+      return a.Rdc*n/2+copperLength({tracks:traces})*a.rho*1e3/(a.tCu*c.traceW)
+        +vias*barrel(c.viaDrill)+coilBarrels*barrel(c.padDrill);
+    });
     data={kind:f,phaseCoefficients:phase,currents,holding,fullStep:90/p,commandStep:90/(p*c.microsteps),stepsPerRev:4*p*c.microsteps,
-      equilibrium:((equilibrium*180/Math.PI)% (360/p)+360/p)%(360/p),Rphase:a.Rdc*n/2,Lphase:a.L*n/2,
-      Pcu:(currents[0]**2+currents[1]**2)*a.Rdc*n/2,
-      curve:Array.from({length:97},(_,i)=>{const deg=360/p*i/96;return {x:deg,y:at(total,deg*p*Math.PI/180)};}),limits};
+      equilibrium:((equilibrium*180/Math.PI)% (360/p)+360/p)%(360/p),phaseResistance,Rphase:(phaseResistance[0]+phaseResistance[1])/2,Lphase:a.L*n/2,
+      Pcu:currents.reduce((sum,current,i)=>sum+current**2*phaseResistance[i],0),
+      curve:Array.from({length:97},(_,i)=>{const deg=360/p*i/96;return {x:deg,y:at(total,deg*p*Math.PI/180)};}),
+      limits:'Static torque integrates the layer windings in a sinusoidal axial field. Copper loss includes generated interconnects. Inter-coil mutual inductance, interconnect torque, detent, and mechanical losses are omitted.'};
   } else if(f==='linear') {
     const k=Math.PI/c.polePitch;
     const coeff=coefficients(res.placed,(x,y,angle)=>c.bGap*Math.cos(k*x-angle),'fx');

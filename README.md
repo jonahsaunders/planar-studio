@@ -82,9 +82,11 @@ published v1.6.0 installer. [Build an installer](docs/development.md#build-an-in
 Choose a **three-phase rotary motor**, **two-phase PCB stepper**, **linear PCB
 motor**, **dual-rotor axial-flux motor**, or **two-axis planar motor**. Use
 automatic or custom phase, polarity and branch assignments for rotary windings.
-Automatic routing supports two-, four- and six-layer rotary and dual-rotor
-stators. Three-phase windings offer wye, delta and isolated six-terminal
-connections. Estimated copper loss includes phase routing tracks and via barrels.
+Automatic routing supports two-, four- and six-layer rotary spiral, dual-rotor
+and stepper stators. Three-phase spiral windings offer wye, delta and isolated
+six-terminal connections. The **Radial wave** option routes a six-layer
+three-phase stator with independently accessible phase terminals. Rotary and
+stepper copper-loss estimates include the generated routing tracks and via barrels.
 [Motor families](docs/motor-families.md) · [Winding connections](docs/motor-coils.md)
 
 **Planar construction** offers six options. The PCB coil grid remains the
@@ -109,6 +111,8 @@ measurements. [Planar construction guide](docs/motor-families.md#construction-op
 - **Motor sizing** ranks routable windings for a torque and speed target under board-size, fabrication, driver and temperature limits. Open a candidate to edit it.
 - **Field map** imports axial-field CSVs and uses the generated winding paths to estimate back-EMF, torque ripple and sensitivity to air gap.
 - **Motion maps** show stepper torque versus speed, linear thrust over the stroke and which XY positions can reach a requested force within the coil-current limits.
+- **Loaded move** simulates stepper acceleration and settling under load. It plots requested and actual rotor position and phase currents with the chosen driver limits.
+- **Microstep calibration** imports measured phase torque versus angle, calculates a corrected current table, and exports it as CSV. The loaded-move study can simulate the corrected currents.
 
 [Motor sizing, field-map and motion guides](docs/design-tools.md#motor-sizing)
 

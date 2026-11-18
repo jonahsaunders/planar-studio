@@ -177,6 +177,32 @@ try {
       click('Close');
     });
   }
+  reset('motor'); host.apply({ motorFamily: 'stepper', layers: 6, microsteps: 8 }); openDesignTools(host, 'loadedMove');
+  await check('Stepper loaded move and calibration run in the worker and persist torque data', async () => {
+    await calculate('Simulate loaded move');
+    assert.match(text(), /Commanded and actual rotor angle/);
+    click('Microstep calibration');
+    assert.ok(byText('Calculate corrected currents').disabled);
+    const input = document.querySelector('[aria-label="Import stepper torque CSV"]');
+    const csv = ['angle_deg,torque_a_nm,torque_b_nm'];
+    for (let degrees = 0; degrees < 180; degrees += 5) {
+      const theta = degrees * Math.PI / 90;
+      csv.push([degrees, 0.01 * Math.cos(theta), 0.009 * Math.sin(theta)].join(','));
+    }
+    Object.defineProperty(input, 'files', { value: [new w.File([csv.join('\n')], 'torque.csv')] });
+    input.dispatchEvent(new w.Event('change'));
+    await until(() => /Phase torque data loaded/.test(status()), 'phase torque import');
+    await calculate('Calculate corrected currents');
+    assert.equal(document.querySelectorAll('[aria-label="Corrected microstep currents"] tbody tr').length, 32);
+    click('Close'); openDesignTools(host, 'microstepCalibration');
+    assert.match(text(), /torque.csv/);
+    host.apply({ dOuter: cfg.dOuter + 1 });
+    click('Loaded move');
+    assert.match(text(), /belongs to an earlier winding/);
+    click('Microstep calibration');
+    assert.ok(byText('Calculate corrected currents').disabled);
+    click('Close');
+  });
   assert.ok(dirty > 0);
   console.log(`\n${checks} DOM/worker integration checks passed (canvas rendering stubbed)`);
 } finally {

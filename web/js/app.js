@@ -304,7 +304,7 @@ function reconcile(key, value) {
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
   enforceFabrication(cfg(), cfg().fabricationProfile);
   const filterLayoutChanged = app.ws === 'filter' && ['family', 'band', 'emiTopology', 'capStyle'].includes(key);
-  const motorLayoutChanged = app.ws === 'motor' && ['motorFamily', 'planarConstruction', 'crossedDrive'].includes(key);
+  const motorLayoutChanged = app.ws === 'motor' && ['motorFamily', 'planarConstruction', 'crossedDrive', 'rotaryWinding'].includes(key);
   if (filterLayoutChanged || (key === 'family' && ['antenna', 'transformer'].includes(app.ws))
     || motorLayoutChanged) app.fitPending = true;
 }

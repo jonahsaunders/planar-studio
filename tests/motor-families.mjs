@@ -51,7 +51,7 @@ for(const family of ['stepper','linear','planar','dual-rotor']) {
   const r=solve(family),c=config(family);
   assert.ok(tiles(c,r).length>3&&spec(c,r).length>0&&charts(c,r).length>0);
   assert.ok(r.analysis.Rdc>0&&r.analysis.L>0);
-  if(family!=='dual-rotor') {assert.equal(r.motor,undefined);assert.ok(notes(c,r).some(n=>/Lorentz/.test(n.text)));}
+  if(family!=='dual-rotor') {assert.equal(r.motor,undefined);assert.ok(notes(c,r).some(n=>/Lorentz|sinusoidal axial/.test(n.text)));}
 }
 for(const n of [3,6,12])for(const coilSeries of [true,false]) {
   const c=config('linear',{linearCoils:n,coilSeries});const r=compute(c,{},{quick:true});
@@ -104,7 +104,7 @@ close(dualRotorField(config('dual-rotor',{rotorOffset:180/8})).combined,0);
 assert.ok(dualRotorField(config('dual-rotor',{topGap:2})).combined<d.combined);
 const asym=dualRotorField(config('dual-rotor',{topGap:2,rotorOffset:180/8}));close(asym.combined,Math.abs(asym.top-asym.bottom));
 close(solve('dual-rotor',{rotorOffset:180/8}).motor.Kt,0);
-for(const [family,extra]of [['stepper',{layers:4}],['stepper',{microsteps:3}],['stepper',{padSize:30}],['stepper',{stepperFill:0.999}],['linear',{linearCoils:4}],['linear',{polePitch:5}],['linear',{moverX:21}],['linear',{driveAngle:NaN}],['planar',{gridPitch:5}],['planar',{moverY:21}],['planar',{gridRows:1}],['dual-rotor',{topGap:-1}],['linear',{turns:1.5}]]) {
+for(const [family,extra]of [['stepper',{layers:8}],['stepper',{microsteps:3}],['stepper',{padSize:30}],['stepper',{stepperFill:0.999}],['linear',{linearCoils:4}],['linear',{polePitch:5}],['linear',{moverX:21}],['linear',{driveAngle:NaN}],['planar',{gridPitch:5}],['planar',{moverY:21}],['planar',{gridRows:1}],['dual-rotor',{topGap:-1}],['linear',{turns:1.5}]]) {
   assert.throws(()=>compute(config(family,extra),{},{quick:true}),`${family} ${JSON.stringify(extra)}`);
 }
 const old=defaults();delete old.motorFamily;

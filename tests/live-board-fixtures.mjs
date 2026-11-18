@@ -46,6 +46,14 @@ for (const [layers, motorTopology] of [[4, 'wye'], [6, 'delta'], [6, 'independen
   if (!art.meta.busRouted || art.meta.routingError) throw new Error(`Could not generate ${name}.`);
   writeFileSync(join(creatorFixtures, `${name}.kicad_pcb`), exportKicadPcb(art));
 }
+for (const [name, patch] of [
+  ['motor-stepper-4', { motorFamily: 'stepper', layers: 4 }],
+  ['motor-stepper-6', { motorFamily: 'stepper', layers: 6 }],
+  ['motor-radial-wave', { rotaryWinding: 'radial-wave' }],
+]) {
+  const { art } = computeMotor({ ...motorDefaults(), ...patch }, { name }, { quick: true });
+  writeFileSync(join(creatorFixtures, name + '.kicad_pcb'), exportKicadPcb(art));
+}
 for (const planarConstruction of ['moving-coil', 'double-sided', 'crossed']) {
   const config = { ...motorDefaults(), motorFamily: 'planar', planarConstruction, turns: 4 };
   const result = computeMotor(config, { name: planarConstruction }, { quick: true });

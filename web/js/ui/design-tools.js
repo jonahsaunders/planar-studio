@@ -12,12 +12,14 @@ import { DISTRIBUTED, plain } from '../engine/filtertune.js';
 import { windingPolys, transformPolys, rotorDesign } from '../engine/magnetics.js';
 import { lineCurrentFactor, motorEnvelope } from '../engine/motor-envelope.js';
 import { motorStudies } from './motor-design-tools.js';
+import { stepperStudies } from './stepper-tools.js';
 import { extractedHairpin, hairpinFixtures } from '../engine/hairpin-fixtures.js';
 import { zipTextFiles } from '../engine/zip-text.js';
 import * as bridge from '../bridge.js';
 
 const TABS = [['optimize', 'Optimize'], ['measurements', 'Measurements'], ['coupling', 'Coupled coils'], ['tolerance', 'Tolerances'], ['tune', 'Filter tuning'], ['field', 'Magnetic field'], ['board', 'Board checks'], ['rotor', 'Rotor']];
 const MOTOR_TABS = [['motorSizing', 'Motor sizing'], ['fieldMap', 'Field map'], ['motionMaps', 'Motion maps']];
+const STEPPER_TABS = [['loadedMove', 'Loaded move'], ['microstepCalibration', 'Microstep calibration']];
 const button = (text, fn, primary = false) => el('button', { class: `btn${primary ? ' primary' : ''}`, type: 'button', text, onClick: fn });
 const note = (text) => el('p', { class: 'hint', text });
 
@@ -564,7 +566,8 @@ export function openDesignTools(host, initial = 'optimize') {
       out.replaceChildren();
       pruneViews();
       try {
-        const result = motorEnvelope(host.result().motor, c, s);
+        const motor = host.result();
+        const result = motorEnvelope(motor.motor, motor.modelCfg || c, s);
         chart(out, result.curve.map(row => row.rpm), [
           { name: 'Continuous torque', values: result.curve.map(row => row.torque) },
           { name: 'Driver current ceiling', values: result.curve.map(() => result.driverTorque), dash: [4, 4] },
@@ -585,9 +588,10 @@ export function openDesignTools(host, initial = 'optimize') {
     draw();
     return draw;
   }
+  const studyApi = { body, config, host, settings, form, field, select, button, runButton, run, output, note, chart, status,
+    exportReport, changed, pruneViews };
   const renderers = { optimize, measurements, coupling, tolerance, tune, field: fieldTool, board, rotor,
-    ...motorStudies({ body, config, host, settings, form, field, select, button, runButton, run, output, note, chart, status,
-      exportReport, changed, pruneViews }) };
+    ...motorStudies(studyApi), ...stepperStudies(studyApi) };
   function render(id) {
     stop(); clearViews(); body.replaceChildren(); active = id;
     title.textContent = `Design tools · ${host.name()}`;
@@ -599,7 +603,7 @@ export function openDesignTools(host, initial = 'optimize') {
     }
     try { renderers[id](); } catch (e) { status.textContent = e.message; }
   }
-  const tabs = kind() === 'motor' ? [...TABS, ...MOTOR_TABS] : TABS;
+  const tabs = kind() === 'motor' ? [...TABS, ...MOTOR_TABS, ...(config().motorFamily === 'stepper' ? STEPPER_TABS : [])] : TABS;
   for (const [id, label] of tabs) { const b = button(label, () => render(id)); b.dataset.tool = id; nav.append(b); }
   render(initial);
 }

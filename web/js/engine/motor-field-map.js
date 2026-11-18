@@ -59,17 +59,20 @@ function fieldAt(plane, x, y) {
   return low + fy * (high - low);
 }
 
-function segments(cfg, tracks, map) {
-  const winding = windingPhasors(cfg);
-  if (winding.parallelMismatch || winding.phases.some(phase => !phase.branches.length)) {
-    throw new Error('Use a complete winding schedule with compatible parallel branches.');
+function segments(cfg, art, map) {
+  const wave = art.meta.radialWave;
+  const phases = Array.from({ length: wave ? 3 : cfg.phases }, () => []);
+  const weights = [];
+  if (!wave) {
+    const winding = windingPhasors(cfg);
+    if (winding.parallelMismatch || winding.phases.some(phase => !phase.branches.length)) {
+      throw new Error('Use a complete winding schedule with compatible parallel branches.');
+    }
+    for (const phase of winding.phases) for (const branch of phase.branches) for (const i of branch.coils) {
+      weights[i] = phase.resistanceFactor / branch.coils.length;
+    }
   }
-  const phases = winding.phases.map(() => []);
-  const weights = Array(cfg.coilCount);
-  for (const phase of winding.phases) for (const branch of phase.branches) for (const i of branch.coils) {
-    weights[i] = phase.resistanceFactor / branch.coils.length;
-  }
-  const copper = tracks.filter(track => Number.isInteger(track.coilIndex));
+  const copper = art.tracks.filter(track => wave ? track.role === 'wave-winding' : Number.isInteger(track.coilIndex));
   let radius = 0;
   for (const track of copper) for (const [x, y] of track.pts) radius = Math.max(radius, Math.hypot(x, y));
   if (!radius) throw new Error('Generate the rotary winding first.');
@@ -90,7 +93,7 @@ function segments(cfg, tracks, map) {
       const fraction = (k + 0.5) / pieces;
       const mx = x + fraction * dx, my = y + fraction * dy;
       // Rotor reaction is the opposite of the moment on the conductor.
-      const moment = 1e-6 * (mx * dx + my * dy) * weights[coilIndex] / pieces;
+      const moment = 1e-6 * (mx * dx + my * dy) * (wave ? 1 : weights[coilIndex]) / pieces;
       if (Math.abs(moment) > 1e-15) phases[phase].push([mx, my, moment]);
     }
   }
@@ -139,7 +142,7 @@ function analysePlane(cfg, paths, plane, opt) {
 }
 
 export function motorFieldMap(cfg, art, map, opt, progress = () => {}) {
-  if (!['rotary', 'dual-rotor'].includes(cfg.motorFamily ?? 'rotary') || cfg.connection !== 'series' || cfg.phases < 2) {
+  if (!['rotary', 'dual-rotor'].includes(cfg.motorFamily ?? 'rotary') || !art.meta.radialWave && (cfg.connection !== 'series' || cfg.phases < 2)) {
     throw new Error('Field-map analysis needs a rotary stator with series layers and at least two phases.');
   }
   if (art.meta.routingError) throw new Error(art.meta.routingError);
@@ -154,7 +157,7 @@ export function motorFieldMap(cfg, art, map, opt, progress = () => {}) {
   if (![opt.rpm, opt.current].every(value => value >= 0 && Number.isFinite(value)) || !Number.isFinite(opt.advance)) {
     throw new Error('Enter a nonnegative speed and current and a valid electrical advance.');
   }
-  const paths = segments(cfg, art.tracks, map);
+  const paths = segments(cfg, art, map);
   return map.map((plane, i) => {
     progress({ done: i, total: map.length, message: 'Integrating the winding paths' });
     return analysePlane(cfg, paths, plane, opt);

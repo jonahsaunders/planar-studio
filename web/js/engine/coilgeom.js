@@ -15,6 +15,14 @@ import { windingSchedule } from './winding-design.js';
 
 export const PHASE_NAMES = ['A', 'B', 'C', 'D', 'E', 'F'];
 
+export function fitsCoilSlot(art, count, clearance) {
+  const half = Math.PI / count;
+  const fits = ([x, y], radius) => x * Math.sin(half) - Math.abs(y) * Math.cos(half) >= radius + clearance / 2 + 0.01;
+  return art.tracks.every(t => t.pts.every(p => fits(p, t.width / 2))) &&
+    art.vias.every(v => fits([v.x, v.y], v.diameter / 2)) &&
+    art.pads.every(p => fits([p.x, p.y], p.w / 2));
+}
+
 /* Motor coils are positioned in their slot by buildCoil before rotation.
    Ordinary inductor shapes remain centred and are never arrayed. */
 export function instances(cfg) {
@@ -86,15 +94,8 @@ export function buildArtwork(cfg, coil, opt = {}) {
     const baseNet = opt.net || 'COIL';
     const netName = arrayed && (!bus?.meta.routed || topology === 'independent') ? phaseNet(baseNet, it.phase) : baseNet;
     const one = coilArtwork(cfg, coil, { net: netName, name: `${opt.name || 'coil'}-${it.index}` });
-    if (arrayed && coil.exactPaths && it.index === 0) {
-      // Both sides of each slot reserve half the gap to the next coil.
-      const half = Math.PI / inst.length;
-      const fits = ([x, y], radius) => x * Math.sin(half) - Math.abs(y) * Math.cos(half) >= radius + cfg.traceS / 2 + 0.01;
-      if (one.tracks.some(t => t.pts.some(p => !fits(p, t.width / 2))) ||
-          one.vias.some(v => !fits([v.x, v.y], v.diameter / 2)) ||
-          one.pads.some(p => !fits([p.x, p.y], p.w / 2))) {
-        one.meta.routingError = 'The series breakout does not fit between adjacent coils. Increase the slot spacing, or use fewer layers or smaller pads and vias.';
-      }
+    if (arrayed && coil.exactPaths && it.index === 0 && !fitsCoilSlot(one, inst.length, cfg.traceS)) {
+      one.meta.routingError = 'The series breakout does not fit between adjacent coils. Increase the slot spacing, or use fewer layers or smaller pads and vias.';
     }
     if (it.polarity < 0) {
       for (const t of one.tracks) t.pts = t.pts.map(([x, y]) => [x, -y]);

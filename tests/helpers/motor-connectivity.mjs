@@ -10,7 +10,7 @@ function distance(p, pts) {
 }
 export function interconnectGroups(art) {
   const nodes=[...art.tracks.filter(t=>!['winding','lead','transition'].includes(t.role)),
-    ...art.vias.filter(v=>['bus-drop','family-drop'].includes(v.role)),...art.pads];
+    ...art.vias.filter(v=>['bus-drop','family-drop','wave-transition'].includes(v.role)),...art.pads];
   const parent=nodes.map((_,i)=>i);
   const root=i=>parent[i]===i?i:(parent[i]=root(parent[i]));
   const join=(i,j)=>{parent[root(i)]=root(j);};

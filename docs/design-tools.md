@@ -318,8 +318,9 @@ Use the combined field for a dual rotor. Center the coordinates on the rotor
 axis and cover the disk traced by the coil copper on both axes. The input is
 saved with the design.
 
-The study interpolates Bz at the coil tracks, leads and layer transitions,
-then evaluates a full mechanical revolution. It reports open-circuit back-EMF
+The study interpolates Bz along the winding copper, including the leads and
+layer transitions for spirals and the active legs and end turns for radial
+wave. It evaluates a full mechanical revolution and reports open-circuit back-EMF
 by winding, mean energized torque, peak-to-peak torque ripple and how they
 change across supplied gap planes. Electrical advance shifts the drive from
 alignment with the stronger fundamental sequence. A single Bz plane applies to
@@ -341,6 +342,43 @@ circulating currents and mechanical losses.
   force vector the drivers can produce in the prescribed field.
 
 Each study exports input settings and results as JSON.
+
+## Loaded move
+
+Select a two-phase stepper and open **Design tools → Loaded move**. Enter a
+signed mechanical angle, peak speed, acceleration, rotor and load inertia,
+damping, and load torque. Set the DC bus voltage, bridge drop, and current
+command and response time. The move rounds to a whole number of command
+increments and follows a triangular or trapezoidal speed profile.
+
+The study solves rotor motion and phase current over time, starting from a
+loaded equilibrium. It reports position error, settling, voltage saturation
+and sustained tracking error as an indicator of synchronism risk. The post-move
+load remains applied. A selected current-loop response and an averaged voltage
+model approximate the bridge. Results depend on the entered inertia and
+damping and the estimated phase inductance.
+
+## Microstep calibration
+
+With the rotor held at each measured mechanical angle, record signed torque at
+a known positive current through A alone and then through B alone. Use the
+stator's angle zero and terminal polarities. Remove the unpowered detent torque
+from both driven readings. Include it separately if measured. Import a CSV
+with these column names:
+
+```csv
+angle_deg,torque_a_nm,torque_b_nm,detent_nm
+```
+
+`detent_nm` is optional. Include at least eight distinct samples over one
+electrical cycle (360 mechanical degrees divided by the rotor pole pairs), with
+no gap above one quarter cycle. Enter the phase current used for the measurement
+before importing. Set the calibration current limit and static load, then run
+**Calculate corrected currents**. Each CSV row identifies the command index,
+target angle, nominal equilibrium error, and corrected A/B currents when the
+position is reachable with restoring torque. The imported data saves with the
+design. Reimport if the winding or field changes. In **Loaded move**, select
+measured phase torque with nominal or corrected currents to compare tracking.
 
 ## Layout correction
 

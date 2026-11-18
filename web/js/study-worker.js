@@ -9,6 +9,8 @@ import { compareTransformerTest, calibrateTransformer, comparePrototypes } from 
 import { optimizeMotor } from './engine/motor-optimizer.js';
 import { motorFieldMap } from './engine/motor-field-map.js';
 import { stepperSpeed, linearThrust, planarForceMap } from './engine/motor-motion.js';
+import { simulateStepperMove } from './engine/stepper-move.js';
+import { calibrateStepper } from './engine/stepper-drive.js';
 import { compute as computeMotor } from './ws/motor.js';
 
 self.onmessage = ({ data: { task, args } }) => {
@@ -33,7 +35,12 @@ self.onmessage = ({ data: { task, args } }) => {
       rotor: () => rotorDesign(args.cfg, args.opt),
       board: () => checkPlacement(args.art, parseBoard(args.text, args.excluded || []), args.opt),
       motorSizing: () => optimizeMotor(args.cfg, args.settings, args.env, progress),
-      motorFieldMap: () => motorFieldMap(args.cfg, computeMotor(args.cfg, args.env, { quick: true }).art, args.planes, args.settings, progress),
+      motorFieldMap: () => {
+        const layout = computeMotor(args.cfg, args.env, { quick: true });
+        return motorFieldMap(layout.modelCfg || args.cfg, layout.art, args.planes, args.settings, progress);
+      },
+      stepperMove: () => simulateStepperMove(computeMotor(args.cfg, args.env), args.settings, args.measured),
+      stepperCalibration: () => calibrateStepper(computeMotor(args.cfg, args.env), args.measured, args.settings),
       motorMotion: () => {
         const layout = computeMotor(args.cfg, args.env, { skipCurve: true });
         const study = { stepper: stepperSpeed, linear: linearThrust, planar: planarForceMap }[layout.family];

@@ -23,8 +23,10 @@ import { windingPreview } from '../ui/winding-design.js';
 import { routedMotorResistance } from '../engine/motor-resistance.js';
 import { buildPlanarConstruction, planarBuildDefaults, planarConstruction } from '../engine/planar-constructions.js';
 import { constructionTiles, constructionSpec, constructionPreview } from '../ui/planar-construction.js';
+import { isRadialWave, buildRadialWave } from '../engine/radial-wave.js';
 export function preview(cfg, res, app) {
   if (res.construction) return constructionPreview(res);
+  if (res.wave) return null;
   const winding = windingPreview(cfg, res);
   const motion = motorPreview(cfg, res, app);
   if (winding && motion) { winding.append(motion); return winding; }
@@ -62,6 +64,7 @@ export function defaults() {
     terminalAngle: -90,
     terminalBreakout: 'phase-neutral',
     motorTopology: 'wye',
+    rotaryWinding: 'spiral',
     windingMode: 'repeat', windingSchedule: null,
   };
 }
@@ -83,6 +86,7 @@ export function reconcile(cfg,key,value) {
 export function compute(cfg, env, opt = {}) {
   const family=familyOf(cfg);
   if(!MOTOR_FAMILIES.some(f=>f.value===family))throw new Error('Choose a supported motor family.');
+  if (isRadialWave(cfg)) return buildRadialWave(cfg, chooseLayers({ ...cfg, layers: 6 }, env.board), env, opt);
   const layers = chooseLayers(cfg, env.board);
   if (family === 'planar' && planarConstruction(cfg) !== 'pcb-grid') return buildPlanarConstruction(cfg, layers, env, opt);
   if(['stepper','linear','planar'].includes(family)) {
@@ -121,16 +125,20 @@ export function compute(cfg, env, opt = {}) {
 
 export function maxRoutedTurns(cfg, res, env) {
   const maximum = Math.min(60, Math.floor(res.coil.spiral.maxTurns));
-  if (!['rotary', 'dual-rotor'].includes(res.family) || ![4, 6].includes(cfg.layers)) return maximum;
+  if (!['rotary', 'dual-rotor', 'stepper'].includes(res.family) || ![4, 6].includes(cfg.layers)) return maximum;
   for (let turns = maximum; turns >= 1; turns--) {
-    const { art } = compute({ ...cfg, turns }, env, { quick: true });
-    if (!art.meta.routingError && (!cfg.busEnabled || art.meta.busRouted)) return turns;
+    try {
+      const { art } = compute({ ...cfg, turns }, env, { quick: true });
+      if (!art.meta.routingError && (!cfg.busEnabled || (res.family === 'stepper' ? art.meta.interconnected : art.meta.busRouted))) return turns;
+    } catch (error) {
+      if (res.family !== 'stepper') throw error;
+    }
   }
   return 0;
 }
 
 export function handles(cfg, res, app) {
-  if(['stepper','linear','planar'].includes(res.family))return [];
+  if(res.wave||['stepper','linear','planar'].includes(res.family))return [];
   const ro = cfg.dOuter / 2, ri = cfg.dInner / 2;
   const half = cfg.spanDeg * Math.PI / 360;
   return [
@@ -180,6 +188,18 @@ export function spec(cfg, res) {
   cfg=res.modelCfg||cfg;
   const m = res.motor, a = res.analysis;
   if (!m) return [];
+  if (res.wave) {
+    return [
+      { title: 'Radial wave winding', rows: [
+        ['Poles', String(2 * res.wave.polePairs)], ['Finished board diameter', num(res.wave.diameter, 2) + ' mm'],
+        ['Active diameter / bore', num(2 * res.wave.outer, 2) + ' / ' + num(cfg.dInner, 2) + ' mm'],
+        ['Phase terminals', res.art.ports.map(port => port.name).join(', ')],
+        ...res.wave.phase.map((phase, i) => ['Phase ' + String.fromCharCode(65 + i) + ' · ' + phase.layers.join(' / '),
+          eng(phase.resistance, 'Ω') + ' · ' + eng(phase.inductance, 'H')]),
+        ['Peak phase back-EMF at set speed', eng(m.KeMech * cfg.rpm * Math.PI / 30, 'V')],
+      ] },
+    ];
+  }
   return [
     {
       title: res.dual ? 'Dual-rotor winding' : 'Winding',
@@ -240,6 +260,10 @@ export function spec(cfg, res) {
 
 export function notes(cfg, res) {
   const out = [...(res.art?.notes || [])];
+  if (res.wave) {
+    out.push({ level: 'info', text: 'Torque and back-EMF use the active radial legs in a sinusoidal axial field. Phase inductance uses the PCB paths with uniform layer spacing and excludes external leads and inter-phase coupling. Use a rotating field map to estimate torque ripple.' });
+    return out;
+  }
   if(res.familyAnalysis) {
     if(res.analysis && !res.analysis.drc.turnsOK)out.push({level:'warn',text:`Only ${res.analysis.turns} of ${cfg.turns} requested turns fit. Use Max turns or enlarge the coil.`});
     out.push({level:'info',text:res.familyAnalysis.limits});
@@ -352,7 +376,7 @@ export function status(cfg, res) {
   }
   const m = res.motor;
   return {
-    algo: `${res.coil.spiral.algorithm.name} · ${res.instances} coils`,
+    algo: res.wave ? 'Radial wave · 6 layers' : `${res.coil.spiral.algorithm.name} · ${res.instances} coils`,
     summary: m ? `Kt ${num(m.Kt, 4)} N·m/A · Kv ${num(m.Kv, 0)} rpm/V · η ${num(m.eff * 100, 0)}%` : 'solving…',
   };
 }

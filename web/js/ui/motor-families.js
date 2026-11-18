@@ -2,24 +2,36 @@ import { MOTOR_FAMILIES, familyOf, isTranslation } from '../engine/motorfamilies
 import { substrateFields, processFields } from '../ws/common.js';
 import { el, eng, num } from './controls.js';
 import { windingDesigner } from './winding-design.js';
+import { isRadialWave } from '../engine/radial-wave.js';
 import { planar, crossedPcb, magnetBuild, gridBuild, pcbWinding, polePitchInput, measured, planarConstructionRail } from './planar-construction.js';
 const rotational=c=>['rotary','dual-rotor'].includes(familyOf(c));
+const spiralRotary=c=>rotational(c)&&!isRadialWave(c);
 const stepper=c=>familyOf(c)==='stepper';
 const linear=c=>familyOf(c)==='linear';
 const shapes=[{value:'circle',label:'Circular spiral'},{value:'racetrack',label:'Racetrack / oval'},{value:'polygon',label:'Polygon'}];
 const range=(key,label,min,max,step=1,unit,when)=>({key,type:'range',label,min,max,step,unit,when});
+
+function stepperLayers(panel, app) {
+  const select = el('select', { 'aria-label': 'Stepper copper layers' },
+    [2, 4, 6].map(value => el('option', { value, text: String(value) })));
+  select.addEventListener('change', () => app.set('layers', Number(select.value)));
+  return { node: el('label', { class: 'field' }, el('span', { class: 'lab', text: 'Copper layers' }), select),
+    set: () => { select.value = panel.state.layers; } };
+}
+
 export function familyRail(panel,app) {
   panel.group({key:'motor-family',title:'Motor family',fields:[{key:'motorFamily',type:'select',label:'Motor family',options:MOTOR_FAMILIES}]});
   planarConstructionRail(panel);
   panel.group({key:'stator',title:'Stator ring',when:c=>!isTranslation(c),fields:[
-    {key:'shape',type:'select',label:'Coil shape',options:[{value:'wedge',label:'Annular sector'},...shapes]},
+    {key:'rotaryWinding',type:'select',label:'Rotary winding',when:c=>familyOf(c)==='rotary',options:[{value:'spiral',label:'Spiral coils'},{value:'radial-wave',label:'Radial wave'}]},
+    {key:'shape',type:'select',label:'Coil shape',when:c=>!isRadialWave(c),options:[{value:'wedge',label:'Annular sector'},...shapes]},
     range('dOuter','Outer diameter',10,300,0.5,'mm'),range('dInner','Bore diameter',2,260,0.5,'mm'),
-    range('coilCount','Coils',3,48,1,null,rotational),range('phases','Phases',1,6,1,null,rotational),
-    range('polePairs','Pole pairs',1,30,1,null,rotational),range('spanDeg','Coil span',3,120,0.5,'°',rotational),
-    {key:'ringActions',type:'row',when:rotational,buttons:[{label:'Fill the ring',onClick:p=>{const c=p.state;const gap=2*Math.asin(Math.min(1,(c.traceW+c.traceS)/c.dInner))*180/Math.PI;app.set('spanDeg',Number(Math.max(2,360/c.coilCount-gap).toFixed(2)));}}]},
+    range('coilCount','Coils',3,48,1,null,spiralRotary),range('phases','Phases',1,6,1,null,spiralRotary),
+    range('polePairs','Pole pairs',1,30,1,null,rotational),range('spanDeg','Coil span',3,120,0.5,'°',spiralRotary),
+    {key:'ringActions',type:'row',when:spiralRotary,buttons:[{label:'Fill the ring',onClick:p=>{const c=p.state;const gap=2*Math.asin(Math.min(1,(c.traceW+c.traceS)/c.dInner))*180/Math.PI;app.set('spanDeg',Number(Math.max(2,360/c.coilCount-gap).toFixed(2)));}}]},
   ]});
-  panel.group({key:'winding-designer',title:'Motor winding designer',when:rotational,fields:[
-    {key:'_motorWindingDesigner',type:'custom',when:rotational,build:p=>windingDesigner(p,app)},
+  panel.group({key:'winding-designer',title:'Motor winding designer',when:spiralRotary,fields:[
+    {key:'_motorWindingDesigner',type:'custom',when:spiralRotary,build:p=>windingDesigner(p,app)},
   ]});
   panel.group({key:'stepper',title:'Stepper command',when:stepper,fields:[
     range('stepperPolePairs','Stepper pole pairs',1,6),range('stepperFill','Stepper slot fill',0.3,0.9,0.01),
@@ -37,24 +49,28 @@ export function familyRail(panel,app) {
     range('driveAngle','Electrical drive angle',0,360,1,'°',linear),
     {key:'coverageHint',type:'note',when:c=>pcbWinding(c)&&!magnetBuild(c),text:'This field model assumes full magnetic coverage throughout the stroke. Required pattern dimensions are reported.'},
   ]});
-  panel.group({key:'coil-profile',title:'Coil profile',when:pcbWinding,fields:[
+  panel.group({key:'coil-profile',title:'Coil profile',when:c=>pcbWinding(c)&&!isRadialWave(c),fields:[
     range('sides','Polygon sides',4,12,2,null,c=>(isTranslation(c)?c.cellShape:c.shape)==='polygon'),
     range('aspect','Oval aspect ratio',0.2,1,0.05,null,c=>(isTranslation(c)?c.cellShape:c.shape)==='racetrack'),
   ]});
   panel.group({key:'routing',title:'Connections',when:c=>!planar(c)||crossedPcb(c),fields:[
-    {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!stepper(c)&&(!rotational(c)||c.windingMode!=='custom'),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
-    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',when:c=>!planar(c),hint:'Rotary stators can route two, four or six series copper layers. Turn off to wire individual coils manually.'},
-    {key:'motorTopology',type:'select',label:'Phase connection',when:c=>rotational(c)&&c.busEnabled,options:[
+    {key:'coilSeries',type:'seg',label:'Coils per phase',when:c=>!isRadialWave(c)&&!stepper(c)&&(!rotational(c)||c.windingMode!=='custom'),options:[{value:true,label:'Series'},{value:false,label:'Parallel'}]},
+    {key:'busEnabled',type:'check',label:'Automatic phase interconnection',when:c=>!planar(c)&&!isRadialWave(c),hint:'Rotary and stepper stators can route two, four or six series copper layers. Turn off to wire individual coils manually.'},
+    {key:'motorTopology',type:'select',label:'Phase connection',when:c=>spiralRotary(c)&&c.busEnabled,options:[
       {value:'wye',label:'Star (wye)'},{value:'delta',label:'Delta (three phases)'},{value:'independent',label:'Six terminals (isolated phases)'}]},
-    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>!planar(c)&&c.busEnabled&&(!rotational(c)||(c.motorTopology??'wye')==='wye'),options:[
+    {key:'terminalBreakout',type:'select',label:'Terminal breakout',when:c=>!planar(c)&&!isRadialWave(c)&&c.busEnabled&&(!rotational(c)||(c.motorTopology??'wye')==='wye'),options:[
       {value:'phase-neutral',label:'Phase terminals + neutral (if applicable)'},{value:'phases',label:'Phase terminals only'},{value:'none',label:'No grouped terminals'}],
       hint:'Star motors can expose N or keep it internal. A stepper always uses A+/A− and B+/B−, with no neutral. No grouped terminals retains individual coil pads.'},
-    range('terminalAngle','Terminal position',-180,180,1,'°',c=>c.busEnabled&&!isTranslation(c)),
+    range('terminalAngle','Terminal position',-180,180,1,'°',c=>!isTranslation(c)&&(c.busEnabled||isRadialWave(c))),
   ]});
   panel.group({key:'winding',title:'Winding',when:pcbWinding,fields:[
-    range('turns','Turns per layer',1,60),range('layers','Copper layers',1,16),
-    {key:'connection',type:'seg',label:'Layer connection',options:[{value:'series',label:'Series'},{value:'parallel',label:'Parallel'}]},
-    {key:'maxTurnsAction',type:'row',when:c=>!crossedPcb(c),buttons:[{label:'Max turns',onClick:()=>app.setMaxTurns()}]},
+    range('turns','Turns per layer',1,60,1,null,c=>!isRadialWave(c)),
+    range('layers','Copper layers',1,16,1,null,c=>!stepper(c)&&!isRadialWave(c)),
+    {key:'stepperLayers',type:'custom',when:stepper,build:p=>stepperLayers(p,app)},
+    {key:'connection',type:'seg',label:'Layer connection',when:c=>!isRadialWave(c),options:[{value:'series',label:'Series'},{value:'parallel',label:'Parallel'}]},
+    {key:'maxTurnsAction',type:'row',when:c=>!crossedPcb(c)&&!isRadialWave(c),buttons:[{label:'Max turns',onClick:()=>app.setMaxTurns()}]},
+    {key:'waveStack',type:'note',when:isRadialWave,text:'Six copper layers, two series passes per phase, and six isolated terminals. The outer routing collar extends beyond the active winding diameter.'},
+    {key:'stepperStack',type:'note',when:stepper,text:'Use two, four or six series copper layers. Design tools includes loaded-move simulation and measured microstep calibration.'},
     ...substrateFields(),
   ]});
   panel.group({key:'dual',title:'Two magnet rotors',when:c=>familyOf(c)==='dual-rotor',fields:[
@@ -91,10 +107,10 @@ export function extraSpec(cfg,res) {
   const rows=[['Family',MOTOR_FAMILIES.find(f=>f.value===res.family).label],['Coils / copper layers',`${res.instances} / ${a.nL}`],
     ['Turns per layer',`${a.turns} of ${cfg.turns} requested`],['Connection points',res.art.ports.map(p=>p.name).join(', ')||'None grouped; use individual coil pads'],
     ['Automatic interconnection',res.art.meta.interconnected?'Routed':'Independent coils / manual routing']];
-  if(m.kind==='stepper')rows.push(['Commands per revolution',String(m.stepsPerRev)],['Phase resistance',eng(m.Rphase,'Ω')],['Phase inductance (mutual between coils omitted)',eng(m.Lphase,'H')]);
+  if(m.kind==='stepper')rows.push(['Commands per revolution',String(m.stepsPerRev)],['Phase A / B resistance',m.phaseResistance.map(r=>eng(r,'Ω')).join(' / ')],['Phase inductance (mutual between coils omitted)',eng(m.Lphase,'H')]);
   if(m.kind==='linear')rows.push(['Minimum magnet-pattern length for full stroke',`${num(m.minimumMagnetLength,1)} mm`],['Instantaneous phase currents',m.currents.map(i=>`${num(i,2)} A`).join(' / ')]);
   if(m.kind==='planar')rows.push(['Minimum magnet-pattern coverage',`${num(m.minimumMagnetWidth,1)} × ${num(m.minimumMagnetHeight,1)} mm`],['Peak field of each X/Y harmonic',`${num(cfg.bGap,3)} T`],['Coil currents',m.currents.map((v,i)=>`C${i+1}: ${num(v,2)} A`).join('; ')]);
-  return [{title:'Family design',rows},{title:'Model boundary',note:m.limits,rows:[['Copper loss at command',eng(m.Pcu,'W')],['Motion dynamics','Not modeled; no acceleration, pull-out speed, or position error prediction']]}];
+  return [{title:'Family design',rows},{title:'Model boundary',note:m.limits,rows:[['Copper loss at command',eng(m.Pcu,'W')],['Motion studies',m.kind==='stepper'?'Motion maps and Loaded move in Design tools':'Motion maps in Design tools']]}];
 }
 export function extraCharts(cfg,res) {
   const m=res.familyAnalysis;if(!m)return null;

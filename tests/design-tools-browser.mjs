@@ -123,6 +123,44 @@ try {
   await page.getByLabel('Field-map air gap').selectOption('1');
   await expect(dialog.getByRole('heading', { name: 'Open-circuit winding back-EMF' })).toBeVisible();
   await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await page.getByLabel('Rotary winding', { exact: true }).selectOption('radial-wave');
+  await expect(page.locator('#st-algo')).toContainText('Radial wave');
+  await expect(page.locator('#side')).toContainText('Finished board diameter');
+  await exportButton.click();
+  await expect(exportDialog.getByRole('button', { name: /KiCad board/ })).toBeEnabled();
+  await exportDialog.getByRole('button', { name: 'Close' }).click();
+  await page.getByLabel('Rotary winding', { exact: true }).selectOption('spiral');
+  await page.getByLabel('Motor family', { exact: true }).selectOption('stepper');
+  await set('Outer diameter', 60);
+  await set('Bore diameter', 26);
+  await page.locator('[data-key="process"] > summary').click();
+  await set('Track width', 0.3);
+  await set('Turns per layer', 4);
+  await page.getByLabel('Stepper copper layers', { exact: true }).selectOption('6');
+  await page.getByLabel('Microsteps per full step', { exact: true }).selectOption('8');
+  await expect(page.locator('#side')).toContainText('Phase A / B resistance');
+  await page.getByRole('button', { name: 'Design tools', exact: true }).click();
+  await page.getByRole('button', { name: 'Loaded move', exact: true }).click();
+  await calculate('Simulate loaded move');
+  await expect(dialog.getByRole('heading', { name: 'Commanded and actual rotor angle' })).toBeVisible();
+  await page.getByRole('button', { name: 'Microstep calibration', exact: true }).click();
+  const torqueCsv = ['angle_deg,torque_a_nm,torque_b_nm'];
+  for (let degrees = 0; degrees < 180; degrees += 5) {
+    const theta = degrees * Math.PI / 90;
+    torqueCsv.push([degrees, 0.01 * Math.cos(theta), 0.009 * Math.sin(theta)].join(','));
+  }
+  await page.getByLabel('Import stepper torque CSV').setInputFiles({
+    name: 'stepper-torque.csv', mimeType: 'text/csv', buffer: Buffer.from(torqueCsv.join('\n')),
+  });
+  await calculate('Calculate corrected currents');
+  await dialog.getByText('Corrected current table', { exact: true }).click();
+  await expect(dialog.getByRole('table', { name: 'Corrected microstep currents' }).getByRole('row')).toHaveCount(33);
+  await dialog.getByRole('button', { name: 'Export current table CSV' }).click();
+  await expect(page.locator('.tools-status')).toHaveText('Current table exported.');
+  await page.getByRole('button', { name: 'Loaded move', exact: true }).click();
+  await expect(dialog.getByLabel('Torque model and drive').locator('option')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Close', exact: true }).click();
+  await page.getByLabel('Stepper copper layers', { exact: true }).selectOption('2');
   await page.getByLabel('Motor family', { exact: true }).selectOption('planar');
   await page.getByRole('button', { name: 'Design tools', exact: true }).click();
   await calculate('Calculate motion map');
@@ -217,7 +255,7 @@ try {
   await expect(page.getByText('Board constraints from notched-board.kicad_pcb')).toBeVisible();
   await expect(page.locator('#st-algo')).not.toHaveText('geometry failed');
   if (errors.length) throw new Error(errors.join('\n'));
-  console.log('Design tools, motor sizing, field maps, planar force maps, hairpin fixtures, starter projects and fabrication controls passed in the browser.');
+  console.log('Design tools, radial wave, stepper moves and calibration, motor sizing, field maps, planar force maps, hairpin fixtures, starter projects and fabrication controls passed in the browser.');
 } finally {
   await browser?.close(); proc.kill(); fs.rmSync(stateDir, { recursive: true, force: true });
 }

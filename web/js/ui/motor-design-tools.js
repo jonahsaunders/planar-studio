@@ -16,6 +16,7 @@ export function motorStudies(api) {
 
   function motorSizing() {
     const c = config(), motor = host.result().motor;
+    if (host.result().wave) { body.append(note('Select Spiral coils in Rotary winding to run coil-count and turn-count sizing.')); return; }
     if (!isRotary(c) || c.phases !== 3) { body.append(note('Choose a three-phase rotary or dual-rotor stator to size a winding.')); return; }
     body.append(note('Search within the current coil shape, bore, rotor field, phase connection, and copper stack. Ranked candidates include the complete routing collar in the finished diameter.'));
     const s = settings('motorSizing', {
@@ -146,7 +147,9 @@ export function motorStudies(api) {
           ])));
         }
         out.append(details); draw(planes[0]);
-        out.append(note('The model uses generated coil copper, leads and layer transitions. One Bz plane applies to all layers. Phase routing collars, external returns, induced circulating currents, and mechanical losses are excluded.'));
+        out.append(note(host.result().wave
+          ? 'The field model integrates the active radial wave winding. One Bz plane applies to all layers. Outer routing and external returns are outside the modeled field.'
+          : 'The model uses generated coil copper, leads and layer transitions. One Bz plane applies to all layers. Phase routing collars, external returns, induced circulating currents, and mechanical losses are excluded.'));
         exportReport(out, 'motor-field-map', { speed: rpm, current, advance, planes });
       });
     });

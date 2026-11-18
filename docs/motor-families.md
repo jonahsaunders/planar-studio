@@ -26,7 +26,8 @@ views of all five motor families, including the original rotary motor.
 ## Stepper
 
 The layout repeats A+, B+, A−, B− around the ring. Negative-polarity coils are
-physically mirrored. Automatic routing makes two isolated series circuits;
+physically mirrored. Automatic routing makes two isolated series circuits on
+two, four or six copper layers. Each coil uses every selected layer in series.
 each connection uses its own lane outside the winding ring to avoid bypassing
 coils when mirrored terminals change angular order. There is no neutral.
 The collar grows with coil count, so winding diameter is smaller than the
@@ -43,14 +44,32 @@ guarantee of positioning accuracy.
 
 **Animate steps** advances the electrical command. The pointer shows the
 predicted static equilibrium within one rotor pole-pair period, not simulated
-rotor dynamics. Switching workspace/family stops stepping. The model has no
-unpowered detent/holding torque and does not predict pull-out speed, inertia,
-acceleration, resonance or missed steps.
+rotor dynamics. Switching workspace or family stops stepping. For transient
+tracking and settling, use [Loaded move](design-tools.md#loaded-move).
+Use [Microstep calibration](design-tools.md#microstep-calibration) to account
+for measured phase imbalance and detent torque.
 
 With **No grouped terminals**, connect A+ to C1.1 and A− to the last A coil's
 second pad; B+ to C2.1 and B− to the last B coil's second pad. Exact pad names
 are reported in the notes. Turning automatic interconnection off removes all
 phase links and leaves the individual coil pads.
+
+## Rotary radial wave
+
+Choose **Stator ring → Rotary winding → Radial wave**. Each phase runs
+alternating inward and outward radial legs with inner and outer end turns. The
+two passes for each phase are connected in series across a symmetric pair of
+copper layers. The six terminals expose three isolated windings for external
+wiring. KiCad placement requires the six copper layers and three distinct
+destination nets.
+
+Set the active outer diameter, bore, pole pairs, track dimensions, and
+terminal position. The collar needed for pads and layer transitions is
+included in the **Finished board diameter** readout. The electric model uses
+sinusoidal axial flux on the radial legs and the resistance of the full copper
+paths. For torque ripple with a measured or simulated flux distribution, use
+[Field map](design-tools.md#motor-field-map). Switch back to **Spiral coils**
+to use the coil winding designer and motor sizing.
 
 ## Linear
 
@@ -163,8 +182,9 @@ and [Sawyer platen and forcer](https://patents.google.com/patent/US7135827B1/en)
 
 ## Geometry, models and exports
 
-The stepper, linear and PCB planar windings require **two copper layers** with
-**Layer connection: Series**, including manual-interconnection layouts.
+Stepper spirals use **two, four or six copper layers**. Linear and PCB planar
+windings use **two copper layers**. These families use **Layer connection:
+Series**, including manual-interconnection layouts.
 Unsupported layer setups produce an error instead of exporting an ambiguous
 multilayer winding. Coil turns must be whole numbers; turns that cannot fit
 are capped and reported. **Max turns** uses the selected family's geometry.
@@ -177,9 +197,9 @@ an ideal straight return for this integral. This is a closed-loop winding
 approximation; it omits the physical leads/interconnect forces. It uses a
 prescribed sinusoidal Bz field, not a field solved from magnet dimensions.
 Coil resistance and inductance use the existing numerical winding engine.
-Reported copper loss excludes routing resistance; phase inductance omits
-mutual coupling between different coils. Eddy-current, mechanical and iron
-losses and motion dynamics are excluded. Magnetic FEA and measurements are
+Stepper copper loss includes generated routing resistance. Phase inductance
+omits mutual coupling between different coils. The static estimates omit
+eddy-current, mechanical and iron losses. Magnetic FEA and measurements are
 needed to assess real performance.
 
 KiCad board/footprint, SVG and DXF exports use the selected family's copper
@@ -202,10 +222,12 @@ physics invariants: isolated routing without coil bypass, export finiteness,
 board containment, configuration round trips, uniform-field cancellation,
 gradient force sign, phase quadrature, current/field scaling, movement phase,
 X/Y force response, dual-field reinforcement/cancellation and invalid inputs.
-`node tests/motor-dom.mjs` exercises all family controls, previews, step
-animation, save/load, exports and invalid-layout recovery. The DOM harness
-stubs canvas; rendered-browser, live KiCad and physical motor validation remain
-outstanding.
+`node tests/motor-studies.mjs` also checks multilayer stepper phase isolation,
+loaded-move dynamics, calibration and the radial-wave numerical model.
+Browser tests exercise the new controls and import flow. Native KiCad fixtures
+check the exported four- and six-layer steppers and the radial wave stator for
+design-rule errors and unrouted connections. The motor performance estimates
+still need validation on physical hardware.
 
 Primary references informing the family choices and model boundary:
 
