@@ -70,12 +70,14 @@ path to the built ZIP to `tests/live-kicad.py` with `--major 9` or
 ```sh
 npm run shots
 npm run shots:motor
+npm run shots:experimental
 ```
 
 These commands require the Playwright Chromium installation above. `shots`
-regenerates the vector cover from the current geometry engines and captures all
-15 application views in the [feature gallery](gallery.md). `shots:motor` refreshes
-only the five motor views.
+regenerates the vector cover and captures the 15 original gallery views.
+`shots:motor` refreshes those five motor-family views. `shots:experimental`
+captures all planar constructions, both crossed-stage drives and every
+antenna type in the [feature gallery](gallery.md).
 
 Captures use disposable settings and a local application server. Images are
 published only after every requested view succeeds; source revision, viewport,

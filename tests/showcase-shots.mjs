@@ -1,8 +1,4 @@
-import { captureSession, publishShots, root } from './feature-capture.mjs';
-import { readFile, writeFile } from 'node:fs/promises';
-import { execFileSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
-import path from 'node:path';
+import { captureSession, frame, publishShots } from './feature-capture.mjs';
 
 export const motors = [
   ['rotary', 'screenshot-motor'],
@@ -11,13 +7,6 @@ export const motors = [
   ['dual-rotor', 'screenshot-motor-dual-rotor'],
   ['planar', 'screenshot-motor-planar'],
 ];
-
-async function frame({ page, fit }) {
-  await fit();
-  await page.locator('#rail').evaluate(el => { el.scrollTop = 0; });
-  await page.locator('#side').evaluate(el => { el.scrollTop = 0; });
-  await page.mouse.move(1, 999);
-}
 
 export async function captureMotors(ctx) {
   const { page, select, workspace, shot, set } = ctx;
@@ -33,7 +22,7 @@ export async function captureMotors(ctx) {
 
 export async function captureShowcase({ motorOnly = false } = {}) {
   await captureSession(async ctx => {
-    const { page, state, settle, shot, range, set, select, workspace } = ctx;
+    const { page, settle, shot, range, set, select, workspace } = ctx;
     const names = [];
     const save = async name => { await frame(ctx); await shot(name); names.push(name); };
     if (!motorOnly) {
@@ -114,18 +103,6 @@ export async function captureShowcase({ motorOnly = false } = {}) {
     }
     await captureMotors(ctx);
     names.push(...motors.map(([, name]) => name));
-    await publishShots(state, names);
-    const provenance = {
-      capturedAt: new Date().toISOString(),
-      applicationVersion: JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).version,
-      applicationCommit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
-      viewport: { width: 1600, height: 1000, deviceScaleFactor: 1.5 },
-      scope: 'Real browser application, isolated settings, no live KiCad connection; numerical results are model predictions.',
-      captures: Object.fromEntries(await Promise.all(names.map(async name => [
-        `${name}.png`, createHash('sha256').update(await readFile(path.join(root, 'docs', `${name}.png`))).digest('hex'),
-      ]))),
-    };
-    await writeFile(path.join(root, 'docs', motorOnly ? 'motor-capture.json' : 'feature-capture.json'), JSON.stringify(provenance, null, 2) + '\n');
-    console.log(`Published ${names.length} verified application captures.`);
+    await publishShots(ctx, names, { manifest: motorOnly ? 'motor-capture.json' : 'feature-capture.json' });
   });
 }

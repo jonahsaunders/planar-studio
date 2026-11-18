@@ -9,7 +9,7 @@ KiCad. Planar Studio reads your board's stack, calculates electrical estimates,
 and places the generated copper into the PCB as one undoable operation.
 
 **[Download v1.6.0](https://github.com/jonahsaunders/planar-studio/releases/download/v1.6.0/planar-studio-1.6.0.zip)**
-· [Features on experimental](#features-on-experimental) · [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
+· [Features on experimental](#features-on-experimental) · [Feature gallery](docs/gallery.md) · [Install](#install) · [Guides](#guides) · [Common PCB issues](docs/common-pcb-issues.md) · [Flyback example](#5-w-planar-flyback-example) · [GaN example](#60-w-gan-planar-llc-example) · [CoilTile example](#coiltile-usb-inductive-sensing-example)
 
 [![Five workspaces: inductors, transformers, PCB motors, filters and antennas](docs/feature-overview.svg)](docs/gallery.md)
 
@@ -33,8 +33,8 @@ Click a workspace capture to open the full-size image.
 <tr>
 <td width="50%" valign="top">
 <h3>PCB motors</h3>
-<a href="docs/screenshot-motor.png"><img src="docs/screenshot-motor.png" alt="Twelve-coil rotary stator with phase phasors and motor estimates" width="100%"></a>
-<p>Design rotary, stepper, linear, dual-rotor and planar machines. Size a stator to a target or compare planar construction options.<br><a href="#pcb-motors">Motor capabilities →</a></p>
+<a href="docs/screenshots/experimental/planar-double-sided.png"><img src="docs/screenshots/experimental/planar-double-sided.png" alt="Double-sided planar motor with a fixed coil board, two magnet plates and independent air-gap controls" width="100%"></a>
+<p>Design rotary, stepper, linear, dual-rotor and planar machines. Size a stator to a target or compare planar construction options.<br><a href="docs/gallery.md#planar-construction-options">Planar motor screenshots →</a></p>
 </td>
 <td width="50%" valign="top">
 <h3>Filters</h3>
@@ -45,8 +45,8 @@ Click a workspace capture to open the full-size image.
 <tr>
 <td width="50%" valign="top">
 <h3>Antennas</h3>
-<a href="docs/screenshot-antenna.png"><img src="docs/screenshot-antenna.png" alt="Patch array with element dimensions and ideal array-factor plot" width="100%"></a>
-<p>Choose from 29 parametric layouts, including patches, arrays, slots, directional radiators and NFC loops.<br><a href="#antennas">Antenna types →</a></p>
+<a href="docs/screenshots/experimental/antenna-aperture-stacked-patch.png"><img src="docs/screenshots/experimental/antenna-aperture-stacked-patch.png" alt="Four-layer aperture-coupled stacked patch with a slotted ground plane and rear feed" width="100%"></a>
+<p>Choose from 29 parametric layouts, including patches, arrays, slots, directional radiators and NFC loops.<br><a href="docs/gallery.md#antenna-types">Screenshots of all 29 types →</a></p>
 </td>
 <td width="50%" valign="top">
 <h3>Design tools</h3>
@@ -56,8 +56,7 @@ Click a workspace capture to open the full-size image.
 </tr>
 </table>
 
-**[Open the full 15-image gallery →](docs/gallery.md)** — obstacle routing,
-transformer search, motor families, antenna variants and both interface themes.
+**[Open the full feature gallery →](docs/gallery.md)**
 
 Save editable designs, compare calculated responses, and export KiCad boards or
 footprints, SVG, DXF, JSON and specification sheets. The **Design tools** panel
@@ -89,16 +88,16 @@ connections. Estimated copper loss includes phase routing tracks and via barrels
 [Motor families](docs/motor-families.md) · [Winding connections](docs/motor-coils.md)
 
 **Planar construction** offers six options. The PCB coil grid remains the
-default for existing designs.
+default for existing designs. [See the construction screenshots](docs/gallery.md#planar-construction-options)
 
 | Construction | What you can lay out |
 | --- | --- |
-| PCB coil grid | Independent printed coils with two terminals per cell. |
-| Wire-wound stator tile | Square wire coils, a carrier and a moving magnet plate. |
-| Moving-coil carriage | A moving coil PCB over a fixed checkerboard magnet bed. |
-| Double-sided magnet carriage | A fixed coil PCB between two moving magnet plates with adjustable gaps and alignment. |
-| Crossed linear motors | Separate X and Y PCB winding boards and magnet tracks, or a voice-coil flexure layout. |
-| Sawyer planar stepper | A toothed steel platen and a phased forcer layout, with a nominal step increment. |
+| [PCB coil grid](docs/screenshots/experimental/planar-pcb-grid.png) | Independent printed coils with two terminals per cell. |
+| [Wire-wound stator tile](docs/screenshots/experimental/planar-wire-tile.png) | Square wire coils, a carrier and a moving magnet plate. |
+| [Moving-coil carriage](docs/screenshots/experimental/planar-moving-coil.png) | A moving coil PCB over a fixed checkerboard magnet bed. |
+| [Double-sided magnet carriage](docs/screenshots/experimental/planar-double-sided.png) | A fixed coil PCB between two moving magnet plates with adjustable gaps and alignment. |
+| [Crossed linear motors](docs/screenshots/experimental/planar-crossed.png) | Separate X and Y PCB winding boards and magnet tracks, or a [voice-coil flexure layout](docs/screenshots/experimental/planar-voice-coil.png). |
+| [Sawyer planar stepper](docs/screenshots/experimental/planar-sawyer.png) | A toothed steel platen and a phased forcer layout, with a nominal step increment. |
 
 Each new construction has an assembly preview. **Export → Motor construction
 package** bundles DXF drawings, an assembly manifest and KiCad files where
@@ -117,6 +116,7 @@ measurements. [Planar construction guide](docs/motor-families.md#construction-op
 
 Choose **Antenna type** to generate one of 29 layouts with adjustable dimensions,
 a live copper preview and KiCad board and footprint exports.
+[See all antenna screenshots](docs/gallery.md#antenna-types)
 
 - **Patches and arrays** include edge-fed, inset-fed, circular, corner-truncated circularly polarized, U-slot, annular-ring and aperture-coupled stacked patches, plus rectangular patch arrays.
 - **Dipoles, monopoles and inverted-Fs** include printed and folded dipoles, bow-tie dipoles, the crossed-dipole turnstile, printed quarter-wave and CPW-fed elliptical monopoles, the dual-band forked monopole, and straight and meandered inverted-Fs.
