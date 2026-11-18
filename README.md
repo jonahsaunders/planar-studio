@@ -45,7 +45,7 @@ Click a workspace capture to open the full-size image.
 <tr>
 <td width="50%" valign="top">
 <h3>Antennas</h3>
-<a href="docs/screenshots/experimental/antenna-aperture-stacked-patch.png"><img src="docs/screenshots/experimental/antenna-aperture-stacked-patch.png" alt="Four-layer aperture-coupled stacked patch with a slotted ground plane and rear feed" width="100%"></a>
+<a href="docs/screenshots/experimental/antenna-cpw-ellipse.png"><img src="docs/screenshots/experimental/antenna-cpw-ellipse.png" alt="CPW-fed elliptical monopole with a center feed and coplanar ground rails" width="100%"></a>
 <p>Choose from 29 parametric layouts, including patches, arrays, slots, directional radiators and NFC loops.<br><a href="docs/gallery.md#antenna-types">Screenshots of all 29 types →</a></p>
 </td>
 <td width="50%" valign="top">
