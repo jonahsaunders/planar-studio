@@ -297,7 +297,9 @@ function reconcile(key, value) {
   const ws = current();
   if (ws.reconcile) ws.reconcile(cfg(), key, value);
   enforceFabrication(cfg(), cfg().fabricationProfile);
-  if ((key === 'family' && ['antenna', 'transformer'].includes(app.ws)) || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
+  const filterLayoutChanged = app.ws === 'filter' && ['family', 'band', 'emiTopology', 'capStyle'].includes(key);
+  if (filterLayoutChanged || (key === 'family' && ['antenna', 'transformer'].includes(app.ws))
+    || (key === 'motorFamily' && app.ws === 'motor')) app.fitPending = true;
 }
 
 function renderRail() {

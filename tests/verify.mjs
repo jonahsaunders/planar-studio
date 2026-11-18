@@ -312,7 +312,65 @@ section('Band transforms and the simulated response');
   check('4th-order roll-off per decade', slope, -80, 4, 'dB');
 }
 
+section('All filter response types and band transforms');
+{
+  const fLow = 90e6, fHigh = 110e6;
+  const centre = Math.sqrt(fLow * fHigh), bandwidth = fHigh - fLow;
+  const factorial = [1];
+  for (let i = 1; i <= 20; i++) factorial.push(i * factorial[i - 1]);
+  const besselMagnitude = (order, u) => {
+    let re = 0, im = 0;
+    for (let j = 0; j <= order; j++) {
+      const a = factorial[2 * order - j] * u ** j / (2 ** (order - j) * factorial[j] * factorial[order - j]);
+      re += a * Math.cos(Math.PI * j / 2);
+      im += a * Math.sin(Math.PI * j / 2);
+    }
+    return 20 * Math.log10(factorial[2 * order] / (2 ** order * factorial[order] * Math.hypot(re, im)));
+  };
+  for (const response of ['butterworth', 'chebyshev', 'bessel', 'linearPhase']) {
+    let finiteAndPassive = true, worstErrorDb = 0;
+    for (let order = 1; order <= 10; order++) for (const band of ['lowpass', 'highpass', 'bandpass', 'bandstop']) {
+      for (const seriesFirst of [true, false]) {
+        const net = ladder({ response, order, seriesFirst, band, z0: 50, ripple: 0.5, fc: 100e6, f1: fLow, f2: fHigh });
+        for (const u of [0.27, 0.5, 0.9, 1, 1.4, 2.1]) {
+          const span = bandwidth * (band === 'bandstop' ? 1 / u : u);
+          const f = band === 'lowpass' ? 100e6 * u : band === 'highpass' ? 100e6 / u : (span + Math.hypot(span, 2 * centre)) / 2;
+          const r = respond(net, { f0: f, points: 1, lossless: true });
+          const out = r.s21db[0], reflection = r.s11db[0];
+          finiteAndPassive &&= Number.isFinite(out) && Number.isFinite(reflection) &&
+            Math.abs(10 ** (out / 10) + 10 ** (reflection / 10) - 1) < 1e-8;
+          if (response === 'linearPhase') continue;
+          const cheb = u <= 1 ? Math.cos(order * Math.acos(u)) : Math.cosh(order * Math.acosh(u));
+          const target = response === 'bessel' ? besselMagnitude(order, u)
+            : -10 * Math.log10(1 + (response === 'chebyshev' ? (10 ** 0.05 - 1) * cheb ** 2 : u ** (2 * order)));
+          worstErrorDb = Math.max(worstErrorDb, Math.abs(out - target));
+        }
+      }
+    }
+    assert(`${response}: finite, lossless, passive at every order, band and orientation`, finiteAndPassive);
+    if (response !== 'linearPhase') check(`${response}: max closed-form response error in dB`, worstErrorDb, 0, 0.012);
+  }
+  const notch = ladder({ response: 'butterworth', order: 4, seriesFirst: true, band: 'bandstop', z0: 50, f1: fLow, f2: fHigh });
+  const exactNotch = respond(notch, { f0: centre, points: 1, lossless: true });
+  assert('An exact LC transmission zero stays a finite deep notch', exactNotch.s21db[0] < -180);
+  const notchSweep = respond(notch, { f0: 40e6, f1: 250e6, points: 1201, lossless: true });
+  assert('Notch metrics use both stopband edges', notchSweep.metrics.edges3.every(Number.isFinite) &&
+    notchSweep.metrics.edges3[0] < centre && notchSweep.metrics.edges3[1] > centre && notchSweep.metrics.notchRejection > 60);
+  const highpass = ladder({ response: 'butterworth', order: 2, band: 'highpass', z0: 50, fc: 1e8, seriesFirst: true });
+  const highSweep = respond(highpass, { f0: 1e6, f1: 1e10, points: 601, lossless: true });
+  check('High-pass corner comes from the lower edge', highSweep.metrics.cutoff, 1e8, 0.5);
+  const uncoupled = { kind: 'coupledSection', length: 10,
+    coupled: { Z0e: 50, Z0o: 50, epsEffEven: 3, epsEffOdd: 3 } };
+  assert('Uncoupled, open-ended lines have no through path',
+    respond({ elements: [uncoupled] }, { f0: 1e9, points: 1, lossless: true }).s21db[0] < -180);
+}
+
 section('EMI synthesis hits its attenuation target');
+{
+  const r = emiFilter({ topology: 'lc', response: 'butterworth', zSource: 0.1, zLoad: 1000, fTarget: 30e6, attnDb: 20 });
+  assert('EMI target excludes loss from the direct termination mismatch', r.throughDb < -30 && r.fc < r.fTarget);
+  check('Relative EMI attenuation attained', r.achieved, 20, 0.01);
+}
 
 for (const topo of ['lc', 'pi', 'tee']) {
   const f = emiFilter({ topology: topo, zSource: 50, zLoad: 50, fTarget: 30e6, attnDb: 40 });

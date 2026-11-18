@@ -45,12 +45,12 @@ export const RESPONSES = {
   },
   bessel: {
     name: 'Bessel',
-    note: 'Maximally flat group delay. Poorest selectivity, but the only one that keeps a pulse looking like a pulse.',
+    note: 'Delay-normalized Bessel prototype with maximally flat group delay near DC.',
     hasRipple: false,
   },
   linearPhase: {
-    name: 'Linear phase 0.05°',
-    note: 'Equidistant-ripple phase. A compromise between Chebyshev selectivity and Bessel delay flatness.',
+    name: 'Bessel/Chebyshev blend',
+    note: 'Interpolated ladder values. The resulting phase and group delay depend on order and frequency.',
     hasRipple: false,
   },
 };
@@ -76,7 +76,11 @@ const BESSEL_G = {
  * Returns g[0..n+1]: source, elements 1..n, load.
  */
 export function prototype(kind, n, rippleDb = 0.1) {
+  if (!Object.hasOwn(RESPONSES, kind) || !Number.isFinite(n)) throw new Error('Choose a supported filter response and finite order.');
   n = clamp(Math.round(n), 1, 12);
+  if ((kind === 'bessel' || kind === 'linearPhase') && !BESSEL_G[n]) {
+    throw new Error('Bessel and blended prototypes support orders 1 through 10.');
+  }
   const g = new Array(n + 2).fill(1);
   g[0] = 1;
 
@@ -87,6 +91,7 @@ export function prototype(kind, n, rippleDb = 0.1) {
   }
 
   if (kind === 'chebyshev') {
+    if (!Number.isFinite(rippleDb) || rippleDb < 0) throw new Error('Enter a finite, nonnegative passband ripple.');
     const ar = Math.max(rippleDb, 1e-4);
     const beta = Math.log(1 / Math.tanh(ar / 17.37));
     const gamma = Math.sinh(beta / (2 * n));
@@ -101,14 +106,14 @@ export function prototype(kind, n, rippleDb = 0.1) {
   }
 
   if (kind === 'bessel') {
-    const table = BESSEL_G[n] || BESSEL_G[10];
+    const table = BESSEL_G[n];
     for (let k = 1; k <= n; k++) g[k] = table[k - 1];
     g[n + 1] = 1;
     return g;
   }
 
   // linearPhase: fall back to Bessel shape scaled slightly toward Chebyshev.
-  const bt = BESSEL_G[n] || BESSEL_G[10];
+  const bt = BESSEL_G[n];
   const cb = prototype('chebyshev', n, 0.01);
   for (let k = 1; k <= n; k++) g[k] = 0.65 * bt[k - 1] + 0.35 * cb[k];
   g[n + 1] = 1;
@@ -129,15 +134,25 @@ export const BANDS = {
   bandstop: 'Band-stop',
 };
 
+const prototypeLoad = (g, Z0, seriesFirst) => Z0 * (seriesFirst ? g.at(-1) : 1 / g.at(-1));
+
+function bandEdges(spec) {
+  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
+  if (!(f1 > 0 && f2 > f1 && Number.isFinite(f2))) throw new Error('Band edges must be positive and distinct.');
+  return [f1, f2];
+}
+
 /**
  * Turn a prototype into a component ladder.
  * @param {object} spec {response, order, ripple, band, z0, fc | f1,f2, seriesFirst}
  */
 export function ladder(spec) {
+  if (!Object.hasOwn(BANDS, spec.band)) throw new Error('Choose a supported filter band.');
   const g = prototype(spec.response, spec.order, spec.ripple);
   const n = clamp(Math.round(spec.order), 1, 12);
   const Z0 = spec.z0 || 50;
   const seriesFirst = !!spec.seriesFirst;
+  const zLoad = prototypeLoad(g, Z0, seriesFirst);
   const out = [];
 
   const push = (kind, type, values, gk, index) =>
@@ -158,11 +173,11 @@ export function ladder(spec) {
         else push('shunt', 'L', { L: Z0 / (g[k] * wc) }, g[k], k);
       }
     }
-    return { g, elements: out, Z0, zLoad: Z0 * g[n + 1], spec };
+    return { g, elements: out, Z0, zLoad, spec };
   }
 
   // Band-pass and band-stop
-  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
+  const [f1, f2] = bandEdges(spec);
   const f0 = Math.sqrt(f1 * f2);
   const w0 = TAU * f0;
   const D = (f2 - f1) / f0;                    // fractional bandwidth
@@ -195,7 +210,7 @@ export function ladder(spec) {
       }
     }
   }
-  return { g, elements: out, Z0, zLoad: Z0 * g[n + 1], f0, fbw: D, spec };
+  return { g, elements: out, Z0, zLoad, f0, fbw: D, spec };
 }
 
 /* ---------------------------------------------------------------------------
@@ -217,7 +232,11 @@ export function ladder(spec) {
        loss in both the L and the C roughly doubles it and then compounds the
        error through the parallel combination — which is how a filter that
        should show 3 dB of insertion loss comes out showing 14. */
-function elementImpedance(el, w, qL, qC) {
+// Use finite limits at exact LC zeros. Returning zero for 1/0 would turn a
+// short to ground into an open circuit at the exact notch frequency.
+const inverseAtLimit = (z, floor) => C.abs(z) < floor ? [1 / floor, 0] : C.inv(z);
+
+function elementImpedance(el, w, qL, qC, Zref) {
   const useQL = el.qL != null ? el.qL : qL;
   const useQC = el.qC != null ? el.qC : qC;
 
@@ -250,10 +269,10 @@ function elementImpedance(el, w, qL, qC) {
         const w0 = 1 / Math.sqrt(el.L * el.C);
         const G = 1 / (el.qu * w0 * el.L);
         const Y = C.add(C.of(G, 0), C.add(C.inv(zL(el.L, 0)), C.inv(zC(el.C, 0))));
-        return C.inv(Y);
+        return inverseAtLimit(Y, 1e-12 / Zref);
       }
       const a = zL(el.L, useQL), b = zC(el.C, useQC);
-      return C.div(C.mul(a, b), C.add(a, b));
+      return inverseAtLimit(C.add(C.inv(a), C.inv(b)), 1e-12 / Zref);
     }
     default: return C.of(0, 0);
   }
@@ -265,7 +284,8 @@ function elementImpedance(el, w, qL, qC) {
  * @param {object} opt    {f0, f1, points, z0, zLoad, qL, qC, lossless}
  */
 export function respond(net, opt = {}) {
-  const points = opt.points || 501;
+  const points = Math.max(1, Math.round(opt.points ?? 501));
+  if (!Number.isFinite(points)) throw new Error('Enter a finite response sample count.');
   const fLo = Math.max(opt.f0 || 1e5, 1);
   const fHi = Math.max(opt.f1 || 1e9, fLo * 1.0001);
   const Zs = opt.z0 || net.Z0 || 50;
@@ -282,7 +302,7 @@ export function respond(net, opt = {}) {
   const vswr = new Array(points);
 
   for (let i = 0; i < points; i++) {
-    const f = fLo * Math.pow(fHi / fLo, i / (points - 1));
+    const f = points === 1 ? fLo : fLo * Math.pow(fHi / fLo, i / (points - 1));
     const w = TAU * f;
     const stages = [];
 
@@ -307,9 +327,9 @@ export function respond(net, opt = {}) {
         if (!opt.lossless && el.alpha > 0) stages.push(ABCD.line(el.coupled.Z0, 0, el.alpha * el.length * 1e-3));
         continue;
       }
-      const Z = elementImpedance(opt.lossless ? { ...el, qu: 0, qL: 0, qC: 0, rs: 0, esr: 0 } : el, w, qL, qC);
+      const Z = elementImpedance(opt.lossless ? { ...el, qu: 0, qL: 0, qC: 0, rs: 0, esr: 0 } : el, w, qL, qC, Zs);
       if (el.kind === 'series') stages.push(ABCD.series(Z));
-      else stages.push(ABCD.shunt(C.inv(Z)));
+      else stages.push(ABCD.shunt(inverseAtLimit(Z, Zs * 1e-12)));
     }
 
     const m = ABCD.cascade(stages);
@@ -333,38 +353,19 @@ export function respond(net, opt = {}) {
   };
 }
 
-/* Open-circuited coupled-line section as a two-port.
-
-   With a single electrical length theta the standard result is
-
-     A = D = cos(theta) (Z0e + Z0o) / (Z0e - Z0o)
-     C     = j 2 sin(theta) / (Z0e - Z0o)
-     B     = (A*D - 1) / C
-
-   B is written as (AD-1)/C rather than expanded, which makes reciprocity
-   exact by construction instead of by algebra that is easy to mistype. At
-   theta = 90 degrees this collapses to an impedance inverter of
-   K = (Z0e - Z0o)/2, which is the identity the whole parallel-coupled
-   synthesis rests on.
-
-   The two modes travel at different velocities on microstrip, so there is no
-   single theta. The mean is used, matching the mean-wavelength section length
-   the layout is cut to; the residual is what shows up as the finite stopband
-   rejection at 2*f0 that a real edge-coupled filter always has. */
+/* Reduce the even and odd line Z matrices to the two diagonal ports.
+   The other two ports are open, so their currents vanish. */
 function coupledSectionABCD(el, f) {
   const cp = el.coupled;
-  const lamE = (299792458 / (f * Math.sqrt(cp.epsEffEven))) * 1e3;
-  const lamO = (299792458 / (f * Math.sqrt(cp.epsEffOdd))) * 1e3;
-  const theta = TAU * el.length * 0.5 * (1 / lamE + 1 / lamO);
-  const spread = cp.Z0e - cp.Z0o;
-  if (Math.abs(spread) < 1e-9) return ABCD.identity();
-
-  const s = Math.sin(theta);
-  const A = Math.cos(theta) * (cp.Z0e + cp.Z0o) / spread;
-  const Cc = 2 * s / spread;                     // imaginary part of C
-  // (A*D - 1) / C with C = j*Cc gives B = j * (1 - A^2) / Cc.
-  const Bi = Math.abs(Cc) > 1e-12 ? (A * A - 1) / Cc * -1 : 0;
-  return [C.of(A, 0), C.of(0, Bi), C.of(0, Cc), C.of(A, 0)];
+  const thetaE = TAU * el.length / guidedWavelength(f, cp.epsEffEven);
+  const thetaO = TAU * el.length / guidedWavelength(f, cp.epsEffOdd);
+  const limit = (value, floor) => Math.abs(value) >= floor ? value : (value < 0 ? -floor : floor);
+  const even = cp.Z0e / limit(Math.sin(thetaE), 1e-12);
+  const odd = cp.Z0o / limit(Math.sin(thetaO), 1e-12);
+  const zSelf = -(even * Math.cos(thetaE) + odd * Math.cos(thetaO)) / 2;
+  const zTransfer = limit((odd - even) / 2, 1e-10);
+  const A = zSelf / zTransfer;
+  return [[A, 0], [0, (A * A - 1) * zTransfer], [0, -1 / zTransfer], [A, 0]];
 }
 
 /* Reading numbers off a response is where it is easiest to quietly lie.
@@ -401,6 +402,9 @@ function responseMetrics(freqs, s21, s11, net) {
     // The passband of a band-stop is everywhere except the notch, so there is
     // no window to anchor to. Search the whole sweep.
     anchor = null;
+  } else if (band === 'highpass' && spec0.fc > 0) {
+    const first = freqs.findIndex(f => f >= spec0.fc);
+    if (first >= 0) lowIdx = first;
   } else if (spec0.fc > 0) {
     // A low- or high-pass: the passband runs from the sweep edge to twice the
     // corner. Anchoring matters here because a stepped-impedance low-pass
@@ -438,6 +442,14 @@ function responseMetrics(freqs, s21, s11, net) {
   // The level that defines this response's own passband edge.
   const designRipple = spec.response === 'chebyshev' ? Math.max(spec.ripple || 0.1, 0.001) : 3;
   const fpeak = freqs[peakIdx];
+  const stopEdges = band === 'bandstop' ? bandEdges(spec) : null;
+  let notchIndex = null;
+  if (stopEdges) {
+    for (let i = 0; i < n; i++) {
+      if (freqs[i] < stopEdges[0] || freqs[i] > stopEdges[1]) continue;
+      if (notchIndex == null || s21[i] < s21[notchIndex]) notchIndex = i;
+    }
+  }
 
   /* Take the crossings that BRACKET the peak, not the outermost ones.
 
@@ -446,10 +458,10 @@ function responseMetrics(freqs, s21, s11, net) {
      from the first crossing in the sweep to the last one spans both, and
      reports a bandwidth tens of times too wide. The band the design is about
      is the one the peak sits in. */
-  const bracket = (hits) => {
+  const bracket = (hits, centre = fpeak) => {
     let lo = null, hi = null;
     for (const f of hits) {
-      if (f <= fpeak) lo = f;
+      if (f <= centre) lo = f;
       else if (hi == null) hi = f;
     }
     return [lo, hi];
@@ -460,15 +472,24 @@ function responseMetrics(freqs, s21, s11, net) {
   const c20 = crossings(peak - 20);
   const c40 = crossings(peak - 40);
 
-  const [r3lo, r3hi] = bracket(c3);
+  const reference = notchIndex == null ? fpeak : freqs[notchIndex];
+  const [r3lo, r3hi] = bracket(c3, reference);
   const [rRlo, rRhi] = bracket(cR);
-  const [r20lo, r20hi] = bracket(c20);
+  const [r20lo, r20hi] = bracket(c20, reference);
 
   // Ripple band: between the design-level crossings around the peak.
   const bandLo = rRlo != null ? rRlo : freqs[0];
   const bandHi = rRhi != null ? rRhi : freqs[n - 1];
   let lo = Infinity, hi = -Infinity;
-  const inBand = (i) => freqs[i] >= bandLo && freqs[i] <= bandHi && s21[i] >= peak - designRipple - 1e-9;
+  const intendedEdges = band === 'bandpass' ? bandEdges(spec)
+    : !band && net.f0 > 0 && spec.f1 > 0 && spec.f2 > 0 ? bandEdges(spec) : null;
+  const inBand = (i) => {
+    const f = freqs[i];
+    if (stopEdges) return f <= stopEdges[0] || f >= stopEdges[1];
+    if (intendedEdges) return f >= intendedEdges[0] && f <= intendedEdges[1];
+    if (spec.response === 'chebyshev' && spec.fc > 0) return band === 'highpass' ? f >= spec.fc : f <= spec.fc;
+    return f >= bandLo && f <= bandHi;
+  };
   for (let i = 0; i < n; i++) if (inBand(i)) { hi = Math.max(hi, s21[i]); lo = Math.min(lo, s21[i]); }
   const rippleDb = isFinite(hi - lo) ? hi - lo : 0;
 
@@ -491,11 +512,14 @@ function responseMetrics(freqs, s21, s11, net) {
     fRipple: cR,
     f3: c3, f20: c20, f40: c40,
     edges3: [r3lo, r3hi],
-    cutoff: r3hi,
+    cutoff: stopEdges ? null : band === 'highpass' ? r3lo : r3hi,
+    cutoff20: stopEdges ? null : band === 'highpass' ? r20lo : r20hi,
+    notchF: notchIndex == null ? null : freqs[notchIndex],
+    notchRejection: notchIndex == null ? null : peak - s21[notchIndex],
     bwRipple: rRlo != null && rRhi != null ? rRhi - rRlo : null,
     bw3, bw20,
     // Shape factor: how squarely the skirt falls. 1.0 is a brick wall.
-    shape: bw3 && bw20 ? bw20 / bw3 : null,
+    shape: !stopEdges && bw3 && bw20 ? bw20 / bw3 : null,
     rippleDb,
     worstReturnLoss: worstRL,
     zLoad: net.zLoad,
@@ -560,7 +584,7 @@ export function steppedImpedance(spec, sub) {
   return {
     kind: 'stepped', spec,
     g, sections, elements, warnings,
-    Z0, zLoad: Z0 * g[n + 1],
+    Z0, zLoad: prototypeLoad(g, Z0, !!spec.seriesFirst),
     feed: { w: wFeed, model: mFeed },
     totalLength: sections.reduce((a, s) => a + s.length, 0),
     maxWidth: Math.max(wLow, wFeed),
@@ -578,7 +602,7 @@ export function edgeCoupled(spec, sub) {
   const g = prototype(spec.response, spec.order, spec.ripple);
   const n = clamp(Math.round(spec.order), 1, 12);
   const Z0 = spec.z0 || 50;
-  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
+  const [f1, f2] = bandEdges(spec);
   const f0 = Math.sqrt(f1 * f2);
   const D = (f2 - f1) / f0;
 
@@ -637,8 +661,7 @@ export function hairpin(spec, sub) {
   const n = clamp(Math.round(spec.order), 1, 12);
   const g = prototype(spec.response, n, spec.ripple), Z0 = spec.z0 || 50;
   if (g.some((v) => !(v > 0) || !Number.isFinite(v))) throw new Error('Hairpin prototype is unavailable at this order.');
-  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
-  if (!(f1 > 0 && f2 > f1 && Number.isFinite(f2))) throw new Error('Hairpin band edges must be positive and distinct.');
+  const [f1, f2] = bandEdges(spec);
   const f0 = Math.sqrt(f1 * f2), fbw = (f2 - f1) / f0;
   const opt = { t: sub.t, f: f0, tanD: sub.tanD };
   const w = microstripWidth(spec.zRes || 60, sub.h, sub.er, opt);
@@ -688,7 +711,7 @@ export function interdigitalFilter(spec, sub) {
   const g = prototype(spec.response, spec.order, spec.ripple);
   const n = clamp(Math.round(spec.order), 1, 12);
   const Z0 = spec.z0 || 50;
-  const f1 = Math.min(spec.f1, spec.f2), f2 = Math.max(spec.f1, spec.f2);
+  const [f1, f2] = bandEdges(spec);
   const f0 = Math.sqrt(f1 * f2);
   const D = (f2 - f1) / f0;
   const Zr = spec.zRes || 60;                    // resonator line impedance
@@ -726,31 +749,28 @@ export function interdigitalFilter(spec, sub) {
   });
 
   const wFeed = microstripWidth(Z0, sub.h, sub.er, { t: sub.t, f: f0 });
-  const tapRatio = clamp(Math.asin(Math.sqrt(Math.PI * Z0 / (2 * Qe1 * Zr))) / (Math.PI / 2), 0.02, 0.95);
+  const tapFor = Qe => {
+    const argument = Math.PI * Z0 / (2 * Qe * msRes.Z0);
+    if (argument > 1) warnings.push('A requested external Q is outside the interdigital tap model range.');
+    const ratio = clamp(Math.asin(Math.sqrt(Math.min(1, argument))) * 2 / Math.PI, 0.02, 0.95);
+    return { ratio, length: ratio * quarter };
+  };
 
-  /* Unloaded Q of a resonator, from the line's own loss: Qu = beta / (2*alpha).
-     This is what the response should be told, not a lumped-inductor Q slider —
-     a microstrip resonator on FR-4 runs Qu ~ 100-200 and on Rogers 300+, and
-     the difference is most of the insertion loss. */
-  const beta = 2 * Math.PI / (msRes.lambda * 1e-3);
-  const Qu = msRes.alpha > 0 ? beta / (2 * msRes.alpha) : 0;
-
-  return {
-    kind: 'interdigital', spec, Qu,
+  return evaluateInterdigital({
+    kind: 'interdigital', spec,
     g, f0, fbw: D, Z0, zLoad: Z0,
     resonators, gaps, kCouple, Qe1, Qen,
     quarter, wRes, msRes,
-    tap: { ratio: tapRatio, length: tapRatio * quarter },
+    tap: tapFor(Qe1), tapOut: tapFor(Qen),
     feed: { w: wFeed, model: microstrip(wFeed, sub.h, sub.er, { t: sub.t, f: f0, tanD: sub.tanD }) },
     warnings,
-    elements: buildCoupledResonatorNetwork(g, n, f0, D, Zr, Z0, Qu),
     totalLength: n * wRes + gaps.reduce((a, x) => a + x.s, 0),
-  };
+  }, sub);
 }
 
 /* Coupling coefficient -> physical gap, by bisection on the coupled model. */
 function gapForCoupling(kTarget, w, sub, f0) {
-  let lo = (sub.minGap || 0.1) * 0.3, hi = sub.h * 15;
+  let lo = (sub.minGap || 0.1) * 0.3, hi = Math.max(lo, sub.h * 15);
   for (let i = 0; i < 46; i++) {
     const s = Math.sqrt(lo * hi);
     const r = coupledMicrostrip(w, s, sub.h, sub.er, { t: sub.t, f: f0 });
@@ -759,35 +779,44 @@ function gapForCoupling(kTarget, w, sub, f0) {
   return Math.sqrt(lo * hi);
 }
 
-/* A coupled-resonator band-pass as its lumped equivalent: each resonator is a
-   shunt parallel-LC tank, each coupling a J-inverter.
+function physicalTap(resonator, tap, Z0) {
+  const length = resonator.length;
+  const margin = Math.min(0.5, length / 4);
+  const distance = clamp(tap.length, margin, length - margin);
+  const ratio = distance / length;
+  const Qe = Math.PI * Z0 / (2 * resonator.model.Z0 * Math.sin(Math.PI * ratio / 2) ** 2);
+  return { length: distance, ratio, Qe };
+}
 
-   The tanks are sized from the susceptance slope parameter of a quarter-wave
-   short-circuited line resonator, b = pi/(4*Zr). The inverter values are the
-   standard shunt-resonator set
-
-     J01     = sqrt(G0 * b * FBW / (g0 * g1))
-     Jk,k+1  = FBW * b / sqrt(gk * gk+1)
-     Jn,n+1  = sqrt(b * Gn+1 * FBW / (gn * gn+1))
-
-   which reproduces the prototype response in the passband. It is a narrowband
-   equivalent -- it says nothing useful about the second passband -- so the
-   response plot is bounded to a couple of octaves either side of f0. */
-function buildCoupledResonatorNetwork(g, n, f0, D, Zr, Z0, Qu = 0) {
-  const w0 = TAU * f0;
-  const b = Math.PI / (4 * Zr);          // susceptance slope, siemens
-  const Ctank = b / w0;
-  const Ltank = 1 / (w0 * w0 * Ctank);
-  const G0 = 1 / Z0;
-
+/* The tapped-line equivalent is narrowband. Its tank frequencies and
+   inverter strengths are always evaluated from the drawn lengths and gaps. */
+export function evaluateInterdigital(d, sub) {
+  const R = d.resonators;
+  const tap = physicalTap(R[0], d.tap, d.Z0);
+  const tapOut = physicalTap(R.at(-1), d.tapOut ?? d.tap, d.Z0);
+  const tanks = R.map((r, i) => {
+    const w0 = TAU * d.f0 * r.model.lambda / (4 * r.length);
+    const b = Math.PI / (4 * r.model.Z0);
+    const cap = b / w0;
+    const qu = r.model.alpha > 0 ? Math.PI / (r.model.lambda * 1e-3 * r.model.alpha) : 0;
+    return { kind: 'shunt', type: 'LC-parallel', L: 1 / (w0 * w0 * cap), C: cap, b, qu, resonator: i };
+  });
+  const gaps = d.gaps.map((gap, i) => {
+    const w = (R[i].w + R[i + 1].w) / 2;
+    const actualK = coupledMicrostrip(w, gap.s, sub.h, sub.er, { t: sub.t, f: d.f0 }).coupling;
+    return { ...gap, actualK };
+  });
+  const modelWarnings = gaps.flatMap((gap, i) => Math.abs(gap.actualK - gap.k) > Math.max(0.002, 0.1 * gap.k)
+    ? [`Gap ${i + 1}–${i + 2} gives k = ${gap.actualK.toFixed(4)} against the target ${gap.k.toFixed(4)}.`] : []);
   const elements = [];
-  elements.push({ kind: 'inverter', J: Math.sqrt(G0 * b * D / (g[0] * g[1])) });
-  for (let i = 1; i <= n; i++) {
-    elements.push({ kind: 'shunt', type: 'LC-parallel', L: Ltank, C: Ctank, resonator: i - 1, qu: Qu });
-    if (i < n) elements.push({ kind: 'inverter', J: D * b / Math.sqrt(g[i] * g[i + 1]) });
+  elements.push({ kind: 'inverter', J: Math.sqrt(tanks[0].b / (d.Z0 * tap.Qe)) });
+  for (const [i, tank] of tanks.entries()) {
+    elements.push(tank);
+    if (i < gaps.length) elements.push({ kind: 'inverter', J: gaps[i].actualK * Math.sqrt(tank.b * tanks[i + 1].b) });
   }
-  elements.push({ kind: 'inverter', J: Math.sqrt(b * G0 * D / (g[n] * g[n + 1])) });
-  return elements;
+  elements.push({ kind: 'inverter', J: Math.sqrt(tanks.at(-1).b / (d.Z0 * tapOut.Qe)) });
+  return { ...d, tap, tapOut, gaps, elements, Qu: tanks[0].qu, modelWarnings,
+    tuningModel: 'Narrowband estimate from physical gaps and taps. Full-wave validation is needed for spurious passbands and final response.' };
 }
 
 /* ---------------------------------------------------------------------------
@@ -832,9 +861,8 @@ export function emiFilter(spec) {
       kind: 'cm', topology: 'cm', elements, Z0: Zs, zLoad: Zl, spec,
       fc: Cy > 0 ? 1 / (TAU * Math.sqrt(Lcm * Cy)) : null,
       Lwinding: Lw, Lcm, Ldm, coupling: k, yCap: Cy,
-      note: 'Differential-mode inductance is L(1−k). Leakage sets the DM current rating and the saturation limit.',
-      warnings: Cy > 0 && Cy > 4.7e-9
-        ? ['Y-capacitance above about 4.7 nF per line will usually fail a mains leakage-current limit.'] : [],
+      note: 'Common- and differential-mode inductances use the entered coupling. Current rating depends on the copper and temperature.',
+      warnings: [],
     };
   }
 
@@ -859,9 +887,10 @@ export function emiFilter(spec) {
     });
     return net;
   };
+  const throughDb = dB(2 * Math.sqrt(Zs * Zl) / (Zs + Zl));
   const attnAt = (fc) => {
     const r = respond(build(fc), { f0: fTarget, f1: fTarget * 1.0001, points: 2, z0: Zs, zLoad: Zl });
-    return -r.s21db[0];
+    return throughDb - r.s21db[0];
   };
 
   let lo = fTarget / 1e5, hi = fTarget;
@@ -885,6 +914,7 @@ export function emiFilter(spec) {
     kind: topo, topology: topo,
     Z0: Zs, zLoad: Zl,
     fc, fTarget, attnDb,
+    throughDb,
     achieved: attnAt(fc),
     Zref: Math.sqrt(Math.max(Zs * Zl, 1e-6)),
     warnings: Zs === Zl ? [] : [

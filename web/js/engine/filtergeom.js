@@ -133,18 +133,37 @@ export function layoutEdgeCoupled(design, ctx) {
   // y of each conductor: conductor k and k+1 are the pair of section k
   const Y = [0];
   for (let k = 0; k < S.length; k++) Y.push(Y[k] - (S[k].w + S[k].s));
+  const clearance = Math.max(ctx.clearance, ctx.minGap);
+  // KiCad track ends are round. Set a wider shoulder back from the end
+  // of its neighboring strip so the outer copper, not just the centerlines,
+  // clears the specified gap.
+  const setback = (wide, narrowSection) => {
+    const pitch = narrowSection.w + narrowSection.s;
+    const needed = clearance + (wide + narrowSection.w) / 2;
+    return needed > pitch ? Math.sqrt(needed ** 2 - pitch ** 2) + 0.01 : 0;
+  };
 
   // Conductor 0 is the input feed line, conductors 1..n the resonators,
   // conductor n+1 the output feed line.
   for (let i = 0; i <= n + 1; i++) {
     const xStart = i === 0 ? X[0] : X[i - 1];
     const xEnd = i === n + 1 ? X[n] + S[n].length : X[i] + S[i].length;
-    const w = i === 0 ? S[0].w : i === n + 1 ? S[n].w : (S[i - 1].w + S[i].w) / 2;
     const role = (i === 0 || i === n + 1) ? 'feed-coupled' : 'resonator';
     const net = i === 0 ? `${ctx.net}_IN` : i === n + 1 ? `${ctx.net}_OUT` : null;
-    A.tracks.push(track(L, w, run(xStart, Y[i], xEnd, Y[i]), { role, index: i, net }));
     if (role === 'resonator') {
-      A.labels.push(label((xStart + xEnd) / 2, Y[i] + w / 2 + 0.5, `R${i}`, { size: 0.7 }));
+      const left = S[i - 1], right = S[i];
+      const shift = right.w > left.w ? setback(right.w, left) : right.w < left.w ? -setback(left.w, right) : 0;
+      const junction = X[i] + shift;
+      if (junction <= xStart || junction >= xEnd) {
+        A.meta.routingError ||= 'A coupled-line section is too short for a clear width transition at this gap.';
+      }
+      const split = junction > xStart && junction < xEnd ? junction : X[i];
+      A.tracks.push(track(L, left.w, run(xStart, Y[i], split, Y[i]), { role, index: i, section: i - 1, net }));
+      A.tracks.push(track(L, right.w, run(split, Y[i], xEnd, Y[i]), { role, index: i, section: i, net }));
+      A.labels.push(label((xStart + xEnd) / 2, Y[i] + Math.max(S[i - 1].w, S[i].w) / 2 + 0.5, `R${i}`, { size: 0.7 }));
+    } else {
+      const section = i === 0 ? 0 : n;
+      A.tracks.push(track(L, S[section].w, run(xStart, Y[i], xEnd, Y[i]), { role, index: i, section, net }));
     }
   }
 
@@ -152,14 +171,16 @@ export function layoutEdgeCoupled(design, ctx) {
   // last conductor.
   const inX = X[0], inY = Y[0];
   const inputNet = `${ctx.net}_IN`, outputNet = `${ctx.net}_OUT`;
-  A.tracks.push(track(L, feedW, run(inX - ctx.feedLength, inY, inX, inY), { role: 'feed', net: inputNet }));
-  A.ports.push({ x: inX - ctx.feedLength, y: inY, name: 'P1', angle: Math.PI, net: inputNet });
-  A.pads.push(pad(inX - ctx.feedLength, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port', net: inputNet }));
-
   const outX = X[n] + S[n].length, outY = Y[n + 1];
-  A.tracks.push(track(L, feedW, run(outX, outY, outX + ctx.feedLength, outY), { role: 'feed', net: outputNet }));
-  A.ports.push({ x: outX + ctx.feedLength, y: outY, name: 'P2', angle: 0, net: outputNet });
-  A.pads.push(pad(outX + ctx.feedLength, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port', net: outputNet }));
+  [[inX, inY, S[0], -1, inputNet], [outX, outY, S[n], 1, outputNet]].forEach(([x, y, section, sign, net], i) => {
+    const neck = feedW > section.w ? setback(feedW, section) : 0;
+    const padSetback = setback(ctx.padSize, section);
+    const portX = x + sign * Math.max(ctx.feedLength, neck + 0.1, padSetback);
+    if (neck > 0) A.tracks.push(track(L, section.w, run(x, y, x + sign * neck, y), { role: 'feed-transition', net }));
+    A.tracks.push(track(L, feedW, run(x + sign * neck, y, portX, y), { role: 'feed', net }));
+    A.ports.push({ x: portX, y, name: 'P' + (i + 1), angle: i ? 0 : Math.PI, net });
+    A.pads.push(pad(portX, y, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: String(i + 1), role: 'port', net }));
+  });
 
   for (let k = 0; k < S.length; k++) {
     A.labels.push(label(X[k] + S[k].length / 2, (Y[k] + Y[k + 1]) / 2, `${S[k].s.toFixed(2)}`, { size: 0.55, layer: 'F.SilkS' }));
@@ -167,9 +188,8 @@ export function layoutEdgeCoupled(design, ctx) {
 
   A.notes.push({
     level: 'info',
-    text: 'Parallel-coupled synthesis is first-order in the fractional bandwidth. Expect the built '
-      + 'filter to come out 10–25 % wide and a little low in centre frequency, and a spurious '
-      + 'passband near 2·f₀ where the odd and even modes fall back into step.',
+    text: 'The circuit model uses uniform coupled sections with distinct even- and odd-mode velocities. '
+      + 'It approximates width transitions and omits fringing and nonadjacent coupling.',
   });
   return A;
 }
@@ -247,6 +267,8 @@ export function layoutInterdigital(design, ctx) {
   const R = design.resonators;
   const len = design.quarter;
   const railW = ctx.railWidth;
+  const railGap = Math.max(ctx.railGap, (railW + Math.max(design.feed.w, ...R.map(r => r.w))) / 2 + ctx.clearance);
+  const railLeft = -ctx.feedLength - 1 - (ctx.padSize + railW) / 2 - ctx.clearance;
 
   let x = 0;
   const centres = [];
@@ -268,47 +290,47 @@ export function layoutInterdigital(design, ctx) {
     x += r.w + gap;
   });
 
-  const span = x - (R.length ? design.gaps.length ? design.gaps[design.gaps.length - 1].s : 0 : 0);
   const xEnd = centres[centres.length - 1] + R[R.length - 1].w / 2;
 
   // Ground rails top and bottom, stitched.
-  for (const [y, tag] of [[-ctx.railGap, 'bottom'], [len + ctx.railGap, 'top']]) {
-    A.tracks.push(track(L, railW, run(-ctx.feedLength - 1, y, xEnd + ctx.feedLength + 1, y), { role: `rail-${tag}`, net: ctx.gndNet }));
+  for (const [y, tag] of [[-railGap, 'bottom'], [len + railGap, 'top']]) {
+    A.tracks.push(track(L, railW, run(railLeft, y, xEnd + ctx.feedLength + 1, y), { role: `rail-${tag}`, net: ctx.gndNet }));
     const stitch = Math.max(2, Math.round((xEnd + 2 * ctx.feedLength) / 4));
     for (let i = 0; i <= stitch; i++) {
-      const sx = -ctx.feedLength - 1 + (xEnd + 2 * ctx.feedLength + 2) * i / stitch;
+      const sx = railLeft + (xEnd + ctx.feedLength + 1 - railLeft) * i / stitch;
       A.vias.push(via(sx, y, { drill: ctx.viaDrill, diameter: ctx.viaPad, net: ctx.gndNet, role: 'stitch' }));
     }
   }
+  A.tracks.push(track(ctx.groundLayer, railW, run(railLeft, -railGap, railLeft, len + railGap), { role: 'rail-return', net: ctx.gndNet }));
 
   // Connect each grounded resonator end to its rail.
   R.forEach((r, i) => {
     const xc = centres[i];
     const bottom = i % 2 === 0;
     const y0 = bottom ? 0 : (r.length || len);
-    const y1 = bottom ? -ctx.railGap : len + ctx.railGap;
+    const y1 = bottom ? -railGap : len + railGap;
     A.tracks.push(track(L, r.w, run(xc, y0, xc, y1), { role: 'ground-stub', net: ctx.gndNet }));
   });
 
   // Tapped feeds on the first and last resonators.
-  const tapLen = clamp(design.tap ? design.tap.length : len * 0.25, 0.5, len - 0.5);
-  const inY = Math.min(tapLen, R[0].length || len), outY = R.length % 2 === 0 ? Math.max(0, (R.at(-1).length || len) - tapLen) : Math.min(tapLen, R.at(-1).length || len);
+  const tapIn = design.tap?.length ?? len * 0.25;
+  const tapOut = design.tapOut?.length ?? tapIn;
+  const inY = tapIn, outY = R.length % 2 === 0 ? (R.at(-1).length || len) - tapOut : tapOut;
   A.tracks.push(track(L, design.feed.w, run(centres[0] - ctx.feedLength - 1, inY, centres[0], inY), { role: 'feed', referenceSignal: true }));
   A.ports.push({ x: centres[0] - ctx.feedLength - 1, y: inY, name: 'P1', angle: Math.PI, net: ctx.gndNet });
-  A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '1', role: 'port' }));
+  A.pads.push(pad(centres[0] - ctx.feedLength - 1, inY, { w: ctx.padSize, layer: L, number: '1', role: 'port' }));
 
   const lastX = centres[centres.length - 1];
   A.tracks.push(track(L, design.feed.w, run(lastX, outY, lastX + ctx.feedLength + 1, outY), { role: 'feed', referenceSignal: true }));
   A.ports.push({ x: lastX + ctx.feedLength + 1, y: outY, name: 'P2', angle: 0, net: ctx.gndNet });
-  A.pads.push(pad(lastX + ctx.feedLength + 1, outY, { w: ctx.padSize, drill: ctx.padDrill, layer: L, number: '2', role: 'port' }));
+  A.pads.push(pad(lastX + ctx.feedLength + 1, outY, { w: ctx.padSize, layer: L, number: '2', role: 'port' }));
 
   defaultNet(A, ctx.gndNet);
 
   A.notes.push({
     level: 'warn',
-    text: 'Both taps are DC-connected to ground. Add DC blocks when the external circuit requires DC isolation. '
-      + 'Every resonator needs a low-inductance path to ground. A single 0.3 mm via adds roughly '
-      + '0.5 nH, which pulls f₀ down by a percent or two — use two or three vias per resonator end.',
+    text: 'The surface-mount taps are DC-connected to ground through the resonators. Add DC blocks where needed. '
+      + 'Via and return-path inductance are outside the narrowband model, so verify the real ground connections and response.',
   });
   return A;
 }
@@ -325,6 +347,7 @@ export function layoutInterdigital(design, ctx) {
  * mid-points of the two spines.
  */
 export function interdigitalGeom(ctx, targetC, opt = {}) {
+  if (!(targetC > 0) || !Number.isFinite(targetC)) throw new Error('The capacitor target must be positive and finite.');
   const fw = opt.fingerW || ctx.fingerW;
   const fg = opt.fingerG || ctx.fingerG;
   const spineW = opt.spineW || Math.max(fw, ctx.traceW);
@@ -345,15 +368,17 @@ export function interdigitalGeom(ctx, targetC, opt = {}) {
     fingers: n, length: l, width: fw, gap: fg, er: ctx.er, h: ctx.h, t: ctx.t,
   });
 
-  let overlap = opt.overlap || ctx.capOverlap;
+  const maxFingers = 48, maxOverlap = 400;
+  let overlap = Math.min(maxOverlap, opt.overlap || ctx.capOverlap);
   let fingers = 2;
   for (let attempt = 0; attempt < 5; attempt++) {
     fingers = Math.max(2, interdigitalFingersFor(targetC, {
       length: overlap, width: fw, gap: fg, er: ctx.er, h: ctx.h, t: ctx.t,
     }));
-    if (fingers <= 48) break;
-    overlap *= 1.8;
+    if (fingers <= maxFingers || overlap === maxOverlap) break;
+    overlap = Math.min(maxOverlap, overlap * 1.8);
   }
+  fingers = Math.min(fingers, maxFingers);
 
   // Trim the overlap. Capacitance is very nearly linear in it, so two or three
   // secant steps land inside a fraction of a percent.
@@ -361,7 +386,7 @@ export function interdigitalGeom(ctx, targetC, opt = {}) {
   for (let i = 0; i < 6; i++) {
     const c = cell(fingers, overlap).C;
     if (Math.abs(c / targetC - 1) < 0.005) break;
-    const next = clamp(overlap * (targetC / c), minOverlap, 400);
+    const next = clamp(overlap * (targetC / c), minOverlap, maxOverlap);
     if (Math.abs(next - overlap) < 1e-4) break;
     overlap = next;
   }
@@ -369,6 +394,9 @@ export function interdigitalGeom(ctx, targetC, opt = {}) {
   const model = cell(fingers, overlap);
 
   const A = artwork({ name: 'idc', kind: 'component' });
+  if (model.C < 0.99 * targetC && fingers >= maxFingers) {
+    A.notes.push({ level: 'warn', text: 'The interdigital capacitor reached its layout limits before meeting the requested capacitance.' });
+  }
   const L = ctx.signalLayer;
   const pitch = fw + fg;
   const width = fingers * fw + (fingers - 1) * fg;
@@ -405,7 +433,11 @@ export function interdigitalGeom(ctx, targetC, opt = {}) {
 export function plateGeom(ctx, targetC, opt = {}) {
   const layerA = opt.layerA || ctx.layers[0] || 'F.Cu';
   const layerB = opt.layerB || ctx.layers[1] || 'B.Cu';
-  const hDiel = opt.h != null ? opt.h : (ctx.layers.length > 1 ? ctx.boardT / (ctx.layers.length - 1) : ctx.boardT);
+  const a = ctx.copperStack?.find(layer => layer.name === layerA);
+  const b = ctx.copperStack?.find(layer => layer.name === layerB);
+  const spacing = a && b ? Math.abs(a.centerHeightMm - b.centerHeightMm) - (a.thicknessMm + b.thicknessMm) / 2 : NaN;
+  const nominalSpacing = ctx.layers.length > 1 ? ctx.boardT / (ctx.layers.length - 1) : ctx.boardT;
+  const hDiel = opt.h ?? (Number.isFinite(spacing) && spacing > 0 ? spacing : nominalSpacing);
   const areaMM2 = plateAreaFor(targetC, hDiel, ctx.er);
   // A short round-ended track is legal copper on inner and outer layers.
   // Size both plates by its actual copper area, not its bounding rectangle.
@@ -660,8 +692,7 @@ export function layoutLumped(design, ctx) {
   warn.forEach((w) => A.notes.push({ level: 'warn', text: w }));
   A.notes.push({
     level: 'info',
-    text: 'Element values shown are what the geometry realises, not what the synthesis asked for. '
-      + 'The response plot is computed from the realised values with their parasitics included.',
+    text: 'The response uses realised L and C and estimated winding Q. Full component parasitics and board coupling require measurement or EM analysis.',
   });
   A.meta.placed = placed.filter((p) => p.el).map((p) => ({
     type: p.el.type, kind: p.el.kind, x: p.x, realised: p.realised, target: p.target,

@@ -53,7 +53,7 @@ export const FAMILIES = {
   },
   interdigital: {
     name: 'Interdigital',
-    note: 'Quarter-wave resonators grounded at alternating ends. Compact, and no spurious passband at 2·f₀ — at the cost of a via under every resonator.',
+    note: 'Quarter-wave resonators grounded at alternating ends. Compact layout with a narrowband response estimate.',
     bands: ['bandpass'],
   },
   emi: {
@@ -111,6 +111,9 @@ export function defaults() {
 
 const isBandpass = (c) => ['bandpass', 'bandstop'].includes(c.band) || ['edgeCoupled', 'hairpin', 'interdigital'].includes(c.family);
 const isDistributed = (c) => ['stepped', 'edgeCoupled', 'hairpin', 'interdigital'].includes(c.family);
+const isCommonMode = (c) => c.family === 'emi' && c.emiTopology === 'cm';
+const hasPlanarCapacitors = (c) => c.family === 'lumped' || (c.family === 'emi' && !isCommonMode(c));
+const hasInterdigitalCapacitors = (c) => hasPlanarCapacitors(c) && c.capStyle === 'interdigital';
 
 export function resolveRfStack(cfg, board) {
   const signal = cfg.rfSignalLayer || 'F.Cu';
@@ -183,7 +186,7 @@ export function rail(panel, app) {
       {
         key: 'response', type: 'select', label: 'Response', optionHint: true,
         options: Object.entries(RESPONSES).map(([value, r]) => ({ value, label: r.name, hint: r.note })),
-        when: (c) => c.family !== 'emi' || c.emiTopology !== 'cm',
+        when: (c) => !isCommonMode(c),
       },
       {
         key: 'order', type: 'range', label: 'Order', min: 1, max: 10, step: 1,
@@ -193,7 +196,7 @@ export function rail(panel, app) {
       {
         key: 'ripple', type: 'range', label: 'Passband ripple', unit: 'dB',
         min: 0.01, max: 3, step: 0.01, decimals: 2,
-        when: (c) => c.response === 'chebyshev' && (c.family !== 'emi' || c.emiTopology !== 'cm'),
+        when: (c) => c.response === 'chebyshev' && !isCommonMode(c),
         hint: 'More ripple buys a steeper skirt. 0.1 dB gives 16 dB return loss; 0.5 dB gives 9.6 dB.',
       },
       {
@@ -282,20 +285,20 @@ export function rail(panel, app) {
           { value: 'plate', label: 'Plate', hint: 'Overlapping copper on two layers. Far denser — nanofarads in millimetres — but the stack-up sets the value.' },
         ],
         optionHint: true,
-        when: (c) => c.family === 'lumped' || (c.family === 'emi' && c.emiTopology !== 'cm'),
+        when: hasPlanarCapacitors,
       },
-      { key: 'fingerW', type: 'range', label: 'Finger width', unit: 'mm', min: 0.08, max: 1, step: 0.01, when: (c) => c.capStyle === 'interdigital' && c.family !== 'emi' || (c.family === 'emi' && c.emiTopology !== 'cm' && c.capStyle === 'interdigital') },
-      { key: 'fingerG', type: 'range', label: 'Finger gap', unit: 'mm', min: 0.08, max: 1, step: 0.01, when: (c) => c.capStyle === 'interdigital' },
-      { key: 'capOverlap', type: 'range', label: 'Finger overlap', unit: 'mm', min: 0.5, max: 20, step: 0.1, when: (c) => c.capStyle === 'interdigital' },
+      { key: 'fingerW', type: 'range', label: 'Finger width', unit: 'mm', min: 0.08, max: 1, step: 0.01, when: hasInterdigitalCapacitors },
+      { key: 'fingerG', type: 'range', label: 'Finger gap', unit: 'mm', min: 0.08, max: 1, step: 0.01, when: hasInterdigitalCapacitors },
+      { key: 'capOverlap', type: 'range', label: 'Finger overlap', unit: 'mm', min: 0.5, max: 20, step: 0.1, when: hasInterdigitalCapacitors },
       {
         key: 'coilDiameter', type: 'range', label: 'Inductor budget', unit: 'mm', min: 2, max: 40, step: 0.5,
         when: (c) => c.family === 'lumped' || c.family === 'emi',
         hint: 'Largest spiral the layout may use. Turns are chosen whole and the diameter is trimmed to land the value.',
       },
-      { key: 'coilLayers', type: 'range', label: 'Inductor layers', min: 1, max: 8, step: 1, when: (c) => c.family === 'lumped' || c.family === 'emi' },
+      { key: 'coilLayers', type: 'range', label: 'Inductor layers', min: 1, max: 8, step: 1, when: hasPlanarCapacitors },
       { key: 'traceW', type: 'range', label: 'Routing width', unit: 'mm', min: 0.1, max: 2, step: 0.01 },
       { key: 'clearance', type: 'range', label: 'Clearance', unit: 'mm', min: 0.08, max: 2, step: 0.01 },
-      { key: 'feedLength', type: 'range', label: 'Feed length', unit: 'mm', min: 0, max: 20, step: 0.5 },
+      { key: 'feedLength', type: 'range', label: 'Feed length', unit: 'mm', min: 0, max: 20, step: 0.5, when: (c) => !isCommonMode(c) },
     ],
   });
 
@@ -418,11 +421,17 @@ export function compute(cfg, env, opt = {}) {
     fingerW: cfg.fingerW, fingerG: cfg.fingerG, capOverlap: cfg.capOverlap,
     coilShape: cfg.coilShape, coilLayers: cfg.coilLayers, coilDiameter: cfg.coilDiameter,
     boardT: cfg.boardT, copperOz: cfg.copperOz,
+    copperStack: env.board?.copperLayers,
     designF: design.f0 || cfg.fc,
   });
 
   const art = layoutFilter(design, ctx);
-  if (rfStack) art.meta.boardLayers = [rfStack.signal, rfStack.reference];
+  if (rfStack) {
+    art.meta.boardLayers = env.board?.copperLayers?.map(layer => layer.name) ?? [rfStack.signal, rfStack.reference];
+    art.meta.rfReferenceLayer = rfStack.reference;
+    art.meta.rfPlaneInset = Math.max(3, 3 * rfStack.h);
+    art.meta.rfPlaneClearance = cfg.clearance;
+  }
   const review = reviewDesign(design, substrateOf(cfg), { minTrace: cfg.minTrace });
   const processError = cfg.fabricationProfile && review.find(item => item.level === 'error');
   if (processError) art.meta.routingError ||= processError.text;
@@ -438,6 +447,10 @@ export function compute(cfg, env, opt = {}) {
 
   const built = realisedNetwork(design, art) || design;
   res.response = respond(built, { ...common, z0: design.Z0, zLoad: design.zLoad });
+  if (Number.isFinite(design.throughDb)) {
+    const atTarget = respond(built, { ...common, f0: design.fTarget, points: 1, z0: design.Z0, zLoad: design.zLoad });
+    res.targetAttenuation = design.throughDb - atTarget.s21db[0];
+  }
   if (cfg.hairpinExtraction && design.kind === 'hairpin') {
     try {
       res.extractedResponse = respond(extractedHairpin(res, cfg.hairpinExtraction), { ...common, z0: design.Z0, zLoad: design.zLoad });
@@ -522,16 +535,21 @@ export function tiles(cfg, res) {
   out.push({ k: 'Insertion loss', v: num(m.insertionLoss, 2), u: 'dB', tone: m.insertionLoss > 3 ? 'warn' : 'good' });
   out.push({ k: 'Return loss', v: num(m.worstReturnLoss, 1), u: 'dB', tone: m.worstReturnLoss < 10 ? 'warn' : 'good', sub: 'worst in band' });
 
-  if (bp && m.centreF) {
+  if (cfg.band === 'bandstop') {
+    out.push({ k: 'Notch frequency', v: m.notchF ? eng(m.notchF, 'Hz', 4) : '—' });
+    out.push({ k: 'Notch rejection', v: m.notchRejection == null ? '—' : num(m.notchRejection, 2), u: 'dB',
+      ...(m.bw3 ? { sub: eng(m.bw3, 'Hz', 3) + ' at −3 dB' } : {}) });
+  } else if (bp && m.centreF) {
     out.push({ k: 'Centre', v: eng(m.centreF, 'Hz', 4) });
     out.push({ k: '−3 dB width', v: m.bw3 ? eng(m.bw3, 'Hz', 3) : '—', sub: m.bw3 && m.centreF ? `${(100 * m.bw3 / m.centreF).toFixed(1)} % FBW` : '' });
   } else {
-    const edge = m.f3 && m.f3.length ? m.f3[m.f3.length - 1] : null;
+    const edge = m.cutoff;
     out.push({ k: '−3 dB corner', v: edge ? eng(edge, 'Hz', 4) : '—' });
-    out.push({ k: '−20 dB', v: m.f20 && m.f20.length ? eng(m.f20[m.f20.length - 1], 'Hz', 3) : '—' });
+    out.push({ k: '−20 dB', v: m.cutoff20 ? eng(m.cutoff20, 'Hz', 3) : '—' });
   }
 
-  out.push({ k: 'Passband ripple', v: num(m.rippleDb, 3), u: 'dB', sub: `target ${num(m.designRipple, 2)} dB` });
+  out.push({ k: 'Passband variation', v: num(m.rippleDb, 3), u: 'dB',
+    sub: cfg.response === 'chebyshev' && !isCommonMode(cfg) ? `target ${num(m.designRipple, 2)} dB` : '' });
   out.push({ k: 'Shape factor', v: m.shape ? num(m.shape, 2) : '—', sub: '20 dB ÷ 3 dB' });
 
   const b = res.bounds;
@@ -549,6 +567,12 @@ export function spec(cfg, res) {
       title: 'Prototype',
       note: `${RESPONSES[cfg.response] ? RESPONSES[cfg.response].name : cfg.response}, order ${cfg.order}. Normalised g-values, g₀ = 1.`,
       rows: d.g.map((g, i) => [`g${i}`, num(g, 5)]),
+    });
+  }
+  if (cfg.family !== 'emi' && Math.abs(d.zLoad - d.Z0) > 1e-6) {
+    sections.push({
+      title: 'Terminations used in the response',
+      rows: [['Source', `${num(d.Z0, 2)} Ω`], ['Load', `${num(d.zLoad, 2)} Ω`]],
     });
   }
 
@@ -615,9 +639,9 @@ export function spec(cfg, res) {
         ['Line impedance', `${num(cfg.zRes, 0)} Ω`],
         ['Line width', `${num(d.wRes, 3)} mm`],
         ['Quarter wave', `${num(d.quarter, 2)} mm`],
-        ['External Q (in / out)', `${num(d.Qe1, 1)} / ${num(d.Qen, 1)}`],
-        ['Tap height', `${num(d.tap.length, 2)} mm`],
-        ...d.gaps.map((g, i) => [`Gap ${i + 1}–${i + 2}`, `${num(g.s, 3)} mm  (k = ${num(g.k, 4)})`]),
+        ['Estimated external Q (in / out)', `${num(d.tap.Qe, 1)} / ${num(d.tapOut.Qe, 1)}`],
+        ['Tap distance from short (in / out)', `${num(d.tap.length, 2)} / ${num(d.tapOut.length, 2)} mm`],
+        ...d.gaps.map((g, i) => [`Gap ${i + 1}–${i + 2}`, `${num(g.s, 3)} mm  (k = ${num(g.actualK, 4)})`]),
       ],
     });
   }
@@ -631,9 +655,9 @@ export function spec(cfg, res) {
         ['Estimated per-winding copper inductance', eng(res.art.meta.windingInductance, 'H', 3)],
         ['Estimated common-mode inductance', eng(res.art.meta.windingInductance * (1 + d.coupling), 'H', 3)],
         ['Estimated differential-mode inductance', eng(res.art.meta.windingInductance * (1 - d.coupling), 'H', 3)],
-        ['Coupling k', num(d.coupling, 3)],
+        ['Entered coupling k', num(d.coupling, 3)],
         d.yCap ? ['Y capacitance', eng(d.yCap, 'F', 3)] : null,
-        d.fc ? ['Corner with Y caps', eng(d.fc, 'Hz', 3)] : null,
+        d.fc ? ['LC frequency with Y caps', eng(d.fc, 'Hz', 3)] : null,
       ].filter(Boolean),
     });
   } else if (cfg.family === 'emi') {
@@ -641,7 +665,9 @@ export function spec(cfg, res) {
       title: 'Attenuation target',
       rows: [
         ['Wanted', `${num(cfg.attnDb, 0)} dB at ${eng(cfg.fTarget, 'Hz', 3)}`],
-        ['Achieved', `${num(d.achieved, 1)} dB`],
+        ['Ideal network', `${num(d.achieved, 1)} dB`],
+        ...(res.targetAttenuation == null ? [] : [['Estimated as built', `${num(res.targetAttenuation, 1)} dB`]]),
+        ['Attenuation reference', 'Direct source-to-load connection'],
         ['Corner frequency', eng(d.fc, 'Hz', 4)],
         ['Reference impedance', `${num(d.Zref, 1)} Ω`],
       ],
@@ -666,15 +692,17 @@ export function spec(cfg, res) {
   });
 
   if (m) {
+    const notch = cfg.band === 'bandstop';
     sections.push({
-      title: 'Measured from the response',
+      title: 'Calculated from the response',
       rows: [
         ['Insertion loss', `${num(m.insertionLoss, 3)} dB`],
-        ['Ripple in band', `${num(m.rippleDb, 3)} dB`],
+        ['Passband variation', `${num(m.rippleDb, 3)} dB`],
         ['Worst return loss', `${num(m.worstReturnLoss, 2)} dB`],
-        m.bwRipple ? ['Ripple bandwidth', eng(m.bwRipple, 'Hz', 4)] : null,
-        m.bw3 ? ['−3 dB bandwidth', eng(m.bw3, 'Hz', 4)] : null,
-        m.bw20 ? ['−20 dB bandwidth', eng(m.bw20, 'Hz', 4)] : null,
+        m.notchF ? ['Notch frequency', eng(m.notchF, 'Hz', 4)] : null,
+        !notch && m.bwRipple ? ['Ripple bandwidth', eng(m.bwRipple, 'Hz', 4)] : null,
+        m.bw3 ? [notch ? '−3 dB rejection width' : '−3 dB bandwidth', eng(m.bw3, 'Hz', 4)] : null,
+        m.bw20 ? [notch ? '−20 dB rejection width' : '−20 dB bandwidth', eng(m.bw20, 'Hz', 4)] : null,
         m.shape ? ['Shape factor', num(m.shape, 3)] : null,
         ['Worst VSWR in band', num(worstVswr(res), 2)],
       ].filter(Boolean),
@@ -690,18 +718,15 @@ function worstVswr(res) {
   const r = res.response;
   const m = r && r.metrics;
   if (!r || !m) return NaN;
-  const lo = m.fRipple && m.fRipple.length ? m.fRipple[0] : r.freqs[0];
-  const hi = m.fRipple && m.fRipple.length ? m.fRipple[m.fRipple.length - 1] : (m.cutoff || r.freqs[r.freqs.length - 1]);
-  let worst = 1;
-  for (let i = 0; i < r.freqs.length; i++) {
-    if (r.freqs[i] < lo || r.freqs[i] > hi) continue;
-    if (r.vswr[i] > worst) worst = r.vswr[i];
-  }
-  return worst;
+  const gamma = 10 ** (-m.worstReturnLoss / 20);
+  return gamma < 0.999999 ? (1 + gamma) / (1 - gamma) : 999;
 }
 
 export function notes(cfg, res) {
   const out = [];
+  if (res.rfStack) out.push({ level: 'info', text: 'The standalone KiCad board includes the selected reference zone. Refill zones to check the returned copper.' });
+  if (!isCommonMode(cfg) && (cfg.response === 'bessel' || cfg.response === 'linearPhase')) out.push({ level: 'info',
+    text: 'The frequency controls scale the prototype. Use the computed −3 dB edges for the actual bandwidth.' });
   if (cfg.fixedDesign) out.push({ level: 'info', text: 'Calibrated copper dimensions are frozen. Change synthesis targets or reset geometry tuning to synthesize a fresh layout.' });
   if (res.design.tuningModel) out.push({ level: 'info', text: res.design.tuningModel });
   for (const n of res.art.notes || []) out.push(n);
@@ -840,9 +865,9 @@ export function charts(cfg, res) {
 
 function markersFor(cfg, res) {
   const m = [];
-  if (cfg.family === 'emi' && cfg.emiTopology !== 'cm') {
-    m.push({ x: cfg.fTarget, label: `${cfg.attnDb} dB` });
-    if (res.design.fc) m.push({ x: res.design.fc, label: 'fc' });
+  if (cfg.family === 'emi') {
+    if (cfg.emiTopology !== 'cm') m.push({ x: cfg.fTarget, label: `${cfg.attnDb} dB` });
+    if (res.design.fc) m.push({ x: res.design.fc, label: cfg.emiTopology === 'cm' ? 'LC f₀' : 'fc' });
   } else if (isBandpass(cfg)) {
     const f0 = res.design.f0 || Math.sqrt(cfg.f1 * cfg.f2);
     m.push({ x: f0, label: 'f₀' });
@@ -856,6 +881,7 @@ function bandFor(cfg, res) {
   if (cfg.family === 'emi') return [];
   if (isBandpass(cfg)) return [{ from: Math.min(cfg.f1, cfg.f2), to: Math.max(cfg.f1, cfg.f2) }];
   if (cfg.band === 'lowpass') return [{ from: 0, to: cfg.fc }];
+  if (cfg.band === 'highpass') return [{ from: cfg.fc, to: res.response.freqs.at(-1) }];
   return [];
 }
 

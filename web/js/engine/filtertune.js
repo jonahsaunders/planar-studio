@@ -3,6 +3,7 @@
    Hairpin/interdigital use a narrowband resonator equivalent; no full-wave EM. */
 import { microstrip, coupledMicrostrip } from './microstrip.js';
 import { evaluateHairpin, hairpinLength, hairpinTap } from './hairpin-model.js';
+import { evaluateInterdigital } from './filter.js';
 
 export const DISTRIBUTED = ['stepped', 'edgeCoupled', 'hairpin', 'interdigital'];
 export const plain = (v) => JSON.parse(JSON.stringify(v));
@@ -51,32 +52,7 @@ export function tuneDistributed(base, cfg, tuning = {}, variation = {}) {
   }
   d.gaps = d.gaps.map((g, i) => ({ ...g, s: positive(gap(i, g.s)) }));
   d.quarter = Math.max(...d.resonators.map((r) => r.length));
-  const n = d.resonators.length;
-  const frequencies = d.resonators.map((r) => 299792458 / (Math.sqrt(r.model.epsEff) * 1e-3 * 4 * r.length));
-  const tanks = d.resonators.map((r, i) => {
-    const b = Math.PI / (4 * r.model.Z0);
-    const w0 = 2 * Math.PI * frequencies[i], C = b / w0, L = 1 / (w0 * w0 * C);
-    const qu = r.model.alpha > 0 ? 2 * Math.PI / (r.model.lambda * 1e-3) / (2 * r.model.alpha) : 0;
-    return { kind: 'shunt', type: 'LC-parallel', L, C, qu, b, resonator: i };
-  });
-  const G = 1 / d.Z0, fbw = d.fbw;
-  d.elements = [{ kind: 'inverter', J: Math.sqrt(G * tanks[0].b * fbw / (d.g[0] * d.g[1])) }];
-  for (let i = 0; i < n; i++) {
-    d.elements.push(tanks[i]);
-    if (i < n - 1) {
-      const a = d.resonators[i], b = d.resonators[i + 1];
-      const oldGap = nominal.gaps[i].s;
-      const newGap = d.gaps[i].s;
-      const oldW = (nominal.resonators[i].w + nominal.resonators[i + 1].w) / 2;
-      const oldK = coupledMicrostrip(oldW, oldGap, cfg.subH, cfg.subEr, { t: cfg.subT, f }).coupling;
-      const newK = cp((a.w + b.w) / 2, newGap).coupling;
-      const J = fbw * Math.sqrt(tanks[i].b * tanks[i + 1].b) / Math.sqrt(d.g[i + 1] * d.g[i + 2]) * newK / oldK;
-      d.elements.push({ kind: 'inverter', J });
-    }
-  }
-  d.elements.push({ kind: 'inverter', J: Math.sqrt(tanks.at(-1).b * G * fbw / (d.g[n] * d.g[n + 1])) });
-  d.tuningModel = 'Narrowband coupled-resonator equivalent; fixed external Q. Bends, taps, and nonadjacent coupling need EM validation.';
-  return d;
+  return evaluateInterdigital(d, sub);
 }
 
 export function tuningHandles(cfg, res, app) {

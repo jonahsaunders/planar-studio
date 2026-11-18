@@ -13,7 +13,7 @@
    happens.
    ========================================================================= */
 
-import { assertRoutable, bounds, decimate, copperLength, copperArea, segmentCount } from './artwork.js';
+import { assertRoutable, bounds, boundsCopper, decimate, copperLength, copperArea, pad, rect, segmentCount } from './artwork.js';
 
 const f3 = (v) => {
   const x = Math.abs(v) < 5e-7 ? 0 : v;
@@ -108,7 +108,28 @@ export function exportKicadMod(A, opt = {}) {
 
 export function exportKicadPcb(A, opt = {}) {
   assertRoutable(A);
-  const art = prepared(A, opt.tolerance);
+  let art = prepared(A, opt.tolerance);
+  let referencePlane = opt.referencePlane;
+  if (art.meta.kind === 'filter' && !art.outline.length) {
+    const b = boundsCopper(art);
+    let extent = b;
+    if (art.meta.rfReferenceLayer && !referencePlane) {
+      const portPads = art.pads.filter(p => p.role === 'port');
+      const ground = [portPads[0], portPads.at(-1)].filter(Boolean).map((port, i) => {
+        const x = i ? b.x1 + port.w : b.x0 - port.w;
+        return pad(x, port.y, { w: port.w, drill: port.drill || Math.min(0.7, port.w / 2), layer: port.layer,
+          number: 'G' + (i + 1), role: 'reference-port', net: 'GND' });
+      });
+      art = { ...art, pads: [...art.pads, ...ground] };
+      extent = boundsCopper(art);
+      const inset = art.meta.rfPlaneInset || 3;
+      referencePlane = { layer: art.meta.rfReferenceLayer,
+        polygon: rect(extent.x0 - inset, extent.y0 - inset, extent.x1 + inset, extent.y1 + inset),
+        clearance: art.meta.rfPlaneClearance || 0.2 };
+      extent = { x0: extent.x0 - inset, y0: extent.y0 - inset, x1: extent.x1 + inset, y1: extent.y1 + inset };
+    }
+    art = { ...art, outline: [{ layer: 'Edge.Cuts', pts: rect(extent.x0 - 1, extent.y0 - 1, extent.x1 + 1, extent.y1 + 1) }] };
+  }
   // A PCB needs a complete, even copper stack, including unused inner layers.
   // Sparse transformer assignments must retain their actual KiCad layer IDs.
   const touched = [...usedLayers(art), ...(art.meta.boardLayers || [])];
@@ -134,10 +155,19 @@ export function exportKicadPcb(A, opt = {}) {
   const netIndex = new Map();
   const allNets = new Set();
   [...art.tracks, ...art.arcs, ...art.vias, ...art.pads].forEach((o) => { if (o.net) allNets.add(o.net); });
-  if (opt.referencePlane) allNets.add('GND');
+  if (referencePlane) allNets.add('GND');
   for (const n of Array.from(allNets).sort()) { netNames.push(`"${n}"`); netIndex.set(n, netNames.length - 1); }
   netNames.forEach((n, i) => L.push(`  (net ${i} ${n})`));
   const netOf = (o) => (o.net && netIndex.has(o.net) ? netIndex.get(o.net) : 0);
+
+  if (art.meta.kind === 'filter') {
+    for (const p of art.pads.filter(p => p.drill > 0)) {
+      L.push(`  (footprint "Planar_Filter_Terminal" (layer "${p.layer}") (at ${f3(p.x)} ${f3(-p.y)}) (attr through_hole)`
+        + ` (pad "${p.number}" thru_hole circle (at 0 0) (size ${f3(p.w)} ${f3(p.h)}) (drill ${f3(p.drill)})`
+        + ` (layers "*.Cu" "*.Mask") (net ${netOf(p)} "${p.net || ''}")))`);
+    }
+    art = { ...art, pads: art.pads.filter(p => !(p.drill > 0)) };
+  }
 
   for (const o of art.outline) {
     for (let i = 1; i < o.pts.length; i++) {
@@ -179,8 +209,8 @@ export function exportKicadPcb(A, opt = {}) {
     L.push(`  (gr_text "${String(t.text).replace(/"/g, "'")}" (at ${f3(t.x)} ${f3(-t.y)}) (layer "${t.layer}") `
       + `(effects (font (size ${f3(t.size)} ${f3(t.size)}) (thickness ${f3(t.size * 0.15)}))))`);
   }
-  if (opt.referencePlane) {
-    const { layer, polygon, clearance } = opt.referencePlane;
+  if (referencePlane) {
+    const { layer, polygon, clearance } = referencePlane;
     const vertices = polygon.slice(0, -1).map(([x, y]) => `(xy ${f3(x)} ${f3(-y)})`).join(' ');
     L.push(`  (zone (net ${netIndex.get('GND')}) (net_name "GND") (layer "${layer}") (hatch edge 0.5)`
       + ` (connect_pads (clearance ${f3(clearance)})) (min_thickness 0.1)`

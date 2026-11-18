@@ -110,7 +110,7 @@ for (const family of ['stepped', 'edgeCoupled', 'hairpin', 'interdigital']) {
     const features = (r) => r.design.kind === 'stepped' ? r.design.sections[0].length : r.design.kind === 'edgeCoupled' ? r.design.sections[0].length : r.design.resonators[0].armLen || r.design.resonators[0].length;
     near(features(b), features(a) * 1.1, 1e-9);
     assert.ok(b.response.s21db.every(Number.isFinite));
-    const peak = (r) => r.response.freqs[r.response.s21db.indexOf(Math.max(...r.response.s21db))];
+    const peak = (r) => r.response.metrics.peakF;
     if (family !== 'stepped') assert.ok(peak(b) < peak(a), `${peak(b)} >= ${peak(a)}`);
     if (family === 'interdigital') {
       const t = computeFilter({ ...c, tuning: { lengths: [1.3, 1, 0.8] } }, {});

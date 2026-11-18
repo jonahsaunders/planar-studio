@@ -132,4 +132,53 @@ check('Common-mode choke has four isolated layer-specific terminals and uses rea
   assert.equal(result.art.meta.placed[0].realised.L, result.art.meta.windingInductance * (1 + result.design.coupling));
   assert.match(exportKicadPcb(result.art), /\(pad "4" smd/);
 });
-console.log(`\n${checks} lumped-layout checks passed`);
+check('Unreachable IDC targets produce bounded artwork and a saturation warning', () => {
+  const request = 10e-6;
+  const result = interdigitalGeom(defaultContext(), request);
+  assert.ok(result.fingers <= 48 && result.overlap <= 400 && result.model.C < request);
+  assert.ok(result.art.notes.some(note => /layout limits/.test(note.text)));
+});
+check('Stack-aware plates use the dielectric gap between their actual copper layers', () => {
+  const ctx = defaultContext({ layers: ['F.Cu', 'In1.Cu', 'B.Cu'],
+    copperStack: [{ name: 'F.Cu', centerHeightMm: 0.0175, thicknessMm: 0.035 },
+      { name: 'In1.Cu', centerHeightMm: 0.1375, thicknessMm: 0.035 }] });
+  assert.ok(Math.abs(plateGeom(ctx, 10e-12).model.h - 0.085) < eps);
+});
+check('Distributed exports include routed reference copper and board edges', () => {
+  for (const family of ['stepped', 'edgeCoupled', 'hairpin', 'interdigital']) {
+    const { art } = compute({ ...defaults(), family, order: 2, fc: 2e9,
+      band: family === 'stepped' ? 'lowpass' : 'bandpass', rfSignalLayer: 'B.Cu', rfReferenceLayer: 'In1.Cu' }, {}, { quick: true });
+    const pcb = exportKicadPcb(art);
+    assert.match(pcb, /\(layer "Edge\.Cuts"\)/);
+    assert.match(pcb, /\(zone .*\(layer "In1\.Cu"\)/);
+    assert.match(pcb, /\(pad "G1" thru_hole/);
+    assert.match(pcb, /\(pad "G2" thru_hole/);
+  }
+});
+check('Interdigital draws and models different taps on an asymmetric fixed design', () => {
+  const cfg = { ...defaults(), family: 'interdigital', order: 2, ripple: 0.5, band: 'bandpass' };
+  const { nominal } = compute(cfg, {}, { quick: true });
+  const fixedDesign = { ...nominal, tapOut: { ...nominal.tapOut, length: 1.2 * nominal.tapOut.length } };
+  const { art, design } = compute(cfg, {}, { quick: true, fixedDesign });
+  const [input, output] = art.ports;
+  assert.ok(Math.abs(design.tap.length - design.tapOut.length) > 0.1);
+  assert.notEqual(design.elements[0].J, design.elements.at(-1).J);
+  assert.ok(Math.abs(input.y - design.tap.length) < eps);
+  assert.ok(Math.abs(output.y - (design.resonators.at(-1).length - design.tapOut.length)) < eps);
+  assert.ok(art.pads.every(p => p.drill === 0), 'Tap pads must not connect directly to the reference plane');
+  assert.ok(art.tracks.some(t => t.role === 'rail-return' && t.layer === 'B.Cu'));
+});
+check('Edge-coupled section copper uses the two widths assumed by the response', () => {
+  const { art, design, ctx } = compute({ ...defaults(), family: 'edgeCoupled', band: 'bandpass', order: 5 }, {}, { quick: true });
+  for (const [i, section] of design.sections.entries()) {
+    const pair = art.tracks.filter(t => t.section === i);
+    assert.equal(pair.length, 2);
+    assert.ok(pair.every(t => t.width === section.w));
+    assert.ok(Math.abs(Math.abs(pair[0].pts[0][1] - pair[1].pts[0][1]) - section.w - section.s) < eps);
+  }
+  const strips = art.tracks.filter(t => t.section != null);
+  for (const [i, strip] of strips.entries()) for (const other of strips.slice(i + 1)) {
+    if (strip.index !== other.index) assert.ok(gap(strip, other) >= ctx.clearance - eps);
+  }
+});
+console.log(`\n${checks} filter-layout checks passed`);
